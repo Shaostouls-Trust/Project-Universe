@@ -1,0 +1,12 @@
+{
+    "auto": {
+        "Include": [
+            "Include/PU/PUBus.h"
+        ],
+        "Source": [
+            "Source/PUModule.cpp",
+            "Source/PUSystemComponent.cpp",
+            "Source/PUSystemComponent.h"
+        ]
+    }
+}
