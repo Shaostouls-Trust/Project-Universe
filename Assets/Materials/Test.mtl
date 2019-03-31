@@ -1,0 +1,9 @@
+<Material MtlFlags="524288" DccMaterialHash="0" Shader="Illum" GenMask="A00A00080000003" StringGenMask="%ALLOW_SILHOUETTE_POM%ALLOW_SPECULAR_ANTIALIASING%FX_DISSOLVE%NORMAL_MAP%OCCLUSION_MAP%SPECULAR_MAP%SUBSURFACE_SCATTERING" SurfaceType="mat_default" Diffuse="0.50196099,0.50196099,0.50196099,1" Specular="0.50196099,0.50196099,0.50196099,1" Opacity="1" Shininess="10" vertModifType="0" LayerAct="1">
+ <Textures>
+  <Texture Map="Diffuse" File="assets/textures/bathroom_floor.dds"/>
+  <Texture Map="Bumpmap" File="assets/textures/bathroom_floor_n.dds"/>
+  <Texture Map="Specular" File="assets/textures/bathroom_floor_s.dds"/>
+  <Texture Map="Occlusion" File="assets/textures/bathroom_floor_n.dds"/>
+ </Textures>
+ <PublicParams DissolveColor="1,1,1" EmittanceMapGamma="1" DissolveEdgeThickness="0" SSSIndex="0" DissolvePercentage="0" IndirectColor="0.25,0.25,0.25"/>
+</Material>
