@@ -4,4 +4,5 @@ Any individuals that participate in this project will be marked as contributors.
 
 # Info for other devs
  
-The Unity version used to save this Project on the last commit was, Unity 2018.1.5f1 64-bit Linux
+The Amazon Lumberyard version last used to run the editor is: 1.18.0.0
+You can download Amazon Lumberyard here: https://aws.amazon.com/lumberyard/
