@@ -4,5 +4,5 @@ Any individuals that participate in this project will be marked as contributors.
 
 # Info for other devs
  
-The Amazon Lumberyard version last used to run the editor is: 1.18.0.0
-<br>You can download Amazon Lumberyard here: https://aws.amazon.com/lumberyard/
+We are currently using Unity3D to develop this game. The current version is 2018.3.11f1.
+<br>You can download Unity3D here: https://store.unity.com/download
