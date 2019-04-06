@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
+
+
 
 public class TilingController : MonoBehaviour
 {
@@ -13,16 +16,33 @@ public class TilingController : MonoBehaviour
     private Vector3 Coords;
     private Vector3 debugrayend;
 
+    private bool sw = false;
+
+
+
     // Start is called before the first frame update
     void Start()
     {
+       
         SnapToGrid = true;
+
+        ReadXMLTiles();
+
+      /* SAVING XML FILE FOR TESTING - THIS WILL GO FOR EXTERIOR EDITOR
+        if (sw == false)
+       {
+           SaveXMLTiles();
+           sw = true;
+        }
+      */
     }
 
 
     // Update is called once per frame
     void Update()
     {
+
+      
 
         if (AllowBuilding)
         {
@@ -56,6 +76,25 @@ public class TilingController : MonoBehaviour
         else
             Tile.SetActive(false);
 
+    }
+
+
+    //READING / SAVING XML FILE
+
+    public void ReadXMLTiles()
+    {
+        var tileContainer = TileCollection.Load(Path.Combine(Application.dataPath, "Tiles.xml"));
+       // var xmlData = @"<TileCollection><tiles><Tiles name=""a""><model_path></model_path>x<material_path>y</material_path></Tiles></tiles></TileCollection>";
+       // var tileContainer = TileCollection.LoadFromText(xmlData);
+        Debug.Log("Number of tiles in database: " + tileContainer.tiles.Length);
+        Debug.Log(tileContainer.tiles[0].model_path);
+
+    }
+
+    public void SaveXMLTiles()
+    {
+        var tileContainer = TileCollection.Load(Path.Combine(Application.dataPath, "Tiles.xml"));
+          tileContainer.Save(Path.Combine(Application.persistentDataPath, "Tiles.xml"));
     }
 }
 
