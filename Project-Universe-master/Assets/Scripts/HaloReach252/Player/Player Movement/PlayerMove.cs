@@ -31,7 +31,6 @@ public class PlayerMove : MonoBehaviour
 
     void Update()
     {
-		Debug.Log("Is grounded: " + groundCheck.IsGrounded());
 		if (groundCheck.IsGrounded())
 		{
 			//Checks if a sprint key is being pressed down

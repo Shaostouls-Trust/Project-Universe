@@ -5,18 +5,18 @@ public class PlayerLook : MonoBehaviour
 	#region Variables
 	[SerializeField]
 	private float maxAngle;
-	public float MaxAngle { get; private set; }
+	public float MaxAngle { get { return maxAngle; } }
 	[SerializeField]
 	private float minAngle;
-	public float MinAngle { get; private set; }
+	public float MinAngle { get { return minAngle; } }
 	[SerializeField]
 	private float horizLookSpeed;
-	public float HorizLookSpeed { get; private set; }
+	public float HorizLookSpeed { get { return horizLookSpeed; } }
 	[SerializeField]
 	private float vertLookSpeed;
-	public float VertLookSpeed { get; private set; }
+	public float VertLookSpeed { get { return vertLookSpeed; } }
 
-	private float mouseY;
+	public float mouseY;
 
 	[SerializeField]
 	private Transform playerCamera;
