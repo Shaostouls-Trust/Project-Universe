@@ -6,11 +6,10 @@ public class Player : NetworkBehaviour
 	#region Variables
 	[HideInInspector]
 	public PlayerSaveData saveData;
-	[SyncVar]
+
 	public GameObject playerCam;
-	
-	[SyncVar]
 	public GameObject pauseMenu;
+
 	[SyncVar]
 	bool isPaused;
 	#endregion
@@ -20,7 +19,10 @@ public class Player : NetworkBehaviour
 	void Start()
 	{
 		if (!isLocalPlayer)
+		{
+			playerCam.SetActive(false);
 			return;
+		}
 
 		//Checks if the scene is being loaded, then loads the player data from the load  file
 		if (SaveLoad.Instance.m_isSceneBeingLoaded)

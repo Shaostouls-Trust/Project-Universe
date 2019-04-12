@@ -12,7 +12,9 @@ public class PlayerMove : NetworkBehaviour
 	public float runSpeed;
 	[SyncVar]
 	public float maxSpeed;
+	[SerializeField]
 	private Rigidbody rb;
+	[SerializeField]
 	private GroundCheck groundCheck;
 
 	#endregion
@@ -23,8 +25,6 @@ public class PlayerMove : NetworkBehaviour
     {
 		if (!isLocalPlayer)
 			return;
-		groundCheck = GetComponentInChildren<GroundCheck>();
-		rb = GetComponent<Rigidbody>();
     }
 
     void Update()
@@ -38,26 +38,28 @@ public class PlayerMove : NetworkBehaviour
 	[Command]
 	void CmdMove()
 	{
-		if (groundCheck.IsGrounded())
+		if(groundCheck != null && rb != null)
 		{
-			//Checks if a sprint key is being pressed down
-			if (Input.GetAxis("Sprint") != 0)
-				speed = runSpeed;
-			else
-				speed = defaultSpeed;
+			if (groundCheck.IsGrounded())
+			{
+				//Checks if a sprint key is being pressed down
+				if (Input.GetAxis("Sprint") != 0)
+					speed = runSpeed;
+				else
+					speed = defaultSpeed;
 
-			//Gets WASD input
-			float h = Input.GetAxis("Horizontal");
-			float v = Input.GetAxis("Vertical");
+				//Gets WASD input
+				float h = Input.GetAxis("Horizontal");
+				float v = Input.GetAxis("Vertical");
 
-			//The vector the player will move in
-			Vector3 movePos = new Vector3(h * speed, 0, v * speed);
+				//The vector the player will move in
+				Vector3 movePos = new Vector3(h * speed, 0, v * speed);
 
-			//Sets movement relative to rotation, and clamps the velocity to prevent superspeed
-			rb.AddRelativeForce(movePos);
-			rb.velocity = new Vector3(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), rb.velocity.y, Mathf.Clamp(rb.velocity.z, -maxSpeed, maxSpeed));
+				//Sets movement relative to rotation, and clamps the velocity to prevent superspeed
+				rb.AddRelativeForce(movePos);
+				rb.velocity = new Vector3(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), rb.velocity.y, Mathf.Clamp(rb.velocity.z, -maxSpeed, maxSpeed));
+			}
 		}
-
 	}
 
 	#endregion
