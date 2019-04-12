@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
 public class ObjectManager : MonoBehaviour
 {
 	#region Variables
-
 	public static ObjectManager Instance;
 
-	public List<TestLoadObject> objects = new List<TestLoadObject>();
-	List<TestLoadObjectData> objectsData = new List<TestLoadObjectData>();
+	public List<LoadableObject> objects = new List<LoadableObject>();
+	List<SaveObjectData> objectsData = new List<SaveObjectData>();
 	#endregion
 
 	#region Methods
@@ -18,14 +18,23 @@ public class ObjectManager : MonoBehaviour
 		if (Instance == null)
 			Instance = this;
 		ReloadObjects();
+		SceneManager.sceneLoaded += LoadObjectsDelegate;
+	}
+
+	private void LoadObjectsDelegate(Scene scene, LoadSceneMode mode)
+	{
+		ReloadObjects();
 	}
 
 	public void ReloadObjects()
 	{
-		objects = new List<TestLoadObject>();
+		//Creates a new list of loadable objects and populates it at the beginning of the game & at every scene load
+		objects = new List<LoadableObject>();
 		GameObject[] temp = GameObject.FindGameObjectsWithTag("SaveObject");
 		for (int i = 0; i < temp.Length; i++)
-			objects.Add(temp[i].GetComponent<TestLoadObject>());
+			objects.Add(temp[i].GetComponent<LoadableObject>());
+
+		//Checks if the scene is being loaded, then loops through all the objects and loads them from the save file
 		if (SaveLoad.Instance.m_isSceneBeingLoaded)
 		{
 			objectsData = SaveLoad.Instance.allData.objectsData;
@@ -41,10 +50,9 @@ public class ObjectManager : MonoBehaviour
 		}
 	}
 
-	void OnLevelWasLoaded(int level)
+	private void OnDestroy()
 	{
-		if (level == SaveLoad.Instance.allData.playerSaveData.sceneId)
-			ReloadObjects();
+		SceneManager.sceneLoaded -= LoadObjectsDelegate;
 	}
 
 	#endregion

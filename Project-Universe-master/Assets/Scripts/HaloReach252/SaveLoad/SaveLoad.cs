@@ -73,6 +73,7 @@ public class SaveLoad : MonoBehaviour
 		}
 	}
 
+	//Checks if all the required scripts have loaded their data
 	bool IsAllLoaded()
 	{
 		for (int i = 0; i < requiredLoads.Length-1; i++)
@@ -87,12 +88,14 @@ public class SaveLoad : MonoBehaviour
 	#endregion
 }
 
+//The base object for savable objects, not used on its own
 [System.Serializable]
 public class SaveObject
 {
 	public int sceneId;
 }
 
+//The players save data
 [System.Serializable]
 public class PlayerSaveData : SaveObject
 {
@@ -115,30 +118,45 @@ public class PlayerSaveData : SaveObject
 
 }
 
+//An objects save data
 [System.Serializable]
-public class TestLoadObjectData : SaveObject
+public class SaveObjectData : SaveObject
 {
 	public string objectId;
+	public bool savePos, saveRot, hasRigidbody;
 	public float posX, posY, posZ;
 	public float rotX, rotY, rotZ;
 	public float velX, velY, velZ;
 
-	public void GetData(TestLoadObject target)
+	public void GetData(LoadableObject target)
 	{
 		objectId = target.objectId;
 
 		sceneId = SceneManager.GetActiveScene().buildIndex;
 
-		posX = target.gameObject.transform.position.x;
-		posY = target.gameObject.transform.position.y;
-		posZ = target.gameObject.transform.position.z;
+		savePos = target.savePos;
+		saveRot = target.saveRot;
+		hasRigidbody = target.hasRigidbody;
 
-		rotX = target.gameObject.transform.localEulerAngles.x;
-		rotY = target.gameObject.transform.localEulerAngles.y;
-		rotZ = target.gameObject.transform.localEulerAngles.z;
-
-		velX = target.gameObject.GetComponent<Rigidbody>().velocity.x;
-		velY = target.gameObject.GetComponent<Rigidbody>().velocity.y;
-		velZ = target.gameObject.GetComponent<Rigidbody>().velocity.z;
+		if (savePos)
+		{
+			posX = target.gameObject.transform.position.x;
+			posY = target.gameObject.transform.position.y;
+			posZ = target.gameObject.transform.position.z;
+		}
+		
+		if (saveRot)
+		{
+			rotX = target.gameObject.transform.localEulerAngles.x;
+			rotY = target.gameObject.transform.localEulerAngles.y;
+			rotZ = target.gameObject.transform.localEulerAngles.z;
+		}
+		
+		if (hasRigidbody)
+		{
+			velX = target.gameObject.GetComponent<Rigidbody>().velocity.x;
+			velY = target.gameObject.GetComponent<Rigidbody>().velocity.y;
+			velZ = target.gameObject.GetComponent<Rigidbody>().velocity.z;
+		}
 	}
 }

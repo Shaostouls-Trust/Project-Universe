@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
 
 	void Start()
 	{
+		//Checks if the scene is being loaded, then loads the player data from the load  file
 		if (SaveLoad.Instance.m_isSceneBeingLoaded)
 		{
 			saveData = SaveLoad.Instance.allData.playerSaveData;
@@ -34,24 +35,27 @@ public class Player : MonoBehaviour
 
 	void Update()
 	{
+		//Saves the game state
 		if (Input.GetKeyDown(KeyCode.F5))
 		{
 			SaveLoad.Instance.SaveData();
 		}
 
+		//Loads the save file
 		if (Input.GetKeyDown(KeyCode.F9))
 		{
 			SaveLoad.Instance.LoadData();
 		}
 
+		//Adds explosive force to loadable objects when you left click, temporary for testing purposes
 		if (Input.GetMouseButtonDown(0))
 		{
 			RaycastHit hit;
 			if(Physics.Raycast(playerCam.position, playerCam.transform.forward, out hit))
 			{
-				if(hit.transform.GetComponent<TestLoadObject>() != null)
+				if(hit.transform.GetComponent<Rigidbody>() != null && hit.transform.GetComponent<LoadableObject>() != null)
 				{
-					hit.transform.GetComponent<TestLoadObject>().Explode(600f);
+					hit.transform.GetComponent<LoadableObject>().Explode(600f);
 				}
 			}
 		}
