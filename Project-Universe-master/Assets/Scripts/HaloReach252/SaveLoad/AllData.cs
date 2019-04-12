@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class AllData
 {
 	public PlayerSaveData playerSaveData;
-	public List<TestLoadObjectData> objects = new List<TestLoadObjectData>();
+	public List<TestLoadObjectData> objectsData;
 	public static AllData Instance;
 
 	public AllData()
@@ -16,7 +16,7 @@ public class AllData
 	public void GetAllData()
 	{
 		playerSaveData = new PlayerSaveData();
-		objects = new List<TestLoadObjectData>();
+		objectsData = new List<TestLoadObjectData>();
 
 		playerSaveData.GetData();
 
@@ -24,7 +24,14 @@ public class AllData
 		{
 			ObjectManager.Instance.objects[i].SaveObjectData();
 			TestLoadObjectData temp = ObjectManager.Instance.objects[i].m_objectData;
-			objects.Add(temp);
+			objectsData.Add(temp);
 		}
+	}
+
+	public void SetAllData(AllData data)
+	{
+		playerSaveData = data.playerSaveData;
+		objectsData = data.objectsData;
+		Instance = data;
 	}
 }

@@ -6,7 +6,7 @@ public class TestLoadObject : MonoBehaviour
 	[SerializeField]
 	public string objectId;
 
-	public TestLoadObjectData m_objectData;
+	public TestLoadObjectData m_objectData = new TestLoadObjectData();
 	#endregion
 
 	#region Methods
@@ -18,7 +18,7 @@ public class TestLoadObject : MonoBehaviour
 
 	void Start()
 	{
-		m_objectData = new TestLoadObjectData();
+		
 	}
 
 	public void Explode(float force)
@@ -28,19 +28,15 @@ public class TestLoadObject : MonoBehaviour
 
 	public void LoadObjectData(TestLoadObjectData data)
 	{
-		if (data.objectId == objectId)
-		{
-			transform.position = new Vector3(data.posX, data.posY, data.posZ);
-			transform.rotation = Quaternion.Euler(new Vector3(data.rotX, data.rotY, data.rotZ));
-		}
-		else
-		{
-			Destroy(gameObject);
-		}
+		objectId = data.objectId;
+		transform.position = new Vector3(data.posX, data.posY, data.posZ);
+		transform.rotation = Quaternion.Euler(new Vector3(data.rotX, data.rotY, data.rotZ));
+		GetComponent<Rigidbody>().velocity = new Vector3(data.velX, data.velY, data.velZ);
 	}
 
 	public void SaveObjectData()
 	{
+		m_objectData = new TestLoadObjectData();
 		m_objectData.GetData(this);
 	}
 

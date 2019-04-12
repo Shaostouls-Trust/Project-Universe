@@ -12,8 +12,7 @@ public class SaveLoad : MonoBehaviour
 
 	public bool m_isSceneBeingLoaded = false;
 
-	int m_numLoads = 2;
-	public int m_loadNum;
+	public bool[] requiredLoads = new bool[2];
 	#endregion
 
 	#region Methods
@@ -22,8 +21,13 @@ public class SaveLoad : MonoBehaviour
 	{
 		if (Instance == null)
 			Instance = this;
+		else if (Instance != null)
+		{
+			Destroy(gameObject);
+		}
 
 		DontDestroyOnLoad(gameObject);
+		requiredLoads = new bool[2];
 	}
 
 	public void SaveData()
@@ -48,7 +52,7 @@ public class SaveLoad : MonoBehaviour
 		FileStream saveFile = File.Open("Saves/save.binary", FileMode.Open);
 
 		allData = (AllData)formatter.Deserialize(saveFile);
-		AllData.Instance = allData;
+		AllData.Instance.SetAllData(allData);
 
 		saveFile.Close();
 
@@ -59,11 +63,25 @@ public class SaveLoad : MonoBehaviour
 
 	public void CheckLoad()
 	{
-		if (m_loadNum == m_numLoads)
+		if (IsAllLoaded())
 		{
 			m_isSceneBeingLoaded = false;
-			m_loadNum = 0;
+			for (int i = 0; i < requiredLoads.Length-1; i++)
+			{
+				requiredLoads[i] = false;
+			}
 		}
+	}
+
+	bool IsAllLoaded()
+	{
+		for (int i = 0; i < requiredLoads.Length-1; i++)
+		{
+			if (requiredLoads[i] == false)
+				return false;
+		}
+
+		return true;
 	}
 
 	#endregion
@@ -103,6 +121,7 @@ public class TestLoadObjectData : SaveObject
 	public string objectId;
 	public float posX, posY, posZ;
 	public float rotX, rotY, rotZ;
+	public float velX, velY, velZ;
 
 	public void GetData(TestLoadObject target)
 	{
@@ -117,5 +136,9 @@ public class TestLoadObjectData : SaveObject
 		rotX = target.gameObject.transform.localEulerAngles.x;
 		rotY = target.gameObject.transform.localEulerAngles.y;
 		rotZ = target.gameObject.transform.localEulerAngles.z;
+
+		velX = target.gameObject.GetComponent<Rigidbody>().velocity.x;
+		velY = target.gameObject.GetComponent<Rigidbody>().velocity.y;
+		velZ = target.gameObject.GetComponent<Rigidbody>().velocity.z;
 	}
 }

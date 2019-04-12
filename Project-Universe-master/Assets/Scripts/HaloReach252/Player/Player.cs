@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
 			transform.position = new Vector3(saveData.posX, saveData.posY, saveData.posZ + 0.1f);
 			GetComponent<PlayerLook>().mouseY = saveData.camLook;
 			transform.rotation = Quaternion.Euler(new Vector3(0, saveData.playerLook, 0));
-			SaveLoad.Instance.m_loadNum++;
+			SaveLoad.Instance.requiredLoads[0] = true;
 			SaveLoad.Instance.CheckLoad();
 		}
 	}
