@@ -1,21 +1,17 @@
 ﻿using UnityEngine;
+using Mirror;
 
-public class PlayerMove : MonoBehaviour
+public class PlayerMove : NetworkBehaviour
 {
 	#region Variables
-	[SerializeField]
-	private float defaultSpeed;
-	public float DefaultSpeed { get; private set; }
-	[SerializeField]
-	private float speed;
-	public float Speed { get; private set; }
-	[SerializeField]
-	private float runSpeed;
-	public float RunSpeed { get; private set; }
-	[SerializeField]
-	private float maxSpeed;
-	public float MaxSpeed { get; private set; }
-
+	[SyncVar]
+	public float defaultSpeed;
+	[SyncVar]
+	public float speed;
+	[SyncVar]
+	public float runSpeed;
+	[SyncVar]
+	public float maxSpeed;
 	private Rigidbody rb;
 	private GroundCheck groundCheck;
 
@@ -25,12 +21,23 @@ public class PlayerMove : MonoBehaviour
 
     void Start()
     {
+		if (!isLocalPlayer)
+			return;
 		groundCheck = GetComponentInChildren<GroundCheck>();
 		rb = GetComponent<Rigidbody>();
     }
 
     void Update()
     {
+		if (!isLocalPlayer)
+			return;
+
+		CmdMove();
+    }
+
+	[Command]
+	void CmdMove()
+	{
 		if (groundCheck.IsGrounded())
 		{
 			//Checks if a sprint key is being pressed down
@@ -50,7 +57,8 @@ public class PlayerMove : MonoBehaviour
 			rb.AddRelativeForce(movePos);
 			rb.velocity = new Vector3(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), rb.velocity.y, Mathf.Clamp(rb.velocity.z, -maxSpeed, maxSpeed));
 		}
-    }
-	
+
+	}
+
 	#endregion
 }

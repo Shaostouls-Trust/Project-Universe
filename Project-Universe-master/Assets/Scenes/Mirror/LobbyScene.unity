@@ -295,7 +295,8 @@ MonoBehaviour:
     m_TypeName: Mirror.UnityEventInt, Mirror, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   port: 7780
   NoDelay: 1
-  MaxMessageSize: 16384
+  serverMaxMessageSize: 16384
+  clientMaxMessageSize: 16384
 --- !u!114 &2008127831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -314,7 +315,7 @@ MonoBehaviour:
   serverTickRate: 30
   showDebugMessages: 0
   offlineScene: OfflineScene
-  onlineScene: 
+  onlineScene: OnlineScene
   transport: {fileID: 2008127830}
   networkAddress: localhost
   maxConnections: 5

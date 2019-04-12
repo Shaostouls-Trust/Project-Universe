@@ -192,16 +192,18 @@ namespace Mirror.Weaver
 
                 foreach (string unityAsmRef in unityAsm.compiledAssemblyReferences)
                 {
-                    dependencyPaths.Add(Path.GetDirectoryName(unityAsmRef));
+                    // including NetStandard dependencies causes a stack overflow
+                    // in the Weaver: https://github.com/vis2k/Mirror/issues/791
+                    // root issue: https://github.com/jbevain/cecil/issues/573
+                    if (!unityAsmRef.Contains("NetStandard"))
+                        dependencyPaths.Add(Path.GetDirectoryName(unityAsmRef));
                 }
             }
 
-            // construct full path to Project/Library/ScriptAssemblies
-            string projectDirectory = Directory.GetParent(Application.dataPath).ToString();
-            string outputDirectory = Path.Combine(projectDirectory, Path.GetDirectoryName(assemblyPath));
-
             //if (UnityLogEnabled) Debug.Log("Weaving: " + assemblyPath); // uncomment to easily observe weave targets
-            if (Program.Process(unityEngineCoreModuleDLL, mirrorRuntimeDll, outputDirectory, new[] { assemblyPath }, dependencyPaths.ToArray(), HandleWarning, HandleError))
+
+            // passing null in the outputDirectory param will do an in-place update of the assembly
+            if (Program.Process(unityEngineCoreModuleDLL, mirrorRuntimeDll, null, new[] { assemblyPath }, dependencyPaths.ToArray(), HandleWarning, HandleError))
             {
                 WeaveFailed = false;
                 Debug.Log("Weaving succeeded for: " + assemblyPath);

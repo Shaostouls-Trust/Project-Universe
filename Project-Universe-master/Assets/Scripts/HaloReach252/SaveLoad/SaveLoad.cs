@@ -30,10 +30,10 @@ public class SaveLoad : MonoBehaviour
 		requiredLoads = new bool[2];
 	}
 
-	public void SaveData()
+	public void SaveData(Player player)
 	{
 		allData = new AllData();
-		allData.GetAllData();
+		allData.GetAllData(player);
 
 		if (!Directory.Exists("Saves"))
 			Directory.CreateDirectory("Saves");
@@ -46,7 +46,7 @@ public class SaveLoad : MonoBehaviour
 		saveFile.Close();
 	}
 	
-	public void LoadData()
+	public void LoadData(Player player)
 	{
 		BinaryFormatter formatter = new BinaryFormatter();
 		FileStream saveFile = File.Open("Saves/save.binary", FileMode.Open);
@@ -104,16 +104,16 @@ public class PlayerSaveData : SaveObject
 	public float camLook, playerLook;
 	#endregion
 
-	public void GetData()
+	public void GetData(Player player)
 	{
 		sceneId = SceneManager.GetActiveScene().buildIndex;
 
-		posX = Player.Instance.gameObject.transform.position.x;
-		posY = Player.Instance.gameObject.transform.position.y;
-		posZ = Player.Instance.gameObject.transform.position.z;
+		posX = player.gameObject.transform.position.x;
+		posY = player.gameObject.transform.position.y;
+		posZ = player.gameObject.transform.position.z;
 
-		camLook = Player.Instance.gameObject.GetComponent<PlayerLook>().mouseY;
-		playerLook = Player.Instance.gameObject.transform.localEulerAngles.y;
+		camLook = player.gameObject.GetComponent<PlayerLook>().mouseY;
+		playerLook = player.gameObject.transform.localEulerAngles.y;
 	}
 
 }

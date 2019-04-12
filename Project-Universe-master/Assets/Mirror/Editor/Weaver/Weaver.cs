@@ -83,9 +83,6 @@ namespace Mirror.Weaver
         public static TypeReference CmdDelegateReference;
         public static MethodReference CmdDelegateConstructor;
 
-        public static MethodReference NetworkReaderReadInt32;
-
-        public static MethodReference NetworkWriterWriteInt32;
         public static MethodReference NetworkWriterWriteInt16;
 
         public static MethodReference NetworkServerGetActive;
@@ -264,8 +261,13 @@ namespace Mirror.Weaver
 
         static TypeReference ImportCorLibType(string fullName)
         {
-            TypeDefinition type = CorLibModule.GetType(fullName) ?? CorLibModule.ExportedTypes.First(t => t.FullName == fullName).Resolve();
-            return CurrentAssembly.MainModule.ImportReference(type);
+            TypeDefinition type = CorLibModule.GetType(fullName) ?? CorLibModule.ExportedTypes.First(t => t.FullName == fullName).Resolve(0);
+            if (type != null)
+            {
+                return CurrentAssembly.MainModule.ImportReference(type);
+            }
+            Error("Failed to import mscorlib type: " + fullName + " because Resolve failed. (Might happen when trying to Resolve in NetStandard dll, see also: https://github.com/vis2k/Mirror/issues/791)");
+            return null;
         }
 
         static void SetupTargetTypes()
@@ -307,16 +309,13 @@ namespace Mirror.Weaver
             NetworkServerGetLocalClientActive = Resolvers.ResolveMethod(NetworkServerType, CurrentAssembly, "get_localClientActive");
             NetworkClientGetActive = Resolvers.ResolveMethod(NetworkClientType, CurrentAssembly, "get_active");
 
-            NetworkReaderReadInt32 = Resolvers.ResolveMethod(NetworkReaderType, CurrentAssembly, "ReadInt32");
-
-            NetworkWriterWriteInt32 = Resolvers.ResolveMethodWithArg(NetworkWriterType, CurrentAssembly, "Write", int32Type);
             NetworkWriterWriteInt16 = Resolvers.ResolveMethodWithArg(NetworkWriterType, CurrentAssembly, "Write", int16Type);
 
             NetworkReaderReadPackedUInt32 = Resolvers.ResolveMethod(NetworkReaderType, CurrentAssembly, "ReadPackedUInt32");
             NetworkReaderReadPackedUInt64 = Resolvers.ResolveMethod(NetworkReaderType, CurrentAssembly, "ReadPackedUInt64");
 
             NetworkWriterWritePackedUInt64 = Resolvers.ResolveMethod(NetworkWriterType, CurrentAssembly, "WritePackedUInt64");
-            
+
             NetworkReadUInt16 = Resolvers.ResolveMethod(NetworkReaderType, CurrentAssembly, "ReadUInt16");
             NetworkWriteUInt16 = Resolvers.ResolveMethodWithArg(NetworkWriterType, CurrentAssembly, "Write", uint16Type);
 
@@ -544,10 +543,21 @@ namespace Mirror.Weaver
 
         static bool Weave(string assName, IEnumerable<string> dependencies, IAssemblyResolver assemblyResolver, string unityEngineDLLPath, string mirrorNetDLLPath, string outputDir)
         {
-            ReaderParameters readParams = Helpers.ReaderParameters(assName, dependencies, assemblyResolver, unityEngineDLLPath, mirrorNetDLLPath);
-
-            using (CurrentAssembly = AssemblyDefinition.ReadAssembly(assName, readParams))
+            using (DefaultAssemblyResolver asmResolver = new DefaultAssemblyResolver())
+            using (CurrentAssembly = AssemblyDefinition.ReadAssembly(assName, new ReaderParameters { ReadWrite = true, AssemblyResolver = asmResolver }))
             {
+                asmResolver.AddSearchDirectory(Path.GetDirectoryName(assName));
+                asmResolver.AddSearchDirectory(Helpers.UnityEngineDLLDirectoryName());
+                asmResolver.AddSearchDirectory(Path.GetDirectoryName(unityEngineDLLPath));
+                asmResolver.AddSearchDirectory(Path.GetDirectoryName(mirrorNetDLLPath));
+                if (dependencies != null)
+                {
+                    foreach (string path in dependencies)
+                    {
+                        asmResolver.AddSearchDirectory(path);
+                    }
+                }
+
                 SetupTargetTypes();
                 Readers.Init(CurrentAssembly);
                 Writers.Init(CurrentAssembly);
@@ -580,8 +590,6 @@ namespace Mirror.Weaver
                             }
                             catch (Exception ex)
                             {
-                                if (CurrentAssembly.MainModule.SymbolReader != null)
-                                    CurrentAssembly.MainModule.SymbolReader.Dispose();
                                 Weaver.Error(ex.Message);
                                 throw ex;
                             }
@@ -589,8 +597,6 @@ namespace Mirror.Weaver
 
                         if (WeavingFailed)
                         {
-                            if (CurrentAssembly.MainModule.SymbolReader != null)
-                                CurrentAssembly.MainModule.SymbolReader.Dispose();
                             return false;
                         }
                     }
@@ -608,28 +614,25 @@ namespace Mirror.Weaver
                     catch (Exception e)
                     {
                         Log.Error("ProcessPropertySites exception: " + e);
-                        if (CurrentAssembly.MainModule.SymbolReader != null)
-                            CurrentAssembly.MainModule.SymbolReader.Dispose();
                         return false;
                     }
 
                     if (WeavingFailed)
                     {
                         //Log.Error("Failed phase II.");
-                        if (CurrentAssembly.MainModule.SymbolReader != null)
-                            CurrentAssembly.MainModule.SymbolReader.Dispose();
                         return false;
                     }
 
-                    string dest = Helpers.DestinationFileFor(outputDir, assName);
-                    //Console.WriteLine ("Output:" + dest);
-
-                    WriterParameters writeParams = Helpers.GetWriterParameters(readParams);
-                    CurrentAssembly.Write(dest, writeParams);
+                    // write to outputDir if specified, otherwise perform in-place write
+                    if (outputDir != null)
+                    {
+                        CurrentAssembly.Write(Helpers.DestinationFileFor(outputDir, assName));
+                    }
+                    else
+                    {
+                        CurrentAssembly.Write();
+                    }
                 }
-
-                if (CurrentAssembly.MainModule.SymbolReader != null)
-                    CurrentAssembly.MainModule.SymbolReader.Dispose();
             }
 
             return true;
@@ -640,27 +643,27 @@ namespace Mirror.Weaver
             WeavingFailed = false;
             WeaveLists = new WeaverLists();
 
-            UnityAssembly = AssemblyDefinition.ReadAssembly(unityEngineDLLPath);
-            NetAssembly = AssemblyDefinition.ReadAssembly(mirrorNetDLLPath);
-
-            SetupUnityTypes();
-
-            try
+            using (UnityAssembly = AssemblyDefinition.ReadAssembly(unityEngineDLLPath))
+            using (NetAssembly = AssemblyDefinition.ReadAssembly(mirrorNetDLLPath))
             {
-                foreach (string ass in assemblies)
+                SetupUnityTypes();
+
+                try
                 {
-                    if (!Weave(ass, dependencies, assemblyResolver, unityEngineDLLPath, mirrorNetDLLPath, outputDir))
+                    foreach (string ass in assemblies)
                     {
-                        return false;
+                        if (!Weave(ass, dependencies, assemblyResolver, unityEngineDLLPath, mirrorNetDLLPath, outputDir))
+                        {
+                            return false;
+                        }
                     }
                 }
+                catch (Exception e)
+                {
+                    Log.Error("Exception :" + e);
+                    return false;
+                }
             }
-            catch (Exception e)
-            {
-                Log.Error("Exception :" + e);
-                return false;
-            }
-            CorLibModule = null;
             return true;
         }
     }

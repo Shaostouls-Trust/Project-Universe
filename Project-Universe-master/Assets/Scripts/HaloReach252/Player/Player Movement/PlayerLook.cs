@@ -1,31 +1,44 @@
 ﻿using UnityEngine;
+using Mirror;
 
-public class PlayerLook : MonoBehaviour
+public class PlayerLook : NetworkBehaviour
 {
 	#region Variables
-	[SerializeField]
-	private float maxAngle;
-	public float MaxAngle { get { return maxAngle; } }
-	[SerializeField]
-	private float minAngle;
-	public float MinAngle { get { return minAngle; } }
-	[SerializeField]
-	private float horizLookSpeed;
-	public float HorizLookSpeed { get { return horizLookSpeed; } }
-	[SerializeField]
-	private float vertLookSpeed;
-	public float VertLookSpeed { get { return vertLookSpeed; } }
-
+	[SyncVar]
+	public float maxAngle;
+	[SyncVar]
+	public float minAngle;
+	[SyncVar]
+	public float horizLookSpeed;
+	[SyncVar]
+	public float vertLookSpeed;
+	[SyncVar]
 	public float mouseY;
-
-	[SerializeField]
+	[SyncVar]
 	private Transform playerCamera;
 	#endregion
 
 	#region Methods
 
+	void Start()
+	{
+		if (!isLocalPlayer)
+			return;
+
+		playerCamera = GetComponent<Player>().playerCam.transform;
+	}
+
 	void Update()
     {
+		if (!isLocalPlayer)
+			return;
+
+		CmdLook();
+    }
+
+	[Command]
+	void CmdLook()
+	{
 		//Gets mouse rotation
 		float mouseX = Input.GetAxis("Mouse X") * horizLookSpeed;
 		mouseY += Input.GetAxis("Mouse Y") * vertLookSpeed;
@@ -36,7 +49,7 @@ public class PlayerLook : MonoBehaviour
 		//Clamps the vertical rotation, then rotates the CAMERA vertically
 		mouseY = Mathf.Clamp(mouseY, minAngle, maxAngle);
 		playerCamera.localEulerAngles = new Vector3(-mouseY, playerCamera.localEulerAngles.y, playerCamera.localEulerAngles.z);
-    }
+	}
 	
 	#endregion
 }

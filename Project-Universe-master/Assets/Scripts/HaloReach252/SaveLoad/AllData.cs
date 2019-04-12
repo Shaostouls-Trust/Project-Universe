@@ -13,12 +13,12 @@ public class AllData
 		Instance = this;
 	}
 
-	public void GetAllData()
+	public void GetAllData(Player player)
 	{
 		playerSaveData = new PlayerSaveData();
 		objectsData = new List<SaveObjectData>();
 
-		playerSaveData.GetData();
+		playerSaveData.GetData(player);
 
 		for (int i = 0; i < ObjectManager.Instance.objects.Count; i++)
 		{

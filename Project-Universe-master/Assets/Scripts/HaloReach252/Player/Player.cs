@@ -1,29 +1,27 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
+using Mirror;
 
-public class Player : MonoBehaviour
+public class Player : NetworkBehaviour
 {
 	#region Variables
-	public static Player Instance;
-
 	[HideInInspector]
-	private PlayerSaveData saveData;
-	public Transform playerCam;
-
+	public PlayerSaveData saveData;
+	[SyncVar]
+	public GameObject playerCam;
+	
+	[SyncVar]
 	public GameObject pauseMenu;
+	[SyncVar]
 	bool isPaused;
 	#endregion
 
 	#region Methods
 
-	void Awake()
-	{
-		if(Instance == null)
-			Instance = this;
-	}
-
 	void Start()
 	{
+		if (!isLocalPlayer)
+			return;
+
 		//Checks if the scene is being loaded, then loads the player data from the load  file
 		if (SaveLoad.Instance.m_isSceneBeingLoaded)
 		{
@@ -42,25 +40,34 @@ public class Player : MonoBehaviour
 
 	void Update()
 	{
-		//Saves the game state
+		if (!isLocalPlayer)
+			return;
+
+		CmdGetInput();
+	}
+
+	[Command]
+	void CmdGetInput()
+	{
+		//Saves the game state | Disabled while i work on network integration
 		if (Input.GetKeyDown(KeyCode.F5))
 		{
-			SaveLoad.Instance.SaveData();
+			//SaveLoad.Instance.SaveData(this);
 		}
 
-		//Loads the save file
+		//Loads the save file | Disabled while i work on network integration
 		if (Input.GetKeyDown(KeyCode.F9))
 		{
-			SaveLoad.Instance.LoadData();
+			//SaveLoad.Instance.LoadData(this);
 		}
 
 		//Adds explosive force to loadable objects when you left click, temporary for testing purposes
 		if (Input.GetMouseButtonDown(0))
 		{
 			RaycastHit hit;
-			if(Physics.Raycast(playerCam.position, playerCam.transform.forward, out hit))
+			if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit))
 			{
-				if(hit.transform.GetComponent<Rigidbody>() != null && hit.transform.GetComponent<LoadableObject>() != null)
+				if (hit.transform.GetComponent<Rigidbody>() != null && hit.transform.GetComponent<LoadableObject>() != null)
 				{
 					hit.transform.GetComponent<LoadableObject>().Explode(600f);
 				}
@@ -78,7 +85,6 @@ public class Player : MonoBehaviour
 			else
 				Cursor.lockState = CursorLockMode.Locked;
 		}
-
 	}
 
 	#endregion
