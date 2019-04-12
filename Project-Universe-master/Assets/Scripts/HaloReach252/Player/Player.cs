@@ -9,6 +9,9 @@ public class Player : MonoBehaviour
 	[HideInInspector]
 	private PlayerSaveData saveData;
 	public Transform playerCam;
+
+	public GameObject pauseMenu;
+	bool isPaused;
 	#endregion
 
 	#region Methods
@@ -31,6 +34,10 @@ public class Player : MonoBehaviour
 			SaveLoad.Instance.requiredLoads[0] = true;
 			SaveLoad.Instance.CheckLoad();
 		}
+
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
+
 	}
 
 	void Update()
@@ -58,6 +65,18 @@ public class Player : MonoBehaviour
 					hit.transform.GetComponent<LoadableObject>().Explode(600f);
 				}
 			}
+		}
+
+		//Handles pausing
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			isPaused = !isPaused;
+			Cursor.visible = isPaused;
+			pauseMenu.SetActive(isPaused);
+			if (isPaused)
+				Cursor.lockState = CursorLockMode.None;
+			else
+				Cursor.lockState = CursorLockMode.Locked;
 		}
 
 	}
