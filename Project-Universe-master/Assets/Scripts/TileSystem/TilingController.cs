@@ -19,9 +19,7 @@ public class TilingController : MonoBehaviour
     private Vector3 Coords;
     private Vector3 debugrayend;
 
-    private bool sw = false;
-
-    //  public BuildMenu buildMenu;
+   // private bool sw = false;
 
     public GameObject BuildingMenu;
     public GameObject Button;
@@ -38,7 +36,7 @@ public class TilingController : MonoBehaviour
     {
         Cmra = GameObject.Find("Main Camera");
         Cam = Cmra.GetComponent<Camera>();
-        // buildMenu = GameObject.Find("EventSystem").GetComponent<BuildMenu>();
+
         SnapToGrid = true;
 
         ReadXMLTiles();
@@ -51,8 +49,6 @@ public class TilingController : MonoBehaviour
           }
         */
 
-        // Mesh model = (Mesh)Resources.Load("Models/Tiles/Floors/nukeguard/mesh1", typeof(Mesh));
-        // Mesh model = Resources.LoadAll<Mesh>("Models/Tiles/Floors/nukeguard/mesh1")[5];
         Tile = new GameObject();
         Tile.name = "TileGhost";
         Tile.tag = "TilingGhost";
@@ -66,12 +62,8 @@ public class TilingController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-
-
         if (AllowBuilding)
         {
-
             Tile.SetActive(true);
 
             RaycastHit hit;
@@ -100,7 +92,7 @@ public class TilingController : MonoBehaviour
                     if (Input.GetButtonDown("Rotate"))  //rotating tile 90 degree
                     {
                         Tile.transform.rotation = Tile.transform.rotation * Quaternion.Euler(0, 90 * Input.GetAxisRaw("Rotate"), 0);
-                        //Tile.transform.rotation = Quaternion.Lerp(Tile.transform.rotation, Tile.transform.rotation * Quaternion.Euler(0, 90 * Input.GetAxisRaw("Rotate"), 0), Time.deltaTime * 10f);
+                        //Tile.transform.rotation = Quaternion.Lerp(Tile.transform.rotation, Tile.transform.rotation * Quaternion.Euler(0, 90 * Input.GetAxisRaw("Rotate"), 0), Time.deltaTime * 10f); WIP
                     }
                 }
             }
@@ -127,43 +119,38 @@ public class TilingController : MonoBehaviour
 
     public void ReadXMLTiles()
     {
-        var tileContainer = TileCollection.Load(Path.Combine(Application.dataPath, "Tiles.xml"));
+        var tileContainer = TileCollection.Load(Path.Combine(Application.dataPath, "Tiles.xml"));  //Loading from XML
         // var xmlData = @"<TileCollection><tiles><Tiles name=""a""><model_path></model_path>x<material_path>y</material_path></Tiles></tiles></TileCollection>";
         // var tileContainer = TileCollection.LoadFromText(xmlData);
         // Debug.Log("Number of tiles in database: " + tileContainer.tiles.Length);
         //  Debug.Log(tileContainer.tiles[0].model_path);
 
-        // AddButton(tileContainer.tiles.Length);  //ADD BUTTONS TO UI
-
-
-        var parentDatabase = new GameObject();
+        var parentDatabase = new GameObject();       //Creating tile database gameobjects
         parentDatabase.name = "Tile_Database";
         parentDatabase.layer = 10;
         for (int c = 0; c < tileContainer.tiles.Length; c++)
         {
-            FilePath = tileContainer.tiles[c].model_path;
+            FilePath = tileContainer.tiles[c].model_path;   //reading model info 
             Debug.Log(tileContainer.tiles[c].model_path);
             //  FilePath = "Models/Tiles/Floors/nukeguard/mesh1";
             GameObject model = Resources.Load<GameObject>(FilePath);
-            GameObject obj = (GameObject)Instantiate(model);
-
-            //  obj.AddComponent(typeof(LODGroup));
-
+            GameObject obj = (GameObject)Instantiate(model);  
 
             foreach (Transform child in obj.transform)
                 child.gameObject.layer = 10;
 
-            // obj.SetActive(false);
             obj.transform.SetParent(parentDatabase.transform);
-            // obj.name = tileContainer.tiles[c].Name;
-            obj.name = c.ToString();
+            obj.name = c.ToString();    //Adding and assigning tiles into database, change name by tile ID position
 
 
+            //-------------Create GUI with buttons-----------
             newButton = Instantiate(Button);
             but = newButton.GetComponent<SelectTileButton>();
             but.TileID = c;
             newButton.GetComponentInChildren<Text>().text = tileContainer.tiles[c].Name;
             newButton.transform.SetParent(BuildingMenu.transform);
+            //-----------------------------------------------
+
 
             // TO REMOVE WHEN ALL TILES IS UNIFIED - Blender garbage hotfix ;)
             if (obj.transform.Find("Camera") != null)
@@ -171,8 +158,8 @@ public class TilingController : MonoBehaviour
                 obj.transform.Find("Camera").GetComponent<Camera>().enabled = false;
             }
             // END REMOVE
-            //obj.GetComponent<LODGroup>().
-            // /*
+       
+            //--------------------------------Building LOD groups------------------------------ 
             if (obj.transform.Find("model") != null)
             {
 
@@ -188,24 +175,22 @@ public class TilingController : MonoBehaviour
                     {
                         case 1:
                             primType = obj.transform.Find("lod1").gameObject;
-                            primType.SetActive(false);
                             break;
                         case 2:
                             primType = obj.transform.Find("lod2").gameObject;
-                            primType.SetActive(false);
                             break;
                         case 3:
                             primType = obj.transform.Find("lod3").gameObject;
-                            primType.SetActive(false);
                             break;
                     }
                     Renderer[] renderers = new Renderer[1];
                     renderers[0] = primType.GetComponentInChildren<Renderer>();
-                    lods[i] = new LOD(1.0F / (i + 1.2f), renderers);
+                    lods[i] = new LOD(1.0F / (i + 12f), renderers); // i+1.2f
                 }
                 group.SetLODs(lods);
                 group.RecalculateBounds();
             }
+            //--------------------------------------------------------------------------------
         }
     }
 
@@ -215,36 +200,8 @@ public class TilingController : MonoBehaviour
         tileContainer.Save(Path.Combine(Application.persistentDataPath, "Tiles.xml"));
     }
 
-    //---------------------BUILDING UI--------------------------
-
-    public void AddButton(int i)
-    {
-        for (int c = 0; c < i; c++)
-        {
-            var newButton = Instantiate(Button);
-            newButton.transform.SetParent(BuildingMenu.transform);
-        }
-
-    }
-
-    //  GameObject newTile;
-
     public void PlaceTile()
     {
-
-        /*
-    if (AllowBuilding)  //here setup required for raycast of hitbox collision in buildable area
-    {
-        GameObject newTileChild = Tile.gameObject.transform.GetChild(0).gameObject;
-newTileChild.transform.localPosition = Coords;
-        newTileChild.transform.localRotation = Tile.transform.rotation;
-        newTileChild.transform.localScale = Tile.transform.localScale;
-
-        GameObject newTile = (GameObject)Instantiate(newTileChild);
-newTile.transform.SetParent(PlayerID.transform);
-    }
-    */
-
 
         if (Tile.transform.childCount > 0)
         {
@@ -257,9 +214,6 @@ newTile.transform.SetParent(PlayerID.transform);
             newTile.transform.SetParent(PlayerID.transform);
         }
     }
-
-
-
 
     public void RemoveTile()
     {

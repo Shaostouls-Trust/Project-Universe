@@ -18,12 +18,6 @@ public class SelectTileButton : MonoBehaviour
         Debug.Log(Cube);
     }
 
-    public void Update()
-    {
-
-    }
-
-
     public void WhenClicked(int a)
     {
 
@@ -31,13 +25,13 @@ public class SelectTileButton : MonoBehaviour
             Destroy(child.gameObject);
 
 
-
-
         path = "Tile_Database/" + TileID.ToString();
         tile = GameObject.Find(path);
-        //Cube = tile;
         duplicate = Instantiate<GameObject>(tile);
+        duplicate.transform.rotation = Cube.transform.rotation;   //prevents from bar rotation orientation after selecting tile
+
         // tile.SetActive(true);
+
 
         duplicate.transform.SetParent(Cube.transform);
         duplicate.transform.localPosition = new Vector3(0, 0, 0);
