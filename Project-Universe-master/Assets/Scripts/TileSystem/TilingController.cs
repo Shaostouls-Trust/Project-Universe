@@ -134,8 +134,17 @@ public class TilingController : MonoBehaviour
             Debug.Log(tileContainer.tiles[c].model_path);
             //  FilePath = "Models/Tiles/Floors/nukeguard/mesh1";
             GameObject model = Resources.Load<GameObject>(FilePath);
-            GameObject obj = (GameObject)Instantiate(model);  
+            GameObject obj = (GameObject)Instantiate(model);
 
+            // --------------------------Creating and assigning tile metadata------------------------------------
+            TileMetadata mt = obj.AddComponent(typeof(TileMetadata)) as TileMetadata;
+            mt.type = tileContainer.tiles[c].type;
+            mt.name = tileContainer.tiles[c].Name;
+            mt.description = "Description to implement";
+            //-------------------------------------------------------------------------------------
+
+
+            //-------------------put database as not renderable with all children--------------------------
             foreach (Transform child in obj.transform)
                 child.gameObject.layer = 10;
 
@@ -212,6 +221,7 @@ public class TilingController : MonoBehaviour
             newTile.transform.localRotation = Tile.transform.rotation;
             newTile.transform.localScale = Tile.transform.localScale;
             newTile.transform.SetParent(PlayerID.transform);
+            newTile.GetComponent<TileMetadata>().buildBy = "PeterHammerman test";
         }
     }
 

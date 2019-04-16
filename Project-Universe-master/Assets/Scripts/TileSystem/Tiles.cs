@@ -6,7 +6,8 @@ public class Tiles
 {
     [XmlAttribute("name")]
     public string Name;
-
+    public string type;
     public string model_path;
     public string material_path;
+
 }
