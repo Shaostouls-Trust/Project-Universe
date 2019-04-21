@@ -9,6 +9,7 @@ public class TileMetadata : MonoBehaviour
     public string type;
     public string description;
     public string buildBy;
+    public int ScaleAnimState;
 
     // Start is called before the first frame update
     void Start()

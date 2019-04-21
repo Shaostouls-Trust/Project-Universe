@@ -19,7 +19,7 @@ public class TilingController : MonoBehaviour
     private Vector3 Coords;
     private Vector3 debugrayend;
 
-   // private bool sw = false;
+    // private bool sw = false;
 
     public GameObject BuildingMenu;
     public GameObject Button;
@@ -130,11 +130,21 @@ public class TilingController : MonoBehaviour
         parentDatabase.layer = 10;
         for (int c = 0; c < tileContainer.tiles.Length; c++)
         {
+
+            //##########################PROCEDURE FOR LOADED TILE#############################################
+
+
             FilePath = tileContainer.tiles[c].model_path;   //reading model info 
             Debug.Log(tileContainer.tiles[c].model_path);
             //  FilePath = "Models/Tiles/Floors/nukeguard/mesh1";
             GameObject model = Resources.Load<GameObject>(FilePath);
             GameObject obj = (GameObject)Instantiate(model);
+
+            //LOAD AND INSTANTIATE MODEL
+
+
+
+
 
             // --------------------------Creating and assigning tile metadata------------------------------------
             TileMetadata mt = obj.AddComponent(typeof(TileMetadata)) as TileMetadata;
@@ -144,9 +154,13 @@ public class TilingController : MonoBehaviour
             //-------------------------------------------------------------------------------------
 
 
-            //-------------------put database as not renderable with all children--------------------------
+            //-------------------put in database as not renderable with all children--------------------------
             foreach (Transform child in obj.transform)
+            {
                 child.gameObject.layer = 10;
+                foreach (Transform child2 in child.transform)
+                    child2.gameObject.layer = 10;
+            }
 
             obj.transform.SetParent(parentDatabase.transform);
             obj.name = c.ToString();    //Adding and assigning tiles into database, change name by tile ID position
@@ -167,67 +181,86 @@ public class TilingController : MonoBehaviour
                 obj.transform.Find("Camera").GetComponent<Camera>().enabled = false;
             }
             // END REMOVE
-       
-            //--------------------------------Building LOD groups------------------------------ 
-            if (obj.transform.Find("model") != null)
+
+
+            //------------------------IF TILE HAS SCALE ANIMATION BEHAVIOR--------------------------------
+           // Debug.Log(obj.transform.childCount);
+            if (tileContainer.tiles[c].Scalable)
             {
-
-                group = obj.AddComponent<LODGroup>();
-
-                // Add 4 LOD levels
-                LOD[] lods = new LOD[4];
-
-                for (int i = 0; i < 4; i++)
-                {
-                    GameObject primType = obj.transform.Find("model").gameObject;
-                    switch (i)
-                    {
-                        case 1:
-                            primType = obj.transform.Find("lod1").gameObject;
-                            break;
-                        case 2:
-                            primType = obj.transform.Find("lod2").gameObject;
-                            break;
-                        case 3:
-                            primType = obj.transform.Find("lod3").gameObject;
-                            break;
-                    }
-                    Renderer[] renderers = new Renderer[1];
-                    renderers[0] = primType.GetComponentInChildren<Renderer>();
-                    lods[i] = new LOD(1.0F / (i + 12f), renderers); // i+1.2f
-                }
-                group.SetLODs(lods);
-                group.RecalculateBounds();
+                //Assign in runtime animator
+                Animator ContainerAnimator = obj.GetComponent<Animator>();
+                ContainerAnimator.runtimeAnimatorController = Resources.Load(tileContainer.tiles[c].model_path) as RuntimeAnimatorController;
+                ContainerAnimator.StopPlayback();
+                ContainerAnimator.enabled = false;
+                //and stop playing and disable by default
             }
-            //--------------------------------------------------------------------------------
+            //---------------------------------------------------------------------------------------
+
+
+
+                //--------------------------------Building LOD groups------------------------------ 
+                if (obj.transform.Find("model") != null)
+                {
+
+                    group = obj.AddComponent<LODGroup>();
+
+                    // Add 4 LOD levels
+                    LOD[] lods = new LOD[4];
+
+                    for (int i = 0; i < 4; i++)
+                    {
+                        GameObject primType = obj.transform.Find("model").gameObject;
+                        switch (i)
+                        {
+                            case 1:
+                                if (obj.transform.Find("lod1") != null)
+                                    primType = obj.transform.Find("lod1").gameObject;
+                                break;
+                            case 2:
+                                if (obj.transform.Find("lod2") != null)
+                                    primType = obj.transform.Find("lod2").gameObject;
+                                break;
+                            case 3:
+                                if (obj.transform.Find("lod3") != null)
+                                    primType = obj.transform.Find("lod3").gameObject;
+                                break;
+                        }
+                        Renderer[] renderers = new Renderer[1];
+                        renderers[0] = primType.GetComponentInChildren<Renderer>();
+                        lods[i] = new LOD(1.0F / (i + 12f), renderers); // i+1.2f
+                    }
+                    group.SetLODs(lods);
+                    group.RecalculateBounds();
+                }
+                //--------------------------------------------------------------------------------
+            }
         }
-    }
 
-    public void SaveXMLTiles()
-    {
-        var tileContainer = TileCollection.Load(Path.Combine(Application.dataPath, "Tiles.xml"));
-        tileContainer.Save(Path.Combine(Application.persistentDataPath, "Tiles.xml"));
-    }
-
-    public void PlaceTile()
-    {
-
-        if (Tile.transform.childCount > 0)
+        public void SaveXMLTiles()
         {
-            Debug.Log(Tile.gameObject.transform.GetChild(0).gameObject);
-            GameObject newTileChild = Tile.gameObject.transform.GetChild(0).gameObject;
-            GameObject newTile = (GameObject)Instantiate(newTileChild);
-            newTile.transform.localPosition = Coords;
-            newTile.transform.localRotation = Tile.transform.rotation;
-            newTile.transform.localScale = Tile.transform.localScale;
-            newTile.transform.SetParent(PlayerID.transform);
-            newTile.GetComponent<TileMetadata>().buildBy = "PeterHammerman test";
+            var tileContainer = TileCollection.Load(Path.Combine(Application.dataPath, "Tiles.xml"));
+            tileContainer.Save(Path.Combine(Application.persistentDataPath, "Tiles.xml"));
+        }
+
+        public void PlaceTile()
+        {
+
+            if (Tile.transform.childCount > 0)
+            {
+                Debug.Log(Tile.gameObject.transform.GetChild(0).gameObject);
+                GameObject newTileChild = Tile.gameObject.transform.GetChild(0).gameObject;
+                GameObject newTile = (GameObject)Instantiate(newTileChild);
+                newTile.transform.localPosition = Coords;
+                newTile.transform.localRotation = Tile.transform.rotation;
+                newTile.transform.localScale = Tile.transform.localScale;
+                newTile.transform.SetParent(PlayerID.transform);
+                newTile.GetComponent<TileMetadata>().buildBy = "PeterHammerman test";
+            }
+        }
+
+        public void RemoveTile()
+        {
+
         }
     }
-
-    public void RemoveTile()
-    {
-
-    }
-}
 

@@ -9,5 +9,6 @@ public class Tiles
     public string type;
     public string model_path;
     public string material_path;
+    public bool Scalable;
 
 }
