@@ -4,7 +4,7 @@ Any individuals that participate in this project will be marked as contributors.
 
 # Info for other devs
  
-We are currently using Unity3D to develop this game. The current version is 2018.3.12f1.
+We are currently using Unity3D to develop this game. The current version is 2019.1.0f2.
 <br>You can download Unity3D here: https://store.unity.com/download
 
 # Misc
