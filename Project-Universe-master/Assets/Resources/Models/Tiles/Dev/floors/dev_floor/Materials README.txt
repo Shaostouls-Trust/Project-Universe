@@ -1,5 +1,20 @@
 When setting up materials they should be as follows
+===================================================================================
+HOW ARE THE FILES SAVED!?
+===================================================================================
+FileType .DDS
+Photoshop Intel Texture Works v1.0.4
 
+Preset: Project_Universe
+
+Texture Type: Color + Alpha
+
+Compression: BC3 8bpp (Linear)
+
+Auto Generate Mip Maps
+===================================================================================
+WHAT ARE THESE MAPS?!
+===================================================================================
 Tile_Name_CM: This is the Color Map,
  The "Red" color channel is the "Main" color, (Has Color modifier, see material)
  The "Green" Channel is the "Secondary" color, (Has Color modifier, see material)
@@ -30,4 +45,4 @@ Tile_Name_DW: This is the dirt/weathering mask. it will be applied ontop of albe
 
 The "Red, Green and Blue" channels are for any details you wish to have applied.
 The "Alpha" channel is for the opacity of all details contained in "RGB".
-
+===================================================================================
