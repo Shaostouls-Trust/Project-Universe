@@ -29,6 +29,13 @@ public class TilingController : MonoBehaviour
     private GameObject newButton;
     private SelectTileButton but;
 
+
+
+    //material var
+    public Shader Shad;
+    private Material TileMat;
+    private Texture colorMask;
+
     //  public TileCollection tileContainer = TileCollection.Load(Path.Combine(Application.dataPath, "Tiles.xml"));
 
     // Start is called before the first frame update
@@ -120,10 +127,9 @@ public class TilingController : MonoBehaviour
     public void ReadXMLTiles()
     {
         var tileContainer = TileCollection.Load(Path.Combine(Application.dataPath, "Tiles.xml"));  //Loading from XML
-        // var xmlData = @"<TileCollection><tiles><Tiles name=""a""><model_path></model_path>x<material_path>y</material_path></Tiles></tiles></TileCollection>";
-        // var tileContainer = TileCollection.LoadFromText(xmlData);
-        // Debug.Log("Number of tiles in database: " + tileContainer.tiles.Length);
-        //  Debug.Log(tileContainer.tiles[0].model_path);
+        var matContainer = MaterialContainer.Load(Path.Combine(Application.dataPath, "Resources/Models/Tiles/Dev/floors/dev_floor/dev_floor.xml"));  //Loading from XML
+      //  Debug.Log(matContainer.material[0].ColorMask);
+
 
         var parentDatabase = new GameObject();       //Creating tile database gameobjects
         parentDatabase.name = "Tile_Database";
@@ -180,11 +186,16 @@ public class TilingController : MonoBehaviour
             {
                 obj.transform.Find("Camera").GetComponent<Camera>().enabled = false;
             }
+            if (obj.transform.Find("hitbox") != null)
+            {
+                if (obj.transform.Find("hitbox").GetComponent<MeshRenderer>() != null)
+                    obj.transform.Find("hitbox").GetComponent<MeshRenderer>().enabled = false;   //disable render of hitbox
+            }
             // END REMOVE
 
 
             //------------------------IF TILE HAS SCALE ANIMATION BEHAVIOR--------------------------------
-           // Debug.Log(obj.transform.childCount);
+            // Debug.Log(obj.transform.childCount);
             if (tileContainer.tiles[c].Scalable)
             {
                 //Assign in runtime animator
@@ -197,11 +208,40 @@ public class TilingController : MonoBehaviour
             //---------------------------------------------------------------------------------------
 
 
+            //----------------MATERIAL INSTANTIATE---------
+
+
+           // if (TileMat != null)
+         //   TileMat.shader = Shad;
+
+            
+            colorMask = Resources.Load<Texture2D>(matContainer.material[0].ColorMask);   //Testing only on 1 loaded texture
+
+            if (colorMask != null)                                      //Setting textures into new material - THIS DONT WORK WTF???
+            TileMat = new Material(Shad);
+            TileMat.SetTexture("_Color_Mask", colorMask);
+            TileMat.SetTexture("_Albedo", colorMask);
+            TileMat.SetTexture("_Metalness", colorMask);
+            TileMat.SetTexture("_Emission", colorMask);
+            TileMat.SetTexture("_Normal", colorMask);
+            TileMat.SetTexture("_Detail", colorMask);
+            TileMat.SetTexture("_Dirt", colorMask);
+            TileMat.SetFloat("_Emission_Intensity", 4);
+
+
+            if (obj.transform.Find("model") != null)                                //Assigning new instance of material to model
+            {
+                for (int m = 0; m < obj.transform.Find("model").GetComponentInChildren<MeshRenderer>().materials.Length; m++)
+                    obj.transform.Find("model").GetComponentInChildren<MeshRenderer>().materials[m] = TileMat;  //Assigning ready material into model
+            }
+
+
+                //---------------------------------------------
+
 
                 //--------------------------------Building LOD groups------------------------------ 
                 if (obj.transform.Find("model") != null)
                 {
-
                     group = obj.AddComponent<LODGroup>();
 
                     // Add 4 LOD levels
