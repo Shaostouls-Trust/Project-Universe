@@ -134,13 +134,15 @@ public class TilingController : MonoBehaviour
     private Color trimColor;
     private Color emColor;
 
+    private MaterialContainer matContainer;
+    private bool matXml;
 
     //READING / SAVING XML FILE
 
     public void ReadXMLTiles()
     {
         var tileContainer = TileCollection.Load(Path.Combine(Application.dataPath, "Tiles.xml"));  //Loading from XML
-        var matContainer = MaterialContainer.Load(Path.Combine(Application.dataPath, "Resources/Models/Tiles/Dev/floors/dev_floor/dev_floor.xml"));  //Loading from XML
+
       //  Debug.Log(matContainer.material[0].ColorMask);
 
 
@@ -154,10 +156,22 @@ public class TilingController : MonoBehaviour
 
 
             FilePath = tileContainer.tiles[c].model_path;   //reading model info 
-            Debug.Log(tileContainer.tiles[c].model_path);
+          //  Debug.Log(tileContainer.tiles[c].model_path);
             //  FilePath = "Models/Tiles/Floors/nukeguard/mesh1";
             GameObject model = Resources.Load<GameObject>(FilePath);
             GameObject obj = (GameObject)Instantiate(model);
+
+          //  Debug.Log("searching for: " + tileContainer.tiles[c].model_path + ".xml");
+           // Debug.Log(Application.dataPath +"/Resources/" + tileContainer.tiles[c].model_path);
+            if (System.IO.File.Exists(Application.dataPath + "/Resources/" + tileContainer.tiles[c].model_path + ".xml"))
+            {
+                Debug.Log("found: " + tileContainer.tiles[c].model_path + ".xml");
+                matContainer = MaterialContainer.Load(Path.Combine(Application.dataPath + "/Resources/" + tileContainer.tiles[c].model_path + ".xml"));  //Loading from XML
+                matXml = true;
+
+            }
+            else
+                matXml = false;
 
             //LOAD AND INSTANTIATE MODEL
 
@@ -224,48 +238,49 @@ public class TilingController : MonoBehaviour
             //----------------MATERIAL INSTANTIATE---------
 
 
-           // if (TileMat != null)
-         //   TileMat.shader = Shad;
-            
-            colorMask = Resources.Load<Texture2D>(matContainer.material[0].ColorMask);   //Loading textures from XML
-            Albedo = Resources.Load<Texture2D>(matContainer.material[0].Albedo);
-            Metal = Resources.Load<Texture2D>(matContainer.material[0].Metal);
-            Emissive = Resources.Load<Texture2D>(matContainer.material[0].Emmisive);
-            Normal = Resources.Load<Texture2D>(matContainer.material[0].Normal);
-            Detail = Resources.Load<Texture2D>(matContainer.material[0].Detail);
-            Dirt = Resources.Load<Texture2D>(matContainer.material[0].Dirt);
-
-            if (colorMask != null)                                      //Setting textures into new material 
-            TileMat = new Material(Shad);
-
-            ColorUtility.TryParseHtmlString(matContainer.material[0].MainColor, out mainColor);    //convert hex into color
-            ColorUtility.TryParseHtmlString(matContainer.material[0].SecColor, out secColor);
-            ColorUtility.TryParseHtmlString(matContainer.material[0].DetailColor, out detColor);
-            ColorUtility.TryParseHtmlString(matContainer.material[0].TrimColor, out trimColor);
-            ColorUtility.TryParseHtmlString(matContainer.material[0].EmissionColor, out emColor);
-
-            TileMat.SetTexture("_CM", colorMask);     //assigning textures and colors into new material
-            TileMat.SetTexture("_AL", Albedo);
-            TileMat.SetTexture("_MT", Metal);
-            TileMat.SetTexture("_EM", Emissive);
-            TileMat.SetTexture("_NM", Normal);
-            TileMat.SetTexture("_DM", Detail);
-            TileMat.SetTexture("_DW", Dirt);
-            TileMat.SetColor("_MC", mainColor);
-            TileMat.SetColor("_SC", secColor);
-            TileMat.SetColor("_DC", detColor);
-            TileMat.SetColor("_TC", trimColor);
-            TileMat.SetColor("_EC", emColor);
-            TileMat.SetFloat("_EI", 7);
-            TileMat.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;    // realtime emissive flag
-
-            if (obj.transform.Find("model") != null)                                //Assigning new instance of material to model
+            // if (TileMat != null)
+            //   TileMat.shader = Shad;
+            if (matXml)
             {
-                for (int m = 0; m < obj.transform.Find("model").GetComponentInChildren<MeshRenderer>().materials.Length; m++)      //For every material in model
-                    obj.transform.Find("model").GetComponentInChildren<MeshRenderer>().materials[m].CopyPropertiesFromMaterial(TileMat); 
+                colorMask = Resources.Load<Texture2D>(matContainer.material[0].ColorMask);   //Loading textures from XML
+                Albedo = Resources.Load<Texture2D>(matContainer.material[0].Albedo);
+                Metal = Resources.Load<Texture2D>(matContainer.material[0].Metal);
+                Emissive = Resources.Load<Texture2D>(matContainer.material[0].Emmisive);
+                Normal = Resources.Load<Texture2D>(matContainer.material[0].Normal);
+                Detail = Resources.Load<Texture2D>(matContainer.material[0].Detail);
+                Dirt = Resources.Load<Texture2D>(matContainer.material[0].Dirt);
+
+                if (colorMask != null)                                      //Setting textures into new material 
+                    TileMat = new Material(Shad);
+
+                ColorUtility.TryParseHtmlString(matContainer.material[0].MainColor, out mainColor);    //convert hex into color
+                ColorUtility.TryParseHtmlString(matContainer.material[0].SecColor, out secColor);
+                ColorUtility.TryParseHtmlString(matContainer.material[0].DetailColor, out detColor);
+                ColorUtility.TryParseHtmlString(matContainer.material[0].TrimColor, out trimColor);
+                ColorUtility.TryParseHtmlString(matContainer.material[0].EmissionColor, out emColor);
+
+                TileMat.SetTexture("_CM", colorMask);     //assigning textures and colors into new material
+                TileMat.SetTexture("_AL", Albedo);
+                TileMat.SetTexture("_MT", Metal);
+                TileMat.SetTexture("_EM", Emissive);
+                TileMat.SetTexture("_NM", Normal);
+                TileMat.SetTexture("_DM", Detail);
+                TileMat.SetTexture("_DW", Dirt);
+                TileMat.SetColor("_MC", mainColor);
+                TileMat.SetColor("_SC", secColor);
+                TileMat.SetColor("_DC", detColor);
+                TileMat.SetColor("_TC", trimColor);
+                TileMat.SetColor("_EC", emColor);
+                TileMat.SetFloat("_EI", 7);
+                TileMat.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;    // realtime emissive flag
+
+                if (obj.transform.Find("model") != null)                                //Assigning new instance of material to model
+                {
+                    for (int m = 0; m < obj.transform.Find("model").GetComponentInChildren<MeshRenderer>().materials.Length; m++)      //For every material in model
+                        obj.transform.Find("model").GetComponentInChildren<MeshRenderer>().materials[m].CopyPropertiesFromMaterial(TileMat);
+                }
+
             }
-
-
                 //---------------------------------------------
 
 
