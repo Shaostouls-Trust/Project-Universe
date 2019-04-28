@@ -54,6 +54,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: a599c3d8f3b63ac43a017011cb8a0ae2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _AL:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Albedo:
         m_Texture: {fileID: 2800000, guid: 346a5026930e8b64eae89c5bad506924, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -74,12 +78,24 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _CM:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _CoatMaskMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Color_Mask:
         m_Texture: {fileID: 2800000, guid: 45faeb1aba69f63458b30cbf923f41e4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DM:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DW:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Detail:
@@ -95,6 +111,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DistortionVectorMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EM:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -118,6 +138,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _MT:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 6b597cd47cd6e5d48afd4e8dc565dbc6, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -128,6 +152,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _Metalness:
         m_Texture: {fileID: 2800000, guid: c3918871f8da3e7448926ca6bcf1bba0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NM:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal:
@@ -212,6 +240,7 @@ Material:
     - _DoubleSidedNormalMode: 1
     - _Drag: 1
     - _DstBlend: 0
+    - _EI: 1
     - _Emission_Intensity: 1
     - _EmissiveColorMode: 1
     - _EmissiveExposureWeight: 1
@@ -304,18 +333,23 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DC: {r: 1, g: 0.904619, b: 0, a: 0}
     - _DetailColor: {r: 1, g: 0.904619, b: 0, a: 0}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
+    - _EC: {r: 0.08811376, g: 1, b: 0, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
     - _EmmisionColor: {r: 0.08811376, g: 1, b: 0, a: 0}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
+    - _MC: {r: 0.57547164, g: 0.57547164, b: 0.57547164, a: 1}
     - _MainColor: {r: 0.57547164, g: 0.57547164, b: 0.57547164, a: 1}
+    - _SC: {r: 0.45874965, g: 0, b: 0.9433962, a: 0.3921569}
     - _SecColor: {r: 0.45874965, g: 0, b: 0.9433962, a: 0.3921569}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
+    - _TC: {r: 0, g: 0.7980523, b: 1, a: 1}
     - _ThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _TransmittanceColor: {r: 1, g: 1, b: 1, a: 1}
     - _TrimColor: {r: 0, g: 0.7980523, b: 1, a: 1}
