@@ -2,19 +2,21 @@
  	<material>
  		<Materials name="Dev_Floor">
 			<ID>1</ID>
-			<ColorMask>Models/Tiles/Dev/floors/dev_floor/Dev_Floor_CM</ColorMask>
- 			<Albedo>Models/Tiles/Dev/floors/dev_floor/Dev_Floor_AS</Albedo>
-			<Metal>Models/Tiles/Dev/floors/dev_floor/Dev_Floor_MS</Metal>
-			<Emmisive>Models/Tiles/Dev/floors/dev_floor/Dev_Floor_EAO</Emmisive>
-			<Normal>Models/Tiles/Dev/floors/dev_floor/Dev_Floor_NM</Normal>
-			<Detail>Models/Tiles/Dev/floors/dev_floor/Dev_Floor_DM</Detail>
-			<Dirt>Models/Tiles/Dev/floors/dev_floor/Dev_Floor_DW</Dirt>
-			<MainColor>#FF1200</MainColor>
-			<SecColor>#FF1200</SecColor>
-			<DetailColor>#FF1200</DetailColor>
-			<TrimColor>#FF1200</TrimColor>
+			<ColorMask>Models/Tiles/Dev/floors/dev_floor/textures/Dev_Floor_CMSM</ColorMask>
+ 			<Albedo>Models/Tiles/Dev/floors/dev_floor/textures/Dev_Floor_AS</Albedo>
+			<MetalSmooth>Models/Tiles/Dev/floors/dev_floor/textures/Dev_Floor_MMSM</MetalSmooth>
+			<EmmisiveAO>Models/Tiles/Dev/floors/dev_floor/textures/Dev_Floor_EMAO</EmmisiveAO>
+			<NormalDM>Models/Tiles/Dev/floors/dev_floor/textures/Dev_Floor_NMDM</NormalDM>
+			<Dirt>Models/Tiles/Dev/floors/dev_floor/textures/Dev_Floor_DWM</Dirt>
+			<MainColor>#808080</MainColor>
+			<SecColor>#808080</SecColor>
+      <TertColor>#808080</TertColor>
+      <QuatColor>#808080</QuatColor>
+			<DetailColor>#808080</DetailColor>
+      <SecDetColor>#808080</SecDetColor>
+			<TrimColor>#808080</TrimColor>
 			<EmissionColor>#FF1200</EmissionColor>
-			<EmissiveMulti>4</EmissiveMulti>
+			<EmissiveMulti>1</EmissiveMulti>
  		</Materials>
  	
  	</material>
