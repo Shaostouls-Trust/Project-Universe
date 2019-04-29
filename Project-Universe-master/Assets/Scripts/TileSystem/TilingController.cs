@@ -122,16 +122,17 @@ public class TilingController : MonoBehaviour
 
     private LODGroup group;
     private Texture colorMask;    //public for debug - should be private
-    private Texture Albedo;
-    private Texture Metal;
-    private Texture Emissive;
-    private Texture Normal;
-    private Texture Detail;
-    private Texture Dirt;
+    private Texture albedo;
+    private Texture dirt;
+    private Texture emissiveAO;
+    private Texture metalSmooth;
+    private Texture normalDM;
     private Color mainColor;
     private Color secColor;
+    private Color tertColor;
+    private Color quatColor;
     private Color detColor;
-    private Color trimColor;
+    private Color secDetColor;
     private Color emColor;
 
     private MaterialContainer matContainer;
@@ -243,33 +244,35 @@ public class TilingController : MonoBehaviour
             if (matXml)
             {
                 colorMask = Resources.Load<Texture2D>(matContainer.material[0].ColorMask);   //Loading textures from XML
-                Albedo = Resources.Load<Texture2D>(matContainer.material[0].Albedo);
-                Metal = Resources.Load<Texture2D>(matContainer.material[0].Metal);
-                Emissive = Resources.Load<Texture2D>(matContainer.material[0].Emmisive);
-                Normal = Resources.Load<Texture2D>(matContainer.material[0].Normal);
-                Detail = Resources.Load<Texture2D>(matContainer.material[0].Detail);
-                Dirt = Resources.Load<Texture2D>(matContainer.material[0].Dirt);
+                albedo = Resources.Load<Texture2D>(matContainer.material[0].Albedo);
+                metalSmooth = Resources.Load<Texture2D>(matContainer.material[0].MetalSmooth);
+                emissiveAO = Resources.Load<Texture2D>(matContainer.material[0].EmmisiveAO);
+                normalDM = Resources.Load<Texture2D>(matContainer.material[0].NormalDM);
+                dirt = Resources.Load<Texture2D>(matContainer.material[0].Dirt);
 
                 if (colorMask != null)                                      //Setting textures into new material 
                     TileMat = new Material(Shad);
 
                 ColorUtility.TryParseHtmlString(matContainer.material[0].MainColor, out mainColor);    //convert hex into color
                 ColorUtility.TryParseHtmlString(matContainer.material[0].SecColor, out secColor);
+                ColorUtility.TryParseHtmlString(matContainer.material[0].TertColor, out tertColor);
+                ColorUtility.TryParseHtmlString(matContainer.material[0].QuatColor, out quatColor);
                 ColorUtility.TryParseHtmlString(matContainer.material[0].DetailColor, out detColor);
-                ColorUtility.TryParseHtmlString(matContainer.material[0].TrimColor, out trimColor);
+                ColorUtility.TryParseHtmlString(matContainer.material[0].SecDetailColor, out secDetColor);
                 ColorUtility.TryParseHtmlString(matContainer.material[0].EmissionColor, out emColor);
 
                 TileMat.SetTexture("_CM", colorMask);     //assigning textures and colors into new material
-                TileMat.SetTexture("_AL", Albedo);
-                TileMat.SetTexture("_MT", Metal);
-                TileMat.SetTexture("_EM", Emissive);
-                TileMat.SetTexture("_NM", Normal);
-                TileMat.SetTexture("_DM", Detail);
-                TileMat.SetTexture("_DW", Dirt);
+                TileMat.SetTexture("_AL", albedo);
+                TileMat.SetTexture("_DWM", dirt);
+                TileMat.SetTexture("_EMAO", emissiveAO);
+                TileMat.SetTexture("_MS", metalSmooth);
+                TileMat.SetTexture("_NMDM", normalDM);
                 TileMat.SetColor("_MC", mainColor);
                 TileMat.SetColor("_SC", secColor);
+                TileMat.SetColor("_TC", tertColor);
+                TileMat.SetColor("_QC", quatColor);
                 TileMat.SetColor("_DC", detColor);
-                TileMat.SetColor("_TC", trimColor);
+                TileMat.SetColor("SDC", secDetColor);
                 TileMat.SetColor("_EC", emColor);
                 TileMat.SetFloat("_EI", 7);
                 TileMat.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;    // realtime emissive flag
