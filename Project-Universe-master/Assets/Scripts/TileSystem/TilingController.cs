@@ -134,6 +134,7 @@ public class TilingController : MonoBehaviour
     private Color detColor;
     private Color secDetColor;
     private Color emColor;
+    private float EmMulti;
 
     private MaterialContainer matContainer;
     private bool matXml;
@@ -250,6 +251,7 @@ public class TilingController : MonoBehaviour
                 normalDM = Resources.Load<Texture2D>(matContainer.material[0].NormalDM);
                 dirt = Resources.Load<Texture2D>(matContainer.material[0].Dirt);
 
+
                 if (colorMask != null)                                      //Setting textures into new material 
                     TileMat = new Material(Shad);
 
@@ -274,7 +276,7 @@ public class TilingController : MonoBehaviour
                 TileMat.SetColor("_DC", detColor);
                 TileMat.SetColor("SDC", secDetColor);
                 TileMat.SetColor("_EC", emColor);
-                TileMat.SetFloat("_EI", 7);
+                TileMat.SetFloat("_EI", matContainer.material[0].EmissiveMulti);
                 TileMat.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;    // realtime emissive flag
 
                 if (obj.transform.Find("model") != null)                                //Assigning new instance of material to model
