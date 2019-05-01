@@ -84,7 +84,7 @@ public class TilingController : MonoBehaviour
                     Debug.DrawLine(hit.point, debugrayend, Color.red);
                     //   Debug.Log(hit.point);
 
-                    if (hit.transform.gameObject.tag != "TilingGhost")  // prevents from raycasting tile
+                    if (hit.transform.gameObject.tag != "TilingGhost" || hit.transform.gameObject.tag != "Player")  // prevents from raycasting tile
 
                         //tile snapping into 1x1x1 grid
                         if (SnapToGrid)
@@ -217,6 +217,7 @@ public class TilingController : MonoBehaviour
             }
             if (obj.transform.Find("hitbox") != null)
             {
+                obj.transform.Find("hitbox").gameObject.AddComponent<MeshCollider>();
                 if (obj.transform.Find("hitbox").GetComponent<MeshRenderer>() != null)
                     obj.transform.Find("hitbox").GetComponent<MeshRenderer>().enabled = false;   //disable render of hitbox
             }
