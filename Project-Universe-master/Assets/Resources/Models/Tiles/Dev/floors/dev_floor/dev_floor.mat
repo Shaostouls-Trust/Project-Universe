@@ -30,20 +30,40 @@ Material:
         m_Texture: {fileID: 2800000, guid: 1e9a00b23d4893e43a49633c04b6b1d9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _AL:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Albedo:
         m_Texture: {fileID: 2800000, guid: 94dae5c9fd116ac46b683490e4f5ba04, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CM:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DirtWeat:
         m_Texture: {fileID: 2800000, guid: 080c4d58a8e94a74ab5cfe2707f924a5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _EMAO:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _EmitAmbient:
         m_Texture: {fileID: 2800000, guid: 2aacd4146b2d2ba4b815ca91126a561d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _MS:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MetalSmooth:
         m_Texture: {fileID: 2800000, guid: f6a63b34e5b2bbd40938ee0df1ab3c5c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NMDM:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalDetail:
@@ -51,6 +71,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _EI: -0.5
     - _Emission_Intensity: 1
     m_Colors:
     - _CM_DetailColor: {r: 0, g: 1, b: 1, a: 1}
@@ -59,10 +80,17 @@ Material:
     - _CM_SecondaryColor: {r: 0, g: 1, b: 0, a: 0}
     - _CM_Secondary_DetailColor: {r: 1, g: 0, b: 1, a: 1}
     - _CM_TertiaryColor: {r: 0, g: 0, b: 1, a: 0}
+    - _DC: {r: 0.7568628, g: 0.7568628, b: 0.7568628, a: 1}
     - _DetalColor: {r: 0.7568628, g: 0.7568628, b: 0.7568628, a: 1}
+    - _EC: {r: 0, g: 1, b: 0.065570354, a: 0}
     - _EmissionColor: {r: 1, g: 0.10714618, b: 0, a: 0}
+    - _MC: {r: 0.7568628, g: 0.7568628, b: 0.7568628, a: 1}
     - _PrimaryColor: {r: 0, g: 0, b: 0, a: 1}
+    - _QC: {r: 0.16099995, g: 0.16099995, b: 0.16099995, a: 1}
     - _QuaternaryColor: {r: 0.16099995, g: 0.16099995, b: 0.16099995, a: 1}
+    - _SC: {r: 0.17056665, g: 0.26337495, b: 0.30099997, a: 1}
+    - _SDC: {r: 0.7568628, g: 0.7568628, b: 0.7568628, a: 1}
     - _SecondaryColor: {r: 0.17056665, g: 0.26337495, b: 0.30099997, a: 1}
     - _SecondaryDetailColor: {r: 0.7568628, g: 0.7568628, b: 0.7568628, a: 1}
+    - _TC: {r: 0.916, g: 0.8289561, b: 0.29495198, a: 1}
     - _TertiaryColor: {r: 0.916, g: 0.8289561, b: 0.29495198, a: 1}

@@ -33,8 +33,10 @@ public class TilingController : MonoBehaviour
 
     //material var
     public Shader Shad;
+    public Shader ScaleableShad;
     private Material TileMat;
-   
+    private Material ScaleableMat;
+
 
     //  public TileCollection tileContainer = TileCollection.Load(Path.Combine(Application.dataPath, "Tiles.xml"));
 
@@ -61,7 +63,7 @@ public class TilingController : MonoBehaviour
         Tile.tag = "TilingGhost";
 
         PlayerID = new GameObject();
-        PlayerID.name = "PlayerID";
+        PlayerID.name = "PlacedTiles";
 
     }
 
@@ -145,7 +147,7 @@ public class TilingController : MonoBehaviour
     {
         var tileContainer = TileCollection.Load(Path.Combine(Application.dataPath, "Tiles.xml"));  //Loading from XML
 
-      //  Debug.Log(matContainer.material[0].ColorMask);
+        //  Debug.Log(matContainer.material[0].ColorMask);
 
 
         var parentDatabase = new GameObject();       //Creating tile database gameobjects
@@ -158,13 +160,13 @@ public class TilingController : MonoBehaviour
 
 
             FilePath = tileContainer.tiles[c].model_path;   //reading model info 
-          //  Debug.Log(tileContainer.tiles[c].model_path);
-            //  FilePath = "Models/Tiles/Floors/nukeguard/mesh1";
+                                                            //  Debug.Log(tileContainer.tiles[c].model_path);
+                                                            //  FilePath = "Models/Tiles/Floors/nukeguard/mesh1";
             GameObject model = Resources.Load<GameObject>(FilePath);
             GameObject obj = (GameObject)Instantiate(model);
 
-          //  Debug.Log("searching for: " + tileContainer.tiles[c].model_path + ".xml");
-           // Debug.Log(Application.dataPath +"/Resources/" + tileContainer.tiles[c].model_path);
+            //  Debug.Log("searching for: " + tileContainer.tiles[c].model_path + ".xml");
+            // Debug.Log(Application.dataPath +"/Resources/" + tileContainer.tiles[c].model_path);
             if (System.IO.File.Exists(Application.dataPath + "/Resources/" + tileContainer.tiles[c].model_path + ".xml"))
             {
                 Debug.Log("found: " + tileContainer.tiles[c].model_path + ".xml");
@@ -280,78 +282,104 @@ public class TilingController : MonoBehaviour
                 TileMat.SetFloat("_EI", matContainer.material[0].EmissiveMulti);
                 TileMat.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;    // realtime emissive flag
 
+
+
                 if (obj.transform.Find("model") != null)                                //Assigning new instance of material to model
                 {
                     for (int m = 0; m < obj.transform.Find("model").GetComponentInChildren<MeshRenderer>().materials.Length; m++)      //For every material in model
-                        obj.transform.Find("model").GetComponentInChildren<MeshRenderer>().materials[m].CopyPropertiesFromMaterial(TileMat);
-                }
-
-            }
-                //---------------------------------------------
-
-
-                //--------------------------------Building LOD groups------------------------------ 
-                if (obj.transform.Find("model") != null)
-                {
-                    group = obj.AddComponent<LODGroup>();
-
-                    // Add 4 LOD levels
-                    LOD[] lods = new LOD[4];
-
-                    for (int i = 0; i < 4; i++)
                     {
-                        GameObject primType = obj.transform.Find("model").gameObject;
-                        switch (i)
+                        obj.transform.Find("model").GetComponentInChildren<MeshRenderer>().materials[m].CopyPropertiesFromMaterial(TileMat);
+                        foreach (Transform child in obj.transform.Find("model").transform)
                         {
-                            case 1:
-                                if (obj.transform.Find("lod1") != null)
-                                    primType = obj.transform.Find("lod1").gameObject;
-                                break;
-                            case 2:
-                                if (obj.transform.Find("lod2") != null)
-                                    primType = obj.transform.Find("lod2").gameObject;
-                                break;
-                            case 3:
-                                if (obj.transform.Find("lod3") != null)
-                                    primType = obj.transform.Find("lod3").gameObject;
-                                break;
+                            child.GetComponentInChildren<MeshRenderer>().materials[m].CopyPropertiesFromMaterial(TileMat);
                         }
-                        Renderer[] renderers = new Renderer[1];
-                        renderers[0] = primType.GetComponentInChildren<Renderer>();
-                        lods[i] = new LOD(1.0F / (i + 12f), renderers); // i+1.2f
+                        obj.transform.Find("lod1").GetComponentInChildren<MeshRenderer>().materials[m].CopyPropertiesFromMaterial(TileMat);
+                        obj.transform.Find("lod2").GetComponentInChildren<MeshRenderer>().materials[m].CopyPropertiesFromMaterial(TileMat);
+                        obj.transform.Find("model_scale_back").GetComponentInChildren<SkinnedMeshRenderer>().materials[m].CopyPropertiesFromMaterial(TileMat);
+                        obj.transform.Find("model_scale_front").GetComponentInChildren<SkinnedMeshRenderer>().materials[m].CopyPropertiesFromMaterial(TileMat);
+                        obj.transform.Find("model_scale_left").GetComponentInChildren<SkinnedMeshRenderer>().materials[m].CopyPropertiesFromMaterial(TileMat);
+                        obj.transform.Find("model_scale_right").GetComponentInChildren<SkinnedMeshRenderer>().materials[m].CopyPropertiesFromMaterial(TileMat);
                     }
-                    group.SetLODs(lods);
-                    group.RecalculateBounds();
                 }
-                //--------------------------------------------------------------------------------
+
             }
-        }
+            //---------------------------------------------
 
-        public void SaveXMLTiles()
-        {
-            var tileContainer = TileCollection.Load(Path.Combine(Application.dataPath, "Tiles.xml"));
-            tileContainer.Save(Path.Combine(Application.persistentDataPath, "Tiles.xml"));
-        }
 
-        public void PlaceTile()
-        {
-
-            if (Tile.transform.childCount > 0)
+            //--------------------------------Building LOD groups------------------------------ 
+            if (obj.transform.Find("model") != null)
             {
-                Debug.Log(Tile.gameObject.transform.GetChild(0).gameObject);
-                GameObject newTileChild = Tile.gameObject.transform.GetChild(0).gameObject;
-                GameObject newTile = (GameObject)Instantiate(newTileChild);
-                newTile.transform.localPosition = Coords;
-                newTile.transform.localRotation = Tile.transform.rotation;
-                newTile.transform.localScale = Tile.transform.localScale;
-                newTile.transform.SetParent(PlayerID.transform);
-                newTile.GetComponent<TileMetadata>().buildBy = "PeterHammerman test";
+                group = obj.AddComponent<LODGroup>();
+
+                // Add 4 LOD levels
+                LOD[] lods = new LOD[4];
+
+                for (int i = 0; i < 4; i++)
+                {
+                    GameObject primType = obj.transform.Find("model").gameObject;
+                    switch (i)
+                    {
+                        case 1:
+                            if (obj.transform.Find("lod1") != null)
+                                primType = obj.transform.Find("lod1").gameObject;
+                            break;
+                        case 2:
+                            if (obj.transform.Find("lod2") != null)
+                                primType = obj.transform.Find("lod2").gameObject;
+                            break;
+                        case 3:
+                            if (obj.transform.Find("lod3") != null)
+                                primType = obj.transform.Find("lod3").gameObject;
+                            break;
+                    }
+
+                    Renderer[] renderers = new Renderer[10];
+
+                    renderers[0] = primType.GetComponent<Renderer>();
+
+    
+
+                    if (primType.transform.childCount > 0)
+    
+                          for (int ch = 1; ch < primType.transform.childCount;ch++)
+                          {
+                            renderers[ch] = primType.transform.GetChild(ch - 1).gameObject.GetComponent<Renderer>();
+                          }
+
+                        lods[i] = new LOD(1.0F / (i + 3f), renderers); // i+1.2f
+                }
+                group.SetLODs(lods);
+                group.RecalculateBounds();
             }
-        }
-
-        public void RemoveTile()
-        {
-
+            //--------------------------------------------------------------------------------
         }
     }
+
+    public void SaveXMLTiles()
+    {
+        var tileContainer = TileCollection.Load(Path.Combine(Application.dataPath, "Tiles.xml"));
+        tileContainer.Save(Path.Combine(Application.persistentDataPath, "Tiles.xml"));
+    }
+
+    public void PlaceTile()
+    {
+
+        if (Tile.transform.childCount > 0)
+        {
+            Debug.Log(Tile.gameObject.transform.GetChild(0).gameObject);
+            GameObject newTileChild = Tile.gameObject.transform.GetChild(0).gameObject;
+            GameObject newTile = (GameObject)Instantiate(newTileChild);
+            newTile.transform.localPosition = Coords;
+            newTile.transform.localRotation = Tile.transform.rotation;
+            newTile.transform.localScale = Tile.transform.localScale;
+            newTile.transform.SetParent(PlayerID.transform);
+            newTile.GetComponent<TileMetadata>().buildBy = "PeterHammerman test";
+        }
+    }
+
+    public void RemoveTile()
+    {
+
+    }
+}
 

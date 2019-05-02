@@ -37,7 +37,13 @@ public class SelectTileButton : MonoBehaviour
         duplicate.transform.localPosition = new Vector3(0, 0, 0);
 
         foreach (Transform child in duplicate.transform)
+        {
             child.gameObject.layer = 0;
+            foreach (Transform child2 in child.transform)
+            {
+                child2.gameObject.layer = 0;
+            }
+        }
     }
 
 }
