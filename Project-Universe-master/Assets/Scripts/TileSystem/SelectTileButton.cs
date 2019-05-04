@@ -20,7 +20,6 @@ public class SelectTileButton : MonoBehaviour
 
     public void WhenClicked(int a)
     {
-
         foreach (Transform child in Cube.transform)
             Destroy(child.gameObject);
 
@@ -30,8 +29,7 @@ public class SelectTileButton : MonoBehaviour
         duplicate = Instantiate<GameObject>(tile);
         duplicate.transform.rotation = Cube.transform.rotation;   //prevents from bar rotation orientation after selecting tile
 
-        // tile.SetActive(true);
-
+        //tile.SetActive(true);
 
         duplicate.transform.SetParent(Cube.transform);
         duplicate.transform.localPosition = new Vector3(0, 0, 0);

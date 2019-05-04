@@ -11,7 +11,9 @@ public class TilingController : MonoBehaviour
     private GameObject Cmra;
     private Camera Cam;
     private GameObject Tile;
+    public GameObject SelectedTile;
     private GameObject PlayerID;
+    private Collider TileCol; //For turning on and off the colliders when placing.
     private MeshFilter mesh;
     public bool AllowBuilding;
     private bool SnapToGrid;
@@ -74,6 +76,12 @@ public class TilingController : MonoBehaviour
         if (AllowBuilding)
         {
             Tile.SetActive(true);
+            if (Tile.transform.childCount > 0)
+            {
+                //Probably need to find a more efficient way of doing this? Or maybe a better spot to put it..
+                TileCol = Tile.GetComponentInChildren<Collider>(); //Get Collider from active tile and disable.
+                TileCol.enabled = false; //Get Collider from active tile and disable.
+            }
 
             RaycastHit hit;
             Ray ray = Cam.ScreenPointToRay(Input.mousePosition);
@@ -109,7 +117,21 @@ public class TilingController : MonoBehaviour
             //simple building without restrictions
             if (Input.GetMouseButtonDown(0))
             {
-                PlaceTile();
+             PlaceTile();
+                if (hit.transform.gameObject.tag == "PlacedTile") //Maybe rename this to something less close to "PlacedTiles" XD
+                {  // prevents from raycasting tile
+                    SelectedTile = hit.transform.gameObject;
+                }
+                else { }
+             Debug.Log(SelectedTile);
+            }
+            //Clear the current selected Tile from the Tileghost
+            if (Input.GetMouseButtonDown(1))
+            {
+                foreach(Transform child in Tile.transform)
+                {
+                    GameObject.Destroy(child.gameObject);
+                }
             }
 
 
@@ -363,21 +385,43 @@ public class TilingController : MonoBehaviour
 
     public void PlaceTile()
     {
-
-        if (Tile.transform.childCount > 0)
+        if (AllowBuilding)
         {
-            Debug.Log(Tile.gameObject.transform.GetChild(0).gameObject);
-            GameObject newTileChild = Tile.gameObject.transform.GetChild(0).gameObject;
-            GameObject newTile = (GameObject)Instantiate(newTileChild);
-            newTile.transform.localPosition = Coords;
-            newTile.transform.localRotation = Tile.transform.rotation;
-            newTile.transform.localScale = Tile.transform.localScale;
-            newTile.transform.SetParent(PlayerID.transform);
-            newTile.GetComponent<TileMetadata>().buildBy = "PeterHammerman test";
+            if (Tile.transform.childCount > 0)
+            {
+                Debug.Log(Tile.gameObject.transform.GetChild(0).gameObject);
+                GameObject newTileChild = Tile.gameObject.transform.GetChild(0).gameObject;
+                GameObject newTile = (GameObject)Instantiate(newTileChild);
+                //Probably a more elegant way to do this.
+                //Get the collider from the tile and enable it before placing.
+                Collider HitBox = newTile.GetComponentInChildren<Collider>();
+                HitBox.enabled = true;
+                HitBox.tag = "PlacedTile";
+                newTile.tag = "PlacedTile";
+
+                newTile.transform.localPosition = Coords;
+                newTile.transform.localRotation = Tile.transform.rotation;
+                newTile.transform.localScale = Tile.transform.localScale;
+                newTile.transform.SetParent(PlayerID.transform);
+                newTile.GetComponent<TileMetadata>().buildBy = "PeterHammerman test";
+            }
         }
     }
+    //Begin Scale function
+    public void ScaleTile(Slider Scale)
+    {
+        //Debug.Log("Setting" + Tile.gameObject.transform.GetChild(0).gameObject + "'s scale.");
+        Animator AnimScale = SelectedTile.GetComponentInParent<Animator>();
+        float aFrame = Scale.value / 7;
+        AnimScale.enabled = true;
+        AnimScale.Play("Scale", 0, aFrame);
+        Debug.Log(AnimScale + "Animator Found" + aFrame);
+        //AnimScale.enabled = false;
 
-    public void RemoveTile()
+        //and stop playing and disable by default
+    }
+    //End Scale Function
+public void RemoveTile()
     {
 
     }
