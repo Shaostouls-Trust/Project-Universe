@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
-
-
+using UnityEngine.EventSystems;
 
 public class TilingController : MonoBehaviour
 {
     private GameObject Cmra;
     private Camera Cam;
     private GameObject Tile;
-    public GameObject SelectedTile;
+    private GameObject SelectedTile;
+    public GameObject TileSelectionInd; // need to assign this at runtime..
     private GameObject PlayerID;
     private Collider TileCol; //For turning on and off the colliders when placing.
     private MeshFilter mesh;
@@ -30,6 +30,9 @@ public class TilingController : MonoBehaviour
 
     private GameObject newButton;
     private SelectTileButton but;
+
+    //GUI testing
+    public Text SelectedTileText;
 
 
 
@@ -73,6 +76,20 @@ public class TilingController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Send to GUI what tile is currently selected. will probably move to function. 
+        if (SelectedTile != null)
+        {
+            SelectedTileText.text = SelectedTile.name + " selected";
+            TileSelectionInd.transform.position = SelectedTile.GetComponentInChildren<Renderer>().bounds.center;
+            TileSelectionInd.SetActive(true);
+
+        }
+        else
+        {
+            SelectedTileText.text = "none selected";
+            TileSelectionInd.SetActive(false);
+        }
+
         if (AllowBuilding)
         {
             Tile.SetActive(true);
@@ -117,17 +134,26 @@ public class TilingController : MonoBehaviour
             //simple building without restrictions
             if (Input.GetMouseButtonDown(0))
             {
-             PlaceTile();
-                if (hit.transform.gameObject.tag == "PlacedTile") //Maybe rename this to something less close to "PlacedTiles" XD
-                {  // prevents from raycasting tile
-                    SelectedTile = hit.transform.gameObject;
+                if (!EventSystem.current.IsPointerOverGameObject())//Check if the pointer is over any GUI elements.
+                {
+                    if (Tile.transform.childCount > 0)
+                    {
+                        PlaceTile();
+                    }
+                    if (hit.transform.gameObject.tag == "PlacedTile") //Maybe rename this to something less close to "PlacedTiles" XD 
+                    {  // prevents from raycasting tile ghost
+                        SelectTile(hit.collider.transform.parent.gameObject);
+                    }
+                    Debug.Log(SelectedTile);
                 }
-                else { }
-             Debug.Log(SelectedTile);
             }
             //Clear the current selected Tile from the Tileghost
             if (Input.GetMouseButtonDown(1))
             {
+                if (SelectedTile != null)
+                {
+                    GameObject.Destroy(SelectedTile);
+                }
                 foreach(Transform child in Tile.transform)
                 {
                     GameObject.Destroy(child.gameObject);
@@ -305,7 +331,7 @@ public class TilingController : MonoBehaviour
                 TileMat.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;    // realtime emissive flag
 
 
-
+                //---------------------------------ASSIGNING MATERIALS--------------------------------
                 if (obj.transform.Find("model") != null)                                //Assigning new instance of material to model
                 {
                     for (int m = 0; m < obj.transform.Find("model").GetComponentInChildren<MeshRenderer>().materials.Length; m++)      //For every material in model
@@ -315,8 +341,20 @@ public class TilingController : MonoBehaviour
                         {
                             child.GetComponentInChildren<MeshRenderer>().materials[m].CopyPropertiesFromMaterial(TileMat);
                         }
+
                         obj.transform.Find("lod1").GetComponentInChildren<MeshRenderer>().materials[m].CopyPropertiesFromMaterial(TileMat);
+                        foreach (Transform child in obj.transform.Find("lod1").transform)
+                        {
+                            child.GetComponentInChildren<MeshRenderer>().materials[m].CopyPropertiesFromMaterial(TileMat);
+                        }
+
                         obj.transform.Find("lod2").GetComponentInChildren<MeshRenderer>().materials[m].CopyPropertiesFromMaterial(TileMat);
+                        foreach (Transform child in obj.transform.Find("lod2").transform)
+                        {
+                            child.GetComponentInChildren<MeshRenderer>().materials[m].CopyPropertiesFromMaterial(TileMat);
+                        }
+
+                        //obj.transform.Find("lod3").GetComponentInChildren<MeshRenderer>().materials[m].CopyPropertiesFromMaterial(TileMat);
                         obj.transform.Find("model_scale_back").GetComponentInChildren<SkinnedMeshRenderer>().materials[m].CopyPropertiesFromMaterial(TileMat);
                         obj.transform.Find("model_scale_front").GetComponentInChildren<SkinnedMeshRenderer>().materials[m].CopyPropertiesFromMaterial(TileMat);
                         obj.transform.Find("model_scale_left").GetComponentInChildren<SkinnedMeshRenderer>().materials[m].CopyPropertiesFromMaterial(TileMat);
@@ -359,16 +397,17 @@ public class TilingController : MonoBehaviour
 
                     renderers[0] = primType.GetComponent<Renderer>();
 
-    
 
+
+                    //-------------------------------------------------
                     if (primType.transform.childCount > 0)
-    
-                          for (int ch = 1; ch < primType.transform.childCount;ch++)
-                          {
-                            renderers[ch] = primType.transform.GetChild(ch - 1).gameObject.GetComponent<Renderer>();
-                          }
 
-                        lods[i] = new LOD(1.0F / (i + 3f), renderers); // i+1.2f
+                        for (int ch = 0; ch < primType.transform.childCount; ch++)
+                        {
+                            renderers[ch + 1] = primType.transform.GetChild(ch).gameObject.GetComponent<Renderer>();
+                        }
+
+                    lods[i] = new LOD(1.0F / (i + 3f), renderers); // i+1.2f
                 }
                 group.SetLODs(lods);
                 group.RecalculateBounds();
@@ -392,6 +431,7 @@ public class TilingController : MonoBehaviour
                 Debug.Log(Tile.gameObject.transform.GetChild(0).gameObject);
                 GameObject newTileChild = Tile.gameObject.transform.GetChild(0).gameObject;
                 GameObject newTile = (GameObject)Instantiate(newTileChild);
+                SelectedTile = newTile;
                 //Probably a more elegant way to do this.
                 //Get the collider from the tile and enable it before placing.
                 Collider HitBox = newTile.GetComponentInChildren<Collider>();
@@ -403,24 +443,37 @@ public class TilingController : MonoBehaviour
                 newTile.transform.localRotation = Tile.transform.rotation;
                 newTile.transform.localScale = Tile.transform.localScale;
                 newTile.transform.SetParent(PlayerID.transform);
+
+                //Set Tile MetaData and add tile to selection
+                newTile.name = newTile.GetComponent<TileMetadata>().name;
                 newTile.GetComponent<TileMetadata>().buildBy = "PeterHammerman test";
+                SelectTile(newTile);
             }
         }
     }
     //Begin Scale function
     public void ScaleTile(Slider Scale)
     {
-        //Debug.Log("Setting" + Tile.gameObject.transform.GetChild(0).gameObject + "'s scale.");
-        Animator AnimScale = SelectedTile.GetComponentInParent<Animator>();
-        float aFrame = Scale.value / 7;
-        AnimScale.enabled = true;
-        AnimScale.Play("Scale", 0, aFrame);
-        Debug.Log(AnimScale + "Animator Found" + aFrame);
-        //AnimScale.enabled = false;
+        if (SelectedTile != null)
+        {
+            //Debug.Log("Setting" + Tile.gameObject.transform.GetChild(0).gameObject + "'s scale.");
+            Animator AnimScale = SelectedTile.GetComponentInParent<Animator>();
+            float aFrame = Scale.value / 7;
+            AnimScale.enabled = true;
+            AnimScale.Play("Scale", 0, aFrame);
+            Debug.Log(AnimScale + "Animator Found" + aFrame);
+            //AnimScale.enabled = false;
+        }
+        else { return; }
 
         //and stop playing and disable by default
     }
     //End Scale Function
+
+        public void SelectTile(GameObject Selected)
+    {
+        SelectedTile = Selected;
+    }
 public void RemoveTile()
     {
 
