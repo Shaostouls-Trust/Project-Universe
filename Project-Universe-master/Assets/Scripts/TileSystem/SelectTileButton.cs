@@ -27,6 +27,10 @@ public class SelectTileButton : MonoBehaviour
         path = "Tile_Database/" + TileID.ToString();
         tile = GameObject.Find(path);
         duplicate = Instantiate<GameObject>(tile);
+        foreach (Transform child in duplicate.transform)
+        {
+            child.tag = "PlacedTile";
+        }
         duplicate.transform.rotation = Cube.transform.rotation;   //prevents from bar rotation orientation after selecting tile
 
         //tile.SetActive(true);

@@ -144,13 +144,17 @@ public class TilingController : MonoBehaviour
                     {  // prevents from raycasting tile ghost
                         SelectTile(hit.collider.transform.parent.gameObject);
                     }
+                    if (hit.transform.gameObject.tag != "PlacedTile" && SelectedTile != null && Tile.transform.childCount == 0)
+                    {
+                        SelectTile(null);
+                    }
                     Debug.Log(SelectedTile);
                 }
             }
             //Clear the current selected Tile from the Tileghost
             if (Input.GetMouseButtonDown(1))
             {
-                if (SelectedTile != null)
+                if (SelectedTile != null && Tile.transform.childCount ==0)
                 {
                     GameObject.Destroy(SelectedTile);
                 }
@@ -163,10 +167,9 @@ public class TilingController : MonoBehaviour
 
         }
         else
+        {
             Tile.SetActive(false);
-
-
-
+        }
     }
 
 
