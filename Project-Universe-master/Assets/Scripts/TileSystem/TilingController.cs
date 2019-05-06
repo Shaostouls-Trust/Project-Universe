@@ -239,6 +239,12 @@ public class TilingController : MonoBehaviour
             mt.type = tileContainer.tiles[c].type;
             mt.name = tileContainer.tiles[c].Name;
             mt.description = "Description to implement";
+
+            if (tileContainer.tiles[c].Scalable)
+                mt.scalable = true;
+            else
+                mt.scalable = false;
+
             //-------------------------------------------------------------------------------------
 
 
@@ -459,13 +465,17 @@ public class TilingController : MonoBehaviour
     {
         if (SelectedTile != null)
         {
-            //Debug.Log("Setting" + Tile.gameObject.transform.GetChild(0).gameObject + "'s scale.");
-            Animator AnimScale = SelectedTile.GetComponentInParent<Animator>();
-            float aFrame = Scale.value / 7;
-            AnimScale.enabled = true;
-            AnimScale.Play("Scale", 0, aFrame);
-            Debug.Log(AnimScale + "Animator Found" + aFrame);
-            //AnimScale.enabled = false;
+            Debug.Log(SelectedTile.GetComponent<TileMetadata>().scalable);
+            if (SelectedTile.GetComponent<TileMetadata>().scalable)
+            {
+                //Debug.Log("Setting" + Tile.gameObject.transform.GetChild(0).gameObject + "'s scale.");
+                Animator AnimScale = SelectedTile.GetComponentInParent<Animator>();
+                float aFrame = Scale.value / 7;
+                AnimScale.enabled = true;
+                AnimScale.Play("Scale", 0, aFrame);
+                Debug.Log(AnimScale + "Animator Found" + aFrame);
+                //AnimScale.enabled = false;
+            }
         }
         else { return; }
 

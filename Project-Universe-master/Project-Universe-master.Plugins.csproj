@@ -615,6 +615,10 @@
       <Project>{DF88BCE8-B64F-969D-3C39-F0C65EF04F6B}</Project>
       <Name>Unity.RenderPipelines.Core.Runtime</Name>
     </ProjectReference>
+    <ProjectReference Include="Unity.VisualEffectGraph.Runtime.csproj">
+      <Project>{CBCB4456-0002-6059-62B9-7911594C8F27}</Project>
+      <Name>Unity.VisualEffectGraph.Runtime</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.TextMeshPro.Editor.csproj">
       <Project>{3A848AB7-9891-EDDA-D555-BF184C2F81F4}</Project>
       <Name>Unity.TextMeshPro.Editor</Name>
@@ -654,6 +658,10 @@
     <ProjectReference Include="UnityEngine.SpatialTracking.csproj">
       <Project>{EDE48CFA-E9C6-66CB-F43E-070EAA2E76B0}</Project>
       <Name>UnityEngine.SpatialTracking</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.VisualEffectGraph.Editor.csproj">
+      <Project>{2EB5BD84-25A3-2218-54E3-84F56A379D41}</Project>
+      <Name>Unity.VisualEffectGraph.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.ShaderGraph.Editor.csproj">
       <Project>{097081EC-B172-781E-F676-D45E858A96D6}</Project>
@@ -1258,6 +1266,144 @@
     <None Include="Packages\com.unity.shadergraph\ShaderGraphLibrary\ShaderVariablesMatrixDefsLegacyUnity.hlsl" />
     <None Include="Packages\com.unity.textmeshpro\Editor Resources\Shaders\TMP_Properties.cginc" />
     <None Include="Packages\com.unity.textmeshpro\Editor Resources\Shaders\TMP_SDF Internal SSD.shader" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\Element3DGridShader.shader" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\GradientBorder.shader" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\GradientDashedBorder.shader" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\PropertyRM.uss" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\PropertyRMDark.uss" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\PropertyRMLight.uss" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\Resizable.uss" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\Selectable.uss" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\StickyNote.uss" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\VFXBlackboard.uss" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\VFXBlock.uss" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\VFXComponentBoard.uss" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\VFXContext.uss" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\VFXControls.uss" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\VFXControlsDark.uss" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\VFXControlsLight.uss" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\VFXDataAnchor.uss" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\VFXFlow.uss" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\VFXFlowEdge.uss" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\VFXLabeledField.uss" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\VFXNode.uss" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\VFXNodeUI.uss" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\VFXOperator.uss" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\VFXParameter.uss" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\VFXReorderableList.uss" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\VFXReorderableListDark.uss" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\VFXReorderableListLight.uss" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\VFXSystemBorder.uss" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\VFXTypeColor.uss" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\VFXView.uss" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\uxml\Resizable.uxml" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\uxml\StickyNote.uxml" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\uxml\VFXBlackboardSection.uxml" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\uxml\VFXComponentBoard-event.uxml" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\uxml\VFXComponentBoard.uxml" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\uxml\VFXContext.uxml" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\uxml\VFXNode.uxml" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\uxml\VFXParameter.uxml" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Resources\uxml\VFXSystemBorder.uxml" />
+    <None Include="Packages\com.unity.visualeffectgraph\Editor\Utils\Templates\VFXBlock.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\Common\VFXCommonCompute.cginc" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\DefaultStaticMeshOutput.shader" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticleDecals\PassForward.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticleHexahedron\Pass.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticleHexahedron\PassBasicForward.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticleHexahedron\PassDepth.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticleHexahedron\PassForward.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticleHexahedron\PassShadowCaster.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticleLines\Pass.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticleLines\PassDepth.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticleLines\PassForward.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticleLines\PassShadowCaster.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticleLinesSW\Pass.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticleLinesSW\PassDepth.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticleLinesSW\PassForward.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticleLinesSW\PassShadowCaster.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticleMeshes\Pass.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticleMeshes\PassDepth.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticleMeshes\PassForward.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticleMeshes\PassShadowCaster.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticlePoints\Pass.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticlePoints\PassDepth.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticlePoints\PassForward.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticlePoints\PassMotionVectors.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticlePoints\PassShadowCaster.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticleQuads\Pass.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticleQuads\PassDepth.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticleQuads\PassForward.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticleQuads\PassGS.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticleQuads\PassShadowCaster.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticleQuads\PassVS.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticleSpheres\Pass.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticleSpheres\PassDepth.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\ParticleSpheres\PassShadowCaster.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\Templates\Hexahedron\PassGBuffer.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\Templates\Hexahedron\PassShadowCaster.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\Templates\Mesh\PassDepth.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\Templates\Mesh\PassForward.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\Templates\Mesh\PassGBuffer.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\Templates\Mesh\PassShadowCaster.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\Templates\Quad\PassDepth.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\Templates\Quad\PassForward.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\Templates\Quad\PassGBuffer.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\Templates\Quad\PassShadowCaster.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\Templates\Sphere\PassDepth.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\Templates\Sphere\PassGBuffer.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\Templates\VFXParticleBasicCube.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\Templates\VFXParticleCube.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\Templates\VFXParticleDecal.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\Templates\VFXParticleLinesHW.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\Templates\VFXParticleLinesSW.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\Templates\VFXParticleLitCube.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\Templates\VFXParticleLitMesh.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\Templates\VFXParticleLitQuad.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\Templates\VFXParticleMeshes.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\Templates\VFXParticlePoints.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\Templates\VFXParticleQuad.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\Templates\VFXParticleSphere.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\VFXCommon.cginc" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\VFXDefines.hlsl" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\VFXLit.cginc" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\VFXLit.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\VFXLitPixelOutput.cginc" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\VFXLitVaryings.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\HDRP\VFXPasses.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\LWRP\Templates\VFXParticleBasicCube.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\LWRP\Templates\VFXParticleCube.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\LWRP\Templates\VFXParticleDecal.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\LWRP\Templates\VFXParticleLinesHW.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\LWRP\Templates\VFXParticleLinesSW.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\LWRP\Templates\VFXParticleMeshes.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\LWRP\Templates\VFXParticlePoints.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\LWRP\Templates\VFXParticleQuad.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\LWRP\VFXCommon.cginc" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\LWRP\VFXDefines.hlsl" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\LWRP\VFXPasses.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\Legacy\Templates\VFXParticleBasicCube.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\Legacy\Templates\VFXParticleCube.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\Legacy\Templates\VFXParticleDecal.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\Legacy\Templates\VFXParticleLinesHW.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\Legacy\Templates\VFXParticleLinesSW.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\Legacy\Templates\VFXParticleMeshes.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\Legacy\Templates\VFXParticlePoints.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\Legacy\Templates\VFXParticleQuad.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\Legacy\VFXCommon.cginc" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\Legacy\VFXDefines.hlsl" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\RenderPipeline\Legacy\VFXPasses.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\Sort.compute" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\VFXCameraSort.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\VFXCommon.cginc" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\VFXCommonOutput.cginc" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\VFXCopyBuffer.compute" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\VFXFillIndirectArgs.compute" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\VFXInit.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\VFXNoise.cginc" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\VFXParticleCommon.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\VFXParticleHeader.template" />
+    <None Include="Packages\com.unity.visualeffectgraph\Shaders\VFXUpdate.template" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
