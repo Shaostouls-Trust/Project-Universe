@@ -41,6 +41,7 @@ public class TilingController : MonoBehaviour
     public Shader ScaleableShad;
     private Material TileMat;
     private Material ScaleableMat;
+    public Material SelectedMat;
 
 
     //  public TileCollection tileContainer = TileCollection.Load(Path.Combine(Application.dataPath, "Tiles.xml"));
@@ -486,6 +487,7 @@ public class TilingController : MonoBehaviour
         public void SelectTile(GameObject Selected)
     {
         SelectedTile = Selected;
+
     }
 public void RemoveTile()
     {
