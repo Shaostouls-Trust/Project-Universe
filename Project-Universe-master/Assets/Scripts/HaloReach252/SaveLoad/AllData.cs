@@ -12,7 +12,7 @@ public class AllData
 	{
 		Instance = this;
 	}
-
+	/*
 	public void GetAllData(Player player)
 	{
 		playerSaveData = new PlayerSaveData();
@@ -26,7 +26,7 @@ public class AllData
 			SaveObjectData temp = ObjectManager.Instance.objects[i].m_objectData;
 			objectsData.Add(temp);
 		}
-	}
+	}*/
 
 	public void SetAllData(AllData data)
 	{

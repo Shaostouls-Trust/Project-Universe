@@ -30,6 +30,7 @@ public class SaveLoad : MonoBehaviour
 		requiredLoads = new bool[2];
 	}
 
+	/*
 	public void SaveData(Player player)
 	{
 		allData = new AllData();
@@ -59,7 +60,7 @@ public class SaveLoad : MonoBehaviour
 		m_isSceneBeingLoaded = true;
 		int loadScene = allData.playerSaveData.sceneId;
 		SceneManager.LoadScene(loadScene);
-	}
+	}*/
 
 	public void CheckLoad()
 	{
@@ -104,6 +105,7 @@ public class PlayerSaveData : SaveObject
 	public float camLook, playerLook;
 	#endregion
 
+	/*
 	public void GetData(Player player)
 	{
 		sceneId = SceneManager.GetActiveScene().buildIndex;
@@ -114,7 +116,7 @@ public class PlayerSaveData : SaveObject
 
 		camLook = player.gameObject.GetComponent<PlayerLook>().mouseY;
 		playerLook = player.gameObject.transform.localEulerAngles.y;
-	}
+	}*/
 
 }
 
