@@ -73,7 +73,28 @@ TextureImporter:
     second: sprHUD_Compass
   - first:
       213: -1674214619366530519
-    second: sprPanel_Trans1
+    second: sprPanel1_Trans
+  - first:
+      213: 4835028192210930330
+    second: sprPanel1_Opaque
+  - first:
+      213: 7861831651581209893
+    second: sprPanel2_Trans
+  - first:
+      213: -2027501269651431426
+    second: sprPanel2_Opaque
+  - first:
+      213: 4215883054717122763
+    second: sprPanel3_Trans
+  - first:
+      213: -3243257876676343639
+    second: sprPanel3_Opaque
+  - first:
+      213: 7557742294318150150
+    second: sprLeftHandedCorner
+  - first:
+      213: -4282296261089112656
+    second: sprRightHandedCorner
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -166,7 +187,7 @@ TextureImporter:
         width: 311
         height: 97
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 32, y: 15, z: 30, w: 15}
       outline: []
       physicsShape: []
@@ -187,7 +208,7 @@ TextureImporter:
         width: 108
         height: 121
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -208,7 +229,7 @@ TextureImporter:
         width: 176
         height: 25
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -229,7 +250,7 @@ TextureImporter:
         width: 175
         height: 22
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -250,7 +271,7 @@ TextureImporter:
         width: 344
         height: 84
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 44, y: 15, z: 43, w: 15}
       outline: []
       physicsShape: []
@@ -271,7 +292,7 @@ TextureImporter:
         width: 304
         height: 88
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 24, y: 15, z: 21, w: 15}
       outline: []
       physicsShape: []
@@ -292,7 +313,7 @@ TextureImporter:
         width: 471
         height: 86
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 30, y: 20, z: 30, w: 20}
       outline: []
       physicsShape: []
@@ -313,7 +334,7 @@ TextureImporter:
         width: 783
         height: 616
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -334,7 +355,7 @@ TextureImporter:
         width: 135
         height: 59
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -355,7 +376,7 @@ TextureImporter:
         width: 131
         height: 58
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -376,7 +397,7 @@ TextureImporter:
         width: 51
         height: 51
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -397,7 +418,7 @@ TextureImporter:
         width: 52
         height: 50
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -418,7 +439,7 @@ TextureImporter:
         width: 56
         height: 53
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -439,7 +460,7 @@ TextureImporter:
         width: 52
         height: 53
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -460,7 +481,7 @@ TextureImporter:
         width: 285
         height: 268
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -481,7 +502,7 @@ TextureImporter:
         width: 314
         height: 293
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -502,7 +523,7 @@ TextureImporter:
         width: 33
         height: 38
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -523,7 +544,7 @@ TextureImporter:
         width: 33
         height: 26
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -544,7 +565,7 @@ TextureImporter:
         width: 33
         height: 26
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -565,7 +586,7 @@ TextureImporter:
         width: 33
         height: 50
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -586,7 +607,7 @@ TextureImporter:
         width: 33
         height: 33
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -603,11 +624,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 487
-        y: 1540
+        y: 1541
         width: 33
         height: 33
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -628,7 +649,7 @@ TextureImporter:
         width: 1773
         height: 41
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -641,7 +662,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprPanel_Trans1
+      name: sprPanel1_Trans
       rect:
         serializedVersion: 2
         x: 276
@@ -649,14 +670,161 @@ TextureImporter:
         width: 359
         height: 453
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 32, y: 182, z: 35, w: 78}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 183, y: 182, z: 84, w: 65}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
       spriteID: 487285ad49968df4094a07ba428cf995
       internalID: -1674214619366530519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprPanel1_Opaque
+      rect:
+        serializedVersion: 2
+        x: 683
+        y: 515
+        width: 354
+        height: 453
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 197, y: 181, z: 89, w: 74}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 820ece17279ad754989286ff548ba288
+      internalID: 4835028192210930330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprPanel2_Trans
+      rect:
+        serializedVersion: 2
+        x: 1235
+        y: 516
+        width: 364
+        height: 457
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 49, y: 41, z: 45, w: 42}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 640c3b2e9f917894da516b6ca310c2ce
+      internalID: 7861831651581209893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprPanel2_Opaque
+      rect:
+        serializedVersion: 2
+        x: 1641
+        y: 519
+        width: 365
+        height: 453
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 47, y: 39, z: 42, w: 39}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f527bd65e22d9d74da8d88789ada2846
+      internalID: -2027501269651431426
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprPanel3_Trans
+      rect:
+        serializedVersion: 2
+        x: 235
+        y: 7
+        width: 845
+        height: 503
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 141, y: 97, z: 137, w: 91}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 25568e69b060fe9499123b6ec5502846
+      internalID: 4215883054717122763
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprPanel3_Opaque
+      rect:
+        serializedVersion: 2
+        x: 1199
+        y: 9
+        width: 846
+        height: 501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 138, y: 81, z: 136, w: 80}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 156fac80aa1d8794f90fc709d6612b1c
+      internalID: -3243257876676343639
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprLeftHandedCorner
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 1565
+        width: 70
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3993502085c03ac489f5eab8bf127542
+      internalID: 7557742294318150150
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprRightHandedCorner
+      rect:
+        serializedVersion: 2
+        x: 83
+        y: 1664
+        width: 70
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8e2826a92c69d404eac0ccb5912050f2
+      internalID: -4282296261089112656
       vertices: []
       indices: 
       edges: []
