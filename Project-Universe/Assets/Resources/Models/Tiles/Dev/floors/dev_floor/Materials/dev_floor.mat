@@ -1,0 +1,122 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: dev_floor
+  m_Shader: {fileID: -6465566751694194690, guid: b7aa1588da010be45a081e8b68b51115,
+    type: 3}
+  m_ShaderKeywords: _BLENDMODE_ALPHA _SURFACE_TYPE_TRANSPARENT
+  m_LightmapFlags: 1
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 3000
+  stringTagMap:
+    MotionVector: User
+    RenderType: Transparent
+  disabledShaderPasses:
+  - DistortionVectors
+  - TransparentDepthPrepass
+  - TransparentDepthPostpass
+  - TransparentBackface
+  - MOTIONVECTORS
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _AL:
+        m_Texture: {fileID: 2800000, guid: 94dae5c9fd116ac46b683490e4f5ba04, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CM:
+        m_Texture: {fileID: 2800000, guid: 1e9a00b23d4893e43a49633c04b6b1d9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DWM:
+        m_Texture: {fileID: 2800000, guid: 080c4d58a8e94a74ab5cfe2707f924a5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EMAO:
+        m_Texture: {fileID: 2800000, guid: 2aacd4146b2d2ba4b815ca91126a561d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionController_784AFA8F_Texture2DE1546C20_4175940845:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MS:
+        m_Texture: {fileID: 2800000, guid: f6a63b34e5b2bbd40938ee0df1ab3c5c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NMDM:
+        m_Texture: {fileID: 2800000, guid: fe036d86cce3d1947ada54fccba1939a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - Vector1_A4078F02: 2.11
+    - _AlphaCutoff: 0.5
+    - _AlphaCutoffEnable: 0
+    - _AlphaDstBlend: 10
+    - _AlphaSrcBlend: 1
+    - _BlendMode: 0
+    - _CullMode: 2
+    - _CullModeForward: 2
+    - _DoubleSidedEnable: 0
+    - _DoubleSidedNormalMode: 2
+    - _DstBlend: 10
+    - _EI: 1
+    - _ReceivesSSR: 1
+    - _RenderQueueType: 5
+    - _RequireSplitLighting: 0
+    - _SrcBlend: 1
+    - _StencilRef: 2
+    - _StencilRefDepth: 0
+    - _StencilRefDistortionVec: 64
+    - _StencilRefGBuffer: 2
+    - _StencilRefMV: 128
+    - _StencilWriteMask: 3
+    - _StencilWriteMaskDepth: 48
+    - _StencilWriteMaskDistortionVec: 64
+    - _StencilWriteMaskGBuffer: 51
+    - _StencilWriteMaskMV: 176
+    - _SurfaceType: 1
+    - _TransparentBackfaceEnable: 0
+    - _TransparentCullMode: 2
+    - _TransparentSortPriority: 0
+    - _UseShadowThreshold: 0
+    - _ZTestDepthEqualForOpaque: 4
+    - _ZTestGBuffer: 4
+    - _ZTestTransparent: 4
+    - _ZWrite: 1
+    - __dirty: 0
+    m_Colors:
+    - CM_Primary_: {r: 1, g: 0, b: 0, a: 0}
+    - Vector2_F4F5DF68: {r: 0, g: 1, b: 0, a: 0}
+    - _Appended_Color: {r: 0.945098, g: 0.048686817, b: 0.01176471, a: 0}
+    - _CM_DetailColor: {r: 0, g: 1, b: 1, a: 1}
+    - _CM_PrimaryColor: {r: 1, g: 0, b: 0, a: 1}
+    - _CM_QuaternaryColor: {r: 1, g: 1, b: 0, a: 1}
+    - _CM_SecondaryColor: {r: 0, g: 1, b: 0, a: 1}
+    - _CM_Secondary_DetailColor: {r: 1, g: 0, b: 1, a: 1}
+    - _CM_TertiaryColor: {r: 0, g: 0, b: 1, a: 0}
+    - _Color0: {r: 0, g: 0, b: 0, a: 0}
+    - _Color1: {r: 0, g: 0, b: 0, a: 0}
+    - _Color_Mask: {r: 0, g: 0, b: 0, a: 0}
+    - _DC: {r: 0.7264151, g: 0.29810432, b: 0.29810432, a: 1}
+    - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
+    - _EC: {r: 1, g: 0.10714618, b: 0, a: 0}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _MC: {r: 0.8773585, g: 0.75734246, b: 0.75734246, a: 1}
+    - _Mask_Color: {r: 1, g: 0, b: 0, a: 0}
+    - _Primary_: {r: 0, g: 0, b: 0, a: 0}
+    - _QC: {r: 0.2924528, g: 0.2690432, b: 0.2441705, a: 0.35686275}
+    - _SC: {r: 0.17194727, g: 0.3166285, b: 0.5283019, a: 1}
+    - _SDC: {r: 0.7568628, g: 0.7568628, b: 0.7568628, a: 1}
+    - _TC: {r: 0.916, g: 0.8289561, b: 0.29495192, a: 1}
