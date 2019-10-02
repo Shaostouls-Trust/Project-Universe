@@ -13,6 +13,7 @@ TagManager:
   - Water
   - Button
   - Prop
+  - InventoryItem
   layers:
   - Default
   - TransparentFX
@@ -26,10 +27,10 @@ TagManager:
   - Snaps
   - HideFromCamera
   - Player
-  - 
-  - 
-  - 
-  - 
+  - damageable
+  - RenderTexture
+  - nonRenderTexture
+  - UIObject3D
   - 
   - 
   - 
@@ -49,4 +50,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: GUI
+    uniqueID: 3795995025
     locked: 0

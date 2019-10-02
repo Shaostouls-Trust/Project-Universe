@@ -23038,18 +23038,13 @@ ParticleSystem:
     - serializedVersion: 3
       emitter: {fileID: 1633373508269397795}
       type: 0
-      properties: 0
-      emitProbability: 1
+      properties: 28
+      emitProbability: 0.5
     - serializedVersion: 3
       emitter: {fileID: 1633373508056760975}
       type: 0
-      properties: 0
-      emitProbability: 1
-    - serializedVersion: 3
-      emitter: {fileID: 777850235064862660}
-      type: 0
-      properties: 0
-      emitProbability: 1
+      properties: -1
+      emitProbability: 0.05
   LightsModule:
     enabled: 0
     ratio: 0

@@ -22,14 +22,14 @@ namespace ProjectUniverseData.PlayerController
         [SerializeField] private string adsInputName;
         [SerializeField] private string offHandInputName;
         [SerializeField] private string flashLightInputName;
-        [SerializeField] private float
-            mouseXSensitivity,
-            mouseYSensitivity;
+        [SerializeField] private float mouseXSensitivity, mouseYSensitivity;
         //End Input List
         [Header("AssetData")]
         [SerializeField] private Camera firstPersonCamera;
         [SerializeField] private Transform playerRoot;
         [SerializeField] private CharacterController charController;
+        [SerializeField] private Light flashLight;
+        private int activeFL = 0;
         //Movement Settings
         private float movementSpeed;
         [SerializeField] private float walkSpeed = 5.50f;
@@ -69,7 +69,7 @@ namespace ProjectUniverseData.PlayerController
 
         void Awake()
         {
-            LockCursor();
+            //LockCursor();
             lookClamp = 0;
         }
         //Lock the cursor to the center of screen.
@@ -88,6 +88,7 @@ namespace ProjectUniverseData.PlayerController
         {
             PlayerMovement();
             PlayerInteraction();
+            FlashLight();
         }
         private void PlayerInteraction()
         {
@@ -108,6 +109,8 @@ namespace ProjectUniverseData.PlayerController
                     //Prop Case
                     if (hit.collider.gameObject.tag == "Prop")
                     {
+                        Interactable TargetScr = hit.collider.GetComponent<Interactable>();
+                        //TargetScr.Interact();
                         Prop = hit.collider.gameObject;
                         PropR = Prop.GetComponent<Rigidbody>();
                         PropR.useGravity = false;
@@ -250,11 +253,11 @@ namespace ProjectUniverseData.PlayerController
 
         private IEnumerator JumpEvent()
         {
+            float jumpForce = jumpFallOff.Evaluate(timeInAir);
             charController.slopeLimit = 90.0f;
             do
             {
                 timeInAir += Time.deltaTime;
-                float jumpForce = jumpFallOff.Evaluate(timeInAir);
                 charController.Move(Vector3.up * jumpForce * jumpMult * Time.deltaTime);
                 yield return null;
             } while (!charController.isGrounded && charController.collisionFlags != CollisionFlags.Above);
@@ -267,6 +270,17 @@ namespace ProjectUniverseData.PlayerController
 
         private void FlashLight()
         {
+
+            if (Input.GetButtonDown(flashLightInputName) && activeFL <= 0)
+            {
+                flashLight.enabled = true;
+                activeFL = 1;
+            }
+            else if (Input.GetButtonDown(flashLightInputName) && activeFL >= 1)
+            {
+                flashLight.enabled = false;
+                activeFL = 0;
+            }
         //Do flashlight stuff
         }
         //Kinda primitive, may adjust later.

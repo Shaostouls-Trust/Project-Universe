@@ -98,7 +98,11 @@ public class TilingController : MonoBehaviour
             {
                 //Probably need to find a more efficient way of doing this? Or maybe a better spot to put it..
                 TileCol = Tile.GetComponentInChildren<Collider>(); //Get Collider from active tile and disable.
-                TileCol.enabled = false; //Get Collider from active tile and disable.
+                if (TileCol != null)
+                {
+                    TileCol.enabled = false; //Get Collider from active tile and disable.
+                }
+                else { Debug.LogError("You need to add a collider to this mesh!   :  "+ Tile.GetComponentInChildren<MeshFilter>().mesh.name); }
             }
 
             RaycastHit hit;
