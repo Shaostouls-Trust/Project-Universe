@@ -1,0 +1,16 @@
+{
+  "name": "com.unity.ide.rider",
+  "displayName": "Rider Editor",
+  "description": "Code editor integration for supporting Rider as code editor for unity. Adds support for generating csproj files for code completion, auto discovery of installations, etc.",
+  "version": "1.1.1",
+  "unity": "2019.2",
+  "unityRelease": "0a12",
+  "dependencies": {
+    "com.unity.test-framework": "1.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.cds.internal.unity3d.com:unity/com.unity.ide.rider.git",
+    "revision": "09be29162a9a8ab4b6be369ff0d57e570601dd7a"
+  }
+}
