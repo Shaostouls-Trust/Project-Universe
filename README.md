@@ -4,9 +4,8 @@ Is a mixed reality (AR/VR/PC/Console/Mobile) massively multiplayer online (MMO) 
 The story of the game follows humanity as it leaves our solar system for the first team with a fleet of colony ships incapable of faster than light (FTL) on a quest to colonize the many solar systems discovered to have planets capable of supporting human life.
 
 # IMPORTANT DEVELOPER INFORMATION
-We're using Unity3D version 2020.1.0a7
-<br>You can download Unity3D <a href="https://store.unity.com/download">Here</a>
-<br>The specific version of Unity we're using can be downloaded <a href="https://unity3d.com/unity/alpha/2020.1.0a7">Here</a>
+We're using Unity3D version 2019.3.0a6
+<br>You can download Unity3D here: https://store.unity.com/download
 
 # JOINING AND CONTRIBUTING TO THE PROJECT
 Game developers/modders wanting to join us and aid game development presently need to join our Discord, link at https://Shaostoul.com
