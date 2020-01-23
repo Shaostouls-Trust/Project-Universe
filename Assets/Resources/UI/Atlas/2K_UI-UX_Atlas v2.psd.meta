@@ -1,0 +1,848 @@
+fileFormatVersion: 2
+guid: f4dc6094ecc48194c942f580e437e2b3
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 833716130503184402
+    second: sprButton1
+  - first:
+      213: 1700850528395579254
+    second: sprPlayerPortrait
+  - first:
+      213: -1542718767581260891
+    second: sprRedHealth
+  - first:
+      213: -2126486048094995361
+    second: sprGreenHealth
+  - first:
+      213: 3923277465182952300
+    second: sprButton2
+  - first:
+      213: -4274539748147492188
+    second: sprButton3
+  - first:
+      213: -115232268642470581
+    second: sprInputBox
+  - first:
+      213: -2678051092662168611
+    second: sprHexGrid
+  - first:
+      213: -2265274420642216873
+    second: sprSwitchOFF
+  - first:
+      213: 6921259846512197123
+    second: sprSwitchON
+  - first:
+      213: 6782832260968711953
+    second: sprCheckBoxCLEAR
+  - first:
+      213: 1801855222369929011
+    second: sprCheckBoxCHECKED
+  - first:
+      213: -2346446167282556965
+    second: sprRadioButtonOFF
+  - first:
+      213: 3874022117139449486
+    second: sprRadiobuttonON
+  - first:
+      213: -8239589256871254360
+    second: sprMapGridOverlay
+  - first:
+      213: -637880039676569187
+    second: sprMapScreen
+  - first:
+      213: -8923876761380388237
+    second: sprExclamationMark
+  - first:
+      213: 6054323040212485112
+    second: sprRedHex
+  - first:
+      213: 6081064150538215824
+    second: sprGreenHex
+  - first:
+      213: -3301567038303919651
+    second: sprMapPointer
+  - first:
+      213: 1622760887121439094
+    second: sprMapZoomPlus
+  - first:
+      213: -5607175426291323194
+    second: sprMapZoomMinus
+  - first:
+      213: 7798697042773878904
+    second: sprHUD_Compass
+  - first:
+      213: -1674214619366530519
+    second: sprPanel1_Trans
+  - first:
+      213: 4835028192210930330
+    second: sprPanel1_Opaque
+  - first:
+      213: 7861831651581209893
+    second: sprPanel2_Trans
+  - first:
+      213: -2027501269651431426
+    second: sprPanel2_Opaque
+  - first:
+      213: 4215883054717122763
+    second: sprPanel3_Trans
+  - first:
+      213: -3243257876676343639
+    second: sprPanel3_Opaque
+  - first:
+      213: 7557742294318150150
+    second: sprLeftHandedCorner
+  - first:
+      213: -4282296261089112656
+    second: sprRightHandedCorner
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: sprButton1
+      rect:
+        serializedVersion: 2
+        x: 201
+        y: 1946
+        width: 311
+        height: 97
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 32, y: 15, z: 30, w: 15}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a1433c9bdc4db4a428ffa089299bb68f
+      internalID: 833716130503184402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprPlayerPortrait
+      rect:
+        serializedVersion: 2
+        x: 195
+        y: 1814
+        width: 108
+        height: 121
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 96dc997e317e27e4ab791ec2bafd41a9
+      internalID: 1700850528395579254
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprRedHealth
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 1878
+        width: 176
+        height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 113047c50dc28d44fa1650884483d036
+      internalID: -1542718767581260891
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprGreenHealth
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 1850
+        width: 175
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 908c7d76ed7072643aabe2d126073b58
+      internalID: -2126486048094995361
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprButton2
+      rect:
+        serializedVersion: 2
+        x: 571
+        y: 1955
+        width: 344
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 44, y: 15, z: 43, w: 15}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 478ac2dd21b1c6c4da04a7065fc6263d
+      internalID: 3923277465182952300
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprButton3
+      rect:
+        serializedVersion: 2
+        x: 975
+        y: 1951
+        width: 304
+        height: 88
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 24, y: 15, z: 21, w: 15}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee365c9502b1e024fba3c2ba0faa4868
+      internalID: -4274539748147492188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprInputBox
+      rect:
+        serializedVersion: 2
+        x: 1335
+        y: 1955
+        width: 471
+        height: 86
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 30, y: 20, z: 30, w: 20}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1fc8f10b997e9a0499ce775ef88c1375
+      internalID: -115232268642470581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprHexGrid
+      rect:
+        serializedVersion: 2
+        x: 1005
+        y: 1091
+        width: 783
+        height: 616
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6f03290d5d916ff4f9bc68412acb1ae8
+      internalID: -2678051092662168611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprSwitchOFF
+      rect:
+        serializedVersion: 2
+        x: 756
+        y: 1322
+        width: 135
+        height: 59
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4e3f09cee4a166049b76bcf8602c8afb
+      internalID: -2265274420642216873
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprSwitchON
+      rect:
+        serializedVersion: 2
+        x: 756
+        y: 1246
+        width: 131
+        height: 58
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c04ef7d8f524b8d4a9877bd0a0e7ade9
+      internalID: 6921259846512197123
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprCheckBoxCLEAR
+      rect:
+        serializedVersion: 2
+        x: 570
+        y: 1330
+        width: 51
+        height: 51
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8c40584655a3b9045b7ea79e217fa257
+      internalID: 6782832260968711953
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprCheckBoxCHECKED
+      rect:
+        serializedVersion: 2
+        x: 659
+        y: 1331
+        width: 52
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0e9d05b19c9785d4297e80e86be17d50
+      internalID: 1801855222369929011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprRadioButtonOFF
+      rect:
+        serializedVersion: 2
+        x: 569
+        y: 1252
+        width: 56
+        height: 53
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7f40e784b36431b46aa7cb1d619f4479
+      internalID: -2346446167282556965
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprRadiobuttonON
+      rect:
+        serializedVersion: 2
+        x: 659
+        y: 1252
+        width: 52
+        height: 53
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 30ccc2deb3b86c0489292b6fcf54fe18
+      internalID: 3874022117139449486
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprMapGridOverlay
+      rect:
+        serializedVersion: 2
+        x: 175
+        y: 1246
+        width: 285
+        height: 268
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 59ab5db3ceb42024f839643ba667f73d
+      internalID: -8239589256871254360
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprMapScreen
+      rect:
+        serializedVersion: 2
+        x: 161
+        y: 1516
+        width: 314
+        height: 293
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9472856471700584ea3438c742472d38
+      internalID: -637880039676569187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprExclamationMark
+      rect:
+        serializedVersion: 2
+        x: 487
+        y: 1759
+        width: 33
+        height: 38
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7a9bd6fa317ecc84a9154476c6c59b04
+      internalID: -8923876761380388237
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprRedHex
+      rect:
+        serializedVersion: 2
+        x: 487
+        y: 1721
+        width: 33
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a5591aff2d0cc6499cc969da4102054
+      internalID: 6054323040212485112
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprGreenHex
+      rect:
+        serializedVersion: 2
+        x: 487
+        y: 1691
+        width: 33
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3cc73e10489e357469b6c6abdaa57f6a
+      internalID: 6081064150538215824
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprMapPointer
+      rect:
+        serializedVersion: 2
+        x: 488
+        y: 1634
+        width: 33
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f722c09dbde026944ac187b6f93e0648
+      internalID: -3301567038303919651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprMapZoomPlus
+      rect:
+        serializedVersion: 2
+        x: 487
+        y: 1585
+        width: 33
+        height: 33
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7afb8a86cb13987469ae4ca249908030
+      internalID: 1622760887121439094
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprMapZoomMinus
+      rect:
+        serializedVersion: 2
+        x: 487
+        y: 1541
+        width: 33
+        height: 33
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b8985a79eb5f9c548932a0e4f2dc49f4
+      internalID: -5607175426291323194
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprHUD_Compass
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 1004
+        width: 1773
+        height: 41
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b9c211ef7d794004cb8542cbbefecab8
+      internalID: 7798697042773878904
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprPanel1_Trans
+      rect:
+        serializedVersion: 2
+        x: 276
+        y: 516
+        width: 359
+        height: 453
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 183, y: 182, z: 84, w: 65}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 487285ad49968df4094a07ba428cf995
+      internalID: -1674214619366530519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprPanel1_Opaque
+      rect:
+        serializedVersion: 2
+        x: 683
+        y: 515
+        width: 354
+        height: 453
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 198, y: 104, z: 32, w: 41}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 820ece17279ad754989286ff548ba288
+      internalID: 4835028192210930330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprPanel2_Trans
+      rect:
+        serializedVersion: 2
+        x: 1235
+        y: 516
+        width: 364
+        height: 457
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 49, y: 41, z: 45, w: 42}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 640c3b2e9f917894da516b6ca310c2ce
+      internalID: 7861831651581209893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprPanel2_Opaque
+      rect:
+        serializedVersion: 2
+        x: 1641
+        y: 519
+        width: 365
+        height: 453
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 47, y: 39, z: 42, w: 39}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f527bd65e22d9d74da8d88789ada2846
+      internalID: -2027501269651431426
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprPanel3_Trans
+      rect:
+        serializedVersion: 2
+        x: 235
+        y: 7
+        width: 845
+        height: 503
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 141, y: 97, z: 137, w: 91}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 25568e69b060fe9499123b6ec5502846
+      internalID: 4215883054717122763
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprPanel3_Opaque
+      rect:
+        serializedVersion: 2
+        x: 1199
+        y: 9
+        width: 846
+        height: 501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 138, y: 81, z: 136, w: 80}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 156fac80aa1d8794f90fc709d6612b1c
+      internalID: -3243257876676343639
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprLeftHandedCorner
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 1565
+        width: 70
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3993502085c03ac489f5eab8bf127542
+      internalID: 7557742294318150150
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprRightHandedCorner
+      rect:
+        serializedVersion: 2
+        x: 83
+        y: 1664
+        width: 70
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8e2826a92c69d404eac0ccb5912050f2
+      internalID: -4282296261089112656
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: e621a2c2656e5dc4cbae480f8dbb4031
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
