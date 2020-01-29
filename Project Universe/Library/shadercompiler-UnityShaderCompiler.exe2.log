@@ -1,8 +1,73 @@
-Base path: 'C:/Program Files/Unity/Hub/Editor/2020.1.0a7/Editor/Data', plugins path 'C:/Program Files/Unity/Hub/Editor/2020.1.0a7/Editor/Data/PlaybackEngines'
+Base path: 'C:/Program Files/Unity 2020.1.0a7/Editor/Data', plugins path 'C:/Program Files/Unity 2020.1.0a7/Editor/Data/PlaybackEngines'
 Cmd: initializeCompiler
-Cmd: compileSnippet
-  error: 1 plat 4 at (3561): implicit truncation of vector type\nCompiling Vertex program with INSTANCING_ON DECALS_3RT
-Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR
-  error: 1 plat 4 at (3568): implicit truncation of vector type\nCompiling Vertex program with INSTANCING_ON DECALS_3RT
-Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR
-  api=4 type=0 insize=66751 outsize=2018 kw=INSTANCING_ON DECALS_3RT pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15840 outsize=11104 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=9415 outsize=3340 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=3043 outsize=2756 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=8070 outsize=4790 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=3918 outsize=2830 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=1326 outsize=678 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=2549 outsize=869 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=12535 outsize=4115 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=36538 outsize=33357 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=36538 outsize=33357 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=21704 outsize=14529 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=3654 outsize=1426 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=8898 outsize=7844 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=7918 outsize=1857 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=17654 outsize=635 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=4918 outsize=2417 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=5065 outsize=1485 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=9029 outsize=6440 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=9844 outsize=4045 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=25900 outsize=15917 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15603 outsize=13993 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15603 outsize=46072 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15603 outsize=45249 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15603 outsize=35965 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15603 outsize=42786 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15603 outsize=32865 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15603 outsize=48393 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15603 outsize=31253 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15603 outsize=57448 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15603 outsize=68565 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=3607 outsize=3162 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=19301 outsize=756 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=2510 outsize=756 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=7423 outsize=1322 ok=1
+Unhandled exception: Protocol error - unexpected end of data (did the Editor crash?)
+
+Quitting shader compiler process

@@ -1,12 +1,73 @@
-Base path: 'C:/Program Files/Unity/Hub/Editor/2020.1.0a7/Editor/Data', plugins path 'C:/Program Files/Unity/Hub/Editor/2020.1.0a7/Editor/Data/PlaybackEngines'
+Base path: 'C:/Program Files/Unity 2020.1.0a7/Editor/Data', plugins path 'C:/Program Files/Unity 2020.1.0a7/Editor/Data/PlaybackEngines'
 Cmd: initializeCompiler
-Cmd: compileSnippet
-  error: 1 plat 4 at (3561): implicit truncation of vector type\nCompiling Fragment program with INSTANCING_ON DECALS_3RT
-Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR
-  error: 1 plat 4 at (3568): gradient instruction used in a loop with varying iteration, attempting to unroll the loop\nCompiling Fragment program with INSTANCING_ON DECALS_3RT
-Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR
-  error: 1 plat 4 at (3568): implicit truncation of vector type\nCompiling Fragment program with INSTANCING_ON DECALS_3RT
-Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR
-  api=4 type=1 insize=66751 outsize=68738 kw=INSTANCING_ON DECALS_3RT pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR ok=1
-Cmd: compileSnippet
-  api=4 type=0 insize=7200 outsize=1670 kw=SHADOWS_SHADOWMASK DECALS_3RT _NORMALMAP_TANGENT_SPACE pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15840 outsize=8237 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=20668 outsize=95091 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=8070 outsize=8161 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=21751 outsize=21741 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=17620 outsize=8154 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=3918 outsize=662 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=12535 outsize=665 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=36538 outsize=33903 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=36538 outsize=36190 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=21704 outsize=15241 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=4245 outsize=244 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=8607 outsize=6439 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=8898 outsize=12677 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=7918 outsize=5629 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=17654 outsize=2481 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=5065 outsize=695 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=5065 outsize=899 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=9844 outsize=3652 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=25900 outsize=15377 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15603 outsize=113877 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15603 outsize=15259 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15603 outsize=35097 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15603 outsize=40332 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15603 outsize=37814 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15603 outsize=44635 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15603 outsize=37578 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15603 outsize=44315 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=19301 outsize=445 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=3797 outsize=1613 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=11912 outsize=1307 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=11383 outsize=9534 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=3107 outsize=2126 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=7423 outsize=1033 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=13624 outsize=2094 ok=1
+Unhandled exception: Protocol error - unexpected end of data (did the Editor crash?)
+
+Quitting shader compiler process

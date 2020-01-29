@@ -1,4 +1,45 @@
-Base path: 'C:/Program Files/Unity/Hub/Editor/2020.1.0a7/Editor/Data', plugins path 'C:/Program Files/Unity/Hub/Editor/2020.1.0a7/Editor/Data/PlaybackEngines'
+Base path: 'C:/Program Files/Unity 2020.1.0a7/Editor/Data', plugins path 'C:/Program Files/Unity 2020.1.0a7/Editor/Data/PlaybackEngines'
 Cmd: initializeCompiler
-Cmd: compileSnippet
-  api=4 type=1 insize=7200 outsize=6118 kw=SHADOWS_SHADOWMASK DECALS_3RT _NORMALMAP_TANGENT_SPACE pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR ok=1
+Cmd: compileComputeKernel
+  api=4 insize=20668 outsize=27766 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=8070 outsize=4899 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=3918 outsize=677 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=12535 outsize=4863 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=36538 outsize=36190 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=36538 outsize=33903 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=21704 outsize=15798 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=8898 outsize=9139 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=5065 outsize=3022 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=9844 outsize=4225 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=25900 outsize=15619 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15603 outsize=15248 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15603 outsize=29536 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15603 outsize=38415 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15603 outsize=31904 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15603 outsize=75043 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15603 outsize=74880 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15603 outsize=77756 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15603 outsize=68225 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=13624 outsize=2204 ok=1
+Unhandled exception: Protocol error - unexpected end of data (did the Editor crash?)
+
+Quitting shader compiler process
