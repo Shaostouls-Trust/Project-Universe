@@ -80,6 +80,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: a89c23c8c55b1054099c41d80e825529, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _EmissionController_836D00DE_Texture2DFC21D1C_552159969:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _EmissiveColorMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -149,8 +153,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Vector1_85AC8AF6: 0
     - Vector1_8C898A51: 0
     - Vector1_A4078F02: 1
+    - Vector1_BDA4AE9A: 0
     - _AORemapMax: 1
     - _AORemapMin: 0
     - _ATDistance: 1
