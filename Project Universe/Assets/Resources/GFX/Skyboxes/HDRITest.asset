@@ -16,7 +16,7 @@ MonoBehaviour:
   m_AdvancedMode: 0
   rotation:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 180
     min: 0
     max: 360
   skyIntensityMode:
@@ -27,15 +27,15 @@ MonoBehaviour:
     m_Value: 0
   multiplier:
     m_OverrideState: 1
-    m_Value: 0.015
+    m_Value: 0.01
     min: 0
   upperHemisphereLuxValue:
     m_OverrideState: 0
-    m_Value: 0.0030144271
+    m_Value: 0.0030144206
     min: 0
   upperHemisphereLuxColor:
     m_OverrideState: 0
-    m_Value: {x: 0.49251342, y: 0.5, z: 0.424611}
+    m_Value: {x: 0.49251345, y: 0.5, z: 0.4246109}
   desiredLuxValue:
     m_OverrideState: 1
     m_Value: 0.01
@@ -138,11 +138,11 @@ MonoBehaviour:
   active: 1
   m_AdvancedMode: 0
   maxShadowDistance:
-    m_OverrideState: 1
-    m_Value: 1000
+    m_OverrideState: 0
+    m_Value: 2500
     min: 0
   directionalTransmissionMultiplier:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 1
     min: 0
     max: 1
@@ -189,6 +189,7 @@ MonoBehaviour:
   - {fileID: 5709240611820962870}
   - {fileID: -7537508317561635568}
   - {fileID: -2901748429169499634}
+  - {fileID: 5787315468775537571}
 --- !u!114 &2576259849468777277
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -313,3 +314,22 @@ MonoBehaviour:
   fogType:
     m_OverrideState: 1
     m_Value: 3
+--- !u!114 &5787315468775537571
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e17fad69ea181b4483974138b566975, type: 3}
+  m_Name: ScreenSpaceRefraction
+  m_EditorClassIdentifier: 
+  active: 1
+  m_AdvancedMode: 0
+  screenFadeDistance:
+    m_OverrideState: 1
+    m_Value: 0.39
+    min: 0.001
+    max: 1
