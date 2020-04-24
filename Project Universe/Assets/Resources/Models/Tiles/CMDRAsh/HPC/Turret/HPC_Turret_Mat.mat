@@ -92,7 +92,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MS:
-        m_Texture: {fileID: 2800000, guid: 113be619c01979b4db450531ecdd35ee, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2de0d4903e3e7b6458472b26896f3747, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -141,7 +141,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - Vector1_85AC8AF6: 0
-    - Vector1_8C898A51: -0.01
+    - Vector1_8C898A51: -0.0015
     - Vector1_A4078F02: 0
     - Vector1_BDA4AE9A: 0
     - _AORemapMax: 1
@@ -188,7 +188,7 @@ Material:
     - _DoubleSidedEnable: 0
     - _DoubleSidedNormalMode: 1
     - _DstBlend: 0
-    - _EI: 10
+    - _EI: 1000000
     - _EmissiveColorMode: 1
     - _EmissiveExposureWeight: 1
     - _EmissiveIntensity: 1
@@ -280,7 +280,7 @@ Material:
     - _DC: {r: 0.7568628, g: 0.7568628, b: 0.7568628, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
-    - _EC: {r: 1, g: 0.27686793, b: 0, a: 0}
+    - _EC: {r: 1, g: 1, b: 1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}

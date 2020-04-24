@@ -58,6 +58,14 @@
      <Compile Include="Assets\Scripts\ActiveStateToggler.cs" />
      <Compile Include="Assets\Scripts\ApplicationManager.cs" />
      <Compile Include="Assets\Scripts\BuildStuff.cs" />
+     <Compile Include="Assets\Scripts\CMDRAsh\DoorAnimator.cs" />
+     <Compile Include="Assets\Scripts\CMDRAsh\MovementDynamicsController.cs" />
+     <Compile Include="Assets\Scripts\CMDRAsh\ParticleCollision.cs" />
+     <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\ICable.cs" />
+     <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\IGenerator.cs" />
+     <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\IMachine.cs" />
+     <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\IRouter.cs" />
+     <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\IRoutingSubstation.cs" />
      <Compile Include="Assets\Scripts\ChangeColor.cs" />
      <Compile Include="Assets\Scripts\DragMe.cs" />
      <Compile Include="Assets\Scripts\DragPanel.cs" />
@@ -112,6 +120,7 @@
      <Compile Include="Assets\Scripts\TiltWindow.cs" />
      <Compile Include="Assets\Scripts\WindowInteractionManager.cs" />
      <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
+     <Compile Include="Assets\VFXToolbox\PropertyAttributes\FloatSliderAttribute.cs" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
      <None Include="Assets\Resources\Models\Tiles\Shaostoul\Floor\Tile_Floor_Colony_003\Tile_Floor_Colony_003.xml" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
@@ -122,12 +131,15 @@
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
      <None Include="Assets\Resources\Models\Tiles\Shaostoul\Floor\Tile_Floor_Colony_004\Tile_Floor_Colony_004.xml" />
      <None Include="Assets\Resources\Models\Tiles\Shaostoul\Wall\Tile_Wall_Colony_001\Tile_Wall_Colony_001.xml" />
+     <None Include="Assets\VFXToolbox\ImageSequencer\CustomMaterialShaders\Rotate.shader" />
      <None Include="Assets\Resources\Models\Tiles\Dev\floors\dev_floor\dev_floor.xml" />
+     <None Include="Assets\VFXToolbox\ImageSequencer\CustomMaterialShaders\Blur.shader" />
      <None Include="Assets\Resources\Models\Tiles\Dev\floors\dev_floor\Materials README.txt" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
      <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF.shader" />
+     <None Include="Assets\VFXToolbox\ImageSequencer\CustomMaterialShaders\HeightToNormal.shader" />
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
      <None Include="Assets\Resources\Models\Crops\Crops_Database.xml" />
      <None Include="Assets\Resources\Models\Tiles\Shaostoul\Tiles_Shaostoul.xml" />
@@ -140,6 +152,7 @@
      <None Include="Assets\Resources\Models\Tiles\Shaostoul\Ceiling\Tile_Ceiling_Colony_002\Tile_Ceiling_Colony_002.xml" />
      <None Include="Assets\Resources\Models\Tiles\Shaostoul\Ceiling\Tile_Ceiling_Colony_000\Tile_Ceiling_Colony_000.xml" />
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
+     <None Include="Assets\VFXToolbox\ImageSequencer\CustomMaterialShaders\LightNormals.shader" />
      <None Include="Assets\Resources\Models\Tiles\Shaostoul\Ceiling\Tile_Ceiling_Colony_004\Tile_Ceiling_Colony_004.xml" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Masking.shader" />
      <None Include="Assets\Resources\Models\Tiles\Shaostoul\Floor\Tile_Floor_Colony_000\Tile_Floor_Colony_000.xml" />
@@ -151,6 +164,7 @@
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Mobile.shader" />
      <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile.shader" />
+     <None Include="Assets\VFXToolbox\ImageSequencer\CustomMaterialShaders\Negative.shader" />
      <None Include="Assets\Resources\Models\Tiles\Shaostoul\Ceiling\Tile_Ceiling_Colony_001\Tile_Ceiling_Colony_001.xml" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Sprite.shader" />
  <Reference Include="Unity.Timeline.Editor">

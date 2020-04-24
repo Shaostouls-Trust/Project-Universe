@@ -92,7 +92,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MS:
-        m_Texture: {fileID: 2800000, guid: d4af65827d3da954989d1fceefc1c886, type: 3}
+        m_Texture: {fileID: 2800000, guid: 748b6e6c278cbdd4896807245173ebcb, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -141,7 +141,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - Vector1_85AC8AF6: 0
-    - Vector1_8C898A51: -0.0025
+    - Vector1_8C898A51: -0.0005
     - Vector1_A4078F02: 0
     - Vector1_BDA4AE9A: 0
     - _AORemapMax: 1
@@ -188,7 +188,7 @@ Material:
     - _DoubleSidedEnable: 0
     - _DoubleSidedNormalMode: 1
     - _DstBlend: 0
-    - _EI: 1000000
+    - _EI: 200000
     - _EmissiveColorMode: 1
     - _EmissiveExposureWeight: 1
     - _EmissiveIntensity: 1
