@@ -92,7 +92,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MS:
-        m_Texture: {fileID: 2800000, guid: 452519d4dc404ae4fbd665d0aa423bf7, type: 3}
+        m_Texture: {fileID: 2800000, guid: 619505d69f7d8634fbb3ba4b8392de5b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -141,8 +141,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - Vector1_85AC8AF6: 0
-    - Vector1_8C898A51: -0.0015
-    - Vector1_A4078F02: 1
+    - Vector1_8C898A51: -0.00015
+    - Vector1_A4078F02: 0
     - Vector1_BDA4AE9A: 0
     - _AORemapMax: 1
     - _AORemapMin: 0
@@ -293,6 +293,7 @@ Material:
     - _UVDetailsMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []
 --- !u!114 &475504023494835017
 MonoBehaviour:
   m_ObjectHideFlags: 11
