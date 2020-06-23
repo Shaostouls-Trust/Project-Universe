@@ -8,6 +8,7 @@ public class ICable
 	public IGenerator gen;
 	public IRouter route;
 	public IRoutingSubstation subst;
+	public IBreakerBox breaker;
 	public IMachine mach;
 
 	private float requestedEnergy;
@@ -34,7 +35,7 @@ public class ICable
 		maxHeatCap = 2400f;
 	}
 
-	//power from router to machine
+	//power from substation to machine
 	public ICable(IRoutingSubstation substation, IMachine machine)
     {
 		mach = machine;
@@ -43,18 +44,39 @@ public class ICable
 		maxHeatCap = 1200f;
 	}
 
+	//power from substation to breaker box
+	public ICable(IRoutingSubstation substation, IBreakerBox brBox)
+    {
+		subst = substation;
+		breaker = brBox;
+		maximumThroughput = 120;//LV low (goal is 50 2u lights/kiosks 30 4u) per box)
+		maxHeatCap = 400f;
+    }
+
+	//power from breaker box to machine
+	public ICable(IBreakerBox brBox, IMachine machine)
+    {
+		breaker = brBox;
+		mach = machine;
+		maximumThroughput = 5;//EVL low
+		maxHeatCap = 24f;
+    }
+
 	//get power passed in
 	public void transferIn(float powerin, int type)
     {
+		//Debug.Log(powerin+" of type "+type);
         //check capacity, loss over distance, etc.
 		//if over throughput limit, begin generating heat
         if (powerin > maximumThroughput)
         {
 			float overcap = powerin - maximumThroughput;
 			heatAmount += overcap * .01f;//100 seconds at 10+, 60 fps, 1200f max (*.02f).
+			heatAmount = (float)Math.Round(heatAmount, 3);
+			//overcap will cause sparks
 			Debug.Log("heat: "+heatAmount+"/"+maxHeatCap);
         }
-		else if(powerin <= maximumThroughput * Time.deltaTime)
+		else if(powerin <= maximumThroughput)
         {
 			heatAmount -= 0.1f * Time.deltaTime; //cooldown in 200 seconds from 1200f max, 60fps
         }
@@ -73,7 +95,8 @@ public class ICable
 	//pass power to the machine/router/etc requesting said power.
 	private void transferOut(float powerOut, int type)
     {
-        switch (type)
+		ICable cable = this;
+		switch (type)
         {
 			case 1:
 				//transfer to a router
@@ -85,10 +108,19 @@ public class ICable
 				break;
 			case 3:
 				//transfering to a machine
-				ICable cable = this;
+				cable = this;
 				mach.receiveEnergyAmount(powerOut, ref cable);
 				break;
-        }
+			case 4:
+				//transfer to breakerBox
+				breaker.receivePowerFromSubstation(powerOut);
+				break;
+			case 5:
+				//transfering to a machine
+				cable = this;
+				mach.receiveEnergyAmount(powerOut, ref cable);
+				break;
+		}
 
     }
 
@@ -123,6 +155,18 @@ public class ICable
                 {
 					return true;
 				}
+				break;
+			case 4:
+				if (subst != null && breaker != null)
+                {
+					return true;
+                }
+				break;
+			case 5:
+				if (breaker != null && mach != null)
+                {
+					return true;
+                }
 				break;
         }
 		return false;

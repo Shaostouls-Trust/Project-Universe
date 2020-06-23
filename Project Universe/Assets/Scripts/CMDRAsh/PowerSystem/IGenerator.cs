@@ -10,12 +10,13 @@ public class IGenerator : MonoBehaviour
     [SerializeField]
     private int generatorLevel;
     public string powerGrid;//grid that this generator is part of
+    [SerializeField]
     private float outputCurrent;//duh
     [SerializeField]
     private IRouter[] routers;
     private Guid guid;
     private LinkedList<ICable> iCableDLL = new LinkedList<ICable>();
-    public float[] requestedRouterPower;
+    private float[] requestedRouterPower;
 
     // Start is called before the first frame update
     void Start()
@@ -68,9 +69,10 @@ public class IGenerator : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Output MAX!");
+                    //Debug.Log("Output MAX!");
                     //Debug.Log("Request is "+requestedRouterPower[itteration]+" and current output is "+outputCurrent);
                     cable.transferIn((outputMax - outputCurrent), 1);
+                    outputCurrent = outputMax;
                 }
             }
             else if((routers.Length - generatorLevel) <= 0)

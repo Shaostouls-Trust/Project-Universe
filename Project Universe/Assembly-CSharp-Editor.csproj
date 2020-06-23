@@ -56,6 +56,8 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\KhorneSyrup\Editor\ProceduralCylinderGen.cs" />
+     <Compile Include="Assets\SplineMesh\Scripts\Editor\SplineEditor.cs" />
+     <Compile Include="Assets\SplineMesh\Scripts\Editor\SplineExtrusionEditor.cs" />
      <Compile Include="Assets\TutorialInfo\Scripts\Editor\ReadmeEditor.cs" />
  <Reference Include="UnityEditor.TestRunner">
  <HintPath>F:/GIT/Project-Universe/Project Universe/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>

@@ -54,6 +54,18 @@ public class IRouter : MonoBehaviour
             requestedPower[i] = uniqueRouterAmount;
             totalRequiredPower += uniqueRouterAmount;
         }
+        //power will be divided equally among linked substations.
+        if (totalRequiredPower > bufferCurrent)
+        {
+            float defecit = totalRequiredPower - bufferCurrent;
+            float defecitVbreaker = defecit / totalRequiredPower;
+            for (int j = 0; j < subRouters.Length; j++)
+            {
+                //subtract the amount to reduce (a percent of the requested amount)
+                requestedPower[j] -= (requestedPower[j] * defecitVbreaker);
+                requestedPower[j] = (float)Math.Round(requestedPower[j], 3);
+            }
+        }
         //Debug.Log("Total Required: " + totalRequiredPower);
         //send it through to substations
         int itteration = 0;
@@ -69,7 +81,6 @@ public class IRouter : MonoBehaviour
                 }
                 else if (bufferCurrent - requestedPower[itteration] < 0)
                 {
-                    //Debug.Log("Power Shortage In Router!");
                     //or transfer all that remains in the buffer
                     cable.transferIn(bufferCurrent, 2);
                     bufferCurrent = 0f;
