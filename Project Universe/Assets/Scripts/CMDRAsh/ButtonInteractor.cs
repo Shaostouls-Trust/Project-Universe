@@ -11,12 +11,6 @@ using UnityEngine;
 
 public class ButtonInteractor : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -27,15 +21,25 @@ public class ButtonInteractor : MonoBehaviour
         if(Physics.Raycast(transform.position,forward,out hit, 1.0f))
         {
             //Debug.Log("Work, dang you!");
+            //bad collision detection? Shutter detection is unreliable, though it is the same exact code for doors.
             if(hit.collider.gameObject.tag == "Button3D")
             {
+                //Debug.Log("Work you piece of dung!");
                 if (Input.GetKeyDown("e"))
                 {
                     //handle the pressing of the button
-                    Debug.Log("Pressed");
+                    Debug.Log("External Call");
                     //Need to put on switch later
                     var script = hit.collider.gameObject.GetComponent<WSButton1>();
-                    script.externalInteractFunc();
+                    var script2 = hit.collider.gameObject.GetComponent<WSButton2>();
+                    if (script != null)
+                    {
+                        script.externalInteractFunc();
+                    }
+                    else if(script2 != null)
+                    {
+                        script2.externalInteractFunc();
+                    }
                 }
             }
         }

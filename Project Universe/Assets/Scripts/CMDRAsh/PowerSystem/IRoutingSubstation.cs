@@ -32,13 +32,19 @@ public class IRoutingSubstation : MonoBehaviour
         //create a cable between substation and machine/s
         for(int i = 0; i < targetMachine.Length; i++)
         {
-            ICable cable = new ICable(this, targetMachine[i]);
-            iCableDLL.AddLast(cable);
+            if (targetMachine[i] != null)
+            {
+                ICable cable = new ICable(this, targetMachine[i]);
+                iCableDLL.AddLast(cable);
+            }
         }
         for(int i = 0; i < targetBreakers.Length; i++)
         {
-            ICable cable = new ICable(this, targetBreakers[i]);
-            iCableDLL.AddLast(cable);
+            if (targetBreakers[i] != null)
+            {
+                ICable cable = new ICable(this, targetBreakers[i]);
+                iCableDLL.AddLast(cable);
+            }
         }
     }
 
@@ -55,26 +61,31 @@ public class IRoutingSubstation : MonoBehaviour
         //get connected machines' requested power.
         for(int i = 0; i < targetMachine.Length; i++)
         {
-            float uniqueMachineAmount;
-            //power required by a machine.
-            uniqueMachineAmount = targetMachine[i].requestedEnergyAmount(ref numSuppliers);
-            //Power is tracked per machine
-            requestedPower[i] = uniqueMachineAmount;
-            totalRequiredPower += uniqueMachineAmount;
-            totalMachineReq += uniqueMachineAmount;
+            if (targetMachine[i] != null)
+            {
+                float uniqueMachineAmount;
+                //power required by a machine.
+                uniqueMachineAmount = targetMachine[i].requestedEnergyAmount(ref numSuppliers);
+                //Power is tracked per machine
+                requestedPower[i] = uniqueMachineAmount;
+                totalRequiredPower += uniqueMachineAmount;
+                totalMachineReq += uniqueMachineAmount;
+            }
         }
         //repeat above for breakers
         //start at the index targetMachine stopped at
         int target = targetMachine.Length + targetBreakers.Length;
         for(int i = targetMachine.Length; i < target; i++)
         {
-            float uniqueMachineAmount;
-            uniqueMachineAmount = targetBreakers[i-targetMachine.Length].getTotalRequiredPower();
-            requestedPower[i] = uniqueMachineAmount;
-            totalRequiredPower += uniqueMachineAmount;
-            totalBreakerReq += uniqueMachineAmount;
+            if (targetBreakers[i - targetMachine.Length] != null)
+            {
+                float uniqueMachineAmount;
+                uniqueMachineAmount = targetBreakers[i - targetMachine.Length].getTotalRequiredPower();
+                requestedPower[i] = uniqueMachineAmount;
+                totalRequiredPower += uniqueMachineAmount;
+                totalBreakerReq += uniqueMachineAmount;
+            }
         }
-        
         //power will be divided equally among linked machines, sacrificing breaker power by as much as 75% in case of defecit.
         //ignore this division block if the substation buffer is empty
         if (bufferCurrent > 0) {
@@ -89,20 +100,26 @@ public class IRoutingSubstation : MonoBehaviour
                 {
                     for (int j = targetMachine.Length; j < target; j++)
                     {
-                        //subtract the amount to reduce (a percent of the requested amount)
-                        requestedPower[j] -= (requestedPower[j] * defecitVbreaker);
-                        requestedPower[j] = (float)Math.Round(requestedPower[j], 3);
-                        //Debug.Log(this + " breaker power after deficit adjustment " + requestedPower[j]);
+                        if (targetMachine[j] != null)
+                        {
+                            //subtract the amount to reduce (a percent of the requested amount)
+                            requestedPower[j] -= (requestedPower[j] * defecitVbreaker);
+                            requestedPower[j] = (float)Math.Round(requestedPower[j], 3);
+                            //Debug.Log(this + " breaker power after deficit adjustment " + requestedPower[j]);
+                        }
                     }
                 }
                 else//assume defecit is greater than 75% the breaker requirement
                 {
                     for (int j = targetMachine.Length; j < target; j++)
                     {
-                        //we've cut off 75% of the breaker draw. Hence only 25% required
-                        requestedPower[j] *= 0.25f;
-                        requestedPower[j] = (float)Math.Round(requestedPower[j], 3);
-                        //Debug.Log(this + " breaker power after deficit adjustment " + requestedPower[j]);
+                        if (targetMachine[j] != null)
+                        {
+                            //we've cut off 75% of the breaker draw. Hence only 25% required
+                            requestedPower[j] *= 0.25f;
+                            requestedPower[j] = (float)Math.Round(requestedPower[j], 3);
+                            //Debug.Log(this + " breaker power after deficit adjustment " + requestedPower[j]);
+                        }
                     }
                     totalBreakerReq *= 0.25f;
                     //get the new power requirement.
@@ -113,14 +130,16 @@ public class IRoutingSubstation : MonoBehaviour
                     float machinePercentCut = deficit / newRequiredPower;//this includes the breaker's 25%
                     for (int j = 0; j < targetMachine.Length; j++)
                     {
-                        requestedPower[j] -= (requestedPower[j] * machinePercentCut);
-                        requestedPower[j] = (float)Math.Round(requestedPower[j], 3);
-                        //Debug.Log(this + " power after deficit adjustment " + requestedPower[j]);
+                        if (targetMachine[j] != null)
+                        {
+                            requestedPower[j] -= (requestedPower[j] * machinePercentCut);
+                            requestedPower[j] = (float)Math.Round(requestedPower[j], 3);
+                            //Debug.Log(this + " power after deficit adjustment " + requestedPower[j]);
+                        }
                     }
                 }
             }
         }
-        
         //transfer power to the linking cable.
         int itteration = 0;
         foreach (ICable cable in iCableDLL)

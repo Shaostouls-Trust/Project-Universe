@@ -82,7 +82,7 @@ public class IMachine : MonoBehaviour
             {
                 if (bufferCurrent >= requiredEnergy * 0.75f)//75% power
                 {
-                    runMachineSelector(machineType, 1);
+                    runMachineSelector(machineType, 1); //any slower locks emiss to blinking yellow.
                 }
                 else if (bufferCurrent >= requiredEnergy * 0.5f)//no lower than 50%
                 {
@@ -166,31 +166,29 @@ public class IMachine : MonoBehaviour
 
     public void runMachineDoor(int powerLevel)//reference attached animation controller script
     {
-        var powerControl = this.GetComponent<DoorAnimator>();
-        var speedControl = this.GetComponent<DoorAnimator>();
-        //access the "Door Animator" script and toggle the control variable
-        //TODO
+        var control = this.GetComponent<DoorAnimator>();
+
         switch (powerLevel)
         {
             case 0:
-                powerControl.setPoweredState(true);
-                speedControl.setAnimSpeed(1.0f);//NYI
+                control.setPoweredState(true);
+                control.setAnimSpeed(1.0f);
                 break;
             case 1:
-                powerControl.setPoweredState(true);
-                speedControl.setAnimSpeed(0.75f);//NYI
+                control.setPoweredState(true);
+                control.setAnimSpeed(0.75f);
                 break;
             case 2:
-                powerControl.setPoweredState(true);
-                speedControl.setAnimSpeed(0.5f);//NYI
+                control.setPoweredState(true);
+                control.setAnimSpeed(0.5f);
                 break;
             case 3:
-                powerControl.setPoweredState(true);
-                speedControl.setAnimSpeed(0.15f);//NYI
+                control.setPoweredState(true);
+                control.setAnimSpeed(0.15f);
                 break;
             case 4:
-                powerControl.setPoweredState(false);
-                speedControl.setAnimSpeed(0.0f);//NYI  
+                control.setPoweredState(false);
+                control.setAnimSpeed(0.0f);
                 break;
         }
     }

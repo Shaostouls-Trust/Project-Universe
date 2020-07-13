@@ -7,7 +7,9 @@ public class WSButton1 : MonoBehaviour
 
     private MeshRenderer renderer;
     [SerializeField]
-    private GameObject door;
+    private GameObject scriptedObj;
+    [SerializeField]
+    private string type;
 
     // Start is called before the first frame update
     void Start()
@@ -27,14 +29,33 @@ public class WSButton1 : MonoBehaviour
     /// </summary>
     public void externalInteractFunc()
     {
+        switch (type)
+        {
+            case "shutter":
+                shutterButton();
+                Debug.Log("shutter");
+                break;
+
+            case "door": 
+                doorButtonOverride(); 
+                Debug.Log("door"); 
+                break;
+            
+        }
         //Debug.Log("Handshake");
-        doorButtonOverride();
+        
     }
 
     //close and lock door, or unlock if locked.
     public void doorButtonOverride()
     {
-        door.GetComponentInChildren<DoorAnimator>().buttonResponse();
+        scriptedObj.GetComponentInChildren<DoorAnimator>().buttonResponse();
+    }
+
+    public void shutterButton()
+    {
+        //Debug.Log("nya nya");
+        scriptedObj.GetComponentInChildren<ShutterAnimator>().buttonResponse();
     }
 
     void OnMouseOver()
