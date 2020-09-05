@@ -500,11 +500,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 0
   m_AdvancedMode: 0
-  indirectSpecularIntensity:
+  indirectDiffuseIntensity:
     m_OverrideState: 0
     m_Value: 1
     min: 0
-  indirectDiffuseIntensity:
+  indirectDiffuseLightingLayers:
+    m_OverrideState: 0
+    m_Value: 255
+  reflectionLightingMultiplier:
+    m_OverrideState: 0
+    m_Value: 1
+    min: 0
+  reflectionLightingLayers:
+    m_OverrideState: 0
+    m_Value: 255
+  indirectSpecularIntensity:
     m_OverrideState: 0
     m_Value: 1
     min: 0

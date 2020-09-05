@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Definitions>
+	<TileGroup>
+		<!--Floor Tiles-->
+		<ID TypeValue="125" />
+		<Definition>
+			<SubType>1</SubType>
+			<Name>ShipFloorA</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\ShipFloorA" />
+		</Definition>
+	</TileGroup>
+	<TileGroup>
+		<!--Floor Tiles-->
+		<ID TypeValue="254" />
+		<Definition>
+			<SubType>255</SubType>
+			<Name>DevFloor0</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\DevBuilding2\DevFloor0" />
+		</Definition>
+	</TileGroup>
+</Definitions>

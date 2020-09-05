@@ -40,7 +40,10 @@ public class WSButton1 : MonoBehaviour
                 doorButtonOverride(); 
                 Debug.Log("door"); 
                 break;
-            
+
+            case "Func0001_Generator":
+                func0001_Generator();
+                break;
         }
         //Debug.Log("Handshake");
         
@@ -56,6 +59,11 @@ public class WSButton1 : MonoBehaviour
     {
         //Debug.Log("nya nya");
         scriptedObj.GetComponentInChildren<ShutterAnimator>().buttonResponse();
+    }
+
+    public void func0001_Generator()
+    {
+        scriptedObj.GetComponentInChildren<PixelMap_Interpreter>().ButtonResponse();
     }
 
     void OnMouseOver()

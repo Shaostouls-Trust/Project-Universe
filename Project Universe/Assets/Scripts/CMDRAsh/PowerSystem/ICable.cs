@@ -17,13 +17,18 @@ public class ICable
 	private float maxHeatCap;
 	private float heatAmount;
 
-	//carry power from generator to router
+	private int activeLegs; //number of legs transmitting
+	private int maxActiveLegs; //number of legs in cable
+	//public ILeg[] cableLegs; //leg array
+
+	//carry power from generator to a single router
 	public ICable(IGenerator generator, IRouter router)
 	{
 		route = router;
 		gen = generator;
-		maximumThroughput = 1080;//HV max
-		maxHeatCap = 5400f;
+		maximumThroughput = 4320;//EHV max
+		maxHeatCap = 14400f;
+		maxActiveLegs = 3;
 	}
 
 	//carry power from router to a substation
@@ -31,8 +36,9 @@ public class ICable
     {
 		subst = substation;
 		route = router;
-		maximumThroughput = 720;//MVmin + 360 (enough for 6 at 120)
-		maxHeatCap = 2400f;
+		maximumThroughput = 1080;//MVmin + 360 (enough for 6 at 120)
+		maxHeatCap = 3600f;
+		maxActiveLegs = 3;
 	}
 
 	//power from substation to machine
@@ -42,6 +48,7 @@ public class ICable
 		subst = substation;
 		maximumThroughput = 360;//LVmax
 		maxHeatCap = 1200f;
+		maxActiveLegs = 3;
 	}
 
 	//power from substation to breaker box
@@ -49,9 +56,10 @@ public class ICable
     {
 		subst = substation;
 		breaker = brBox;
-		maximumThroughput = 120;//LV low (goal is 50 2u lights/kiosks 30 4u) per box)
+		maximumThroughput = 120;//LV low
 		maxHeatCap = 400f;
-    }
+		maxActiveLegs = 1;
+	}
 
 	//power from breaker box to machine
 	public ICable(IBreakerBox brBox, IMachine machine)
@@ -59,66 +67,77 @@ public class ICable
 		breaker = brBox;
 		mach = machine;
 		maximumThroughput = 5;//EVL low
-		maxHeatCap = 24f;
-    }
+		maxHeatCap = 15f;
+		maxActiveLegs = 1;
+	}
 
 	//get power passed in
-	public void transferIn(float powerin, int type)
+	public void transferIn(int legCount, float[] powerinPerLeg, int type)
     {
-		//Debug.Log(powerin+" of type "+type);
-        //check capacity, loss over distance, etc.
-		//if over throughput limit, begin generating heat
-        if (powerin > maximumThroughput)
+		float powerinTotal = 0f;
+		foreach(float amt in powerinPerLeg)
         {
-			float overcap = powerin - maximumThroughput;
+			powerinTotal += amt;
+        }
+		//Debug.Log("power total: "+powerinTotal);
+        //check capacity.
+		//if over throughput limit, begin generating heat
+        if (powerinTotal > maximumThroughput)
+        {
+			float overcap = powerinTotal - maximumThroughput;
 			heatAmount += overcap * .01f;//100 seconds at 10+, 60 fps, 1200f max (*.02f).
 			heatAmount = (float)Math.Round(heatAmount, 3);
 			//overcap will cause sparks
-			Debug.Log("heat: "+heatAmount+"/"+maxHeatCap);
+			//Debug.Log("heat: "+heatAmount+"/"+maxHeatCap);
         }
-		else if(powerin <= maximumThroughput)
+		else if(powerinTotal <= maximumThroughput)
         {
 			heatAmount -= 0.1f * Time.deltaTime; //cooldown in 200 seconds from 1200f max, 60fps
         }
-		if(heatAmount > maxHeatCap)
-        {
+		if (heatAmount > maxHeatCap)
+		{
 			//cable melts, later this will interact with surrounding objects
 			//for now, just set energy transfer to 0
-			transferOut(0f, type);
+			transferOut(0, new float[]{}, type);
         }
         else
         {
-			transferOut(powerin, type);
+			transferOut(legCount, powerinPerLeg, type);
         }
     }
 
 	//pass power to the machine/router/etc requesting said power.
-	private void transferOut(float powerOut, int type)
+	private void transferOut(int legCount, float[] powerOutPerLeg, int type)
     {
 		ICable cable = this;
 		switch (type)
         {
 			case 1:
+				//Debug.Log(powerOutPerLeg[0]+" "+powerOutPerLeg[1]+" "+powerOutPerLeg[1]+" to a router.");
 				//transfer to a router
-				route.receivePowerFromGenerator(powerOut);
+				route.receivePowerFromGenerator(legCount, powerOutPerLeg);
 				break;
 			case 2:
+				//Debug.Log(powerOutPerLeg[0] + " " + powerOutPerLeg[1] + " " + powerOutPerLeg[2] + " to a substation.");
 				//transfering to a substation
-				subst.receivePowerFromRouter(powerOut);
+				subst.receivePowerFromRouter(legCount, powerOutPerLeg);
 				break;
 			case 3:
+				//Debug.Log(powerOutPerLeg[0] + " " + powerOutPerLeg[1] + " " + powerOutPerLeg[2] + " to a machine.");
 				//transfering to a machine
 				cable = this;
-				mach.receiveEnergyAmount(powerOut, ref cable);
+				mach.receiveEnergyAmount(legCount, powerOutPerLeg, ref cable);
 				break;
 			case 4:
+				//Debug.Log(powerOutPerLeg[0] + " " + powerOutPerLeg[1] + " to a breaker.");
 				//transfer to breakerBox
-				breaker.receivePowerFromSubstation(powerOut);
+				breaker.receivePowerFromSubstation(legCount, powerOutPerLeg);
 				break;
 			case 5:
+				//Debug.Log(powerOutPerLeg[0] + " to a machine.");
 				//transfering to a machine
 				cable = this;
-				mach.receiveEnergyAmount(powerOut, ref cable);
+				mach.receiveEnergyAmount(legCount, powerOutPerLeg, ref cable);
 				break;
 		}
 
@@ -133,7 +152,7 @@ public class ICable
 		return requestedEnergy;
     }
 
-	//type 1 = generator to router; 2 = router to substation; 3 = subst to machine
+	//type 1 = generator to router; 2 = router to substation; 3 = subst to machine; 4 = subst to breakear; 5 = breaker to machine
 	public Boolean checkConnection(int type)
     {
         switch (type)

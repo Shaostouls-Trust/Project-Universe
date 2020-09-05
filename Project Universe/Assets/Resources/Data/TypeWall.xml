@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Definitions>
+	<TileGroup>
+		<!--Straight Wall-->
+		<ID TypeValue="0" />
+		<Definition>
+			<SubType>1</SubType>
+			<Name>Wall_PanelA</Name>
+			<Components>
+				<Component Name="MeshCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\Wall_PanelA" />
+		</Definition>
+		<Definition>
+			<SubType>2</SubType>
+			<Name>Wall_500AdapterB</Name>
+			<Components>
+				<Component Name="MeshCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\Wall Set B\Wall_500AdapterB" />
+		</Definition>
+		<Definition>
+			<SubType>3</SubType>
+			<Name>Wall_500StraightInsetB_A</Name>
+			<Components>
+				<Component Name="MeshCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\Wall Set B\Wall_500StraightInsetB_A" />
+		</Definition>
+		<Definition>
+			<SubType>4</SubType>
+			<Name>Wall_500StraightInsetB_B</Name>
+			<Components>
+				<Component Name="MeshCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\Wall Set B\Wall_500StraightInsetB_B" />
+		</Definition>
+		<Definition>
+			<SubType>5</SubType>
+			<Name>Wall_StraightB_CArch</Name>
+			<Components>
+				<Component Name="MeshCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\Wall Set B\Wall_StraightB_CArch" />
+		</Definition>
+		<Definition>
+			<SubType>6</SubType>
+			<Name>Wall_StraightB_CPost</Name>
+			<Components>
+				<Component Name="MeshCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\Wall Set B\Wall_StraightB_CPost" />
+		</Definition>
+		<Definition>
+			<SubType>7</SubType>
+			<Name>Wall_StraightB_D</Name>
+			<Components>
+				<Component Name="MeshCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\Wall Set B\Wall_StraightB_D" />
+		</Definition>
+	</TileGroup>
+	<TileGroup>
+		<!--Inside Corner Wall-->
+		<ID TypeValue="50" />
+		<Definition>
+			<SubType>1</SubType>
+			<Name>Wall_CornerA</Name>
+			<Components>
+				<Component Name="MeshCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\Wall_CornerA" />
+		</Definition>
+		<Definition>
+			<SubType>2</SubType>
+			<Name>Wall_500CornerInsetB_A</Name>
+			<Components>
+				<Component Name="MeshCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\Wall Set B\Wall_500CornerInsetB_A" />
+		</Definition>
+		<Definition>
+			<SubType>3</SubType>
+			<Name>Wall_CornerB_D</Name>
+			<Components>
+				<Component Name="MeshCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\Wall Set B\Wall_CornerB_D" />
+		</Definition>
+	</TileGroup>
+	<TileGroup>
+		<!--Full 1m Wall-->
+		<ID TypeValue="75" />
+		<Definition>
+			<SubType>1</SubType>
+			<Name>DevWallFull</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\DevBuilding2\DevWallFull" />
+		</Definition>
+	</TileGroup>
+	<TileGroup>
+		<!--Outside Corner Wall-->
+		<ID TypeValue="100" />
+		<Definition>
+			<SubType>1</SubType>
+			<Name>Wall_InvertedCornerA</Name>
+			<Components>
+				<Component Name="MeshCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\Wall_InvertedCornerA" />
+		</Definition>
+	</TileGroup>
+</Definitions>

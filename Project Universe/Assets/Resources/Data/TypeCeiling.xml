@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Definitions>
+	<TileGroup>
+		<!--Ceilings-->
+		<ID TypeValue="150" />
+		<Definition>
+			<SubType>1</SubType>
+			<Name>ShipCeilingA</Name>
+			<!--Component tracker (for verification purposes)-->
+			<Components>
+				<Component Name="MeshCollider" />
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\ShipCeilingA" />
+		</Definition>
+	</TileGroup>
+</Definitions>

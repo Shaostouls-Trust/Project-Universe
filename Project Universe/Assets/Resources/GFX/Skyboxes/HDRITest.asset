@@ -27,7 +27,7 @@ MonoBehaviour:
     m_Value: 0
   multiplier:
     m_OverrideState: 1
-    m_Value: 0.002
+    m_Value: 0.0016666667
     min: 0
   upperHemisphereLuxValue:
     m_OverrideState: 0
@@ -258,13 +258,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 1
   m_AdvancedMode: 0
-  indirectSpecularIntensity:
-    m_OverrideState: 1
-    m_Value: 0.5
-    min: 0
   indirectDiffuseIntensity:
     m_OverrideState: 1
     m_Value: 0.25
+    min: 0
+  indirectDiffuseLightingLayers:
+    m_OverrideState: 0
+    m_Value: 255
+  reflectionLightingMultiplier:
+    m_OverrideState: 0
+    m_Value: 1
+    min: 0
+  reflectionLightingLayers:
+    m_OverrideState: 0
+    m_Value: 255
+  indirectSpecularIntensity:
+    m_OverrideState: 1
+    m_Value: 0.5
     min: 0
 --- !u!114 &11400000
 MonoBehaviour:

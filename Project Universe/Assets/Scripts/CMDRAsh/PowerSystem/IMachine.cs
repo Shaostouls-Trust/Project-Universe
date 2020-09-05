@@ -32,6 +32,13 @@ public class IMachine : MonoBehaviour
     public Transform transform;
     public GameObject screenObject;
     public Light lightComponent;
+    public float maxLightIntensity;
+    public float maxLightRange;
+
+    //power legs update
+    [SerializeField]
+    private int legsRequired;
+    private int legsReceived;
 
     // Start is called before the first frame update
     void Start()
@@ -42,10 +49,8 @@ public class IMachine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //reset requestedEnergy and drawToFill
+        //reset requestedEnergy
         requestedEnergy = requiredEnergy;
-        //drawToFill = requiredEnergy;
-
         //Recalculate drawToFill based on draw percent
         float floatDrawToFill = (float)percentDrawToFill;
         drawToFill = requiredEnergy + (requiredEnergy * (floatDrawToFill / 100)); //105% or 110% draw
@@ -54,16 +59,16 @@ public class IMachine : MonoBehaviour
         {
             //Get the deficit between the energybuffer(max) and the current buffer amount
             float deficit = energyBuffer - bufferCurrent;
-            if(deficit >= (drawToFill - requiredEnergy))
+            if (deficit >= (drawToFill - requiredEnergy))
             {
                 requestedEnergy = drawToFill;
             }
-            else if(deficit < (drawToFill - requiredEnergy))
+            else if (deficit < (drawToFill - requiredEnergy))
             {
                 requestedEnergy = deficit + requiredEnergy;
             }
         }
-        else if(bufferCurrent >= energyBuffer)
+        else if (bufferCurrent >= energyBuffer)
         {
             requestedEnergy = requiredEnergy;
             //trim off excess power. Buffers cannot overcharge
@@ -76,36 +81,55 @@ public class IMachine : MonoBehaviour
         ///////////////////////////////////////
         //Run logic
         ///////////////////////////////////////
-        if (bufferCurrent > 0f)
+        if (legsReceived == legsRequired)
         {
-            if (bufferCurrent - requiredEnergy < 0.0f)//not enough power to run at full
+            if (bufferCurrent > 0f)
             {
-                if (bufferCurrent >= requiredEnergy * 0.75f)//75% power
+                if (bufferCurrent - requiredEnergy < 0.0f)//not enough power to run at full
                 {
-                    runMachineSelector(machineType, 1); //any slower locks emiss to blinking yellow.
+                    if (bufferCurrent >= requiredEnergy * 0.75f)//75% power
+                    {
+                        runMachineSelector(machineType, 1); //any slower locks emiss to blinking yellow.
+                    }
+                    else if (bufferCurrent >= requiredEnergy * 0.5f)//no lower than 50%
+                    {
+                        runMachineSelector(machineType, 2);
+                    }
+                    else//lower than 50%
+                    {
+                        runMachineSelector(machineType, 3);
+                    }
+                    //no matter what, the buffer is emptied
+                    bufferCurrent = 0.0f;
                 }
-                else if (bufferCurrent >= requiredEnergy * 0.5f)//no lower than 50%
+                else
                 {
-                    runMachineSelector(machineType, 2);
+                    //run full power
+                    runMachineSelector(machineType, 0);
+                    bufferCurrent -= requiredEnergy;
                 }
-                else//lower than 50%
-                {
-                    runMachineSelector(machineType, 3);
-                }
-                //no matter what, the buffer is emptied
-                bufferCurrent = 0.0f;
             }
             else
             {
-                //run full power
-                runMachineSelector(machineType, 0);
-                bufferCurrent -= requiredEnergy;
+                //'run' at 0 power
+                runMachineSelector(machineType, 4);
             }
+        }
+        else if (legsReceived < legsRequired && legsReceived >= 1)
+        {
+            //Shut down machine due to leg requirement
+            runMachineSelector(machineType, 4);
+            //electrical damage (if the buffer is not empty)
+            //if (bufferCurrent > 0)
+            //{
+                //NYI
+            //}
         }
         else
         {
-            //'run' at 0 power
+            //Shut down machine due to leg requirement
             runMachineSelector(machineType, 4);
+            //NO electrical damage, because no legs attached.
         }
     }
 
@@ -123,10 +147,17 @@ public class IMachine : MonoBehaviour
         }
     }
     
-    public void receiveEnergyAmount(float amount, ref ICable cable)
+    public void receiveEnergyAmount(int legCount, float[] amounts, ref ICable cable)
     {
-        bufferCurrent += amount;
-        //Debug.Log(this + " added " + amount + " to buffer, making buffer " + bufferCurrent);
+        //receive X legs with X amounts
+        for(int i = 0; i < legCount; i++)
+        {
+            bufferCurrent += amounts[i];
+        }
+        legsReceived = legCount;
+        //Debug.Log("machine has "+legsReceived+" legs");
+
+        //bufferCurrent += amount;
         //round buffer current to 3 places to avoid having a psychotic meltdown
         bufferCurrent = (float)Math.Round(bufferCurrent, 3);
         if (!iCableDLL.Contains(cable))
@@ -134,6 +165,13 @@ public class IMachine : MonoBehaviour
             iCableDLL.AddLast(cable);
         }
     }
+    //return the amount of legs needed by the machine, so that the substation will know
+    //how to divide the power.
+    public int getLegRequirement()
+    {
+        return legsRequired;
+    }
+
     //called on cable disconnect (NYI)
     public void removeCableConnection(ICable cable)
     {
@@ -167,7 +205,6 @@ public class IMachine : MonoBehaviour
     public void runMachineDoor(int powerLevel)//reference attached animation controller script
     {
         var control = this.GetComponent<DoorAnimator>();
-
         switch (powerLevel)
         {
             case 0:
@@ -191,6 +228,9 @@ public class IMachine : MonoBehaviour
                 control.setAnimSpeed(0.0f);
                 break;
         }
+        //temp override for ship construction sake
+        //control.setPoweredState(true);
+        //control.setAnimSpeed(1.0f);   
     }
 
     public void runMachineNormal(int powerLevel)
@@ -242,20 +282,20 @@ public class IMachine : MonoBehaviour
         switch (powerLevel)
         {
             case 0:
-                lightComponent.intensity = 1.0f;
-                lightComponent.range = 10.0f;
+                lightComponent.intensity = maxLightIntensity;
+                lightComponent.range = maxLightRange;
                 break;
             case 1:
-                lightComponent.intensity = 0.5f; //base is 1.0f
-                lightComponent.range = 8.0f; //was 10.0f
+                lightComponent.intensity = maxLightIntensity * 0.5f; //base is 1.0f
+                lightComponent.range = maxLightRange * 0.8f; //was 10.0f
                 break;
             case 2:
-                lightComponent.intensity = UnityEngine.Random.Range(0.3f, 0.4f);//0.4f; (.3 to .4)
-                lightComponent.range = UnityEngine.Random.Range(5.0f, 6.0f);//6.0f; (5.0 to 6.0)
+                lightComponent.intensity = maxLightIntensity * UnityEngine.Random.Range(0.3f, 0.4f);//0.4f; (.3 to .4)
+                lightComponent.range = maxLightRange * UnityEngine.Random.Range(.50f, .60f);//6.0f; (5.0 to 6.0)
                 break;
             case 3:
-                lightComponent.intensity = UnityEngine.Random.Range(0.05f, 0.15f);//0.1f; (.05 to .15)
-                lightComponent.range = UnityEngine.Random.Range(3.0f, 1.0f); //4.0f; (3.0 to 4.0f)
+                lightComponent.intensity = maxLightIntensity * UnityEngine.Random.Range(0.05f, 0.15f);//0.1f; (.05 to .15)
+                lightComponent.range = maxLightRange * UnityEngine.Random.Range(.30f, .10f); //4.0f; (3.0 to 4.0f)
                 break;
             case 4:
                 lightComponent.intensity = 0.0f;

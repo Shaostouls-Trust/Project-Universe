@@ -19,6 +19,10 @@ public class IBreakerBox : MonoBehaviour
     [SerializeField]
     private float bufferCurrent;
 
+    //power legs update
+    private int legsRequired = 2;
+    private int legsReceived;
+
     void Start()
     {
         energyBufferMax = 50.0f;//buffer is the size of 1-update draw?
@@ -36,6 +40,8 @@ public class IBreakerBox : MonoBehaviour
     void Update()
     {
         totalRequiredPower = 0f;
+        //get leg states - this will be for when we have a display that closes off certain legs.
+        //NYI
         requestedPower = new float[targetMachine.Length];
         int numSuppliers = 0;
         //get connected machines' requested power.
@@ -69,18 +75,29 @@ public class IBreakerBox : MonoBehaviour
         int itteration = 0;
         foreach (ICable cable in iCableDLL)
         {
+            //get machine's leg req
+            int machineLegReq = cable.mach.getLegRequirement();
+            //split power between legs
+            float[] powerAmount = new float[machineLegReq];
+            for (int l = 0; l < machineLegReq; l++)
+            {
+                powerAmount[l] = requestedPower[itteration] / machineLegReq;
+            }
             if (cable.checkConnection(5))//type is substation to machine linkage
             {
                 if (bufferCurrent - requestedPower[itteration] >= 0)
                 {
                     //transfer the uniquely requested amount to the machine
-                    cable.transferIn(requestedPower[itteration], 5);
+                    //cable.transferIn(requestedPower[itteration], 3);
+                    cable.transferIn(machineLegReq, powerAmount, 5);
                     bufferCurrent -= requestedPower[itteration];
                 }
                 else if (bufferCurrent - requestedPower[itteration] < 0)
                 {
+                    float[] tempfloat = new float[] { bufferCurrent / 3, bufferCurrent / 3, bufferCurrent / 3 };
                     //or transfer all that remains in the buffer
-                    cable.transferIn(bufferCurrent, 5);
+                    cable.transferIn(machineLegReq, tempfloat, 5);
+                    //cable.transferIn(bufferCurrent, 5);
                     bufferCurrent = 0f;
                 }
             }
@@ -88,9 +105,20 @@ public class IBreakerBox : MonoBehaviour
         }
     }
 
-    public void receivePowerFromSubstation(float power)
+    public int getLegRequirement()
     {
-        bufferCurrent += power;
+        return legsRequired;
+    }
+
+    public void receivePowerFromSubstation(int legCount, float[] amounts)
+    {
+        //receive X legs with X amounts
+        for (int i = 0; i < legCount; i++)
+        {
+            //Debug.Log(legCount);
+            bufferCurrent += amounts[i];
+        }
+        legsReceived = legCount;
         bufferCurrent = (float)Math.Round(bufferCurrent, 3);
     }
 

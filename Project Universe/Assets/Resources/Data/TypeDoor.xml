@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Definitions>
+	<TileGroup>
+		<!--Doors-->
+		<ID TypeValue="160" />
+		<Definition>
+			<SubType>1</SubType>
+			<Name>1x1_DoorA</Name>
+			<!--Component tracker (for verification purposes)-->
+			<Components>
+				<Component Name="BoxCollider"/>
+				<Component Name="MeshCollider"/>
+				<Component Name="DoorAnimator"/>
+				<Component Name="IMachine"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\DevBuilding2\1x1_DoorA" />
+		</Definition>
+		<Definition>
+			<SubType>2</SubType>
+			<Name>1x2_DoorA</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+				<Component Name="MeshCollider"/>
+				<Component Name="DoorAnimator"/>
+				<Component Name="IMachine"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\DevBuilding2\1x2_DoorA" />
+		</Definition>
+	</TileGroup>
+</Definitions>

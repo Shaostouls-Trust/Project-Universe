@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Definitions>
+	<TileGroup>
+		<!--Generators-->
+		<ID TypeValue="175" />
+		<Definition>
+			<SubType>1</SubType>
+			<Name>EnergyCapacitor_Large</Name>
+			<!--Component tracker (for verification purposes)-->
+			<Components>
+				<Component Name="MeshCollider"/>
+				<Component Name="IGenerator"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\DevBuilding2\EnergyCapacitor_Large" />
+		</Definition>
+	</TileGroup>
+	<TileGroup>
+		<!--Routers-->
+		<ID TypeValue="200" />
+		<Definition>
+			<SubType>1</SubType>
+			<Name>Router_Lvl1</Name>
+			<Components>
+				<Component Name="MeshCollider"/>
+				<Component Name="IRouter"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\DevBuilding2\Router_Lvl1" />
+		</Definition>
+	</TileGroup>
+	<TileGroup>
+		<!--Substations-->
+		<ID TypeValue="225" />
+		<Definition>
+			<SubType>2</SubType>
+			<Name>Router_SubstationBox</Name>
+			<Components>
+				<Component Name="MeshCollider"/>
+				<Component Name="IRoutingSubstation"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\DevBuilding2\Router_SubstationBox" />
+		</Definition>
+	</TileGroup>
+	<TileGroup>
+		<!--Breakers-->
+		<ID TypeValue="245" />
+		<Definition>
+			<SubType>3</SubType>
+			<Name>DummyBreakerBox</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+				<Component Name="IBreakerBox"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\Wall_InvertedCornerA\DummyBreakerBox" />
+		</Definition>
+	</TileGroup>
+</Definitions>
