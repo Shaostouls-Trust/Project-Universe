@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Registry>
+	<Archetype type = "BasicTile">
+		<Components>
+				<Component Name="Name" />
+				<Component Name="Translation" />
+				<Component Name="Mesh" />
+				<Component Name="Renderer" />
+				<Component Name="LocalToWorld" />
+				<Component Name="Collider" />
+				<Component Name="Material" />
+		</Components>
+	</Archetype>
+	<Archetype type = "ScriptedTile">
+		<Components>
+				<Component Name="Name" />
+				<Component Name="Translation" />
+				<Component Name="Mesh" />
+				<Component Name="Renderer" />
+				<Component Name="LocalToWorld" />
+				<Component Name="Collider" />
+				<Component Name="Material" />
+				<Component Name="Script" />
+		</Components>
+	</Archetype>
+	<Archetype type = "AnimatedTile">
+		<Components>
+				<Component Name="Name" />
+				<Component Name="Translation" />
+				<Component Name="Mesh" />
+				<Component Name="Renderer" />
+				<Component Name="LocalToWorld" />
+				<Component Name="Collider" />
+				<Component Name="Material" />
+				<Component Name="Script" />
+				<Component Name="Animation" />
+				<Component Name="Animator" />
+		</Components>
+	</Archetype>
+</Registry>

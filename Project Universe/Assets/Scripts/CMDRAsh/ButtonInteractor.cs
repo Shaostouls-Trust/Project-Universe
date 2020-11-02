@@ -14,7 +14,7 @@ public class ButtonInteractor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 forward = transform.TransformDirection(0f, 0f, 1f) * 10;
+        Vector3 forward = transform.TransformDirection(0f, 0f, 1f) * 1.0f;
         Debug.DrawRay(transform.position, forward, Color.green,1.0f);
         //if a 1m raycast hits an object collider
         RaycastHit hit;
@@ -32,6 +32,7 @@ public class ButtonInteractor : MonoBehaviour
                     //Need to put on switch later
                     var script = hit.collider.gameObject.GetComponent<WSButton1>();
                     var script2 = hit.collider.gameObject.GetComponent<WSButton2>();
+                    var script3 = hit.collider.gameObject.GetComponent<WSButton3>();
                     if (script != null)
                     {
                         script.externalInteractFunc();
@@ -39,6 +40,10 @@ public class ButtonInteractor : MonoBehaviour
                     else if(script2 != null)
                     {
                         script2.externalInteractFunc();
+                    }
+                    else if(script3 != null)
+                    {
+                        script3.externalInteractFunc();
                     }
                 }
             }

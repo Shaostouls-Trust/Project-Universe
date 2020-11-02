@@ -10,6 +10,7 @@ public class ICable
 	public IRoutingSubstation subst;
 	public IBreakerBox breaker;
 	public IMachine mach;
+	public ISubMachine subMach;
 
 	private float requestedEnergy;
 	private float maximumThroughput;
@@ -21,7 +22,7 @@ public class ICable
 	private int maxActiveLegs; //number of legs in cable
 	//public ILeg[] cableLegs; //leg array
 
-	//carry power from generator to a single router
+	//carry power from generator to a single router -- 500mm cable
 	public ICable(IGenerator generator, IRouter router)
 	{
 		route = router;
@@ -31,7 +32,7 @@ public class ICable
 		maxActiveLegs = 3;
 	}
 
-	//carry power from router to a substation
+	//carry power from router to a substation -- 250mm cable
 	public ICable(IRouter router, IRoutingSubstation substation)
     {
 		subst = substation;
@@ -41,34 +42,34 @@ public class ICable
 		maxActiveLegs = 3;
 	}
 
-	//power from substation to machine
+	//power from substation to machine -- 150mm cable
 	public ICable(IRoutingSubstation substation, IMachine machine)
     {
 		mach = machine;
 		subst = substation;
-		maximumThroughput = 360;//LVmax
+		maximumThroughput = 360;//LVmax (one heavy machine)
 		maxHeatCap = 1200f;
 		maxActiveLegs = 3;
 	}
 
-	//power from substation to breaker box
+	//power from substation to breaker box -- 100mm cable
 	public ICable(IRoutingSubstation substation, IBreakerBox brBox)
     {
 		subst = substation;
 		breaker = brBox;
-		maximumThroughput = 120;//LV low
-		maxHeatCap = 400f;
-		maxActiveLegs = 1;
+		maximumThroughput = 180;//LV low + 60 (30 connections. 30 lights is 60. 12 doors is 180. Ideal is 10 doors (150) + 15 lights (30)).
+		maxHeatCap = 600f;
+		maxActiveLegs = 3;
 	}
 
-	//power from breaker box to machine
-	public ICable(IBreakerBox brBox, IMachine machine)
+	//power from breaker box to machine -- 50mm cable
+	public ICable(IBreakerBox brBox, ISubMachine submachine)
     {
 		breaker = brBox;
-		mach = machine;
-		maximumThroughput = 5;//EVL low
-		maxHeatCap = 15f;
-		maxActiveLegs = 1;
+		subMach = submachine;
+		maximumThroughput = 25;//EVL med (5 + 20)
+		maxHeatCap = 100f;
+		maxActiveLegs = 2;
 	}
 
 	//get power passed in
@@ -134,10 +135,10 @@ public class ICable
 				breaker.receivePowerFromSubstation(legCount, powerOutPerLeg);
 				break;
 			case 5:
-				//Debug.Log(powerOutPerLeg[0] + " to a machine.");
+				//Debug.Log(powerOutPerLeg[0] + " to a submachine.");
 				//transfering to a machine
 				cable = this;
-				mach.receiveEnergyAmount(legCount, powerOutPerLeg, ref cable);
+				subMach.receiveEnergyAmount(legCount, powerOutPerLeg, ref cable);
 				break;
 		}
 
@@ -182,7 +183,7 @@ public class ICable
                 }
 				break;
 			case 5:
-				if (breaker != null && mach != null)
+				if (breaker != null && subMach != null)
                 {
 					return true;
                 }

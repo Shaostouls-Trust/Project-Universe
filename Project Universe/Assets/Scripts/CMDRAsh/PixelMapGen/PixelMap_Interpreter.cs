@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -6,19 +7,25 @@ using System.IO;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-//[ExecuteInEditMode]
 public class PixelMap_Interpreter : MonoBehaviour
 {
 	public string bitmapName;
 	Bitmap levelMap;
 	public string PixelMapRootPath;
-	public string PrefabsRootPath;
-	public bool generated;
-	//private float y3D;
+	//public string PrefabsRootPath;
+	private bool generated;
+	private bool tilesGenerated;
+	private float y3D;
 	private float x3D; //rows
 	private float z3D; //columns
-	//public PixelMap_IDLibrary library = new PixelMap_IDLibrary();
-	//public Dictionary<string, string> tilePathPairs = new Dictionary<string, string>();
+
+	private ArrayList tileArrayList = new ArrayList();
+	private int tileIttCount = 0;
+	//run config
+	public bool ignoreR254;
+	public bool multipleLevels;
+	private int ceiling;
+	public int staticCeiling;
 	/*tile placement with respect to world axis.
 	* Z is North/South
 	* X is East/West
@@ -26,9 +33,6 @@ public class PixelMap_Interpreter : MonoBehaviour
 	* PixelMap X is E/W
 	*/
 	//Red - Tile ID
-	//Green - rotation
-	//Blue - rotation 2 (for 256 deg and up)
-	//change to:
 	//Green - rot / 3 (*3 for rotation)
 	//blue - subset (IE door_A, door_B, ceilingwall_A, ceilingwall_B)
 
@@ -41,10 +45,69 @@ public class PixelMap_Interpreter : MonoBehaviour
 		}
 	}
 
-	public void BitMapInterpreter()
+	public void MultiLevelIntegration(string baseMapName, Transform gameobjectTransform, bool myIgnoreR254)
+	{
+		//search directory for the base map name
+		string root = Directory.GetCurrentDirectory();
+		string[] filesInDir;
+		string[] pathParts;
+		string[] nameAndNumber;
+		List<string> maps = new List<string>(1);
+		int count = 1;
+		string myName;
+		//string filePath = "";
+		filesInDir = Directory.GetFiles(root + GetPixelMapRootPath(), "*" + ".png", SearchOption.AllDirectories);
+		//search for name
+		foreach (string fileAndPath in filesInDir)
+		{
+			//split off the name from the path
+			pathParts = fileAndPath.Split('\\');
+			//Split name and the level number
+			//Debug.Log(pathParts[pathParts.Length - 1]);
+			nameAndNumber = pathParts[pathParts.Length - 1].Split('_');
+			//strip extension
+			string[] temp = nameAndNumber[nameAndNumber.Length - 1].Split('.');
+			nameAndNumber[nameAndNumber.Length - 1] = temp[0];
+			if (nameAndNumber.Length > 1)
+			{
+				//Idea here is that any map that is not part of a multi-level structure will fail the conversion of the last argument 
+				//(which should always be an integer) because non-level maps will end on a non-parsable string
+				try
+				{
+					int.Parse(nameAndNumber[nameAndNumber.Length - 1]);
+				}
+				catch (Exception e) {
+					continue; 
+				}
+				//extract base name
+				string[] temp2 = new string[nameAndNumber.Length-1];
+				for(int j = 0; j < nameAndNumber.Length-1; j++)
+				{
+					temp2[j] = nameAndNumber[j];
+				}
+				string checkName = String.Join("_", temp2);
+				//count = nameAndNumber[pathParts.Length - 1];
+				//nameAndNumber.SetValue("", nameAndNumber.Length - 1);
+				myName = String.Join("_", nameAndNumber);
+				//check name
+				Debug.Log("map: " + myName+"; "+ checkName);
+				if (checkName == baseMapName)
+				{
+					maps.Add(myName);
+				}
+			}
+		}
+		//Debug.Log(maps);
+		foreach(string level in maps)
+		{
+			BitMapInterpreter(level, gameobjectTransform, myIgnoreR254,count++);
+		}
+	}
+
+	public void BitMapInterpreter(string mapName, Transform gameobjectTransform, bool myIgnoreR254, int levelNumber)
 	{
 		//Load the parameter bitmap
-		string path = SolvePath(bitmapName, ".png", PixelMapRootPath);// "\\Assets\\Resources\\Maps\\PixelMaps");
+		string path = SolvePath(mapName, ".png", GetPixelMapRootPath());// "\\Assets\\Resources\\Maps\\PixelMaps");
 		try
 		{
 			//open image
@@ -68,17 +131,17 @@ public class PixelMap_Interpreter : MonoBehaviour
 		System.IntPtr ptrFirstPixel = levelMapData.Scan0;
 		//copy the pixels from memory to the array we created above
 		Marshal.Copy(ptrFirstPixel, pixels, 0, pixels.Length);
+		//we have the map data, so unlock the bits and close the image
+		levelMap.UnlockBits(levelMapData);
+		levelMap.Dispose();
 		int heightInPixels = levelMapData.Height;
 		int widthInBytes = levelMapData.Width * bytesPerPixel;
 		//declare the variables we need inside the loop
 		string prefabID;
-		Dictionary<int, string> returnedDict;
 		string fullpath;
 		float rotation;
-		GameObject prefab;
 		//establish the 3D (y) axis
-		//y3D = transform.localPosition.y;
-		//establish our build plane
+		y3D = gameobjectTransform.position.y + (levelNumber*3);//for now assume each level is 3m
 		x3D = 0.0f;
 		z3D = 0.0f;
 		Debug.Log("Attempting to build level...");
@@ -86,48 +149,54 @@ public class PixelMap_Interpreter : MonoBehaviour
 		for (int y = 0; y < heightInPixels; y++)
 		{
 			int currentLine = y * levelMapData.Stride;
-			for (int x = 0; x < widthInBytes; x = x + bytesPerPixel)
+			for (int x = 0; x < widthInBytes; x += bytesPerPixel)
 			{
 				int blue = pixels[currentLine + x];
 				int green = pixels[currentLine + x + 1];
 				int red = pixels[currentLine + x + 2];
 				//image processing
-				if (red != 255 )//|| red != 254)
+				if (red != 255)
 				{
-					//check the R value against the dictionary of tile monochannel IDs
-					if (PixelMap_IDLibrary.PIXID_TILELIB.TryGetValue(red, out returnedDict))//PIXID_LIBRARY
+					//TODO clean this empty statement up
+					if(red == 254 && myIgnoreR254){}
+					else
 					{
-						//access returned dict for subtype (blue)
-						//If there are no subtypes blue == 0. This is out of consideration to map-making, where B=1 is incredibly hard (impossible) to see,
-						//so the less it is done, the less likely there are to be mistakes in the map.
-						if (blue == 0)
+						//check the R value against the dictionary of tile monochannel IDs
+						if (PixelMap_IDLibrary.PIXID_TILELIB.TryGetValue(red, out Dictionary<int, string> returnedDict))
 						{
-							returnedDict.TryGetValue(1, out prefabID);
+							//access returned dict for subtype (blue)
+							//If there are no subtypes blue == 0. This is out of consideration to map-making, where B=1 is incredibly hard (impossible) to see,
+							//so the less it is done, the less likely there are to be mistakes in the map.
+							if (blue == 0)
+							{
+								returnedDict.TryGetValue(1, out prefabID);
+							}
+							else
+							{   //get the subtype
+								returnedDict.TryGetValue(blue, out prefabID);
+							}
+							//get the path from the static PATHPAIRS dictionary
+							try
+							{
+								PixelMap_IDLibrary.PIXID_PATHPAIRS.TryGetValue(prefabID, out fullpath);
+							}
+							catch (System.Exception e)
+							{
+								Debug.Log(e);
+								Debug.Log(red + " " + blue + " " + green);
+								PixelMap_IDLibrary.PIXID_TILELIB.TryGetValue(254, out returnedDict);
+								returnedDict.TryGetValue(255, out prefabID);
+								PixelMap_IDLibrary.PIXID_PATHPAIRS.TryGetValue(prefabID, out fullpath);
+							}
+
+							//pull rotation from G and multiply by 3
+							rotation = green * 3;
+							ArrayList tempArray = new ArrayList() { fullpath,
+							new Vector3(gameobjectTransform.position.x + x3D + 0.5f, y3D, gameobjectTransform.position.z + z3D - 0.5f),
+							rotation };
+							tileArrayList.Add(tempArray);
 						}
-						else
-						{   //get the subtype
-							returnedDict.TryGetValue(blue, out prefabID);
-						}
-						//get the path from the static PATHPAIRS dictionary
-						PixelMap_IDLibrary.PIXID_PATHPAIRS.TryGetValue(prefabID, out fullpath);
-						//pull rotation from G and multiply by 3
-						rotation = green * 3;
-						//load the prefab into memory via the Resource system
-						prefab = Resources.Load(fullpath) as GameObject;
-						//instanciate a prefab object at the coords relative from the pixelmap
-						//Vector3 newRotation = new Vector3(0.0f, rotation, 0.0f);
-						GameObject instanceObject = Instantiate(prefab, new Vector3(transform.position.x + x3D + 0.5f, transform.position.y, transform.position.z + z3D - 0.5f), new Quaternion(0.0f, 0.0f, 0.0f,1.0f), transform);
-						//set the objects rotation (not using a quaternion for sake of euler precision)
-						instanceObject.transform.localRotation = Quaternion.Euler(0.0f,rotation,0.0f);
-						//set name to whatever is next (IE 1,2,3) so that not everything has the same name
-						//if it's a floor
-						if(red == 125)
-						{
-							//place a ceiling over it
-							prefab = Resources.Load("Prefabs\\CMDRAsh\\ShipCeilingA") as GameObject;
-							GameObject instanceObjectRoof = Instantiate(prefab, new Vector3(transform.position.x + x3D + 0.5f, transform.position.y + 3, transform.position.z + z3D - 0.5f), new Quaternion(0.0f, 0.0f, 0.0f, 1.0f), transform);
-							instanceObjectRoof.transform.localRotation = Quaternion.Euler(0.0f,0.0f,180.0f);
-						}
+
 					}
 				}
 				//update positional parameters
@@ -141,34 +210,88 @@ public class PixelMap_Interpreter : MonoBehaviour
 				}
 			}
 		}
-		//unlock bits
-		levelMap.UnlockBits(levelMapData);
+	}
+
+	void Update()
+	{
+		if(tileArrayList.Count > 0 && !tilesGenerated)
+		{
+			//Debug.Log("...");
+			if (tileIttCount + staticCeiling > tileArrayList.Count)
+			{
+				ceiling += tileArrayList.Count - tileIttCount;
+			}
+			else
+			{
+				ceiling += staticCeiling;
+			}
+			for (; tileIttCount < ceiling; tileIttCount++)
+			{
+				//catch prefabbed rooms
+				//Might not be necessary?
+				ArrayList unpacked = (ArrayList)tileArrayList[tileIttCount];
+				string fullpath = (string)unpacked[0];
+				Vector3 position = (Vector3)unpacked[1];
+				float rotation = (float)unpacked[2];
+				GameObject prefab = Resources.Load(fullpath) as GameObject;
+				GameObject instanceObject = Instantiate(prefab, new Vector3(position.x, position.y, position.z), new Quaternion(0.0f, 0.0f, 0.0f, 1.0f), transform);
+				//set the objects rotation (not using a quaternion for sake of euler precision)
+				instanceObject.transform.localRotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+				instanceObject.name = prefab.name + " " + tileIttCount;
+				//if it's a floor
+				//if(red == 125)
+				//{
+				//place a ceiling over it
+				//	prefab = Resources.Load("Prefabs\\CMDRAsh\\ShipCeilingA") as GameObject;
+				//	GameObject instanceObjectRoof = Instantiate(prefab, new Vector3(transform.position.x + x3D + 0.5f, transform.position.y + 3, transform.position.z + z3D - 0.5f), new Quaternion(0.0f, 0.0f, 0.0f, 1.0f), transform);
+				//	instanceObjectRoof.transform.localRotation = Quaternion.Euler(0.0f,0.0f,180.0f);
+				//}
+			}
+			if (tileIttCount >= tileArrayList.Count-1)
+			{
+				tilesGenerated = true;
+				Debug.Log("Generated");
+			}
+		}
+	}
+
+	public void SetPixelMapRootPath(string pixelMapRoot)
+	{
+		PixelMapRootPath = pixelMapRoot;
+	}
+	public string GetPixelMapRootPath()
+	{
+		return PixelMapRootPath;
+	}
+	public ArrayList GetTileArrayList()
+	{
+		return tileArrayList;
 	}
 
 	//attempt to path from the basedirectory to the file described by the 'name' and 'extension' params
 	public string SolvePath(string name, string extension, string baseDirectory)
 	{
 		string root = Directory.GetCurrentDirectory();
-		//move from root to base prefab directory
-		//parse through prefabs and find the path for the prefab name
 		string[] filesInDir;
 		string[] pathParts;
-		string myPath = "";
+		string myPath;
 		string filePath = "";
-		//get files in directory
 		filesInDir = Directory.GetFiles(root + baseDirectory,"*"+extension,SearchOption.AllDirectories);
 		//search for name
 		foreach(string fileAndPath in filesInDir)
 		{
 			//split off the name of the tile and compare to var 'name'
 			pathParts = fileAndPath.Split('\\');
+			//split at _ and recombine all but the last segment
+
+			//check name
 			if (pathParts[pathParts.Length - 1] == name + extension)
 			{
 				pathParts.SetValue("", pathParts.Length - 1);
 				myPath = Path.Combine(pathParts);
 				filePath = fileAndPath;
 				break;
-			}	
+			}	 
 		}
 		return filePath;
 	}
@@ -177,9 +300,18 @@ public class PixelMap_Interpreter : MonoBehaviour
 	{
 		if (!generated)
 		{
-			generated = true;
-			//begin PIXI process
-			BitMapInterpreter();
+			generated = true; 
+			tilesGenerated = false;
+			if (multipleLevels)
+			{
+				MultiLevelIntegration(bitmapName, transform, ignoreR254);
+			}
+			else
+			{
+				//begin PIXI process
+				BitMapInterpreter(bitmapName, transform, ignoreR254,1);
+			}
+			
 		}
 	}
 }

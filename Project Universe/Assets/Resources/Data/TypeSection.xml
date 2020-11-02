@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Definitions>
+	<TileGroup>
+		<!--Prefabbed Rooms-->
+		<ID TypeValue="245" />
+		<Definition>
+			<SubType>1</SubType>
+			<Name>5-18_trapObservation1</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\5-18_trapObservation1" />
+		</Definition>
+		<Definition>
+			<SubType>2</SubType>
+			<Name>43-22_trapBridge1</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\43-22_trapBridge1" />
+		</Definition>
+		<Definition>
+			<SubType>3</SubType>
+			<Name>12-4_trapExteriorWindow1</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\12-4_trapExteriorWindow1" />
+		</Definition>
+		<Definition>
+			<SubType>4</SubType>
+			<Name>17-17_rectPerimeterCatwalk1</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\17-17_rectPerimeterCatwalk1" />
+		</Definition>
+		<Definition>
+			<SubType>5</SubType>
+			<Name>5-18_trapObservation2</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\5-18_trapObservation2" />
+		</Definition>
+		<Definition>
+			<SubType>6</SubType>
+			<Name>43-22_trapBridge2</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\43-22_trapBridge2" />
+		</Definition>
+		<Definition>
+			<SubType>7</SubType>
+			<Name>6-4_rectSideRoom1</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\6-4_rectSideRoom1" />
+		</Definition>
+		<Definition>
+			<SubType>8</SubType>
+			<Name>17-17_rect3mExtension1</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\17-17_rect3mExtension1" />
+		</Definition>
+		<!-- -->
+	</TileGroup>
+	<TileGroup>
+		<!--Prefabbed Corridors-->
+		<ID TypeValue="250" />
+		<Definition>
+			<SubType>1</SubType>
+			<Name>3-4_rectDoorHallwayOneway1</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\3-4_rectDoorHallwayOneway1" />
+		</Definition>
+		<Definition>
+			<SubType>2</SubType>
+			<Name>3-4_rectHallway1</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\3-4_rectHallway1" />
+		</Definition>
+		<!-- -->
+	</TileGroup>
+</Definitions>

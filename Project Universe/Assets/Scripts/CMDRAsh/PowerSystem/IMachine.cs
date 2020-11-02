@@ -21,32 +21,33 @@ public class IMachine : MonoBehaviour
     private float bufferCurrent;
     [SerializeField]
     private string machineType;
-    private ICable cable;
-    private IRoutingSubstation[] substations;
+    [SerializeField]
+    private bool runMachine;
+    //private ICable cable;
+    private List<IRoutingSubstation> substations = new List<IRoutingSubstation>();
     //backend of power cables
     private LinkedList<ICable> iCableDLL = new LinkedList<ICable>();
     //time control
     private float time = 0.1f; //10 times a second
 
     //temp stuff
-    public Transform transform;
+    //public Transform transform;
     public GameObject screenObject;
-    public Light lightComponent;
-    public float maxLightIntensity;
-    public float maxLightRange;
+    //public Light lightComponent;
+    //public float maxLightIntensity;
+    //public float maxLightRange;
 
     //power legs update
     [SerializeField]
     private int legsRequired;
     private int legsReceived;
 
-    // Start is called before the first frame update
     void Start()
     {
+        RunMachine = true;
         bufferCurrent = 0.0f;
     }
 
-    // Update is called once per frame
     void Update()
     {
         //reset requestedEnergy
@@ -54,88 +55,135 @@ public class IMachine : MonoBehaviour
         //Recalculate drawToFill based on draw percent
         float floatDrawToFill = (float)percentDrawToFill;
         drawToFill = requiredEnergy + (requiredEnergy * (floatDrawToFill / 100)); //105% or 110% draw
-        //If the energy buffer is not full
-        if (bufferCurrent < energyBuffer)//(energyBuffer-requiredEnergy))
+                                                                                    //If the energy buffer is not full
+        if (bufferCurrent < energyBuffer)
         {
             //Get the deficit between the energybuffer(max) and the current buffer amount
             float deficit = energyBuffer - bufferCurrent;
             if (deficit >= (drawToFill - requiredEnergy))
             {
                 requestedEnergy = drawToFill;
+                //Debug.Log(this.gameObject.name + " Request Helper");
+                requestHelper();
             }
             else if (deficit < (drawToFill - requiredEnergy))
             {
                 requestedEnergy = deficit + requiredEnergy;
+                //Debug.Log(this.gameObject.name + " Request Helper");
+                requestHelper();
             }
         }
         else if (bufferCurrent >= energyBuffer)
         {
             requestedEnergy = requiredEnergy;
+            //requestedEnergy = 0.0f;
             //trim off excess power. Buffers cannot overcharge
-            bufferCurrent = energyBuffer;
+            //bufferCurrent = energyBuffer;
+            //Debug.Log(this.gameObject.name + " Request Helper");
+            requestHelper();
         }
         else
         {
             requestedEnergy = requiredEnergy;
+            //Debug.Log(this.gameObject.name + " Request Helper");
+            requestHelper();
         }
-        ///////////////////////////////////////
-        //Run logic
-        ///////////////////////////////////////
-        if (legsReceived == legsRequired)
+        //send power request
+        if (runMachine)
         {
-            if (bufferCurrent > 0f)
-            {
-                if (bufferCurrent - requiredEnergy < 0.0f)//not enough power to run at full
-                {
-                    if (bufferCurrent >= requiredEnergy * 0.75f)//75% power
-                    {
-                        runMachineSelector(machineType, 1); //any slower locks emiss to blinking yellow.
-                    }
-                    else if (bufferCurrent >= requiredEnergy * 0.5f)//no lower than 50%
-                    {
-                        runMachineSelector(machineType, 2);
-                    }
-                    else//lower than 50%
-                    {
-                        runMachineSelector(machineType, 3);
-                    }
-                    //no matter what, the buffer is emptied
-                    bufferCurrent = 0.0f;
-                }
-                else
-                {
-                    //run full power
-                    runMachineSelector(machineType, 0);
-                    bufferCurrent -= requiredEnergy;
-                }
-            }
-            else
-            {
-                //'run' at 0 power
-                runMachineSelector(machineType, 4);
-            }
-        }
-        else if (legsReceived < legsRequired && legsReceived >= 1)
-        {
-            //Shut down machine due to leg requirement
-            runMachineSelector(machineType, 4);
-            //electrical damage (if the buffer is not empty)
-            //if (bufferCurrent > 0)
-            //{
-                //NYI
-            //}
+            //run machines
+            runLogic();
         }
         else
         {
-            //Shut down machine due to leg requirement
             runMachineSelector(machineType, 4);
-            //NO electrical damage, because no legs attached.
+        }
+        
+    }
+
+    public void requestHelper()
+    {
+        foreach(IRoutingSubstation subs in substations)
+        {
+            //Debug.Log(this.gameObject.name + " machine has Requested " + requestedEnergy / substations.Count);
+            subs.requestPowerFromSubstation(requestedEnergy/substations.Count, this.GetComponent<IMachine>());
         }
     }
 
-    public float requestedEnergyAmount(ref int numSuppliers)
+    public void runLogic()
     {
-        numSuppliers += 1;
+        ///////////////////////////////////////
+        //Run logic
+        ///////////////////////////////////////
+        if (runMachine)
+        {
+            if (legsReceived == legsRequired)
+            {
+                if (bufferCurrent > 0f)
+                {
+                    if (bufferCurrent - requiredEnergy < 0.0f)//not enough power to run at full
+                    {
+                        if (bufferCurrent >= requiredEnergy * 0.75f)//75% power
+                        {
+                            runMachineSelector(machineType, 1); //any slower locks emiss to blinking yellow.
+                        }
+                        else if (bufferCurrent >= requiredEnergy * 0.5f)//no lower than 50%
+                        {
+                            runMachineSelector(machineType, 2);
+                        }
+                        else//lower than 50%
+                        {
+                            runMachineSelector(machineType, 3);
+                        }
+                        //no matter what, the buffer is emptied
+                        bufferCurrent = 0.0f;
+                    }
+                    else
+                    {
+                        //run full power
+                        runMachineSelector(machineType, 0);
+                        bufferCurrent -= requiredEnergy;
+                    }
+                }
+                else
+                {
+                    //'run' at 0 power
+                    runMachineSelector(machineType, 4);
+                }
+            }
+            else if (legsReceived < legsRequired && legsReceived >= 1)
+            {
+                //Shut down machine due to leg requirement
+                runMachineSelector(machineType, 4);
+                //electrical damage (if the buffer is not empty)
+                //if (bufferCurrent > 0)
+                //{
+                //NYI
+                //}
+            }
+            else
+            {
+                //Shut down machine due to leg requirement
+                runMachineSelector(machineType, 4);
+                //NO electrical damage, because no legs attached.
+            }
+        }
+        else
+        {
+            runMachineSelector(machineType, 4);
+        }
+        
+    }
+
+    public bool RunMachine
+    {
+        get { return runMachine; }
+        set { runMachine = value; }
+    }
+
+    public float requestedEnergyAmount()//ref int numSuppliers)
+    {
+        //numSuppliers += 1;
         if(iCableDLL.Count > 1)
         {
             //correct for multiple inputs
@@ -153,10 +201,10 @@ public class IMachine : MonoBehaviour
         for(int i = 0; i < legCount; i++)
         {
             bufferCurrent += amounts[i];
+            //Debug.Log(this.gameObject.name + " machine has Received "+amounts[i]);
         }
         legsReceived = legCount;
-        //Debug.Log("machine has "+legsReceived+" legs");
-
+        //Debug.Log(this.gameObject.name+" machine has "+legsReceived+" legs");
         //bufferCurrent += amount;
         //round buffer current to 3 places to avoid having a psychotic meltdown
         bufferCurrent = (float)Math.Round(bufferCurrent, 3);
@@ -164,7 +212,12 @@ public class IMachine : MonoBehaviour
         {
             iCableDLL.AddLast(cable);
         }
+        if(bufferCurrent > energyBuffer)
+        {
+            bufferCurrent = energyBuffer;
+        }
     }
+
     //return the amount of legs needed by the machine, so that the substation will know
     //how to divide the power.
     public int getLegRequirement()
@@ -178,59 +231,30 @@ public class IMachine : MonoBehaviour
         iCableDLL.Remove(cable);
     }
 
-    public void runMachineSelector(string ImachineType, int powerLevel)
+    //called at the start of the Substation update block
+    public bool checkMachineState(ref IRoutingSubstation substation)
     {
-        if (machineType == "light_point")
+        if (!substations.Contains(substation))
         {
-            this.runMachinePointLight(powerLevel);
+            substations.Add(substation);
         }
-        else if (machineType == "door")
-        {
-            this.runMachineDoor(powerLevel);
-        }
-        else if (machineType == "machine_basic")
-        {
-            this.runMachineNormal(powerLevel);
-        }
-        else if (machineType == "machine_adv")
-        {
-            this.runMachineAdv(powerLevel);
-        }
-        else if (machineType == "kiosk")
-        {
-            this.runMachineKiosk(powerLevel);
-        }
+        return true;
     }
 
-    public void runMachineDoor(int powerLevel)//reference attached animation controller script
+    public void runMachineSelector(string ImachineType, int powerLevel)
     {
-        var control = this.GetComponent<DoorAnimator>();
-        switch (powerLevel)
+        switch (ImachineType)
         {
-            case 0:
-                control.setPoweredState(true);
-                control.setAnimSpeed(1.0f);
+            case "machine_basic":
+                this.runMachineNormal(powerLevel);
                 break;
-            case 1:
-                control.setPoweredState(true);
-                control.setAnimSpeed(0.75f);
+            case "machine_adv":
+                this.runMachineAdv(powerLevel);
                 break;
-            case 2:
-                control.setPoweredState(true);
-                control.setAnimSpeed(0.5f);
-                break;
-            case 3:
-                control.setPoweredState(true);
-                control.setAnimSpeed(0.15f);
-                break;
-            case 4:
-                control.setPoweredState(false);
-                control.setAnimSpeed(0.0f);
+            case "kiosk":
+                this.runMachineKiosk(powerLevel);
                 break;
         }
-        //temp override for ship construction sake
-        //control.setPoweredState(true);
-        //control.setAnimSpeed(1.0f);   
     }
 
     public void runMachineNormal(int powerLevel)
@@ -238,19 +262,19 @@ public class IMachine : MonoBehaviour
         switch (powerLevel)
         {
             case 0:
-                transform.Rotate(0.0f, 50.0f * Time.deltaTime, 0.0f);
+                this.gameObject.transform.Rotate(0.0f, 50.0f * Time.deltaTime, 0.0f);
                 break;
             case 1:
-                transform.Rotate(0.0f, 25.0f * Time.deltaTime, 0.0f);//should be 0?
+                this.gameObject.transform.Rotate(0.0f, 25.0f * Time.deltaTime, 0.0f);//should be 0?
                 break;
             case 2:
-                transform.Rotate(0.0f, 12.5f * Time.deltaTime, 0.0f);
+                this.gameObject.transform.Rotate(0.0f, 12.5f * Time.deltaTime, 0.0f);
                 break;
             case 3:
-                transform.Rotate(0.0f, 6.0f * Time.deltaTime, 0.0f);
+                this.gameObject.transform.Rotate(0.0f, 6.0f * Time.deltaTime, 0.0f);
                 break;
             case 4:
-                transform.Rotate(0.0f, 0.0f * Time.deltaTime, 0.0f);
+                this.gameObject.transform.Rotate(0.0f, 0.0f * Time.deltaTime, 0.0f);
                 break;
         }
     }
@@ -260,46 +284,19 @@ public class IMachine : MonoBehaviour
         switch (powerLevel)
         {
             case 0:
-                transform.Rotate(0.0f, 50.0f * Time.deltaTime, 0.0f);
+                this.gameObject.transform.Rotate(0.0f, 50.0f * Time.deltaTime, 0.0f);
                 break;
             case 1:
-                transform.Rotate(0.0f, 25.0f * Time.deltaTime, 0.0f);//should be 0?
+                this.gameObject.transform.Rotate(0.0f, 25.0f * Time.deltaTime, 0.0f);//should be 0?
                 break;
             case 2:
-                transform.Rotate(0.0f, 12.5f * Time.deltaTime, 0.0f);
+                this.gameObject.transform.Rotate(0.0f, 12.5f * Time.deltaTime, 0.0f);
                 break;
             case 3:
-                transform.Rotate(0.0f, 6.0f * Time.deltaTime, 0.0f);
+                this.gameObject.transform.Rotate(0.0f, 6.0f * Time.deltaTime, 0.0f);
                 break;
             case 4:
-                transform.Rotate(0.0f, 0.0f * Time.deltaTime, 0.0f);
-                break;
-        }
-    }
-
-    public void runMachinePointLight(int powerLevel)
-    {
-        switch (powerLevel)
-        {
-            case 0:
-                lightComponent.intensity = maxLightIntensity;
-                lightComponent.range = maxLightRange;
-                break;
-            case 1:
-                lightComponent.intensity = maxLightIntensity * 0.5f; //base is 1.0f
-                lightComponent.range = maxLightRange * 0.8f; //was 10.0f
-                break;
-            case 2:
-                lightComponent.intensity = maxLightIntensity * UnityEngine.Random.Range(0.3f, 0.4f);//0.4f; (.3 to .4)
-                lightComponent.range = maxLightRange * UnityEngine.Random.Range(.50f, .60f);//6.0f; (5.0 to 6.0)
-                break;
-            case 3:
-                lightComponent.intensity = maxLightIntensity * UnityEngine.Random.Range(0.05f, 0.15f);//0.1f; (.05 to .15)
-                lightComponent.range = maxLightRange * UnityEngine.Random.Range(.30f, .10f); //4.0f; (3.0 to 4.0f)
-                break;
-            case 4:
-                lightComponent.intensity = 0.0f;
-                lightComponent.range = 0.0f;
+                this.gameObject.transform.Rotate(0.0f, 0.0f * Time.deltaTime, 0.0f);
                 break;
         }
     }

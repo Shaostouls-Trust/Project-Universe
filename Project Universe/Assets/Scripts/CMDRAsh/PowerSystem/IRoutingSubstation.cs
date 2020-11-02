@@ -17,10 +17,14 @@ public class IRoutingSubstation : MonoBehaviour
     public IBreakerBox[] targetBreakers;
     private float[] requestedPower;
     private float totalRequiredPower;
-    //private ICable cable;
+    private IRoutingSubstation thisSubstation;
     private LinkedList<ICable> iCableDLL = new LinkedList<ICable>();
     private float energyBufferMax;
+    [SerializeField]
     private float bufferCurrent;
+    private float defecitVbreaker = 1.0f;
+    private float defecitVmachine = 1.0f;
+    private List<IRouter> myRouters = new List<IRouter>();
 
     //power legs update
     private int legsRequired = 3;//leg shortage willonly cut distributable power by 1/2/3 3rds
@@ -32,30 +36,47 @@ public class IRoutingSubstation : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        energyBufferMax = 150f;
+        thisSubstation = GetComponent<IRoutingSubstation>();
+        energyBufferMax = 1080f;
         bufferCurrent = 0f;
         totalRequiredPower = 0.0f;
         guid = Guid.NewGuid();
         //create a cable between substation and machine/s
-        for (int i = 0; i < targetMachine.Length; i++)
+        ProxyStart(2);
+        ProxyStart(1);
+    }
+
+    public void ProxyStart(int mode)
+    {
+        if(mode == 1)
         {
-            if (targetMachine[i] != null)
+            for (int i = 0; i < targetBreakers.Length; i++)
             {
-                ICable cable = new ICable(this, targetMachine[i]);
-                iCableDLL.AddLast(cable);
+                if (targetBreakers[i] != null)
+                {
+                    ICable cable = new ICable(this, targetBreakers[i]);
+                    iCableDLL.AddLast(cable);
+                    legsOut += targetBreakers[i].getLegRequirement();
+                    availibleLegsOut = legsOut;
+                    Debug.Log("Checking Breaker State " + targetBreakers[i].gameObject.name);
+                    targetBreakers[i].checkMachineState(ref thisSubstation);
+                }
             }
-            legsOut += targetMachine[i].getLegRequirement();
         }
-        for(int i = 0; i < targetBreakers.Length; i++)
+        else if(mode == 2)
         {
-            if (targetBreakers[i] != null)
+            for (int i = 0; i < targetMachine.Length; i++)
             {
-                ICable cable = new ICable(this, targetBreakers[i]);
-                iCableDLL.AddLast(cable);
+                if (targetMachine[i] != null)
+                {
+                    ICable cable = new ICable(this, targetMachine[i]);
+                    iCableDLL.AddLast(cable);
+                    legsOut += targetMachine[i].getLegRequirement();
+                    Debug.Log("Checking Machine State " + targetMachine[i].gameObject.name);
+                    targetMachine[i].checkMachineState(ref thisSubstation);
+                }
             }
-            legsOut += targetMachine[i].getLegRequirement();
         }
-        availibleLegsOut = legsOut;
     }
 
     // Update is called once per frame
@@ -69,171 +90,206 @@ public class IRoutingSubstation : MonoBehaviour
         float totalMachineReq = 0f;
         float totalBreakerReq = 0f;
         requestedPower = new float[targetMachine.Length + targetBreakers.Length];
-        int numSuppliers = 0;
-        //get connected machines' requested power.
-        if (targetMachine.Length > 0)
+        //int numSuppliers = 0;
+
+        for(int i = 0; i < targetMachine.Length; i++)
         {
-            for (int i = 0; i < targetMachine.Length; i++)
+            if(targetMachine[i] != null)
             {
-                if (targetMachine[i] != null)
-                {
-                    float uniqueMachineAmount;
-                    //power required by a machine.
-                    uniqueMachineAmount = targetMachine[i].requestedEnergyAmount(ref numSuppliers);
-                    //Power is tracked per machine
-                    requestedPower[i] = uniqueMachineAmount;
-                    totalRequiredPower += uniqueMachineAmount;
-                    totalMachineReq += uniqueMachineAmount;
-                }
+                totalMachineReq += targetMachine[i].requestedEnergyAmount();
+                totalRequiredPower += targetMachine[i].requestedEnergyAmount();
             }
         }
-        //repeat above for breakers
-        //start at the index targetMachine stopped at
-        int target = targetMachine.Length + targetBreakers.Length;
-        for (int i = targetMachine.Length; i < target; i++)
+        //Debug.Log("Machine requirement: "+ totalMachineReq);
+        for (int k = 0; k < targetBreakers.Length; k++)
         {
-            if (targetBreakers[i - targetMachine.Length] != null)
+            if (targetBreakers[k] != null)
             {
-                float uniqueMachineAmount;
-                uniqueMachineAmount = targetBreakers[i - targetMachine.Length].getTotalRequiredPower();
-                requestedPower[i] = uniqueMachineAmount;
-                totalRequiredPower += uniqueMachineAmount;
-                totalBreakerReq += uniqueMachineAmount;
+                totalBreakerReq += targetBreakers[k].getTotalRequiredPower();
+                totalRequiredPower += targetBreakers[k].getTotalRequiredPower();
             }
         }
+        //Debug.Log("Breaker requirement: " + totalBreakerReq);
+        //request the required energy from the router
+        if (bufferCurrent < energyBufferMax)
+        {
+            //request energy from Router
+            float requestPerRouter = totalRequiredPower / myRouters.Count;
+            foreach(IRouter rout in myRouters)
+            {
+                rout.RequestPowerFromRouter(requestPerRouter, thisSubstation);
+            }
+        }
+        else if(bufferCurrent >= energyBufferMax)
+        {
+            totalRequiredPower = 0;
+            bufferCurrent = energyBufferMax;
+        }
+
         //power will be divided equally among linked machines, sacrificing breaker power by as much as 75% in case of defecit.
         //ignore this division block if the substation buffer is empty
-        if (bufferCurrent > 0) {
+        //if (bufferCurrent > 0)
+        //{
             if (totalBreakerReq + totalMachineReq > bufferCurrent)
             {
+                //Debug.Log("Requested exceeds buffer:"+bufferCurrent);
                 //difference between required and available power.
                 float deficit = totalRequiredPower - bufferCurrent;
                 if (targetBreakers.Length > 0)//no need to run the code below if there are no breakers.
                 {
-                    float defecitVbreaker = 1.0f;
+                    //defecitVbreaker = 1.0f;
                     //determine the percent difference between defecit and the power required by the breakers
                     if (totalBreakerReq > 0)//div by zero precaution
                     {
-                        defecitVbreaker = deficit / totalBreakerReq;
-                    }
-                    //if the deficit is 3/4 or less of the breaker requirement.
-                    if (defecitVbreaker <= 0.75f)
-                    {
-                        for (int j = 0; j < targetBreakers.Length; j++)
-                        {
-                            if (targetBreakers[j] != null)
-                            {
-                                //subtract the amount to reduce (a percent of the requested amount)
-                                requestedPower[j] -= (requestedPower[j] * defecitVbreaker);
-                                requestedPower[j] = (float)Math.Round(requestedPower[j], 3);
-                                //Debug.Log(this + " breaker power after deficit adjustment " + requestedPower[j]);
-                            }
-                        }
-                    }
-                    else//assume defecit is greater than 75% the breaker requirement
-                    {
-                        if (targetBreakers.Length > 0)
-                        {
-                            for (int j = 0; j < targetBreakers.Length; j++)
-                            {
-                                if (targetBreakers[j] != null)
-                                {
-                                    //we've cut off 75% of the breaker draw. Hence only 25% required
-                                    requestedPower[j] *= 0.25f;
-                                    requestedPower[j] = (float)Math.Round(requestedPower[j], 3);
-                                    //Debug.Log(this + " breaker power after deficit adjustment " + requestedPower[j]);
-                                }
-                            }
-                        }
+                        defecitVbreaker = totalBreakerReq / deficit;
+                        //if (defecitVbreaker > 0.75f)
+                        //{
+                        //    defecitVbreaker = 0.25f;
+                        //}
                     }
                 }
-                totalBreakerReq *= 0.25f;
+                //multiply by the ammount of power we are retaining for the breakers
+                totalBreakerReq *= defecitVbreaker;//-= (totalBreakerReq * defecitVbreaker);//0.25f;
                 //get the new power requirement.
                 float newRequiredPower = totalMachineReq + totalBreakerReq;
                 //recompute deficit based on reduced breaker draw.
                 deficit = newRequiredPower - bufferCurrent;
                 //calculate the percent that we need to trim off of the machine requirement to settle deficit
-                float machinePercentCut = deficit / newRequiredPower;//this includes the breaker's 25%
-                for (int j = 0; j < targetMachine.Length; j++)
-                {
-                    if (targetMachine[j] != null)
-                    {
-                        requestedPower[j] -= (requestedPower[j] * machinePercentCut);
-                        requestedPower[j] = (float)Math.Round(requestedPower[j], 3);
-                        //Debug.Log(this + " power after deficit adjustment " + requestedPower[j]);
-                    }
-                }
-            }
+                //IE how much is the defecit when compared to the buffer (in %)
+                defecitVmachine = deficit / totalMachineReq;
+                //Debug.Log("Defecit v machine: " + defecitVmachine);
+                //Debug.Log("Defecit v breaker: " + defecitVbreaker);
+            } 
+        //}
+    }
+
+    //called at start of router update
+    public bool checkMachineState(ref IRouter thisRouter)
+    {
+        if (!myRouters.Contains(thisRouter))
+        {
+            Debug.Log("router added");
+            myRouters.Add(thisRouter);
         }
+        return true;
+    }
+
+    public void requestPowerFromSubstation(float requestedAmount, IBreakerBox thisBreaker)
+    {
         //transfer power to the linking cable.
-        int itteration = 0;
         foreach (ICable cable in iCableDLL)
         {
-            //get machine's leg req (a default value)
-            int machineLegReq = 2;
-            if (cable.checkConnection(3))//substation to machine linkage
+            //if this is a machine
+            if (cable.breaker == thisBreaker)
             {
-                machineLegReq = cable.mach.getLegRequirement();
+                //get machine's leg req (a default value)
+                int breakerLegReq = cable.breaker.getLegRequirement();
+                //if something has happened, and we don't have as many legs as we need.
+                if (breakerLegReq > availibleLegsOut)
+                {
+                    //we will temporarily change the required leg count to what we can provide
+                    breakerLegReq = availibleLegsOut;
+                }
+                //split power between legs
+                float[] powerAmount = new float[breakerLegReq];
+                for (int l = 0; l < breakerLegReq; l++)
+                {
+                    powerAmount[l] = requestedAmount / breakerLegReq;
+                    //Debug.Log("power amount " + l + " : " + powerAmount[l]);
+                    //powerAmount[l] -= (powerAmount[l] * defecitVbreaker);
+                    powerAmount[l] = (float)Math.Round(powerAmount[l], 3);
+                }
+                //Debug.Log("defecitVbreaker:" + defecitVbreaker);
+                requestedAmount = powerAmount[0] * breakerLegReq;
+                if (cable.checkConnection(4))//transfer to breaker
+                {
+                    if (bufferCurrent - requestedAmount >= 0)
+                    {
+                        //transfer the uniquely requested amount to the machine
+                        cable.transferIn(breakerLegReq, powerAmount, 4);
+                        availibleLegsOut -= breakerLegReq;
+                        //cable.transferIn(requestedPower[itteration], 4);
+                        bufferCurrent -= requestedAmount;
+                    }
+                    else if (bufferCurrent - requestedAmount < 0)
+                    {
+                        float[] tempfloat = new float[] { bufferCurrent / 3, bufferCurrent / 3, bufferCurrent / 3 };
+                        //or transfer all that remains in the buffer
+                        cable.transferIn(breakerLegReq, tempfloat, 4);
+                        availibleLegsOut -= breakerLegReq;
+                        //cable.transferIn(bufferCurrent, 4);
+                        bufferCurrent = 0f;
+                    }
+                }
+                //no need to continue searching through the rest of the cables
+                break;
             }
-            else if (cable.checkConnection(4))//substation to breaker linkage
+        }
+    }
+
+    public void requestPowerFromSubstation(float requestedAmount, IMachine thisMachine)
+    {
+        //transfer power to the linking cable.
+        foreach (ICable cable in iCableDLL)
+        {
+            //if this is a machine
+            if (cable.mach == thisMachine)
             {
-                machineLegReq = cable.breaker.getLegRequirement();
-            }
+                //get machine's leg req
+                int machineLegReq = cable.mach.getLegRequirement();
                 //if something has happened, and we don't have as many legs as we need.
                 if (machineLegReq > availibleLegsOut)
-            {
-                //we will temporarily change the required leg count to what we can provide
-                machineLegReq = availibleLegsOut;
-            }
-            //split power between legs
-            float[] powerAmount = new float[machineLegReq];
-            for (int l = 0; l < machineLegReq; l++)
-            {
-                powerAmount[l] = requestedPower[itteration] / machineLegReq;
-                //Debug.Log("power amount " + l + " : " + powerAmount[l]);
-            }
-            if (cable.checkConnection(3))//type is substation to machine linkage
-            {
-                if (bufferCurrent - requestedPower[itteration] >= 0)
                 {
-                    //transfer the uniquely requested amount to the machine
-                    //cable.transferIn(requestedPower[itteration], 3);
-                    cable.transferIn(machineLegReq, powerAmount,3);
-                    availibleLegsOut -= machineLegReq;
-                    bufferCurrent -= requestedPower[itteration];
+                    //we will temporarily change the required leg count to what we can provide
+                    machineLegReq = availibleLegsOut;
+                    //Debug.Log("leg shortage ("+machineLegReq+")");
                 }
-                else if(bufferCurrent - requestedPower[itteration] < 0)
+                //split power between legs
+                float[] powerAmount = new float[machineLegReq];
+                //Debug.Log("splitting power between legs");
+                for (int l = 0; l < machineLegReq; l++)
                 {
-                    float[] tempfloat = new float[] { bufferCurrent / 3, bufferCurrent / 3, bufferCurrent / 3 };
-                    //or transfer all that remains in the buffer
-                    cable.transferIn(machineLegReq,tempfloat, 3);
-                    availibleLegsOut -= machineLegReq;
-                    //cable.transferIn(bufferCurrent, 3);
-                    bufferCurrent = 0f;
+                    powerAmount[l] = requestedAmount / machineLegReq;
+                    //Debug.Log("power amount " + l + " : " + powerAmount[l]);
+                    //powerAmount[l] -= (powerAmount[l] * defecitVmachine);
+                   // Debug.Log("defecitVbreaker:" + defecitVmachine);
+                    //Debug.Log("defecitVmacine:" + defecitVmachine);
+                    powerAmount[l] = (float)Math.Round(powerAmount[l], 3);
                 }
+                requestedAmount = powerAmount[0] * machineLegReq;
+                if (cable.checkConnection(3))//type is substation to machine linkage
+                {
+                    //Debug.Log("Cable exists");
+                    if (bufferCurrent - requestedAmount >= 0)
+                    {
+                        //transfer the uniquely requested amount to the machine
+                       // Debug.Log("Sufficient Power");
+                        cable.transferIn(machineLegReq, powerAmount, 3);
+                        availibleLegsOut -= machineLegReq;
+                        bufferCurrent -= requestedAmount;
+                    }
+                    else if (bufferCurrent - requestedAmount < 0)
+                    {
+                      //  Debug.Log("Power Defecit");
+                        float[] tempfloat = new float[] { bufferCurrent / 3, bufferCurrent / 3, bufferCurrent / 3 };
+                        //or transfer all that remains in the buffer
+                        cable.transferIn(machineLegReq, tempfloat, 3);
+                        availibleLegsOut -= machineLegReq;
+                        bufferCurrent = 0f;
+                    }
+                } 
             }
-            else if (cable.checkConnection(4))//transfer to breaker
-            {
-                if (bufferCurrent - requestedPower[itteration] >= 0)
-                {
-                    //transfer the uniquely requested amount to the machine
-                    cable.transferIn(machineLegReq, powerAmount, 4);
-                    availibleLegsOut -= machineLegReq;
-                    //cable.transferIn(requestedPower[itteration], 4);
-                    bufferCurrent -= requestedPower[itteration];
-                }
-                else if (bufferCurrent - requestedPower[itteration] < 0)
-                {
-                    float[] tempfloat = new float[] { bufferCurrent / 3, bufferCurrent / 3, bufferCurrent / 3 };
-                    //or transfer all that remains in the buffer
-                    cable.transferIn(machineLegReq, tempfloat, 4);
-                    availibleLegsOut -= machineLegReq;
-                    //cable.transferIn(bufferCurrent, 4);
-                    bufferCurrent = 0f;
-                }
-            }
-            itteration++;
-        }
+        } 
+    }
+
+    public void SetMachines(IMachine[] newMachines)
+    {
+        targetMachine = newMachines;
+    }
+
+    public void SetBreakers(IBreakerBox[] newBreakers)
+    {
+        targetBreakers = newBreakers; ;
     }
 
     public int getLegRequirement()
@@ -249,6 +305,7 @@ public class IRoutingSubstation : MonoBehaviour
             bufferCurrent += powerAmounts[i];
         }
         legsReceived = legCount;
+        bufferCurrent = (float)Math.Round(bufferCurrent, 3);
     }
 
     public float getTotalRequiredPower()

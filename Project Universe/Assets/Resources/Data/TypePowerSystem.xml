@@ -16,7 +16,7 @@
 	</TileGroup>
 	<TileGroup>
 		<!--Routers-->
-		<ID TypeValue="200" />
+		<ID TypeValue="185" />
 		<Definition>
 			<SubType>1</SubType>
 			<Name>Router_Lvl1</Name>
@@ -29,9 +29,9 @@
 	</TileGroup>
 	<TileGroup>
 		<!--Substations-->
-		<ID TypeValue="225" />
+		<ID TypeValue="195" />
 		<Definition>
-			<SubType>2</SubType>
+			<SubType>1</SubType>
 			<Name>Router_SubstationBox</Name>
 			<Components>
 				<Component Name="MeshCollider"/>
@@ -42,15 +42,36 @@
 	</TileGroup>
 	<TileGroup>
 		<!--Breakers-->
-		<ID TypeValue="245" />
+		<ID TypeValue="205" />
 		<Definition>
-			<SubType>3</SubType>
-			<Name>DummyBreakerBox</Name>
+			<SubType>1</SubType>
+			<Name>BreakerBoxA</Name>
 			<Components>
 				<Component Name="BoxCollider"/>
 				<Component Name="IBreakerBox"/>
 			</Components>
-			<ResourcePath Path="Prefabs\CMDRAsh\Wall_InvertedCornerA\DummyBreakerBox" />
+			<ResourcePath Path="Prefabs\CMDRAsh\PowerSystem\BreakerBoxA" />
+		</Definition>
+		<Definition>
+			<SubType>2</SubType>
+			<Name>Wall_BreakerBoxInset</Name>
+			<Components>
+				<Component Name="MeshCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PowerSystem\Wall_BreakerBoxInset" />
+		</Definition>
+	</TileGroup>
+	<TileGroup>
+		<!--Breakers-->
+		<ID TypeValue="225" />
+		<Definition>
+			<SubType>1</SubType>
+			<Name>LightPole1</Name>
+			<Components>
+				<Component Name="MeshCollider"/>
+				<Component Name="IMachine"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\Lighting\LightPole1" />
 		</Definition>
 	</TileGroup>
 </Definitions>

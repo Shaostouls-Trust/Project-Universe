@@ -9,11 +9,48 @@
 			<Components>
 				<Component Name="BoxCollider"/>
 			</Components>
-			<ResourcePath Path="Prefabs\CMDRAsh\ShipFloorA" />
+			<ResourcePath Path="Prefabs\CMDRAsh\Floors\ShipFloorA" />
+		</Definition>
+		<Definition>
+			<SubType>2</SubType>
+			<Name>GrillFloor_Straight1</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\Floors\GrillFloor_Straight1" />
+		</Definition>
+		<!--Floor with ceiling-->
+		<Definition>
+			<SubType>4</SubType>
+			<Name>ShipFloor3mCeiling</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\Floors\ShipFloor3mCeiling" />
+		</Definition>
+		<Definition>
+			<SubType>5</SubType>
+			<Name>ShipFloor6mCeiling</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\Floors\ShipFloor6mCeiling" />
 		</Definition>
 	</TileGroup>
 	<TileGroup>
-		<!--Floor Tiles-->
+		<!--Stairs and ladders-->
+		<ID TypeValue="135" />
+		<Definition>
+			<SubType>1</SubType>
+			<Name>Stairs_LeftHand1</Name>
+			<Components>
+				<Component Name="MeshCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\Floors\Stairs_LeftHand1" />
+		</Definition>
+	</TileGroup>
+	<TileGroup>
+		<!--Empty Tiles-->
 		<ID TypeValue="254" />
 		<Definition>
 			<SubType>255</SubType>

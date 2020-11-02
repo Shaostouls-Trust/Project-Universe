@@ -26,5 +26,16 @@
 			</Components>
 			<ResourcePath Path="Prefabs\CMDRAsh\DevBuilding2\1x2_DoorA" />
 		</Definition>
+		<Definition>
+			<SubType>3</SubType>
+			<Name>1x2_SDoorA</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+				<Component Name="MeshCollider"/>
+				<Component Name="DoorAnimator"/>
+				<Component Name="IMachine"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\Doors\1x2_SDoorA" />
+		</Definition>
 	</TileGroup>
 </Definitions>

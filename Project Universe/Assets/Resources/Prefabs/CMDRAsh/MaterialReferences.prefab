@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3711429487296056363
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3711429487296056357}
+  - component: {fileID: 3711429487296056362}
+  m_Layer: 0
+  m_Name: MaterialReferences
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3711429487296056357
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3711429487296056363}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3711429487296056362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3711429487296056363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91d8b9719776c3a4f8e2fbacc4de7f9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doorMaterials:
+  - {fileID: 2100000, guid: 549844a56f05373439a435ca64a250fe, type: 2}
+  - {fileID: 2100000, guid: 026c6f058f020f143a3b341da4e4e1cd, type: 2}
+  - {fileID: 2100000, guid: 54591f3d4f0e16846a66edaa233a3ac2, type: 2}
+  - {fileID: 2100000, guid: 18108d9e427a64f4d9c92222012aee97, type: 2}
+  - {fileID: 2100000, guid: 2d56a506bd2244947a18a162c7718789, type: 2}
+  - {fileID: 2100000, guid: d2bc0cc926d9c2546bcee92409af3af9, type: 2}
+  displayMaterials:
+  - {fileID: 2100000, guid: d74eadb19a34abc4b954a6c9553e3af0, type: 2}
+  - {fileID: 2100000, guid: b0d755dcc0135af4ab17d1bfc3b212fc, type: 2}
+  - {fileID: 2100000, guid: d87df077edd4f2b4895dfb2988da9038, type: 2}
+  - {fileID: 2100000, guid: e04579757e09b124aa8cde757f3d0a14, type: 2}
+  powerMaterials:
+  - {fileID: 2100000, guid: 348fa516672e8dd408e52a405e1ea12b, type: 2}
+  - {fileID: 2100000, guid: 96b3a9362177fd246b96603f6e2b9905, type: 2}
+  - {fileID: 2100000, guid: 18b62de894915f944bb4811943c83440, type: 2}
+  - {fileID: 2100000, guid: 0933f1de18b3e5a48a84b81ae878fd80, type: 2}
+  - {fileID: 2100000, guid: fd87175983cc1c64db1a8c5693a20742, type: 2}
+  - {fileID: 2100000, guid: 49659668295d89f40b6d27a3e0faa4d1, type: 2}

@@ -150,15 +150,16 @@ MonoBehaviour:
       isFptlEnabled: 0
   m_RenderPipelineResources: {fileID: 11400000, guid: 3ce144cff5783da45aa5d4fdc2da14b7,
     type: 2}
-  m_RenderPipelineRayTracingResources: {fileID: 0}
+  m_RenderPipelineRayTracingResources: {fileID: 11400000, guid: ba6e7f30e5cffc249a8bf7ee5756c196,
+    type: 2}
   m_DefaultVolumeProfile: {fileID: 11400000, guid: 582adbd84082fdb4faf7cd4beb1ccd14,
     type: 2}
   m_DefaultLookDevProfile: {fileID: 11400000, guid: 254c4fe87beb7be4fa72e1681edbed02,
     type: 2}
   m_RenderingPathDefaultCameraFrameSettings:
     bitDatas:
-      data1: 70297877217117
-      data2: 4539628425463136256
+      data1: 70366596693887
+      data2: 4539628425194700800
     lodBias: 1
     lodBiasMode: 0
     lodBiasQualityLevel: 1
@@ -179,21 +180,21 @@ MonoBehaviour:
     materialQuality: 0
   m_RenderingPathDefaultRealtimeReflectionFrameSettings:
     bitDatas:
-      data1: 69622750778125
-      data2: 4539628424389459968
+      data1: 70366596693805
+      data2: 4539628425462874112
     lodBias: 1
     lodBiasMode: 0
-    lodBiasQualityLevel: 0
+    lodBiasQualityLevel: 1
     maximumLODLevel: 0
     maximumLODLevelMode: 0
-    maximumLODLevelQualityLevel: 0
+    maximumLODLevelQualityLevel: 1
     materialQuality: 0
   m_RenderPipelineSettings:
     supportShadowMask: 1
-    supportSSR: 0
+    supportSSR: 1
     supportSSAO: 1
     supportSubsurfaceScattering: 1
-    increaseSssSampleCount: 0
+    increaseSssSampleCount: 1
     supportVolumetrics: 1
     increaseResolutionOfVolumetrics: 1
     supportLightLayers: 0
@@ -209,30 +210,30 @@ MonoBehaviour:
     supportTransparentBackface: 1
     supportTransparentDepthPrepass: 1
     supportTransparentDepthPostpass: 1
-    colorBufferFormat: 74
+    colorBufferFormat: 48
     supportCustomPass: 1
-    customBufferFormat: 12
-    supportedLitShaderMode: 2
+    customBufferFormat: 74
+    supportedLitShaderMode: 3
     supportDecals: 1
-    msaaSampleCount: 1
+    msaaSampleCount: 2
     supportMotionVectors: 1
     supportRuntimeDebugDisplay: 1
     supportDitheringCrossFade: 1
     supportTerrainHole: 0
-    supportRayTracing: 1
+    supportRayTracing: 0
     lightLoopSettings:
       cookieAtlasSize: 2048
-      cookieFormat: 48
+      cookieFormat: 74
       pointCookieSize: 128
       cubeCookieTexArraySize: 16
       cookieAtlasLastValidMip: 0
       cookieTexArraySize: 16
-      planarReflectionAtlasSize: 8192
-      reflectionProbeCacheSize: 64
-      reflectionCubemapSize: 256
-      reflectionCacheCompressed: 0
-      planarReflectionCacheCompressed: 0
-      skyReflectionSize: 256
+      planarReflectionAtlasSize: 4096
+      reflectionProbeCacheSize: 30
+      reflectionCubemapSize: 512
+      reflectionCacheCompressed: 1
+      planarReflectionCacheCompressed: 1
+      skyReflectionSize: 512
       skyLightingOverrideLayerMask:
         serializedVersion: 2
         m_Bits: 0
@@ -242,7 +243,7 @@ MonoBehaviour:
       maxAreaLightsOnScreen: 64
       maxEnvLightsOnScreen: 64
       maxDecalsOnScreen: 512
-      maxPlanarReflectionOnScreen: 16
+      maxPlanarReflectionOnScreen: 22
     hdShadowInitParams:
       maxShadowRequests: 128
       directionalShadowsDepthBits: 16
@@ -270,9 +271,9 @@ MonoBehaviour:
       maxDirectionalShadowMapResolution: 2048
       maxPunctualShadowMapResolution: 2048
       maxAreaShadowMapResolution: 2048
-      supportScreenSpaceShadows: 0
-      maxScreenSpaceShadowSlots: 4
-      screenSpaceShadowBufferFormat: 48
+      supportScreenSpaceShadows: 1
+      maxScreenSpaceShadowSlots: 8
+      screenSpaceShadowBufferFormat: 8
     decalSettings:
       drawDistance: 1000
       atlasWidth: 4096
@@ -283,10 +284,10 @@ MonoBehaviour:
       lutFormat: 48
       bufferFormat: 74
     dynamicResolutionSettings:
-      enabled: 0
+      enabled: 1
       maxPercentage: 100
-      minPercentage: 100
-      dynResType: 1
+      minPercentage: 50
+      dynResType: 0
       upsampleFilter: 1
       forceResolution: 0
       forcedPercentage: 100
@@ -321,24 +322,24 @@ MonoBehaviour:
         m_SchemaId:
           m_Id: 
     maximumLODLevel:
-      m_Values: 000000000000000000000000
+      m_Values: 010000000000000000000000
       m_SchemaId:
         m_Id: With3Levels
     lodBias:
       m_Values:
       - 1
       - 1
-      - 1
+      - 2
       m_SchemaId:
         m_Id: With3Levels
     lightingQualitySettings:
       AOStepCount: 040000000600000010000000
-      AOFullRes: 000001
+      AOFullRes: 000101
       AOMaximumRadiusPixels: 200000002800000050000000
       AOBilateralUpsample: 000101
       AODirectionCount: 010000000200000004000000
       ContactShadowSampleCount: 060000000a00000010000000
-      SSRMaxRaySteps: 100000002000000040000000
+      SSRMaxRaySteps: 200000004000000080000000
   allowShaderVariantStripping: 1
   enableSRPBatcher: 1
   shaderVariantLogLevel: 0
@@ -349,6 +350,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 26bdddf49760c61438938733f07fa2a2, type: 2}
   - {fileID: 11400000, guid: 78322c7f82657514ebe48203160e3f39, type: 2}
   - {fileID: 11400000, guid: faf9682c42d4bb64eb237cec38bcf8e0, type: 2}
+  - {fileID: 11400000, guid: 5d0becc9081392a48a3d4aed35c6734f, type: 2}
   beforeTransparentCustomPostProcesses: []
   beforePostProcessCustomPostProcesses: []
   afterPostProcessCustomPostProcesses: []

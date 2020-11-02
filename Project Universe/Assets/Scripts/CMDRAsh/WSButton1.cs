@@ -5,24 +5,18 @@ using UnityEngine;
 public class WSButton1 : MonoBehaviour
 {
 
-    private MeshRenderer renderer;
+    //private MeshRenderer renderer;
     [SerializeField]
     private GameObject scriptedObj;
     [SerializeField]
     private string type;
+    public GameObject player;
 
-    // Start is called before the first frame update
     void Start()
     {
-        renderer = this.GetComponent<MeshRenderer>();
-        renderer.enabled = false;
+        this.GetComponent<MeshRenderer>().enabled = false;
+        //renderer.enabled = false;
     }
-
-    // Update is called once per frame
-    //void Update()
-    //{
-    //   
-    //}
 
     /// <summary>
     /// Universal linking function to be present in all button classes. A universal backend.
@@ -33,20 +27,25 @@ public class WSButton1 : MonoBehaviour
         {
             case "shutter":
                 shutterButton();
-                Debug.Log("shutter");
+                //Debug.Log("shutter");
                 break;
 
             case "door": 
                 doorButtonOverride(); 
-                Debug.Log("door"); 
+                //Debug.Log("door"); 
                 break;
 
             case "Func0001_Generator":
                 func0001_Generator();
                 break;
+
+            case "Func0002_Generator":
+                func0002_Generator();
+                break;
+            case "ICannonInteract":
+                IMyCannonInteract(player);
+                break;
         }
-        //Debug.Log("Handshake");
-        
     }
 
     //close and lock door, or unlock if locked.
@@ -57,7 +56,6 @@ public class WSButton1 : MonoBehaviour
 
     public void shutterButton()
     {
-        //Debug.Log("nya nya");
         scriptedObj.GetComponentInChildren<ShutterAnimator>().buttonResponse();
     }
 
@@ -66,21 +64,29 @@ public class WSButton1 : MonoBehaviour
         scriptedObj.GetComponentInChildren<PixelMap_Interpreter>().ButtonResponse();
     }
 
+    public void func0002_Generator()
+    {
+        scriptedObj.GetComponentInChildren<PixelMap_ECSInterpreter>().ButtonResponse();
+    }
+
+    public void IMyCannonInteract(GameObject player)
+    {
+        scriptedObj.GetComponent<IControllableWeapon>().ButtonResponse(player);
+    }
+
     void OnMouseOver()
     {
-        if (!renderer.enabled)
+        if (!this.GetComponent<MeshRenderer>().enabled)
         {
-            //Debug.Log("enabled?");
-            renderer.enabled = true;
+            this.GetComponent<MeshRenderer>().enabled = true;
         }
     }
 
     void OnMouseExit()
     {
-        if (renderer.enabled)
+        if (this.GetComponent<MeshRenderer>().enabled)
         {
-            //Debug.Log("disabled?");
-            renderer.enabled = false;
+            this.GetComponent<MeshRenderer>().enabled = false;
         }
     }
 }

@@ -25,7 +25,7 @@ public class AlarmSoundController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Debug.Log(audioClip.ToString());
+        Debug.Log(audioClip.ToString());
         tempClip = audioClip;
         updateParameters();
     }
@@ -39,9 +39,10 @@ public class AlarmSoundController : MonoBehaviour
         {
             Debug.Log("GotPassed");
         }
-        if (SoundLibA.soundParameters.TryGetValue(audioClip.ToString(), out value))
-        {
-            Debug.Log("PAssed");
+        // if (SoundLibA.soundParameters.TryGetValue(audioClip.ToString(), out value))
+        // {
+            SoundLibA.soundParameters.TryGetValue(audioClip.ToString(), out value);
+            Debug.Log("Passed");
             //grab parameters from the dictionary's value list.
             speaker.clip = audioClip;
             speaker.outputAudioMixerGroup = mixer.FindMatchingGroups(value[0])[0];
@@ -52,7 +53,7 @@ public class AlarmSoundController : MonoBehaviour
             speaker.spread = float.Parse(value[5]);
             speaker.priority = int.Parse(value[6]);
             tempClip = audioClip;
-        }
+     //  }
         //configure speaker
         //speaker.outputAudioMixerGroup = mixer.FindMatchingGroups(outputGroup)[0];
         //speaker.volume = alarmVolume;
