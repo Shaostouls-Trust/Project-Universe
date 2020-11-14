@@ -1,178 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!64 &883535894692704117
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9179213592787467992}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4522329988570222493, guid: d1b794f6c0af7b34cad4bbab5017a9a6, type: 3}
---- !u!64 &883535894773814063
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9179213594678757924}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 3977597161343099346, guid: 492960e9f5b69644fb95668018081a76, type: 3}
---- !u!65 &883535894864014532
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9179213594634646987}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.010000003, y: 0.00535, z: 0.014000003}
-  m_Center: {x: 0.0050000013, y: 0.002675, z: -0.0070000016}
---- !u!65 &883535895105674123
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9179213593803735680}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.010300002, y: 0.005, z: 0.014200003}
-  m_Center: {x: 0.005100001, y: 0.0025, z: -0.0071000014}
---- !u!65 &883535895241473799
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9179213593670051340}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.010300002, y: 0.005, z: 0.014200003}
-  m_Center: {x: 0.005100001, y: 0.0025, z: -0.0071000014}
---- !u!64 &883535895324371510
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9179213594155479869}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 3977597161343099346, guid: 492960e9f5b69644fb95668018081a76, type: 3}
---- !u!65 &883535895339512992
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9179213594104688039}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.010000003, y: 0.00535, z: 0.014000003}
-  m_Center: {x: 0.0050000013, y: 0.002675, z: -0.0070000016}
---- !u!65 &883535895732909731
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9179213593222590376}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.010300002, y: 0.005, z: 0.014200003}
-  m_Center: {x: 0.005100001, y: 0.0025, z: -0.0071000014}
---- !u!65 &883535895745766463
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9179213593167854900}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.010000003, y: 0.00535, z: 0.014000003}
-  m_Center: {x: 0.0050000013, y: 0.002675, z: -0.0070000016}
---- !u!64 &883535895886461671
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9179213593576547308}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 3977597161343099346, guid: 492960e9f5b69644fb95668018081a76, type: 3}
---- !u!65 &883535896023617404
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9179213593445668467}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.010300002, y: 0.005, z: 0.014200003}
-  m_Center: {x: 0.005100001, y: 0.0025, z: -0.0071000014}
---- !u!65 &883535896163418480
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9179213592781641847}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.010300002, y: 0.005, z: 0.014200003}
-  m_Center: {x: 0.005100001, y: 0.0025, z: -0.0071000014}
---- !u!65 &883535896224278883
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9179213592708149352}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.010300002, y: 0.005, z: 0.014200003}
-  m_Center: {x: 0.005100001, y: 0.0025, z: -0.0071000014}
 --- !u!1 &1849056110331001864
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,6 +44,179 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &883535896224278883
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9179213592708149352}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.010300002, y: 0.005, z: 0.014200003}
+  m_Center: {x: 0.005100001, y: 0.0025, z: -0.0071000014}
+--- !u!65 &883535896163418480
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9179213592781641847}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.010300002, y: 0.005, z: 0.014200003}
+  m_Center: {x: 0.005100001, y: 0.0025, z: -0.0071000014}
+--- !u!64 &883535894692704117
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9179213592787467992}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4522329988570222493, guid: d1b794f6c0af7b34cad4bbab5017a9a6, type: 3}
+--- !u!65 &883535895745766463
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9179213593167854900}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.010000003, y: 0.00535, z: 0.014000003}
+  m_Center: {x: 0.0050000013, y: 0.002675, z: -0.0070000016}
+--- !u!65 &883535895732909731
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9179213593222590376}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.010300002, y: 0.005, z: 0.014200003}
+  m_Center: {x: 0.005100001, y: 0.0025, z: -0.0071000014}
+--- !u!65 &883535896023617404
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9179213593445668467}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.010300002, y: 0.005, z: 0.014200003}
+  m_Center: {x: 0.005100001, y: 0.0025, z: -0.0071000014}
+--- !u!64 &883535895886461671
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9179213593576547308}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 3977597161343099346, guid: 492960e9f5b69644fb95668018081a76, type: 3}
+--- !u!65 &883535895241473799
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9179213593670051340}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.010300002, y: 0.005, z: 0.014200003}
+  m_Center: {x: 0.005100001, y: 0.0025, z: -0.0071000014}
+--- !u!65 &883535895105674123
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9179213593803735680}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.010300002, y: 0.005, z: 0.014200003}
+  m_Center: {x: 0.005100001, y: 0.0025, z: -0.0071000014}
+--- !u!65 &883535895339512992
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9179213594104688039}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.010000003, y: 0.00535, z: 0.014000003}
+  m_Center: {x: 0.0050000013, y: 0.002675, z: -0.0070000016}
+--- !u!64 &883535895324371510
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9179213594155479869}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 3977597161343099346, guid: 492960e9f5b69644fb95668018081a76, type: 3}
+--- !u!65 &883535894864014532
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9179213594634646987}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.010000003, y: 0.00535, z: 0.014000003}
+  m_Center: {x: 0.0050000013, y: 0.002675, z: -0.0070000016}
+--- !u!64 &883535894773814063
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9179213594678757924}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 3977597161343099346, guid: 492960e9f5b69644fb95668018081a76, type: 3}
 --- !u!1001 &883535894773814061
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -299,22 +299,32 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 48c66496f9133d54b8b8bff634ce4fb8, type: 2}
+    - target: {fileID: -1504981713932161579, guid: 492960e9f5b69644fb95668018081a76,
+        type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 492960e9f5b69644fb95668018081a76,
         type: 3}
       propertyPath: m_Name
       value: Router_SubstationBox_Component1 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 492960e9f5b69644fb95668018081a76,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 492960e9f5b69644fb95668018081a76, type: 3}
---- !u!4 &5276046100717205559 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 492960e9f5b69644fb95668018081a76,
-    type: 3}
-  m_PrefabInstance: {fileID: 883535894773814061}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &9179213594678757924 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 492960e9f5b69644fb95668018081a76,
+    type: 3}
+  m_PrefabInstance: {fileID: 883535894773814061}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5276046100717205559 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 492960e9f5b69644fb95668018081a76,
     type: 3}
   m_PrefabInstance: {fileID: 883535894773814061}
   m_PrefabAsset: {fileID: 0}
@@ -400,10 +410,20 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 45b6572aa9c2fa54981152600a274066, type: 2}
+    - target: {fileID: -1504981713932161579, guid: 0b52852160025fd45bf8a8d5df7e7a90,
+        type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 0b52852160025fd45bf8a8d5df7e7a90,
         type: 3}
       propertyPath: m_Name
       value: Router_SubstationBox_Component4 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 0b52852160025fd45bf8a8d5df7e7a90,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b52852160025fd45bf8a8d5df7e7a90, type: 3}
@@ -501,22 +521,32 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 6f927d9d66c5c674fa83114e5af8f13c, type: 2}
+    - target: {fileID: -1504981713932161579, guid: 376009ad02838de4bb218b31159408d5,
+        type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 376009ad02838de4bb218b31159408d5,
         type: 3}
       propertyPath: m_Name
       value: Router_SubstationBox_Component2 (4)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 376009ad02838de4bb218b31159408d5,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 376009ad02838de4bb218b31159408d5, type: 3}
---- !u!4 &5276046101048012947 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 376009ad02838de4bb218b31159408d5,
-    type: 3}
-  m_PrefabInstance: {fileID: 883535895105674121}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &9179213593803735680 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 376009ad02838de4bb218b31159408d5,
+    type: 3}
+  m_PrefabInstance: {fileID: 883535895105674121}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5276046101048012947 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 376009ad02838de4bb218b31159408d5,
     type: 3}
   m_PrefabInstance: {fileID: 883535895105674121}
   m_PrefabAsset: {fileID: 0}
@@ -602,10 +632,20 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 6f927d9d66c5c674fa83114e5af8f13c, type: 2}
+    - target: {fileID: -1504981713932161579, guid: 376009ad02838de4bb218b31159408d5,
+        type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 376009ad02838de4bb218b31159408d5,
         type: 3}
       propertyPath: m_Name
       value: Router_SubstationBox_Component2 (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 376009ad02838de4bb218b31159408d5,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 376009ad02838de4bb218b31159408d5, type: 3}
@@ -703,22 +743,32 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 48c66496f9133d54b8b8bff634ce4fb8, type: 2}
+    - target: {fileID: -1504981713932161579, guid: 492960e9f5b69644fb95668018081a76,
+        type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 492960e9f5b69644fb95668018081a76,
         type: 3}
       propertyPath: m_Name
       value: Router_SubstationBox_Component1
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 492960e9f5b69644fb95668018081a76,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 492960e9f5b69644fb95668018081a76, type: 3}
---- !u!1 &9179213594155479869 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 492960e9f5b69644fb95668018081a76,
-    type: 3}
-  m_PrefabInstance: {fileID: 883535895324371508}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5276046101231960366 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 492960e9f5b69644fb95668018081a76,
+    type: 3}
+  m_PrefabInstance: {fileID: 883535895324371508}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &9179213594155479869 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 492960e9f5b69644fb95668018081a76,
     type: 3}
   m_PrefabInstance: {fileID: 883535895324371508}
   m_PrefabAsset: {fileID: 0}
@@ -804,10 +854,20 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 45b6572aa9c2fa54981152600a274066, type: 2}
+    - target: {fileID: -1504981713932161579, guid: 0b52852160025fd45bf8a8d5df7e7a90,
+        type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 0b52852160025fd45bf8a8d5df7e7a90,
         type: 3}
       propertyPath: m_Name
       value: Router_SubstationBox_Component4 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 0b52852160025fd45bf8a8d5df7e7a90,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b52852160025fd45bf8a8d5df7e7a90, type: 3}
@@ -905,10 +965,20 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 6f927d9d66c5c674fa83114e5af8f13c, type: 2}
+    - target: {fileID: -1504981713932161579, guid: 376009ad02838de4bb218b31159408d5,
+        type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 376009ad02838de4bb218b31159408d5,
         type: 3}
       propertyPath: m_Name
       value: Router_SubstationBox_Component2 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 376009ad02838de4bb218b31159408d5,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 376009ad02838de4bb218b31159408d5, type: 3}
@@ -1006,22 +1076,32 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 45b6572aa9c2fa54981152600a274066, type: 2}
+    - target: {fileID: -1504981713932161579, guid: 0b52852160025fd45bf8a8d5df7e7a90,
+        type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 0b52852160025fd45bf8a8d5df7e7a90,
         type: 3}
       propertyPath: m_Name
       value: Router_SubstationBox_Component4
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 0b52852160025fd45bf8a8d5df7e7a90,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b52852160025fd45bf8a8d5df7e7a90, type: 3}
---- !u!4 &5276046101686914855 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 0b52852160025fd45bf8a8d5df7e7a90,
-    type: 3}
-  m_PrefabInstance: {fileID: 883535895745766461}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &9179213593167854900 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 0b52852160025fd45bf8a8d5df7e7a90,
+    type: 3}
+  m_PrefabInstance: {fileID: 883535895745766461}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5276046101686914855 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 0b52852160025fd45bf8a8d5df7e7a90,
     type: 3}
   m_PrefabInstance: {fileID: 883535895745766461}
   m_PrefabAsset: {fileID: 0}
@@ -1107,22 +1187,32 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 48c66496f9133d54b8b8bff634ce4fb8, type: 2}
+    - target: {fileID: -1504981713932161579, guid: 492960e9f5b69644fb95668018081a76,
+        type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 492960e9f5b69644fb95668018081a76,
         type: 3}
       propertyPath: m_Name
       value: Router_SubstationBox_Component1 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 492960e9f5b69644fb95668018081a76,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 492960e9f5b69644fb95668018081a76, type: 3}
---- !u!4 &5276046101811024383 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 492960e9f5b69644fb95668018081a76,
-    type: 3}
-  m_PrefabInstance: {fileID: 883535895886461669}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &9179213593576547308 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 492960e9f5b69644fb95668018081a76,
+    type: 3}
+  m_PrefabInstance: {fileID: 883535895886461669}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5276046101811024383 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 492960e9f5b69644fb95668018081a76,
     type: 3}
   m_PrefabInstance: {fileID: 883535895886461669}
   m_PrefabAsset: {fileID: 0}
@@ -1208,22 +1298,32 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 6f927d9d66c5c674fa83114e5af8f13c, type: 2}
+    - target: {fileID: -1504981713932161579, guid: 376009ad02838de4bb218b31159408d5,
+        type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 376009ad02838de4bb218b31159408d5,
         type: 3}
       propertyPath: m_Name
       value: Router_SubstationBox_Component2
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 376009ad02838de4bb218b31159408d5,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 376009ad02838de4bb218b31159408d5, type: 3}
---- !u!4 &5276046101950162016 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 376009ad02838de4bb218b31159408d5,
-    type: 3}
-  m_PrefabInstance: {fileID: 883535896023617402}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &9179213593445668467 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 376009ad02838de4bb218b31159408d5,
+    type: 3}
+  m_PrefabInstance: {fileID: 883535896023617402}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5276046101950162016 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 376009ad02838de4bb218b31159408d5,
     type: 3}
   m_PrefabInstance: {fileID: 883535896023617402}
   m_PrefabAsset: {fileID: 0}
@@ -1309,22 +1409,32 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 6f927d9d66c5c674fa83114e5af8f13c, type: 2}
+    - target: {fileID: -1504981713932161579, guid: 376009ad02838de4bb218b31159408d5,
+        type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 376009ad02838de4bb218b31159408d5,
         type: 3}
       propertyPath: m_Name
       value: Router_SubstationBox_Component2 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 376009ad02838de4bb218b31159408d5,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 376009ad02838de4bb218b31159408d5, type: 3}
---- !u!4 &5276046102074305124 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 376009ad02838de4bb218b31159408d5,
-    type: 3}
-  m_PrefabInstance: {fileID: 883535896163418494}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &9179213592781641847 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 376009ad02838de4bb218b31159408d5,
+    type: 3}
+  m_PrefabInstance: {fileID: 883535896163418494}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5276046102074305124 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 376009ad02838de4bb218b31159408d5,
     type: 3}
   m_PrefabInstance: {fileID: 883535896163418494}
   m_PrefabAsset: {fileID: 0}
@@ -1410,10 +1520,20 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: a6ebf2f7b6672a94693bb8785d9f640a, type: 2}
+    - target: {fileID: -1504981713932161579, guid: d1b794f6c0af7b34cad4bbab5017a9a6,
+        type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: d1b794f6c0af7b34cad4bbab5017a9a6,
         type: 3}
       propertyPath: m_Name
       value: Router_SubstationBox
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: d1b794f6c0af7b34cad4bbab5017a9a6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d1b794f6c0af7b34cad4bbab5017a9a6, type: 3}
@@ -1511,22 +1631,32 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 6f927d9d66c5c674fa83114e5af8f13c, type: 2}
+    - target: {fileID: -1504981713932161579, guid: 376009ad02838de4bb218b31159408d5,
+        type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 376009ad02838de4bb218b31159408d5,
         type: 3}
       propertyPath: m_Name
       value: Router_SubstationBox_Component2 (5)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 376009ad02838de4bb218b31159408d5,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 376009ad02838de4bb218b31159408d5, type: 3}
---- !u!4 &5276046102151856763 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 376009ad02838de4bb218b31159408d5,
-    type: 3}
-  m_PrefabInstance: {fileID: 883535896224278881}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &9179213592708149352 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 376009ad02838de4bb218b31159408d5,
+    type: 3}
+  m_PrefabInstance: {fileID: 883535896224278881}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5276046102151856763 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 376009ad02838de4bb218b31159408d5,
     type: 3}
   m_PrefabInstance: {fileID: 883535896224278881}
   m_PrefabAsset: {fileID: 0}
@@ -1612,10 +1742,20 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: b79bf32dcb86ffd47bd97be8562c2e5b, type: 2}
+    - target: {fileID: -1504981713932161579, guid: cae09871f1253c04b849d9156b0f5f87,
+        type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: cae09871f1253c04b849d9156b0f5f87,
         type: 3}
       propertyPath: m_Name
       value: Router_SubstationBox_Component3
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: cae09871f1253c04b849d9156b0f5f87,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cae09871f1253c04b849d9156b0f5f87, type: 3}

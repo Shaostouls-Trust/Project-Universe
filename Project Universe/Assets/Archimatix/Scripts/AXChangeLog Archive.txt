@@ -1,0 +1,848 @@
+﻿
+1.0.10
+Features
+- Altered node graph edtior colors for the Personal skin.
+- Return of the displaying of unselected shapes.
+- Ability to automatically split concave Shapes into a seris of convex Shapes.
+Fixes
+- Fixed a bug where, under certain conditions, a Null Reference error would disable the node graph editor.
+- Fixed a bug where a change to the runtime system was not reflected in the controller generator script.
+- Fixed a .Net 4.6 error by reverting the AXGetType function to instantiate generators.
+
+1.0.9
+- Fixed bug where the library was called before it was initialized.
+
+1.0.8
+Features
+- New Deformer Nodes: NoiseDeformer, TaperDeformer, DomicalDeformer, TwistDeforemer, PlanDeformer, InflateDeformer 
+- Added Node and Cell Shapes to PlanRepeater2D (formerly only did Corner Shapes).
+
+Fixes
+- Fixed PlanRepeater bugs.
+- Corrections to rail uprights in LighthouseBase.
+
+
+1.0.7
+Features
+- Subdivision parameter added to nodes. 
+- Channeler now has an "All" channel, which combines all of the channels
+- Grouper will now add input meshes that are have no dependents inside the Grouper (re-adding the original functionality of the Grouper to the newer Groupees)
+- Added offset to JitterTool
+- Added Open node Graph button to the Model Inspector
+- Pro: DomicalDeformer Beta
+
+Fixes
+- fixed a bug where extra topCaps were created on Meshers.
+- fixed a bug where materials were not immediately updating after being modified in the Inspector.
+- fixed bug that expressed itself in the RicketyStairs
+- fixed a bug where rutime handles were not appearing.
+- fixed null-ref error in PlanRepeater
+
+
+1.0.6
+- Features
+-   New Runtime tutorial: http://www.archimatix.com/manual/runtime-archimatix-for-artists
+-   Runtime: Added auto-generate controller button to AXModel Inspector
+-   Runtime: Created template file for runtime Controller
+-   Extrude: LipEdgeBottom added; LipEdges can now be negative. 
+-   Added AXRuntimeController base class
+
+- Fixed
+-   respelled initiateRipple_setFloatValueFromGUIChange
+-   setParameterValueByName now initiates Ripple (e.g. in the “set” turtle command).
+-   changed Align_x to Align_X in Generators2D
+
+1.0.5
+Features
+Runtime Archimatix:
+- Expose a parameter to the model interface to make available for runtime GUI [Beta]
+- Runtime proxy parameters can now be edited.
+- Handles can be exposed for runtime.
+Node Graph Editor
+- The Channeler node now has a Channel parameter to let you set which of the input meshes is output.
+- Return of the ShapeOffsetter node to the sidebar menu.
+- Relation Edit Window now appears automatically when you select a Relation connector.
+- When dragging a parameter output, inputs of the same node become inactive as do inputs of other types.
+- Added buttons to move parameters up and down in the Controls list.
+TurtleScripting: 
+- Nested conditionals and loops are now supported.
+- Loops have a counter variable specified as the 2nd argument, e.g., loop 3 i
+Library: 
+- Optimizations for faster entry into Play mode and saving and deleting library items.
+- Added a description field to libraryItem (and AXNode).
+- Now uses relative file locations for maximum portability.
+- You can now choose that a library item not be displayed in the sidebar of the node graph editor window.
+- Improved GridView (though still needs some optimizations).
+- Editing now in ListView.
+Custom Nodes: 
+- Can now set parametricObject.thumbnailState to Open or Closed.
+- Can implement  the ILogic interface to expose logic textarea in node palette.
+- Can set 2D thumbnail line color woith parametricObject.thumbnailLineColor.
+- Generator Init() now called after gernerator has ParametricObject reference.
+
+Fixes:
+Runtime: Fixed several runtime memory leaks.
+Handle name textfield was initializing with text from the logic window.
+DifferenceRail now ensures that all resulting segments are in the direction of the source shape.
+Fixed a bug where custom nodes without an nodeicon were not displaying in the sidebar.
+Fixed axis Orientation bug for combined meshes.
+Thickened shapes had a missing face when the source shape was open.
+Specific namespace calls to UnityEditor.Tools to avoid asset conflicts.
+Control-delete deletes a word when editing a textfield instead of its node.
+Empty relation expressions were throwing an error when copying and pasting.
+Double-clicking a textfield in Grouper no longer closes it.
+PlanRepeater: The end corner placement of an open plan are correctly oriented now.
+ShapeMerger: clipping open shapes in DifferenceRail and IntersectionRail now works.
+
+
+
+1.0.4
+Features
+Added zoom level display at t
+he lower left corner of the node graph window.
+Extruder now has a subdivision parameter called "Segs" in preperation for the upcoming Deformer nodes.
+Relation Expressions may not be blank to make them uni-directional Relations.
+The Enabled parameter is now relatable so that nodes can be turned on and off from a controller such as a Grouper.
+Added zoom level display at the lower left corner of the node graph window.
+New node: Channeler - takes mutliple mesh inuts and allows for a rule set to be entered into the logic field.
+Added Parameter type String.
+Advanced AX: Added an isEven(pName) function to Turtle Script
+Advanced AX: Custom node classes (Subclasses of Generator) are now discoverable by Archiamtix. See: http://www.archimatix.com/manual/creating-custom-nodes
+Advanced AX: Added customeNodeGUIZones for custom node developers.
+
+Fixed 
+Middle points in FreeCurve are working again. And in Unity 5.5.
+Finished namespace encapsulating 3rd-party libraries to avoid conflicts with other assets.
+Setting the default material for a model caused it to disappear temerarily from the Scene View.
+Boolean relation connections were not being displayed.
+Turtle Scripting: sin and cos functions in turtle scripting
+Turtle Scripting: modulo function is now working in tutle script
+Turtle Scripting: Logic Refresh button works
+Turtle Scripting: Logic window no longer loses focus unexpectedly
+Turtle Scripting: Fixed a bug with the turtle script loop
+
+1.0.3
+Features
+Reversed the top edge Extrude handle behavior. By default the handle controls bevel radius and while holding the alt/option key down controls taper.
+Added Node Graph zooming with RMB in addition to scrollwheel.
+FlipX now works for shape parameters.
+Parameter number fields now expand with the node windows.
+Beta version of a new node called Lander, which stamps a building footprint in a Unity Terrain.
+
+Fixes
+Copy and paste bug in logic text area, expression fields and float fields.
+Wandering node graph camera has been fixed.
+Instancing a Grouper while it is open no longer causes a cycle.
+Removed references to depricated Handle calls which threw warnings in Unity 5.6.
+An un-handled GUI.Label state was causing the Unity ColorPicker and other GUI items to have bad label widths.
+Scene handles no longer are super-scaled when Parametric Object is scaled.
+Wrapped 3rd-party ibraries in custom namespaces to avoid conflicts with other assets.
+Deleteing a Shape node and then clicking on ShapeMerger in the node menu created a dangling connector to the location of the deleted node.
+
+1.0.2
+Fixes
+A UnityEditor calls in core runtime files were causing an error on project build.
+Middle mouse button no longer selects AX objects.
+Long scene save times fixed. No delay on save scene. Saving a library item is also faster now.
+Fixed Material inheritance bug where, if a node had a downstream node connected, it would not update a material change.
+
+1.0.1
+Features
+Added a Physics foldout to the MaterialTool node so that that node could specify a PhysicMaterial and a "density." The density is used to set the mass of any mesh created based on the meshe's volume.
+New Node: Physics Joiner - groups input nodes together physically using FixedJoints, essentially making a concave mesh collider.
+New Turtle script command: closed true/false
+Added a checkbox for Mesh Renderer to the Inspector so that generated object can act as a collider only.
+BETA NODE: Terrain Deformer
+Added Terrain input fields to PlanRepeater
+
+Fixes
+After editing a parameter field using keystrokes, clicking on the scene view window would temporarily hide the model.
+When when clicking on the new MaterialTool node button on the node palette, the texture was not responding to the controls until after a scene save.
+When a MaterialTool was deleted, the the parametric object was no longer inheriting texture control values from downstream.
+PrefabInstancer can now works in PlanRepeater.
+Error thrown in some cases when deleting a light from the scene.
+Can now make a Prefab with an AXModel that features a PrefabInstancer (thanks to Enoch)
+Adjusted Personal Skin colors to accentuate selection highlights.
+Fixed recent bug with errors cast when opening Transforms foldout on any node.
+Reinstated pan and zoom animation in the Node Graph Editor window
+New nodes appear in more predictable places
+Cut and paste distinguishes between text in fields and copy/pasting nodes themselves.
+Introduced a delay in KeyUp builds  in number fields that were causing slow downs when entering several numbers.
+
+1.0.0
+Archimatix is released!
+
+
+0.8.35.2
+Added RedSHip and WhiteShip scenes to the demo Scenes folder. 
+
+0.8.35.1
+Changed PlanRepeater node icon to be more like other repeater icons.
+Added IncrRots to PlanRepeater
+GridRepeater2D now takes Edge_Count into consideration to create a courtyard or a rectangular void in the center.
+Adjusted sizing of Node Graph Editor Window stats labels
+
+0.8.35.0
+Fixed a bug in the when boundsCombinator is used in Repeaters
+Modified ProgressiveRotation in Repeaters to be IncrRot (incremental rotation) in three axes.
+Fixed various bugs relating to dragging nodes in and out of groups
+Added a Library item called Bookcase.
+Added sample scene VillaRomano.
+
+0.8.34.9
+Removed flicker when dragging a Scene View Handle on a large model.
+Fixed bug where Plansweep was not displaying the Plan handles in the correct orientation.
+
+0.8.34.8
+Fixed a bug where the midpoint of Shape segment was generating too many points if it was being displayed by a downstream consumer.
+Changed the default behavior of FreeCurve: when you finish clicking out the curve points, if they were made CW, it reverses the curve.
+Added demo scene for Villa Apresto
+Added demo scen for Skyplatform
+
+0.8.34.7
+Fixed a bug in how bounding meshes were calculated for FloorRepeater.
+Fixed a bug in PlanRepeater where it was not finding breakAngles that were negative.
+
+0.8.34.6
+Added a new node: PlanRepeater2D
+Fixed a bug where a crash would occur when creating a Grouper in side a Grouper if the outer Grouper was selected.
+Fixed a bug with copy and paste in Grouper
+Fixed snapping tool bug for the bounds handles
+
+0.8.34.5
+Node Graph Editor: Fixed a bug where in some case a node would mysteriously pop out of a Grouper.
+Node Graph Editor: When clicking on the bread crumb trail of Groupers in the top menubar, the node grraph window frames the newly selected group better.
+Changed default Material to AX_GridPurple
+Improved framing logic for when creating new nodes.
+
+0.8.34.4
+Node Graph Editor: Allowed pasting text into TextFields in the node palettes.
+Fixed a crash when editing a node inside a group that is connected to a material outside the group via a proxy.
+Update various Library items to reflect the renaming of the Extrude parameter "Insides" to "Backfaces"
+
+0.8.34.3
+NodeGraphEditor: The summmary stats count for the selected model is now accurate
+Optimization: Improved the generation loop to reduce lag, increase speed and allievete an occasional blip while dragging a slider.
+
+0.8.34.2
+Grouper: Implimented connections via the addition of proxy parameters for dropping into a Grouper and poping a node out of a Grouper.
+
+0.8.34.1
+Fixed a bug with the placement of the footer menu in SceneView.
+The Prefab and Stamp buttons are now disabled when the model does yet generate a mesh (e.g., when only Shape nodes are present).
+Reverse in a Shape parameter now works allowing one to easily invert a mesh
+Box Primitive: Fixed a bug where the Aligns were not funtioning when distributed by Repeaters
+GridRepeater: Fixed a bug in the placement of SpanV items
+NodeGraphEditor: Fixed a bug where the drop zone on a group node was not responding.
+NodeGraphEditor: Dropping a node into a group that had connectors through a proxy into the group now rewires appropriately
+AXModel: Fixed a bug where editor utilities were being referenced causing a Unity build errors.
+
+0.8.34.0
+Major optimization that allows for realtime editing of "heavy" AX objects (especially on a MacBook Pro where there is editor throttling). Thanks to brainstorming with mangax!
+Extrude will now invert the caps if Insides is checked.
+
+0.8.33.9
+Further refinements to Grouper workflow.
+
+0.8.33.8
+Grouper now has a drop zone that appears when dragging any node in the graph. 
+THe Robot Kyle billboard has returned with a GUI Toggle at the bottom of the SceneView to turn him on and off.
+
+0.8.33.7
+More GUI tweaks thanks to S.Darkwell! 
+Fixed a bug introduced in 0.8.33.5 that ran the CPU up to 80% even while idle. Most noticible in snappier node movement.
+
+0.8.33.6
+Numerous GUI tweaks based on excellent feedback from S.Darkwell (most, but excluding the Library window)
+Node Graph Window: Fixed minor bug wih rectangular selection
+Node Graph Window: Now dragging nodes ignores snapping until mouse up.
+
+0.8.33.5
+Modified the when the test for a version change happens to pop up the about window automatically.
+Modified node graph: node palettes highlight box dimmer and behind input and output sockets; background grid lighter; node framing does not zoom in as much.
+Material Tool scale now multiplies against the Unity Material Tiling parameter
+
+0.8.33.4
+Fixed bug where rubberband select would select subnodes currently hidden in a closed grouper
+The active rubberband select will deselect nodes that fall outside the changing rectangle.
+Graphical finessing of node pallete colors and transparency
+Node palettes now snap to grid.
+
+0.8.33.3
+Expanded width of axis orientation button next to the Transformation foldout on the node palette.
+
+0.8.33.2
+Fixed an error thrown when clicking on a Mesher that had a FreeCurve as input. 
+Remove the buttons to set FreCurve editing mode to "add Point" or "Done". To exit AddPoint mode, noe hit ESC or Return/Enter
+
+0.8.33.2
+The About Archimatix window should now pop up as soon as you install AX for the first time into a new project.
+
+0.8.33.1
+Added new fixes for the missing Inspector Icons and the Mismatched Layout errors the Inspector was generating.
+
+0.8.33.0
+Fixed an error generated in OnInspectorGUI where the autobuild would change the layout between a given frame's OnInspectorGUI calls.
+Fixed a bug whereby typing in a numerical field in the Inspector would not rebuild the model.
+
+0.8.32.9
+Circle segs handle is now cyan.
+Fixed a bug in the Personal Skin GUI where node icons were not showing in the Inspector.
+Re-oriented the BasicStair Library item for the default ScenView orbit with X-axis to the left and Z-axis coming toward the camera.
+Fixed bug where the snapping GUI controls were displaying at midheight on Windows.
+
+0.8.32.8
+Changed the default turtle direction from 0 to 90 in the Shape scripting API
+
+0.8.32.7
+Fixed a bug where, if the Library loaded first, it would not have the correct asset path.
+Optimized the LibraryEditorWindow where it was calling a loadAssets for he shadow images in OnGUI().
+Reverted Shape logic script so that it can't use commas as argument seperators, since that interfered with function argument seperators. 
+
+0.8.32.6
+Added new original materials MedievalWall, MedievalWallStone, Wood01
+Made adjustments to Generator::getConsumerMatrix to fix selection bug introduced when fixing the graph cycle crash from the last build.
+Now allow commas in Shape logic script
+Turtle function bezier now leaves the direction set to the tangent of the end of the curve.
+
+0.8.32.5
+StartupWindow now has a link to the QuickStart Guide PDF.
+Reconfigured how the StartupWindow works. Removed AssetDatabase calls from the constructor. 
+Cycle-select now includes the AXModel itself in the cycle. Now clicking repeatedly on an object cycles you through all the downstream consumers until the model itself is selected.
+Fixed a graph cycle crash when clicking on a Groupee that has links to a pass-thru parameter in the Grouper by adding a condition to Generator.getConsumerMatrix to ensure that the selectedConsumer of the Groupee was not the Grouper.
+Library shows only 2D or only 3D at one time. 
+Library Search will now display no results if the search string yields no hits.
+Framing a selected object will still frame the node in the Node Graph Editor Window, but will not focus the window.
+
+0.8.32.4
+Change the Snapping key temporary toggle to the control key instead of command/windows
+Snapping is off by default.
+Possible fix to the intermittant Layout errors in the Inspector
+Fixed error messages when the height of the stair is taken down to zero (there's still a warning).
+Fixed Handle title editing in node palette.
+
+0.8.32.3
+Returned to the original behavior of connecting a Shape to an input that already has a Shape connected. Now it once again automatically inserts a merge between. Press command/windows to replace SHape.
+Delete three library items that were too old to work in the current version.
+
+0.8.32.2
+Fixed: Hitting [Space] key in AX Graph with at least one node but no nodes selected causes ArgumentOutOfRangeException
+
+0.8.32.1
+Deleted Concrete_07 that was causing import errors.
+
+0.8.32.0
+New beta testers invited in... Welcome!
+
+0.8.31.9
+Fixed a bug with fixedHeights for Buttons
+Grouper boundary handles now show only if the Size parameters are related to another parameter or if they have expressions defined for them.
+
+0.8.31.8
+Added snapping to most point controls
+Added to the Library: ColonialStair, RicketyStaircase, SciFiRamp, SciFiPlatform
+Added Demo Scenes: MeshingAroundand SciFiPlatform
+Fixed bug where FreeCurve handles were not using local transformation
+
+0.8.31.7
+When you add a library item, the item is now framed
+Fixed search and filters in the Library
+Fixed bug in PairRepeater2D for when zAxis is true, it does the proper separation.
+Fixed bug in PairRepeater where it threw a null ref exception when connecting to the PairRepeater icon in the sidebar menu.
+Added Start and End to the StairRepeater and its handler to allow the start of the repeat to be dragged as well.
+GeneratorHandler, added an adjustWorldMatrices() to drawBoundsHandles to force an update when dragging Bounds Handles (e.g., on Grouper).
+
+0.8.31.6
+Added preliminary ability to drag a node outside of a Group by dragging it to the left of the Grouper node.
+
+0.8.31.5
+PrefabInstancer now works in PairRepeater
+Grouper material is now inherited by Groupees.
+Reduced the calls to AXModel.remapMaterials(), making some operations such as delete node more efficient and fixing an infinite loop editor crash in certain cases.
+Fixed the boundsMesh count in FlooorRepeater to be either the number of floors or stories, but not the addition of the two (fixed CombineInstance null warnings).
+
+0.8.31.4
+Shifted wordDisplayMatrix from Generator to ParametricObject so that it can persist through cleanGraph.
+Fixed bug in Grouper generateNow by making visitedPOs a model member rather than a ref passed in recursive call.
+Added FrameSelected to sub group items so their Grouper becomes the currentWorking Group.
+
+0.8.31.3
+Clicking FreeCurve points in Add Point mode now snaps to grid as well.
+
+0.8.31.2
+Fixed various bugs with unhighlighted curves not displayed. Added AdjustWorldMatrices to cleanGraph.
+
+0.8.31.1
+Substantial change to the selection system. Now relies more on ArchimatixEngine.OnSceneGUI rather than on ArchimatixEngine.Update. The custom control is always 0 now.
+
+0.8.31.0
+Implimented editing on multiple selections of FreeCurves
+
+0.8.30.9
+Fixed bug in PairRepeater2D so that it dispalys the handles of its input shapes
+
+0.8.30.8
+FreeFormCurve create.
+
+0.8.30.7
+PrefabInstancer node created.
+
+0.8.30.6
+Extrude: Reworked bevel handles.
+
+0.8.30.5
+Extrude: Fixd bug where each sub-extrude of a merged mesh was including all the sub-extrude meshes generated before it. Huge optimization for complex shapes.
+
+0.8.30.4
+NodeGraphEditor: Modified how panning works. Nolonger panToPO, but now panToRect
+NodeGraphEditor: Framing now Zooms as well.
+NodeGraphEditor: SelectAll bow selects all visible nodes, framing then frames them
+NodeGraphEditor: When nothing is selected, Frame will selectAll and then zoom and center
+Fixed: Bug where the Reverse checkbox was overlapped by the break sliders above.
+
+0.8.30.3
+More fixes Grouping: added getUpstreamSourceParameter() to get Meshes and Tools, since they are not modified along the daisy chain.
+
+0.8.30.2
+More fixes Grouping: Decided not to use pass-thru, but rather make sure that Grouper interface proxy parameters are calculated before groupees are generated. Also no PO will execute its own group ancestor.
+
+0.8.30.1
+Some fixes to Pass-thur parameters for getting source parameters. Instead of always getting P_Input.DepndesOn, use getUpstreamSourceParameter(P_Input)
+
+0.8.30.0
+Began Restructuring how groups work. 
+
+0.8.29.1
+More refinements to rubberband selection.
+Fix for a bug where ShapeDistributor would alway turn itself to a Closed shape when connected to a Mesher
+
+0.8.29.0
+Refinements to rubberband selection.
+Highlight outline added to node palettes.
+
+0.8.28.9
+Multiselect with rectangular bubberbanding now working in the Node Graph Editor
+Node connectors can now be selected by clicking on them. 
+Once a Relation is selected, the normal Delete keys will delete them. Also - space bar to edit a selected relation expression.
+Removed feature whereby a ShapeDistributor would be automatically inserted when connecting a Shape output to a second node.
+
+0.8.28.8
+MOdified code to allow for absence of Node Graph Editor.
+Fixed bug inGridRepeater where the Bounding Shape was turned up 90 degrees
+Adding control to GridRepeater where you can choose the Bounding Shape to be a void.
+
+0.8.28.7
+RadialRepeaterTool: Set the miniimum radius to 0 instead of .1
+Began seperating out NodeGraphEditor files into new folder to allow for version of AX without editor.
+When showing Inputs, the nodes appear closer to downstream node. Solved issue where RepeaterTool opened far across the canvas.
+Add more Undo registrations
+
+0.8.28.6
+Arts and Crafts Chair included in Library, added to Unity GameObjects menu.
+Calling a parametric object from the Unity menu now makes a new AXModel each time.
+
+0.8.28.5
+Fixed crash when saving prefab on certain MacOS machines by removing the waiting Popup dialog box.
+
+0.8.28.4
+Node isActive switch has been implimented.
+Fixed Circle Library Item to have the correct number of segs.
+
+0.8.28.3
+More fixes to Generator namespace references.
+Fixed NullRef Exception that resulted from the namespace fixes.
+
+0.8.28.2
+More fixes to Generator namespace references.
+Adjustments to Extrude bevel Handles
+Extrude is now bevelOut=false by default, since this is the more common case.
+
+0.8.28.1
+Fixed a bug with the number of segments in a 2D Shape curve. 
+Fixed namespace conflict with another assetstore extension calle DunGen by adding the namespae prefix to calls to the class Generator
+General improvements to the workflow of relating parameters.
+
+0.8.28.0
+GrouperHandler no longer automatically displays the Handles of upstrem nodes, avoiding clutter and optimizes SceneView framerate.
+Fixed float parameters adhere to min values (still need to add editing of min/max to parameterGUI)
+Extruder: Fine-tuned secion controls and added independent top and bottom radii as well as lip
+
+0.8.27.9
+Optimization in 1. when thumbnails are rendered and 2. calling  adjustWorldMatrices only from alteredHeadPOs instead of on FloatRipple
+
+0.8.27.8
+Groupers now have sizing boxes.
+Compile warnings removed.
+
+0.8.27.7
+Fixed the "count <= std::numeric_limits<UInt16>::max() UnityEngine.Mesh:CombineMeshes(CombineInstance[])" error when making object bounds.
+
+0.8.27.6
+Node Graph: Fine-tuned the Open Shape/ClosedShape icons in the node palettes.
+Material: Modified workflow for a model's default material
+Lighting: Made all new nodes LightmapStatic by default.
+Pair Repeater: Fixed a minor bug where the left item was rotated 180 degrees.
+
+0.8.27.5
+Changed where SecondaryUVs are generated in the pipline. Bake noise is now fix.
+
+0.8.27.4
+General Optimizations.
+Fixed Plan Repeater bug where transforms for the PlanRepeater were doubled on ints inset extrudes.
+
+0.8.27.3
+Fixed an issue whereby going into Play mode removed GI lightmaps
+General alterations to lightmapping specification workflow.
+
+0.8.27.2
+Fixed bug with PairRepeater. Ramp and StairWithLandingAndSides are working again
+
+0.8.27.1
+Fixes to PlanRepeater to allow for Rail inputs.
+Fixed Mac crash on Play, Prefab creation and Scene Load.
+
+0.8.27.0
+PlanRepeater: Node and Cell Meshes are now repeated.
+Lathe: Fixed unexpected beavior with low segment counts. Known Issue: shape merged shapes do not work in Lathe. 
+
+0.8.26.9
+Splines: No longer removing last point if similar to the first point. Reconfigured Meshers to adapt to this.
+Fixed: Scaling figure billboard code gave build error.
+PlanRepeater: various features added and improved. Still not ready for testing.
+
+0.8.26.8
+Progress on PlanRepeater: spanSplines
+
+0.8.26.7
+Fixed: More JoinType conflicts.
+
+0.8.26.6
+Fixed: Conflict with AXGeometry.Utilities (?) and some missed JoinType calls.
+
+0.8.26.5
+Fixed: Conflict with JoinType (?)
+
+0.8.26.4
+Fixed: Precision error when Shapes were very small by changing point merging distance for polygon cleanup.
+Fixed: Error from AXSceneViewBillboard when building.
+
+0.8.26.3
+Fixed: Bug where the "Bay SpanU" to LinearRepeater was not responding properly to Terrain if the LinearRepeater node was transformed.
+Fixed: Bug in PlanSweep where the end bevels were skewed when the should haveb been perpendicular to the last segments.
+PlanRepeater: Still not ready, but now takes a Section for making PlanSweepes around corners (alpha version)
+
+0.8.26.2
+Lathe: Radius is now zero by default. THis helps for making Domes
+Shape Library: Added GothicArcOpen - great as a dome section for a Lathe - the top will always be a the center of a Lathe
+PlanRepeater: Still not ready, but now adds corner Meshes (alpha version)
+
+0.8.26.1
+Fixed: Checkboxes for Parameters displayed in the Inspector are working.
+
+0.8.26.0
+Inspector: Now features the controls of the selected nodes. 
+StaticFlags: In the Inspector view fr a node you can now set the StaticFlags of the generated GameObjects.
+Tags: In the Inspector view fr a node you can now set the Tag of the generated GameObjects.
+Layers: In the Inspector view fr a node you can now set the Layer of the generated GameObjects.
+
+0.8.25.9
+Warnings: Current warnings have been erradicated.
+Fixed: bug in the loading of ui/NodeIcons if old filenames were still present.
+Fixed: bug where if a mesh had more than the Unity limit of 65K vertices, the NodeGraph would freeze.
+Shortcuts: Added Windows shortcuts to Node menu
+NodgeGraph: The stats in the footer of the NodeGraph window now always show the totals for the model.
+
+0.8.25.8
+Library: Added Save to Library Folder in node menu. This allows you o place the item in the folder of your choice.
+Library: Save now has memory of the last folder you saved to. Most library saves will not require a Save File Popup Panel as a result.
+Library: You can now rename a file in the Save Panel Popoup if an item of that name already exists.
+Unity Menus: Started a new menu item at Game Objects>3D Objects>Archimatix Objects... will place select library items to call up with no need for the GraphEditor (for beginners)
+
+0.8.25.7
+Fixed: Error in numeric input field validation on Windows.
+Fixed: positioning of Prefab Dialog Window.
+Library: Now Save to Library places items automatically in Assets/ArchimatixLibrary. 
+
+0.8.25.6
+Possible Fix: PrefabScreen error in Windows 10
+
+0.8.25.5
+Fixed: Errors in names of ui icons.
+
+0.8.25.4
+Fixed: Bug where non-numeric characters could be entered into FloatFields and IntFields.
+Fixed: Bug where a ShapeMerger still showed an output shape after its source shapes were deleted.
+Fixed: Bug where node thumbnails appear too dark in linear color space. They should also look a little cleaner now.
+System: ui textures now have prefixes to sort them to the end of the Select Texture window.
+System: Library thumbnail textures now have prefixes to sort them to the end of the Select Texture window.
+
+0.8.25.3
+Nodes: LinearRepeater2D added
+Nodes: PairRepeater2D added
+Nodes: RadialRepeater2D added
+
+0.8.25.2
+Nodes: Added Instance2D
+
+0.8.25.1
+Fixed: GridRepeater2D no longer gives a NullRef when copy and pasted.
+Scaling Billboard: Fixed a bug where the scaling billboard would jitter rotationally when orbiting the ScenView camera.
+Node Menu: Temporarily removed "Replicate"
+
+
+0.8.25.0
+Fixed: Bug related to the name change of the Node "ShapeRepeater2D" to "GridRepeater2D". Older scene should be compatible now.
+
+0.8.24.9
+Graphics: Fixed a bug in Thumbnail rendering where the default reflection probe was made in active. 
+Optimization: Removed the Repaint calls at the end of NodeMenu and Library menu. These repaint were responsible for double-digit CPU % while idling in the NodeGraph editor.
+Validation: In Turtle command parsing, now asserting a minimum radius of .05f in arcl and arcr to avoid errors due to IntPoint precision that resulted in zero points.
+Validation: Turtle segs can be less than 1 per 120 degs. THis way and circle can't be less than 3 segs.
+Fixed: bug where an AXModel gameobject was added to the scene on Save if there were no models in the scene at the time of Save. 
+
+0.8.24.8
+NodeGraphEditor: Fixed layourt ot accomodate changes in Unity 5.4b20. SHould be backward compatible
+NodeGraphEditor: Added Archimatix version number to header
+Validation: Added validation to Transformation parameters as they are polled in generators.
+Repeaters2D: Changed name pf ShapeRepeater2D to GridRepeater2D to allow for addition of LinearRepeater2D and RadialRepeater2D
+Repeaters2D: Repeaters2D can now have Node and Cell Shape input in the same node.
+Repeaters2D: Known Issue -  can't rotate a GridRpeater2D
+StartUp Screen: Added version number under banner. 
+
+0.8.24.7
+SceneView: RobotKyleBillboard added automatically as a default scaling figure. 
+NodeGraphEditor: GUI improvemnts
+
+0.8.24.6
+NodeGraphEditor: Moved upper menu items for graph display to the bootom and made them icons with tooltips
+
+0.8.24.5
+Fixed PC bug with saving Prefabs
+
+0.8.24.4
+Fixed bug with duplicate but hidden relations that remained active after a visible link was deleted.
+
+0.8.24.1
+Fixed a bug when saving a Prefab on Windows.
+
+0.8.24
+ModelOutput: Prefab button! (Meshes are added to Assets)
+ModelOutput: Stamp button (as opposed to Prefab, meshes are in-scene only)
+Lightmapping: Based on @Sarum's observation of Gaia practices, Auto lighting remains on, but no there is a "LightMap Static" button for a model
+Lightmapping: Button for adding Lightmap Baking UV's 
+NodeLogic: Mapped most of the functions from the Mathf library.
+General Bug Fixes to NodeGraph UI: Many thanks to S.Darkwell for plumbing the editor source to isolate some UI bugs, not the least of which was the long-standing and very annoying copy and paste in the logic window.
+
+0.8.23
+RadialRepeater: Complete make over, new Handles and parameters, better defaults.
+Lathe: Added scene view handles and fixed some Null Reference bugs.
+Extrude: Fixed bug where Top Cap Material addtion caused the top cap collider to fail.
+Repeaters: All Repeaters now have a Terrain input field to specify which Terran, if any, they should adjust their Y-translation to.
+Node Palette: Material Input no longer displays the parameters of a connected MaterialTool node, if that MaterialTool node is open.
+Optimization: Fixed bug in the generation system that was having all the subgraphs regenerate instead of those that had changed.
+
+0.8.22
+Meshers: Fix the Extrude TopCap Material bug where it was missing the top collider
+
+0.8.21
+Misc: Started building without DLLs for better debuging and scene saving consistency through Beta II
+Jitter: ScaleJitter is working again. 
+Jitter: Added Jitter to FloorRepeater
+Jitter: Added to ShapeRepeater2D
+ShapeRepeater2D: Better default added when first connecting an input shape
+Fixed: NullEx when disconnecting a Shape from an Extrude connected to a Repeater
+
+0.8.20
+Misc: Major code re-organization to improve update consistency.
+
+
+0.8.19
+NodeGraphWindow: lighten drop shadows for Personal Edition
+
+
+0.8.18
+ShapeLibrary: Rectangle made smaller to overlap better with Circle by default
+PairRepeater: Fixed positioning bug by putting call to the parametricObjects localMatrix on the parent GameObject
+PairRepeater: Adjusted handles to move with its transformations
+PairRepeater: Made the default Separation respond to the size of the node being Repeated.
+Optimization: Added decimation to the thickenAndOffset in Shapes. Still need to consider adjusting this per node and globally
+
+0.8.15
+ShapeLibrary: Gear is now working and centered, and with new handles too!
+NodeGraphEditor: Node thumbnails should dolly on Windows with Ctrl-drag on the icon in the upper right of the thumbnail
+NodeGraphEditor: Delete node with Windows Delete key should work (please test) and general improvments in Windows Shortcuts
+Fixed: Deleting RepeaterTool from ShapeRepeater2D caused Null Ref Error
+Fixed: Lathe.Section connected to another Lethe.Section caused Null Ref Error
+
+
+0.8.1
+GUI: Personal Edition colors adjusted
+
+0.8.0
+Beta II Release!
+
+0.7.8
+Shapes: Roundness feature added
+
+0.5.9
+Shapes: ShapeRepeater2D implemented
+
+0.5.8
+NodeGraphEditor: Sidbar Library Items sorted
+
+0.5.7
+Shapes: ShapeMerge rotation
+
+0.5.6
+Shapes: Shape scaling
+
+0.5.5
+Misc: General SceneView handle fixes.
+
+0.4.5
+ParametricShapes: Further tuned workflow for editing parameters, handles and turtle logic. (Still issues with code scrolling vs. editor zooming)
+
+0.4.4
+ParametricShapes: Tuned workflow for editing parameters, handles and turtle logic. (Still issues with code scrolling vs. editor zooming)
+Misc: Standardized initialization procedures across generators
+Optimization: Reduced Dictionary lookups by adding runtime references
+0.3.8
+Meshers: Added bevel handle to Extrude
+Meshers: To Extrude bevel, added segs parameter for curved bevel and also added Hard Edge checkbox.
+Nodes: Renamed TextureTool to MaterialTool
+MaterialTool: Added a uniform scaling checkbox, set to tru as default.
+NodeGraphWindow: Added Texels-per-Unit display to the MaterialTool nodethat is aware of texture sizes
+NodeGraphWindow: Input foldout stay open more consistently
+
+0.3.7
+NodeGraphEditor: Fix more orphaned connection lines (possibly all?)
+NodeGraphEditor: Sidbar menus noe scroll to include the last item
+NodeGraphEditor: Added 3D library items to left sidebar.
+Lathe: Default for Lathe radius is now tuned to the input Shape (open vs. closed, etc.)
+Lathe: SceneView Handle now does not conflict with Section Shape handles
+
+0.3.6
+Repeaters: Repeaters now adjust to Terrain properly with displacement
+NodeGraphWindow: Added left sidebar menu for 2D Shapes
+
+0.3.5
+Misc: Fixed most orphaned node graph connections 
+
+0.3.4
+NodeGraphEditor: Grapical sidebar node menu
+Misc: Generalized/ refactored Mesher and Repeater code
+
+0.3.0.6
+Misc: Added Scaling to parametric transforms.
+
+0.2.9
+Meshers: The bevel at the ends of a PlanSweep now make more sense.
+
+0.2.8
+Meshers: Added Symmetry to PairRepeater
+NodeGraphEditor: Can now resize the logic coding area in the node palette.
+
+0.2.7
+Meshers: Major revamping of how Meshers create GameObjects. 
+
+0.2.6
+Misc: You can now build a Unity project while Archimatix is in the Assets folder.
+NodeGraphEditor: Fixed bug where the NodeGraphEditor would become unresponsive when the SceneView was not displayed.
+
+0.2.5
+Meshers: Fixed bug where an extruded inner shape from a ShapeMerger would not build as a GameObject.
+Meshers: Possibly fixed bug where some objects ended up outside of "generatedObects" on build.
+NodeGraphEditor: Added "Close Controls" to the node palette menu.
+NodeGraphEditor: Added the node palette menu to Instance and Replicant nodes.
+
+0.2.4
+Misc: Fixed crash when selecting some objects in SceneView.
+SceneView: Improved the alignment of gizmos for selected objects
+NodeGraphWindow: Allowed zoom-in beyond 100% as a trial for UI testing.
+Library: Saved PlanSweep_5 with nodes tidied-up.
+
+0.2.3
+Repeaters: Replicant is now working. shift-Cmd-D generates a Replicant.
+NodeGraphEditor: The popup menu near the top of the node palette is fully funtional.
+
+0.2.2
+Misc: You can instantiate a library item without the graph editor appearing.
+SceneView: Selecting in the SceneView is back. When an item is selected, if the editor window is open, it pans to the node that created the item.
+SceneView: After selecting an item, hiting F frames that item. Also, after selecting a node in the graph editor, F will frame the item in the SceneView. 
+SceneView: Ctl clicking and object in SceneView brings up the contextual output menu.
+Repeaters: GridRepeater adds more objects more smoothly when adjusting overall size in x, y and z.
+Repeaters: Instance is now working. Cmd-D gnerates and Instance while shift-cmd-D makes an independent copy.
+Optimization: Thumbnails saved to Texture2D only when saving a library item. Otherwise a "live" RenderTexture is drawn as thumbnails.
+Optimization: When a node is edited, only it and its "consumers are regenerated, rather than all the nodes in the model.
+Repeaters: Instance is now working. Cmd-D gnerates an Instance.
+
+0.1.8
+NodeGraphEditor: Added thumbnail dolly (hold down command when over the ordit icon)
+NodeGraphEditor: Objects are centered in thumbnail now regardless of the node's transform, axis rotation or alignment
+
+0.1.7
+Mesher: Fixed Extruder bug where model became stuck when sides are turned off and insides turned on.
+
+0.1.6
+NodeGraphEditor: Added ability to orbit thumbnail views
+NodeGraphEditor: Consolidated multiple ParametricObject cameras into one camera attached to the model.
+NodeGraphEditor: Removed all hidden objects in the scene.
+
+0.1.5
+NodeGraphEditor: Pro colors for node palettes reworked.
+NodeGraphEditor: Fixed bug with option/alt-drag to move selected node and all its sub nodes (including those below a ShapeMerger).
+NodeGraphEditor: Optimized Repaint calls for better CPU performance.
+Repeaters: Added fromAngle and to Angle to RadialRepeater.
+Misc: Fixed bug where thumbnail lights were not being turned off after thumbnail was rendered.
+
+0.1.4
+NodeGraphEditor: Fixed thumbnail hidden cameras so they don't conflict with other assets such as Ceto, etc.
+NodeGraphEditor: When a model is added from a library click, it is placed near the center of focus of the graph window and the window pans to center the new node.
+
+0.1.3
+NodeGraphEditor: Added zooming to the node graph EditorWindow.
+NodeGraphEditor: Changed the menu item name "Generator Palettes" to "Nodes".
+
+0.1.2
+NodeGraphEditor: Fixed copy-paste bug where mutiple copies pasted.
+NodeGraphEditor: ⌘D now duplicates.
+NodeGraphEditor: Pasted items are laid out more cleanly.
+NodeGraphEditor: ⌘D now duplicates.
+NodeGraphEditor: When duplicating a Shape, if it has output to a single ShapeMerger, the pasted item will also automatically link to the ShapeMerger as well..
+NodeGraphEditor: Huge optimization so that dragging nodes when there are dozens of nodes in the model is now much faster.
+ShapeGenerators: ShapeMerger now highlights merged shape in SceneView
+Meshers: Boundary of an Extrude is now more accurate
+
+0.1.1
+Repeaters: PairRepeater working 
+Repeaters: PairRepeater, RadialRepeat added to Output context menus 
+
+0.1.0
+Repeaters: RadialRepeater working 
+
+0.0.9
+Misc: Cross-platform Debug for Library loading v. 5. Fixed! 
+
+0.0.8
+Misc: Cross-platform Debug for Library loading v. 4. Uri instead of Path 
+
+0.0.7
+Misc: Cross-platform Debug for Library loading v. 3. Added additional logging 
+
+0.0.6
+Misc: Cross-platform Fix for Library loading v. 2. 
+
+0.0.5
+Misc: Cross-platform Fix for Library loading. 
+
+0.0.4
+Misc: Added Debug logging for Windows OS bug in the Library
+
+0.0.3
+Misc: Fixed bug with PC file system?
+
+0.0.2
+Reconfigured code to isolate Editor api calls from runtime.
+
+0.0.1
+- Misc: First Alpha.

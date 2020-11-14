@@ -1,0 +1,310 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1371493878145358
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4621300840916976}
+  - component: {fileID: 33410040916170948}
+  - component: {fileID: 23470773157760948}
+  - component: {fileID: 64343564480776348}
+  - component: {fileID: 114238880393592390}
+  m_Layer: 5
+  m_Name: RuntimeHandlePrefab_PlanarKnob
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4621300840916976
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371493878145358}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &33410040916170948
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371493878145358}
+  m_Mesh: {fileID: 4300000, guid: 3ef850a28d2564dc5a536356d07f9b57, type: 3}
+--- !u!23 &23470773157760948
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371493878145358}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: bcaec32bceeab4d918f36e254c2748a9, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!64 &64343564480776348
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371493878145358}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300000, guid: 3ef850a28d2564dc5a536356d07f9b57, type: 3}
+--- !u!114 &114238880393592390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371493878145358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ce57d25385414cf8aea07f672b3d37d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  normalColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  highlightColor: {r: 1, g: 1, b: 1, a: 1}
+  selectedColor: {r: 1, g: 0, b: 0, a: 1}
+  P_H:
+    isOpen: 0
+    isOpenInInspector: 0
+    isStowed: 0
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    m_name: new
+    description: 
+    m_guid: 928aff8a-d59c-445b-9be0-878d8ede177d
+    m_type: 0
+    isEditable: 1
+    m_ptype: 4
+    axis: 0
+    lineType: 0
+    exposeAsInterface: 0
+    perlinScale: 1
+    perlinVariance: 3
+    expressions: []
+    val: 0
+    intval: 1
+    colorVal: {r: 0, g: 0, b: 0, a: 0}
+    vector3: {x: 0, y: 0, z: 0}
+    floats: []
+    StringVal: 
+    optionLabels: []
+    animationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    rigidbody: {fileID: 0}
+    boolval: 0
+    m_margin: 0
+    max: 10000
+    min: -10000
+    intmax: 10000
+    intmin: -10000
+    sizeBindingAxis: 0
+    _spline:
+      name: spline
+      key: 
+      isControllable: 0
+      isHole: 0
+      angles: []
+      sharpVertsInside_Count: 0
+      breakAngle: 60
+      uValues: []
+      length: 0
+      isClosed: 1
+      isTriangle: 0
+      isDirty: 0
+      minX: 1999999
+      maxX: -1999999
+      minY: 1999999
+      maxY: -1999999
+      cenX: 1999999
+      cenY: 1999999
+      width: 0
+      height: 0
+      isProductOfBooleanOperation: 0
+      segment_lengths: []
+      curve_distances: []
+    flipX: 0
+    reverse: 0
+    symmetry: 0
+    symSeperation: 0
+    breakGeom: 0
+    breakNorm: 60
+    roundness: 0
+    offset: 0
+    hasThickness: 0
+    thickness: 0
+    seglen: 10
+    subdivision: 0
+    shapeState: 0
+    drawClosed: 0
+    mergeType: 0
+    polyType: 0
+    joinType: 2
+    endType: 0
+    openEndType: 0
+    arcTolerance: 50
+    clipType: 0
+    area: 0
+    volume: 0
+    hasInputSocket: 1
+    hasOutputSocket: 1
+    negativeOfDependsValue: 0
+    dependsOnKey: 
+    dependsOnCurveIsVisible: 0
+    inputGUIPosition: {x: 0, y: 0}
+    dependsOnSrcGUIPosition: {x: 0, y: 0}
+    isDependent: 0
+  P_V:
+    isOpen: 0
+    isOpenInInspector: 0
+    isStowed: 0
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    m_name: new
+    description: 
+    m_guid: 40e9ef41-afd5-449f-aa3b-791ca1895388
+    m_type: 0
+    isEditable: 1
+    m_ptype: 4
+    axis: 0
+    lineType: 0
+    exposeAsInterface: 0
+    perlinScale: 1
+    perlinVariance: 3
+    expressions: []
+    val: 0
+    intval: 1
+    colorVal: {r: 0, g: 0, b: 0, a: 0}
+    vector3: {x: 0, y: 0, z: 0}
+    floats: []
+    StringVal: 
+    optionLabels: []
+    animationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    rigidbody: {fileID: 0}
+    boolval: 0
+    m_margin: 0
+    max: 10000
+    min: -10000
+    intmax: 10000
+    intmin: -10000
+    sizeBindingAxis: 0
+    _spline:
+      name: spline
+      key: 
+      isControllable: 0
+      isHole: 0
+      angles: []
+      sharpVertsInside_Count: 0
+      breakAngle: 60
+      uValues: []
+      length: 0
+      isClosed: 1
+      isTriangle: 0
+      isDirty: 0
+      minX: 1999999
+      maxX: -1999999
+      minY: 1999999
+      maxY: -1999999
+      cenX: 1999999
+      cenY: 1999999
+      width: 0
+      height: 0
+      isProductOfBooleanOperation: 0
+      segment_lengths: []
+      curve_distances: []
+    flipX: 0
+    reverse: 0
+    symmetry: 0
+    symSeperation: 0
+    breakGeom: 0
+    breakNorm: 60
+    roundness: 0
+    offset: 0
+    hasThickness: 0
+    thickness: 0
+    seglen: 10
+    subdivision: 0
+    shapeState: 0
+    drawClosed: 0
+    mergeType: 0
+    polyType: 0
+    joinType: 2
+    endType: 0
+    openEndType: 0
+    arcTolerance: 50
+    clipType: 0
+    area: 0
+    volume: 0
+    hasInputSocket: 1
+    hasOutputSocket: 1
+    negativeOfDependsValue: 0
+    dependsOnKey: 
+    dependsOnCurveIsVisible: 0
+    inputGUIPosition: {x: 0, y: 0}
+    dependsOnSrcGUIPosition: {x: 0, y: 0}
+    isDependent: 0
+  handleGuid: 
+  offPlaneGap: 0.5

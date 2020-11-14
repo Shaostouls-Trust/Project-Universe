@@ -96,14 +96,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da5ab44aadfb1804db5fd470983ac1b8, type: 3}
   m_Name: LiftGammaGain
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   m_AdvancedMode: 0
   lift:
     m_OverrideState: 0
     m_Value: {x: 1, y: 0.9956215, z: 0.98248637, w: 0}
   gamma:
     m_OverrideState: 0
-    m_Value: {x: 1, y: 0.99380803, z: 0.9938079, w: 0}
+    m_Value: {x: 1, y: 0.99380803, z: 0.9938079, w: 0.102920644}
   gain:
     m_OverrideState: 0
     m_Value: {x: 1, y: 1, z: 1, w: -0.0000000013444656}
@@ -402,7 +402,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 953beb541740ddc499d005ee80c9ff29, type: 3}
   m_Name: Fog
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   m_AdvancedMode: 0
   enabled:
     m_OverrideState: 1
@@ -417,8 +417,8 @@ MonoBehaviour:
     showAlpha: 0
     showEyeDropper: 1
   tint:
-    m_OverrideState: 0
-    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    m_OverrideState: 1
+    m_Value: {r: 1, g: 0.8235294, b: 0.5294118, a: 1}
     hdr: 1
     showAlpha: 0
     showEyeDropper: 1
@@ -441,13 +441,13 @@ MonoBehaviour:
     min: 0
   baseHeight:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: -49
   maximumHeight:
     m_OverrideState: 1
-    m_Value: 15
+    m_Value: 50
   albedo:
-    m_OverrideState: 0
-    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    m_OverrideState: 1
+    m_Value: {r: 1, g: 0.92156863, b: 0.627451, a: 1}
     hdr: 0
     showAlpha: 1
     showEyeDropper: 1

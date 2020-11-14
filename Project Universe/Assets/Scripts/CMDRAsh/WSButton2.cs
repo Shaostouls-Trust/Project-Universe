@@ -41,13 +41,23 @@ public class WSButton2 : MonoBehaviour
             case "Func0002_Generator":
                 func0002_Generator();
                 break;
+
+            case "CrawlDoor":
+                crawlDoorOpen();
+                Debug.Log("crawlDoor");
+                break;
         }
     }
 
     //close and lock door, or unlock if locked.
     public void doorButtonOverride()
     {
-        scriptedObj.GetComponentInChildren<DoorAnimator>().buttonResponse();
+        scriptedObj.GetComponentInChildren<DoorAnimator>().ButtonResponse();
+    }
+
+    public void crawlDoorOpen()
+    {
+        scriptedObj.GetComponent<CrawlDoorAnimator>().ButtonResponse();
     }
 
     public void shutterButton()

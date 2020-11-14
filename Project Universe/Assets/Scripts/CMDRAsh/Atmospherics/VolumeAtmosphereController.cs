@@ -7,6 +7,7 @@ public class VolumeAtmosphereController : MonoBehaviour
     public float roomPressure;
     public float roomTemp;
     public float roomOxygenation;
+    public float humidity;
     public string[] roomGases;
 
     // Start is called before the first frame update

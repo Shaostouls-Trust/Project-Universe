@@ -42,8 +42,14 @@ public class WSButton1 : MonoBehaviour
             case "Func0002_Generator":
                 func0002_Generator();
                 break;
+
             case "ICannonInteract":
                 IMyCannonInteract(player);
+                break;
+
+            case "CrawlDoor":
+                crawlDoorOpen();
+                Debug.Log("crawlDoor");
                 break;
         }
     }
@@ -51,7 +57,7 @@ public class WSButton1 : MonoBehaviour
     //close and lock door, or unlock if locked.
     public void doorButtonOverride()
     {
-        scriptedObj.GetComponentInChildren<DoorAnimator>().buttonResponse();
+        scriptedObj.GetComponentInChildren<DoorAnimator>().ButtonResponse();
     }
 
     public void shutterButton()
@@ -72,6 +78,11 @@ public class WSButton1 : MonoBehaviour
     public void IMyCannonInteract(GameObject player)
     {
         scriptedObj.GetComponent<IControllableWeapon>().ButtonResponse(player);
+    }
+
+    public void crawlDoorOpen()
+    {
+        scriptedObj.GetComponent<CrawlDoorAnimator>().ButtonResponse();
     }
 
     void OnMouseOver()

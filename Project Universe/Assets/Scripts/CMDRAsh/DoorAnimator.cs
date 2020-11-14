@@ -216,7 +216,7 @@ public class DoorAnimator : MonoBehaviour
         }
     }
 
-    public void buttonResponse()
+    public void ButtonResponse()
     {
         if (!locked)
         {
