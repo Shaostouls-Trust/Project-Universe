@@ -17,4 +17,10 @@ public class doorAnimEventController : MonoBehaviour
     {
         parentObject.GetComponent<DoorAnimator>().animEventOpenDone();
     }
+
+    public void stopAllAnimations()
+    {
+
+        parentObject.GetComponent<DoorAnimator>().haltAllAnimations();
+    }
 }

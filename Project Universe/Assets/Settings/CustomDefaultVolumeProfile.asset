@@ -68,7 +68,7 @@ MonoBehaviour:
   m_AdvancedMode: 0
   indirectDiffuseIntensity:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 1.5
     min: 0
   indirectDiffuseLightingLayers:
     m_OverrideState: 0
@@ -256,7 +256,7 @@ MonoBehaviour:
   active: 1
   m_AdvancedMode: 0
   quality:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 1
   enable:
     m_OverrideState: 1
@@ -267,7 +267,7 @@ MonoBehaviour:
     min: 0
     max: 1
   opacity:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 1
     min: 0
     max: 1
@@ -277,19 +277,19 @@ MonoBehaviour:
     min: 0
     max: 1
   maxDistance:
-    m_OverrideState: 0
-    m_Value: 25
+    m_OverrideState: 1
+    m_Value: 10
     min: 0
   minDistance:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
     min: 0
   fadeDistance:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 5
     min: 0
   fadeInDistance:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
     min: 0
   m_SampleCount:
@@ -768,7 +768,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e17fad69ea181b4483974138b566975, type: 3}
   m_Name: ScreenSpaceRefraction
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   m_AdvancedMode: 0
   screenFadeDistance:
     m_OverrideState: 1
@@ -790,7 +790,7 @@ MonoBehaviour:
   active: 1
   m_AdvancedMode: 0
   quality:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 2
   enabled:
     m_OverrideState: 1
@@ -805,19 +805,19 @@ MonoBehaviour:
     max: 1
   smoothnessFadeStart:
     m_OverrideState: 1
-    m_Value: 0.15
+    m_Value: 0.5
     min: 0
     max: 1
   reflectSky:
     m_OverrideState: 1
     m_Value: 1
   depthBufferThickness:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0.1
     min: 0
     max: 1
   screenFadeDistance:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0.15
     min: 0
     max: 1

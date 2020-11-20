@@ -46,6 +46,10 @@ public class WSButton2 : MonoBehaviour
                 crawlDoorOpen();
                 Debug.Log("crawlDoor");
                 break;
+            case "cargoElevator":
+                cargoElevatorStart();
+                Debug.Log("cargoElevator");
+                break;
         }
     }
 
@@ -63,6 +67,11 @@ public class WSButton2 : MonoBehaviour
     public void shutterButton()
     {
         scriptedObj.GetComponentInChildren<ShutterAnimator>().buttonResponse();
+    }
+
+    public void cargoElevatorStart()
+    {
+        scriptedObj.GetComponent<CargoElevatorAnimator>().ButtonResponse();
     }
 
     public void func0001_Generator()

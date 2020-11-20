@@ -8,7 +8,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{44CC3DEB-A8A6-74C3-54D0-F23493855D9C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -22,7 +23,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Temp\Bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;UNITY_2020_1_2;UNITY_2020_1;UNITY_2020;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;UNITY_2019_3_OR_NEWER;UNITY_2019_4_OR_NEWER;UNITY_2020_1_OR_NEWER;PLATFORM_ARCH_64;UNITY_64;UNITY_INCLUDE_TESTS;ENABLE_AR;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_EVENT_QUEUE;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_TEXTURE_STREAMING;ENABLE_VIRTUALTEXTURING;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_UNITYWEBREQUEST;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;ENABLE_MANAGED_AUDIO_JOBS;INCLUDE_DYNAMIC_GI;ENABLE_MONO_BDWGC;ENABLE_SCRIPTING_GC_WBARRIERS;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_VIDEO;PLATFORM_STANDALONE;PLATFORM_STANDALONE_WIN;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_OUT_OF_PROCESS_CRASH_HANDLER;ENABLE_CLUSTER_SYNC;ENABLE_CLUSTERINPUT;GFXDEVICE_WAITFOREVENT_MESSAGEPUMP;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_STANDARD_2_0;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_DIRECTOR;ENABLE_LOCALIZATION;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_TILEMAP;ENABLE_TIMELINE;ENABLE_LEGACY_INPUT_MANAGER;UNITY_POST_PROCESSING_STACK_V2;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;UNITY_2020_1_2;UNITY_2020_1;UNITY_2020;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;UNITY_2019_3_OR_NEWER;UNITY_2019_4_OR_NEWER;UNITY_2020_1_OR_NEWER;PLATFORM_ARCH_64;UNITY_64;UNITY_INCLUDE_TESTS;ENABLE_AR;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_EVENT_QUEUE;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_TEXTURE_STREAMING;ENABLE_VIRTUALTEXTURING;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_UNITYWEBREQUEST;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;ENABLE_MANAGED_AUDIO_JOBS;INCLUDE_DYNAMIC_GI;ENABLE_MONO_BDWGC;ENABLE_SCRIPTING_GC_WBARRIERS;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_VIDEO;PLATFORM_STANDALONE;PLATFORM_STANDALONE_WIN;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_OUT_OF_PROCESS_CRASH_HANDLER;ENABLE_CLUSTER_SYNC;ENABLE_CLUSTERINPUT;GFXDEVICE_WAITFOREVENT_MESSAGEPUMP;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_STANDARD_2_0;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_DIRECTOR;ENABLE_LOCALIZATION;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_TILEMAP;ENABLE_TIMELINE;ENABLE_LEGACY_INPUT_MANAGER;UNITY_POST_PROCESSING_STACK_V2;AMPLIFY_SHADER_EDITOR;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
@@ -60,6 +61,7 @@
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\Sets\ConstrainedPointSet.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Polygon\PolygonPoint.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Shapers\ShapeSlicer.cs" />
+    <Compile Include="Assets\AmplifyOcclusion\Samples\Blacksmith\Scripts\MouseLook.cs" />
     <Compile Include="Assets\Scripts\TileSystem\TilingController.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Abs.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Runtime\AXRuntimeUIFloatField.cs" />
@@ -69,6 +71,8 @@
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters2D\LinearRepeater2D.cs" />
     <Compile Include="Assets\Scripts\PanelManager.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\AXThumbnail.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\CargoElevatorAnimator.cs" />
+    <Compile Include="Assets\AmplifyOcclusion\Plugins\AmplifyOcclusionEffect.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Meshers\CityExtrude.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\IMachineBehaviors.cs" />
     <Compile Include="Assets\Scripts\TileSystem\SelectTileButton.cs" />
@@ -245,6 +249,7 @@
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Geometry_3D\AXPlaneDeformer.cs" />
     <Compile Include="Assets\Scripts\DragMe.cs" />
     <Compile Include="Assets\Scripts\KhorneSyrup\Props Loader\PropMetadata.cs" />
+    <Compile Include="Assets\AmplifyOcclusion\Plugins\Runtime\VersionInfo.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\GenerNode.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Cache.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\plugins\ExpressionParser.cs" />
@@ -295,7 +300,6 @@
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\ImageProcessing\AXImageProcessor.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Meshers\Polygon.cs" />
     <Compile Include="Assets\Scripts\KhorneSyrup\Props Loader\PropsContainer.cs" />
-    <Compile Include="Assets\Scripts\SkyboxPositionScript.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\ISubMachine.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Curve.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Scale.cs" />
@@ -314,6 +318,7 @@
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Generator\Billow.cs" />
     <Compile Include="Assets\Scripts\KhorneSyrup\Room Editor\RoomController.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\AXCurvePointParameterBinding.cs" />
+    <Compile Include="Assets\AmplifyOcclusion\Plugins\AmplifyOcclusionCommon.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Geometry_3D\AXPolygon.cs" />
     <Compile Include="Assets\SplineMesh\Scripts\MeshProcessing\MeshVertex.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Clamp.cs" />
@@ -340,10 +345,12 @@
     <Compile Include="Assets\Scripts\KhorneSyrup\Player Controller\PlayerGuiController.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\P2T.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\AXSceneViewBillboard.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\LightToggleScript.cs" />
     <Compile Include="Assets\SplineMesh\Scripts\MeshProcessing\SplineExtrusion.cs" />
     <Compile Include="Assets\Scripts\HaloReach252\MessageItem.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\plugins\SoftCircuits\SCMathParser.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\Delaunay\Sweep\AdvancingFront.cs" />
+    <Compile Include="Assets\AmplifyOcclusion\Samples\Blacksmith\Scripts\Controls.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Primitives\GroundPrimitive.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Deformers\Deformers.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\ModuleBase.cs" />
@@ -383,76 +390,117 @@
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters\RadialStepRepeater.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Primitives\BoxPrimitive.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Replicators\Replicator.cs" />
+    <Compile Include="Assets\Scripts\Koro\Hammer.cs" />
+    <Compile Include="Assets\Scripts\Koro\target.cs" />
+    <Compile Include="Assets\Scripts\Koro\Grow.cs" />
+    <Compile Include="Assets\Scripts\Koro\Shotgun.cs" />
+    <Compile Include="Assets\Scripts\Koro\WeaponSwitching.cs" />
+    <Compile Include="Assets\Scripts\Koro\Teleporter.cs" />
+    <Compile Include="Assets\Scripts\Koro\Refil.cs" />
+    <Compile Include="Assets\Scripts\Koro\PlantingGridManager.cs" />
+    <Compile Include="Assets\Scripts\Koro\TwoDPlant.cs" />
+    <Compile Include="Assets\Scripts\Koro\ChildPlant.cs" />
+    <Compile Include="Assets\Scripts\Koro\RefilHealth.cs" />
+    <Compile Include="Assets\Scripts\Koro\Gun.cs" />
+    <Compile Include="Assets\Scripts\Koro\FlameThrower.cs" />
+    <Compile Include="Assets\Scripts\Koro\PlasmaGun.cs" />
+    <Compile Include="Assets\Scripts\Koro\MainGridPlanting.cs" />
+    <Compile Include="Assets\Scripts\Koro\Grenade.cs" />
+    <Compile Include="Assets\Scripts\Koro\grenadelauncher.cs" />
+    <Compile Include="Assets\Scripts\Koro\yeetthegrenade.cs" />
+    <Compile Include="Assets\Scripts\Koro\testing.cs" />
+    <Compile Include="Assets\Scripts\Koro\boom.cs" />
+    <Compile Include="Assets\Scripts\Koro\Farmingprototype.cs" />
+    <Compile Include="Assets\Scripts\Koro\RefilAmmo.cs" />
+    <Compile Include="Assets\Scripts\Koro\PlayerMovement.cs" />
+    <Compile Include="Assets\Scripts\Koro\GrapplingGun.cs" />
+    <Compile Include="Assets\Scripts\Koro\MoveCamera.cs" />
+    <Compile Include="Assets\Scenes\Koro\LightningBolt\LightningBoltScript.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\PlayerChildingTrigger.cs" />
   </ItemGroup>
   <ItemGroup>
-     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
-     <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\SimpleJSON\LICENSE.txt" />
-     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Floor\Tile_Floor_Colony_003\Tile_Floor_Colony_003.xml" />
-     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
-     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Wall\Tile_Wall_Colony_000\Tile_Wall_Colony_000.xml" />
-     <None Include="Assets\Resources\Data\TypePowerSystem.xml" />
-     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
-     <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\AUTHORS.txt" />
-     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Floor\Tile_Floor_Colony_002\Tile_Floor_Colony_002.xml" />
-     <None Include="Assets\mcs.rsp" />
-     <None Include="Assets\Resources\Data\ECS_EntityArchetypes\ECSArchetypeRegistry.xml" />
-     <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\COPYING.LESSER.txt" />
-     <None Include="Assets\EffectExamples\Misc Effects\Prefabs\Readme_Dissolve_Respawn_.txt" />
-     <None Include="Assets\Tiles.xml" />
-     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
-     <None Include="Assets\Resources\Data\TypeFloor.xml" />
-     <None Include="Assets\Archimatix\Scripts\AXChangeLog.txt" />
-     <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\COPYING.txt" />
-     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Floor\Tile_Floor_Colony_004\Tile_Floor_Colony_004.xml" />
-     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Wall\Tile_Wall_Colony_001\Tile_Wall_Colony_001.xml" />
-     <None Include="Assets\EffectExamples\Magic Effects\Shaders\Ice.shader" />
-     <None Include="Assets\Resources\Models\Tiles\Dev\floors\dev_floor\dev_floor.xml" />
-     <None Include="Assets\EffectExamples\Misc Effects\Shaders\Respawn.shader" />
-     <None Include="Assets\Resources\Models\Tiles\Dev\floors\dev_floor\Materials README.txt" />
-     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
-     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
-     <None Include="Assets\Archimatix\Library\ColorKeys.txt" />
-     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
-     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF.shader" />
-     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
-     <None Include="Assets\Resources\Models\Crops\Crops_Database.xml" />
-     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Tiles_Shaostoul.xml" />
-     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
-     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Surface.cginc" />
-     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Floor\Tile_Floor_Colony_001\Tile_Floor_Colony_001.xml" />
-     <None Include="Assets\Resources\Characters\CharacterGenerator_FbxToBiped_Readme.txt" />
-     <None Include="Assets\Tiles_Shaostoul.xml" />
-     <None Include="Assets\Resources\Data\TypeDoor.xml" />
-     <None Include="Assets\Archimatix\Third-Party Notices.txt" />
-     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Ceiling\Tile_Ceiling_Colony_002\Tile_Ceiling_Colony_002.xml" />
-     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Ceiling\Tile_Ceiling_Colony_000\Tile_Ceiling_Colony_000.xml" />
-     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
-     <None Include="Assets\Archimatix\README.txt" />
-     <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\LICENSE.txt" />
-     <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\README.txt" />
-     <None Include="Assets\Resources\Data\TypeWall.xml" />
-     <None Include="Assets\Archimatix\Library\ColorsPersonal.txt" />
-     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Ceiling\Tile_Ceiling_Colony_004\Tile_Ceiling_Colony_004.xml" />
-     <None Include="Assets\Resources\Data\TypeCeiling.xml" />
-     <None Include="Assets\Resources\Data\TypeSection.xml" />
-     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Masking.shader" />
-     <None Include="Assets\EffectExamples\Misc Effects\Shaders\FireFly.shader" />
-     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Floor\Tile_Floor_Colony_000\Tile_Floor_Colony_000.xml" />
-     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Wall\Tile_Wall_Colony_003\Tile_Wall_Colony_003.xml" />
-     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Wall\Tile_Wall_Colony_002\Tile_Wall_Colony_002.xml" />
-     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Wall\Tile_Wall_Colony_004\Tile_Wall_Colony_004.xml" />
-     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF Overlay.shader" />
-     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Ceiling\Tile_Ceiling_Colony_003\Tile_Ceiling_Colony_003.xml" />
-     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Mobile.shader" />
-     <None Include="Assets\Archimatix\Scripts\AXChangeLog Archive.txt" />
-     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
-     <None Include="Assets\Sci-Fi Styled Modular Pack\Readme.txt" />
-     <None Include="Assets\Archimatix\Library\ColorsPro.txt" />
-     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile.shader" />
-     <None Include="Assets\EffectExamples\Misc Effects\Shaders\Dissolve.shader" />
-     <None Include="Assets\SplineMesh\Doc.txt" />
-     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Ceiling\Tile_Ceiling_Colony_001\Tile_Ceiling_Colony_001.xml" />
-     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Sprite.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
+    <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\SimpleJSON\LICENSE.txt" />
+    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Floor\Tile_Floor_Colony_003\Tile_Floor_Colony_003.xml" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
+    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Wall\Tile_Wall_Colony_000\Tile_Wall_Colony_000.xml" />
+    <None Include="Assets\Resources\Shaders\AshShader_A01.shader" />
+    <None Include="Assets\Resources\Data\TypePowerSystem.xml" />
+    <None Include="Assets\Scenes\Koro\LightningBolt\Readme.txt" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
+    <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\AUTHORS.txt" />
+    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Floor\Tile_Floor_Colony_002\Tile_Floor_Colony_002.xml" />
+    <None Include="Assets\AmplifyOcclusion\Resources\Blur.shader" />
+    <None Include="Assets\AmplifyOcclusion\Resources\OcclusionFunctions.cginc" />
+    <None Include="Assets\mcs.rsp" />
+    <None Include="Assets\AmplifyOcclusion\Resources\Apply.shader" />
+    <None Include="Assets\Resources\Data\ECS_EntityArchetypes\ECSArchetypeRegistry.xml" />
+    <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\COPYING.LESSER.txt" />
+    <None Include="Assets\EffectExamples\Misc Effects\Prefabs\Readme_Dissolve_Respawn_.txt" />
+    <None Include="Assets\Tiles.xml" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
+    <None Include="Assets\Resources\Data\TypeFloor.xml" />
+    <None Include="Assets\AmplifyOcclusion\Resources\BlurFunctions.cginc" />
+    <None Include="Assets\Archimatix\Scripts\AXChangeLog.txt" />
+    <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\COPYING.txt" />
+    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Floor\Tile_Floor_Colony_004\Tile_Floor_Colony_004.xml" />
+    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Wall\Tile_Wall_Colony_001\Tile_Wall_Colony_001.xml" />
+    <None Include="Assets\EffectExamples\Magic Effects\Shaders\Ice.shader" />
+    <None Include="Assets\Resources\Models\Tiles\Dev\floors\dev_floor\dev_floor.xml" />
+    <None Include="Assets\AmplifyOcclusion\Readme.txt" />
+    <None Include="Assets\EffectExamples\Misc Effects\Shaders\Respawn.shader" />
+    <None Include="Assets\Resources\Models\Tiles\Dev\floors\dev_floor\Materials README.txt" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
+    <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
+    <None Include="Assets\Archimatix\Library\ColorKeys.txt" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF.shader" />
+    <None Include="Assets\Resources\Shaders\DevPlantShader.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
+    <None Include="Assets\Resources\Models\Crops\Crops_Database.xml" />
+    <None Include="Assets\AmplifyOcclusion\Resources\GTAO.cginc" />
+    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Tiles_Shaostoul.xml" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
+    <None Include="Assets\AmplifyOcclusion\Resources\TemporalFilter.cginc" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Surface.cginc" />
+    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Floor\Tile_Floor_Colony_001\Tile_Floor_Colony_001.xml" />
+    <None Include="Assets\Resources\Characters\CharacterGenerator_FbxToBiped_Readme.txt" />
+    <None Include="Assets\Tiles_Shaostoul.xml" />
+    <None Include="Assets\Resources\Data\TypeDoor.xml" />
+    <None Include="Assets\AmplifyOcclusion\Resources\Occlusion.shader" />
+    <None Include="Assets\Archimatix\Third-Party Notices.txt" />
+    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Ceiling\Tile_Ceiling_Colony_002\Tile_Ceiling_Colony_002.xml" />
+    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Ceiling\Tile_Ceiling_Colony_000\Tile_Ceiling_Colony_000.xml" />
+    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
+    <None Include="Assets\Archimatix\README.txt" />
+    <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\LICENSE.txt" />
+    <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\README.txt" />
+    <None Include="Assets\Resources\Data\TypeWall.xml" />
+    <None Include="Assets\Archimatix\Library\ColorsPersonal.txt" />
+    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Ceiling\Tile_Ceiling_Colony_004\Tile_Ceiling_Colony_004.xml" />
+    <None Include="Assets\Resources\Data\TypeCeiling.xml" />
+    <None Include="Assets\Resources\Data\TypeSection.xml" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Masking.shader" />
+    <None Include="Assets\EffectExamples\Misc Effects\Shaders\FireFly.shader" />
+    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Floor\Tile_Floor_Colony_000\Tile_Floor_Colony_000.xml" />
+    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Wall\Tile_Wall_Colony_003\Tile_Wall_Colony_003.xml" />
+    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Wall\Tile_Wall_Colony_002\Tile_Wall_Colony_002.xml" />
+    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Wall\Tile_Wall_Colony_004\Tile_Wall_Colony_004.xml" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF Overlay.shader" />
+    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Ceiling\Tile_Ceiling_Colony_003\Tile_Ceiling_Colony_003.xml" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Mobile.shader" />
+    <None Include="Assets\Archimatix\Scripts\AXChangeLog Archive.txt" />
+    <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
+    <None Include="Assets\Sci-Fi Styled Modular Pack\Readme.txt" />
+    <None Include="Assets\Archimatix\Library\ColorsPro.txt" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile.shader" />
+    <None Include="Assets\AmplifyOcclusion\Resources\ApplyPostEffect.cginc" />
+    <None Include="Assets\AmplifyOcclusion\Resources\Common.cginc" />
+    <None Include="Assets\AmplifyOcclusion\Resources\CommonFunctions.cginc" />
+    <None Include="Assets\EffectExamples\Misc Effects\Shaders\Dissolve.shader" />
+    <None Include="Assets\SplineMesh\Doc.txt" />
+    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Ceiling\Tile_Ceiling_Colony_001\Tile_Ceiling_Colony_001.xml" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Sprite.shader" />
     <Reference Include="UnityEngine">
       <HintPath>C:\Program Files\2020.1.2f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>
@@ -1157,6 +1205,10 @@
     <ProjectReference Include="Unity.RenderPipelines.HighDefinition.Config.Runtime.csproj">
       <Project>{6FF01695-AC0D-9315-9819-4B0149FECA7E}</Project>
       <Name>Unity.RenderPipelines.HighDefinition.Config.Runtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="AmplifyShaderEditor.csproj">
+      <Project>{1ABC5D9B-5BDE-59EC-D53F-0F40C6717DA6}</Project>
+      <Name>AmplifyShaderEditor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

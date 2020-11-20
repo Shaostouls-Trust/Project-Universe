@@ -21,8 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Overhead_LargeDuctStraightUpA_Mat
-  m_Shader: {fileID: -6465566751694194690, guid: 7e3818d37e479b747a07d57f00293a3e,
-    type: 3}
+  m_Shader: {fileID: 4800000, guid: 313c1dc82c58d6b489675cf25cf4f3cd, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
@@ -32,10 +31,10 @@ Material:
     MotionVector: User
   disabledShaderPasses:
   - DistortionVectors
-  - MOTIONVECTORS
+  - TransparentBackface
   - TransparentDepthPrepass
   - TransparentDepthPostpass
-  - TransparentBackface
+  - MOTIONVECTORS
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -44,6 +43,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AL:
+        m_Texture: {fileID: 2800000, guid: df65d36adc203834bbc464ffa76a86c2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Albedo:
         m_Texture: {fileID: 2800000, guid: df65d36adc203834bbc464ffa76a86c2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -73,6 +76,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _DWM:
         m_Texture: {fileID: 2800000, guid: 79db44deda431d04b9f804cb27a6e0ad, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Depth:
+        m_Texture: {fileID: 2800000, guid: 2a8711b220351544e9a205f81eee8b97, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailMap:
@@ -107,6 +114,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Lighting:
+        m_Texture: {fileID: 2800000, guid: 6fcdd17f11350194fb7739b1de7ef963, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MS:
         m_Texture: {fileID: 2800000, guid: 6aa4fc766f1f42e499c9db6ed87cccb6, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -117,6 +128,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MaskMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetalSmoothness:
+        m_Texture: {fileID: 2800000, guid: 6aa4fc766f1f42e499c9db6ed87cccb6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NMHM:
@@ -152,6 +167,14 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TransmittanceColorMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Transparency:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -205,6 +228,7 @@ Material:
     - _DoubleSidedNormalMode: 1
     - _DstBlend: 0
     - _EI: 1
+    - _EmissionIntensity: 50
     - _EmissiveColorMode: 1
     - _EmissiveExposureWeight: 1
     - _EmissiveIntensity: 1
@@ -213,8 +237,11 @@ Material:
     - _EnableFogOnTransparent: 1
     - _EnableGeometricSpecularAA: 0
     - _EnergyConservingSpecularColor: 1
+    - _ExposureWeight: 1
+    - _GlobalTriplanarFalloff: 0.5
     - _HeightAmplitude: 0.02
     - _HeightCenter: 0.5
+    - _HeightDiscriminant: 0.5
     - _HeightMapParametrization: 0
     - _HeightMax: 1
     - _HeightMin: -1
@@ -228,7 +255,9 @@ Material:
     - _IridescenceThickness: 1
     - _LinkDetailsWithBase: 1
     - _MaterialID: 1
+    - _MetalLDodge: 0
     - _Metallic: 0
+    - _MetalnessContrast: 1
     - _NormalMapSpace: 0
     - _NormalScale: 1
     - _PPDLodThreshold: 5
@@ -236,12 +265,17 @@ Material:
     - _PPDMinSamples: 5
     - _PPDPrimitiveLength: 1
     - _PPDPrimitiveWidth: 1
+    - _ParallaxHeightScale: 0.01
     - _ReceivesSSR: 1
     - _RefractionModel: 0
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
+    - _SAASSV: 0.5
+    - _SAAThreshold: 10
     - _SSRefractionProjectionModel: 0
     - _Smoothness: 0.5
+    - _SmoothnessContrast: 1
+    - _SmoothnessLDodge: 0
     - _SmoothnessRemapMax: 1
     - _SmoothnessRemapMin: 0
     - _SpecularAAScreenSpaceVariance: 0.1
@@ -272,6 +306,7 @@ Material:
     - _TransparentSortPriority: 0
     - _TransparentWritingMotionVec: 0
     - _TransparentZWrite: 0
+    - _TriplanarTF: 0
     - _UVBase: 0
     - _UVDetail: 0
     - _UVEmissive: 0
@@ -294,10 +329,13 @@ Material:
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
+    - _GlobalTriplanarTiling: {r: 1, g: 1, b: 0, a: 0}
     - _HM_Tile: {r: 1, g: 1, b: 0, a: 0}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _MC: {r: 0.7568628, g: 0.7568628, b: 0.7568628, a: 1}
+    - _Offset1: {r: 0, g: 0, b: 0, a: 0}
+    - _Offset2: {r: -0.1, g: -0.1, b: 0, a: 0}
     - _QC: {r: 0.16099995, g: 0.16099995, b: 0.16099995, a: 1}
     - _SC: {r: 0.17056665, g: 0.26337495, b: 0.30099997, a: 1}
     - _SDC: {r: 0.7568628, g: 0.7568628, b: 0.7568628, a: 1}

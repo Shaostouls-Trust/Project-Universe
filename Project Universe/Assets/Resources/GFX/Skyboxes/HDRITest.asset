@@ -16,7 +16,7 @@ MonoBehaviour:
   m_AdvancedMode: 0
   rotation:
     m_OverrideState: 1
-    m_Value: 100
+    m_Value: 30
     min: 0
     max: 360
   skyIntensityMode:
@@ -27,21 +27,21 @@ MonoBehaviour:
     m_Value: 0
   multiplier:
     m_OverrideState: 1
-    m_Value: 0.0011574074
+    m_Value: 1.9
     min: 0
   upperHemisphereLuxValue:
     m_OverrideState: 0
-    m_Value: 0.05790624
+    m_Value: 0.03305208
     min: 0
   upperHemisphereLuxColor:
     m_OverrideState: 0
-    m_Value: {x: 0.4354201, y: 0.5, z: 0.25994825}
+    m_Value: {x: 0.5, y: 0.47584522, z: 0.47503456}
   desiredLuxValue:
     m_OverrideState: 1
     m_Value: 0.01
   updateMode:
-    m_OverrideState: 0
-    m_Value: 2
+    m_OverrideState: 1
+    m_Value: 0
   updatePeriod:
     m_OverrideState: 0
     m_Value: 0
@@ -51,7 +51,7 @@ MonoBehaviour:
     m_Value: 0
   hdriSky:
     m_OverrideState: 1
-    m_Value: {fileID: 8900000, guid: 0cb32dc043ff5a04cacfe26ca5bc7573, type: 3}
+    m_Value: {fileID: 8900000, guid: eaf8e5c6d2b69dc49baa642ff9987906, type: 3}
   enableBackplate:
     m_OverrideState: 0
     m_Value: 0
@@ -113,7 +113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 953beb541740ddc499d005ee80c9ff29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   m_AdvancedMode: 0
   enabled:
     m_OverrideState: 1
@@ -203,7 +203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24f077503be6ae942a1e1245dbd53ea9, type: 3}
   m_Name: Bloom
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   m_AdvancedMode: 0
   quality:
     m_OverrideState: 1
@@ -256,7 +256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f034cba68ab55e046ae1445a42f18c0e, type: 3}
   m_Name: IndirectLightingController
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   m_AdvancedMode: 0
   indirectDiffuseIntensity:
     m_OverrideState: 1
@@ -431,7 +431,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e17fad69ea181b4483974138b566975, type: 3}
   m_Name: ScreenSpaceRefraction
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   m_AdvancedMode: 0
   screenFadeDistance:
     m_OverrideState: 1

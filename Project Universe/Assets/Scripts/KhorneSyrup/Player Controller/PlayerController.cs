@@ -328,7 +328,7 @@ namespace ProjectUniverseData.PlayerController
         private void ClampLookRotationToValue(float value)
         {
             Vector3 eulerRotation = transform.eulerAngles;
-            eulerRotation.x = value;
+            eulerRotation.x = value * Time.deltaTime;//modified 11/17/20 by CMDRAsh. Added Time.deltatime to smooth out looking when fps not constant.
             firstPersonCamera.transform.eulerAngles = eulerRotation;
         }
     }

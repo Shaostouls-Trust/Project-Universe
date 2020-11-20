@@ -46,6 +46,7 @@ public class DoorAnimator : MonoBehaviour
 
     //panel emissive
     private Renderer[] panelRenderer;
+    public bool doorAnimIsInX;
 
     void Start()
     {
@@ -76,55 +77,115 @@ public class DoorAnimator : MonoBehaviour
         {
             //check door positions and animation cycles
             //when the door is at open position, but the animation is not done opening.
-            if (doorL_TF.localPosition.z > leftBoundOpen && (isLOpening || isLOpen))
+            if (doorAnimIsInX)
             {
-                //stop the left door animation.
-                anim[0].enabled = false;
-                //return to final position
-                doorL_TF.localPosition = new Vector3(doorL_TF.localPosition.x, doorL_TF.localPosition.y, leftBoundOpen);
+                if (doorL_TF.localPosition.x > leftBoundOpen && (isLOpening || isLOpen))
+                {
+                    anim[1].enabled = false;
+                    //doorL_TF.localPosition = new Vector3(doorL_TF.localPosition.x, doorL_TF.localPosition.y, leftBoundOpen);
+                    doorL_TF.localPosition = new Vector3(leftBoundOpen,doorL_TF.localPosition.y, doorL_TF.localPosition.z);
+                }
+                else
+                {
+                    anim[0].enabled = true;
+                }
             }
             else
             {
-                anim[0].enabled = true;
-            }
-            //if closed but not done with closing animation
-            if (doorL_TF.localPosition.z < leftBoundClosing && (isLClosing || isLClosed))
-            {
-                //stop
-                anim[0].enabled = false;
-                //return to start
-                doorL_TF.localPosition = new Vector3(doorL_TF.localPosition.x, doorL_TF.localPosition.y, leftBoundClosing);
-            }
-            else
-            {
-                anim[0].enabled = true;
+                if (doorL_TF.localPosition.z > leftBoundOpen && (isLOpening || isLOpen))
+                {
+                    //stop the left door animation.
+                    anim[0].enabled = false;
+                    //return to final position
+                    //doorL_TF.localPosition = new Vector3(leftBoundOpen, doorL_TF.localPosition.y, doorL_TF.localPosition.z);
+                    doorL_TF.localPosition = new Vector3(doorL_TF.localPosition.x, doorL_TF.localPosition.y, leftBoundOpen);
+                }
+                else
+                {
+                    anim[0].enabled = true;
+                }
             }
 
+            //if closed but not done with closing animation
+            if (doorAnimIsInX)
+            {
+                if (doorL_TF.localPosition.x < leftBoundClosing && (isLClosing || isLClosed))
+                {
+                    anim[0].enabled = false;
+                    //doorL_TF.localPosition = new Vector3(doorL_TF.localPosition.x, doorL_TF.localPosition.y, leftBoundClosing);
+                    doorL_TF.localPosition = new Vector3(leftBoundClosing, doorL_TF.localPosition.y, doorL_TF.localPosition.z);
+                }
+                else
+                {
+                    anim[0].enabled = true;
+                }
+            }
+            else
+            {
+                if (doorL_TF.localPosition.z < leftBoundClosing && (isLClosing || isLClosed))
+                {
+                    //stop
+                    anim[0].enabled = false;
+                    //doorL_TF.localPosition = new Vector3(leftBoundClosing, doorL_TF.localPosition.y, doorL_TF.localPosition.z);
+                    doorL_TF.localPosition = new Vector3(doorL_TF.localPosition.z, doorL_TF.localPosition.y, leftBoundClosing);
+                }
+                else
+                {
+                    anim[0].enabled = true;
+                }
+            } 
+
             //R Door open, but not done with animation
-            if (doorR_TF.localPosition.z < rightBoundOpen && (isROpening || isROpen)) //open past -1.8Z
+            if (doorAnimIsInX)
             {
-                //stop the left door animation.
                 anim[1].enabled = false;
-                //return to final position
-                doorR_TF.localPosition = new Vector3(doorR_TF.localPosition.x, doorR_TF.localPosition.y, rightBoundOpen);
+                if (doorR_TF.localPosition.x < rightBoundOpen && (isROpening || isROpen)) //open past -1.8Z
+                {
+                    doorR_TF.localPosition = new Vector3(rightBoundOpen, doorR_TF.localPosition.y, doorR_TF.localPosition.z);
+                }
+                else
+                {
+                    anim[1].enabled = true;
+                }
             }
             else
             {
-                anim[1].enabled = true;
+                if (doorR_TF.localPosition.z < rightBoundOpen && (isROpening || isROpen)) //open past -1.8Z
+                {
+                    anim[1].enabled = false;
+                    doorR_TF.localPosition = new Vector3(doorR_TF.localPosition.x, doorR_TF.localPosition.y, rightBoundOpen);
+                }
+                else
+                {
+                    anim[1].enabled = true;
+                }
             }
+
             //if closed but not done with anim
-            if (doorR_TF.localPosition.z > rightBoundClosing && (isRClosing || isRClosed)) //closed past -1.0f
+            if (doorAnimIsInX)
             {
-                //stop the left door animation.
-                anim[1].enabled = false;
-                //return to final position
-                doorR_TF.localPosition = new Vector3(doorR_TF.localPosition.x, doorR_TF.localPosition.y, rightBoundClosing);
+                if (doorR_TF.localPosition.x > rightBoundClosing && (isRClosing || isRClosed)) //closed past -1.0f
+                {
+                    anim[1].enabled = false;
+                    doorR_TF.localPosition = new Vector3(rightBoundClosing, doorR_TF.localPosition.y, doorR_TF.localPosition.z);
+                }
+                else
+                {
+                    anim[1].enabled = true;
+                }
             }
             else
             {
-                anim[1].enabled = true;
-            }
-            
+                if (doorR_TF.localPosition.z > rightBoundClosing && (isRClosing || isRClosed)) //closed past -1.0f
+                {
+                    anim[1].enabled = false;
+                    doorR_TF.localPosition = new Vector3(doorR_TF.localPosition.x, doorR_TF.localPosition.y, rightBoundClosing);
+                }
+                else
+                {
+                    anim[1].enabled = true;
+                }
+            } 
         }
     }
 
@@ -132,14 +193,17 @@ public class DoorAnimator : MonoBehaviour
     {
         if (isPowered && (!locked && isRunning))
         {
-            //yellow blinking
-            doorRIsOpening();
-            doorLIsOpening();
-            anim[0].Play("DoorLeftOpen");
-            anim[1].Play("DoorRightOpen");
-            doorLIsOpen();
-            doorRIsOpen();
-            //green
+            if(!isLOpening && !isROpening)
+            {
+                //yellow blinking
+                doorRIsOpening();
+                doorLIsOpening();
+                anim[0].Play("DoorLeftOpen");
+                anim[1].Play("DoorRightOpen");
+                doorLIsOpen();
+                doorRIsOpen();
+                //green
+            }
         }
     }
 
@@ -175,6 +239,12 @@ public class DoorAnimator : MonoBehaviour
             doorRIsClosed();
             //green
         }
+    }
+
+    public void haltAllAnimations()
+    {
+        anim[0].enabled = false;
+        anim[1].enabled = false;
     }
 
     public void lockDoor()

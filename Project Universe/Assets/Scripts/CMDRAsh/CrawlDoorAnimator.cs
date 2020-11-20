@@ -24,7 +24,7 @@ public class CrawlDoorAnimator : MonoBehaviour
         {
             isOpening = true;
             isClosing = false;
-            Debug.Log("Crawl Door Open");
+            //Debug.Log("Crawl Door Open");
             anim.Play("CrawlDoorOpen");
             isOpen = true;
             isClosed = false;
@@ -33,7 +33,7 @@ public class CrawlDoorAnimator : MonoBehaviour
         {
             isOpening = false;
             isClosing = true;
-            Debug.Log("Crawl Door Close");
+            //Debug.Log("Crawl Door Close");
             anim.Play("CrawlDoorClose");
             isOpen = false;
             isClosed = true;

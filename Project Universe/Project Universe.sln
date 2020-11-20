@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.RenderPipelines.HighDefinition.Config.Runtime", "Unity.RenderPipelines.HighDefinition.Config.Runtime.csproj", "{6FF01695-AC0D-9315-9819-4B0149FECA7E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmplifyShaderEditor", "AmplifyShaderEditor.csproj", "{1ABC5D9B-5BDE-59EC-D53F-0F40C6717DA6}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{91BBF21A-BBE2-705A-60AC-1ECF169506E1}"
 EndProject
 Global
@@ -21,6 +23,10 @@ Global
 		{6FF01695-AC0D-9315-9819-4B0149FECA7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FF01695-AC0D-9315-9819-4B0149FECA7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FF01695-AC0D-9315-9819-4B0149FECA7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1ABC5D9B-5BDE-59EC-D53F-0F40C6717DA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1ABC5D9B-5BDE-59EC-D53F-0F40C6717DA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1ABC5D9B-5BDE-59EC-D53F-0F40C6717DA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1ABC5D9B-5BDE-59EC-D53F-0F40C6717DA6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{91BBF21A-BBE2-705A-60AC-1ECF169506E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{91BBF21A-BBE2-705A-60AC-1ECF169506E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91BBF21A-BBE2-705A-60AC-1ECF169506E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
