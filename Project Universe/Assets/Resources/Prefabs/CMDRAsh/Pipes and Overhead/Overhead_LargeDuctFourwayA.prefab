@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8898641606710109774}
   - component: {fileID: 5535355988526803435}
   - component: {fileID: 7725221165205576993}
+  - component: {fileID: 7792975498887274843}
   m_Layer: 0
   m_Name: Overhead_LargeDuctFourwayA
   m_TagString: Untagged
@@ -81,3 +82,32 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &7792975498887274843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8085513603006332148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7937c6540c271584688a51ff10620548, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gasses: []
+  neighbors: []
+  temp: 0
+  tempTol:
+  - -250
+  - 250
+  pressure: 0
+  maxP: 1.25
+  volume_m3: 0.5
+  health: 100
+  leakRate: 0
+  bulletHoles: []
+  throughput_m3: 4
+  vent: {fileID: 0}
+  ductVolume: {fileID: 0}
+  insulationRating: 0.1
+  burst: 0

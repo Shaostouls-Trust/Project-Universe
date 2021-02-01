@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8696181894840092174}
   - component: {fileID: 6866859211132793540}
   - component: {fileID: 5227106538536234566}
+  - component: {fileID: 1582805916935079197}
   m_Layer: 0
   m_Name: Overhead_LargeDuctSingleA_500mm
   m_TagString: Untagged
@@ -96,3 +97,33 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 5220708838075940879, guid: c62d82de419e7074897c50241e6113ed, type: 3}
+--- !u!114 &1582805916935079197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4921027439622083345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7937c6540c271584688a51ff10620548, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gasses: []
+  neighbors: []
+  temp: 70
+  tempTol:
+  - -250
+  - 250
+  globalPressure: 0
+  appliedPressure: 0
+  maxP: 1.5
+  volume_m3: 0.35
+  health: 100
+  leakRate: 0
+  bulletHoles: []
+  throughput_m3: 3
+  vent: {fileID: 0}
+  ductVolume: {fileID: 0}
+  insulationRating: 0.1
+  burst: 0

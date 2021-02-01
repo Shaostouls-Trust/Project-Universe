@@ -114,18 +114,6 @@
 		</Definition>
 	</TileGroup>
 	<TileGroup>
-		<!--Full 1m Wall-->
-		<ID TypeValue="75" />
-		<Definition>
-			<SubType>1</SubType>
-			<Name>DevWallFull</Name>
-			<Components>
-				<Component Name="BoxCollider"/>
-			</Components>
-			<ResourcePath Path="Prefabs\CMDRAsh\DevBuilding2\DevWallFull" />
-		</Definition>
-	</TileGroup>
-	<TileGroup>
 		<!--Outside Corner Wall-->
 		<ID TypeValue="100" />
 		<Definition>

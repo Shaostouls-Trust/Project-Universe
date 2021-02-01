@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{44CC3DEB-A8A6-74C3-54D0-F23493855D9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.RenderPipelines.HighDefinition.Config.Runtime", "Unity.RenderPipelines.HighDefinition.Config.Runtime.csproj", "{6FF01695-AC0D-9315-9819-4B0149FECA7E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmplifyShaderEditor.Samples.BuiltIn", "AmplifyShaderEditor.Samples.BuiltIn.csproj", "{F26C164E-900A-11A5-FC14-B9936BCB66A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmplifyShaderEditor.Samples.HDRP", "AmplifyShaderEditor.Samples.HDRP.csproj", "{18A789E6-3DD0-4C95-ABB8-6A8E3769699C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmplifyShaderEditor", "AmplifyShaderEditor.csproj", "{1ABC5D9B-5BDE-59EC-D53F-0F40C6717DA6}"
 EndProject
@@ -19,10 +21,14 @@ Global
 		{44CC3DEB-A8A6-74C3-54D0-F23493855D9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44CC3DEB-A8A6-74C3-54D0-F23493855D9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44CC3DEB-A8A6-74C3-54D0-F23493855D9C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6FF01695-AC0D-9315-9819-4B0149FECA7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6FF01695-AC0D-9315-9819-4B0149FECA7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6FF01695-AC0D-9315-9819-4B0149FECA7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6FF01695-AC0D-9315-9819-4B0149FECA7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F26C164E-900A-11A5-FC14-B9936BCB66A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F26C164E-900A-11A5-FC14-B9936BCB66A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F26C164E-900A-11A5-FC14-B9936BCB66A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F26C164E-900A-11A5-FC14-B9936BCB66A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18A789E6-3DD0-4C95-ABB8-6A8E3769699C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18A789E6-3DD0-4C95-ABB8-6A8E3769699C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18A789E6-3DD0-4C95-ABB8-6A8E3769699C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18A789E6-3DD0-4C95-ABB8-6A8E3769699C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1ABC5D9B-5BDE-59EC-D53F-0F40C6717DA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1ABC5D9B-5BDE-59EC-D53F-0F40C6717DA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1ABC5D9B-5BDE-59EC-D53F-0F40C6717DA6}.Release|Any CPU.ActiveCfg = Release|Any CPU

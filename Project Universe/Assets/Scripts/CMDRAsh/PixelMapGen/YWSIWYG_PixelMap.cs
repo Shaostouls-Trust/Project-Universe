@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
+//using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 using UnityEngine;
@@ -21,6 +21,7 @@ public class YWSIWYG_PixelMap : MonoBehaviour
 	//run config
 	public bool ignoreR254;
 	public bool multipleLevels;
+	public bool triscalar;
 	public bool RUNAFTER_updatePowerPointers;
 	private int ceiling;
 	public int staticCeiling;
@@ -44,11 +45,11 @@ public class YWSIWYG_PixelMap : MonoBehaviour
 			pixMapInt.SetPixelMapRootPath(pixelMapRootPath);
 			if (multipleLevels)
 			{
-				pixMapInt.MultiLevelIntegration(bitmapName, transform, ignoreR254);
+				pixMapInt.MultiLevelIntegration(bitmapName, transform, ignoreR254, triscalar);
 			}
 			else
 			{
-				pixMapInt.BitMapInterpreter(bitmapName, transform, ignoreR254, 1);
+				pixMapInt.BitMapInterpreter(bitmapName, transform, ignoreR254, triscalar, 1);
 			}
 			tileList = pixMapInt.GetTileArrayList();
 			Debug.Log(tileList.Count);

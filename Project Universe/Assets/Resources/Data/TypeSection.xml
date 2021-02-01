@@ -1,93 +1,1107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Definitions>
 	<TileGroup>
-		<!--Prefabbed Rooms-->
+		<!--Prefabbed Corridors-->
 		<ID TypeValue="245" />
 		<Definition>
 			<SubType>1</SubType>
-			<Name>5-18_trapObservation1</Name>
+			<Name>3x3_2WayCorridor</Name>
 			<Components>
 				<Component Name="BoxCollider"/>
 			</Components>
-			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\5-18_trapObservation1" />
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\3x3_2WayCorridor" />
 		</Definition>
 		<Definition>
 			<SubType>2</SubType>
-			<Name>43-22_trapBridge1</Name>
+			<Name>3x3_2WayDoorCorridor</Name>
 			<Components>
 				<Component Name="BoxCollider"/>
 			</Components>
-			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\43-22_trapBridge1" />
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\3x3_2WayDoorCorridor" />
 		</Definition>
 		<Definition>
 			<SubType>3</SubType>
-			<Name>12-4_trapExteriorWindow1</Name>
+			<Name>3x3_3WayCorridor</Name>
 			<Components>
 				<Component Name="BoxCollider"/>
 			</Components>
-			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\12-4_trapExteriorWindow1" />
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\3x3_3WayCorridor" />
 		</Definition>
 		<Definition>
 			<SubType>4</SubType>
-			<Name>17-17_rectPerimeterCatwalk1</Name>
+			<Name>3x3_3WayCorridor_Doored</Name>
 			<Components>
 				<Component Name="BoxCollider"/>
 			</Components>
-			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\17-17_rectPerimeterCatwalk1" />
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\3x3_3WayCorridor_Doored" />
 		</Definition>
 		<Definition>
 			<SubType>5</SubType>
-			<Name>5-18_trapObservation2</Name>
+			<Name>3x3_4WayCorridor</Name>
 			<Components>
 				<Component Name="BoxCollider"/>
 			</Components>
-			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\5-18_trapObservation2" />
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\3x3_4WayCorridor" />
 		</Definition>
 		<Definition>
 			<SubType>6</SubType>
-			<Name>43-22_trapBridge2</Name>
+			<Name>3x3_4WayCorridor_Doored</Name>
 			<Components>
 				<Component Name="BoxCollider"/>
 			</Components>
-			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\43-22_trapBridge2" />
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\3x3_4WayCorridor_Doored" />
 		</Definition>
 		<Definition>
 			<SubType>7</SubType>
-			<Name>6-4_rectSideRoom1</Name>
+			<Name>3x3_DeadEnd</Name>
 			<Components>
 				<Component Name="BoxCollider"/>
 			</Components>
-			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\6-4_rectSideRoom1" />
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\3x3_DeadEnd" />
 		</Definition>
 		<Definition>
 			<SubType>8</SubType>
-			<Name>17-17_rect3mExtension1</Name>
+			<Name>3x3_SmallCorner</Name>
 			<Components>
 				<Component Name="BoxCollider"/>
 			</Components>
-			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\17-17_rect3mExtension1" />
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\3x3_SmallCorner" />
 		</Definition>
-		<!-- -->
+		<Definition>
+			<SubType>9</SubType>
+			<Name>3x5_2WayCorridor</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\3x5_2WayCorridor" />
+		</Definition>
+		<Definition>
+			<SubType>10</SubType>
+			<Name>3x5_3WayCorridor</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\3x5_3WayCorridor" />
+		</Definition>
+		<Definition>
+			<SubType>11</SubType>
+			<Name>3x5_3WayCorridor_Doored</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\3x5_3WayCorridor_Doored" />
+		</Definition>
+		<Definition>
+			<SubType>12</SubType>
+			<Name>3x5_4WayCorridor</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\3x5_4WayCorridor" />
+		</Definition>
+		<Definition>
+			<SubType>13</SubType>
+			<Name>3x5_4WayCorridor_Doored</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\3x5_4WayCorridor_Doored" />
+		</Definition>
+		<Definition>
+			<SubType>14</SubType>
+			<Name>3x5_4WayCorridor_DooredPillared</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\3x5_4WayCorridor_DooredPillared" />
+		</Definition>
+		<Definition>
+			<SubType>15</SubType>
+			<Name>3x5_SmallCorner</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\3x5_SmallCorner" />
+		</Definition>
+		<Definition>
+			<SubType>16</SubType>
+			<Name>3x6_2WayCorridor</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\3x6_2WayCorridor" />
+		</Definition>
+		<Definition>
+			<SubType>17</SubType>
+			<Name>3x6_3WayCorridor</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\3x6_3WayCorridor" />
+		</Definition>
+		<Definition>
+			<SubType>18</SubType>
+			<Name>3x6_3WayCorridor_Doored</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\3x6_3WayCorridor_Doored" />
+		</Definition>
+		<Definition>
+			<SubType>19</SubType>
+			<Name>3x6_3WayCorridor_DooredPillared</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\3x6_3WayCorridor_DooredPillared" />
+		</Definition>
+		<Definition>
+			<SubType>20</SubType>
+			<Name>3x6_4WayCorridor</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\3x6_4WayCorridor" />
+		</Definition>
+		<Definition>
+			<SubType>21</SubType>
+			<Name>3x6_4WayCorridor_Doored</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\3x6_4WayCorridor_Doored" />
+		</Definition>
+		<Definition>
+			<SubType>22</SubType>
+			<Name>3x6_4WayCorridor_DooredPillared</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\3x6_4WayCorridor_DooredPillared" />
+		</Definition>
+		<Definition>
+			<SubType>23</SubType>
+			<Name>3x6_SmallCorner</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\3x6_SmallCorner" />
+		</Definition>
+		<Definition>
+			<SubType>24</SubType>
+			<Name>5x3_2WayCorridor</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\5x3_2WayCorridor" />
+		</Definition>
+		<Definition>
+			<SubType>25</SubType>
+			<Name>5x3_3WayCorridor</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\5x3_3WayCorridor" />
+		</Definition>
+		<Definition>
+			<SubType>26</SubType>
+			<Name>5x3_3WayCorridor_Doored</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\5x3_3WayCorridor_Doored" />
+		</Definition>
+		<Definition>
+			<SubType>27</SubType>
+			<Name>5x3_4WayCorridor</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\5x3_4WayCorridor" />
+		</Definition>
+		<Definition>
+			<SubType>28</SubType>
+			<Name>5x3_4WayCorridor_Doored</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\5x3_4WayCorridor_Doored" />
+		</Definition>
+		<Definition>
+			<SubType>29</SubType>
+			<Name>5x3_4WayCorridor_DooredPillared</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\5x3_4WayCorridor_DooredPillared" />
+		</Definition>
+		<Definition>
+			<SubType>30</SubType>
+			<Name>5x6_2WayCorridor</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\5x6_2WayCorridor" />
+		</Definition>
+		<Definition>
+			<SubType>31</SubType>
+			<Name>5x6_3WayCorridor</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\5x6_3WayCorridor" />
+		</Definition>
+		<Definition>
+			<SubType>32</SubType>
+			<Name>5x6_3WayCorridor_Doored</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\5x6_3WayCorridor_Doored" />
+		</Definition>
+		<Definition>
+			<SubType>33</SubType>
+			<Name>5x6_4WayCorridor</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\5x6_4WayCorridor" />
+		</Definition>
+		<Definition>
+			<SubType>34</SubType>
+			<Name>5x6_4WayCorridor_Doored</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\5x6_4WayCorridor_Doored" />
+		</Definition>
+		<Definition>
+			<SubType>35</SubType>
+			<Name>5x6_4WayCorridor_DooredPillared</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\5x6_4WayCorridor_DooredPillared" />
+		</Definition>
+		<Definition>
+			<SubType>36</SubType>
+			<Name>5x6_MedCorner</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\5x6_MedCorner" />
+		</Definition>
+		<Definition>
+			<SubType>37</SubType>
+			<Name>5x9_2WayCorridor</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\5x9_2WayCorridor" />
+		</Definition>
+		<Definition>
+			<SubType>38</SubType>
+			<Name>5x9_3WayCorridor</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\5x9_3WayCorridor" />
+		</Definition>
+		<Definition>
+			<SubType>39</SubType>
+			<Name>5x9_3WayCorridor_Doored</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\5x9_3WayCorridor_Doored" />
+		</Definition>
+		<Definition>
+			<SubType>40</SubType>
+			<Name>5x9_4WayCorridor</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\5x9_4WayCorridor" />
+		</Definition>
+		<Definition>
+			<SubType>41</SubType>
+			<Name>5x9_4WayCorridor_Doored</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\5x9_4WayCorridor_Doored" />
+		</Definition>
+		<Definition>
+			<SubType>42</SubType>
+			<Name>5x9_4WayCorridor_DooredPillared</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\5x9_4WayCorridor_DooredPillared" />
+		</Definition>
+		<Definition>
+			<SubType>43</SubType>
+			<Name>5x9_LargeCorner</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\5x9_LargeCorner" />
+		</Definition>
+		<Definition>
+			<SubType>44</SubType>
+			<Name>6x3_2WayCorridor</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\6x3_2WayCorridor" />
+		</Definition>
+		<Definition>
+			<SubType>45</SubType>
+			<Name>6x3_3WayCorridor_Door</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\6x3_3WayCorridor_Door" />
+		</Definition>
+		<Definition>
+			<SubType>46</SubType>
+			<Name>6x3_4WayCorridor_Door</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\6x3_4WayCorridor_Door" />
+		</Definition>
+		<Definition>
+			<SubType>47</SubType>
+			<Name>6x5_2WayCorridor</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\6x5_2WayCorridor" />
+		</Definition>
+		<Definition>
+			<SubType>48</SubType>
+			<Name>6x5_3WayCorridor_3mOpening</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\6x5_3WayCorridor_3mOpening" />
+		</Definition>
+		<Definition>
+			<SubType>49</SubType>
+			<Name>6x5_3WayCorridor_3mOpening_Doored</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\6x5_3WayCorridor_3mOpening_Doored" />
+		</Definition>
+		<Definition>
+			<SubType>50</SubType>
+			<Name>6x5_3WayCorridor_3mOpening_DooredPillared</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\6x5_3WayCorridor_3mOpening_DooredPillared" />
+		</Definition>
+		<Definition>
+			<SubType>51</SubType>
+			<Name>6x5_3WayCorridor_6mOpening</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\6x5_3WayCorridor_6mOpening" />
+		</Definition>
+		<Definition>
+			<SubType>52</SubType>
+			<Name>6x5_4WayCorridor_3mOpening</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\6x5_4WayCorridor_3mOpening" />
+		</Definition>
+		<Definition>
+			<SubType>53</SubType>
+			<Name>6x5_4WayCorridor_3mOpening_Doored</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\6x5_4WayCorridor_3mOpening_Doored" />
+		</Definition>
+		<Definition>
+			<SubType>54</SubType>
+			<Name>6x5_4WayCorridor_3mOpening_DooredPillared</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\6x5_4WayCorridor_3mOpening_DooredPillared" />
+		</Definition>
+		<Definition>
+			<SubType>55</SubType>
+			<Name>6x5_4WayCorridor_6mOpening</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\6x5_4WayCorridor_6mOpening" />
+		</Definition>
+		<Definition>
+			<SubType>56</SubType>
+			<Name>6x6_2WayCorridor</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\6x6_2WayCorridor" />
+		</Definition>
+		<Definition>
+			<SubType>57</SubType>
+			<Name>6x6_2WayCorridorB</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\6x6_2WayCorridorB" />
+		</Definition>
+		<Definition>
+			<SubType>58</SubType>
+			<Name>6x6_2WayCorridorC</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\6x6_2WayCorridorC" />
+		</Definition>
+		<Definition>
+			<SubType>59</SubType>
+			<Name>6x6_3WayCorridor_3mOpening</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\6x6_3WayCorridor_3mOpening" />
+		</Definition>
+		<Definition>
+			<SubType>60</SubType>
+			<Name>6x6_3WayCorridor_3mOpening_Doored</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\6x6_3WayCorridor_3mOpening_Doored" />
+		</Definition>
+		<Definition>
+			<SubType>61</SubType>
+			<Name>6x6_3WayCorridor_6mOpening</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\6x6_3WayCorridor_6mOpening" />
+		</Definition>
+		<Definition>
+			<SubType>62</SubType>
+			<Name>6x6_3WayLarge_Window</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\6x6_3WayLarge_Window" />
+		</Definition>
+		<Definition>
+			<SubType>63</SubType>
+			<Name>6x6_4WayCorridor_3mOpening</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\6x6_4WayCorridor_3mOpening" />
+		</Definition>
+		<Definition>
+			<SubType>64</SubType>
+			<Name>6x6_4WayCorridor_3mOpening_DooredPillared</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\6x6_4WayCorridor_3mOpening_DooredPillared" />
+		</Definition>
+		<Definition>
+			<SubType>65</SubType>
+			<Name>6x6_4WayCorridor_6mOpening</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\6x6_4WayCorridor_6mOpening" />
+		</Definition>
+		<Definition>
+			<SubType>66</SubType>
+			<Name>6x6_MedCorner</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\6x6_MedCorner" />
+		</Definition>
+		<Definition>
+			<SubType>67</SubType>
+			<Name>6x6_MedCornerB</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\6x6_MedCornerB" />
+		</Definition>
+		<Definition>
+			<SubType>68</SubType>
+			<Name>9x3_2WayCorridor_3mH</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\9x3_2WayCorridor_3mH" />
+		</Definition>
+		<Definition>
+			<SubType>69</SubType>
+			<Name>9x3_2WayCorridor_6mH</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\9x3_2WayCorridor_6mH" />
+		</Definition>
+		<Definition>
+			<SubType>70</SubType>
+			<Name>9x3_LargeCorner_3mH</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\9x3_LargeCorner_3mH" />
+		</Definition>
+		<Definition>
+			<SubType>71</SubType>
+			<Name>9x3_LargeCorner_6mH</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\9x3_LargeCorner_6mH" />
+		</Definition>
+		<Definition>
+			<SubType>72</SubType>
+			<Name>9x5_2WayCorridor_3mH</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\9x5_2WayCorridor_3mH" />
+		</Definition>
+		<Definition>
+			<SubType>73</SubType>
+			<Name>9x5_2WayCorridor_6mH</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\9x5_2WayCorridor_6mH" />
+		</Definition>
+		<Definition>
+			<SubType>74</SubType>
+			<Name>9x5_LargeCorner_3m</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\9x5_LargeCorner_3m" />
+		</Definition>
+		<Definition>
+			<SubType>75</SubType>
+			<Name>9x5_LargeCorner_6mH</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\9x5_LargeCorner_6mH" />
+		</Definition>
+		<Definition>
+			<SubType>76</SubType>
+			<Name>9x9_LargeCorner_3mH</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\9x9_LargeCorner_3mH" />
+		</Definition>
+		<Definition>
+			<SubType>77</SubType>
+			<Name>9x9_LargeCorner_6mH</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corridors\9x9_LargeCorner_6mH" />
+		</Definition>
 	</TileGroup>
 	<TileGroup>
-		<!--Prefabbed Corridors-->
-		<ID TypeValue="250" />
+		<!--Prefabbed Rooms A-I -->
+		<ID TypeValue="25" />
+		<!--Cargo Hold-->
 		<Definition>
 			<SubType>1</SubType>
-			<Name>3-4_rectDoorHallwayOneway1</Name>
+			<Name>9x9_LargeCargoHold_3mH</Name>
 			<Components>
 				<Component Name="BoxCollider"/>
 			</Components>
-			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\3-4_rectDoorHallwayOneway1" />
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\9x9_LargeCargoHold_3mH" />
 		</Definition>
 		<Definition>
 			<SubType>2</SubType>
-			<Name>3-4_rectHallway1</Name>
+			<Name>9x9_LargeCargoHold_6mH</Name>
 			<Components>
 				<Component Name="BoxCollider"/>
 			</Components>
-			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\3-4_rectHallway1" />
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\9x9_LargeCargoHold_6mH" />
 		</Definition>
-		<!-- -->
+		<Definition>
+			<SubType>3</SubType>
+			<Name>9x9CargoHold_BackCorridorBottomA</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\9x9CargoHold_BackCorridorBottomA" />
+		</Definition>
+		<Definition>
+			<SubType>4</SubType>
+			<Name>9x9CargoHold_BackCorridorTopA</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\9x9CargoHold_BackCorridorTopA" />
+		</Definition>
+		<!--Cargo Runs-->
+		<Definition>
+			<SubType>5</SubType>
+			<Name>CargoFloorLarge6mCeilingA</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\CargoFloorLarge6mCeilingA" />
+		</Definition>
+		<Definition>
+			<SubType>6</SubType>
+			<Name>CargoFloorLarge6mCeilingB</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\CargoFloorLarge6mCeilingB" />
+		</Definition>
+		<Definition>
+			<SubType>7</SubType>
+			<Name>CargoRun12mPort</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\CargoRun12mPort" />
+		</Definition>
+		<!--Dorm Complexes -->
+		<Definition>
+			<SubType>8</SubType>
+			<Name>PlayerRoomSmallA</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\PlayerRoomSmallA" />
+		</Definition>
+		<!--Elevator Compile -->
+		<Definition>
+			<SubType>9</SubType>
+			<Name>CargoElevatorA</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\CargoElevatorA" />
+		</Definition>
+		<!--Prefabbed Rooms J-R -->
+		<!--Power Router Rooms -->
+		<Definition>
+			<SubType>10</SubType>
+			<Name>RouterRoom_SmallA</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RouterRoom_SmallA" />
+		</Definition>
+		<!--Prefabbed Rooms S-Z -->
+		<Definition>
+			<SubType>11</SubType>
+			<Name>StairwellStraightSimple6x6</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\Corners\StairwellStraightSimple6x6" />
+		</Definition>
+	</TileGroup>
+	<TileGroup>	
+		<ID TypeValue="250" />
+		<!--Room Building -->
+		<!--Corners -->
+		<Definition>
+			<SubType>1</SubType>
+			<Name>WallA_CornerA_3m</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Corners\WallA_CornerA_3m" />
+		</Definition>
+		<Definition>
+			<SubType>2</SubType>
+			<Name>WallA_CornerA_6mlo</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Corners\WallA_CornerA_6mlo" />
+		</Definition>
+		<Definition>
+			<SubType>3</SubType>
+			<Name>WallB_500CornerA_3m</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Corners\WallA_CornerA_3m" />
+		</Definition>
+		<Definition>
+			<SubType>4</SubType>
+			<Name>WallB_500CornerA_6mlo</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Corners\WallA_CornerA_6mlo" />
+		</Definition>
+		<Definition>
+			<SubType>5</SubType>
+			<Name>WallB_500AdapterCorner_3m</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Corners\WallB_500AdapterCorner_3m" />
+		</Definition>
+		<Definition>
+			<SubType>6</SubType>
+			<Name>WallB_500AdapterCorner_6mlo</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Corners\WallB_500AdapterCorner_3m" />
+		</Definition>
+		<Definition>
+			<SubType>7</SubType>
+			<Name>WallB_CornerA_3m</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Corners\WallB_CornerA_3m" />
+		</Definition>
+		<Definition>
+			<SubType>8</SubType>
+			<Name>WallB_CornerA_6mlo</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Corners\WallB_CornerA_6mlo" />
+		</Definition>
+		<Definition>
+			<SubType>9</SubType>
+			<Name>WallC_CornerA_3m</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Corners\WallB_CornerA_3m" />
+		</Definition>
+		<Definition>
+			<SubType>10</SubType>
+			<Name>WallC_CornerA_6mlo</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Corners\WallB_CornerA_3m" />
+		</Definition>
+		<!--Straight -->
+		<Definition>
+			<SubType>11</SubType>
+			<Name>WallA_StraightA_3m</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Straights\WallA_StraightA_3m" />
+		</Definition>
+		<Definition>
+			<SubType>12</SubType>
+			<Name>WallA_StraightA_6mlo</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Straights\WallA_StraightA_6mlo" />
+		</Definition>
+		<Definition>
+			<SubType>13</SubType>
+			<Name>WallB_500StraightA_3m</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Straights\WallB_500StraightA_3m" />
+		</Definition>
+		<Definition>
+			<SubType>14</SubType>
+			<Name>WallB_500StraightA_6mlo</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Straights\WallB_500StraightA_6mlo" />
+		</Definition>
+		<Definition>
+			<SubType>15</SubType>
+			<Name>WallB_500StraightB_3m</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Straights\WallB_500StraightB_3m" />
+		</Definition>
+		<Definition>
+			<SubType>16</SubType>
+			<Name>WallB_500StraightB_6mlo</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Straights\WallB_500StraightB_6mlo" />
+		</Definition>
+		<Definition>
+			<SubType>17</SubType>
+			<Name>WallB_500StraightCrawlA_3m</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Straights\WallB_500StraightCrawlA_3m" />
+		</Definition>
+		<Definition>
+			<SubType>18</SubType>
+			<Name>WallB_500StraightCrawlA_6mlo</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Straights\WallB_500StraightCrawlA_6mlo" />
+		</Definition>
+		<Definition>
+			<SubType>19</SubType>
+			<Name>WallB_500StraightCrawlB_3m</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Straights\WallB_500StraightCrawlB_3m" />
+		</Definition>
+		<Definition>
+			<SubType>20</SubType>
+			<Name>WallB_500StraightCrawlB_6mlo</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Straights\WallB_500StraightCrawlB_6mlo" />
+		</Definition>
+		<Definition>
+			<SubType>21</SubType>
+			<Name>WallB_StraightA_3m</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Straights\WallB_StraightA_3m" />
+		</Definition>
+		<Definition>
+			<SubType>22</SubType>
+			<Name>WallB_StraightA_6mlo</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Straights\WallB_StraightA_6mlo" />
+		</Definition>
+		<Definition>
+			<SubType>23</SubType>
+			<Name>WallC_StraightA_3m</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Straights\WallC_StraightA_3m" />
+		</Definition>
+		<Definition>
+			<SubType>24</SubType>
+			<Name>WallC_StraightA_6mlo</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Straights\WallC_StraightA_6mlo" />
+		</Definition>
+		<Definition>
+			<SubType>25</SubType>
+			<Name>WallC_StraightB_3m</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Straights\WallC_StraightB_3m" />
+		</Definition>
+		<Definition>
+			<SubType>26</SubType>
+			<Name>WallC_StraightB_6mlo</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Straights\WallC_StraightB_6mlo" />
+		</Definition>
+		<!--Wall Extenters -->
+		<Definition>
+			<SubType>27</SubType>
+			<Name>WallC_ExtenderStraightB</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Extenders\WallC_ExtenderStraightB" />
+		</Definition>
+		<Definition>
+			<SubType>28</SubType>
+			<Name>WallC_ExtenderStraightB_noTop</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Extenders\WallC_ExtenderStraightB_noTop" />
+		</Definition>
+		<Definition>
+			<SubType>29</SubType>
+			<Name>WallExtender_StraightA</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Extenders\WallExtender_StraightA" />
+		</Definition>
+		<Definition>
+			<SubType>30</SubType>
+			<Name>WallExtender_StraightA_noTop</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Extenders\WallExtender_StraightA_noTop" />
+		</Definition>
+		<Definition>
+			<SubType>31</SubType>
+			<Name>WallExtender_StraightB</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Extenders\WallExtender_StraightB" />
+		</Definition>
+		<Definition>
+			<SubType>32</SubType>
+			<Name>WallExtender_StraightB_noTop</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Extenders\WallExtender_StraightB_noTop" />
+		</Definition>
+		<Definition>
+			<SubType>33</SubType>
+			<Name>WallExtender_CornerA</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Extenders\WallExtender_CornerA" />
+		</Definition>
+		<Definition>
+			<SubType>34</SubType>
+			<Name>WallExtender_CornerA_noTop</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Extenders\WallExtender_CornerA_noTop" />
+		</Definition>
+		<Definition>
+			<SubType>35</SubType>
+			<Name>WallExtender_CornerB</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Extenders\WallExtender_CornerB" />
+		</Definition>
+		<Definition>
+			<SubType>36</SubType>
+			<Name>WallExtender_CornerB_noTop</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Extenders\WallExtender_CornerB_noTop" />
+		</Definition>
+		<Definition>
+			<SubType>37</SubType>
+			<Name>WallExtender_InvertedCornerA</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Extenders\WallExtender_InvertedCornerA" />
+		</Definition>
+		<Definition>
+			<SubType>38</SubType>
+			<Name>WallExtender_InvertedCornerA_noTop</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Extenders\WallExtender_InvertedCornerA_noTop" />
+		</Definition>
+		<Definition>
+			<SubType>39</SubType>
+			<Name>WallExtender_InvertedCornerB</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Extenders\WallExtender_InvertedCornerB" />
+		</Definition>
+		<Definition>
+			<SubType>40</SubType>
+			<Name>WallExtender_InvertedCornerB_noTop</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Extenders\WallExtender_InvertedCornerB_noTop" />
+		</Definition>
+		<!--Inverted Corners -->
+		<Definition>
+			<SubType>41</SubType>
+			<Name>Wall_3x3InvertedCornerA</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Wall_3x3InvertedCornerA" />
+		</Definition>
+		<Definition>
+			<SubType>42</SubType>
+			<Name>Wall_3x3InvertedCornerA_noFloor</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Wall_3x3InvertedCornerA_noFloor" />
+		</Definition>
+		<Definition>
+			<SubType>43</SubType>
+			<Name>Wall_3x3InvertedCornerA_noTop</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\Wall_3x3InvertedCornerA_noTop" />
+		</Definition>
+		<!--Doors -->
+		<Definition>
+			<SubType>44</SubType>
+			<Name>1x2_SDoorB_CornerAdaptedA</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\1x2_SDoorB_CornerAdaptedA" />
+		</Definition>
+		<Definition>
+			<SubType>45</SubType>
+			<Name>1x2_SDoorB_CornerAdaptedA_noTop</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\1x2_SDoorB_CornerAdaptedA_noTop" />
+		</Definition>
+		<Definition>
+			<SubType>46</SubType>
+			<Name>1x2_SDoorB_3mAdapted</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\1x2_SDoorB_3mAdapted" />
+		</Definition>
+		<Definition>
+			<SubType>47</SubType>
+			<Name>1x2_SDoorB_3mAdapted_noTop</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\PrefabbedRooms\RoomSegments\1x2_SDoorB_3mAdapted_noTop" />
+		</Definition>
 	</TileGroup>
 </Definitions>

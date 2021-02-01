@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3587528829423033045}
   - component: {fileID: 461247203348092272}
   - component: {fileID: 2414592040024433082}
+  - component: {fileID: 1128053011026066204}
   m_Layer: 0
   m_Name: WallOverhead_ArchAdapter1
   m_TagString: Untagged
@@ -81,3 +82,33 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1128053011026066204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4216115660189319279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7937c6540c271584688a51ff10620548, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gasses: []
+  neighbors: []
+  temp: 0
+  tempTol:
+  - -250
+  - 250
+  globalPressure: 0
+  appliedPressure: 0
+  maxP: 3
+  volume_m3: 0.425
+  health: 100
+  leakRate: 0
+  bulletHoles: []
+  throughput_m3: 3
+  vent: {fileID: 0}
+  ductVolume: {fileID: 0}
+  insulationRating: 0.1
+  burst: 0

@@ -23,9 +23,12 @@ public class PixelMap_Interpreter : MonoBehaviour
 	private int tileIttCount = 0;
 	//run config
 	public bool ignoreR254;
+	public bool triscalar;
 	public bool multipleLevels;
 	private int ceiling;
 	public int staticCeiling;
+	private List<int> tilelist6m = new List<int> { 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65 };
+	private List<int> tilelist5m = new List<int> { };
 	/*tile placement with respect to world axis.
 	* Z is North/South
 	* X is East/West
@@ -45,7 +48,7 @@ public class PixelMap_Interpreter : MonoBehaviour
 		}
 	}
 
-	public void MultiLevelIntegration(string baseMapName, Transform gameobjectTransform, bool myIgnoreR254)
+	public void MultiLevelIntegration(string baseMapName, Transform gameobjectTransform, bool myIgnoreR254, bool triscalar)
 	{
 		//search directory for the base map name
 		string root = Directory.GetCurrentDirectory();
@@ -100,11 +103,11 @@ public class PixelMap_Interpreter : MonoBehaviour
 		//Debug.Log(maps);
 		foreach(string level in maps)
 		{
-			BitMapInterpreter(level, gameobjectTransform, myIgnoreR254,count++);
+			BitMapInterpreter(level, gameobjectTransform, myIgnoreR254, triscalar, count++);
 		}
 	}
 
-	public void BitMapInterpreter(string mapName, Transform gameobjectTransform, bool myIgnoreR254, int levelNumber)
+	public void BitMapInterpreter(string mapName, Transform gameobjectTransform, bool myIgnoreR254, bool triscalar, int levelNumber)
 	{
 		//Load the parameter bitmap
 		string path = SolvePath(mapName, ".png", GetPixelMapRootPath());// "\\Assets\\Resources\\Maps\\PixelMaps");
@@ -140,10 +143,17 @@ public class PixelMap_Interpreter : MonoBehaviour
 		string prefabID;
 		string fullpath;
 		float rotation;
+		float levelMapWidth = levelMapData.Width;
+		if (triscalar)
+		{
+			levelMapWidth *= 3;
+		}
 		//establish the 3D (y) axis
 		y3D = gameobjectTransform.position.y + (levelNumber*3);//for now assume each level is 3m
 		x3D = 0.0f;
 		z3D = 0.0f;
+		float xOffset = 0.5f;
+		float zOffset = -0.5f;
 		Debug.Log("Attempting to build level...");
 		//itterate through the bitmap data
 		for (int y = 0; y < heightInPixels; y++)
@@ -191,21 +201,103 @@ public class PixelMap_Interpreter : MonoBehaviour
 
 							//pull rotation from G and multiply by 3
 							rotation = green * 3;
-							ArrayList tempArray = new ArrayList() { fullpath,
-							new Vector3(gameobjectTransform.position.x + x3D + 0.5f, y3D, gameobjectTransform.position.z + z3D - 0.5f),
-							rotation };
-							tileArrayList.Add(tempArray);
-						}
 
+							if(red==245)
+							{
+								///check X and Z component of name for the size-based offsets
+								string[] XYdims = prefabID.Split('_')[0].Split('x');
+								//Debug.Log(XYdims[0]+" "+XYdims[1]);
+								int x0 = int.Parse(XYdims[0]);
+								int y0 = int.Parse(XYdims[1]);
+								switch (x0)
+								{
+									case 3:
+										xOffset = 0.5f;
+										break;
+									case 5:
+										xOffset = 1.0f;
+										break;
+									case 6:
+										if(rotation == 0)
+										{
+											xOffset = 1.5f;
+										}
+										else if(rotation == 90)
+										{
+											xOffset = 2.5f;
+										}
+										else if(rotation == 180)
+										{
+											xOffset = 1.5f;
+										}
+										else if(rotation == 270)
+										{
+											xOffset = 2.5f;
+										}
+										//xOffset = 1.5f;
+										break;
+									case 9:
+										xOffset = 0.5f;
+										break;
+								}
+								switch (y0)
+								{
+									case 3:
+										zOffset = -0.5f;
+										break;
+									case 5:
+										zOffset = 0.0f;
+										break;
+									case 6:
+										zOffset = 0.0f;
+										break;
+									case 9:
+										zOffset = -0.5f;
+										break;
+								}
+								//if (tilelist6m.Contains(blue))
+								//{
+								//	xOffset = 1.5f;
+								//	zOffset = 0.0f;
+								//}
+								ArrayList tempArray = new ArrayList() { fullpath,
+							new Vector3(gameobjectTransform.position.x + x3D + xOffset, y3D, gameobjectTransform.position.z + z3D + zOffset),// - 0.5f
+							rotation };
+								tileArrayList.Add(tempArray);
+							}
+							else
+							{
+								xOffset = 0.5f;
+								zOffset = -0.5f;
+								ArrayList tempArray = new ArrayList() { fullpath,
+							new Vector3(gameobjectTransform.position.x + x3D + 0.5f, y3D, gameobjectTransform.position.z + z3D - 0.5f ),
+							rotation };
+								tileArrayList.Add(tempArray);
+							}
+						}
 					}
 				}
 				//update positional parameters
-				x3D++;
+				if (triscalar)
+				{
+					x3D += 3;
+				}
+				else
+				{
+					x3D++;
+				}
 				//if our x position has hit the bounds of the pixelmap
-				if (x3D > levelMapData.Width - 1)//imageWidth is 50 (0-49m)
+				if (x3D > levelMapWidth - 1)//imageWidth is 50 (0-49m)
 				{
 					//next pixel column, which is the next worldspace z row
-					z3D--;
+					if (triscalar)
+					{
+						z3D -= 3;
+					}
+					else
+					{
+						z3D--;
+					}
 					x3D = 0.0f;
 				}
 			}
@@ -304,12 +396,12 @@ public class PixelMap_Interpreter : MonoBehaviour
 			tilesGenerated = false;
 			if (multipleLevels)
 			{
-				MultiLevelIntegration(bitmapName, transform, ignoreR254);
+				MultiLevelIntegration(bitmapName, transform, ignoreR254, triscalar);
 			}
 			else
 			{
 				//begin PIXI process
-				BitMapInterpreter(bitmapName, transform, ignoreR254,1);
+				BitMapInterpreter(bitmapName, transform, ignoreR254, triscalar,1);
 			}
 			
 		}

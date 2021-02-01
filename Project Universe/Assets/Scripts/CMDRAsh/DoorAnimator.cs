@@ -47,10 +47,16 @@ public class DoorAnimator : MonoBehaviour
     //panel emissive
     private Renderer[] panelRenderer;
     public bool doorAnimIsInX;
+    //private ISubMachine doorMachine;
+    private bool thisRunMachine = false;
 
     void Start()
     {
         panelRenderer = new Renderer[controlPanelScreens.Length];
+        //doorMachine = GetComponent<ISubMachine>();
+        //thisRunMachine = doorMachine.RunMachine;
+        thisRunMachine =  GetComponent<ISubMachine>().getRunMachine();
+        //Debug.Log(thisRunMachine);
         doorL_TF = anim[0].gameObject.transform;
         doorR_TF = anim[1].gameObject.transform;
         if(emissiveMesh == null)
@@ -72,6 +78,35 @@ public class DoorAnimator : MonoBehaviour
 
     void Update()
     {
+        if (thisRunMachine)
+        {
+            isRunning = true;
+            if (!locked)
+            {
+                emissRenderer.material = MaterialLibrary.GetDoorStateMaterials(0);
+                for (int i = 0; i < panelRenderer.Length; i++)
+                {
+                    panelRenderer[i].material = MaterialLibrary.GetDoorDisplayMaterials(0);
+                }
+            }
+            else
+            {
+                emissRenderer.material = MaterialLibrary.GetDoorStateMaterials(2);
+                for (int i = 0; i < panelRenderer.Length; i++)
+                {
+                    panelRenderer[i].material = MaterialLibrary.GetDoorDisplayMaterials(2);
+                }
+            }
+        }
+        else
+        {
+            isRunning = false;
+            emissRenderer.material = MaterialLibrary.GetDoorStateMaterials(2);
+            for (int i = 0; i < panelRenderer.Length; i++)
+            {
+                panelRenderer[i].material = MaterialLibrary.GetDoorDisplayMaterials(2);
+            }
+        }
         //if door is powered, run the below checks
         if (isPowered && isRunning)
         {
@@ -81,6 +116,7 @@ public class DoorAnimator : MonoBehaviour
             {
                 if (doorL_TF.localPosition.x > leftBoundOpen && (isLOpening || isLOpen))
                 {
+                    anim[0].enabled = false;
                     anim[1].enabled = false;
                     //doorL_TF.localPosition = new Vector3(doorL_TF.localPosition.x, doorL_TF.localPosition.y, leftBoundOpen);
                     doorL_TF.localPosition = new Vector3(leftBoundOpen,doorL_TF.localPosition.y, doorL_TF.localPosition.z);
@@ -88,6 +124,7 @@ public class DoorAnimator : MonoBehaviour
                 else
                 {
                     anim[0].enabled = true;
+                    anim[1].enabled = true;
                 }
             }
             else
@@ -96,6 +133,7 @@ public class DoorAnimator : MonoBehaviour
                 {
                     //stop the left door animation.
                     anim[0].enabled = false;
+                    anim[1].enabled = false;
                     //return to final position
                     //doorL_TF.localPosition = new Vector3(leftBoundOpen, doorL_TF.localPosition.y, doorL_TF.localPosition.z);
                     doorL_TF.localPosition = new Vector3(doorL_TF.localPosition.x, doorL_TF.localPosition.y, leftBoundOpen);
@@ -103,6 +141,7 @@ public class DoorAnimator : MonoBehaviour
                 else
                 {
                     anim[0].enabled = true;
+                    anim[1].enabled = true;
                 }
             }
 
@@ -112,12 +151,14 @@ public class DoorAnimator : MonoBehaviour
                 if (doorL_TF.localPosition.x < leftBoundClosing && (isLClosing || isLClosed))
                 {
                     anim[0].enabled = false;
+                    anim[1].enabled = false;
                     //doorL_TF.localPosition = new Vector3(doorL_TF.localPosition.x, doorL_TF.localPosition.y, leftBoundClosing);
                     doorL_TF.localPosition = new Vector3(leftBoundClosing, doorL_TF.localPosition.y, doorL_TF.localPosition.z);
                 }
                 else
                 {
                     anim[0].enabled = true;
+                    anim[1].enabled = true;
                 }
             }
             else
@@ -126,25 +167,30 @@ public class DoorAnimator : MonoBehaviour
                 {
                     //stop
                     anim[0].enabled = false;
+                    anim[1].enabled = false;
                     //doorL_TF.localPosition = new Vector3(leftBoundClosing, doorL_TF.localPosition.y, doorL_TF.localPosition.z);
                     doorL_TF.localPosition = new Vector3(doorL_TF.localPosition.z, doorL_TF.localPosition.y, leftBoundClosing);
                 }
                 else
                 {
                     anim[0].enabled = true;
+                    anim[1].enabled = true;
                 }
             } 
 
             //R Door open, but not done with animation
             if (doorAnimIsInX)
             {
-                anim[1].enabled = false;
+                
                 if (doorR_TF.localPosition.x < rightBoundOpen && (isROpening || isROpen)) //open past -1.8Z
                 {
+                    anim[0].enabled = false;
+                    anim[1].enabled = false;
                     doorR_TF.localPosition = new Vector3(rightBoundOpen, doorR_TF.localPosition.y, doorR_TF.localPosition.z);
                 }
                 else
                 {
+                    anim[0].enabled = true;
                     anim[1].enabled = true;
                 }
             }
@@ -152,11 +198,13 @@ public class DoorAnimator : MonoBehaviour
             {
                 if (doorR_TF.localPosition.z < rightBoundOpen && (isROpening || isROpen)) //open past -1.8Z
                 {
+                    anim[0].enabled = false;
                     anim[1].enabled = false;
                     doorR_TF.localPosition = new Vector3(doorR_TF.localPosition.x, doorR_TF.localPosition.y, rightBoundOpen);
                 }
                 else
                 {
+                    anim[0].enabled = true;
                     anim[1].enabled = true;
                 }
             }
@@ -166,11 +214,13 @@ public class DoorAnimator : MonoBehaviour
             {
                 if (doorR_TF.localPosition.x > rightBoundClosing && (isRClosing || isRClosed)) //closed past -1.0f
                 {
+                    anim[0].enabled = false;
                     anim[1].enabled = false;
                     doorR_TF.localPosition = new Vector3(rightBoundClosing, doorR_TF.localPosition.y, doorR_TF.localPosition.z);
                 }
                 else
                 {
+                    anim[0].enabled = true;
                     anim[1].enabled = true;
                 }
             }
@@ -178,67 +228,91 @@ public class DoorAnimator : MonoBehaviour
             {
                 if (doorR_TF.localPosition.z > rightBoundClosing && (isRClosing || isRClosed)) //closed past -1.0f
                 {
+                    anim[0].enabled = false;
                     anim[1].enabled = false;
                     doorR_TF.localPosition = new Vector3(doorR_TF.localPosition.x, doorR_TF.localPosition.y, rightBoundClosing);
                 }
                 else
                 {
+                    anim[0].enabled = true;
                     anim[1].enabled = true;
                 }
             } 
         }
     }
 
-    void OnTriggerEnter()
+    void OnTriggerEnter(Collider other)
     {
-        if (isPowered && (!locked && isRunning))
+        if (other.CompareTag("Player"))
         {
-            if(!isLOpening && !isROpening)
+            if (isPowered && (!locked && isRunning))
             {
-                //yellow blinking
-                doorRIsOpening();
-                doorLIsOpening();
-                anim[0].Play("DoorLeftOpen");
-                anim[1].Play("DoorRightOpen");
-                doorLIsOpen();
-                doorRIsOpen();
-                //green
+                if (!isLOpening && !isROpening)
+                {
+                    //yellow blinking
+                    doorRIsOpening();
+                    doorLIsOpening();
+                    anim[0].Play("DoorLeftOpen");
+                    anim[1].Play("DoorRightOpen");
+                    doorLIsOpen();
+                    doorRIsOpen();
+                    //green
+                }
             }
         }
     }
 
-    void OnTriggerStay()
+    void OnTriggerStay(Collider other)
     {
-        if (isPowered && (!locked && isRunning))
+        if (other.CompareTag("Player"))
         {
-            //both doors are open (eval to false) or opening already.
-            if ((!isLOpen && !isROpen)||(isROpening && isLOpening))
+            if (isPowered && (!locked && isRunning))
             {
-                //yellow blinking
-                doorRIsOpening();
-                doorLIsOpening();
-                anim[0].Play("DoorLeftOpen");
-                anim[1].Play("DoorRightOpen");
-                doorLIsOpen();
-                doorRIsOpen();
-                //green
+                //both doors are open (eval to false) or opening already.
+                if ((!isLOpen && !isROpen) || (isROpening && isLOpening))
+                {
+                    //yellow blinking
+                    doorRIsOpening();
+                    doorLIsOpening();
+                    anim[0].Play("DoorLeftOpen");
+                    anim[1].Play("DoorRightOpen");
+                    doorLIsOpen();
+                    doorRIsOpen();
+                    //green
+                }
             }
         }
     }
 
-    void OnTriggerExit()
+    void OnTriggerExit(Collider other)
     {
-        if (isPowered && (!locked && isRunning))
+        if (other.CompareTag("Player"))
         {
-            //yellow blinking
-            doorRIsClosing();
-            doorLIsClosing();
-            anim[0].Play("DoorLeftClose");
-            anim[1].Play("DoorRightClose");
-            doorLIsClosed();
-            doorRIsClosed();
-            //green
+            if (isPowered && (!locked && isRunning))
+            {
+                if (!isLClosing && !isRClosing)
+                {
+                    //yellow blinking
+                    doorRIsClosing();
+                    doorLIsClosing();
+                    anim[0].Play("DoorLeftClose");
+                    anim[1].Play("DoorRightClose");
+                    doorLIsClosed();
+                    doorRIsClosed();
+                    //green
+                }
+            }
         }
+    }
+
+    public bool OpenOrOpening()
+    {
+        bool state = false;
+        if (isLOpen || isLOpening || isROpen || isROpening)
+        {
+            state = true;
+        }
+        return state;
     }
 
     public void haltAllAnimations()
@@ -253,6 +327,11 @@ public class DoorAnimator : MonoBehaviour
         {
             //close door
             locked = true;
+            emissRenderer.material = MaterialLibrary.GetDoorStateMaterials(2);
+            for (int i = 0; i < panelRenderer.Length; i++)
+            {
+                panelRenderer[i].material = MaterialLibrary.GetDoorDisplayMaterials(2);
+            }
             if (isLOpen)
             {
                 doorLIsClosing();
@@ -261,9 +340,7 @@ public class DoorAnimator : MonoBehaviour
             }
             if (isROpen){
                 doorRIsClosing();
-
                 anim[1].Play("DoorRightClose");
-
                 doorRIsClosed();
             }
         }
@@ -274,6 +351,11 @@ public class DoorAnimator : MonoBehaviour
         if (isRunning && isPowered)
         {
             locked = false;
+            emissRenderer.material = MaterialLibrary.GetDoorStateMaterials(0);
+            for (int i = 0; i < panelRenderer.Length; i++)
+            {
+                panelRenderer[i].material = MaterialLibrary.GetDoorDisplayMaterials(0);
+            }
             //green. Assumes no further issues. Will need logic later on.
             if (hasEmissive)
             {
@@ -301,7 +383,7 @@ public class DoorAnimator : MonoBehaviour
     //universal
     public void animEventOpen()
     {
-            //if locked, change to flashing red
+        //if locked, change to flashing red
         if (locked)
         {
             if (hasEmissive)

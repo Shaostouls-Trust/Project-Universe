@@ -44,12 +44,15 @@ public class WSButton1 : MonoBehaviour
                 break;
 
             case "ICannonInteract":
-                IMyCannonInteract(player);
+                IMyCannonInteract();//player);
                 break;
 
             case "CrawlDoor":
                 crawlDoorOpen();
                 Debug.Log("crawlDoor");
+                break;
+            case "pickupable":
+                PickupBy();// player);
                 break;
         }
     }
@@ -75,7 +78,7 @@ public class WSButton1 : MonoBehaviour
         scriptedObj.GetComponentInChildren<PixelMap_ECSInterpreter>().ButtonResponse();
     }
 
-    public void IMyCannonInteract(GameObject player)
+    public void IMyCannonInteract()//GameObject player)
     {
         scriptedObj.GetComponent<IControllableWeapon>().ButtonResponse(player);
     }
@@ -83,6 +86,12 @@ public class WSButton1 : MonoBehaviour
     public void crawlDoorOpen()
     {
         scriptedObj.GetComponent<CrawlDoorAnimator>().ButtonResponse();
+    }
+
+    public void PickupBy()//GameObject player)
+    {
+        //will eventually need to go by type.
+        scriptedObj.GetComponentInParent<Consumable_Ore>().PickUpConsumable(player);
     }
 
     void OnMouseOver()

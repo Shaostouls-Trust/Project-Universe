@@ -93,8 +93,11 @@ public class IRouter : MonoBehaviour
         //power request to generator logic
         if(bufferCurrent < energyBufferMax)
         {
-            //request power from generator
-            supplyingGenerator.RequestPowerFromGenerator(totalRequiredPower, thisRouter);
+            if(supplyingGenerator != null)
+            {
+                //request power from generator
+                supplyingGenerator.RequestPowerFromGenerator(totalRequiredPower, thisRouter);
+            }
         }
         if (bufferCurrent >= energyBufferMax)
         {

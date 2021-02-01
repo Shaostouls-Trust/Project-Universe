@@ -34,6 +34,7 @@ namespace ProjectUniverseData.PlayerController
         [SerializeField] private string openCharacterMenuInputName;
         [SerializeField] private string openSkillsManagementMenuInputName;
         [SerializeField] private string openAbilitiesMenuInputName;
+
         //End Input List
         [Header("AssetData")]
         [SerializeField] private Camera firstPersonCamera;
@@ -68,8 +69,6 @@ namespace ProjectUniverseData.PlayerController
         //Interaction stuff
         private GameObject Prop = null;
         private Rigidbody PropR = null;
-
-
 
         private float lookClamp;
         private float timeInAir = 0.0f;

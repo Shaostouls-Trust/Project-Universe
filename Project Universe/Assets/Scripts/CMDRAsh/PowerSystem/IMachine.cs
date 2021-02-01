@@ -241,6 +241,7 @@ public class IMachine : MonoBehaviour
         return true;
     }
 
+    /// Could we pass in script to run, so that we don't need to hardcode in all these machine scripts.
     public void runMachineSelector(string ImachineType, int powerLevel)
     {
         switch (ImachineType)
@@ -253,6 +254,8 @@ public class IMachine : MonoBehaviour
                 break;
             case "kiosk":
                 this.runMachineKiosk(powerLevel);
+                break;
+            case "InductionFurnace":
                 break;
         }
     }

@@ -19,6 +19,14 @@
 			</Components>
 			<ResourcePath Path="Prefabs\CMDRAsh\Floors\GrillFloor_Straight1" />
 		</Definition>
+		<Definition>
+			<SubType>3</SubType>
+			<Name>GrillFloor_Straight2</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\Floors\GrillFloor_Straight2" />
+		</Definition>
 		<!--Floor with ceiling-->
 		<Definition>
 			<SubType>4</SubType>
@@ -35,6 +43,30 @@
 				<Component Name="BoxCollider"/>
 			</Components>
 			<ResourcePath Path="Prefabs\CMDRAsh\Floors\ShipFloor6mCeiling" />
+		</Definition>
+		<Definition>
+			<SubType>6</SubType>
+			<Name>ShipLargeCeilingA_6m</Name>
+			<Components>
+				<Component Name="MeshCollider" />
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\Ceiling\ShipLargeCeilingA_6m" />
+		</Definition>
+		<Definition>
+			<SubType>7</SubType>
+			<Name>ShipLargeFloorA_6m</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\Floors\ShipLargeFloorA_6m" />
+		</Definition>
+		<Definition>
+			<SubType>8</SubType>
+			<Name>ShipLargeFloorCeiling_3m</Name>
+			<Components>
+				<Component Name="BoxCollider"/>
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\Floors\ShipLargeFloorCeiling_3m" />
 		</Definition>
 	</TileGroup>
 	<TileGroup>

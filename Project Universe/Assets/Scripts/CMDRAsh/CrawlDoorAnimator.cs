@@ -50,10 +50,10 @@ public class CrawlDoorAnimator : MonoBehaviour
         doorTF = anim.gameObject.transform;
     }
 
-    /*
+
     void Update()
     {
-        if(doorTF.localEulerAngles.y > closeBound && (isClosing || isClosed))
+        if (doorTF.localEulerAngles.y > closeBound && (isClosing || isClosed))
         {
             anim.enabled = false;
             doorTF.localRotation = Quaternion.Euler(doorTF.localEulerAngles.x,
@@ -63,7 +63,7 @@ public class CrawlDoorAnimator : MonoBehaviour
         {
             anim.enabled = true;
         }
-        if(doorTF.localEulerAngles.y < openBound && (isOpening || isOpen))
+        if (doorTF.localEulerAngles.y < openBound && (isOpening || isOpen))
         {
             anim.enabled = false;
             doorTF.localRotation = Quaternion.Euler(doorTF.localEulerAngles.x,
@@ -74,5 +74,5 @@ public class CrawlDoorAnimator : MonoBehaviour
             anim.enabled = true;
         }
     }
-    */
+    
 }

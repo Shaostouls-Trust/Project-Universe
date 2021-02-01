@@ -6,11 +6,18 @@
 		<Definition>
 			<SubType>1</SubType>
 			<Name>ShipCeilingA</Name>
-			<!--Component tracker (for verification purposes)-->
 			<Components>
 				<Component Name="MeshCollider" />
 			</Components>
-			<ResourcePath Path="Prefabs\CMDRAsh\ShipCeilingA" />
+			<ResourcePath Path="Prefabs\CMDRAsh\Ceiling\ShipCeilingA" />
+		</Definition>
+		<Definition>
+			<SubType>2</SubType>
+			<Name>ShipCeilingB</Name>
+			<Components>
+				<Component Name="MeshCollider" />
+			</Components>
+			<ResourcePath Path="Prefabs\CMDRAsh\Ceiling\ShipCeilingB" />
 		</Definition>
 	</TileGroup>
 </Definitions>

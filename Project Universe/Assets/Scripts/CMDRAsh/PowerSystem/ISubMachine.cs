@@ -38,7 +38,7 @@ public class ISubMachine : MonoBehaviour
     private int legsReceived;
     void Start()
     {
-        RunMachine = true;
+        //RunMachine = true;
         bufferCurrent = 0.0f;
     }
 
@@ -95,6 +95,11 @@ public class ISubMachine : MonoBehaviour
             //turn the machine off
             runMachineSelector(machineType, 5);
         }
+    }
+
+    public bool getRunMachine()
+    {
+        return runMachine;
     }
 
     public void requestHelper()

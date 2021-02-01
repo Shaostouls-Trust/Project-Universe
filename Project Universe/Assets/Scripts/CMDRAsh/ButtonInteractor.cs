@@ -21,7 +21,7 @@ public class ButtonInteractor : MonoBehaviour
         if(Physics.Raycast(transform.position,forward,out hit, 1.0f))
         {
             //Debug.Log("Work, dang you!");
-            //bad collision detection? Shutter detection is unreliable, though it is the same exact code for doors.
+            //bad collision detection? Detection is unreliable.
             if(hit.collider.gameObject.tag == "Button3D")
             {
                 //Debug.Log("Work you piece of dung!");
@@ -35,14 +35,17 @@ public class ButtonInteractor : MonoBehaviour
                     var script3 = hit.collider.gameObject.GetComponent<WSButton3>();
                     if (script != null)
                     {
+                        //Debug.Log("1");
                         script.externalInteractFunc();
                     }
                     else if(script2 != null)
                     {
+                        //Debug.Log("2");
                         script2.externalInteractFunc();
                     }
                     else if(script3 != null)
                     {
+                        //Debug.Log("3");
                         script3.externalInteractFunc();
                     }
                 }

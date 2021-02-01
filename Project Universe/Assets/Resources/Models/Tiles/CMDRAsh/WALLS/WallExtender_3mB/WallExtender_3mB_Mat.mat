@@ -47,7 +47,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Albedo:
-        m_Texture: {fileID: 2800000, guid: 8bafae771b16f774e9d6368c14ee8813, type: 3}
+        m_Texture: {fileID: 2800000, guid: 63ca6c598a4587143a3319e6a2e6f8c4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AnisotropyMap:
@@ -79,7 +79,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Depth:
-        m_Texture: {fileID: 2800000, guid: 0207ef89820f13b478efccf488326687, type: 3}
+        m_Texture: {fileID: 2800000, guid: 4e88f819f3021814f88aff43469acfd6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailMap:
@@ -115,7 +115,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Lighting:
-        m_Texture: {fileID: 2800000, guid: 603ab015ebde30145ad3494231b54aaf, type: 3}
+        m_Texture: {fileID: 2800000, guid: f620ca0e81055874f8df5287eb24d2ce, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MS:
@@ -131,7 +131,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalSmoothness:
-        m_Texture: {fileID: 2800000, guid: caf5630b9e4d9b84f997022b644ee576, type: 3}
+        m_Texture: {fileID: 2800000, guid: 611bde8b01923b94a8b4e10d150d7ae5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NMHM:
@@ -242,6 +242,7 @@ Material:
     - _HeightAmplitude: 0.02
     - _HeightCenter: 0.5
     - _HeightDiscriminant: 0.5
+    - _HeightDownshift: 0
     - _HeightMapParametrization: 0
     - _HeightMax: 1
     - _HeightMin: -1
@@ -249,6 +250,7 @@ Material:
     - _HeightPoMAmplitude: 2
     - _HeightTessAmplitude: 2
     - _HeightTessCenter: 0.5
+    - _HeightUpshift: 0
     - _InvTilingScale: 1
     - _Ior: 1.5
     - _IridescenceMask: 1
@@ -266,6 +268,7 @@ Material:
     - _PPDPrimitiveLength: 1
     - _PPDPrimitiveWidth: 1
     - _ParallaxHeightScale: 0.01
+    - _RGBHeightGrey: 191
     - _ReceivesSSR: 1
     - _RefractionModel: 0
     - _RenderQueueType: 1
@@ -295,6 +298,10 @@ Material:
     - _SubsurfaceMask: 1
     - _SupportDecals: 1
     - _SurfaceType: 0
+    - _TessMax: 25
+    - _TessMin: 10
+    - _TessPhongStrength: 0
+    - _TessValue: 1
     - _TexWorldScale: 1
     - _TexWorldScaleEmissive: 1
     - _Thickness: 1

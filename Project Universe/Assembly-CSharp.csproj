@@ -8,8 +8,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{44CC3DEB-A8A6-74C3-54D0-F23493855D9C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -65,9 +64,13 @@
     <Compile Include="Assets\Scripts\TileSystem\TilingController.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Abs.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Runtime\AXRuntimeUIFloatField.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\SerializationAndLoading\IHierarchyMapper.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Atmospherics\VolumeGlobalAtmosphereController.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\IBreakerBox.cs" />
     <Compile Include="Assets\Scripts\HaloReach252\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Koro\Hammer.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Runtime\AXRuntimeControllerTemplate.cs" />
+    <Compile Include="Assets\Archimatix\Scripts\Core\UVProjector.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters2D\LinearRepeater2D.cs" />
     <Compile Include="Assets\Scripts\PanelManager.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\AXThumbnail.cs" />
@@ -80,6 +83,7 @@
     <Compile Include="Assets\Scripts\CMDRAsh\MaterialLibrary.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Generator\Cylinders.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Organizers.cs" />
+    <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Tools\TextureTool.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Meshers\Lathe.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Deformers\FlattenerDeformer.cs" />
     <Compile Include="Assets\Scripts\TileSystem\Materials.cs" />
@@ -88,29 +92,34 @@
     <Compile Include="Assets\Archimatix\Scripts\Core\AXGameObject.cs" />
     <Compile Include="Assets\SplineMesh\Scripts\Example\ExampleTentacle.cs" />
     <Compile Include="Assets\SplineMesh\Scripts\MeshProcessing\SplineMeshTiling.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Atmospherics\GlobalVolumeInteractController.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Rotate.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Utilities.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\PixelMapGen\PixelMap_Interpreter.cs" />
     <Compile Include="Assets\Archimatix\Scenes Runtime\RuntimeCube\CubeRuntimeController.cs" />
     <Compile Include="Assets\Scripts\FarmingSystem\Crops.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Deformers\InflateDeformer.cs" />
+    <Compile Include="Assets\Scripts\Koro\target.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Add.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Meshers\WinWall.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\doorAnimEventController.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters\Repeaters.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Geometry_3D\AXSplineExtrudeGenerator.cs" />
     <Compile Include="Assets\Scripts\KhorneSyrup\Props Loader\SelectPropButton.cs" />
+    <Compile Include="Assets\Scripts\Koro\Grow.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Geometry_3D\AXQuadGenerator.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Geometry_3D\AXWallExtrude.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters\InstanceRepeater.cs" />
     <Compile Include="Assets\Scripts\HaloReach252\ObjectManager.cs" />
     <Compile Include="Assets\Scripts\KhorneSyrup\Player Controller\Interaction\Exploding_Prop.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\TriangulationDebugContext.cs" />
+    <Compile Include="Assets\Scenes\Koro\LightningBolt\LightningBoltScript.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\Delaunay\Sweep\AdvancingFrontNode.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Utils.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\AXMesh.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Displace.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Geometry_3D\AXHalfRoundShellGenerator.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Atmospherics\IGasPipeLinker.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\IRouter.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\CamOrbiter.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Noise2D.cs" />
@@ -127,7 +136,10 @@
     <Compile Include="Assets\SplineMesh\Scripts\Bezier\CurveSample.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Select.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\Delaunay\Sweep\DTSweepDebugContext.cs" />
+    <Compile Include="Assets\Scripts\Koro\Shotgun.cs" />
+    <Compile Include="Assets\Scripts\Koro\WeaponSwitching.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Geometry_3D\AXLatheGenerator.cs" />
+    <Compile Include="Assets\Scripts\Koro\Teleporter.cs" />
     <Compile Include="Assets\Scripts\ActiveStateToggler.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\WSButton1.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Meshers\PlanSweep.cs" />
@@ -137,6 +149,7 @@
     <Compile Include="Assets\SplineMesh\Scripts\MeshProcessing\SourceMesh.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\IMachine.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\IRoutingSubstation.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Transfer\IGasPipe.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\WSButton2.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\WindowInteractionManager.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\AXRelation.cs" />
@@ -150,6 +163,7 @@
     <Compile Include="Assets\Scripts\CMDRAsh\Atmospherics\VolumeAtmosphereController.cs" />
     <Compile Include="Assets\Scripts\TiltWindow.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Meshers\HalfRoundShell.cs" />
+    <Compile Include="Assets\Scripts\Koro\Refil.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Primitives\Primitives.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Deformers\PillowDeformer.cs" />
     <Compile Include="Assets\SplineMesh\Scripts\Example\ExampleSower.cs" />
@@ -168,8 +182,11 @@
     <Compile Include="Assets\Scripts\TileSystem\TileMetadata.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\clipper_library\clipper.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\Orientation.cs" />
+    <Compile Include="Assets\Scripts\Koro\PlantingGridManager.cs" />
+    <Compile Include="Assets\Scripts\Koro\TwoDPlant.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Meshers\CurveSweeper3.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Organizer\Channeler.cs" />
+    <Compile Include="Assets\Scripts\Koro\ChildPlant.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters2D\PairRepeater2D.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Deformers\TaperDeformer.cs" />
     <Compile Include="Assets\SplineMesh\Scripts\MeshProcessing\ExtrusionSegment.cs" />
@@ -187,19 +204,24 @@
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Deformers\NoiseDeformer.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Terrace.cs" />
     <Compile Include="Assets\Scripts\SimpleCameraController.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Atmospherics\VolumeNode.cs" />
     <Compile Include="Assets\Scripts\KhorneSyrup\Player Controller\PlayerController.cs" />
     <Compile Include="Assets\Scripts\DropMe.cs" />
+    <Compile Include="Assets\Scripts\Koro\RefilHealth.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\CrawlDoorAnimator.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Geometry_2D\AXSegment.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\TriangulationConstraint.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Atmospherics\IGas.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\AXTexCoords.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\FreeCurve3D.cs" />
     <Compile Include="Assets\SplineMesh\Scripts\Bezier\Spline.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Polygon\Polygon.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\TriangulationUtil.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Generator\Perlin.cs" />
+    <Compile Include="Assets\Mach_InductionFurnace.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\ImageProcessing\AXImageBlur.cs" />
     <Compile Include="Assets\Shared\Scripts\ProximityActivate.cs" />
+    <Compile Include="Assets\Scripts\Koro\Gun.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\Delaunay\Sweep\DTSweep.cs" />
     <Compile Include="Assets\Scripts\ShowSliderValue.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Shapers\ShapeConnector.cs" />
@@ -207,6 +229,7 @@
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\ScaleBias.cs" />
     <Compile Include="Assets\SplineMesh\Scripts\Utils\MeshUtility.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Geometry_3D\AXSpriteMesh.cs" />
+    <Compile Include="Assets\Scripts\Koro\FlameThrower.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\ILinkOnCreation.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\Delaunay\Sweep\DTSweepContext.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Physics\PhysicsRope.cs" />
@@ -218,19 +241,25 @@
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters\LinearRepeater.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Generator\Spheres.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Subtract.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\PlayerChildingTrigger.cs" />
     <Compile Include="Assets\Scripts\HaloReach252\WorldItem.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\TerrainTools\TerrainStamper.cs" />
     <Compile Include="Assets\Scripts\ECS\Components\Component_PrefabEntity.cs" />
     <Compile Include="Assets\Scripts\KhorneSyrup\Player Controller\Interaction\Door.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Archimatix.cs" />
     <Compile Include="Assets\SplineMesh\Scripts\Example\ExampleFollowSpline.cs" />
+    <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Shapers\ImageShaper.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\StopWatch.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core2D\AXSpriteCamera.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\MovementDynamicsController.cs" />
     <Compile Include="Assets\Scripts\KhorneSyrup\Player Controller\Interaction\VehicleController.cs" />
+    <Compile Include="Assets\Scripts\Koro\PlasmaGun.cs" />
+    <Compile Include="Assets\Scripts\Koro\MainGridPlanting.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Geometry_3D\CurveControlPoint3D.cs" />
+    <Compile Include="Assets\Scripts\Koro\Grenade.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\DataHolders\AXGenratorProduct.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters\RadialRepeater.cs" />
+    <Compile Include="Assets\Scripts\Koro\grenadelauncher.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters2D\Instance2D.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\AXShape.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\ICable.cs" />
@@ -241,6 +270,7 @@
     <Compile Include="Assets\SplineMesh\Scripts\Bezier\SplineNode.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Shapers\ShapeNoiser.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Pather.cs" />
+    <Compile Include="Assets\Scripts\Koro\yeetthegrenade.cs" />
     <Compile Include="Assets\Shared\Scripts\SimpleCharacterMotor.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Generators.cs" />
     <Compile Include="Assets\Scripts\TileSystem\Tiles.cs" />
@@ -255,6 +285,7 @@
     <Compile Include="Assets\Archimatix\Scripts\Core\plugins\ExpressionParser.cs" />
     <Compile Include="Assets\Scripts\TileSystem\ScalingWall.cs" />
     <Compile Include="Assets\Scripts\ECS\Systems\PixelMap_ECSInterpreter.cs" />
+    <Compile Include="Assets\Scripts\Koro\testing.cs" />
     <Compile Include="Assets\Scripts\HaloReach252\SaveLoad\SaveLoad.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\plugins\SoftCircuits\SCTextParser.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Turbulence.cs" />
@@ -263,6 +294,7 @@
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\Delaunay\DelaunayTriangle.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\SwitchAnimationController.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Geometry_2D\AXSpline.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Atmospherics\IOxygenGenerator.cs" />
     <Compile Include="Assets\SplineMesh\Scripts\Example\ExampleGrowingRoot.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\ShapeGenerators.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\EmptyCSharpFile.cs" />
@@ -284,11 +316,13 @@
     <Compile Include="Assets\Archimatix\Scripts\Core\AXScriptParser.cs" />
     <Compile Include="Assets\Scripts\TileSystem\TileContainer.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters2D\PlanRepeater2D.cs" />
+    <Compile Include="Assets\Scripts\Koro\boom.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Geometry_3D\AXExtrudeGenerator.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Atmospherics\PlayerVolumeController.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\Util\PointGenerator.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\FarmingSystem\CropsContainer.cs" />
+    <Compile Include="Assets\Scripts\Koro\Farmingprototype.cs" />
     <Compile Include="Assets\Scripts\HaloReach252\SaveLoad\AllData.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Meshers\Meshers.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Meshers\ContourExtruder.cs" />
@@ -329,6 +363,7 @@
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters\Replicant.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\SoundLibA.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\Delaunay\Sweep\DTSweepEdgeEvent.cs" />
+    <Compile Include="Assets\Scripts\Koro\RefilAmmo.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Geometry_3D\CurvePoint3.cs" />
     <Compile Include="Assets\Scripts\ScrollDetailTexture.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Generator\RiggedMultifractal.cs" />
@@ -340,6 +375,7 @@
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\Delaunay\Sweep\PointOnEdgeException.cs" />
     <Compile Include="Assets\Archimatix\Scenes Runtime\SpaceshipShop\GrayShipDesigner.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Generator\Const.cs" />
+    <Compile Include="Assets\Consumable_Ore.cs" />
     <Compile Include="Assets\SplineMesh\Scripts\MeshProcessing\MeshBender.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\Delaunay\Sweep\DTSweepPointComparator.cs" />
     <Compile Include="Assets\Scripts\KhorneSyrup\Player Controller\PlayerGuiController.cs" />
@@ -357,6 +393,7 @@
     <Compile Include="Assets\Scripts\CMDRAsh\AlarmSoundController.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Geometry_2D\CurvePoint2.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Meshers\BuildingExtruder.cs" />
+    <Compile Include="Assets\Scripts\Koro\PlayerMovement.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\ITriangulatable.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\AXEnumerations.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Geometry_3D\AXPolygonGenerator.cs" />
@@ -373,6 +410,7 @@
     <Compile Include="Assets\Scripts\CMDRAsh\ButtonInteractor.cs" />
     <Compile Include="Assets\Scripts\ApplicationManager.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Runtime\AXRuntimeControllerBase.cs" />
+    <Compile Include="Assets\Scripts\Koro\GrapplingGun.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\Delaunay\Sweep\DTSweepConstraint.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Spline.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Geometry_2D\AXLine.cs" />
@@ -389,118 +427,97 @@
     <Compile Include="Assets\SplineMesh\Scripts\Example\ExampleContortAlong.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters\RadialStepRepeater.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Primitives\BoxPrimitive.cs" />
-    <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Replicators\Replicator.cs" />
-    <Compile Include="Assets\Scripts\Koro\Hammer.cs" />
-    <Compile Include="Assets\Scripts\Koro\target.cs" />
-    <Compile Include="Assets\Scripts\Koro\Grow.cs" />
-    <Compile Include="Assets\Scripts\Koro\Shotgun.cs" />
-    <Compile Include="Assets\Scripts\Koro\WeaponSwitching.cs" />
-    <Compile Include="Assets\Scripts\Koro\Teleporter.cs" />
-    <Compile Include="Assets\Scripts\Koro\Refil.cs" />
-    <Compile Include="Assets\Scripts\Koro\PlantingGridManager.cs" />
-    <Compile Include="Assets\Scripts\Koro\TwoDPlant.cs" />
-    <Compile Include="Assets\Scripts\Koro\ChildPlant.cs" />
-    <Compile Include="Assets\Scripts\Koro\RefilHealth.cs" />
-    <Compile Include="Assets\Scripts\Koro\Gun.cs" />
-    <Compile Include="Assets\Scripts\Koro\FlameThrower.cs" />
-    <Compile Include="Assets\Scripts\Koro\PlasmaGun.cs" />
-    <Compile Include="Assets\Scripts\Koro\MainGridPlanting.cs" />
-    <Compile Include="Assets\Scripts\Koro\Grenade.cs" />
-    <Compile Include="Assets\Scripts\Koro\grenadelauncher.cs" />
-    <Compile Include="Assets\Scripts\Koro\yeetthegrenade.cs" />
-    <Compile Include="Assets\Scripts\Koro\testing.cs" />
-    <Compile Include="Assets\Scripts\Koro\boom.cs" />
-    <Compile Include="Assets\Scripts\Koro\Farmingprototype.cs" />
-    <Compile Include="Assets\Scripts\Koro\RefilAmmo.cs" />
-    <Compile Include="Assets\Scripts\Koro\PlayerMovement.cs" />
-    <Compile Include="Assets\Scripts\Koro\GrapplingGun.cs" />
     <Compile Include="Assets\Scripts\Koro\MoveCamera.cs" />
-    <Compile Include="Assets\Scenes\Koro\LightningBolt\LightningBoltScript.cs" />
-    <Compile Include="Assets\Scripts\CMDRAsh\PlayerChildingTrigger.cs" />
+    <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Replicators\Replicator.cs" />
+    <Compile Include="Assets\IPlayer_Inventory.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Inventory\IEquipable.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Inventory\ItemStack.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
-    <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\SimpleJSON\LICENSE.txt" />
-    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Floor\Tile_Floor_Colony_003\Tile_Floor_Colony_003.xml" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
-    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Wall\Tile_Wall_Colony_000\Tile_Wall_Colony_000.xml" />
-    <None Include="Assets\Resources\Shaders\AshShader_A01.shader" />
-    <None Include="Assets\Resources\Data\TypePowerSystem.xml" />
-    <None Include="Assets\Scenes\Koro\LightningBolt\Readme.txt" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
-    <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\AUTHORS.txt" />
-    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Floor\Tile_Floor_Colony_002\Tile_Floor_Colony_002.xml" />
-    <None Include="Assets\AmplifyOcclusion\Resources\Blur.shader" />
-    <None Include="Assets\AmplifyOcclusion\Resources\OcclusionFunctions.cginc" />
-    <None Include="Assets\mcs.rsp" />
-    <None Include="Assets\AmplifyOcclusion\Resources\Apply.shader" />
-    <None Include="Assets\Resources\Data\ECS_EntityArchetypes\ECSArchetypeRegistry.xml" />
-    <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\COPYING.LESSER.txt" />
-    <None Include="Assets\EffectExamples\Misc Effects\Prefabs\Readme_Dissolve_Respawn_.txt" />
-    <None Include="Assets\Tiles.xml" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
-    <None Include="Assets\Resources\Data\TypeFloor.xml" />
-    <None Include="Assets\AmplifyOcclusion\Resources\BlurFunctions.cginc" />
-    <None Include="Assets\Archimatix\Scripts\AXChangeLog.txt" />
-    <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\COPYING.txt" />
-    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Floor\Tile_Floor_Colony_004\Tile_Floor_Colony_004.xml" />
-    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Wall\Tile_Wall_Colony_001\Tile_Wall_Colony_001.xml" />
-    <None Include="Assets\EffectExamples\Magic Effects\Shaders\Ice.shader" />
-    <None Include="Assets\Resources\Models\Tiles\Dev\floors\dev_floor\dev_floor.xml" />
-    <None Include="Assets\AmplifyOcclusion\Readme.txt" />
-    <None Include="Assets\EffectExamples\Misc Effects\Shaders\Respawn.shader" />
-    <None Include="Assets\Resources\Models\Tiles\Dev\floors\dev_floor\Materials README.txt" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
-    <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
-    <None Include="Assets\Archimatix\Library\ColorKeys.txt" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF.shader" />
-    <None Include="Assets\Resources\Shaders\DevPlantShader.shader" />
-    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
-    <None Include="Assets\Resources\Models\Crops\Crops_Database.xml" />
-    <None Include="Assets\AmplifyOcclusion\Resources\GTAO.cginc" />
-    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Tiles_Shaostoul.xml" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
-    <None Include="Assets\AmplifyOcclusion\Resources\TemporalFilter.cginc" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Surface.cginc" />
-    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Floor\Tile_Floor_Colony_001\Tile_Floor_Colony_001.xml" />
-    <None Include="Assets\Resources\Characters\CharacterGenerator_FbxToBiped_Readme.txt" />
-    <None Include="Assets\Tiles_Shaostoul.xml" />
-    <None Include="Assets\Resources\Data\TypeDoor.xml" />
-    <None Include="Assets\AmplifyOcclusion\Resources\Occlusion.shader" />
-    <None Include="Assets\Archimatix\Third-Party Notices.txt" />
-    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Ceiling\Tile_Ceiling_Colony_002\Tile_Ceiling_Colony_002.xml" />
-    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Ceiling\Tile_Ceiling_Colony_000\Tile_Ceiling_Colony_000.xml" />
-    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
-    <None Include="Assets\Archimatix\README.txt" />
-    <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\LICENSE.txt" />
-    <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\README.txt" />
-    <None Include="Assets\Resources\Data\TypeWall.xml" />
-    <None Include="Assets\Archimatix\Library\ColorsPersonal.txt" />
-    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Ceiling\Tile_Ceiling_Colony_004\Tile_Ceiling_Colony_004.xml" />
-    <None Include="Assets\Resources\Data\TypeCeiling.xml" />
-    <None Include="Assets\Resources\Data\TypeSection.xml" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Masking.shader" />
-    <None Include="Assets\EffectExamples\Misc Effects\Shaders\FireFly.shader" />
-    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Floor\Tile_Floor_Colony_000\Tile_Floor_Colony_000.xml" />
-    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Wall\Tile_Wall_Colony_003\Tile_Wall_Colony_003.xml" />
-    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Wall\Tile_Wall_Colony_002\Tile_Wall_Colony_002.xml" />
-    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Wall\Tile_Wall_Colony_004\Tile_Wall_Colony_004.xml" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF Overlay.shader" />
-    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Ceiling\Tile_Ceiling_Colony_003\Tile_Ceiling_Colony_003.xml" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Mobile.shader" />
-    <None Include="Assets\Archimatix\Scripts\AXChangeLog Archive.txt" />
-    <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
-    <None Include="Assets\Sci-Fi Styled Modular Pack\Readme.txt" />
-    <None Include="Assets\Archimatix\Library\ColorsPro.txt" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile.shader" />
-    <None Include="Assets\AmplifyOcclusion\Resources\ApplyPostEffect.cginc" />
-    <None Include="Assets\AmplifyOcclusion\Resources\Common.cginc" />
-    <None Include="Assets\AmplifyOcclusion\Resources\CommonFunctions.cginc" />
-    <None Include="Assets\EffectExamples\Misc Effects\Shaders\Dissolve.shader" />
-    <None Include="Assets\SplineMesh\Doc.txt" />
-    <None Include="Assets\Resources\Models\Tiles\Shaostoul\Ceiling\Tile_Ceiling_Colony_001\Tile_Ceiling_Colony_001.xml" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Sprite.shader" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
+     <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\SimpleJSON\LICENSE.txt" />
+     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Floor\Tile_Floor_Colony_003\Tile_Floor_Colony_003.xml" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
+     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Wall\Tile_Wall_Colony_000\Tile_Wall_Colony_000.xml" />
+     <None Include="Assets\Resources\Shaders\AshShader_A01.shader" />
+     <None Include="Assets\Resources\Data\TypePowerSystem.xml" />
+     <None Include="Assets\Scenes\Koro\LightningBolt\Readme.txt" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
+     <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\AUTHORS.txt" />
+     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Floor\Tile_Floor_Colony_002\Tile_Floor_Colony_002.xml" />
+     <None Include="Assets\AmplifyOcclusion\Resources\Blur.shader" />
+     <None Include="Assets\AmplifyOcclusion\Resources\OcclusionFunctions.cginc" />
+     <None Include="Assets\Resources\Shaders\AshShader_C01.shader" />
+     <None Include="Assets\mcs.rsp" />
+     <None Include="Assets\AmplifyOcclusion\Resources\Apply.shader" />
+     <None Include="Assets\Resources\Data\ECS_EntityArchetypes\ECSArchetypeRegistry.xml" />
+     <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\COPYING.LESSER.txt" />
+     <None Include="Assets\EffectExamples\Misc Effects\Prefabs\Readme_Dissolve_Respawn_.txt" />
+     <None Include="Assets\Tiles.xml" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
+     <None Include="Assets\Resources\Data\TypeFloor.xml" />
+     <None Include="Assets\AmplifyOcclusion\Resources\BlurFunctions.cginc" />
+     <None Include="Assets\Archimatix\Scripts\AXChangeLog.txt" />
+     <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\COPYING.txt" />
+     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Floor\Tile_Floor_Colony_004\Tile_Floor_Colony_004.xml" />
+     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Wall\Tile_Wall_Colony_001\Tile_Wall_Colony_001.xml" />
+     <None Include="Assets\EffectExamples\Magic Effects\Shaders\Ice.shader" />
+     <None Include="Assets\Resources\Models\Tiles\Dev\floors\dev_floor\dev_floor.xml" />
+     <None Include="Assets\AmplifyOcclusion\Readme.txt" />
+     <None Include="Assets\EffectExamples\Misc Effects\Shaders\Respawn.shader" />
+     <None Include="Assets\Resources\Models\Tiles\Dev\floors\dev_floor\Materials README.txt" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
+     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
+     <None Include="Assets\Archimatix\Library\ColorKeys.txt" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF.shader" />
+     <None Include="Assets\Resources\Shaders\DevPlantShader.shader" />
+     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
+     <None Include="Assets\Resources\Models\Crops\Crops_Database.xml" />
+     <None Include="Assets\Resources\Shaders\AshShader_A01_Backup.shader" />
+     <None Include="Assets\AmplifyOcclusion\Resources\GTAO.cginc" />
+     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Tiles_Shaostoul.xml" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
+     <None Include="Assets\AmplifyOcclusion\Resources\TemporalFilter.cginc" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Surface.cginc" />
+     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Floor\Tile_Floor_Colony_001\Tile_Floor_Colony_001.xml" />
+     <None Include="Assets\Resources\Characters\CharacterGenerator_FbxToBiped_Readme.txt" />
+     <None Include="Assets\Tiles_Shaostoul.xml" />
+     <None Include="Assets\Resources\Data\TypeDoor.xml" />
+     <None Include="Assets\AmplifyOcclusion\Resources\Occlusion.shader" />
+     <None Include="Assets\Archimatix\Third-Party Notices.txt" />
+     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Ceiling\Tile_Ceiling_Colony_002\Tile_Ceiling_Colony_002.xml" />
+     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Ceiling\Tile_Ceiling_Colony_000\Tile_Ceiling_Colony_000.xml" />
+     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
+     <None Include="Assets\Archimatix\README.txt" />
+     <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\LICENSE.txt" />
+     <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\README.txt" />
+     <None Include="Assets\Resources\Data\TypeWall.xml" />
+     <None Include="Assets\Archimatix\Library\ColorsPersonal.txt" />
+     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Ceiling\Tile_Ceiling_Colony_004\Tile_Ceiling_Colony_004.xml" />
+     <None Include="Assets\Resources\Data\TypeCeiling.xml" />
+     <None Include="Assets\Resources\Data\TypeSection.xml" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Masking.shader" />
+     <None Include="Assets\EffectExamples\Misc Effects\Shaders\FireFly.shader" />
+     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Floor\Tile_Floor_Colony_000\Tile_Floor_Colony_000.xml" />
+     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Wall\Tile_Wall_Colony_003\Tile_Wall_Colony_003.xml" />
+     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Wall\Tile_Wall_Colony_002\Tile_Wall_Colony_002.xml" />
+     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Wall\Tile_Wall_Colony_004\Tile_Wall_Colony_004.xml" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF Overlay.shader" />
+     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Ceiling\Tile_Ceiling_Colony_003\Tile_Ceiling_Colony_003.xml" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Mobile.shader" />
+     <None Include="Assets\Archimatix\Scripts\AXChangeLog Archive.txt" />
+     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
+     <None Include="Assets\Sci-Fi Styled Modular Pack\Readme.txt" />
+     <None Include="Assets\Archimatix\Library\ColorsPro.txt" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile.shader" />
+     <None Include="Assets\AmplifyOcclusion\Resources\ApplyPostEffect.cginc" />
+     <None Include="Assets\AmplifyOcclusion\Resources\Common.cginc" />
+     <None Include="Assets\AmplifyOcclusion\Resources\CommonFunctions.cginc" />
+     <None Include="Assets\EffectExamples\Misc Effects\Shaders\Dissolve.shader" />
+     <None Include="Assets\SplineMesh\Doc.txt" />
+     <None Include="Assets\Resources\Models\Tiles\Shaostoul\Ceiling\Tile_Ceiling_Colony_001\Tile_Ceiling_Colony_001.xml" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Sprite.shader" />
     <Reference Include="UnityEngine">
       <HintPath>C:\Program Files\2020.1.2f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>
@@ -695,6 +712,9 @@
     </Reference>
     <Reference Include="Unity.Collections.LowLevel.ILSupport">
       <HintPath>Library\PackageCache\com.unity.collections@0.14.0-preview.16\Unity.Collections.LowLevel.ILSupport\Unity.Collections.LowLevel.ILSupport.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>Library\PackageCache\com.unity.ext.nunit@1.0.5\net35\unity-custom\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>Library\PackageCache\com.unity.nuget.newtonsoft-json@2.0.0-preview\Runtime\Newtonsoft.Json.dll</HintPath>
@@ -1152,6 +1172,9 @@
     <Reference Include="Unity.Deformations">
       <HintPath>Library\ScriptAssemblies\Unity.Deformations.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.RenderPipelines.HighDefinition.Config.Runtime">
+      <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.HighDefinition.Config.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Properties.UI.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Properties.UI.Editor.dll</HintPath>
     </Reference>
@@ -1202,9 +1225,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Unity.RenderPipelines.HighDefinition.Config.Runtime.csproj">
-      <Project>{6FF01695-AC0D-9315-9819-4B0149FECA7E}</Project>
-      <Name>Unity.RenderPipelines.HighDefinition.Config.Runtime</Name>
+    <ProjectReference Include="AmplifyShaderEditor.Samples.BuiltIn.csproj">
+      <Project>{F26C164E-900A-11A5-FC14-B9936BCB66A6}</Project>
+      <Name>AmplifyShaderEditor.Samples.BuiltIn</Name>
+    </ProjectReference>
+    <ProjectReference Include="AmplifyShaderEditor.Samples.HDRP.csproj">
+      <Project>{18A789E6-3DD0-4C95-ABB8-6A8E3769699C}</Project>
+      <Name>AmplifyShaderEditor.Samples.HDRP</Name>
     </ProjectReference>
     <ProjectReference Include="AmplifyShaderEditor.csproj">
       <Project>{1ABC5D9B-5BDE-59EC-D53F-0F40C6717DA6}</Project>

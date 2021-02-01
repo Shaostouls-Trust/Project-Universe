@@ -151,13 +151,13 @@ MonoBehaviour:
   m_RenderPipelineResources: {fileID: 11400000, guid: 3ce144cff5783da45aa5d4fdc2da14b7,
     type: 2}
   m_RenderPipelineRayTracingResources: {fileID: 0}
-  m_DefaultVolumeProfile: {fileID: 11400000, guid: 582adbd84082fdb4faf7cd4beb1ccd14,
+  m_DefaultVolumeProfile: {fileID: 11400000, guid: 23a9ada74b6d01041b4e4101478e2968,
     type: 2}
   m_DefaultLookDevProfile: {fileID: 11400000, guid: 254c4fe87beb7be4fa72e1681edbed02,
     type: 2}
   m_RenderingPathDefaultCameraFrameSettings:
     bitDatas:
-      data1: 70362301726591
+      data1: 70368744177535
       data2: 4539628425194700800
     lodBias: 1
     lodBiasMode: 0
@@ -179,7 +179,7 @@ MonoBehaviour:
     materialQuality: 0
   m_RenderingPathDefaultRealtimeReflectionFrameSettings:
     bitDatas:
-      data1: 70366596693805
+      data1: 70368744177517
       data2: 4539628425462874112
     lodBias: 1
     lodBiasMode: 0
@@ -211,8 +211,8 @@ MonoBehaviour:
     supportTransparentDepthPostpass: 1
     colorBufferFormat: 48
     supportCustomPass: 1
-    customBufferFormat: 74
-    supportedLitShaderMode: 3
+    customBufferFormat: 48
+    supportedLitShaderMode: 2
     supportDecals: 1
     msaaSampleCount: 2
     supportMotionVectors: 1
@@ -227,12 +227,12 @@ MonoBehaviour:
       cubeCookieTexArraySize: 16
       cookieAtlasLastValidMip: 0
       cookieTexArraySize: 16
-      planarReflectionAtlasSize: 4096
-      reflectionProbeCacheSize: 25
-      reflectionCubemapSize: 512
+      planarReflectionAtlasSize: 2048
+      reflectionProbeCacheSize: 16
+      reflectionCubemapSize: 1024
       reflectionCacheCompressed: 1
       planarReflectionCacheCompressed: 1
-      skyReflectionSize: 512
+      skyReflectionSize: 1024
       skyLightingOverrideLayerMask:
         serializedVersion: 2
         m_Bits: 0
@@ -242,7 +242,7 @@ MonoBehaviour:
       maxAreaLightsOnScreen: 64
       maxEnvLightsOnScreen: 64
       maxDecalsOnScreen: 512
-      maxPlanarReflectionOnScreen: 22
+      maxPlanarReflectionOnScreen: 30
     hdShadowInitParams:
       maxShadowRequests: 128
       directionalShadowsDepthBits: 16
@@ -267,21 +267,21 @@ MonoBehaviour:
         m_Values: 00010000000200000004000000080000
         m_SchemaId:
           m_Id: With4Levels
-      maxDirectionalShadowMapResolution: 2048
+      maxDirectionalShadowMapResolution: 4096
       maxPunctualShadowMapResolution: 2048
       maxAreaShadowMapResolution: 2048
       supportScreenSpaceShadows: 1
-      maxScreenSpaceShadowSlots: 8
+      maxScreenSpaceShadowSlots: 9
       screenSpaceShadowBufferFormat: 8
     decalSettings:
       drawDistance: 1000
       atlasWidth: 4096
       atlasHeight: 4096
-      perChannelMask: 0
+      perChannelMask: 1
     postProcessSettings:
       m_LutSize: 32
       lutFormat: 48
-      bufferFormat: 74
+      bufferFormat: 48
     dynamicResolutionSettings:
       enabled: 1
       maxPercentage: 100
@@ -317,7 +317,7 @@ MonoBehaviour:
       ChromaticAberrationMaxSamples: 03000000060000000c000000
     lightSettings:
       useContactShadow:
-        m_Values: 000101
+        m_Values: 010101
         m_SchemaId:
           m_Id: 
     maximumLODLevel:
@@ -347,9 +347,9 @@ MonoBehaviour:
   diffusionProfileSettings: {fileID: 0}
   diffusionProfileSettingsList:
   - {fileID: 11400000, guid: 5d0becc9081392a48a3d4aed35c6734f, type: 2}
-  - {fileID: 11400000, guid: 26bdddf49760c61438938733f07fa2a2, type: 2}
   - {fileID: 11400000, guid: 78322c7f82657514ebe48203160e3f39, type: 2}
   - {fileID: 11400000, guid: faf9682c42d4bb64eb237cec38bcf8e0, type: 2}
+  - {fileID: 11400000, guid: 26bdddf49760c61438938733f07fa2a2, type: 2}
   beforeTransparentCustomPostProcesses: []
   beforePostProcessCustomPostProcesses: []
   afterPostProcessCustomPostProcesses: []

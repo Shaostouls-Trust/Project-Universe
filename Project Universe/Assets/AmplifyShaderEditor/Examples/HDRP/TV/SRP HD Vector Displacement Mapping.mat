@@ -1,0 +1,217 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SRP HD Vector Displacement Mapping
+  m_Shader: {fileID: 4800000, guid: b79b20e80ed2ebe4dbb244789aec259f, type: 3}
+  m_ShaderKeywords: _ADD_PRECOMPUTED_VELOCITY _TOGGLESCREEN_ON
+  m_LightmapFlags: 0
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap:
+    MotionVector: User
+  disabledShaderPasses:
+  - TransparentBackface
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _Albedo:
+        m_Texture: {fileID: 2800000, guid: fee3d6c66c9f7fc4294caf4caefc054e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _LeftHand:
+        m_Texture: {fileID: 2800000, guid: bb176a5ceabe4274b8868f4a3c27d7ca, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _LeftHandVDM:
+        m_Texture: {fileID: 2800000, guid: bb176a5ceabe4274b8868f4a3c27d7ca, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Masks:
+        m_Texture: {fileID: 2800000, guid: 9670904ec41723446943d2bfc39209fa, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseFlipbook:
+        m_Texture: {fileID: 2800000, guid: 12c89afe141ffb44db0961b50bfb0d10, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Normal:
+        m_Texture: {fileID: 2800000, guid: 70c247db5b217844dab975e0fe9786a8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalHands:
+        m_Texture: {fileID: 2800000, guid: 1d75b14f4f330394b905e928ac14c061, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalTopSkull:
+        m_Texture: {fileID: 2800000, guid: c3039ffc5e0516b44b5b7b599a16367d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalsLeftHand:
+        m_Texture: {fileID: 2800000, guid: 38c34d9a83dd163439364888ad5eda23, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _R_Skull_normal:
+        m_Texture: {fileID: 2800000, guid: c3039ffc5e0516b44b5b7b599a16367d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ScreenHands:
+        m_Texture: {fileID: 2800000, guid: 821049934f0b08f43b59f0e83855b872, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ScreenHandsVDM:
+        m_Texture: {fileID: 2800000, guid: 821049934f0b08f43b59f0e83855b872, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TV_AlbedoTransparency:
+        m_Texture: {fileID: 2800000, guid: 13587e6454fac36488d85225f5f521ee, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TV_MetallicSmoothness:
+        m_Texture: {fileID: 2800000, guid: 5d7beef2bf536ce4787fd5b796ced093, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TV_normal:
+        m_Texture: {fileID: 2800000, guid: 38ac2223f901b3f438715f6ec10eeb65, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TV_normal_base:
+        m_Texture: {fileID: 2800000, guid: 70c247db5b217844dab975e0fe9786a8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TV_normal_justhands:
+        m_Texture: {fileID: 2800000, guid: 1d75b14f4f330394b905e928ac14c061, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample0:
+        m_Texture: {fileID: 2800000, guid: 12c89afe141ffb44db0961b50bfb0d10, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample2:
+        m_Texture: {fileID: 2800000, guid: 821049934f0b08f43b59f0e83855b872, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample3:
+        m_Texture: {fileID: 2800000, guid: 821049934f0b08f43b59f0e83855b872, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TopSkull:
+        m_Texture: {fileID: 2800000, guid: 6c5beca9a2811f54e8e341880e84b0d3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TopSkull1:
+        m_Texture: {fileID: 2800000, guid: bb176a5ceabe4274b8868f4a3c27d7ca, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TopSkullVDM:
+        m_Texture: {fileID: 2800000, guid: 6c5beca9a2811f54e8e341880e84b0d3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _noise:
+        m_Texture: {fileID: 2800000, guid: 12c89afe141ffb44db0961b50bfb0d10, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _AddPrecomputedVelocity: 1
+    - _AlphaCutoff: 0.5
+    - _AlphaCutoffEnable: 0
+    - _AlphaDstBlend: 0
+    - _AlphaSrcBlend: 1
+    - _BaseSmoothness: 0
+    - _BlendMode: 0
+    - _CullMode: 2
+    - _CullModeForward: 2
+    - _DisplacementMultiplier: 0.1
+    - _DoubleSidedEnable: 0
+    - _DoubleSidedNormalMode: 2
+    - _DstBlend: 0
+    - _EdgeLength: 9.2
+    - _EnableFogOnTransparent: 1
+    - _Float0: 0
+    - _Float1: 0.04
+    - _Float10: 0.005
+    - _Float11: 0.43
+    - _Float12: 0.01
+    - _Float2: -0.01
+    - _Float3: 0
+    - _Float4: 6
+    - _Float5: 12
+    - _Float6: 1
+    - _Float7: 1.54
+    - _Float8: -0.06
+    - _Float9: 0.01
+    - _GlowIntensity: 0.33
+    - _GrainMix: 0.79
+    - _HandIntensity: 1.059
+    - _HandIntensity1: 0
+    - _HandsIntensity: 1
+    - _Int0: 0
+    - _NoiseTiling: 1.2
+    - _NoiseTiling1: 4
+    - _ReceivesSSR: 1
+    - _RenderQueueType: 1
+    - _RequireSplitLighting: 0
+    - _ScreenColorTintBlend: 0.5647059
+    - _ScreenToggle: 0.2
+    - _SideHandIntensity: 1.5
+    - _SkullIntensity: 0.3
+    - _SkullIntensity1: 1
+    - _SrcBlend: 1
+    - _StencilRef: 0
+    - _StencilRefDepth: 8
+    - _StencilRefDistortionVec: 4
+    - _StencilRefGBuffer: 10
+    - _StencilRefMV: 40
+    - _StencilWriteMask: 6
+    - _StencilWriteMaskDepth: 8
+    - _StencilWriteMaskDistortionVec: 4
+    - _StencilWriteMaskGBuffer: 14
+    - _StencilWriteMaskMV: 40
+    - _Strength: -78.8
+    - _Strength1: 34.84
+    - _SurfaceType: 0
+    - _TVON: 1
+    - _TessValue: 7
+    - _TilingGlow: 4
+    - _ToggleScreen: 1
+    - _ToggleScreen1: 0
+    - _TransAmbient: 0.2
+    - _TransDirect: 1
+    - _TransNormalDistortion: 0.1
+    - _TransScattering: 2
+    - _TransShadow: 1
+    - _Translucency: 1
+    - _TransparentBackfaceEnable: 0
+    - _TransparentCullMode: 2
+    - _TransparentSortPriority: 0
+    - _TransparentZWrite: 1
+    - _UseShadowThreshold: 0
+    - _ZTestDepthEqualForOpaque: 3
+    - _ZTestGBuffer: 4
+    - _ZTestTransparent: 4
+    - _ZWrite: 1
+    - __dirty: 0
+    m_Colors:
+    - _Color0: {r: 0.9622641, g: 0.51556414, b: 0.31318873, a: 0}
+    - _Color1: {r: 1.0144179, g: 1.1576588, b: 1.5471696, a: 0}
+    - _Color2: {r: 0.745283, g: 0.745283, b: 0.745283, a: 1}
+    - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _NoiseTint: {r: 1.0144179, g: 1.1576588, b: 1.5471696, a: 0}
+    - _SideHandTint: {r: 0.9622641, g: 0.51556414, b: 0.31318864, a: 0}
+    - _SkullColor: {r: 0.5188676, g: 0.4674706, b: 0.4674706, a: 0}
+    - _SkullColor1: {r: 1, g: 1, b: 1, a: 0}
+    - _TVHandsTint: {r: 0.745283, g: 0.745283, b: 0.745283, a: 1}
+    - _TopSkullTint: {r: 0.5188676, g: 0.4674706, b: 0.4674706, a: 0}
+    - _Vector0: {r: 1, g: 1, b: 0, a: 0}
+    - _Vector1: {r: 0, g: 0, b: 0, a: 0}

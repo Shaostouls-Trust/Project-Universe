@@ -13,6 +13,7 @@ public static class PixelMap_IDLibrary
 	/// <summary>
 	/// Hardcoded dictionary used for testing purposes.
 	/// </summary>
+	/*
 	public static Dictionary<int, Dictionary<int, string>> PIXID_LIBRARY = new Dictionary<int, Dictionary<int, string>>
 	{
 		{0, new Dictionary<int,string>{{1,"Wall_PanelA" } } },//DevWallStraight
@@ -31,6 +32,7 @@ public static class PixelMap_IDLibrary
 		{254, new Dictionary<int,string>{{255, "DevFloor0" } } },//magenta (IGNORE - No prefab yet)
 		{255, new Dictionary<int,string>{{1, "IGNORE" } } },//white
 	};
+	*/
 
 	public class PIX_DICT
 	{

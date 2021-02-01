@@ -259,13 +259,14 @@ MonoBehaviour:
   anim:
   - {fileID: 6105934385865784461}
   - {fileID: 6105934385917385673}
-  emissiveMesh: {fileID: 0}
+  emissiveMesh: {fileID: 1362800747209721917}
   controlPanelScreens:
   - {fileID: 1362800747209721917}
   leftBoundOpen: 1
   leftBoundClosing: 0.3
   rightBoundOpen: -2
   rightBoundClosing: -1.3
+  doorAnimIsInX: 0
 --- !u!114 &1184786035564987908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,7 +285,7 @@ MonoBehaviour:
   energyBuffer: 150
   bufferCurrent: 0
   machineType: door
-  runMachine: 0
+  runMachine: 1
   maxLightIntensity: 0
   maxLightRange: 0
   legsRequired: 2

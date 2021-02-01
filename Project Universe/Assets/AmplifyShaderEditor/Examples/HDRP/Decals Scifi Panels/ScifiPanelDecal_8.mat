@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ScifiPanelDecal_8
+  m_Shader: {fileID: 4800000, guid: c77dbb694aceba74dabd0a16484178d7, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _Decal_BaseColor:
+        m_Texture: {fileID: 2800000, guid: a494d020f4020ab4b8ae2aca06660431, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Decal_Emissive:
+        m_Texture: {fileID: 2800000, guid: a973f709b92aa76488eb46bdd48fffe4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Decal_MaskMap:
+        m_Texture: {fileID: 2800000, guid: abafce4eb8166734d8a923d7eb05aa79, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Decal_Normal:
+        m_Texture: {fileID: 2800000, guid: 9d098687fb5c01c48bdf5f4cde2f405f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _AlphaCutoff: 0.5
+    - _DecalMeshDepthBias: 0.15
+    - _DrawOrder: 1.34
+    - _Float0: 0
+    - _Float1: 4
+    - _TileNoise1: 0.356
+    m_Colors:
+    - _Color0: {r: 119.42823, g: 93.20086, b: 0, a: 1}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionTintIntensity: {r: 120.336685, g: 20.44959, b: 0.56762725, a: 1}
+    - _Offset: {r: 0, g: 0, b: 0, a: 0}
+    - _Tiling: {r: 5.03, g: 0.33, b: 0, a: 0}
