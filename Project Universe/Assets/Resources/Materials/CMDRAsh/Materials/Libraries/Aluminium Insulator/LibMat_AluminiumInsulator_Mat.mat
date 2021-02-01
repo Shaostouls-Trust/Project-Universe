@@ -34,7 +34,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Albedo:
-        m_Texture: {fileID: 2800000, guid: 61d751268f58328419c6d35d1df756b1, type: 3}
+        m_Texture: {fileID: 2800000, guid: f3773ff151a36d44a8e4d8ad28c43e61, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AnisotropyMap:
@@ -66,7 +66,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Depth:
-        m_Texture: {fileID: 2800000, guid: 728581a05148bf340a683e2390078b90, type: 3}
+        m_Texture: {fileID: 2800000, guid: 21acfe0b4fae95b41bbeea28976efe1d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailMap:
@@ -102,7 +102,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Lighting:
-        m_Texture: {fileID: 2800000, guid: 37877346f2725f04ab1f5597e21dbbd2, type: 3}
+        m_Texture: {fileID: 2800000, guid: ef2603f2ab08f2540938f11fb2fd08ac, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MS:
@@ -118,7 +118,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalSmoothness:
-        m_Texture: {fileID: 2800000, guid: b71ecd3292c0b3841a0c4325ba0702be, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0d528a4acd8b11b46aab230e5b2bbd30, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NMHM:
@@ -229,6 +229,7 @@ Material:
     - _HeightAmplitude: 0.02
     - _HeightCenter: 0.5
     - _HeightDiscriminant: 0.5
+    - _HeightDownshift: 0
     - _HeightMapParametrization: 0
     - _HeightMax: 1
     - _HeightMin: -1
@@ -236,6 +237,7 @@ Material:
     - _HeightPoMAmplitude: 2
     - _HeightTessAmplitude: 2
     - _HeightTessCenter: 0.5
+    - _HeightUpshift: 0
     - _InvTilingScale: 1
     - _Ior: 1.5
     - _IridescenceMask: 1
@@ -253,6 +255,7 @@ Material:
     - _PPDPrimitiveLength: 1
     - _PPDPrimitiveWidth: 1
     - _ParallaxHeightScale: 0.01
+    - _RGBHeightGrey: 191
     - _ReceivesSSR: 1
     - _RefractionModel: 0
     - _RenderQueueType: 1
