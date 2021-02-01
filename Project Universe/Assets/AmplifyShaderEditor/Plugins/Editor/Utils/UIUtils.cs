@@ -253,6 +253,7 @@ namespace AmplifyShaderEditor
 		public static GUIStyle MiniButtonTopRight;
 
 		public static GUIStyle CommentaryTitle;
+		public static GUIStyle StickyNoteText;
 		public static GUIStyle InputPortLabel;
 		public static GUIStyle OutputPortLabel;
 
@@ -857,6 +858,7 @@ namespace AmplifyShaderEditor
 			Textfield = null;
 
 			CommentaryTitle = null;
+			StickyNoteText = null;
 			InputPortLabel = null;
 			OutputPortLabel = null;
 
@@ -958,6 +960,7 @@ namespace AmplifyShaderEditor
 				InputPortLabel.fontSize = (int)( Constants.DefaultFontSize );
 				OutputPortLabel.fontSize = (int)( Constants.DefaultFontSize );
 				CommentaryTitle.fontSize = (int)( Constants.DefaultFontSize );
+				StickyNoteText.fontSize = (int)( Constants.DefaultFontSize );
 			}
 		}
 
@@ -1007,6 +1010,9 @@ namespace AmplifyShaderEditor
 			}
 
 			CommentaryTitle = new GUIStyle( MainSkin.customStyles[ (int)CustomStyle.CommentaryTitle ] );
+			StickyNoteText = new GUIStyle( MainSkin.customStyles[ (int)CustomStyle.CommentaryTitle ] );
+			StickyNoteText.wordWrap = true;
+			StickyNoteText.alignment = TextAnchor.UpperLeft;
 			InputPortLabel = new GUIStyle( MainSkin.customStyles[ (int)CustomStyle.InputPortlabel ] );
 			OutputPortLabel = new GUIStyle( MainSkin.customStyles[ (int)CustomStyle.OutputPortLabel ] );
 
@@ -1190,6 +1196,7 @@ namespace AmplifyShaderEditor
 			InputPortLabel.fontSize = (int)( Constants.DefaultFontSize * drawInfo.InvertedZoom );
 			OutputPortLabel.fontSize = (int)( Constants.DefaultFontSize * drawInfo.InvertedZoom );
 			CommentaryTitle.fontSize = (int)( Constants.DefaultFontSize * drawInfo.InvertedZoom );
+			StickyNoteText.fontSize = (int)( Constants.DefaultFontSize * drawInfo.InvertedZoom );
 
 			RangedFloatSliderStyle.fixedHeight = 18 * drawInfo.InvertedZoom;
 			RangedFloatSliderThumbStyle.fixedHeight = 12 * drawInfo.InvertedZoom;
@@ -1993,6 +2000,15 @@ namespace AmplifyShaderEditor
 			for( int i = 0; i < Constants.AttrInvalidChars.Length; i++ )
 			{
 				originalString = originalString.Replace( Constants.AttrInvalidChars[ i ], string.Empty );
+			}
+			return originalString;
+		}
+
+		public static string RemoveHeaderAttrCharacters( string originalString )
+		{
+			for( int i = 0; i < Constants.AttrInvalidChars.Length; i++ )
+			{
+				originalString = originalString.Replace( Constants.HeaderInvalidChars[ i ], string.Empty );
 			}
 			return originalString;
 		}

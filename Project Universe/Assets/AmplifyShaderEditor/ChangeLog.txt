@@ -1,4 +1,87 @@
 Release Notes:
+v1.8.0 rev 00
+:* Fixes:
+    * Fixed SSAO issue over Universal 10 PBR template
+    * Fixed issue with GPU instancing and Stereo VR on multiple Builtin Legacy templates
+
+v1.8.7 rev 18:
+* Fixes:
+    * Fixed missing ASE Pragma tag over HDRP 10 Decal template
+
+* Improvements:
+    * Added new DepthNormals and GBuffer passes over Universal 10 PBR template
+
+v1.8.7 rev 17:
+* Fixes:
+    * Fixed issue with debug display across multiple HDRP 10 templates
+    * Fixed 'Compile and show code' button not working over ASE custom shader inspector on Unity 2020.2
+
+* Improvements:
+    * Added new strip #line directives over ASE custom shader inspector on Unity 2020.2
+
+v1.8.7 rev 16:
+* Fixes:
+    * Fixed multiple _BlendMode issues across all HDRP templates
+    * Fixed issue with using custom meshes on standard surface custom material inspector over 2020.1 and above
+
+v1.8.7 rev 15:
+* Fixes:
+    * Automatically converting obsolete custom inspectors from HDRP v.7/8/9 when reading shaders into HDRP 10
+    * Bumped internal HDRP version control to force new HDRP 10 templates to be unpacked
+
+v1.8.7 rev 14:
+* New Node:
+    * Sticky Note
+        * Allows user to add notes directly on the ASE canvas
+
+* Improvements:
+    * Updated HDRP templates to be compatible with SRP 10
+
+* Fixes:
+    * Fixed issue with inverted depth dir on Reconstruct World Position From Depth SF over HDRP 8 and above
+    * Fixed minor issue over Tags foldout on templates node properties
+    * Added missing SRP versions into ASE Package Manager
+        * SRP v.8.3.1
+        * SRP v.7.5.1
+        * SRP v.7.5.2
+        * SRP v.9.0.0 Preview 71
+
+v1.8.7 rev 13:
+* Fixes:
+    * Fixed issue with capturing canvas screen shot while maximized
+    * Removed multiple incorrect port restrictions over 'Triplanar Sample' node
+    * Fixed issue on incorrect template behavior if on a template inline option its internal property is selected via the the inline dropdown
+    * Fixed issue on template options type set to inline but with no inline property selected
+    * Fixed issue on losing inline properties between canvas
+
+* Improvements:
+    * 'Dither' node now has new SS input port to be able to use custom sampler states
+
+v1.8.7 rev 12:
+* Fixes:
+    * Fixed issue with removing Header attributes
+
+v1.8.7 rev 11:
+* New Sample:
+    * Transparent Cutout for both URP and HDRP
+
+v1.8.7 rev 10:
+* Fixes:
+    * Fixed issue on user not being able to use the dot/period character on Header attributes
+    * Fixed issue on Header attributes not being correctly shown on 'Color' node
+
+v1.8.7 rev 09:
+* Improvements:
+    * User can now specify multiple headers for each property
+
+v1.8.7 rev 08:
+* Improvements:
+    * Added new No Interpolation option into 'Vertex To Fragment' node
+    * Added new Header attribute for property type nodes
+    * Added new No Keyword Toggle attribute for 'Float' node
+    * Added new Remap Slider custom drawer for 'Vector4' node
+        * User must specify min limit and max limit on Z and W coordinate respectively
+
 v1.8.7 rev 07:
 * Fixes:
     * Fixed issue on 'Texture Sampler' node incorrectly generating sampler states when its R,G,B,A ports were being used

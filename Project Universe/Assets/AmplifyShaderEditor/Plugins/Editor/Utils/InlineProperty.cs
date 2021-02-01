@@ -191,7 +191,9 @@ namespace AmplifyShaderEditor
 		private void DrawPicker( ref UndoParentNode owner, string content )
 		{
 			EditorGUILayout.BeginHorizontal();
-			m_nodeId = owner.EditorGUILayoutIntPopup( content, m_nodeId, UIUtils.FloatIntNodeArr(), UIUtils.FloatIntNodeIds() );
+			string[] intArraysNames = owner.ContainerGraph.ParentWindow.CurrentGraph.FloatIntNodes.NodesArr;
+			int[] intIds = owner.ContainerGraph.ParentWindow.CurrentGraph.FloatIntNodes.NodeIds;
+			m_nodeId = owner.EditorGUILayoutIntPopup( content, m_nodeId, intArraysNames, intIds );
 			if( GUILayout.Button( UIUtils.FloatIntIconOFF, UIUtils.FloatIntPickerONOFF, GUILayout.Width( 15 ), GUILayout.Height( 15 ) ) )
 				m_active = !m_active;
 			EditorGUILayout.EndHorizontal();

@@ -135,6 +135,7 @@ namespace AX.Generators
 
             Paths paths = inputSrc_p.getPaths();
 
+           // Debug.Log("paths.Count = " + paths.Count);
             if (paths == null || paths.Count == 0)
                 return null;
 

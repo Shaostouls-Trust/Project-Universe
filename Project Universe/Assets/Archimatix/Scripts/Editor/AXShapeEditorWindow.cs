@@ -24,7 +24,7 @@ public class AXShapeEditorWindow : EditorWindow
     //private static AXShapeEditorWindow _instance = null;
  
 
-    [MenuItem("Window/Archimatix/Shape Editor")]
+    //[MenuItem("Window/Archimatix/Shape Editor")]
     public static void Init()
     {
         AXShapeEditorWindow edwin = (AXShapeEditorWindow)EditorWindow.GetWindow(typeof(AXShapeEditorWindow));

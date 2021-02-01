@@ -348,6 +348,7 @@ namespace AmplifyShaderEditor
 		protected override void OnAtrributesChanged()
 		{
 			CheckIfHDR();
+			CheckHeaderAttribute();
 		}
 
 		public override void RefreshExternalReferences()

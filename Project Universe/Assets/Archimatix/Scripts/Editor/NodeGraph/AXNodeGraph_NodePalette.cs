@@ -770,10 +770,12 @@ namespace AXEditor
 									cur_y = ParameterToolGUI.display(pRect, editor, p);
 								else if (p.Name.Contains("Repeater"))
 									cur_y = ParameterToolGUI.display(pRect, editor, p);
-								else if (p.Name.Contains("Jitter"))
-									cur_y = ParameterToolGUI.display(pRect, editor, p);
-								else
-								{
+                                    else if (p.Name.Contains("Jitter"))
+                                        cur_y = ParameterToolGUI.display(pRect, editor, p);
+                                    else if (p.Name.Contains("Image"))
+                                        cur_y = ParameterToolGUI.display(pRect, editor, p);
+                                    else
+                                    {
 									
 									cur_y += ParameterGUI.OnGUI(pRect, editor, p) + gap;
 								}
@@ -1019,10 +1021,27 @@ namespace AXEditor
 		}
 
 
+        if (po.generator is TextureTool)
+        {
+            EditorGUI.BeginChangeCheck();
+
+            
+            po.imageData = (Texture2D)EditorGUI.ObjectField(new Rect(x2, cur_y, innerWidth - 2 * thumbSize, lineHgt), po.imageData, typeof(Texture2D), true);
+            if (EditorGUI.EndChangeCheck())
+            {
+                Undo.RegisterCompleteObjectUndo(model, "TextureSelection");
+
+                model.autobuild();
+
+            }
+            cur_y += lineHgt + gap;
+        }
 
 
 
-   
+
+
+
 
 
             // TEXTURES
@@ -1770,9 +1789,21 @@ namespace AXEditor
 					}
 
 				}
+                if (po.generator is TextureTool && po.imageData != null)
+                {
+                    Texture2D thumber = po.imageData;
+                    if (e.type == EventType.Repaint)
+                    {
+                        if (thumber != null)
+                            EditorGUI.DrawTextureTransparent(editor.mostRecentThumbnailRect, thumber, ScaleMode.ScaleToFit, 1.0F);
+                        else
+                            EditorGUI.DrawTextureTransparent(editor.mostRecentThumbnailRect, ArchimatixEngine.nodeIcons[po.GeneratorTypeString], ScaleMode.ScaleToFit, 1.0F);
 
-				else if ( ((po.Output != null && po.Output.meshes != null && po.Output.meshes.Count > 0) || po.generator is MaterialTool) && (po.renTex != null || po.thumbnail != null)   )
-					//if ( po.thumbnail != null )   
+                    }
+
+                }
+                else if ( ((po.Output != null && po.Output.meshes != null && po.Output.meshes.Count > 0) || po.generator is MaterialTool) && (po.renTex != null || po.thumbnail != null)   )
+				//if ( po.thumbnail != null )   
 				{
 					//Debug.Log(po.Name + " thumb " + po.renTex);
 					if (e.type == EventType.Repaint)

@@ -17,6 +17,11 @@ Shader /*ase_name*/ "Hidden/Templates/Legacy/DefaultUnlit" /*end*/
 		Pass
 		{
 			CGPROGRAM
+			#ifndef UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX
+			//only defining to not throw compilation error over Unity 5.5
+			#define UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input)
+			#endif
+
 			#pragma target 3.0 
 			#pragma vertex vert
 			#pragma fragment frag
@@ -64,6 +69,9 @@ Shader /*ase_name*/ "Hidden/Templates/Legacy/DefaultUnlit" /*end*/
 			
 			fixed4 frag (v2f i /*ase_frag_input*/) : SV_Target
 			{
+				UNITY_SETUP_INSTANCE_ID(i);
+				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
+
 				fixed4 myColorVar;
 				// ase common template code
 				/*ase_frag_code:i=v2f*/

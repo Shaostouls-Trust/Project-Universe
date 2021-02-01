@@ -51,6 +51,16 @@ namespace AmplifyShaderEditor
 			return newValue;
 		}
 
+		public string EditorGUILayoutTextField( string text, params GUILayoutOption[] options )
+		{
+			string newValue = EditorGUILayout.TextField( text, options );
+			if( !text.Equals( newValue ) )
+			{
+				UndoRecordObject( string.Format( MessageFormat, "EditorGUILayoutTextField", ( ( m_nodeAttribs != null ) ? m_nodeAttribs.Name : GetType().ToString() ) ) );
+			}
+			return newValue;
+		}
+
 		public string EditorGUILayoutTextField( string label, string text, params GUILayoutOption[] options )
 		{
 			string newValue = EditorGUILayout.TextField( label, text, options );
@@ -442,6 +452,26 @@ namespace AmplifyShaderEditor
 			if( !newValue.Equals( text ) )
 			{
 				UndoRecordObject( string.Format( MessageFormat, label, ( ( m_nodeAttribs != null ) ? m_nodeAttribs.Name : GetType().ToString() ) ) );
+			}
+			return newValue;
+		}
+
+		public string EditorGUITextArea( Rect position, string text )
+		{
+			string newValue = EditorGUI.TextArea( position, text );
+			if( !newValue.Equals( text ) )
+			{
+				UndoRecordObject( string.Format( MessageFormat, "TextArea", ( ( m_nodeAttribs != null ) ? m_nodeAttribs.Name : GetType().ToString() ) ) );
+			}
+			return newValue;
+		}
+
+		public string EditorGUITextArea( Rect position, string text, [UnityEngine.Internal.DefaultValue( "EditorStyles.textField" )] GUIStyle style )
+		{
+			string newValue = EditorGUI.TextArea( position, text,style );
+			if( !newValue.Equals( text ) )
+			{
+				UndoRecordObject( string.Format( MessageFormat, "TextArea", ( ( m_nodeAttribs != null ) ? m_nodeAttribs.Name : GetType().ToString() ) ) );
 			}
 			return newValue;
 		}

@@ -1,4 +1,4 @@
-﻿#pragma warning disable 0618 // SphereCap obsolete - use SphereHandleCap
+﻿#pragma warning disable 0618 // SphereHandleCap obsolete - use SphereHandleCap
 
 using UnityEngine;
 using UnityEditor;
@@ -214,7 +214,7 @@ namespace AX.GeneratorHandlers
 				Quaternion.identity,
 				.15f*HandleUtility.GetHandleSize(pos),
 				Vector3.zero, 
-				Handles.SphereCap
+				Handles.SphereHandleCap
 			);
 			if(EditorGUI.EndChangeCheck())
 			{
@@ -230,7 +230,7 @@ namespace AX.GeneratorHandlers
 				Quaternion.identity,
 				.15f*HandleUtility.GetHandleSize(pos),
 				Vector3.zero, 
-				Handles.SphereCap
+				Handles.SphereHandleCap
 			);
 			if(EditorGUI.EndChangeCheck())
 			{
@@ -247,7 +247,7 @@ namespace AX.GeneratorHandlers
 				Quaternion.identity,
 				.15f*HandleUtility.GetHandleSize(pos),
 				Vector3.zero, 
-				Handles.SphereCap
+				Handles.SphereHandleCap
 			);
 			if(EditorGUI.EndChangeCheck())
 			{
@@ -263,7 +263,7 @@ namespace AX.GeneratorHandlers
 				Quaternion.identity,
 				.15f*HandleUtility.GetHandleSize(pos),
 				Vector3.zero, 
-				Handles.SphereCap
+				Handles.SphereHandleCap
 			);
 			if(EditorGUI.EndChangeCheck())
 			{
@@ -443,7 +443,7 @@ namespace AX.GeneratorHandlers
 				Quaternion.identity,
 				.15f*HandleUtility.GetHandleSize(pos),
 				Vector3.zero, 
-				Handles.SphereCap
+				Handles.SphereHandleCap
 			);
 			if(EditorGUI.EndChangeCheck())
 			{
@@ -464,7 +464,7 @@ namespace AX.GeneratorHandlers
 				Quaternion.identity,
 				.15f*HandleUtility.GetHandleSize(pos),
 				Vector3.zero, 
-				Handles.SphereCap
+				Handles.SphereHandleCap
 			);
 			if(EditorGUI.EndChangeCheck())
 			{
@@ -497,7 +497,7 @@ namespace AX.GeneratorHandlers
 
 
 
-			if(Handles.Button(labelPosition-new Vector3(0, len, 0),  Quaternion.Euler(90,0,0), size, size, Handles.ConeCap ))
+			if(Handles.Button(labelPosition-new Vector3(0, len, 0),  Quaternion.Euler(90,0,0), size, size, Handles.ConeHandleCap ))
 			{
 				Undo.RegisterCompleteObjectUndo (parametricObject.model, "Cell Count");
 
@@ -507,7 +507,7 @@ namespace AX.GeneratorHandlers
 				for (int i = 0; i < generator.P_Output.Dependents.Count; i++) 
 					generator.P_Output.Dependents [i].parametricObject.generator.adjustWorldMatrices ();
 			}
-			if(Handles.Button(labelPosition+new Vector3(0, len*.5f, 0), Quaternion.Euler(-90,0,0), size, size, Handles.ConeCap ))
+			if(Handles.Button(labelPosition+new Vector3(0, len*.5f, 0), Quaternion.Euler(-90,0,0), size, size, Handles.ConeHandleCap ))
 			{
 				Undo.RegisterCompleteObjectUndo (parametricObject.model, "Cell Count");
 
@@ -701,7 +701,7 @@ namespace AX.GeneratorHandlers
 				Quaternion.identity,
 				.15f*HandleUtility.GetHandleSize(pos),
 				Vector3.zero, 
-				Handles.SphereCap
+				Handles.SphereHandleCap
 			);
 			if(EditorGUI.EndChangeCheck())
 			{

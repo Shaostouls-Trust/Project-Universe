@@ -58,6 +58,7 @@ namespace AmplifyShaderEditor
 	[NodeAttributes( "Custom Expression", "Miscellaneous", "Creates a custom expression or function if <b>return</b> is detected in the written code." )]
 	public sealed class CustomExpressionNode : ParentNode
 	{
+		private const string WarningText = "Characters $ and @ are NOT allowed inside code since they are internally used as delimiters over the node meta.\nThey will be automatically removed when saving the shader.";
 		private const float AddRemoveButtonLayoutWidth = 15;
 		private const float LineAdjust = 1.15f;
 		private const float IdentationAdjust = 5f;
@@ -68,8 +69,7 @@ namespace AmplifyShaderEditor
 													"On Expression mode a ; is not required on the end of an instruction line.\n\n" +
 													"- You can also call a function from an external file, just make sure to add the include file via the 'Additional Directives' group " +
 													"in the main property panel. Also works with shader functions.";
-		private const char LineFeedSeparator = '$';
-
+		
 		private const string ReturnHelper = "return";
 		private const double MaxTimestamp = 1;
 		private const string DefaultExpressionNameStr = "My Custom Expression";
@@ -440,6 +440,7 @@ namespace AmplifyShaderEditor
 			NodeUtils.DrawPropertyGroup( ref m_visibleInputsFoldout, InputsStr, DrawReordableInputs, DrawItemsAddRemoveInputs );
 
 			EditorGUILayout.HelpBox( CustomExpressionInfo, MessageType.Info );
+			EditorGUILayout.HelpBox( WarningText, MessageType.Warning );
 		}
 
 		string WrapCodeInFunction( bool isTemplate, string functionName, bool expressionMode )
@@ -1375,7 +1376,7 @@ namespace AmplifyShaderEditor
 			// This node is, by default, created with one input port 
 			base.ReadFromString( ref nodeParams );
 			m_code = GetCurrentParam( ref nodeParams );
-			m_code = m_code.Replace( LineFeedSeparator, '\n' );
+			m_code = m_code.Replace( Constants.LineFeedSeparator, '\n' );
 			m_code = m_code.Replace( Constants.SemiColonSeparator, ';' );
 			m_outputTypeIdx = Convert.ToInt32( GetCurrentParam( ref nodeParams ) );
 			if( m_outputTypeIdx >= AvailableWireTypes.Length )
@@ -1496,9 +1497,11 @@ namespace AmplifyShaderEditor
 		{
 			base.WriteToString( ref nodeInfo, ref connectionsInfo );
 
+			m_code = m_code.Replace( Constants.LineFeedSeparator.ToString(), string.Empty );
+			m_code = m_code.Replace( Constants.SemiColonSeparator.ToString(), string.Empty );
 			m_code = UIUtils.ForceLFLineEnding( m_code );
 
-			string parsedCode = m_code.Replace( '\n', LineFeedSeparator );
+			string parsedCode = m_code.Replace( '\n', Constants.LineFeedSeparator );
 			parsedCode = parsedCode.Replace( ';', Constants.SemiColonSeparator );
 
 			IOUtils.AddFieldValueToString( ref nodeInfo, parsedCode );

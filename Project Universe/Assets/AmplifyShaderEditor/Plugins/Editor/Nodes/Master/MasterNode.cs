@@ -269,7 +269,15 @@ namespace AmplifyShaderEditor
 #if UNITY_2018_3_OR_NEWER
 					if( ASEPackageManagerHelper.CurrentHDVersion > ASESRPVersions.ASE_SRP_6_9_1 )
 					{
-						AddMenuItem( menu, "UnityEditor.Rendering.HighDefinition.HDLitGUI" );
+						if( ASEPackageManagerHelper.CurrentHDVersion > ASESRPVersions.ASE_SRP_10_0_0 )
+						{
+							AddMenuItem( menu, "Rendering.HighDefinition.LightingShaderGraphGUI" );
+							AddMenuItem( menu, "Rendering.HighDefinition.HDUnlitGUI" );
+						}
+						else
+						{
+							AddMenuItem( menu, "UnityEditor.Rendering.HighDefinition.HDLitGUI" );
+						}
 						AddMenuItem( menu, "UnityEditor.ShaderGraph.PBRMasterGUI" );
 					}
 					else
@@ -976,7 +984,7 @@ namespace AmplifyShaderEditor
 		}
 		public string CustomInspectorFormatted { get { return string.Format( CustomInspectorFormat, m_customInspectorName ); } }
 		public string CroppedShaderName { get { return m_croppedShaderName; } }
-		public AvailableShaderTypes CurrentMasterNodeCategory { get { return ( m_masterNodeCategory == 0 ) ? AvailableShaderTypes.SurfaceShader : AvailableShaderTypes.Template; } }
+		public virtual AvailableShaderTypes CurrentMasterNodeCategory { get { return ( m_masterNodeCategory == 0 ) ? AvailableShaderTypes.SurfaceShader : AvailableShaderTypes.Template; } }
 		public int CurrentMasterNodeCategoryIdx { get { return m_masterNodeCategory; } }
 		public MasterNodeDataCollector CurrentDataCollector { get { return m_currentDataCollector; } set { m_currentDataCollector = value; } }
 		public List<PropertyNode> PropertyNodesVisibleList { get { return m_propertyNodesVisibleList; } }

@@ -1,4 +1,4 @@
-#pragma warning disable 0618 // SphereCap obsolete - use SphereHandleCap
+#pragma warning disable 0618 // SphereHandleCap obsolete - use SphereHandleCap
 
 using UnityEngine;
 using UnityEditor;
@@ -71,7 +71,7 @@ namespace AX.GeneratorHandlers
 				Quaternion.identity,
 				.15f*HandleUtility.GetHandleSize(pos),
 				Vector3.zero, 
-				Handles.SphereCap
+				Handles.SphereHandleCap
 			);
 			if(EditorGUI.EndChangeCheck())
 			{
@@ -162,7 +162,7 @@ namespace AX.GeneratorHandlers
 			}
 
 
-
+            Event e = Event.current;
 
 			Matrix4x4 pushM = Handles.matrix;
 
@@ -179,10 +179,10 @@ namespace AX.GeneratorHandlers
 					Handles.color = brightOrange;
 					Handles.DrawLine(new Vector3(gener.radius/2-.5f, 0, 0), new Vector3(gener.radius/2+.5f, 0, 0));
 
-					Handles.SphereCap(0,
+					Handles.SphereHandleCap(0,
 						new Vector3(gener.radius/2, 0, 0),
 						Quaternion.identity,
-						.15f*HandleUtility.GetHandleSize(pos));
+						.15f*HandleUtility.GetHandleSize(pos), e.type);
 
 				}
 				Handles.DrawLine(new Vector3(gener.radius-.5f, 0, 0), new Vector3(gener.radius+.5f, 0, 0));
@@ -192,10 +192,11 @@ namespace AX.GeneratorHandlers
 
 
 			// SIZE CAP
-			Handles.SphereCap(0,
+			Handles.SphereHandleCap(0,
 				new Vector3(gener.radius*.9f, 0, 0),
 				Quaternion.identity,
-				.15f*HandleUtility.GetHandleSize(pos));
+				.15f*HandleUtility.GetHandleSize(pos),
+                e.type);
 
 
 			Handles.Label(new Vector3(gener.radius, -y/2, 0), ""+System.Math.Round(gener.size, 0)+" degs", labelStyle);
@@ -219,7 +220,7 @@ namespace AX.GeneratorHandlers
 
 			Handles.color = new Color(.7f, 1f, .7f, .9f);
 			pos = new Vector3(gener.radius, -y, -handleSizer*2);
-			if(Handles.Button(pos, Quaternion.Euler(0,180,0), handleSizer, handleSizer, Handles.ConeCap))
+			if(Handles.Button(pos, Quaternion.Euler(0,180,0), handleSizer, handleSizer, Handles.ConeHandleCap))
 			{ 
 				Undo.RegisterCompleteObjectUndo (parametricObject.model, "Cell Count");
 
@@ -233,7 +234,7 @@ namespace AX.GeneratorHandlers
 			// [+]
 			Handles.color = new Color(.7f, .7f, 1, .9f);
 			pos = new Vector3(gener.radius, -y, handleSizer*2);
-			if(Handles.Button(pos, Quaternion.Euler(0,0,0), handleSizer, handleSizer, Handles.ConeCap))
+			if(Handles.Button(pos, Quaternion.Euler(0,0,0), handleSizer, handleSizer, Handles.ConeHandleCap))
 			{ 
 				Undo.RegisterCompleteObjectUndo (parametricObject.model, "Cell Count");
 
@@ -367,7 +368,7 @@ namespace AX.GeneratorHandlers
 				Quaternion.identity,
 				handleSize,
 				Vector3.zero, 
-				Handles.SphereCap
+				Handles.SphereHandleCap
 				);
 			if(EditorGUI.EndChangeCheck())
 			{
@@ -415,7 +416,7 @@ namespace AX.GeneratorHandlers
 				Quaternion.identity,
 				.15f*HandleUtility.GetHandleSize(pos),
 				Vector3.zero, 
-				Handles.SphereCap
+				Handles.SphereHandleCap
 				);
 			if(EditorGUI.EndChangeCheck())
 			{
@@ -437,7 +438,7 @@ namespace AX.GeneratorHandlers
 				Quaternion.identity,
 				.15f*HandleUtility.GetHandleSize(pos),
 				Vector3.zero, 
-				Handles.SphereCap
+				Handles.SphereHandleCap
 				);
 			if(EditorGUI.EndChangeCheck())
 			{
@@ -457,7 +458,7 @@ namespace AX.GeneratorHandlers
 			// (-)
 			Handles.color = new Color(.7f, .7f, 1, .9f);
 			pos = new Vector3(left-handleSize*1f, -lhgtBay, 0);
-			if(Handles.Button(pos, Quaternion.Euler(0,-90,0), .15f*HandleUtility.GetHandleSize(pos), .15f*HandleUtility.GetHandleSize(pos), Handles.ConeCap))
+			if(Handles.Button(pos, Quaternion.Euler(0,-90,0), .15f*HandleUtility.GetHandleSize(pos), .15f*HandleUtility.GetHandleSize(pos), Handles.ConeHandleCap))
 			{ 
 				Undo.RegisterCompleteObjectUndo (parametricObject.model, "Cell Count");
 				repeaterToolU.parametricObject.getParameter("Cells").initiateRipple_setIntValueFromGUIChange(repeaterToolU.parametricObject.intValue("Cells")-1);
@@ -469,7 +470,7 @@ namespace AX.GeneratorHandlers
 			// [+]
 			Handles.color = new Color(.7f, 1f, .7f, .9f);
 			pos = new Vector3(left+handleSize*1f, -lhgtBay, 0);
-			if(Handles.Button(pos, Quaternion.Euler(0,90,0), .15f*HandleUtility.GetHandleSize(pos), .15f*HandleUtility.GetHandleSize(pos), Handles.ConeCap))
+			if(Handles.Button(pos, Quaternion.Euler(0,90,0), .15f*HandleUtility.GetHandleSize(pos), .15f*HandleUtility.GetHandleSize(pos), Handles.ConeHandleCap))
 			{ 
 				Undo.RegisterCompleteObjectUndo (parametricObject.model, "Cell Count");
 				repeaterToolU.parametricObject.getParameter("Cells").initiateRipple_setIntValueFromGUIChange(repeaterToolU.parametricObject.intValue("Cells")+1);
@@ -490,7 +491,7 @@ namespace AX.GeneratorHandlers
 			{
 				Handles.color = new Color(.7f, .7f, 1, .6f);
 				pos = new Vector3(left-handleSize*1f, -lhgtBay/2, 0);
-				if(Handles.Button(pos, Quaternion.Euler(0,-90,0), .13f*HandleUtility.GetHandleSize(pos), .13f*HandleUtility.GetHandleSize(pos), Handles.ConeCap))
+				if(Handles.Button(pos, Quaternion.Euler(0,-90,0), .13f*HandleUtility.GetHandleSize(pos), .13f*HandleUtility.GetHandleSize(pos), Handles.ConeHandleCap))
 				{ 
 					Undo.RegisterCompleteObjectUndo (parametricObject.model, "Edge Count");
 					repeaterToolU.parametricObject.getParameter("Edge_Count").initiateRipple_setIntValueFromGUIChange(repeaterToolU.parametricObject.intValue("Edge_Count")-1);
@@ -502,7 +503,7 @@ namespace AX.GeneratorHandlers
 				// [+]
 				Handles.color = new Color(.7f, 1f, .7f, .6f);
 				pos = new Vector3(left+handleSize*1f, -lhgtBay/2, 0);
-				if(Handles.Button(pos, Quaternion.Euler(0,90,0), .13f*HandleUtility.GetHandleSize(pos), .13f*HandleUtility.GetHandleSize(pos), Handles.ConeCap))
+				if(Handles.Button(pos, Quaternion.Euler(0,90,0), .13f*HandleUtility.GetHandleSize(pos), .13f*HandleUtility.GetHandleSize(pos), Handles.ConeHandleCap))
 				{ 
 					Undo.RegisterCompleteObjectUndo (parametricObject.model, "Edge Count");
 					repeaterToolU.parametricObject.getParameter("Edge_Count").initiateRipple_setIntValueFromGUIChange(repeaterToolU.parametricObject.intValue("Edge_Count")+1);
@@ -627,7 +628,7 @@ namespace AX.GeneratorHandlers
 				Quaternion.identity,
 				handleSize,
 				Vector3.zero, 
-				Handles.SphereCap
+				Handles.SphereHandleCap
 				);
 			if(EditorGUI.EndChangeCheck())
 			{
@@ -669,7 +670,7 @@ namespace AX.GeneratorHandlers
 				Quaternion.identity,
 				.15f*HandleUtility.GetHandleSize(pos),
 				Vector3.zero, 
-				Handles.SphereCap
+				Handles.SphereHandleCap
 				);
 			if(EditorGUI.EndChangeCheck())
 			{
@@ -682,7 +683,7 @@ namespace AX.GeneratorHandlers
 
 
 			pos = new Vector3(right-handleSize*1f, -lhgtBay, 0);
-			if(Handles.Button(pos, Quaternion.Euler(0,-90,0), .15f*HandleUtility.GetHandleSize(pos), .15f*HandleUtility.GetHandleSize(pos), Handles.ConeCap))
+			if(Handles.Button(pos, Quaternion.Euler(0,-90,0), .15f*HandleUtility.GetHandleSize(pos), .15f*HandleUtility.GetHandleSize(pos), Handles.ConeHandleCap))
 			{ 
 				Undo.RegisterCompleteObjectUndo (parametricObject.model, "Cell Count");
 				repeaterTool.parametricObject.getParameter("Cells").initiateRipple_setIntValueFromGUIChange(repeaterTool.parametricObject.intValue("Cells")-1);
@@ -690,7 +691,7 @@ namespace AX.GeneratorHandlers
 			}
 
 			pos = new Vector3(left+handleSize*1f, -lhgtBay, 0);
-			if(Handles.Button(pos, Quaternion.Euler(0,90,0), .15f*HandleUtility.GetHandleSize(pos), .15f*HandleUtility.GetHandleSize(pos), Handles.ConeCap))
+			if(Handles.Button(pos, Quaternion.Euler(0,90,0), .15f*HandleUtility.GetHandleSize(pos), .15f*HandleUtility.GetHandleSize(pos), Handles.ConeHandleCap))
 			{ 
 				Undo.RegisterCompleteObjectUndo (parametricObject.model, "Cell Count");
 				repeaterTool.parametricObject.getParameter("Cells").initiateRipple_setIntValueFromGUIChange(repeaterTool.parametricObject.intValue("Cells")+1);

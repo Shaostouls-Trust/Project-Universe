@@ -2595,7 +2595,7 @@ namespace AmplifyShaderEditor
 			}
 		}
 
-		public string GenerateInputInVertex( ref MasterNodeDataCollector dataCollector, int inputPortUniqueId, string varName, bool createInterpolator )
+		public string GenerateInputInVertex( ref MasterNodeDataCollector dataCollector, int inputPortUniqueId, string varName, bool createInterpolator , bool noInterpolationFlag = false )
 		{
 			InputPort inputPort = GetInputPortByUniqueId( inputPortUniqueId );
 			if( !dataCollector.IsFragmentCategory)
@@ -2626,7 +2626,7 @@ namespace AmplifyShaderEditor
 
 				if( createInterpolator )
 				{
-					dataCollector.TemplateDataCollectorInstance.RegisterCustomInterpolatedData( varName, inputPort.DataType, CurrentPrecisionType, data );
+					dataCollector.TemplateDataCollectorInstance.RegisterCustomInterpolatedData( varName, inputPort.DataType, CurrentPrecisionType, data,true,MasterNodePortCategory.Fragment,noInterpolationFlag );
 				}
 				else
 				{
@@ -3760,6 +3760,7 @@ namespace AmplifyShaderEditor
 			return TitleContent.text.IndexOf( text, StringComparison.CurrentCultureIgnoreCase ) >= 0;
 		}
 
+		public virtual ParentNode ExecuteStubCode(){ return this; }
 		public virtual float HeightEstimate
 		{
 			get
@@ -3782,5 +3783,6 @@ namespace AmplifyShaderEditor
 		public string TypeName { get { if( m_nodeAttribs != null ) return m_nodeAttribs.Name;return GetType().ToString(); } }
 		public bool PreviewIsDirty { set { m_previewIsDirty = value; } get { return m_previewIsDirty; } }
 		protected bool FinishPreviewRender { get { return m_finishPreviewRender; } set { m_finishPreviewRender = value; } }
+		public virtual bool IsStubNode { get { return false; } }
 	}
 }

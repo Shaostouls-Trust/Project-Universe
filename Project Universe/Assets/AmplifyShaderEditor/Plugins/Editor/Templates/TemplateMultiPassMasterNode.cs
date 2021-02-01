@@ -250,7 +250,7 @@ namespace AmplifyShaderEditor
 				int oldPropertyCount = template.AvailableShaderProperties.Count;
 				for( int i = 0; i < oldPropertyCount; i++ )
 				{
-					UIUtils.ReleaseUniformName( passUniqueId, template.AvailableShaderProperties[ i ].PropertyName );
+					ContainerGraph.ParentWindow.DuplicatePrevBufferInstance.ReleaseUniformName( passUniqueId, template.AvailableShaderProperties[ i ].PropertyName );
 				}
 			}
 		}
@@ -284,7 +284,7 @@ namespace AmplifyShaderEditor
 				for( int i = 0; i < newPropertyCount; i++ )
 				{
 					m_containerGraph.AddInternalTemplateNode( m_templateMultiPass.AvailableShaderProperties[ i ] );
-					int nodeId = UIUtils.CheckUniformNameOwner( m_templateMultiPass.AvailableShaderProperties[ i ].PropertyName );
+					int nodeId = ContainerGraph.ParentWindow.DuplicatePrevBufferInstance.CheckUniformNameOwner( m_templateMultiPass.AvailableShaderProperties[ i ].PropertyName );
 					if( nodeId > -1 )
 					{
 						if( UniqueId != nodeId )
@@ -1215,7 +1215,7 @@ namespace AmplifyShaderEditor
 
 			if( m_propertyOrderChanged )
 			{
-				List<TemplateMultiPassMasterNode> mpNodes = UIUtils.CurrentWindow.CurrentGraph.MultiPassMasterNodes.NodesList;
+				List<TemplateMultiPassMasterNode> mpNodes = ContainerGraph.MultiPassMasterNodes.NodesList;
 				int count = mpNodes.Count;
 				for( int i = 0; i < count; i++ )
 				{
@@ -1868,7 +1868,7 @@ namespace AmplifyShaderEditor
 
 		public string BuildShaderBody( MasterNodeDataCollector inDataCollector, ref MasterNodeDataCollector outDataCollector )
 		{
-			List<TemplateMultiPassMasterNode> list = UIUtils.CurrentWindow.CurrentGraph.MultiPassMasterNodes.NodesList;
+			List<TemplateMultiPassMasterNode> list = ContainerGraph.MultiPassMasterNodes.NodesList;
 			int currentSubshader = list[ 0 ].SubShaderIdx;
 			m_templateMultiPass.SetShaderName( string.Format( TemplatesManager.NameFormatter, m_shaderName ) );
 			if( string.IsNullOrEmpty( m_customInspectorName ) )
@@ -2221,7 +2221,7 @@ namespace AmplifyShaderEditor
 							if( item.Output.Equals( options[ optionIdx ].Options.FieldInlineName ) )
 							{
 								var node = options[ optionIdx ].Options.FieldValue.GetPropertyNode();
-								if( node != null && ( node.IsConnected || node.AutoRegister ) && options[ optionIdx ].Options.FieldValue.Active )
+								if( node != null && ( node.IsConnected || node.AutoRegister || node.UniqueId < -1 ) && options[ optionIdx ].Options.FieldValue.Active )
 								{
 									item.Replacement = node.PropertyName;
 								}
@@ -2954,6 +2954,16 @@ namespace AmplifyShaderEditor
 
 			m_containerGraph.CurrentCanvasMode = NodeAvailability.TemplateShader;
 			m_containerGraph.CurrentPrecision = m_currentPrecisionType;
+#if UNITY_2020_2_OR_NEWER
+			if(  m_templateMultiPass.SubShaders[0].Modules.SRPType == TemplateSRPType.HD && ASEPackageManagerHelper.CurrentHDVersion >= ASESRPVersions.ASE_SRP_10_0_0 )
+			{
+				if( Constants.CustomInspectorHD7To10.ContainsKey( m_customInspectorName ) )
+				{
+					UIUtils.ShowMessage( string.Format("Detected obsolete custom inspector \"{0}\" in shader meta. Converting to new one \"{1}\"", m_customInspectorName , Constants.CustomInspectorHD7To10[ m_customInspectorName ] ), MessageSeverity.Warning );
+					m_customInspectorName = Constants.CustomInspectorHD7To10[ m_customInspectorName ];
+				}
+			}
+#endif
 		}
 
 		public override void WriteToString( ref string nodeInfo, ref string connectionsInfo )
@@ -3296,7 +3306,7 @@ namespace AmplifyShaderEditor
 				m_hdSrpMaterialType = value;
 				if( m_isMainOutputNode )
 				{
-					List<TemplateMultiPassMasterNode> mpNodes = UIUtils.CurrentWindow.CurrentGraph.MultiPassMasterNodes.NodesList;
+					List<TemplateMultiPassMasterNode> mpNodes = ContainerGraph.MultiPassMasterNodes.NodesList;
 					int count = mpNodes.Count;
 					for( int i = 0; i < count; i++ )
 					{
@@ -3359,5 +3369,6 @@ namespace AmplifyShaderEditor
 			ShaderName = name;
 		}
 		public bool IsLODMainFirstPass { get { return m_passIdx == 0 && m_lodIndex == -1; } }
+		public override AvailableShaderTypes CurrentMasterNodeCategory { get { return AvailableShaderTypes.Template; } }
 	}
 }

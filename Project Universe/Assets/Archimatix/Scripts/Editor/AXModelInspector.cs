@@ -102,7 +102,7 @@ public class AXModelInspector : Editor
 			break;
 
 		case EventType.DragUpdated:
-				UnityEngine.Debug.Log("Dragging");
+			//	UnityEngine.Debug.Log("Dragging");
 			break;
 
 		case EventType.DragPerform:

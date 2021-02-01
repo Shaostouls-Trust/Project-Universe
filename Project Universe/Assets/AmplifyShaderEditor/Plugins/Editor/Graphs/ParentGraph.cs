@@ -3006,8 +3006,17 @@ namespace AmplifyShaderEditor
 			if( newNode )
 			{
 				newNode.ContainerGraph = this;
-				newNode.UniqueId = nodeId;
-				AddNode( newNode, nodeId < 0, addLast, registerUndo );
+				if( newNode.IsStubNode )
+				{
+					ParentNode stubNode = newNode.ExecuteStubCode();
+					ScriptableObject.DestroyImmediate( newNode, true );
+					newNode = stubNode;
+				}
+				else
+				{
+					newNode.UniqueId = nodeId;
+					AddNode( newNode, nodeId < 0, addLast, registerUndo );
+				}
 			}
 			return newNode;
 		}

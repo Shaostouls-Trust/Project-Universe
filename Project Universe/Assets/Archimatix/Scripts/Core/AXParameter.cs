@@ -55,7 +55,7 @@ namespace AX
 		public event ParameterAltered WasAltered;
 
 
-		public enum DataType { Float, Int, Bool, Spline, Mesh, Vector3, Option, Shape, Plane, Data, MaterialTool, RepeaterTool, JitterTool, Outlet, String, CustomOption, AnimationCurve, Generic, Color, FloatList, Curve3D };
+		public enum DataType { Float, Int, Bool, Spline, Mesh, Vector3, Option, Shape, Plane, Data, MaterialTool, RepeaterTool, JitterTool, Outlet, String, CustomOption, AnimationCurve, Generic, Color, FloatList, Curve3D, Texture2D };
 
 		[SerializeField]
 		private DataType m_type;

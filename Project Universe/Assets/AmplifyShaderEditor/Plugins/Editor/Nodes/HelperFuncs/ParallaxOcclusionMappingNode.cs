@@ -66,6 +66,7 @@ namespace AmplifyShaderEditor
 		
 		private InputPort m_uvPort;
 		private InputPort m_texPort;
+		private InputPort m_ssPort;
 		private InputPort m_scalePort;
 		private InputPort m_viewdirTanPort;
 		private InputPort m_refPlanePort;
@@ -79,24 +80,29 @@ namespace AmplifyShaderEditor
 		protected override void CommonInit( int uniqueId )
 		{
 			base.CommonInit( uniqueId );
-			AddInputPort( WirePortDataType.FLOAT2, false, "UV" );
-			AddInputPort( WirePortDataType.SAMPLER2D, false, "Tex" );
-			m_inputPorts[ 1 ].CreatePortRestrictions( WirePortDataType.SAMPLER2D, WirePortDataType.SAMPLER3D, WirePortDataType.SAMPLER2DARRAY );
-			AddInputPort( WirePortDataType.FLOAT, false, "Scale" );
-			AddInputPort( WirePortDataType.FLOAT3, false, "ViewDir (tan)" );
-			AddInputPort( WirePortDataType.FLOAT, false, "Ref Plane" );
-			AddInputPort( WirePortDataType.FLOAT2, false, "Curvature" );
-			AddInputPort( WirePortDataType.FLOAT, false, ArrayIndexStr );
+			AddInputPort( WirePortDataType.FLOAT2, false, "UV",-1,MasterNodePortCategory.Fragment,0);
+			AddInputPort( WirePortDataType.SAMPLER2D, false, "Tex", -1, MasterNodePortCategory.Fragment, 1 );
+			AddInputPort( WirePortDataType.SAMPLERSTATE, false, "SS", -1, MasterNodePortCategory.Fragment, 7 );
+			AddInputPort( WirePortDataType.FLOAT, false, "Scale", -1, MasterNodePortCategory.Fragment, 2 );
+			AddInputPort( WirePortDataType.FLOAT3, false, "ViewDir (tan)", -1, MasterNodePortCategory.Fragment, 3 );
+			AddInputPort( WirePortDataType.FLOAT, false, "Ref Plane", -1, MasterNodePortCategory.Fragment, 4 );
+			AddInputPort( WirePortDataType.FLOAT2, false, "Curvature", -1, MasterNodePortCategory.Fragment, 5 );
+			AddInputPort( WirePortDataType.FLOAT, false, ArrayIndexStr, -1, MasterNodePortCategory.Fragment, 6 );
+
 			AddOutputPort( WirePortDataType.FLOAT2, "Out" );
 
-			m_uvPort = m_inputPorts[ 0 ];
-			m_texPort = m_inputPorts[ 1 ];
-			m_scalePort = m_inputPorts[ 2 ];
-			m_viewdirTanPort = m_inputPorts[ 3 ];
-			m_refPlanePort = m_inputPorts[ 4 ];
+			m_uvPort = GetInputPortByUniqueId( 0 );
+			m_texPort = GetInputPortByUniqueId( 1 );
+			m_texPort.CreatePortRestrictions( WirePortDataType.SAMPLER2D, WirePortDataType.SAMPLER3D, WirePortDataType.SAMPLER2DARRAY );
+			m_ssPort = GetInputPortByUniqueId( 7 );
+			m_ssPort.CreatePortRestrictions( WirePortDataType.SAMPLERSTATE );
+			m_scalePort = GetInputPortByUniqueId( 2 );
+			m_viewdirTanPort = GetInputPortByUniqueId( 3 );
+			m_refPlanePort = GetInputPortByUniqueId( 4 );
 			m_pomUVPort = m_outputPorts[ 0 ];
-			m_curvaturePort = m_inputPorts[ 5 ];
-			m_arrayIndexPort = m_inputPorts[ 6 ];
+			m_curvaturePort = GetInputPortByUniqueId( 5 );
+			m_arrayIndexPort = GetInputPortByUniqueId( 6 );
+
 			m_scalePort.FloatInternalData = 0.02f;
 			m_useInternalPortData = false;
 			m_textLabelWidth = 130;
@@ -331,7 +337,15 @@ namespace AmplifyShaderEditor
 			if( ( outsideGraph.SamplingMacros && !outsideGraph.IsStandardSurface ) || m_texPort.DataType == WirePortDataType.SAMPLER2DARRAY )
 #endif
 			{
-				string sampler = GeneratorUtils.GenerateSamplerState( ref dataCollector, UniqueId, texture );
+				string sampler = string.Empty;
+				if( m_ssPort.IsConnected )
+				{
+					sampler = m_ssPort.GeneratePortInstructions( ref dataCollector );
+				}
+				else
+				{
+					sampler = GeneratorUtils.GenerateSamplerState( ref dataCollector, UniqueId, texture );
+				}
 				if( outsideGraph.IsSRP )
 				{
 					textureArgs = texture + ", " + sampler;

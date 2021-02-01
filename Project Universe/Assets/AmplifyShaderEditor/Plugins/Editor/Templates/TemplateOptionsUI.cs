@@ -292,6 +292,29 @@ namespace AmplifyShaderEditor
 		{
 			get
 			{
+				if( m_options.Type == AseOptionsType.Field &&
+					m_currentOption == 1 )
+				{
+					if( m_options.FieldValue.NodeId < -1 )
+					{
+						//This is quite the hack. The bug is related to if a user chooses an inline property on the field option, then the behavior is to comment the original property set on the template
+						// The problem is that, if the user sets an inline property and select its own internal property from there, then the behavior that will prevail without this hack is to call the actions associated with setting a new inline property
+						// Which is on all templates to comment the original template internal property leaving the property commented on the final code (This was detected on URP PBR)
+						PropertyNode node = UIUtils.CurrentWindow.OutsideGraph.GetInternalTemplateNode( m_options.FieldValue.NodeId ) as PropertyNode;
+						if( node != null )
+						{
+							if( node.PropertyName.Equals( m_options.FieldInlineName ) )
+							{
+								return m_options.ActionsPerOption.Rows[ 0 ];
+							}
+						}
+					}
+					else if( m_options.FieldValue.NodeId == -1 )
+					{
+						// If node id is -1 then no node is selected on the inline dropdown then we should also fallback to using its internal property
+						return m_options.ActionsPerOption.Rows[ 0 ];
+					}
+				}
 				return m_options.ActionsPerOption.Rows[m_currentOption];
 			}
 		}

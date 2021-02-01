@@ -1,4 +1,9 @@
-﻿1.2.8
+﻿1.2.9
+- New Node: ImageShaper that traces the alpha channel of a Texture2D and creates a Shape.
+- New Node: UVProjecter which alters the UVs of a Mesh for z-axis projection.
+- Fixed: Updated Handles code to match new Unity API in 2020.
+
+1.2.8
 - Fixed a bug where the Lathe did not auto-generate when a Section Shape was linked.
 
 1.2.7

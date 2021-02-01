@@ -1157,7 +1157,20 @@ namespace AXGeometry
 
         }
 
-		public static IntPoint getCenter(Path path)
+        public static IntRect getBounds(Paths paths)
+        {
+           
+            return AXClipperLib.Clipper.GetBounds(paths);
+
+        }
+
+
+
+
+
+
+
+        public static IntPoint getCenter(Path path)
 		{
 			IntRect b = getBounds(path);
 
@@ -1859,11 +1872,36 @@ namespace AXGeometry
             Potrace.potrace_trace(Result, ListOfCurveArrays);
 
 
+            if (ListOfCurveArrays.Count == 0)
+            {
+                //Debug.Log("NO CURVE GENERATED FROM " + image.name);
+                return null;
+            }
+
+            ArrayList FirstCurveArray = ListOfCurveArrays[0] as ArrayList;
+
+           // Debug.Log("count: " + ListOfCurveArrays.Count);
 
 
+            // Paths paths = ProcessCurveArray(FirstCurveArray);
 
 
+            Paths paths = new Paths();
 
+            foreach (ArrayList arrayList in ListOfCurveArrays)
+            {
+                Paths tmpPaths = ProcessCurveArray(arrayList);
+
+                if (tmpPaths != null && tmpPaths.Count > 0)
+                    paths.AddRange(tmpPaths);
+            }
+
+
+            return paths;
+        }
+
+        public static Paths ProcessCurveArray(ArrayList curveArray)
+        { 
             // RETURN POLY_TREE
             Clipper c = new Clipper(Clipper.ioPreserveCollinear);
 
@@ -1874,14 +1912,8 @@ namespace AXGeometry
             //Debug.Log(" ================= A " + ListOfCurveArrays.Count);
 
 
-            if (ListOfCurveArrays.Count == 0)
-            {
-                Debug.Log("NO CURVE GENERATED FROM " + image.name);
-                return null;
-            }
-
-            ArrayList FirstCurveArray = ListOfCurveArrays[0] as ArrayList;
-
+            
+           
            
 
 
@@ -1892,7 +1924,7 @@ namespace AXGeometry
             AXCurvePoint curvePoint = null;
 
 
-            if (FirstCurveArray.Count == 0)
+            if (curveArray.Count == 0)
                 return null;
 
            
@@ -1900,11 +1932,11 @@ namespace AXGeometry
 
 
             // *** ====== EACH SUB_CURVE IN FIRST_CURVE_ARAY
-            for (int j = 0; j < FirstCurveArray.Count; j++)
+            for (int j = 0; j < curveArray.Count; j++)
             {
                 // MAP Potrace.Curves TO AX Curve
 
-                Potrace.Curve[] poSubCurve = (Potrace.Curve[])FirstCurveArray[j];
+                Potrace.Curve[] poSubCurve = (Potrace.Curve[])curveArray[j];
                 AXCurve axSubcurve = new AXCurve();
 
                 Vector2 P;

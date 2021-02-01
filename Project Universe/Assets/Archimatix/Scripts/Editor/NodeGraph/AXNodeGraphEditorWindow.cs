@@ -2599,9 +2599,10 @@ public class AXNodeGraphEditorWindow : EditorWindow {
                         && pA_p.Type != AXParameter.DataType.Spline
                         && pA_p.Type != AXParameter.DataType.Curve3D
                         && pA_p.Type != AXParameter.DataType.MaterialTool 
-						&& pA_p.Type != AXParameter.DataType.JitterTool 
-						&& pA_p.Type != AXParameter.DataType.RepeaterTool 
-						&& pA_p.Type != AXParameter.DataType.Plane 
+						&& pA_p.Type != AXParameter.DataType.JitterTool
+                        && pA_p.Type != AXParameter.DataType.Texture2D
+                        && pA_p.Type != AXParameter.DataType.RepeaterTool
+                        && pA_p.Type != AXParameter.DataType.Plane 
 						&& pA_p.Type != AXParameter.DataType.Float 
 						&& ! po.showControls)
 						continue;

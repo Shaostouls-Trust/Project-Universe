@@ -1,4 +1,4 @@
-﻿#pragma warning disable 0618 // SphereCap obsolete - use SphereHandleCap
+﻿#pragma warning disable 0618 // SphereHandleCap obsolete - use SphereHandleCap
 
 using UnityEngine;
 using UnityEditor;
@@ -172,10 +172,10 @@ namespace AX.GeneratorHandlers
 					if (pointIsSelected)
 					{
 						capSize = .17f*HandleUtility.GetHandleSize(pos);
-					}	
+					}
 
 
-
+                    EventType et = e.type;
 					 
 
 
@@ -187,11 +187,11 @@ namespace AX.GeneratorHandlers
 //						Quaternion.identity,
 //						capSize,
 //						Vector3.zero, 
-//						(controlID, positione, rotation, size) =>
+//						(controlID, positione, rotation, size, type) =>
 //					{
 //						if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
 //						Debug.Log("YOP");
-//						Handles.SphereCap(controlID, positione, rotation, size);
+//						Handles.SphereHandleCap(controlID, positione, rotation, size, type);
 //					});
 
 					
@@ -200,7 +200,7 @@ namespace AX.GeneratorHandlers
 						Quaternion.identity,
 						capSize,
 						Vector3.zero, 
-						(controlID, position, rotation, size) =>
+						( controlID, position, rotation, size, type) =>
 						{ 
 							
 							if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
@@ -259,7 +259,7 @@ namespace AX.GeneratorHandlers
 							}
 
 
-							Handles.SphereCap(controlID, position, rotation, size);
+							Handles.SphereHandleCap(controlID, position, rotation, size, type);
 						});
 
 
@@ -404,7 +404,7 @@ namespace AX.GeneratorHandlers
 								Quaternion.identity,
 								.1f*HandleUtility.GetHandleSize(pos),
 								Vector3.zero, 
-								Handles.SphereCap
+								Handles.SphereHandleCap
 							);
 
 							if(EditorGUI.EndChangeCheck())
@@ -437,7 +437,7 @@ namespace AX.GeneratorHandlers
 								Quaternion.identity,
 								.1f*HandleUtility.GetHandleSize(pos),
 								Vector3.zero, 
-								Handles.SphereCap
+								Handles.SphereHandleCap
 							);
 
 							if(EditorGUI.EndChangeCheck())

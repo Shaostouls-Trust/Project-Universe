@@ -52,6 +52,7 @@ namespace AmplifyShaderEditor
 			m_showHybridInstancedUI = true;
 			m_selectedLocation = PreviewLocation.BottomCenter;
 			m_availableAttribs.Add( new PropertyAttributes( "Toggle", "[Toggle]" ) );
+			m_availableAttribs.Add( new PropertyAttributes( "No Keyword Toggle", "[NoKeywordToggle]" ) );
 			m_availableAttribs.Add( new PropertyAttributes( "Int Range", "[IntRange]" ) );
 			m_availableAttribs.Add( new PropertyAttributes( "Enum", "[Enum]" ) );
 			m_previewShaderGUID = "d9ca47581ac157145bff6f72ac5dd73e";

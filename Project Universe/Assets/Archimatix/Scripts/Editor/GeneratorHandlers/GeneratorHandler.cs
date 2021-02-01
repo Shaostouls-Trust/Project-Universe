@@ -1,4 +1,4 @@
-﻿#pragma warning disable 0618 // SphereCap obsolete - use SphereHandleCap
+﻿#pragma warning disable 0618 // SphereHandleCap obsolete - use SphereHandleCap
 
 using UnityEngine;
 using UnityEditor;
@@ -371,11 +371,11 @@ namespace AX.GeneratorHandlers
                                 Quaternion.identity,
                                 handleScale * HandleUtility.GetHandleSize(pos) * handlesMatrixScaleAdjuster,
                                 Vector3.zero,
-                                (controlID, positione, rotation, size) =>
+                                (controlID, positione, rotation, size, type) =>
                                 {
                                     if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
                                         ArchimatixEngine.mouseDownOnSceneViewHandle();
-                                    Handles.SphereCap(controlID, positione, rotation, size);
+                                    Handles.SphereHandleCap(controlID, positione, rotation, size, type);
                                 });
 
 
@@ -460,7 +460,7 @@ namespace AX.GeneratorHandlers
                                 Quaternion.identity,
                                 handleScale * HandleUtility.GetHandleSize(tanpos) * handlesMatrixScaleAdjuster,
                                 Vector3.zero,
-                                (controlID, positione, rotation, size) =>
+                                (controlID, positione, rotation, size, type) =>
                                 {
 
                                     if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
@@ -468,7 +468,7 @@ namespace AX.GeneratorHandlers
                                         ArchimatixEngine.mouseDownOnSceneViewHandle();
                                     //ArchimatixEngine.selectedFreeCurve = gener;
                                 }
-                                    Handles.SphereCap(controlID, positione, rotation, size);
+                                    Handles.SphereHandleCap(controlID, positione, rotation, size, type);
                                 });
 
 
@@ -491,7 +491,7 @@ namespace AX.GeneratorHandlers
                                 Quaternion.identity,
                                 handleScale * HandleUtility.GetHandleSize(radpos) * handlesMatrixScaleAdjuster,
                                 Vector3.zero,
-                                (controlID, positione, rotation, size) =>
+                                (controlID, positione, rotation, size, type) =>
                                 {
 
                                     if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
@@ -499,7 +499,7 @@ namespace AX.GeneratorHandlers
                                         ArchimatixEngine.mouseDownOnSceneViewHandle();
                                     //ArchimatixEngine.selectedFreeCurve = gener;
                                 }
-                                    Handles.SphereCap(controlID, positione, rotation, size);
+                                    Handles.SphereHandleCap(controlID, positione, rotation, size, type);
                                 });
 
                             radius = (radpos - pos).x;
@@ -590,7 +590,7 @@ namespace AX.GeneratorHandlers
                             Quaternion.identity,
                             handleScale * HandleUtility.GetHandleSize(angpos) * handlesMatrixScaleAdjuster,
                             Vector3.zero,
-                            (controlID, positione, rotation, size) =>
+                            (controlID, positione, rotation, size, type) =>
                             {
 
                                 if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
@@ -598,7 +598,7 @@ namespace AX.GeneratorHandlers
                                     ArchimatixEngine.mouseDownOnSceneViewHandle();
                                     //ArchimatixEngine.selectedFreeCurve = gener;
                                 }
-                                Handles.SphereCap(controlID, positione, rotation, size);
+                                Handles.SphereHandleCap(controlID, positione, rotation, size, type);
                             });
                             if (EditorGUI.EndChangeCheck())
                             {
@@ -879,7 +879,7 @@ namespace AX.GeneratorHandlers
                 Quaternion.identity,
                 handleScale * HandleUtility.GetHandleSize(tanpos),
                 Vector3.zero,
-                (controlID, positione, rotation, size) =>
+                (controlID, positione, rotation, size, type) =>
                 {
 
                     if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
@@ -887,7 +887,7 @@ namespace AX.GeneratorHandlers
                         ArchimatixEngine.mouseDownOnSceneViewHandle();
                         //ArchimatixEngine.selectedFreeCurve = gener;
                     }
-                    Handles.SphereCap(controlID, positione, rotation, size);
+                    Handles.SphereHandleCap(controlID, positione, rotation, size, type);
                 });
 
 
@@ -914,7 +914,7 @@ namespace AX.GeneratorHandlers
                 Quaternion.identity,
                 handleScale * HandleUtility.GetHandleSize(radpos),
                 Vector3.zero,
-                (controlID, positione, rotation, size) =>
+                (controlID, positione, rotation, size, type) =>
                 {
 
                     if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
@@ -922,7 +922,7 @@ namespace AX.GeneratorHandlers
                         ArchimatixEngine.mouseDownOnSceneViewHandle();
                         //ArchimatixEngine.selectedFreeCurve = gener;
                     }
-                    Handles.SphereCap(controlID, positione, rotation, size);
+                    Handles.SphereHandleCap(controlID, positione, rotation, size, type);
                 });
             if (EditorGUI.EndChangeCheck())
             {
@@ -1159,7 +1159,7 @@ namespace AX.GeneratorHandlers
                     Quaternion.identity,
                     .3f * handleRadius,
                     Vector3.zero,
-                    (controlID, positione, rotation, size) =>
+                    (controlID, positione, rotation, size, type) =>
                     {
 
                         if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
@@ -1167,7 +1167,7 @@ namespace AX.GeneratorHandlers
                             ArchimatixEngine.mouseDownOnSceneViewHandle();
                             //ArchimatixEngine.selectedFreeCurve = gener;
                         }
-                        Handles.SphereCap(controlID, positione, rotation, size);
+                        Handles.SphereHandleCap(controlID, positione, rotation, size, type);
                     });
 
                 // convert to local space
@@ -1935,12 +1935,12 @@ namespace AX.GeneratorHandlers
                     Quaternion.identity,
                     handleScale * HandleUtility.GetHandleSize(posx),
                     Vector3.zero,
-                    (controlID, positione, rotation, size) =>
+                    (controlID, positione, rotation, size, type) =>
                     {
                         if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
                             ArchimatixEngine.mouseDownOnSceneViewHandle();
 
-                        Handles.SphereCap(controlID, positione, rotation, size);
+                        Handles.SphereHandleCap(controlID, positione, rotation, size, type);
                     });
 
 
@@ -1989,12 +1989,12 @@ namespace AX.GeneratorHandlers
                     Quaternion.identity,
                     handleScale * HandleUtility.GetHandleSize(posy),
                     Vector3.zero,
-                    (controlID, positione, rotation, size) =>
+                    (controlID, positione, rotation, size, type) =>
                     {
                         if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
                             ArchimatixEngine.mouseDownOnSceneViewHandle();
 
-                        Handles.SphereCap(controlID, positione, rotation, size);
+                        Handles.SphereHandleCap(controlID, positione, rotation, size, type);
                     });
 
                 if (EditorGUI.EndChangeCheck())
@@ -2040,12 +2040,12 @@ namespace AX.GeneratorHandlers
                     Quaternion.identity,
                     handleScale * HandleUtility.GetHandleSize(posz),
                     Vector3.zero,
-                    (controlID, positione, rotation, size) =>
+                    (controlID, positione, rotation, size, type) =>
                     {
                         if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
                             ArchimatixEngine.mouseDownOnSceneViewHandle();
 
-                        Handles.SphereCap(controlID, positione, rotation, size);
+                        Handles.SphereHandleCap(controlID, positione, rotation, size, type);
                     });
 
                 if (EditorGUI.EndChangeCheck())

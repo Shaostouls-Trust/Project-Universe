@@ -1,4 +1,4 @@
-﻿#pragma warning disable 0618 // SphereCap obsolete - use SphereHandleCap
+﻿#pragma warning disable 0618 // SphereHandleCap obsolete - use SphereHandleCap
 
 using UnityEngine;
 using UnityEditor;
@@ -116,7 +116,7 @@ namespace AX.GeneratorHandlers
             else
                 Handles.color = Color.cyan;
 
-            if (Handles.Button(points[index].position, Quaternion.identity, size * handleSize, size * pickSize, Handles.DotCap))
+            if (Handles.Button(points[index].position, Quaternion.identity, size * handleSize, size * pickSize, Handles.DotHandleCap))
             {
 
                 if (parametricObject.curve3D.IsSelected(index))

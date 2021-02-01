@@ -141,8 +141,12 @@ namespace AX
 
 		public bool splitConcaveShapes;
 
+        [SerializeField]
+        public Texture2D imageData;
 
-		[SerializeField]
+
+
+        [SerializeField]
 		private string m_guid	= System.Guid.NewGuid().ToString();
 		public  string	Guid   
 		{

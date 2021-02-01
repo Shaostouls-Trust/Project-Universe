@@ -3327,5 +3327,6 @@ namespace AmplifyShaderEditor
 					( m_castShadows && m_inputPorts[ m_discardPortId ].Available && m_inputPorts[ m_discardPortId ].IsConnected && m_currentLightModel == StandardShaderLightModel.CustomLighting ) ) );
 			}
 		}
+		public override AvailableShaderTypes CurrentMasterNodeCategory { get { return AvailableShaderTypes.SurfaceShader; } }
 	}
 }

@@ -19,7 +19,10 @@ namespace UnityEditor
 			public static Texture2D warningIcon = EditorGUIUtilityEx.LoadIcon( "console.warnicon.sml" );
 			#if UNITY_2020_1_OR_NEWER
 			public static GUIContent togglePreprocess = EditorGUIUtilityEx.TextContent( "Preprocess only|Show preprocessor output instead of compiled shader code" );
+			#if UNITY_2020_2_OR_NEWER
+			public static GUIContent toggleStripLineDirective = EditorGUIUtility.TrTextContent( "Strip #line directives", "Strip #line directives from preprocessor output" );
 			#endif
+			#endif				
 			public static GUIContent showSurface = EditorGUIUtilityEx.TextContent( "Show generated code|Show generated code of a surface shader" );
 
 			public static GUIContent showFF = EditorGUIUtilityEx.TextContent( "Show generated code|Show generated code of a fixed function shader" );
@@ -38,6 +41,9 @@ namespace UnityEditor
 		}
 #if UNITY_2020_1_OR_NEWER
 		private static bool s_PreprocessOnly = false;
+#if UNITY_2020_2_OR_NEWER
+		private static bool s_StripLineDirectives = true;
+#endif
 #endif
 		private const float kSpace = 5f;
 
@@ -494,7 +500,15 @@ namespace UnityEditor
 		{
 #if UNITY_2020_1_OR_NEWER
 			using( new EditorGUI.DisabledScope( !EditorSettings.cachingShaderPreprocessor ) )
+			{
 				s_PreprocessOnly = EditorGUILayout.Toggle( Styles.togglePreprocess, s_PreprocessOnly );
+#if UNITY_2020_2_OR_NEWER
+				if( s_PreprocessOnly )
+				{
+					s_StripLineDirectives = EditorGUILayout.Toggle( Styles.toggleStripLineDirective, s_StripLineDirectives );
+				}
+#endif
+			}
 #endif
 			EditorGUILayout.BeginHorizontal( new GUILayoutOption[ 0 ] );
 			EditorGUILayout.PrefixLabel( "Compiled code", EditorStyles.miniButton );
@@ -515,8 +529,10 @@ namespace UnityEditor
 				}
 				if( GUI.Button( rect, showCurrent, EditorStyles.miniButton ) )
 				{
-#if UNITY_2020_1_OR_NEWER
+#if UNITY_2020_1
 					ShaderUtilEx.OpenCompiledShader( s, ShaderInspectorPlatformsPopupEx.GetCurrentMode(), ShaderInspectorPlatformsPopupEx.GetCurrentPlatformMask(), ShaderInspectorPlatformsPopupEx.GetCurrentVariantStripping() == 0, s_PreprocessOnly );
+#elif UNITY_2020_2_OR_NEWER
+					ShaderUtilEx.OpenCompiledShader( s, ShaderInspectorPlatformsPopupEx.GetCurrentMode(), ShaderInspectorPlatformsPopupEx.GetCurrentPlatformMask(), ShaderInspectorPlatformsPopupEx.GetCurrentVariantStripping() == 0, s_PreprocessOnly, s_StripLineDirectives );
 #else
 					ShaderUtilEx.OpenCompiledShader( s, ShaderInspectorPlatformsPopupEx.GetCurrentMode(), ShaderInspectorPlatformsPopupEx.GetCurrentPlatformMask(), ShaderInspectorPlatformsPopupEx.GetCurrentVariantStripping() == 0 );
 #endif
@@ -737,10 +753,15 @@ namespace UnityEditor
 			ShaderUtilEx.Type.InvokeMember( "OpenGeneratedFixedFunctionShader", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.InvokeMethod, null, null, new object[] { s } );
 		}
 
-#if UNITY_2020_1_OR_NEWER
+#if UNITY_2020_1
 		public static void OpenCompiledShader( Shader shader, int mode, int customPlatformsMask, bool includeAllVariants, bool preprocessOnly )
 		{
 			ShaderUtilEx.Type.InvokeMember( "OpenCompiledShader", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.InvokeMethod, null, null, new object[] { shader, mode, customPlatformsMask, includeAllVariants, preprocessOnly } );
+		}
+#elif UNITY_2020_2_OR_NEWER
+		public static void OpenCompiledShader( Shader shader, int mode, int customPlatformsMask, bool includeAllVariants, bool preprocessOnly, bool stripLineDirectives )
+		{
+			ShaderUtilEx.Type.InvokeMember( "OpenCompiledShader", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.InvokeMethod, null, null, new object[] { shader, mode, customPlatformsMask, includeAllVariants, preprocessOnly, stripLineDirectives } );
 		}
 #else
 		public static void OpenCompiledShader( Shader shader, int mode, int customPlatformsMask, bool includeAllVariants )

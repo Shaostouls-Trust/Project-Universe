@@ -122,6 +122,7 @@ namespace AmplifyShaderEditor
 			GlobalStartUp = (ShowOption)EditorPrefs.GetInt( PrefStartUp, 0 );
 			GlobalAutoSRP = EditorPrefs.GetBool( PrefAutoSRP, true );
 			GlobalDefineSymbol = EditorPrefs.GetBool( PrefDefineSymbol, true );
+			GlobalClearLog = EditorPrefs.GetBool( PrefClearLog, true );
 		}
 	}
 }

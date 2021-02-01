@@ -58,6 +58,14 @@ internal class ASEMaterialInspector : ShaderGUI
 	private FieldInfo m_selectedField = null;
 	private FieldInfo m_infoField = null;
 
+#if UNITY_2020_1_OR_NEWER
+	private Type m_previewSettingsType = null;
+	object m_previewSettingsInstance;
+	FieldInfo previewDirInfo;
+	FieldInfo shadedMaterialInfo;
+	FieldInfo activeMaterialInfo;
+#endif
+
 #if UNITY_2018_2_OR_NEWER
 	public override void OnClosed( Material material )
 	{
@@ -449,7 +457,7 @@ internal class ASEMaterialInspector : ShaderGUI
 			}
 		}
 	}
-
+	
 	public override void OnMaterialInteractivePreviewGUI( MaterialEditor materialEditor, Rect r, GUIStyle background )
 	{
 		if( Event.current.type == EventType.DragExited )
@@ -497,12 +505,38 @@ internal class ASEMaterialInspector : ShaderGUI
 
 		m_previewDir = (Vector2)m_dragMethod.Invoke( m_previewGUIType, new object[] { m_previewDir, r } );
 
+#if UNITY_2020_1_OR_NEWER
+		if( m_previewSettingsType == null )
+		{
+			m_previewSettingsType = m_modelInspectorType.GetNestedType( "PreviewSettings",BindingFlags.NonPublic);
+		}
+
+		if( m_previewSettingsInstance == null )
+		{
+			m_previewSettingsInstance = Activator.CreateInstance( m_previewSettingsType );
+			previewDirInfo = m_previewSettingsType.GetField( "previewDir", BindingFlags.Instance | BindingFlags.Public );
+			shadedMaterialInfo = m_previewSettingsType.GetField( "shadedPreviewMaterial", BindingFlags.Instance | BindingFlags.Public );
+			activeMaterialInfo = m_previewSettingsType.GetField( "activeMaterial", BindingFlags.Instance | BindingFlags.Public );
+		}
+
+		shadedMaterialInfo.SetValue( m_previewSettingsInstance, mat );
+		activeMaterialInfo.SetValue( m_previewSettingsInstance, mat );
+		previewDirInfo.SetValue( m_previewSettingsInstance, m_previewDir );
+		
+		if( Event.current.type == EventType.Repaint )
+		{
+			m_previewRenderUtility.BeginPreview( r, background );
+			m_renderMeshMethod.Invoke( m_modelInspectorType, new object[] { m_targetMesh, m_previewRenderUtility, m_previewSettingsInstance, -1 } );
+			m_previewRenderUtility.EndAndDrawPreview( r );
+		}
+#else
 		if( Event.current.type == EventType.Repaint )
 		{
 			m_previewRenderUtility.BeginPreview( r, background );
 			m_renderMeshMethod.Invoke( m_modelInspectorType, new object[] { m_targetMesh, m_previewRenderUtility, mat, null, m_previewDir, -1 } );
 			m_previewRenderUtility.EndAndDrawPreview( r );
 		}
+#endif
 	}
 
 	public static MaterialEditor Instance { get { return m_instance; } set { m_instance = value; } }

@@ -1,4 +1,4 @@
-﻿#pragma warning disable 0618 // SphereCap obsolete - use SphereHandleCap
+﻿#pragma warning disable 0618 // SphereHandleCap obsolete - use SphereHandleCap
 
 using UnityEngine;
 using UnityEditor;
@@ -449,7 +449,7 @@ namespace AX.GeneratorHandlers
 				Quaternion.identity,
 				.15f*HandleUtility.GetHandleSize(pos),
 				Vector3.zero, 
-				Handles.SphereCap
+				Handles.SphereHandleCap
 			);
 			if(EditorGUI.EndChangeCheck())
 			{
@@ -465,7 +465,7 @@ namespace AX.GeneratorHandlers
 				Quaternion.identity,
 				.15f*HandleUtility.GetHandleSize(pos),
 				Vector3.zero, 
-				Handles.SphereCap
+				Handles.SphereHandleCap
 			);
 			if(EditorGUI.EndChangeCheck())
 			{
@@ -482,7 +482,7 @@ namespace AX.GeneratorHandlers
 				Quaternion.identity,
 				.15f*HandleUtility.GetHandleSize(pos),
 				Vector3.zero, 
-				Handles.SphereCap
+				Handles.SphereHandleCap
 			);
 			if(EditorGUI.EndChangeCheck())
 			{
@@ -498,7 +498,7 @@ namespace AX.GeneratorHandlers
 				Quaternion.identity,
 				.15f*HandleUtility.GetHandleSize(pos),
 				Vector3.zero, 
-				Handles.SphereCap
+				Handles.SphereHandleCap
 			);
 			if(EditorGUI.EndChangeCheck())
 			{

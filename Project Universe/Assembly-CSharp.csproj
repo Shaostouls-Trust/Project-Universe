@@ -260,6 +260,7 @@
     <Compile Include="Assets\Archimatix\Scripts\Core\DataHolders\AXGenratorProduct.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters\RadialRepeater.cs" />
     <Compile Include="Assets\Scripts\Koro\grenadelauncher.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Inventory\ItemStack.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters2D\Instance2D.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\AXShape.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\ICable.cs" />
@@ -367,6 +368,7 @@
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Geometry_3D\CurvePoint3.cs" />
     <Compile Include="Assets\Scripts\ScrollDetailTexture.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Generator\RiggedMultifractal.cs" />
+    <Compile Include="Assets\IPlayer_Inventory.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Generator\Checker.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\IControllableWeapon.cs" />
     <Compile Include="Assets\Scripts\KhorneSyrup\Props Loader\Props.cs" />
@@ -402,6 +404,7 @@
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters\PairRepeater.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Tools.cs" />
     <Compile Include="Assets\Scripts\HaloReach252\FarmingSystem\Crop.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Inventory\IEquipable.cs" />
     <Compile Include="Assets\Shared\Ramps\Runtime\RampAsset.cs" />
     <Compile Include="Assets\Scripts\KhorneSyrup\InventoryController\ItemClass.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Meshers\Lofter.cs" />
@@ -429,9 +432,6 @@
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Primitives\BoxPrimitive.cs" />
     <Compile Include="Assets\Scripts\Koro\MoveCamera.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Replicators\Replicator.cs" />
-    <Compile Include="Assets\IPlayer_Inventory.cs" />
-    <Compile Include="Assets\Scripts\CMDRAsh\Inventory\IEquipable.cs" />
-    <Compile Include="Assets\Scripts\CMDRAsh\Inventory\ItemStack.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
@@ -712,9 +712,6 @@
     </Reference>
     <Reference Include="Unity.Collections.LowLevel.ILSupport">
       <HintPath>Library\PackageCache\com.unity.collections@0.14.0-preview.16\Unity.Collections.LowLevel.ILSupport\Unity.Collections.LowLevel.ILSupport.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>Library\PackageCache\com.unity.ext.nunit@1.0.5\net35\unity-custom\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>Library\PackageCache\com.unity.nuget.newtonsoft-json@2.0.0-preview\Runtime\Newtonsoft.Json.dll</HintPath>
@@ -1172,9 +1169,6 @@
     <Reference Include="Unity.Deformations">
       <HintPath>Library\ScriptAssemblies\Unity.Deformations.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.RenderPipelines.HighDefinition.Config.Runtime">
-      <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.HighDefinition.Config.Runtime.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.Properties.UI.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Properties.UI.Editor.dll</HintPath>
     </Reference>
@@ -1232,6 +1226,10 @@
     <ProjectReference Include="AmplifyShaderEditor.Samples.HDRP.csproj">
       <Project>{18A789E6-3DD0-4C95-ABB8-6A8E3769699C}</Project>
       <Name>AmplifyShaderEditor.Samples.HDRP</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.RenderPipelines.HighDefinition.Config.Runtime.csproj">
+      <Project>{6FF01695-AC0D-9315-9819-4B0149FECA7E}</Project>
+      <Name>Unity.RenderPipelines.HighDefinition.Config.Runtime</Name>
     </ProjectReference>
     <ProjectReference Include="AmplifyShaderEditor.csproj">
       <Project>{1ABC5D9B-5BDE-59EC-D53F-0F40C6717DA6}</Project>

@@ -101,8 +101,8 @@ using Axis = AXGeometry.Axis;
     		{
     			//Debug.Log(nodeIconPaths[i]);
     			filename = System.IO.Path.GetFileName(nodeIconPaths[i]);
-
-    			if (! string.IsNullOrEmpty(filename) && filename.Length > 10)
+            
+            if (! string.IsNullOrEmpty(filename) && filename.Length > 10)
     			{
     				// strip extension
     				nodeIconName =  System.IO.Path.GetFileNameWithoutExtension(nodeIconPaths[i]);
@@ -111,7 +111,7 @@ using Axis = AXGeometry.Axis;
     				{
     					//strip prefix of "zz-AXNode-"
     					nodeIconName 	= nodeIconName.Substring(10);
-
+                   // Debug.Log(nodeIconName);
     					ArchimatixEngine.nodeIcons.Add(nodeIconName, (Texture2D) AssetDatabase.LoadAssetAtPath(ArchimatixEngine.ArchimatixAssetPath+"/ui/NodeIcons/"+filename, typeof(Texture2D)));
     				}
     			}

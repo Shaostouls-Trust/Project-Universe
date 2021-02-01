@@ -49,6 +49,9 @@ Shader /*ase_name*/"Hidden/Templates/Legacy/UIDefault"/*end*/
 		{
 			Name "Default"
 		CGPROGRAM
+			#ifndef UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX
+			#define UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input)
+			#endif
 			#pragma vertex vert
 			#pragma fragment frag
 			#pragma target 3.0
@@ -107,6 +110,9 @@ Shader /*ase_name*/"Hidden/Templates/Legacy/UIDefault"/*end*/
 
 			fixed4 frag(v2f IN /*ase_frag_input*/ ) : SV_Target
 			{
+				UNITY_SETUP_INSTANCE_ID( IN );
+				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX( IN );
+
 				/*ase_frag_code:IN=v2f*/
 				half4 color = /*ase_frag_out:Color;Float4*/(tex2D(_MainTex, IN.texcoord) + _TextureSampleAdd) * IN.color/*end*/;
 				
