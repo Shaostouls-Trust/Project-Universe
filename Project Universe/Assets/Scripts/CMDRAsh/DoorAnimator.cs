@@ -55,7 +55,7 @@ public class DoorAnimator : MonoBehaviour
         panelRenderer = new Renderer[controlPanelScreens.Length];
         //doorMachine = GetComponent<ISubMachine>();
         //thisRunMachine = doorMachine.RunMachine;
-        thisRunMachine =  GetComponent<ISubMachine>().getRunMachine();
+        thisRunMachine =  GetComponent<ISubMachine>().GetRunMachine();
         //Debug.Log(thisRunMachine);
         doorL_TF = anim[0].gameObject.transform;
         doorR_TF = anim[1].gameObject.transform;
@@ -237,7 +237,16 @@ public class DoorAnimator : MonoBehaviour
                     anim[0].enabled = true;
                     anim[1].enabled = true;
                 }
-            } 
+            }
+        }
+        else 
+        { 
+            //if the door is not powered or running, turn emissives and such red.
+            emissRenderer.material = MaterialLibrary.GetDoorStateMaterials(2);
+            for (int i = 0; i < panelRenderer.Length; i++)
+            {
+                panelRenderer[i].material = MaterialLibrary.GetDoorDisplayMaterials(2);
+            }
         }
     }
 
@@ -303,6 +312,45 @@ public class DoorAnimator : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void runSubMachine(int powerLevel)
+    {
+        switch (powerLevel)
+        {
+            case 0:
+                setPoweredState(true);
+                setRunningState(true);
+                setAnimSpeed(1.0f);
+                break;
+            case 1:
+                setPoweredState(true);
+                setRunningState(true);
+                setAnimSpeed(0.75f);
+                break;
+            case 2:
+                setPoweredState(true);
+                setRunningState(true);
+                setAnimSpeed(0.5f);
+                break;
+            case 3:
+                setPoweredState(true);
+                setRunningState(true);
+                setAnimSpeed(0.15f);
+                break;
+            case 4:
+                setPoweredState(false);
+                setRunningState(false);//was true
+                setAnimSpeed(0.0f);
+                break;
+            case 5:
+                setPoweredState(false);//wasn't present
+                setRunningState(false);
+                break;
+        }
+        //temp override for ship construction sake
+        //setPoweredState(true);
+        //setAnimSpeed(1.0f);
     }
 
     public bool OpenOrOpening()

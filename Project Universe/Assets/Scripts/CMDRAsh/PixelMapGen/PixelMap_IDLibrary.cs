@@ -9,6 +9,7 @@ public static class PixelMap_IDLibrary
 	//red 0-254 is tile id
 	public static Dictionary<int, Dictionary<int, string>> PIXID_TILELIB;//once PIX_DICT has the xmls read, equate the instance dict with this static dict.
 	public static Dictionary<string, string> PIXID_PATHPAIRS;
+	private static Boolean isInitialized;
 
 	/// <summary>
 	/// Hardcoded dictionary used for testing purposes.
@@ -36,8 +37,6 @@ public static class PixelMap_IDLibrary
 
 	public class PIX_DICT
 	{
-		//will ensure this only runs once (at Awake()).
-		public Boolean isInitialized = false;
 		//pixidlib
 		public Dictionary<int, Dictionary<int, string>> PIXID_TileLibrary;
 		//tile path pairs
@@ -53,9 +52,7 @@ public static class PixelMap_IDLibrary
 		/// </summary>
 		public void InitializeTileDictionary()
 		{
-			Debug.Log("Library Construction Initiated");
-			//prevent any other Awake methods from starting the tile dictionary initialization process.
-			isInitialized = true;
+			Debug.Log("Pixel Library Construction Initiated");
 			//find the xmls
 			string xmlPath = "\\Assets\\Resources\\Data\\";
 			string root = Directory.GetCurrentDirectory();
@@ -68,63 +65,72 @@ public static class PixelMap_IDLibrary
 			string rssPath;
 			List<string> componentList = new List<string>();
 
-			foreach (string fileAndPath in filesInDir)
+			if (!isInitialized)
 			{
-				//open xmls
-				//pathParts = fileAndPath.Split('\\');
-				XDocument doc = XDocument.Load(fileAndPath);//root + xmlPath + pathParts[pathParts.Length - 1]);
-				//basic file check
-				//Debug.Log("Checking XML Format...");
-				if (doc.Root.Name != "Definitions")
+				isInitialized = true;
+				foreach (string fileAndPath in filesInDir)
 				{
-					//Debug.Log("This is not a definition file or is incorrectly formatted!");
-					continue;
-				}
-				else
-				{
-					//Debug.Log("Format Check Complete");
-				}
-				//grab tilegroups
-				foreach (XElement file in doc.Descendants("Definitions"))
-				{	
-					foreach (XElement groups in file.Elements("TileGroup"))
+					//open xmls
+					//pathParts = fileAndPath.Split('\\');
+					XDocument doc = XDocument.Load(fileAndPath);//root + xmlPath + pathParts[pathParts.Length - 1]);
+																//basic file check
+																//Debug.Log("Checking XML Format...");
+					if (doc.Root.Name != "Definitions")
 					{
-						//grab attribute TypeValue by accessing the 'ID' element, and it's attribute, 'TypeValue'
-						typeValue = int.Parse(groups.Element("ID").Attribute("TypeValue").Value);
-						foreach (XElement tileDefs in groups.Elements("Definition"))
+						//Debug.Log("This is not a definition file or is incorrectly formatted!");
+						continue;
+					}
+					else
+					{
+						//Debug.Log("Format Check Complete");
+					}
+					//grab tilegroups
+					foreach (XElement file in doc.Descendants("Definitions"))
+					{
+						foreach (XElement groups in file.Elements("TileGroup"))
 						{
-							subType = int.Parse(tileDefs.Element("SubType").Value);
-							name = tileDefs.Element("Name").Value;
-							rssPath = tileDefs.Element("ResourcePath").Attribute("Path").Value;
-							foreach (XElement component in tileDefs.Elements("Components"))
+							//grab attribute TypeValue by accessing the 'ID' element, and it's attribute, 'TypeValue'
+							typeValue = int.Parse(groups.Element("ID").Attribute("TypeValue").Value);
+							foreach (XElement tileDefs in groups.Elements("Definition"))
 							{
-								componentList.Add(component.Element("Component").Attribute("Name").Value);
+								subType = int.Parse(tileDefs.Element("SubType").Value);
+								name = tileDefs.Element("Name").Value;
+								rssPath = tileDefs.Element("ResourcePath").Attribute("Path").Value;
+								foreach (XElement component in tileDefs.Elements("Components"))
+								{
+									componentList.Add(component.Element("Component").Attribute("Name").Value);
+								}
+								//try to return the inner dictionary associated with the typevalue
+								//or add the key if it doesn't exist.
+								if (!PIXID_TileLibrary.TryGetValue(typeValue, out Dictionary<int, string> innerDict))
+								{
+									//declare the dictionary as empty.
+									innerDict = new Dictionary<int, string>();
+									PIXID_TileLibrary.Add(typeValue, innerDict);
+								}
+								//if the key existed, innerdict is still just a dictionary.
+								//Thus we can add the new keyvaluepair without issue.
+								innerDict.Add(subType, name);
+								//add the name and path to PIXID_PathLibrary
+								PIXID_PathLibrary.Add(name, rssPath);
+								//clear the list for the next tile
+								componentList.Clear();
 							}
-							//try to return the inner dictionary associated with the typevalue
-							//or add the key if it doesn't exist.
-							if (!PIXID_TileLibrary.TryGetValue(typeValue, out Dictionary<int, string> innerDict))
-							{
-								//declare the dictionary as empty.
-								innerDict = new Dictionary<int, string>();
-								PIXID_TileLibrary.Add(typeValue, innerDict);
-							}
-							//if the key existed, innerdict is still just a dictionary.
-							//Thus we can add the new keyvaluepair without issue.
-							innerDict.Add(subType, name);
-							//add the name and path to PIXID_PathLibrary
-							PIXID_PathLibrary.Add(name, rssPath);
-							//clear the list for the next tile
-							componentList.Clear();
+
 						}
-						
 					}
 				}
+				Debug.Log("Library Construction Finished");
+				//when the last xml has been red, assign the pathlib and tilelib to the master class statics
+				//this way the static dictionaries function as a globally-accessible reference.
+				PixelMap_IDLibrary.PIXID_TILELIB = PIXID_TileLibrary;
+				PixelMap_IDLibrary.PIXID_PATHPAIRS = PIXID_PathLibrary;
 			}
-			Debug.Log("Library Construction Finished");
-			//when the last xml has been red, assign the pathlib and tilelib to the master class statics
-			//this way the static dictionaries function as a globally-accessible reference.
-			PixelMap_IDLibrary.PIXID_TILELIB = PIXID_TileLibrary;
-			PixelMap_IDLibrary.PIXID_PATHPAIRS = PIXID_PathLibrary;
+		}
+
+		public bool GetInitialization()
+		{
+			return isInitialized;
 		}
 	}
 }

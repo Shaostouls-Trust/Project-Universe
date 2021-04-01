@@ -44,8 +44,8 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 0.93773586, a: 1}
-  m_Intensity: 19.894367
-  m_Range: 6
+  m_Intensity: 5.9683104
+  m_Range: 5
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -113,7 +113,7 @@ MonoBehaviour:
   m_PointlightHDType: 0
   m_SpotLightShape: 0
   m_AreaLightShape: 0
-  m_Intensity: 250
+  m_Intensity: 75
   m_EnableSpotReflector: 0
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 0
@@ -216,6 +216,7 @@ GameObject:
   - component: {fileID: 4764456271302180960}
   - component: {fileID: 7348265961877255338}
   - component: {fileID: 8231416098783438891}
+  - component: {fileID: 4194352140149529408}
   m_Layer: 0
   m_Name: CeilingLightA
   m_TagString: Untagged
@@ -301,3 +302,25 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -2622375265405707540, guid: 1fff773c3c960a244b799beb7289983d, type: 3}
+--- !u!114 &4194352140149529408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9149824078736397695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a99f22c62263c24aa8091282b281440, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  requestedEnergy: 2
+  requiredEnergy: 2
+  percentDrawToFill: 10
+  energyBuffer: 10
+  bufferCurrent: 0
+  machineType: light_point
+  runMachine: 1
+  maxLightIntensity: 75
+  maxLightRange: 5
+  legsRequired: 2

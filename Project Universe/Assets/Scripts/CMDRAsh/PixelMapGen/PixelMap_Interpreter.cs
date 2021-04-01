@@ -42,7 +42,7 @@ public class PixelMap_Interpreter : MonoBehaviour
 	void Awake()
 	{
 		PixelMap_IDLibrary.PIX_DICT internalDictConstructor = new PixelMap_IDLibrary.PIX_DICT();
-		if (!internalDictConstructor.isInitialized)
+		if (!internalDictConstructor.GetInitialization())
 		{
 			internalDictConstructor.InitializeTileDictionary();
 		}

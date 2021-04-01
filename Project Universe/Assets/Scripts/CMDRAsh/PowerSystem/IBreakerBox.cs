@@ -11,20 +11,19 @@ public class IBreakerBox : MonoBehaviour
     private Guid guid;
     //power group or machine this unit provides power to.
     public ISubMachine[] targetSubMachine;
-    private float[] requestedPower;
-    [SerializeField]
-    private float totalRequiredPower;
+    //private float[] requestedPower;
+    [SerializeField] private float totalRequiredPower;
     private IBreakerBox thisBreaker;
     private LinkedList<ICable> iCableDLL = new LinkedList<ICable>();
     private float energyBufferMax;
-    [SerializeField]
-    private float bufferCurrent;
+    [SerializeField] private float bufferCurrent;
     private int maxConnections = 30;
-    [SerializeField]
-    private GameObject[] occupiedSwitches;
+    [SerializeField] private GameObject[] occupiedSwitches;
     public int switchCount;
     private float defecitVbreaker;
     private List<IRoutingSubstation> mySubstations = new List<IRoutingSubstation>();
+    private List<Renderer> yellowSwitchRenderers = new List<Renderer>();
+    [SerializeField] AudioSource soundsource;
 
     //power legs update
     private int legsRequired = 3;
@@ -52,7 +51,7 @@ public class IBreakerBox : MonoBehaviour
         {
             if(targetSubMachine[i] != null)
             {
-                totalRequiredPower += targetSubMachine[i].requestedEnergyAmount();//ref numSuppliers);
+                totalRequiredPower += targetSubMachine[i].RequestedEnergyAmount();//ref numSuppliers);
             }
         }
         //Breaker Box power request to IRoutingSubstation
@@ -61,14 +60,11 @@ public class IBreakerBox : MonoBehaviour
             float requestPerSubstation = (totalRequiredPower / mySubstations.Count);// + ((totalRequiredPower / mySubstations.Count) * 0.05f);
             foreach (IRoutingSubstation subs in mySubstations)
             {
-                subs.requestPowerFromSubstation(requestPerSubstation, thisBreaker);
+                subs.RequestPowerFromSubstation(requestPerSubstation, thisBreaker);
             }
-            //totalRequiredPower *= 0.20f;
-            //totalRequiredPower = 180.0f;
         }
         else if (bufferCurrent >= energyBufferMax)
         {
-            //totalRequiredPower = 0.0f;
             //Debug.Log("Overcap: "+bufferCurrent);
             bufferCurrent = energyBufferMax;
         }
@@ -77,19 +73,35 @@ public class IBreakerBox : MonoBehaviour
         {
             //Debug.Log("Breaker dividing:" + bufferCurrent);
             float defecit = totalRequiredPower - bufferCurrent;
-            defecitVbreaker = defecit / totalRequiredPower;
-            //Debug.Log("defecitVbreakerbox:");
-            /*
-            for (int j = 0; j < targetSubMachine.Length; j++)//loop through once more
+            defecitVbreaker = defecit / totalRequiredPower;//dvb is broke?
+            //Debug.Log(this.gameObject.name + " dvb=("+ totalRequiredPower + "-"+ bufferCurrent + ")/"+totalRequiredPower);
+        }
+        else
+        {
+            defecitVbreaker = 0.0f;
+        }
+        //monitor the yellow power indicator lights
+        for(int b = 0; b < yellowSwitchRenderers.Count; b++)
+        {
+            if(targetSubMachine[b] != null)
             {
-                //subtract the amount to reduce (a percent of the requested amount)
-                requestedPower[j] -= (requestedPower[j] * defecitVbreaker);
-                //Debug.Log("Request " + j + " is " + requestedPower[j]);
-                //round to 3 decimal places for sake of not going insane
-                requestedPower[j] = (float)Math.Round(requestedPower[j], 3);
-                //Debug.Log(this + " power after deficit adjustment " + requestedPower[j]);
+                if (targetSubMachine[b].PowerMachine)
+                {
+                    yellowSwitchRenderers[b].material = MaterialLibrary.GetPowerSystemStateMaterials(2);//yellow on
+                }
+                else
+                {
+                    yellowSwitchRenderers[b].material = MaterialLibrary.GetPowerSystemStateMaterials(5);
+                }
             }
-            */
+            else
+            {
+                Debug.Log("AAAAAAAAAAAA");
+                yellowSwitchRenderers[b].material = MaterialLibrary.GetPowerSystemStateMaterials(5);
+                //mySwitchLEDs[0].GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials(3);//green to off
+                //mySwitchLEDs[1].GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials(4);//red off
+                //mySwitchLEDs[0].GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials(5);//yellow off
+            }
         }
        
     }
@@ -99,7 +111,7 @@ public class IBreakerBox : MonoBehaviour
     /// 
     /// Allocate Legs as demanded
     /// </summary>
-    public void requestPowerFromBreaker(float requestedAmount, ISubMachine thisSubMachine)
+    public void RequestPowerFromBreaker(float requestedAmount, ISubMachine thisSubMachine)
     {
         //find the cable linking the breaker to the calling submachine
         foreach (ICable cable in iCableDLL)
@@ -108,34 +120,36 @@ public class IBreakerBox : MonoBehaviour
             //Debug.Log("SubMachine testee:" + thisSubMachine);
             if (cable.subMach == thisSubMachine)
             {
-                //Debug.Log("Request from "+thisSubMachine.gameObject.name);
+                //Debug.Log(thisSubMachine.gameObject.name + " requests "+requestedAmount);
                 //get machine's leg req
-                int machineLegReq = cable.subMach.getLegRequirement();
+                int machineLegReq = cable.subMach.GetLegRequirement();
                 //split power between legs
                 float[] powerAmount = new float[machineLegReq];
+                //Debug.Log("dVb this update: "+defecitVbreaker);
                 for (int l = 0; l < machineLegReq; l++)
                 {
                     powerAmount[l] = requestedAmount / machineLegReq;
                     //remove the resultant multiplicant from defecitVbreaker from the amount of power to be sent, then round off to three places
                     powerAmount[l] -= (powerAmount[l] * defecitVbreaker);
+                    //Debug.Log("powerAmount after dVb: "+powerAmount[l]+" for "+powerAmount[l]* machineLegReq);
                     powerAmount[l] = (float)Math.Round(powerAmount[l], 3);
                 }
                // Debug.Log("defecitVbreakerbox:" + defecitVbreaker);
                 //recalculate the requested about - all powerAmount[] indicies should be equvalent.
                 requestedAmount = powerAmount[0] * machineLegReq;
-                if (cable.checkConnection(5))//type is breaker to SubMachine linkage
+                if (cable.CheckConnection(5))//type is breaker to SubMachine linkage
                 {
                     if (bufferCurrent - requestedAmount >= 0)
                     {
                         //transfer the uniquely requested amount to the machine
-                        cable.transferIn(machineLegReq, powerAmount, 5);
+                        cable.TransferIn(machineLegReq, powerAmount, 5);
                         bufferCurrent -= requestedAmount;
                     }
                     else if (bufferCurrent - requestedAmount < 0)
                     {
-                        float[] tempfloat = new float[] { bufferCurrent / 3, bufferCurrent / 3, bufferCurrent / 3 };
+                        float[] tempfloat = new float[] { bufferCurrent / 3.0f, bufferCurrent / 3.0f, bufferCurrent / 3.0f };
                         //or transfer all that remains in the buffer
-                        cable.transferIn(machineLegReq, tempfloat, 5);
+                        cable.TransferIn(machineLegReq, tempfloat, 5);
                         bufferCurrent = 0f;
                     }
                 }
@@ -145,11 +159,11 @@ public class IBreakerBox : MonoBehaviour
     }
 
     //called at the start of the substation update block
-    public bool checkMachineState(ref IRoutingSubstation thisSubstation)
+    public bool CheckMachineState(ref IRoutingSubstation thisSubstation)
     {
         if (!mySubstations.Contains(thisSubstation))
         {
-            //Debug.Log("breaker added");
+            Debug.Log("breaker added");
             mySubstations.Add(thisSubstation);
         }
         return true;
@@ -157,21 +171,46 @@ public class IBreakerBox : MonoBehaviour
 
     public void SwitchToggle(int numID, ref GameObject[] mySwitchLEDs)
     {
-        //if the machines are not running, turn red emissive on. If running, green.
-        if (targetSubMachine[numID].RunMachine)
+        if(targetSubMachine[numID] != null)
         {
-            targetSubMachine[numID].RunMachine = false;
-            //update switch emissive to red
-            mySwitchLEDs[0].GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials(3);//green to off
-            mySwitchLEDs[1].GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials(1);//red to on
+            //play switch sound (It should not be set to loop).
+            soundsource.Play();
+            //if the machines are not running, turn red emissive on. If running, green.
+            if (targetSubMachine[numID].RunMachine)
+            {
+                targetSubMachine[numID].RunMachine = false;
+                //update switch emissive to red
+                mySwitchLEDs[0].GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials(3);//green to off
+                mySwitchLEDs[1].GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials(1);//red to on
+            }
+            else
+            {
+                targetSubMachine[numID].RunMachine = true;
+                //update emissive to green
+                mySwitchLEDs[0].GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials(0);//green on
+                mySwitchLEDs[1].GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials(4);//red off
+            }
         }
         else
         {
-            targetSubMachine[numID].RunMachine = true;
-            //update emissive to green
-            mySwitchLEDs[0].GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials(0);//green on
+            Debug.Log("AAAAAAAAAAAA");
+            mySwitchLEDs[0].GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials(3);//green to off
             mySwitchLEDs[1].GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials(4);//red off
+            mySwitchLEDs[0].GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials(5);//yellow off
         }
+        /*
+        //if the machines are not powered, turn yellow emissive off. If running, on.
+        if (targetSubMachine[numID].PowerMachine == true)
+        {
+            //update switch emissive to on
+            mySwitchLEDs[0].GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials(2);//yellow on?
+        }
+        else
+        {
+            //update emissive to off
+            mySwitchLEDs[0].GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials(5);//yellow off
+        }
+        */
     }
 
     public void ProxyStart()
@@ -196,7 +235,7 @@ public class IBreakerBox : MonoBehaviour
                     ICable cable = new ICable(this, targetSubMachine[i]);
                     iCableDLL.AddLast(cable);
                     Debug.Log("Checking Submachine State " + i);
-                    targetSubMachine[i].checkMachineState(ref thisBreaker);
+                    targetSubMachine[i].CheckMachineState(ref thisBreaker);
                     //add one cell to occupiedSwitches
                     occupiedSwitches = new GameObject[i+1];
                     //Debug.Log("New occSch: " + occupiedSwitches.Length);
@@ -260,6 +299,7 @@ public class IBreakerBox : MonoBehaviour
                         if (child.gameObject.name == "BreakerBox_Yellow")
                         {
                             child.GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials(2);
+                            yellowSwitchRenderers.Add(child.GetComponent<Renderer>());
                         }
                         else if (child.gameObject.name == "BreakerBox_Red")
                         {
@@ -281,12 +321,12 @@ public class IBreakerBox : MonoBehaviour
         targetSubMachine = newSubMachines;
     }
 
-    public int getLegRequirement()
+    public int GetLegRequirement()
     {
         return legsRequired;
     }
 
-    public void receivePowerFromSubstation(int legCount, float[] amounts)
+    public void ReceivePowerFromSubstation(int legCount, float[] amounts)
     {
         //Debug.Log("Breaker Received Power");
         //receive X legs with X amounts
@@ -299,12 +339,12 @@ public class IBreakerBox : MonoBehaviour
         bufferCurrent = (float)Math.Round(bufferCurrent, 3);
     }
 
-    public float getTotalRequiredPower()
+    public float GetTotalRequiredPower()
     {
         return totalRequiredPower;
     }
 
-    public Guid getGUID()
+    public Guid GetGUID()
     {
         return guid;
     }

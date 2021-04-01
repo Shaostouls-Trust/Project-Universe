@@ -73,7 +73,7 @@ public class IRouter : MonoBehaviour
                 //add it to the end of the DLL, if alone, it's first and last.
                 iCableDLL.AddLast(myIcable);
                 Debug.Log("Checking Substation state "+subRouters[i]);
-                subRouters[i].checkMachineState(ref thisRouter);
+                subRouters[i].CheckMachineState(ref thisRouter);
             }
         }
     }
@@ -88,7 +88,7 @@ public class IRouter : MonoBehaviour
         //get requested power amount
         for(int i = 0; i < subRouters.Length; i++)
         {
-            totalRequiredPower += subRouters[i].getTotalRequiredPower();
+            totalRequiredPower += subRouters[i].GetTotalRequiredPower();
         }
         //power request to generator logic
         if(bufferCurrent < energyBufferMax)
@@ -133,7 +133,7 @@ public class IRouter : MonoBehaviour
         }
         //Debug.Log("Total Required: " + totalRequiredPower);
     }
-    public bool checkMachineState(ref IGenerator thisGenerator)
+    public bool CheckMachineState(ref IGenerator thisGenerator)
     {
         supplyingGenerator = thisGenerator;
         return true;
@@ -148,7 +148,7 @@ public class IRouter : MonoBehaviour
             if(cable.subst == thisSubstation)
             {
                 //get subst's leg req
-                int routerLegReq = cable.subst.getLegRequirement();
+                int routerLegReq = cable.subst.GetLegRequirement();
                 //if something has happened, and we don't have as many legs as we need.
                 if (routerLegReq > availibleLegsOut)
                 {
@@ -161,13 +161,13 @@ public class IRouter : MonoBehaviour
                 {
                     powerAmount[l] = requestedAmount / routerLegReq;
                 }
-                if (cable.checkConnection(2))//type is router to substation linkage
+                if (cable.CheckConnection(2))//type is router to substation linkage
                 {
                     if (bufferCurrent - requestedAmount >= 0)
                     {
                         //transfer the uniquely requested amount to the router
                         //cable.transferIn(requestedPower[itteration], 2);
-                        cable.transferIn(routerLegReq, powerAmount, 2);
+                        cable.TransferIn(routerLegReq, powerAmount, 2);
                         availibleLegsOut -= routerLegReq;
                         bufferCurrent -= requestedAmount;
                     }
@@ -175,7 +175,7 @@ public class IRouter : MonoBehaviour
                     {
                         float[] tempfloat = new float[] { bufferCurrent / 3, bufferCurrent / 3, bufferCurrent / 3 };
                         //or transfer all that remains in the buffer
-                        cable.transferIn(routerLegReq, tempfloat, 2);
+                        cable.TransferIn(routerLegReq, tempfloat, 2);
                         bufferCurrent = 0f;
                     }
                 }
@@ -192,7 +192,7 @@ public class IRouter : MonoBehaviour
     {
         return subRouters.Length;
     }
-    public int getLegRequirement()
+    public int GetLegRequirement()
     {
         return legsRequired;
     }
@@ -202,8 +202,9 @@ public class IRouter : MonoBehaviour
         return guid;
     }
 
-    public void receivePowerFromGenerator(int legCount, float[] powerAmounts)
+    public void ReceivePowerFromGenerator(int legCount, float[] powerAmounts)
     {
+        //Debug.Log("Received power from generator: "+ powerAmounts[0]+" X3");
         //receive 3 legs of X amount
         for (int i = 0; i < legCount; i++)
         {

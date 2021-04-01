@@ -17,6 +17,7 @@ public class PlayerVolumeController : MonoBehaviour
     private float myRoomTemp;
     private float myRoomOxygenation;
     private float myRoomToxicity;
+    private float myRadExposureRateRaw;
     //Player stats:
     [SerializeField] private float playerHealth = 100f;
     [SerializeField] private float playerOxygen = 100;//hold breath %
@@ -118,6 +119,15 @@ public class PlayerVolumeController : MonoBehaviour
         {
             //you dead, punk!
         }
+    }
+
+    public void SetRadiationExposureRate(float roentgen)
+    {
+        myRadExposureRateRaw = roentgen;
+    }
+    public float GetRadiationExposureRate()
+    {
+        return myRadExposureRateRaw;
     }
 
     public void InflictPlayerDamage(float amount)

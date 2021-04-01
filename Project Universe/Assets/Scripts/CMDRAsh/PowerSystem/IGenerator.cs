@@ -60,7 +60,7 @@ public class IGenerator : MonoBehaviour
                 //add it to the end of the DLL, if alone, it's first and last.
                 iCableDLL.AddLast(myIcable);
                 Debug.Log("Checking Router connections");
-                routers[i].checkMachineState(ref myGenerator);
+                routers[i].CheckMachineState(ref myGenerator);
             }
         }
     }
@@ -68,7 +68,8 @@ public class IGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        availibleLegsOut = routers.Length * 3;
+        //Debug.Log("_________________________");
+        availibleLegsOut = routers.Length * 3;//needs to stick to the hard value, not x3
         outputCurrent = 0f;
         //get leg states - this will be for when we have levers that close off indiv legs.
         //NYI
@@ -99,7 +100,7 @@ public class IGenerator : MonoBehaviour
             if(cable.route == thisRouter)
             {
                 //get subst's leg req
-                int routerLegReq = cable.route.getLegRequirement();
+                int routerLegReq = cable.route.GetLegRequirement();
                 //if something has happened, and we don't have as many legs as we need.
                 if (routerLegReq > availibleLegsOut)
                 {
@@ -112,22 +113,28 @@ public class IGenerator : MonoBehaviour
                 {
                     powerAmount[l] = requestedAmount / routerLegReq;
                 }
-                //Debug.Log("Request is " + requestedRouterPower[itteration]);
+                //Debug.Log("Request is " + requestedAmount);
+                
                 if (outputCurrent + requestedAmount <= outputMax)
                 {
                     //transfer as much power as is needed, up until capacity is met.
                     //cable.transferIn(requestedRouterPower[itteration], 1);
-                    cable.transferIn(routerLegReq, powerAmount, 1);
                     availibleLegsOut -= routerLegReq;
                     outputCurrent += requestedAmount;
+                    cable.TransferIn(routerLegReq, powerAmount, 1);
+                    
+                    //Debug.Log("Transfer for Output of: " + outputCurrent);
                 }
                 else
                 {
                     //Debug.Log("Output MAX!");
                     //Debug.Log("Request is "+requestedRouterPower[itteration]+" and current output is "+outputCurrent);
+                    
                     float[] tempfloat = new float[] { outputMax - outputCurrent / 3, outputMax - outputCurrent / 3, outputMax - outputCurrent / 3 };
-                    cable.transferIn(routerLegReq, tempfloat, 1);
                     outputCurrent = outputMax;
+                    cable.TransferIn(routerLegReq, tempfloat, 1);
+                    
+                    //Debug.Log("Transfer for Output of: " + outputCurrent);
                 }
             }
         }
@@ -138,12 +145,12 @@ public class IGenerator : MonoBehaviour
         routers = newRouters;
     }
 
-    public Boolean checkConnection()
+    public Boolean CheckConnection()
     {
         return true;
     }
 
-    public Guid getGUID()
+    public Guid GetGUID()
     {
         return guid;
     }

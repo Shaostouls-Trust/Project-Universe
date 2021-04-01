@@ -25,7 +25,7 @@ public class GlobalVolumeInteractController : MonoBehaviour
 
     public void CoroutineEncap()
     {
-        StartCoroutine("InstanceCollector");
+        StartCoroutine(InstanceCollector());
         //Debug.Log("Cycle: "+cycleNumber++);
     }
 
@@ -46,20 +46,23 @@ public class GlobalVolumeInteractController : MonoBehaviour
         //clear was here
         yield return null;
 
-        //Debug.Log("Internal Reset and Colldier Cycle On");
-        for (int j = 0; j < VGACs.Length; j++)
+        if(VACs != null && VGACs != null)
         {
-            for (int i = 0; i < VACs.Length; i++)
+            //Debug.Log("Internal Reset and Colldier Cycle On");
+            for (int j = 0; j < VGACs.Length; j++)
             {
-                foreach (GameObject node in VACs[i].GetConnectedNeighbors())
+                for (int i = 0; i < VACs.Length; i++)
                 {
-                    node.GetComponent<Rigidbody>().detectCollisions = true;
-                    node.GetComponent<BoxCollider>().enabled = true;
+                    foreach (GameObject node in VACs[i].GetConnectedNeighbors())
+                    {
+                        node.GetComponent<Rigidbody>().detectCollisions = true;
+                        node.GetComponent<BoxCollider>().enabled = true;
+                    }
+                    //functionally wipe the neighbormap
+                    VACs[i].SetConnectedNeighbors(new List<GameObject>());
                 }
-                //functionally wipe the neighbormap
-                VACs[i].SetConnectedNeighbors(new List<GameObject>());
+                VGACs[j].SetExposedNodes(new List<GameObject>());
             }
-            VGACs[j].SetExposedNodes(new List<GameObject>());
         }
         clear = true;
         StopCoroutine("InstaceCollector");
@@ -72,24 +75,27 @@ public class GlobalVolumeInteractController : MonoBehaviour
         {
             //Debug.Log("V(G)AC Cleaning and Colldier Cycle Off");
             clear = false;
-            //Check if a VAC node is in a VGAC nodelist
-            for (int j = 0; j < VGACs.Length; j++)
+            if (VACs != null && VGACs != null)
             {
-                for (int i = 0; i < VACs.Length; i++)
+                //Check if a VAC node is in a VGAC nodelist
+                for (int j = 0; j < VGACs.Length; j++)
                 {
-                    foreach (GameObject node in VACs[i].GetConnectedNeighbors())
+                    for (int i = 0; i < VACs.Length; i++)
                     {
-                        if (VGACs[j].GetExposedNodes().Contains(node))
+                        foreach (GameObject node in VACs[i].GetConnectedNeighbors())
                         {
-                            //if it is in the node list, remove it from the globals list.
-                            //this way only the nodes that are actually exposed to space will be in the VGAC list.
-                            VGACs[j].NullifyNodeLink(VGACs[j].GetExposedNodes());
-                            List<GameObject> temp = VGACs[j].GetExposedNodes();
-                            temp.Remove(node);
-                            VGACs[j].SetExposedNodes(temp);
+                            if (VGACs[j].GetExposedNodes().Contains(node))
+                            {
+                                //if it is in the node list, remove it from the globals list.
+                                //this way only the nodes that are actually exposed to space will be in the VGAC list.
+                                VGACs[j].NullifyNodeLink(VGACs[j].GetExposedNodes());
+                                List<GameObject> temp = VGACs[j].GetExposedNodes();
+                                temp.Remove(node);
+                                VGACs[j].SetExposedNodes(temp);
+                            }
+                            node.GetComponent<Rigidbody>().detectCollisions = false;
+                            node.GetComponent<BoxCollider>().enabled = false;
                         }
-                        node.GetComponent<Rigidbody>().detectCollisions = false;
-                        node.GetComponent<BoxCollider>().enabled = false;
                     }
                 }
             }

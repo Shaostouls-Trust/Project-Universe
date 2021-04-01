@@ -52,7 +52,32 @@ public class WSButton1 : MonoBehaviour
                 Debug.Log("crawlDoor");
                 break;
             case "pickupable":
-                PickupBy();// player);
+                //determine the type of the object
+                Consumable_Ore COre;
+                if (scriptedObj.TryGetComponent(out COre))
+                {
+                    Pickup<Consumable_Ore>();
+                }
+                break;
+            case "FillFurnace":
+                Debug.Log("FillFurnace");
+                FillFurnace();
+                break;
+            case "EmptyFurnace":
+                EmptyFurnace();
+                break;
+            case "FillFactory":
+                FillFactory();
+                break;
+            case "StartFactory":
+                Debug.Log("Trying to start Factory");
+                StartFactory();
+                break;
+            case "EmptyFactory":
+                EmptyFactory();
+                break;
+            case "MiningDrone":
+                MiningDrone();
                 break;
         }
     }
@@ -88,10 +113,41 @@ public class WSButton1 : MonoBehaviour
         scriptedObj.GetComponent<CrawlDoorAnimator>().ButtonResponse();
     }
 
-    public void PickupBy()//GameObject player)
+    public void Pickup<pickupType>()//GameObject player)
     {
         //will eventually need to go by type.
-        scriptedObj.GetComponentInParent<Consumable_Ore>().PickUpConsumable(player);
+        Debug.Log("Pickup type: "+typeof(pickupType));
+        if(typeof(pickupType) == typeof(Consumable_Ore))
+        {
+            scriptedObj.GetComponentInParent<Consumable_Ore>().PickUpConsumable(player);
+        }
+    }
+
+    public void FillFurnace()
+    {
+        scriptedObj.GetComponent<Mach_InductionFurnace>().InputFromPlayer(player);
+    }
+    public void EmptyFurnace()
+    {
+        scriptedObj.GetComponent<Mach_InductionFurnace>().OutputToPlayer(player);
+    }
+    public void FillFactory()
+    {
+        Debug.Log("FillFactory");
+        scriptedObj.GetComponent<Mach_DevFactory>().InputFromPlayer(player);
+    }
+    public void EmptyFactory()
+    {
+        scriptedObj.GetComponent<Mach_DevFactory>().OutputToPlayer(player);
+    }
+    public void StartFactory()
+    {
+        scriptedObj.GetComponent<Mach_DevFactory>().StartFactory();
+    }
+
+    public void MiningDrone()
+    {
+        scriptedObj.GetComponent<IMiningDrone>().EmptyInventory(player);
     }
 
     void OnMouseOver()

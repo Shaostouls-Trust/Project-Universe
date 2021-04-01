@@ -56,10 +56,10 @@ public class IRoutingSubstation : MonoBehaviour
                 {
                     ICable cable = new ICable(this, targetBreakers[i]);
                     iCableDLL.AddLast(cable);
-                    legsOut += targetBreakers[i].getLegRequirement();
+                    legsOut += targetBreakers[i].GetLegRequirement();
                     availibleLegsOut = legsOut;
                     Debug.Log("Checking Breaker State " + targetBreakers[i].gameObject.name);
-                    targetBreakers[i].checkMachineState(ref thisSubstation);
+                    targetBreakers[i].CheckMachineState(ref thisSubstation);
                 }
             }
         }
@@ -71,9 +71,9 @@ public class IRoutingSubstation : MonoBehaviour
                 {
                     ICable cable = new ICable(this, targetMachine[i]);
                     iCableDLL.AddLast(cable);
-                    legsOut += targetMachine[i].getLegRequirement();
+                    legsOut += targetMachine[i].GetLegRequirement();
                     Debug.Log("Checking Machine State " + targetMachine[i].gameObject.name);
-                    targetMachine[i].checkMachineState(ref thisSubstation);
+                    targetMachine[i].CheckMachineState(ref thisSubstation);
                 }
             }
         }
@@ -96,8 +96,8 @@ public class IRoutingSubstation : MonoBehaviour
         {
             if(targetMachine[i] != null)
             {
-                totalMachineReq += targetMachine[i].requestedEnergyAmount();
-                totalRequiredPower += targetMachine[i].requestedEnergyAmount();
+                totalMachineReq += targetMachine[i].RequestedEnergyAmount();
+                totalRequiredPower += targetMachine[i].RequestedEnergyAmount();
             }
         }
         //Debug.Log("Machine requirement: "+ totalMachineReq);
@@ -105,8 +105,8 @@ public class IRoutingSubstation : MonoBehaviour
         {
             if (targetBreakers[k] != null)
             {
-                totalBreakerReq += targetBreakers[k].getTotalRequiredPower();
-                totalRequiredPower += targetBreakers[k].getTotalRequiredPower();
+                totalBreakerReq += targetBreakers[k].GetTotalRequiredPower();
+                totalRequiredPower += targetBreakers[k].GetTotalRequiredPower();
             }
         }
         //Debug.Log("Breaker requirement: " + totalBreakerReq);
@@ -128,43 +128,45 @@ public class IRoutingSubstation : MonoBehaviour
 
         //power will be divided equally among linked machines, sacrificing breaker power by as much as 75% in case of defecit.
         //ignore this division block if the substation buffer is empty
-        //if (bufferCurrent > 0)
-        //{
-            if (totalBreakerReq + totalMachineReq > bufferCurrent)
+        if (totalBreakerReq + totalMachineReq > bufferCurrent)
+        {
+            //Debug.Log("Requested exceeds buffer:"+bufferCurrent);
+            //difference between required and available power.
+            float deficit = totalRequiredPower - bufferCurrent;
+            if (targetBreakers.Length > 0)//no need to run the code below if there are no breakers.
             {
-                //Debug.Log("Requested exceeds buffer:"+bufferCurrent);
-                //difference between required and available power.
-                float deficit = totalRequiredPower - bufferCurrent;
-                if (targetBreakers.Length > 0)//no need to run the code below if there are no breakers.
+                //defecitVbreaker = 1.0f;
+                //determine the percent difference between defecit and the power required by the breakers
+                if (totalBreakerReq > 0)//div by zero precaution
                 {
-                    //defecitVbreaker = 1.0f;
-                    //determine the percent difference between defecit and the power required by the breakers
-                    if (totalBreakerReq > 0)//div by zero precaution
-                    {
-                        defecitVbreaker = totalBreakerReq / deficit;
-                        //if (defecitVbreaker > 0.75f)
-                        //{
-                        //    defecitVbreaker = 0.25f;
-                        //}
-                    }
+                    //defecitVbreaker = totalBreakerReq / deficit; //backwards?
+                    defecitVbreaker = deficit/totalBreakerReq;
                 }
-                //multiply by the ammount of power we are retaining for the breakers
-                totalBreakerReq *= defecitVbreaker;//-= (totalBreakerReq * defecitVbreaker);//0.25f;
-                //get the new power requirement.
-                float newRequiredPower = totalMachineReq + totalBreakerReq;
-                //recompute deficit based on reduced breaker draw.
-                deficit = newRequiredPower - bufferCurrent;
-                //calculate the percent that we need to trim off of the machine requirement to settle deficit
-                //IE how much is the defecit when compared to the buffer (in %)
-                defecitVmachine = deficit / totalMachineReq;
-                //Debug.Log("Defecit v machine: " + defecitVmachine);
-                //Debug.Log("Defecit v breaker: " + defecitVbreaker);
-            } 
-        //}
+                else { defecitVbreaker = 0.0f; }
+            }
+            else { defecitVbreaker = 0.0f; }
+            //multiply by the ammount of power we are retaining for the breakers
+            totalBreakerReq *= defecitVbreaker;//-= (totalBreakerReq * defecitVbreaker);//0.25f;
+            //get the new power requirement.
+            float newRequiredPower = totalMachineReq + totalBreakerReq;
+            //recompute deficit based on reduced breaker draw.
+            deficit = newRequiredPower - bufferCurrent;
+            //calculate the percent that we need to trim off of the machine requirement to settle deficit
+            //IE how much is the defecit when compared to the buffer (in %)
+            defecitVmachine = deficit / totalMachineReq;
+            //Debug.Log("Defecit v machine: " + defecitVmachine);
+            //Debug.Log("Defecit v breaker: " + defecitVbreaker);
+        }
+        else
+        {
+            defecitVbreaker = 0.0f;
+            defecitVmachine = 0.0f;
+        }
+        
     }
 
     //called at start of router update
-    public bool checkMachineState(ref IRouter thisRouter)
+    public bool CheckMachineState(ref IRouter thisRouter)
     {
         if (!myRouters.Contains(thisRouter))
         {
@@ -174,7 +176,7 @@ public class IRoutingSubstation : MonoBehaviour
         return true;
     }
 
-    public void requestPowerFromSubstation(float requestedAmount, IBreakerBox thisBreaker)
+    public void RequestPowerFromSubstation(float requestedAmount, IBreakerBox thisBreaker)
     {
         //transfer power to the linking cable.
         foreach (ICable cable in iCableDLL)
@@ -183,51 +185,51 @@ public class IRoutingSubstation : MonoBehaviour
             if (cable.breaker == thisBreaker)
             {
                 //get machine's leg req (a default value)
-                int breakerLegReq = cable.breaker.getLegRequirement();
+                int breakerLegReq = cable.breaker.GetLegRequirement();
                 //if something has happened, and we don't have as many legs as we need.
                 if (breakerLegReq > availibleLegsOut)
                 {
                     //we will temporarily change the required leg count to what we can provide
                     breakerLegReq = availibleLegsOut;
                 }
+                //adjust total power need by the breaker defecit
+                requestedAmount -= (requestedAmount * defecitVbreaker);//new, was in for below
                 //split power between legs
                 float[] powerAmount = new float[breakerLegReq];
                 for (int l = 0; l < breakerLegReq; l++)
                 {
                     powerAmount[l] = requestedAmount / breakerLegReq;
                     //Debug.Log("power amount " + l + " : " + powerAmount[l]);
-                    //powerAmount[l] -= (powerAmount[l] * defecitVbreaker);
                     powerAmount[l] = (float)Math.Round(powerAmount[l], 3);
                 }
                 //Debug.Log("defecitVbreaker:" + defecitVbreaker);
-                requestedAmount = powerAmount[0] * breakerLegReq;
-                if (cable.checkConnection(4))//transfer to breaker
+                //requestedAmount = powerAmount[0] * breakerLegReq; //was included
+                if (cable.CheckConnection(4))//transfer to breaker
                 {
+                    //Debug.Log("buffer amount: "+bufferCurrent);
                     if (bufferCurrent - requestedAmount >= 0)
                     {
                         //transfer the uniquely requested amount to the machine
-                        cable.transferIn(breakerLegReq, powerAmount, 4);
+                        //Debug.Log("Transfer power amount: "+(powerAmount[0]*breakerLegReq));
+                        cable.TransferIn(breakerLegReq, powerAmount, 4);
                         availibleLegsOut -= breakerLegReq;
-                        //cable.transferIn(requestedPower[itteration], 4);
                         bufferCurrent -= requestedAmount;
                     }
                     else if (bufferCurrent - requestedAmount < 0)
                     {
-                        float[] tempfloat = new float[] { bufferCurrent / 3, bufferCurrent / 3, bufferCurrent / 3 };
+                        //Debug.Log("Transfer remaining ("+bufferCurrent+")");
+                        float[] tempfloat = new float[] { bufferCurrent / 3.0f, bufferCurrent / 3.0f, bufferCurrent / 3.0f };
                         //or transfer all that remains in the buffer
-                        cable.transferIn(breakerLegReq, tempfloat, 4);
+                        cable.TransferIn(breakerLegReq, tempfloat, 4);
                         availibleLegsOut -= breakerLegReq;
-                        //cable.transferIn(bufferCurrent, 4);
                         bufferCurrent = 0f;
                     }
                 }
-                //no need to continue searching through the rest of the cables
-                break;
             }
         }
     }
 
-    public void requestPowerFromSubstation(float requestedAmount, IMachine thisMachine)
+    public void RequestPowerFromSubstation(float requestedAmount, IMachine thisMachine)
     {
         //transfer power to the linking cable.
         foreach (ICable cable in iCableDLL)
@@ -236,7 +238,7 @@ public class IRoutingSubstation : MonoBehaviour
             if (cable.mach == thisMachine)
             {
                 //get machine's leg req
-                int machineLegReq = cable.mach.getLegRequirement();
+                int machineLegReq = cable.mach.GetLegRequirement();
                 //if something has happened, and we don't have as many legs as we need.
                 if (machineLegReq > availibleLegsOut)
                 {
@@ -244,6 +246,8 @@ public class IRoutingSubstation : MonoBehaviour
                     machineLegReq = availibleLegsOut;
                     //Debug.Log("leg shortage ("+machineLegReq+")");
                 }
+                //
+                requestedAmount -= (requestedAmount * defecitVmachine);
                 //split power between legs
                 float[] powerAmount = new float[machineLegReq];
                 //Debug.Log("splitting power between legs");
@@ -251,20 +255,20 @@ public class IRoutingSubstation : MonoBehaviour
                 {
                     powerAmount[l] = requestedAmount / machineLegReq;
                     //Debug.Log("power amount " + l + " : " + powerAmount[l]);
-                    //powerAmount[l] -= (powerAmount[l] * defecitVmachine);
-                   // Debug.Log("defecitVbreaker:" + defecitVmachine);
+                    
+                    // Debug.Log("defecitVbreaker:" + defecitVmachine);
                     //Debug.Log("defecitVmacine:" + defecitVmachine);
                     powerAmount[l] = (float)Math.Round(powerAmount[l], 3);
                 }
                 requestedAmount = powerAmount[0] * machineLegReq;
-                if (cable.checkConnection(3))//type is substation to machine linkage
+                if (cable.CheckConnection(3))//type is substation to machine linkage
                 {
                     //Debug.Log("Cable exists");
                     if (bufferCurrent - requestedAmount >= 0)
                     {
                         //transfer the uniquely requested amount to the machine
                        // Debug.Log("Sufficient Power");
-                        cable.transferIn(machineLegReq, powerAmount, 3);
+                        cable.TransferIn(machineLegReq, powerAmount, 3);
                         availibleLegsOut -= machineLegReq;
                         bufferCurrent -= requestedAmount;
                     }
@@ -273,7 +277,7 @@ public class IRoutingSubstation : MonoBehaviour
                       //  Debug.Log("Power Defecit");
                         float[] tempfloat = new float[] { bufferCurrent / 3, bufferCurrent / 3, bufferCurrent / 3 };
                         //or transfer all that remains in the buffer
-                        cable.transferIn(machineLegReq, tempfloat, 3);
+                        cable.TransferIn(machineLegReq, tempfloat, 3);
                         availibleLegsOut -= machineLegReq;
                         bufferCurrent = 0f;
                     }
@@ -292,12 +296,12 @@ public class IRoutingSubstation : MonoBehaviour
         targetBreakers = newBreakers; ;
     }
 
-    public int getLegRequirement()
+    public int GetLegRequirement()
     {
         return legsRequired;
     }
 
-    public void receivePowerFromRouter(int legCount, float[] powerAmounts)
+    public void ReceivePowerFromRouter(int legCount, float[] powerAmounts)
     {
         //receive 3 legs of X amount
         for(int i = 0; i < legCount; i++)
@@ -308,7 +312,7 @@ public class IRoutingSubstation : MonoBehaviour
         bufferCurrent = (float)Math.Round(bufferCurrent, 3);
     }
 
-    public float getTotalRequiredPower()
+    public float GetTotalRequiredPower()
     {
         return totalRequiredPower;
     }

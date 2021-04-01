@@ -20,7 +20,7 @@ public class ILinkOnCreation : MonoBehaviour
         shipBreakers = GetAllChildrenWithComponent<IBreakerBox>(shipRoot);
         shipSubMachines = GetAllChildrenWithComponent<ISubMachine>(shipRoot);
         //StartCoroutine(SplittingLogic());
-        SplittingLogic();
+        //SplittingLogic();
     }
 
     public void LinkSystems(IGenerator generator, IRouter[] router)

@@ -13,11 +13,15 @@ public class MaterialLibrary : MonoBehaviour
     //[SerializeField]
     private static Material[] doorDisplayMaterials;
     private static Material[] powerStateMaterials;
+    private static MaterialPropertyBlock commonLightPropertyBlock;
     void Awake()
     {
         doorStateMaterials = doorMaterials;
         doorDisplayMaterials = displayMaterials;
         powerStateMaterials = powerMaterials;
+
+        commonLightPropertyBlock = new MaterialPropertyBlock();
+        
     }
 
     public static Material[] GetDoorStateMaterials()
@@ -43,5 +47,9 @@ public class MaterialLibrary : MonoBehaviour
     public static Material GetPowerSystemStateMaterials(int index)
     {
         return powerStateMaterials[index];
+    }
+    public static MaterialPropertyBlock GetMaterialPropertyBlockForCommonLights()
+    {
+        return commonLightPropertyBlock;
     }
 }

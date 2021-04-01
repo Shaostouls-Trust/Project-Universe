@@ -195,6 +195,7 @@ Material:
     - _HeightAmplitude: 0.02
     - _HeightCenter: 0.5
     - _HeightDiscriminant: 0.5
+    - _HeightDownshift: 0
     - _HeightMapParametrization: 0
     - _HeightMax: 1
     - _HeightMin: -1
@@ -202,6 +203,7 @@ Material:
     - _HeightPoMAmplitude: 2
     - _HeightTessAmplitude: 2
     - _HeightTessCenter: 0.5
+    - _HeightUpshift: 0
     - _InvTilingScale: 1
     - _Ior: 1.5
     - _IridescenceMask: 1
@@ -219,6 +221,7 @@ Material:
     - _PPDPrimitiveLength: 1
     - _PPDPrimitiveWidth: 1
     - _ParallaxHeightScale: 0.01
+    - _RGBHeightGrey: 191
     - _ReceivesSSR: 1
     - _RefractionModel: 0
     - _RenderQueueType: 1

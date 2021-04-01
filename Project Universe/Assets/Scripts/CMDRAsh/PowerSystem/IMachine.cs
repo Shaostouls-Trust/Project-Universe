@@ -6,23 +6,16 @@ using UnityEngine;
 public class IMachine : MonoBehaviour
 {
     //Amount required (requested) to run machine
-    [SerializeField]
-    private float requestedEnergy;
+    [SerializeField] private float requestedEnergy;
     //unadjusted amount required to run the machine
-    [SerializeField]
-    private float requiredEnergy;
-    [SerializeField]
-    private int percentDrawToFill;
+    [SerializeField] private float requiredEnergy;
+    [SerializeField] private int percentDrawToFill;
     //amount to draw when filling the interal buffer
     private float drawToFill;
-    [SerializeField]
-    private float energyBuffer; //Machines shouldn't store more than 10 frames worth of power.
-    [SerializeField]
-    private float bufferCurrent;
-    [SerializeField]
-    private string machineType;
-    [SerializeField]
-    private bool runMachine;
+    [SerializeField] private float energyBuffer; //Machines shouldn't store more than 10 frames worth of power.
+    [SerializeField] private float bufferCurrent;
+    [SerializeField] private string machineType;
+    [SerializeField] private bool runMachine;
     //private ICable cable;
     private List<IRoutingSubstation> substations = new List<IRoutingSubstation>();
     //backend of power cables
@@ -60,17 +53,23 @@ public class IMachine : MonoBehaviour
         {
             //Get the deficit between the energybuffer(max) and the current buffer amount
             float deficit = energyBuffer - bufferCurrent;
-            if (deficit >= (drawToFill - requiredEnergy))
+            if (deficit >= drawToFill)
             {
                 requestedEnergy = drawToFill;
                 //Debug.Log(this.gameObject.name + " Request Helper");
-                requestHelper();
+                RequestHelper();
             }
-            else if (deficit < (drawToFill - requiredEnergy))
+            else if(deficit == requiredEnergy)
+            {
+                requestedEnergy = requiredEnergy;
+                //Debug.Log(this.gameObject.name + " Request Helper");
+                RequestHelper();
+            }
+            else if (deficit < drawToFill && deficit > requiredEnergy)
             {
                 requestedEnergy = deficit + requiredEnergy;
                 //Debug.Log(this.gameObject.name + " Request Helper");
-                requestHelper();
+                RequestHelper();
             }
         }
         else if (bufferCurrent >= energyBuffer)
@@ -80,37 +79,37 @@ public class IMachine : MonoBehaviour
             //trim off excess power. Buffers cannot overcharge
             //bufferCurrent = energyBuffer;
             //Debug.Log(this.gameObject.name + " Request Helper");
-            requestHelper();
+            RequestHelper();
         }
         else
         {
             requestedEnergy = requiredEnergy;
             //Debug.Log(this.gameObject.name + " Request Helper");
-            requestHelper();
+            RequestHelper();
         }
         //send power request
         if (runMachine)
         {
             //run machines
-            runLogic();
+            RunLogic();
         }
         else
         {
-            runMachineSelector(machineType, 4);
+            RunMachineSelector(machineType, 4);
         }
         
     }
 
-    public void requestHelper()
+    public void RequestHelper()
     {
         foreach(IRoutingSubstation subs in substations)
         {
             //Debug.Log(this.gameObject.name + " machine has Requested " + requestedEnergy / substations.Count);
-            subs.requestPowerFromSubstation(requestedEnergy/substations.Count, this.GetComponent<IMachine>());
+            subs.RequestPowerFromSubstation(requestedEnergy/substations.Count, this.GetComponent<IMachine>());
         }
     }
 
-    public void runLogic()
+    public void RunLogic()
     {
         ///////////////////////////////////////
         //Run logic
@@ -125,15 +124,15 @@ public class IMachine : MonoBehaviour
                     {
                         if (bufferCurrent >= requiredEnergy * 0.75f)//75% power
                         {
-                            runMachineSelector(machineType, 1); //any slower locks emiss to blinking yellow.
+                            RunMachineSelector(machineType, 1); //any slower locks emiss to blinking yellow.
                         }
                         else if (bufferCurrent >= requiredEnergy * 0.5f)//no lower than 50%
                         {
-                            runMachineSelector(machineType, 2);
+                            RunMachineSelector(machineType, 2);
                         }
                         else//lower than 50%
                         {
-                            runMachineSelector(machineType, 3);
+                            RunMachineSelector(machineType, 3);
                         }
                         //no matter what, the buffer is emptied
                         bufferCurrent = 0.0f;
@@ -141,20 +140,20 @@ public class IMachine : MonoBehaviour
                     else
                     {
                         //run full power
-                        runMachineSelector(machineType, 0);
+                        RunMachineSelector(machineType, 0);
                         bufferCurrent -= requiredEnergy;
                     }
                 }
                 else
                 {
                     //'run' at 0 power
-                    runMachineSelector(machineType, 4);
+                    RunMachineSelector(machineType, 4);
                 }
             }
             else if (legsReceived < legsRequired && legsReceived >= 1)
             {
                 //Shut down machine due to leg requirement
-                runMachineSelector(machineType, 4);
+                RunMachineSelector(machineType, 4);
                 //electrical damage (if the buffer is not empty)
                 //if (bufferCurrent > 0)
                 //{
@@ -164,13 +163,13 @@ public class IMachine : MonoBehaviour
             else
             {
                 //Shut down machine due to leg requirement
-                runMachineSelector(machineType, 4);
+                RunMachineSelector(machineType, 4);
                 //NO electrical damage, because no legs attached.
             }
         }
         else
         {
-            runMachineSelector(machineType, 4);
+            RunMachineSelector(machineType, 4);
         }
         
     }
@@ -181,7 +180,7 @@ public class IMachine : MonoBehaviour
         set { runMachine = value; }
     }
 
-    public float requestedEnergyAmount()//ref int numSuppliers)
+    public float RequestedEnergyAmount()//ref int numSuppliers)
     {
         //numSuppliers += 1;
         if(iCableDLL.Count > 1)
@@ -195,13 +194,13 @@ public class IMachine : MonoBehaviour
         }
     }
     
-    public void receiveEnergyAmount(int legCount, float[] amounts, ref ICable cable)
+    public void ReceiveEnergyAmount(int legCount, float[] amounts, ref ICable cable)
     {
         //receive X legs with X amounts
         for(int i = 0; i < legCount; i++)
         {
             bufferCurrent += amounts[i];
-            //Debug.Log(this.gameObject.name + " machine has Received "+amounts[i]);
+            //Debug.Log(this.gameObject.name + " machine has Received "+amounts[i]+" X3");
         }
         legsReceived = legCount;
         //Debug.Log(this.gameObject.name+" machine has "+legsReceived+" legs");
@@ -220,19 +219,19 @@ public class IMachine : MonoBehaviour
 
     //return the amount of legs needed by the machine, so that the substation will know
     //how to divide the power.
-    public int getLegRequirement()
+    public int GetLegRequirement()
     {
         return legsRequired;
     }
 
     //called on cable disconnect (NYI)
-    public void removeCableConnection(ICable cable)
+    public void RemoveCableConnection(ICable cable)
     {
         iCableDLL.Remove(cable);
     }
 
     //called at the start of the Substation update block
-    public bool checkMachineState(ref IRoutingSubstation substation)
+    public bool CheckMachineState(ref IRoutingSubstation substation)
     {
         if (!substations.Contains(substation))
         {
@@ -242,25 +241,39 @@ public class IMachine : MonoBehaviour
     }
 
     /// Could we pass in script to run, so that we don't need to hardcode in all these machine scripts.
-    public void runMachineSelector(string ImachineType, int powerLevel)
+    public void RunMachineSelector(string ImachineType, int powerLevel)
     {
+
         switch (ImachineType)
         {
             case "machine_basic":
-                this.runMachineNormal(powerLevel);
+                this.RunMachineNormal(powerLevel);
                 break;
             case "machine_adv":
-                this.runMachineAdv(powerLevel);
+                this.RunMachineAdv(powerLevel);
                 break;
             case "kiosk":
-                this.runMachineKiosk(powerLevel);
+                this.RunMachineKiosk(powerLevel);
                 break;
             case "InductionFurnace":
+                this.gameObject.GetComponent<Mach_InductionFurnace>().RunMachine(powerLevel);
+                break;
+            case "OxygenGen":
+                this.gameObject.GetComponent<IOxygenGenerator>().RunMachine(powerLevel);
+                break;
+            case "DevFactory":
+                this.gameObject.GetComponent<Mach_DevFactory>().RunMachine(powerLevel);
                 break;
         }
     }
 
-    public void runMachineNormal(int powerLevel)
+    //public void runMachineSelector<mytype>(string ImachineType, int powerLevel,bool rtw)
+    //{
+    //    var scriptComponent = this.gameObject.GetComponent(ImachineType) as IOxygenGenerator;
+    //    scriptComponent.runMachine(powerLevel);
+    //}
+
+    public void RunMachineNormal(int powerLevel)
     {
         switch (powerLevel)
         {
@@ -282,7 +295,7 @@ public class IMachine : MonoBehaviour
         }
     }
 
-    public void runMachineAdv(int powerLevel)
+    public void RunMachineAdv(int powerLevel)
     {
         switch (powerLevel)
         {
@@ -304,7 +317,7 @@ public class IMachine : MonoBehaviour
         }
     }
 
-    public void runMachineKiosk(int powerlevel)
+    public void RunMachineKiosk(int powerlevel)
     {
         //grab the screen's material
         Renderer screenRenderer = screenObject.GetComponent<Renderer>();

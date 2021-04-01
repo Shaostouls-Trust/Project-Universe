@@ -18,9 +18,13 @@ public class IOxygenGenerator : MonoBehaviour
     [SerializeField] private Volume myVolume;
     //[SerializeField] private LinkedList<IGasPipe>[] outputs;
     private VolumeAtmosphereController genRoom;
+    private bool isRunning;
+    private bool isPowered;
+    //private bool thisRunMachine;
     // Start is called before the first frame update
     void Start()
     {
+        //thisRunMachine = GetComponent<IMachine>().RunMachine;
         //Recurse the paths of the ends of the air duct branch... though I don't thing that'd do anything?
         genRoom = myVolume.gameObject.GetComponent<VolumeAtmosphereController>();
     }
@@ -28,38 +32,91 @@ public class IOxygenGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (genRoom.roomOxygenation < 1.0f)
+        if (GetComponent<IMachine>().RunMachine)
         {
-            genRoom.roomOxygenation += (oxyGenRate_m3s*Time.deltaTime);
+            isRunning = true;
         }
-        //transfer air into the linked airvents
-        float oxyGenRateThisUpdate = 0.0f;
-        for (int i = 0; i < connectedPipes.Length; i++)
+        else
         {
-            if (connectedPipes[i].GetGlobalPressure()<1.0)
+            isRunning = false;
+        }
+
+        if (isPowered && isRunning)
+        {
+
+            if (genRoom.roomOxygenation < 1.0f)
             {
-                oxyGenRateThisUpdate = (oxyGenRate_m3s * Time.deltaTime);
+                genRoom.roomOxygenation += (oxyGenRate_m3s * Time.deltaTime);
             }
-            else
+            //transfer air into the linked airvents
+            float oxyGenRateThisUpdate = 0.0f;
+            for (int i = 0; i < connectedPipes.Length; i++)
             {
-                float lerpF = Mathf.Lerp(0f, 1.05f, connectedPipes[i].GetGlobalPressure());//rateAdjuster);
-                //Debug.Log("0-1.025 range lerp by global pressure: "+lerpF);
-                //Lerp the rate by the pressure
-                oxyGenRateThisUpdate = Mathf.Lerp((oxyGenRate_m3s * Time.deltaTime), 0.0f, lerpF);
-                //Debug.Log("OxyGen Rate - 0 lerp by lerpF: "+oxyGenRateThisUpdate);
-            }
-            ///
-            /// Is creating this gas at these conditions part of the problem? 3.0m3 and 1.0atm in 0.4m3?
-            ///
-            IGas gasTest = new IGas("Oxygen", 70.0f, (float)Math.Round(oxyGenRateThisUpdate,3), (float)Math.Round((1.0f * Time.deltaTime),3), .4f);
-            gasTest.CalculateAtmosphericDensity();
-            //Debug.Log(gasTest.ToString());
-            object[] atmoDatas = { gasTest.GetTemp(), gasTest.GetLocalPressure(), gasTest};
-            if(connectedPipes[i].GetGlobalPressure() < 1.05)
-            {
-                //Debug.Log("Generating: " + gasTest.ToString());
-                connectedPipes[i].Receive(false,atmoDatas);
+                if (connectedPipes[i].GetGlobalPressure() < 1.0)
+                {
+                    oxyGenRateThisUpdate = (oxyGenRate_m3s * Time.deltaTime);
+                }
+                else
+                {
+                    float lerpF = Mathf.Lerp(0f, 1.05f, connectedPipes[i].GetGlobalPressure());//rateAdjuster);
+                                                                                               //Debug.Log("0-1.025 range lerp by global pressure: "+lerpF);
+                                                                                               //Lerp the rate by the pressure
+                    oxyGenRateThisUpdate = Mathf.Lerp((oxyGenRate_m3s * Time.deltaTime), 0.0f, lerpF);
+                    //Debug.Log("OxyGen Rate - 0 lerp by lerpF: "+oxyGenRateThisUpdate);
+                }
+                ///
+                /// Is creating this gas at these conditions part of the problem? 3.0m3 and 1.0atm in 0.4m3?
+                ///
+                IGas gasTest = new IGas("Oxygen", 70.0f, (float)Math.Round(oxyGenRateThisUpdate, 3), (float)Math.Round((1.0f * Time.deltaTime), 3), .4f);
+                gasTest.CalculateAtmosphericDensity();
+                //Debug.Log(gasTest.ToString());
+                object[] atmoDatas = { gasTest.GetTemp(), gasTest.GetLocalPressure(), gasTest };
+                if (connectedPipes[i].GetGlobalPressure() < 1.05)
+                {
+                    //Debug.Log("Generating: " + gasTest.ToString());
+                    connectedPipes[i].Receive(false, atmoDatas);
+                }
             }
         }
+    }
+
+    public void RunMachine(int powerLevel)
+    {
+        switch (powerLevel)
+        {
+            case 0:
+                SetPoweredState(true);
+                //SetRunningState(true);
+                break;
+            case 1:
+                SetPoweredState(true);
+                //SetRunningState(true);
+                break;
+            case 2:
+                SetPoweredState(true);
+                //SetRunningState(true);
+                break;
+            case 3:
+                SetPoweredState(true);
+                //SetRunningState(true);
+                break;
+            case 4:
+                SetPoweredState(false);
+                //SetRunningState(false);
+                break;
+            case 5:
+                SetPoweredState(false);
+                //SetRunningState(false);
+                break;
+        }
+    }
+
+    public void SetPoweredState(bool value)
+    {
+        isPowered = value;
+    }
+    public void SetRunningState(bool value)
+    {
+        isRunning = value;
     }
 }

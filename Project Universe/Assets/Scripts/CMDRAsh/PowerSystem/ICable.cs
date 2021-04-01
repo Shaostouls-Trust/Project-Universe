@@ -57,7 +57,8 @@ public class ICable
     {
 		subst = substation;
 		breaker = brBox;
-		maximumThroughput = 180;//LV low + 60 (30 connections. 30 lights is 60. 12 doors is 180. Ideal is 10 doors (150) + 15 lights (30)).
+		maximumThroughput = 180;//LV low + 60 (30 connections. 30 lights is 60. 12 doors is 180 (actual is 11 b/c of drawToCharge)
+								//Ideal is 9 doors (135) + 15 lights (30)).
 		maxHeatCap = 600f;
 		maxActiveLegs = 3;
 	}
@@ -67,13 +68,13 @@ public class ICable
     {
 		breaker = brBox;
 		subMach = submachine;
-		maximumThroughput = 25;//EVL med (5 + 20)
+		maximumThroughput = 25;//ELV med (5 + 20)
 		maxHeatCap = 100f;
 		maxActiveLegs = 2;
 	}
 
 	//get power passed in
-	public void transferIn(int legCount, float[] powerinPerLeg, int type)
+	public void TransferIn(int legCount, float[] powerinPerLeg, int type)
     {
 		float powerinTotal = 0f;
 		foreach(float amt in powerinPerLeg)
@@ -99,16 +100,16 @@ public class ICable
 		{
 			//cable melts, later this will interact with surrounding objects
 			//for now, just set energy transfer to 0
-			transferOut(0, new float[]{}, type);
+			TransferOut(0, new float[]{}, type);
         }
         else
         {
-			transferOut(legCount, powerinPerLeg, type);
+			TransferOut(legCount, powerinPerLeg, type);
         }
     }
 
 	//pass power to the machine/router/etc requesting said power.
-	private void transferOut(int legCount, float[] powerOutPerLeg, int type)
+	private void TransferOut(int legCount, float[] powerOutPerLeg, int type)
     {
 		ICable cable = this;
 		switch (type)
@@ -116,45 +117,45 @@ public class ICable
 			case 1:
 				//Debug.Log(powerOutPerLeg[0]+" "+powerOutPerLeg[1]+" "+powerOutPerLeg[1]+" to a router.");
 				//transfer to a router
-				route.receivePowerFromGenerator(legCount, powerOutPerLeg);
+				route.ReceivePowerFromGenerator(legCount, powerOutPerLeg);
 				break;
 			case 2:
 				//Debug.Log(powerOutPerLeg[0] + " " + powerOutPerLeg[1] + " " + powerOutPerLeg[2] + " to a substation.");
 				//transfering to a substation
-				subst.receivePowerFromRouter(legCount, powerOutPerLeg);
+				subst.ReceivePowerFromRouter(legCount, powerOutPerLeg);
 				break;
 			case 3:
 				//Debug.Log(powerOutPerLeg[0] + " " + powerOutPerLeg[1] + " " + powerOutPerLeg[2] + " to a machine.");
 				//transfering to a machine
 				cable = this;
-				mach.receiveEnergyAmount(legCount, powerOutPerLeg, ref cable);
+				mach.ReceiveEnergyAmount(legCount, powerOutPerLeg, ref cable);
 				break;
 			case 4:
 				//Debug.Log(powerOutPerLeg[0] + " " + powerOutPerLeg[1] + " to a breaker.");
 				//transfer to breakerBox
-				breaker.receivePowerFromSubstation(legCount, powerOutPerLeg);
+				breaker.ReceivePowerFromSubstation(legCount, powerOutPerLeg);
 				break;
 			case 5:
 				//Debug.Log(powerOutPerLeg[0] + " to a submachine.");
 				//transfering to a machine
 				cable = this;
-				subMach.receiveEnergyAmount(legCount, powerOutPerLeg, ref cable);
+				subMach.ReceiveEnergyAmount(legCount, powerOutPerLeg, ref cable);
 				break;
 		}
 
     }
 
-	public void setRequestedEnergy(float request)
+	public void SetRequestedEnergy(float request)
     {
 		requestedEnergy = request;
     }
-	public float getRequestedEnergy()
+	public float GetRequestedEnergy()
     {
 		return requestedEnergy;
     }
 
 	//type 1 = generator to router; 2 = router to substation; 3 = subst to machine; 4 = subst to breakear; 5 = breaker to machine
-	public Boolean checkConnection(int type)
+	public Boolean CheckConnection(int type)
     {
         switch (type)
         {

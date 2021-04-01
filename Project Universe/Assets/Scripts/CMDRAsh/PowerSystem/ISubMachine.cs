@@ -21,12 +21,13 @@ public class ISubMachine : MonoBehaviour
     private float bufferCurrent;
     [SerializeField]
     private string machineType;
-    [SerializeField]
-    private bool runMachine;
+    [SerializeField] private bool runMachine;
+    private bool isPowered;
     //private ICable cable;
     private List<IBreakerBox> breakers = new List<IBreakerBox>();
     //backend of power cables
     private LinkedList<ICable> iCableDLL = new LinkedList<ICable>();
+    private MeshRenderer renderer;
     
     private Light lightComponent;
     public float maxLightIntensity;
@@ -40,8 +41,17 @@ public class ISubMachine : MonoBehaviour
     {
         //RunMachine = true;
         bufferCurrent = 0.0f;
+        //get light mesh renderer
+        renderer = GetComponent<MeshRenderer>();
+        if(renderer == null)
+        {
+            renderer = GetComponentInChildren<MeshRenderer>();
+        }
     }
 
+    /// <summary>
+    /// We need to lighten this update method as much as possible!
+    /// </summary>
     void Update()
     {
         //reset requestedEnergy
@@ -54,20 +64,32 @@ public class ISubMachine : MonoBehaviour
         {
             //Get the deficit between the energybuffer(max) and the current buffer amount
             float deficit = energyBuffer - bufferCurrent;
-            if (deficit >= (drawToFill - requiredEnergy))
+            if (deficit >= drawToFill)
             {
                 //send energy request
                 requestedEnergy = drawToFill;
                 //Debug.Log(this.gameObject.name+" Request Helper");
-                requestHelper();
+                RequestHelper();
 
             }
-            else if (deficit < (drawToFill - requiredEnergy))
+            else if (deficit == requiredEnergy)
             {
                 //send energy request
+                requestedEnergy = requiredEnergy;
+                //Debug.Log(this.gameObject.name + " Request Helper");
+                RequestHelper();
+            }
+            else if(deficit < drawToFill && deficit > requiredEnergy)
+            {
                 requestedEnergy = deficit + requiredEnergy;
                 //Debug.Log(this.gameObject.name + " Request Helper");
-                requestHelper();
+                RequestHelper();
+            }
+            else
+            {
+                requestedEnergy = requiredEnergy;
+                //Debug.Log(this.gameObject.name + " Request Helper");
+                RequestHelper();
             }
         }
         else if (bufferCurrent >= energyBuffer)
@@ -76,42 +98,44 @@ public class ISubMachine : MonoBehaviour
             requestedEnergy = requiredEnergy;
             //requestedEnergy = 0.0f;
             //Debug.Log(this.gameObject.name + " Request Helper");
-            requestHelper();
+            RequestHelper();
         }
+        /*
         else
         {
             requestedEnergy = requiredEnergy;
             //Debug.Log(this.gameObject.name + " Request Helper");
-            requestHelper();
+            RequestHelper();
         }
+        */
         if (runMachine)
         {
             //run machines
             //Debug.Log("Running "+this.gameObject.name);
-            runLogic();
+            RunLogic();
         }
         else
         {
             //turn the machine off
-            runMachineSelector(machineType, 5);
+            RunMachineSelector(machineType, 5);
         }
     }
 
-    public bool getRunMachine()
+    public bool GetRunMachine()
     {
         return runMachine;
     }
 
-    public void requestHelper()
+    public void RequestHelper()
     {
         foreach (IBreakerBox box in breakers)
         {
             //Debug.Log("request/breakCount: "+requestedEnergy/breakers.Count);
-            box.requestPowerFromBreaker(requestedEnergy/breakers.Count, this);//this.GetComponent<ISubMachine>()
+            box.RequestPowerFromBreaker(requestedEnergy/breakers.Count, this);//this.GetComponent<ISubMachine>()
         }
     }
 
-    public void runLogic()
+    public void RunLogic()
     {
         ///////////////////////////////////////
         //Run logic
@@ -123,19 +147,20 @@ public class ISubMachine : MonoBehaviour
                 //Debug.Log("Legs received");
                 if (bufferCurrent > 0f)
                 {
+                    isPowered = true;
                     if (bufferCurrent - requiredEnergy < 0.0f)//not enough power to run at full
                     {
                         if (bufferCurrent >= requiredEnergy * 0.75f)//75% power
                         {
-                            runMachineSelector(machineType, 1); //any slower locks emiss to blinking yellow.
+                            RunMachineSelector(machineType, 1); //any slower locks emiss to blinking yellow.
                         }
                         else if (bufferCurrent >= requiredEnergy * 0.5f)//no lower than 50%
                         {
-                            runMachineSelector(machineType, 2);
+                            RunMachineSelector(machineType, 2);
                         }
                         else//lower than 50%
                         {
-                            runMachineSelector(machineType, 3);
+                            RunMachineSelector(machineType, 3);
                         }
                         //no matter what, the buffer is emptied
                         bufferCurrent = 0.0f;
@@ -143,20 +168,21 @@ public class ISubMachine : MonoBehaviour
                     else
                     {
                         //run full power
-                        runMachineSelector(machineType, 0);
+                        RunMachineSelector(machineType, 0);
                         bufferCurrent -= requiredEnergy;
                     }
                 }
                 else
                 {
+                    isPowered = false;
                     //'run' at 0 power
-                    runMachineSelector(machineType, 4);
+                    RunMachineSelector(machineType, 4);
                 }
             }
             else if (legsReceived < legsRequired && legsReceived >= 1)
             {
                 //Shut down machine due to leg requirement
-                runMachineSelector(machineType, 4);
+                RunMachineSelector(machineType, 4);
                 //electrical damage (if the buffer is not empty)
                 //if (bufferCurrent > 0)
                 //{
@@ -166,18 +192,18 @@ public class ISubMachine : MonoBehaviour
             else
             {
                 //Shut down machine due to leg requirement
-                runMachineSelector(machineType, 4);
+                RunMachineSelector(machineType, 4);
                 //NO electrical damage, because no legs attached.
             }
         }
         else
         {
-            runMachineSelector(machineType, 4);
+            RunMachineSelector(machineType, 4);
         }
 
     }
 
-    public int getLegRequirement()
+    public int GetLegRequirement()
     {
         return legsRequired;
     }
@@ -188,7 +214,12 @@ public class ISubMachine : MonoBehaviour
         set { runMachine = value; }
     }
 
-    public float requestedEnergyAmount() //ref int numSuppliers)
+    public bool PowerMachine
+    {
+        get { return isPowered; }
+    }
+
+    public float RequestedEnergyAmount() //ref int numSuppliers)
     {
         //numSuppliers += 1;
         if (iCableDLL.Count > 1)
@@ -202,18 +233,20 @@ public class ISubMachine : MonoBehaviour
         }
     }
 
-    public void receiveEnergyAmount(int legCount, float[] amounts, ref ICable cable)
+    public void ReceiveEnergyAmount(int legCount, float[] amounts, ref ICable cable)
     {
         //receive X legs with X amounts
         for (int i = 0; i < legCount; i++)
         {
             bufferCurrent += amounts[i];
         }
+        //Debug.Log(this + " submachine buffer at: " + bufferCurrent);
         legsReceived = legCount;
-        //Debug.Log("machine has "+legsReceived+" legs");
+        //Debug.Log("submachine has "+legsReceived+" legs");
         //bufferCurrent += amount;
         //round buffer current to 3 places to avoid having a psychotic meltdown
         bufferCurrent = (float)Math.Round(bufferCurrent, 3);
+        
         if (!iCableDLL.Contains(cable))
         {
             iCableDLL.AddLast(cable);
@@ -226,13 +259,13 @@ public class ISubMachine : MonoBehaviour
     }
 
     //called on cable disconnect (NYI)
-    public void removeCableConnection(ICable cable)
+    public void RemoveCableConnection(ICable cable)
     {
         iCableDLL.Remove(cable);
     }
 
     //called at the start of the breaker update block
-    public bool checkMachineState(ref IBreakerBox myBreaker)
+    public bool CheckMachineState(ref IBreakerBox myBreaker)
     {
         if (!breakers.Contains(myBreaker))
         {
@@ -242,86 +275,75 @@ public class ISubMachine : MonoBehaviour
         return true;
     }
 
-    public void runMachineSelector(string ImachineType, int powerLevel)
+    public void RunMachineSelector(string ImachineType, int powerLevel)
     {
         switch (ImachineType)
         {
             case "light_point":
-                this.runMachinePointLight(powerLevel);
+                this.RunMachinePointLight(powerLevel);
                 break;
             case "door":
-                this.runMachineDoor(powerLevel);
+                this.gameObject.GetComponent<DoorAnimator>().runSubMachine(powerLevel);
                 break;
         }
     }
 
-    public void runMachineDoor(int powerLevel)
-    {
-        var control = this.GetComponent<DoorAnimator>();
-        switch (powerLevel)
-        {
-            case 0:
-                control.setPoweredState(true);
-                control.setRunningState(true);
-                control.setAnimSpeed(1.0f);
-                break;
-            case 1:
-                control.setPoweredState(true);
-                control.setRunningState(true);
-                control.setAnimSpeed(0.75f);
-                break;
-            case 2:
-                control.setPoweredState(true);
-                control.setRunningState(true);
-                control.setAnimSpeed(0.5f);
-                break;
-            case 3:
-                control.setPoweredState(true);
-                control.setRunningState(true);
-                control.setAnimSpeed(0.15f);
-                break;
-            case 4:
-                control.setPoweredState(false);
-                control.setRunningState(true);
-                control.setAnimSpeed(0.0f);
-                break;
-            case 5:
-                control.setRunningState(false);
-                break;
-        }
-        //temp override for ship construction sake
-        control.setPoweredState(true);
-        control.setAnimSpeed(1.0f);
-    }
-
-    public void runMachinePointLight(int powerLevel)
+    public void RunMachinePointLight(int powerLevel)
     {
         lightComponent = this.gameObject.GetComponentInChildren<Light>();
         lightComponent.enabled = true;
+        MaterialPropertyBlock MPB = MaterialLibrary.GetMaterialPropertyBlockForCommonLights();
         switch (powerLevel)
         {
+            //base is 100.0f
+            //base is 5.0f
             case 0:
                 lightComponent.intensity = maxLightIntensity;
                 lightComponent.range = maxLightRange;
+                //set material emissive to default
+                //MaterialPropertyBlock to manage the emissive material values for all our common lights
+                renderer.GetPropertyBlock(MPB);
+                MPB.SetFloat("_EmissionIntensity",50f);//50f is current emissive level for lights
+                renderer.SetPropertyBlock(MPB);
                 break;
             case 1:
-                lightComponent.intensity = maxLightIntensity * 0.25f; //base is 500.0f
-                lightComponent.range = maxLightRange * 0.75f; //base is 15.0f
+                lightComponent.intensity = maxLightIntensity * 0.5f; //50
+                lightComponent.range = maxLightRange * 0.75f; //3.75
+                //set material emissive to 50%
+                renderer.GetPropertyBlock(MPB);
+                MPB.SetFloat("_EmissionIntensity", 50f);//50f is current emissive level for lights
+                renderer.SetPropertyBlock(MPB);
                 break;
             case 2:
-                lightComponent.intensity = maxLightIntensity * UnityEngine.Random.Range(0.03f, 0.04f);//0.4f; (.3 to .4)
-                lightComponent.range = maxLightRange * UnityEngine.Random.Range(.50f, .60f);//6.0f; (5.0 to 6.0)
+                lightComponent.intensity = maxLightIntensity * UnityEngine.Random.Range(0.35f, 0.25f);//35 - 25
+                lightComponent.range = maxLightRange * UnityEngine.Random.Range(0.5f, 0.6f);//6.0f; (2.5 to 3)
+                //set material emissive to 35%
+                renderer.GetPropertyBlock(MPB);
+                MPB.SetFloat("_EmissionIntensity", 50f);//50f is current emissive level for lights
+                renderer.SetPropertyBlock(MPB);
                 break;
             case 3:
-                lightComponent.intensity = maxLightIntensity * UnityEngine.Random.Range(0.005f, 0.015f);//0.1f; (.05 to .15)
-                lightComponent.range = maxLightRange * UnityEngine.Random.Range(.30f, .10f); //4.0f; (3.0 to 4.0f)
+                lightComponent.intensity = maxLightIntensity * UnityEngine.Random.Range(0.05f, 0.1f);//5 - 10
+                lightComponent.range = maxLightRange * UnityEngine.Random.Range(0.2f, 0.30f); //4.0f; (1 to 1.5)
+                //set material emissive to 10%
+                renderer.GetPropertyBlock(MPB);
+                MPB.SetFloat("_EmissionIntensity", 50f);//50f is current emissive level for lights
+                renderer.SetPropertyBlock(MPB);
                 break;
             case 4:
                 lightComponent.intensity = 0.0f;
                 lightComponent.range = 0.0f;
+                //set material emissive to 0%
+                renderer.GetPropertyBlock(MPB);
+                MPB.SetFloat("_EmissionIntensity", 50f);//50f is current emissive level for lights
+                renderer.SetPropertyBlock(MPB);
                 break;
             case 5:
                 lightComponent.enabled = false;
+                //set material emissive to 0%
+                renderer.GetPropertyBlock(MPB);
+                MPB.SetFloat("_EmissionIntensity", 50f);//50f is current emissive level for lights
+                renderer.SetPropertyBlock(MPB);
                 break;
         }
     }

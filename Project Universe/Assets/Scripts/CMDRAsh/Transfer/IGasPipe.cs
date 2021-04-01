@@ -312,6 +312,12 @@ public class IGasPipe : MonoBehaviour
             ///
             if (vent != null)
             {
+                //Play the vent airflow sound from the vent object
+                AudioSource ventAud = vent.GetComponentInChildren<AudioSource>();//GetComponent<AudioSource>();
+                if (!ventAud.isPlaying)
+                {
+                    ventAud.Play();
+                }
                 //Debug.Log("Vent?");
                 VolumeAtmosphereController roomVAC = ductVolume.GetComponent<VolumeAtmosphereController>();
                 float roomVolume = roomVAC.GetVolume();
@@ -327,7 +333,7 @@ public class IGasPipe : MonoBehaviour
                 {
                     //Debug.Log("Checking room gasses");
                     gasses = CheckGasses(globalPressure);//precautionary check
-                    if (gasses.Count > 1)/// THIS BLOCK UNTESTED! ///
+                    if (gasses.Count > 1)
                     {
                         float totalConc = 0.0f;
                         //calc total concentration
@@ -454,19 +460,17 @@ public class IGasPipe : MonoBehaviour
             if (neighbors[i].GetInstanceID() != neighborDuct.GetInstanceID())
             {
                 Debug.Log(gameObject + " is adding duct to neighbor");
-                Debug.Log("Current length: " + neighbors.Length);
+                //Debug.Log("Current length: " + neighbors.Length);
                 IGasPipe[] neighborTemp = new IGasPipe[neighbors.Length + 1];
                 neighbors.CopyTo(neighborTemp, 0);
                 neighborTemp[neighbors.Length] = neighborDuct;
                 neighbors = neighborTemp;
-                Debug.Log("New Length is: " + neighbors.Length);
+                //Debug.Log("New Length is: " + neighbors.Length);
             }
-            else
-            {
-                Debug.Log("DUPE!!");
-            }
+            //else
+            //{
+                //Debug.Log("DUPE!!");
+            //}
         }
-        
-        
     }
 }

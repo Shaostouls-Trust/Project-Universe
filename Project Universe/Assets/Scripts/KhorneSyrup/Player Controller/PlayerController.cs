@@ -97,6 +97,23 @@ namespace ProjectUniverseData.PlayerController
             PlayerControl();
             GuiUpdate();
         }
+
+        ///Temp location - Technically belongs in a GUI controller
+        ///Used with GUIs to free the cursor for GUI interaction
+        public void LockAndFreeCursor()
+        {
+            guiController.LockCursor();
+            cameraLocked = !cameraLocked;
+            Cursor.visible = true;
+        }
+        public void UnlockCursor()
+        {
+            guiController.LockCursor();
+            cameraLocked = !cameraLocked;
+            Cursor.visible = false;
+        }
+        /// 
+
         private void GuiUpdate()
         {
             if (Input.GetButtonDown(lockCursorInputName))
@@ -185,6 +202,7 @@ namespace ProjectUniverseData.PlayerController
             Prop.transform.localScale = Vector3.one;
             Prop = null;
         }
+
         //Control the camera during regular movement.
         private void CameraControl()
         {
@@ -197,13 +215,13 @@ namespace ProjectUniverseData.PlayerController
             if (lookClamp > 90.0f)
             {
                 lookClamp = 90.0f;
-                mouseY = 0.0f;
+                mouseY = 90.0f;//shouldn't this be 90.0f not 0.0f?
                 ClampLookRotationToValue(270.0f);
             }
             else if (lookClamp < -90.0f)
             {
                 lookClamp = -90.0f;
-                mouseY = 0.0f;
+                mouseY = -90.0f;//was 0.0f
                 ClampLookRotationToValue(90);
             }
 
@@ -309,7 +327,10 @@ namespace ProjectUniverseData.PlayerController
 
         private void FlashLight()
         {
-
+            ///
+            /// On Hold F and Mousewheel, allow flashlight OuterAngle to go from 10 to 120deg
+            /// Decrease range as the angle broadens
+            ///
             if (Input.GetButtonDown(flashLightInputName) && activeFL <= 0)
             {
                 flashLight.enabled = true;

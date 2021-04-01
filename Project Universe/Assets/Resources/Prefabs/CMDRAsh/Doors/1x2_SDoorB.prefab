@@ -281,7 +281,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 1
   m_IsActive: 1
 --- !u!4 &8768394324425705366
 Transform:
@@ -332,7 +332,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
+  m_ReceiveGI: 2
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -488,7 +488,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 1
   m_IsActive: 1
 --- !u!4 &2730072094018658478
 Transform:
@@ -539,7 +539,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
+  m_ReceiveGI: 2
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -639,6 +639,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 6c2be695f4aad604997cd058171fa85a, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 99fd2882cea4dc44fb6ec2827a99b72f,
+        type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: -2834767080355620966, guid: 99fd2882cea4dc44fb6ec2827a99b72f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -649,11 +654,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: 1x2_SDoorB_DoorRight
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 99fd2882cea4dc44fb6ec2827a99b72f,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2147586462574711553, guid: 99fd2882cea4dc44fb6ec2827a99b72f,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4813858684155554073, guid: 99fd2882cea4dc44fb6ec2827a99b72f,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 6c2be695f4aad604997cd058171fa85a, type: 2}
+    - target: {fileID: 4813858684155554073, guid: 99fd2882cea4dc44fb6ec2827a99b72f,
+        type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99fd2882cea4dc44fb6ec2827a99b72f, type: 3}
 --- !u!1 &2380817625747898392 stripped
@@ -741,6 +761,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 6c2be695f4aad604997cd058171fa85a, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 99fd2882cea4dc44fb6ec2827a99b72f,
+        type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: -2834767080355620966, guid: 99fd2882cea4dc44fb6ec2827a99b72f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -756,11 +781,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: 1x2_SDoorB_DoorLeft
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 99fd2882cea4dc44fb6ec2827a99b72f,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2147586462574711553, guid: 99fd2882cea4dc44fb6ec2827a99b72f,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4813858684155554073, guid: 99fd2882cea4dc44fb6ec2827a99b72f,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 6c2be695f4aad604997cd058171fa85a, type: 2}
+    - target: {fileID: 4813858684155554073, guid: 99fd2882cea4dc44fb6ec2827a99b72f,
+        type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99fd2882cea4dc44fb6ec2827a99b72f, type: 3}
 --- !u!4 &2946573573383247163 stripped
@@ -843,10 +883,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -1609253586135502806, guid: 518437b6c6a078a428eba4cf88c97852,
+        type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 518437b6c6a078a428eba4cf88c97852,
         type: 3}
       propertyPath: m_Name
       value: DoorOverhead_LCDDisplay1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884020794387602405, guid: 518437b6c6a078a428eba4cf88c97852,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2706995077054888140, guid: 518437b6c6a078a428eba4cf88c97852,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5598611370015236625, guid: 518437b6c6a078a428eba4cf88c97852,
+        type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 518437b6c6a078a428eba4cf88c97852, type: 3}
@@ -960,11 +1020,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: ControlPanel_Small_Body
       objectReference: {fileID: 0}
+    - target: {fileID: 5067964611035060152, guid: 5f26cf043dde2bf42ad7925e99b73fba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7896994626892694162, guid: 5f26cf043dde2bf42ad7925e99b73fba,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: d74eadb19a34abc4b954a6c9553e3af0, type: 2}
+    - target: {fileID: 7896994626892694162, guid: 5f26cf043dde2bf42ad7925e99b73fba,
+        type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f26cf043dde2bf42ad7925e99b73fba, type: 3}
 --- !u!4 &49140973565896172 stripped

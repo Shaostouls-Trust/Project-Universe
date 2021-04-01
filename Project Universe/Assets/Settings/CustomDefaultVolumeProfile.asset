@@ -141,11 +141,11 @@ MonoBehaviour:
     min: 0
   farFocusStart:
     m_OverrideState: 1
-    m_Value: 500
+    m_Value: 800
     min: 0
   farFocusEnd:
     m_OverrideState: 1
-    m_Value: 550
+    m_Value: 5000
     min: 0
   m_NearSampleCount:
     m_OverrideState: 0
@@ -260,7 +260,7 @@ MonoBehaviour:
     m_Value: -1
   limitMax:
     m_OverrideState: 1
-    m_Value: 4
+    m_Value: 0
   curveMap:
     m_OverrideState: 0
     m_Value:
@@ -673,7 +673,7 @@ MonoBehaviour:
   m_Name: AmbientOcclusion
   m_EditorClassIdentifier: 
   active: 1
-  m_AdvancedMode: 0
+  m_AdvancedMode: 1
   quality:
     m_OverrideState: 1
     m_Value: 1
@@ -696,7 +696,7 @@ MonoBehaviour:
     min: 0.25
     max: 5
   temporalAccumulation:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 1
   ghostingReduction:
     m_OverrideState: 1

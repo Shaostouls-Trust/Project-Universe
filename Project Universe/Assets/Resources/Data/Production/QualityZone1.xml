@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ZoneDefinitions>
+	<RSZone>1</RSZone>
+	<Zone>
+		<QualityZone>0</QualityZone><!--PoorII-->
+		<Inclusions>
+			<Materials>
+				<STR_ID Material_Type="Material_Carbon" />
+				<Ratio Ratio="10" />
+			</Materials>
+			<Materials>
+				<STR_ID Material_Type="Material_Sulfur" />
+				<Ratio Ratio="3.5" />
+			</Materials>
+			<Materials>
+				<STR_ID Material_Type="Material_Phosphorus" />
+				<Ratio Ratio="3.5" />
+			</Materials>
+			<Materials>
+				<STR_ID Material_Type="Material_Silicon" />
+				<Ratio Ratio="1" />
+			</Materials>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Manganese" />
+				<Ratio Ratio="5" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Chromium" />
+				<Ratio Ratio="5" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Molybdenum" />
+				<Ratio Ratio="5" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Nickel" />
+				<Ratio Ratio="6" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Aluminum" />
+				<Ratio Ratio="6" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Vanadium" />
+				<Ratio Ratio="5" />
+			</Ore>
+		</Inclusions>
+	</Zone>
+	<Zone>
+		<QualityZone>1</QualityZone><!--PoorI-->
+		<Inclusions>
+			<Materials>
+				<STR_ID Material_Type="Material_Carbon" />
+				<Ratio Ratio="7.5" />
+			</Materials>
+			<Materials>
+				<STR_ID Material_Type="Material_Sulfur" />
+				<Ratio Ratio="2.5" />
+			</Materials>
+			<Materials>
+				<STR_ID Material_Type="Material_Phosphorus" />
+				<Ratio Ratio="2.5" />
+			</Materials>
+			<Materials>
+				<STR_ID Material_Type="Material_Silicon" />
+				<Ratio Ratio="0.75" />
+			</Materials>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Manganese" />
+				<Ratio Ratio="4" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Chromium" />
+				<Ratio Ratio="4.25" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Molybdenum" />
+				<Ratio Ratio="4" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Nickel" />
+				<Ratio Ratio="5" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Aluminum" />
+				<Ratio Ratio="5" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Vanadium" />
+				<Ratio Ratio="4.5" />
+			</Ore>
+		</Inclusions>
+	</Zone>
+	<Zone>
+		<QualityZone>2</QualityZone><!--NormalIII-->
+		<Inclusions>
+			<Materials>
+				<STR_ID Material_Type="Material_Carbon" />
+				<Ratio Ratio="5" />
+			</Materials>
+			<Materials>
+				<STR_ID Material_Type="Material_Sulfur" />
+				<Ratio Ratio="2" />
+			</Materials>
+			<Materials>
+				<STR_ID Material_Type="Material_Phosphorus" />
+				<Ratio Ratio="2" />
+			</Materials>
+			<Materials>
+				<STR_ID Material_Type="Material_Silicon" />
+				<Ratio Ratio="0.5" />
+			</Materials>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Manganese" />
+				<Ratio Ratio="3" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Chromium" />
+				<Ratio Ratio="3.5" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Molybdenum" />
+				<Ratio Ratio="3" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Nickel" />
+				<Ratio Ratio="4" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Aluminum" />
+				<Ratio Ratio="4" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Vanadium" />
+				<Ratio Ratio="3" />
+			</Ore>
+		</Inclusions>
+	</Zone>
+	<Zone>
+		<QualityZone>3</QualityZone><!--NormalII-->
+		<Inclusions>
+			<Materials>
+				<STR_ID Material_Type="Material_Carbon" />
+				<Ratio Ratio="3" />
+			</Materials>
+			<Materials>
+				<STR_ID Material_Type="Material_Sulfur" />
+				<Ratio Ratio="1.5" />
+			</Materials>
+			<Materials>
+				<STR_ID Material_Type="Material_Phosphorus" />
+				<Ratio Ratio="1.5" />
+			</Materials>
+			<Materials>
+				<STR_ID Material_Type="Material_Silicon" />
+				<Ratio Ratio="0.25" />
+			</Materials>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Manganese" />
+				<Ratio Ratio="2" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Chromium" />
+				<Ratio Ratio="2.25" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Molybdenum" />
+				<Ratio Ratio="2" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Nickel" />
+				<Ratio Ratio="3" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Aluminum" />
+				<Ratio Ratio="3" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Vanadium" />
+				<Ratio Ratio="1.5" />
+			</Ore>
+		</Inclusions>
+	</Zone>
+	<Zone>
+		<QualityZone>4</QualityZone><!--NormalI-->
+		<Inclusions>
+			<Materials>
+				<STR_ID Material_Type="Material_Carbon" />
+				<Ratio Ratio="2" />
+			</Materials>
+			<Materials>
+				<STR_ID Material_Type="Material_Sulfur" />
+				<Ratio Ratio="0.75" />
+			</Materials>
+			<Materials>
+				<STR_ID Material_Type="Material_Phosphorus" />
+				<Ratio Ratio="0.75" />
+			</Materials>
+			<Materials>
+				<STR_ID Material_Type="Material_Silicon" />
+				<Ratio Ratio="0.125" />
+			</Materials>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Manganese" />
+				<Ratio Ratio="1" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Chromium" />
+				<Ratio Ratio="1.25" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Molybdenum" />
+				<Ratio Ratio="1" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Nickel" />
+				<Ratio Ratio="1.0" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Aluminum" />
+				<Ratio Ratio="1.375" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Vanadium" />
+				<Ratio Ratio="0.75" />
+			</Ore>
+		</Inclusions>
+	</Zone>
+	<Zone>
+		<QualityZone>5</QualityZone><!--HighII-->
+		<Inclusions>
+			<Materials>
+				<STR_ID Material_Type="Material_Carbon" />
+				<Ratio Ratio="1" />
+			</Materials>
+			<Materials>
+				<STR_ID Material_Type="Material_Sulfur" />
+				<Ratio Ratio="0.25" />
+			</Materials>
+			<Materials>
+				<STR_ID Material_Type="Material_Phosphorus" />
+				<Ratio Ratio="0.375" />
+			</Materials>
+			<Materials>
+				<STR_ID Material_Type="Material_Silicon" />
+				<Ratio Ratio="0.0" />
+			</Materials>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Manganese" />
+				<Ratio Ratio="0.75" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Chromium" />
+				<Ratio Ratio="0.75" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Molybdenum" />
+				<Ratio Ratio="0.5" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Nickel" />
+				<Ratio Ratio="0.5" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Aluminum" />
+				<Ratio Ratio="0.5" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Vanadium" />
+				<Ratio Ratio="0.375" />
+			</Ore>
+		</Inclusions>
+	</Zone>
+	<Zone>
+		<QualityZone>6</QualityZone><!--HighI-->
+		<Inclusions>
+			<Materials>
+				<STR_ID Material_Type="Material_Carbon" />
+				<Ratio Ratio="0.25" />
+			</Materials>
+			<Materials>
+				<STR_ID Material_Type="Material_Sulfur" />
+				<Ratio Ratio="0.125" />
+			</Materials>
+			<Materials>
+				<STR_ID Material_Type="Material_Phosphorus" />
+				<Ratio Ratio="0.125" />
+			</Materials>
+			<Materials>
+				<STR_ID Material_Type="Material_Silicon" />
+				<Ratio Ratio="0.0" />
+			</Materials>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Manganese" />
+				<Ratio Ratio="0.5" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Chromium" />
+				<Ratio Ratio="0.5" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Molybdenum" />
+				<Ratio Ratio="0.25" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Nickel" />
+				<Ratio Ratio="0.25" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Aluminum" />
+				<Ratio Ratio="0.25" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Vanadium" />
+				<Ratio Ratio="0.25" />
+			</Ore>
+		</Inclusions>
+	</Zone>
+	<Zone>
+		<QualityZone>7</QualityZone><!--VeryHigh-->
+		<Inclusions>
+			<Materials>
+				<STR_ID Material_Type="Material_Carbon" />
+				<Ratio Ratio="0.05" />
+			</Materials>
+			<Materials>
+				<STR_ID Material_Type="Material_Sulfur" />
+				<Ratio Ratio="0.0125" />
+			</Materials>
+			<Materials>
+				<STR_ID Material_Type="Material_Phosphorus" />
+				<Ratio Ratio="0.0125" />
+			</Materials>
+			<Materials>
+				<STR_ID Material_Type="Material_Silicon" />
+				<Ratio Ratio="0.0" />
+			</Materials>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Manganese" />
+				<Ratio Ratio="0.25" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Chromium" />
+				<Ratio Ratio="0.25" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Molybdenum" />
+				<Ratio Ratio="0.05" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Nickel" />
+				<Ratio Ratio="0.125" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Aluminum" />
+				<Ratio Ratio="0.125" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Vanadium" />
+				<Ratio Ratio="0.125" />
+			</Ore>
+		</Inclusions>
+	</Zone>
+</ZoneDefinitions>
