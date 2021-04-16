@@ -2595,7 +2595,7 @@ namespace AmplifyShaderEditor
 			}
 		}
 
-		public string GenerateInputInVertex( ref MasterNodeDataCollector dataCollector, int inputPortUniqueId, string varName, bool createInterpolator , bool noInterpolationFlag = false )
+		public string GenerateInputInVertex( ref MasterNodeDataCollector dataCollector , int inputPortUniqueId , string varName , bool createInterpolator , bool noInterpolationFlag = false , bool sampleFlag = false )
 		{
 			InputPort inputPort = GetInputPortByUniqueId( inputPortUniqueId );
 			if( !dataCollector.IsFragmentCategory)
@@ -2626,7 +2626,7 @@ namespace AmplifyShaderEditor
 
 				if( createInterpolator )
 				{
-					dataCollector.TemplateDataCollectorInstance.RegisterCustomInterpolatedData( varName, inputPort.DataType, CurrentPrecisionType, data,true,MasterNodePortCategory.Fragment,noInterpolationFlag );
+					dataCollector.TemplateDataCollectorInstance.RegisterCustomInterpolatedData( varName, inputPort.DataType, CurrentPrecisionType, data,true,MasterNodePortCategory.Fragment,noInterpolationFlag,sampleFlag );
 				}
 				else
 				{

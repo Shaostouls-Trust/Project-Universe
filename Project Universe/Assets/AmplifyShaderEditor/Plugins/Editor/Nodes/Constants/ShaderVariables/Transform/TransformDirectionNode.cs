@@ -28,12 +28,15 @@ namespace AmplifyShaderEditor
 		private bool m_normalize = false;
 
 		[SerializeField]
+		private bool m_safeNormalize = false;
+
+		[SerializeField]
 		private InverseTangentType m_inverseTangentType = InverseTangentType.Fast;
 
 		private string InverseTBNStr = "Inverse TBN";
 
 		private const string NormalizeOptionStr = "Normalize";
-		private const string NormalizeFunc = "normalize( {0} )";
+		private const string SafeNormalizeOptionStr = "Safe";
 
 		private const string AseObjectToWorldDirVarName = "objToWorldDir";
 		private const string AseObjectToWorldDirFormat = "mul( unity_ObjectToWorld, float4( {0}, 0 ) ).xyz";
@@ -155,6 +158,14 @@ namespace AmplifyShaderEditor
 			if( EditorGUI.EndChangeCheck() )
 			{
 				UpdateSubtitle();
+			}
+
+			if( m_normalize )
+			{
+				EditorGUI.indentLevel++;
+				m_safeNormalize = EditorGUILayoutToggle( SafeNormalizeOptionStr , m_safeNormalize );
+				EditorGUILayout.HelpBox( Constants.SafeNormalizeInfoStr , MessageType.Info );
+				EditorGUI.indentLevel--;
 			}
 		}
 
@@ -521,7 +532,9 @@ namespace AmplifyShaderEditor
 			}
 
 			if( m_normalize )
-				result = string.Format( NormalizeFunc, result );
+			{
+				result = GeneratorUtils.NormalizeValue( ref dataCollector , m_safeNormalize , m_inputPorts[ 0 ].DataType , result );
+			}
 
 			RegisterLocalVariable( 0, result, ref dataCollector, varName );
 			return GetOutputVectorItem( 0, outputId, m_outputPorts[ 0 ].LocalValue( dataCollector.PortCategory ) );
@@ -545,6 +558,11 @@ namespace AmplifyShaderEditor
 			{
 				m_inverseTangentType = (InverseTangentType)Enum.Parse( typeof( InverseTangentType ), GetCurrentParam( ref nodeParams ) );
 			}
+			if( UIUtils.CurrentShaderVersion() > 18814 )
+			{
+				m_safeNormalize = Convert.ToBoolean( GetCurrentParam( ref nodeParams ) );
+			}
+
 			UpdateSubtitle();
 		}
 
@@ -555,6 +573,7 @@ namespace AmplifyShaderEditor
 			IOUtils.AddFieldValueToString( ref nodeInfo, m_to );
 			IOUtils.AddFieldValueToString( ref nodeInfo, m_normalize );
 			IOUtils.AddFieldValueToString( ref nodeInfo, m_inverseTangentType );
+			IOUtils.AddFieldValueToString( ref nodeInfo , m_safeNormalize );
 		}
 	}
 }

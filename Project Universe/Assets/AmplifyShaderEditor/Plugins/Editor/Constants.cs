@@ -74,6 +74,19 @@ namespace AmplifyShaderEditor
 			"#define ASE_TEXTURE2D_ARRAY_PARAMS(textureName) textureName, sampler##textureName\n"
 		};*/
 
+		public readonly static List<string> UnityNativeInspectors = new List<string>
+		{
+			"Rendering.HighDefinition.LightingShaderGraphGUI",
+			"Rendering.HighDefinition.HDUnlitGUI",
+			"UnityEditor.Rendering.HighDefinition.HDLitGUI",
+			"UnityEditor.ShaderGraph.PBRMasterGUI",
+			"UnityEditor.Rendering.HighDefinition.DecalGUI",
+			"UnityEditor.Rendering.HighDefinition.FabricGUI",
+			"UnityEditor.Experimental.Rendering.HDPipeline.HDLitGUI",
+			"Rendering.HighDefinition.DecalGUI",
+			"Rendering.HighDefinition.LitShaderGraphGUI",
+		};
+
 		public readonly static Dictionary<string, string> CustomInspectorHD7To10 = new Dictionary<string, string>
 		{
 			{ "UnityEditor.Rendering.HighDefinition.DecalGUI","Rendering.HighDefinition.DecalGUI"},
@@ -161,6 +174,8 @@ namespace AmplifyShaderEditor
 			{ TextureType.Texture2DArray,WirePortDataType.SAMPLER2DARRAY},
 			{ TextureType.ProceduralTexture,WirePortDataType.SAMPLER2D},
 		};
+
+		public readonly static string SamplingMacrosDirective = "#define ASE_USING_SAMPLING_MACROS 1";
 
 		// STANDARD
 		public readonly static string[] CustomASEStandarSamplingMacrosHelper =
@@ -329,6 +344,7 @@ namespace AmplifyShaderEditor
 		public static float NodeButtonDeltaX = 5;
 		public static float NodeButtonDeltaY = 11;
 
+		public readonly static string SafeNormalizeInfoStr = "With Safe Normalize division by 0 is prevented over the normalize operation at the expense of additional instructions on shader.";
 		public readonly static string ReservedPropertyNameStr = "Property name '{0}' is reserved and cannot be used";
 		public readonly static string NumericPropertyNameStr = "Property name '{0}' is numeric thus cannot be used";
 		public readonly static string DeprecatedMessageStr = "Node '{0}' is deprecated. Use node '{1}' instead.";

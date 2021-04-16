@@ -346,8 +346,13 @@ namespace AmplifyShaderEditor
 			}
 			else
 			{
+#if UNITY_2020_2_OR_NEWER
+				lineOne = "\n[DiffusionProfile]" + m_propertyName + "(\"" + m_propertyInspectorName + "\", Float) = " + RoundTrip.ToRoundTrip( HDShadowUtilsEx.Asfloat( DefaultHash ) );
+				lineTwo = PropertyAttributes + "[HideInInspector]" + m_propertyName + "_Asset(\"" + m_propertyInspectorName + "\", Vector) = ( " + assetVec + " )";
+#else
 				lineOne = PropertyAttributes + "[ASEDiffusionProfile(" + m_propertyName + ")]" + m_propertyName + "_asset(\"" + m_propertyInspectorName + "\", Vector) = ( " + assetVec + " )";
 				lineTwo = "\n[HideInInspector]" + m_propertyName + "(\"" + m_propertyInspectorName + "\", Float) = " + RoundTrip.ToRoundTrip( HDShadowUtilsEx.Asfloat( DefaultHash ) );
+#endif
 			}
 
 			return lineOne + lineTwo;

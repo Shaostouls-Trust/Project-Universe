@@ -22,11 +22,11 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: LibMat_SciFiPanel2_Mat
   m_Shader: {fileID: 4800000, guid: 313c1dc82c58d6b489675cf25cf4f3cd, type: 3}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: _DISABLE_SSR_TRANSPARENT
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2000
+  m_CustomRenderQueue: 2225
   stringTagMap:
     MotionVector: User
   disabledShaderPasses:
@@ -47,6 +47,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Albedo:
+        m_Texture: {fileID: 2800000, guid: 216b501b48c557f47be57f8e33f9d206, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Albedo1:
         m_Texture: {fileID: 2800000, guid: 216b501b48c557f47be57f8e33f9d206, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -79,6 +83,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Depth:
+        m_Texture: {fileID: 2800000, guid: b1c6080c6223d2c42af76a1818d36691, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Depth1:
         m_Texture: {fileID: 2800000, guid: b1c6080c6223d2c42af76a1818d36691, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -118,6 +126,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 473862bb678d681488ca6137a01f87d3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Lighting1:
+        m_Texture: {fileID: 2800000, guid: 473862bb678d681488ca6137a01f87d3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MS:
         m_Texture: {fileID: 2800000, guid: 288be56b17ec2e94b84dcccd65fa8131, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -131,6 +143,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalSmoothness:
+        m_Texture: {fileID: 2800000, guid: 96c0175f854b21b4db3d9b040805e89e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetalSmoothness1:
         m_Texture: {fileID: 2800000, guid: 96c0175f854b21b4db3d9b040805e89e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -174,6 +190,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Transparency1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _texcoord:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -183,6 +203,8 @@ Material:
     - Vector1_8C898A51: 0.0025
     - Vector1_A4078F02: 0
     - Vector1_BDA4AE9A: 1
+    - _AOLDodge: 0
+    - _AOLDodge1: 0
     - _AORemapMax: 1
     - _AORemapMin: 0
     - _ATDistance: 1
@@ -228,7 +250,8 @@ Material:
     - _DoubleSidedNormalMode: 1
     - _DstBlend: 0
     - _EI: 10
-    - _EmissionIntensity: 50
+    - _EmissionIntensity: 0
+    - _EmissionIntensity1: 1
     - _EmissiveColorMode: 1
     - _EmissiveExposureWeight: 1
     - _EmissiveIntensity: 1
@@ -238,6 +261,7 @@ Material:
     - _EnableGeometricSpecularAA: 0
     - _EnergyConservingSpecularColor: 1
     - _ExposureWeight: 1
+    - _ExposureWeight1: 1
     - _GlobalTriplanarFalloff: 0.5
     - _HeightAmplitude: 0.02
     - _HeightCenter: 0.5
@@ -248,6 +272,7 @@ Material:
     - _HeightMin: -1
     - _HeightOffset: 0
     - _HeightPoMAmplitude: 2
+    - _HeightScale1: 0.005
     - _HeightTessAmplitude: 2
     - _HeightTessCenter: 0.5
     - _HeightUpshift: 0
@@ -270,15 +295,21 @@ Material:
     - _ParallaxHeightScale: 0.01
     - _RGBHeightGrey: 191
     - _ReceivesSSR: 1
+    - _ReceivesSSRTransparent: 0
     - _RefractionModel: 0
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
     - _SAASSV: 0.5
     - _SAAThreshold: 10
+    - _SAAThreshold1: 0
+    - _SAAVariance: 1
+    - _SAAVariance1: 1
     - _SSRefractionProjectionModel: 0
     - _Smoothness: 0.5
     - _SmoothnessContrast: 1
+    - _SmoothnessContrast1: 1
     - _SmoothnessLDodge: 0
+    - _SmoothnessLDodge1: 0
     - _SmoothnessRemapMax: 1
     - _SmoothnessRemapMin: 0
     - _SpecularAAScreenSpaceVariance: 0.1

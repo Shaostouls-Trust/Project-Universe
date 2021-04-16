@@ -427,6 +427,7 @@ namespace AmplifyShaderEditor
 			if( EditorGUI.EndChangeCheck() )
 			{
 				m_isDirty = true;
+				CustomEdited = true;
 			}
 		}
 
@@ -584,6 +585,7 @@ namespace AmplifyShaderEditor
 
 		public override void ReadFromString( ref uint index, ref string[] nodeParams )
 		{
+			base.ReadFromString( ref index, ref nodeParams );
 			ReadBlendModeFromString( ref index, ref nodeParams );
 			ReadBlendOpFromString( ref index, ref nodeParams );
 			ReadAlphaToMaskFromString( ref index, ref nodeParams );
@@ -591,6 +593,7 @@ namespace AmplifyShaderEditor
 
 		public override void WriteToString( ref string nodeInfo )
 		{
+			base.WriteToString( ref nodeInfo );
 			WriteBlendModeToString( ref nodeInfo );
 			WriteBlendOpToString( ref nodeInfo );
 		}

@@ -294,7 +294,13 @@ namespace AmplifyShaderEditor
 						break;
 						case TransformSpaceTo.World:
 						{
-							result = string.Format( AseViewToWorldPosFormat, result );
+							result = string.Format( AseViewToWorldPosFormat, result ); 
+							if( dataCollector.IsTemplate && 
+								dataCollector.TemplateDataCollectorInstance.CurrentSRPType == TemplateSRPType.HD &&
+								m_absoluteWorldPos )
+							{
+								result = string.Format( ASEHDAbsoluteWordPos , result );
+							}
 							varName = AseViewToWorldPosVarName + OutputId;
 						}
 						break;

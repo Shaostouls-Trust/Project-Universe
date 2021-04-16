@@ -553,6 +553,14 @@ namespace AmplifyShaderEditor
 		public static string HDPBRGUID = "bb308bce79762c34e823049efce65141";
 		public static string HDUnlitGUID = "dfe2f27ac20b08c469b2f95c236be0c3";
 
+		public static Dictionary<string, string> DeprecatedTemplates = new Dictionary<string, string>()
+		{
+			{ HDLitGUID, HDNewLitGUID},
+			{ HDUnlitGUID,HDNewUnlitGUID},
+			{ HDPBRGUID,HDNewLitGUID},
+			{ HDNewPBRGUID,HDNewLitGUID}
+		};
+
 		public static Dictionary<string, string> OfficialTemplates = new Dictionary<string, string>()
 		{
 			{ "0770190933193b94aaa3065e307002fa","Legacy/Unlit"},
@@ -909,6 +917,18 @@ namespace AmplifyShaderEditor
 				m_optionsInitialSetup.Add( optionId, value );
 			}
 			return m_optionsInitialSetup[ optionId ];
+		}
+
+		public bool CheckIfDeprecated( string guid , out string newGUID )
+		{
+			if( DeprecatedTemplates.ContainsKey( guid ) )
+			{
+				UIUtils.ShowMessage( "Shader using deprecated template which no longer exists on ASE. Pointing to new correct one, options and connections to master node were reset." );
+				newGUID =  DeprecatedTemplates[ guid ];
+				return true;
+			}
+			newGUID = string.Empty;
+			return false;
 		}
 
 		public int TemplateCount { get { return m_sortedTemplates.Count; } }

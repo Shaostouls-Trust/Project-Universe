@@ -9,11 +9,11 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Overhead_FillerSlantCornerA_Mat
   m_Shader: {fileID: 4800000, guid: 313c1dc82c58d6b489675cf25cf4f3cd, type: 3}
-  m_ShaderKeywords: _ADD_PRECOMPUTED_VELOCITY
+  m_ShaderKeywords: _DISABLE_SSR_TRANSPARENT
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2225
   stringTagMap:
     MotionVector: User
   disabledShaderPasses:
@@ -21,6 +21,7 @@ Material:
   - TransparentBackface
   - TransparentDepthPrepass
   - TransparentDepthPostpass
+  - MOTIONVECTORS
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -28,7 +29,15 @@ Material:
         m_Texture: {fileID: 2800000, guid: eeafff8c081ca3a45b6e20d287235f98, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Albedo1:
+        m_Texture: {fileID: 2800000, guid: eeafff8c081ca3a45b6e20d287235f98, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Depth:
+        m_Texture: {fileID: 2800000, guid: 2f65ba37cf1fef14aa3f13cff9393f62, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Depth1:
         m_Texture: {fileID: 2800000, guid: 2f65ba37cf1fef14aa3f13cff9393f62, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -36,11 +45,23 @@ Material:
         m_Texture: {fileID: 2800000, guid: 7c165c6317314024da04464a43891ab5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Lighting1:
+        m_Texture: {fileID: 2800000, guid: 7c165c6317314024da04464a43891ab5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MetalSmoothness:
         m_Texture: {fileID: 2800000, guid: d086d42073534c245b4f6a5390dc1656, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _MetalSmoothness1:
+        m_Texture: {fileID: 2800000, guid: d086d42073534c245b4f6a5390dc1656, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Transparency:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Transparency1:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -49,7 +70,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _AddPrecomputedVelocity: 1
+    - _AOLDodge1: 0
+    - _AddPrecomputedVelocity: 0
     - _AlphaCutoff: 0.5
     - _AlphaCutoffEnable: 0
     - _AlphaDstBlend: 0
@@ -61,20 +83,28 @@ Material:
     - _DoubleSidedNormalMode: 2
     - _DstBlend: 0
     - _EmissionIntensity: 50
+    - _EmissionIntensity1: 50
     - _EnableFogOnTransparent: 1
     - _ExposureWeight: 1
+    - _ExposureWeight1: 1
     - _GlobalTriplanarFalloff: 0.5
     - _HeightDownshift: -0.01
+    - _HeightScale1: 0.005
     - _HeightUpshift: 0.01
     - _MetalLDodge: 0
     - _MetalnessContrast: 1
     - _NormalScale: 1
     - _RGBHeightGrey: 191
     - _ReceivesSSR: 1
+    - _ReceivesSSRTransparent: 0
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
+    - _SAAThreshold1: 0
+    - _SAAVariance1: 1
     - _SmoothnessContrast: 1
+    - _SmoothnessContrast1: 1
     - _SmoothnessLDodge: 0
+    - _SmoothnessLDodge1: 0
     - _SrcBlend: 1
     - _StencilRef: 0
     - _StencilRefDepth: 8
@@ -86,6 +116,7 @@ Material:
     - _StencilWriteMaskDistortionVec: 4
     - _StencilWriteMaskGBuffer: 14
     - _StencilWriteMaskMV: 40
+    - _SupportDecals: 1
     - _SurfaceType: 0
     - _TransparentBackfaceEnable: 0
     - _TransparentCullMode: 2

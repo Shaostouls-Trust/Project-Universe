@@ -62,7 +62,12 @@ namespace AmplifyShaderEditor
 																	"{0}.y *= length( GetObjectToWorldMatrix()._m01_m11_m21 )",
 																	"{0}.z *= length( GetObjectToWorldMatrix()._m02_m12_m22 )",
 																	"{0} = mul( {0}, rotationCamMatrix )",
-																	"{0}.xyz += GetObjectToWorldMatrix()._m03_m13_m23",
+																	//Had to comment this one out in HDRP since it was moving the vertices to incorrect locations
+																	// Over HDRP the correct results are achievied without having to do this operation
+																	//This is because the vertex position variable is a float3 and an implicit cast is done to float4
+																	//with w set to 0, this makes the multiplication below only affects rotation and not translation
+																	//thus no adding the world translation is needed to counter the GetObjectToWorldMatrix() operation
+																	"//{0}.xyz += GetObjectToWorldMatrix()._m03_m13_m23",
 																	"//Need to nullify rotation inserted by generated surface shader",
 																	"{0} = mul( GetWorldToObjectMatrix(), {0} )"};
 
@@ -99,6 +104,8 @@ namespace AmplifyShaderEditor
 				FillDataCollector( ref dataCollector, m_billboardType, m_rotationIndependent, "v.vertex", "v.normal", false );
 			}
 		}
+
+
 		// This should be called after the Vertex Offset and Vertex Normal ports are analised
 		public static void FillDataCollector( ref MasterNodeDataCollector dataCollector, BillboardType billboardType, bool rotationIndependent, string vertexPosValue, string vertexNormalValue, bool vertexIsFloat3 )
 		{

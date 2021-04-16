@@ -23,7 +23,7 @@ public class RemapSlidersFull : MaterialPropertyDrawer
 			EditorGUIUtility.fieldWidth = Mathf.Ceil( 0.55f * total ) + 30;
 		}
 
-		EditorGUILayout.MinMaxSlider( label, ref value.x, ref value.y, value.z, value.w );
+		EditorGUI.MinMaxSlider( position, label, ref value.x, ref value.y, value.z, value.w );
 
 		EditorGUIUtility.labelWidth = cacheLabel;
 		EditorGUIUtility.fieldWidth = cacheField;

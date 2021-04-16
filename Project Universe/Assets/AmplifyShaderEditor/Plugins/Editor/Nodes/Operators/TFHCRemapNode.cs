@@ -19,9 +19,19 @@ namespace AmplifyShaderEditor
 			m_inputPorts[ 1 ].Name = "Min Old";
 			AddInputPort( WirePortDataType.FLOAT, false, "Max Old" );
 			m_inputPorts[ 2 ].FloatInternalData = 1;
+			m_inputPorts[ 2 ].Vector2InternalData = Vector2.one;
+			m_inputPorts[ 2 ].Vector3InternalData = Vector3.one;
+			m_inputPorts[ 2 ].Vector4InternalData = Vector4.one;
+			m_inputPorts[ 2 ].ColorInternalData = Color.white;
+
 			AddInputPort( WirePortDataType.FLOAT, false, "Min New" );
 			AddInputPort( WirePortDataType.FLOAT, false, "Max New" );
 			m_inputPorts[ 4 ].FloatInternalData = 1;
+			m_inputPorts[ 4 ].Vector2InternalData = Vector2.one;
+			m_inputPorts[ 4 ].Vector3InternalData = Vector3.one;
+			m_inputPorts[ 4 ].Vector4InternalData = Vector4.one;
+			m_inputPorts[ 4 ].ColorInternalData = Color.white;
+
 			m_textLabelWidth = 100;
 			m_useInternalPortData = true;
 			m_previewShaderGUID = "72dd1cbea889fa047b929d5191e360c0";

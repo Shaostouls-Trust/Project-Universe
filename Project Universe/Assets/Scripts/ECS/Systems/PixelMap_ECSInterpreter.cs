@@ -1,15 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-//using System.Drawing.Common;
 using System.IO;
 using System.Runtime.InteropServices;
 using UnityEngine;
-using Unity.Transforms;
 using Unity.Entities;
 using Unity.Collections;
-using Unity.Mathematics;
 
 /// <summary>
 /// This class is an attepted rewrite of the pixelmap interpreter using ECS
@@ -55,13 +51,14 @@ public class PixelMap_ECSInterpreter : MonoBehaviour//, IConvertGameObjectToEnti
 		string path = SolvePath(bitmapName, ".png", PixelMapRootPath);// \\Assets\\Resources\\Maps\\PixelMaps
 		try
 		{
-			levelMap = new Bitmap(path);
+			levelMap = null;//new Bitmap(path);
 
 		}
 		catch (System.Exception e)
 		{
 			Debug.Log(e);
 		}
+
 		Rectangle rect = new Rectangle(0, 0, levelMap.Width, levelMap.Height);
 		//lock bits into memory
 		BitmapData levelMapData = levelMap.LockBits(rect, ImageLockMode.ReadOnly, levelMap.PixelFormat);
@@ -87,6 +84,9 @@ public class PixelMap_ECSInterpreter : MonoBehaviour//, IConvertGameObjectToEnti
 		Debug.Log("Attempting to build ECS level...");
 		//itterate through the bitmap data
 		Debug.Log("Ready for Universe-Ending Headaches?");
+
+		
+
 		for (int y = 0; y < heightInPixels; y++)
 		{
 			int currentLine = y * levelMapData.Stride;
@@ -127,33 +127,6 @@ public class PixelMap_ECSInterpreter : MonoBehaviour//, IConvertGameObjectToEnti
 					//create 100 tiles of archetype 'basictile'. After this we would set the individual component values.
 					//myEntityManager.CreateEntity(basicTile, shipArray);
 					//Convert the prefab to an Entity
-					/*
-					using (BlobAssetStore blobAssetStore = new BlobAssetStore())
-					{
-						//convert whole devship object?
-						Entity prefabEntity = GameObjectConversionUtility.ConvertGameObjectHierarchy(instanceObject,
-							GameObjectConversionSettings.FromWorld(myEntityManager.World, blobAssetStore));
-						//store the prefab entity in the list that we will instantiate from
-						//shipEntityArray.Add(prefabEntity);
-						//instanciate the tile
-						Entity tileEntity = myEntityManager.Instantiate(prefabEntity);
-						myEntityManager.SetName(tileEntity, prefabID+" "+count++);
-						//set the rotation of the object. No idea if the other components need set or not.
-						myEntityManager.SetComponentData(tileEntity,
-							new Translation {Value = Quaternion.Euler(0.0f, rotation, 0.0f).eulerAngles });
-					}
-					*/
-					//destroy prefab?
-					//instanceObject.SetActive(false);
-					/*
-					Entity spawnedEntity = EntityManager.Instantiate yada yada
-					EntityManager.SetComponentData(spawnedEntity,
-						new Translation{Value = new Vector3(x,y,z),0},
-						new etc
-					);
-					 */
-
-					//Place a roof over it.
 				}
 				}
 				//update positional parameters

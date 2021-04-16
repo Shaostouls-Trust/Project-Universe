@@ -32,6 +32,15 @@ namespace AmplifyShaderEditor
 		public static readonly string PrefClearLog = "ASEClearLog" + Application.productName;
 		public static bool GlobalClearLog = true;
 
+		private static readonly GUIContent UpdateOnSceneSave = new GUIContent( "Update on Scene save (Ctrl+S)" , "ASE is aware of Ctrl+S and will use it to save shader" );
+		public static readonly string PrefUpdateOnSceneSave = "ASEUpdateOnSceneSave" + Application.productName;
+		public static bool GlobalUpdateOnSceneSave = true;
+
+#if UNITY_2019_4_OR_NEWER
+		private static readonly GUIContent ShowAsyncMsg = new GUIContent( "Show Shader Async. Compilation Message", "Shows message on ASE log if Asynchronous Shader Compilation is detected" );
+		public static readonly string PrefShowAsyncMsg = "ASEShowAsync" + Application.productName;
+		public static bool GlobalShowAsyncMsg = true;
+#endif
 		private static bool PrefsLoaded = false;
 
 #if UNITY_2019_1_OR_NEWER
@@ -95,7 +104,21 @@ namespace AmplifyShaderEditor
 				EditorPrefs.SetBool( PrefClearLog, GlobalClearLog );
 			}
 
+			EditorGUI.BeginChangeCheck();
+			GlobalUpdateOnSceneSave = EditorGUILayout.Toggle( UpdateOnSceneSave , GlobalUpdateOnSceneSave );
+			if( EditorGUI.EndChangeCheck() )
+			{
+				EditorPrefs.SetBool( PrefUpdateOnSceneSave , GlobalUpdateOnSceneSave );
+			}
 
+#if UNITY_2019_4_OR_NEWER
+			EditorGUI.BeginChangeCheck();
+			GlobalShowAsyncMsg = EditorGUILayout.Toggle( ShowAsyncMsg, GlobalShowAsyncMsg);
+			if( EditorGUI.EndChangeCheck() )
+			{
+				EditorPrefs.SetBool( PrefShowAsyncMsg, GlobalShowAsyncMsg );
+			}
+#endif
 			EditorGUILayout.BeginHorizontal();
 			GUILayout.FlexibleSpace();
 			if( GUILayout.Button( "Reset and Forget All" ) )
@@ -112,6 +135,14 @@ namespace AmplifyShaderEditor
 
 				EditorPrefs.DeleteKey( PrefClearLog );
 				GlobalClearLog = true;
+
+				EditorPrefs.DeleteKey( PrefUpdateOnSceneSave );
+				GlobalUpdateOnSceneSave = true;
+
+#if UNITY_2019_4_OR_NEWER
+				EditorPrefs.DeleteKey( PrefShowAsyncMsg );
+				GlobalShowAsyncMsg = true;
+#endif
 			}
 			EditorGUILayout.EndHorizontal();
 			EditorGUIUtility.labelWidth = cache;
@@ -123,6 +154,10 @@ namespace AmplifyShaderEditor
 			GlobalAutoSRP = EditorPrefs.GetBool( PrefAutoSRP, true );
 			GlobalDefineSymbol = EditorPrefs.GetBool( PrefDefineSymbol, true );
 			GlobalClearLog = EditorPrefs.GetBool( PrefClearLog, true );
+			GlobalUpdateOnSceneSave = EditorPrefs.GetBool( PrefUpdateOnSceneSave , true );
+#if UNITY_2019_4_OR_NEWER
+			GlobalShowAsyncMsg = EditorPrefs.GetBool( PrefShowAsyncMsg, true );
+#endif
 		}
 	}
 }

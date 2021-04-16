@@ -13,6 +13,7 @@ namespace AmplifyShaderEditor
 	{
 		private const string InputPortName = "In ";
 		private const string CurrSelectedStr = "Toggle Value";
+		private const string GenerateKeywordStr = "Generate Keyword"; 
 		//private const string LerpOp = "lerp({0},{1},{2})";
 		private const string LerpOp = "(( {2} )?( {1} ):( {0} ))";
 
@@ -27,6 +28,9 @@ namespace AmplifyShaderEditor
 
 		[SerializeField]
 		private WirePortDataType m_mainDataType = WirePortDataType.FLOAT;
+
+		[SerializeField]
+		private bool m_generateKeyword = true;
 
 		private int m_cachedPropertyId = -1;
 
@@ -187,7 +191,19 @@ namespace AmplifyShaderEditor
 
 		public override void DrawMainPropertyBlock()
 		{
-			base.DrawMainPropertyBlock();
+			EditorGUILayout.BeginVertical();
+			{
+				ShowPropertyInspectorNameGUI();
+				ShowPropertyNameGUI( true );
+				ShowVariableMode();
+				ShowHybridInstanced();
+				ShowAutoRegister();
+				ShowPrecision();
+				m_generateKeyword = EditorGUILayoutToggle( GenerateKeywordStr, m_generateKeyword );
+				ShowToolbar();
+			}
+			EditorGUILayout.EndVertical();
+
 			EditorGUILayout.Separator();
 			EditorGUI.BeginChangeCheck();
 			m_currentSelectedInput = EditorGUILayoutIntPopup( CurrSelectedStr, m_currentSelectedInput, AvailableInputsLabels, AvailableInputsValues );
@@ -218,12 +234,17 @@ namespace AmplifyShaderEditor
 		{
 			base.ReadFromString( ref nodeParams );
 			m_currentSelectedInput = Convert.ToInt32( GetCurrentParam( ref nodeParams ) );
+			if( UIUtils.CurrentShaderVersion() > 18806 )
+			{
+				m_generateKeyword = Convert.ToBoolean( GetCurrentParam( ref nodeParams ) );
+			}
 		}
 
 		public override void WriteToString( ref string nodeInfo, ref string connectionsInfo )
 		{
 			base.WriteToString( ref nodeInfo, ref connectionsInfo );
 			IOUtils.AddFieldValueToString( ref nodeInfo, m_currentSelectedInput );
+			IOUtils.AddFieldValueToString( ref nodeInfo, m_generateKeyword );
 		}
 
 		public override void RefreshExternalReferences()
@@ -234,7 +255,12 @@ namespace AmplifyShaderEditor
 		}
 		public override string GetPropertyValue()
 		{
-			return PropertyAttributes + "[Toggle]" + m_propertyName + "(\"" + m_propertyInspectorName + "\", Float) = " + m_currentSelectedInput;
+#if UNITY_2018_1_OR_NEWER
+			string toggleAttribute = ( m_generateKeyword ) ? "[Toggle]":"[ToggleUI]";
+#else
+			string toggleAttribute = ( m_generateKeyword ) ? "[Toggle]": "[NoKeywordToggle]";
+#endif
+			return PropertyAttributes + toggleAttribute + m_propertyName + "(\"" + m_propertyInspectorName + "\", Float) = " + m_currentSelectedInput;
 		}
 
 		public override string GetUniformValue()

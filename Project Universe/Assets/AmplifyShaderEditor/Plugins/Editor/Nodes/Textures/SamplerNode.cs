@@ -396,12 +396,15 @@ namespace AmplifyShaderEditor
 				m_textureProperty = m_texPort.GetOutputNodeWhichIsNotRelay( 0 ) as TexturePropertyNode;
 				if( m_textureProperty == null )
 				{
-					m_currentType = Constants.WireToTexture[ m_texPort.ConnectionType() ];
-					m_textureProperty = this;
-					// This cast fails only from within shader functions if connected to a Sampler Input
-					// and in this case property is set by what is connected to that input
-					UIUtils.UnregisterPropertyNode( this );
-					UIUtils.UnregisterTexturePropertyNode( this );
+					if( Constants.WireToTexture.TryGetValue( m_texPort.ConnectionType() , out m_currentType ) )
+					{
+						//m_currentType = Constants.WireToTexture[ m_texPort.ConnectionType() ];
+						m_textureProperty = this;
+						// This cast fails only from within shader functions if connected to a Sampler Input
+						// and in this case property is set by what is connected to that input
+						UIUtils.UnregisterPropertyNode( this );
+						UIUtils.UnregisterTexturePropertyNode( this );
+					}
 				}
 				else
 				{
@@ -1931,6 +1934,11 @@ namespace AmplifyShaderEditor
 			if( !m_isNodeBeingCopied && m_referenceType == TexReferenceType.Object )
 			{
 				ContainerGraph.SamplerNodes.UpdateDataOnNode( UniqueId, DataToArray );
+			}
+
+			if( UIUtils.CurrentShaderVersion() >= 6001 && UIUtils.CurrentShaderVersion() < 7003 )
+			{
+				m_oldInputCount = 6;
 			}
 		}
 

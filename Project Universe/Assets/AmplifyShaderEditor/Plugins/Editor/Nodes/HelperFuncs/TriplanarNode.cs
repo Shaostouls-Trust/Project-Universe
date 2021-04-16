@@ -1056,6 +1056,9 @@ namespace AmplifyShaderEditor
 
 		public override string GenerateShaderForOutput( int outputId, ref MasterNodeDataCollector dataCollector, bool ignoreLocalvar )
 		{
+			if( m_outputPorts[ 0 ].IsLocalValue( dataCollector.PortCategory ) )
+				return GetOutputColorItem( 0, outputId, m_outputPorts[ 0 ].LocalValue( dataCollector.PortCategory ) );
+
 			ParentGraph outsideGraph = UIUtils.CurrentWindow.OutsideGraph;
 
 			dataCollector.AddPropertyNode( m_topTexture );
@@ -1346,15 +1349,22 @@ namespace AmplifyShaderEditor
 				call = dataCollector.AddFunctions( callHeader, samplingTriplanar, texTop + ssTop, pos, norm, falloff, tiling, normalScale, topIndex );
 			else
 				call = dataCollector.AddFunctions( callHeader, samplingTriplanar, texTop + ssTop, texMid + ssMid, texBot + ssBot, pos, norm, falloff, tiling, normalScale, "float3(" + topIndex + "," + midIndex + "," + botIndex + ")" );
-			dataCollector.AddToLocalVariables( dataCollector.PortCategory, UniqueId, type + " triplanar" + OutputId + " = " + call + ";" );
+			string triplanarVarName = "triplanar" + OutputId;
+
+			dataCollector.AddToLocalVariables( dataCollector.PortCategory, UniqueId, type + " "+ triplanarVarName + " = " + call + ";" );
 			if( m_normalCorrection && m_normalSpace == ViewSpace.Tangent )
 			{
-				dataCollector.AddToLocalVariables( dataCollector.PortCategory, UniqueId, "float3 tanTriplanarNormal" + OutputId + " = mul( " + worldToTangent + ", triplanar" + OutputId + " );" );
-				return GetOutputVectorItem( 0, outputId, "tanTriplanarNormal" + OutputId );
+				string tanTriplanarVarName = "tanTriplanarNormal" + OutputId;
+
+				dataCollector.AddToLocalVariables( dataCollector.PortCategory, UniqueId, "float3 " + tanTriplanarVarName + " = mul( " + worldToTangent + ", "+ triplanarVarName + " );" );
+
+				m_outputPorts[ 0 ].SetLocalValue( tanTriplanarVarName, dataCollector.PortCategory );
+
+				return GetOutputVectorItem( 0, outputId, tanTriplanarVarName );
 			}
 			else
 			{
-				return GetOutputVectorItem( 0, outputId, "triplanar" + OutputId );
+				return GetOutputVectorItem( 0, outputId, triplanarVarName );
 			}
 		}
 

@@ -15,9 +15,14 @@ namespace AmplifyShaderEditor
 
 		private const string LinearEyeFuncFormat = "LinearEyeDepth({0})";
 		private const string Linear01FuncFormat = "Linear01Depth({0})";
+
+		private const string LinearEyeFuncSRPFormat = "LinearEyeDepth({0},_ZBufferParams)";
+		private const string Linear01FuncSRPFormat = "Linear01Depth({0},_ZBufferParams)";
+
 		private const string LinerValName = "depthToLinear";
 		private const string ViewSpaceLabel = "View Space";
 
+		
 		private UpperLeftWidgetHelper m_upperLeftWidget = new UpperLeftWidgetHelper();
 
 		[SerializeField]
@@ -76,7 +81,14 @@ namespace AmplifyShaderEditor
 			base.GenerateShaderForOutput( outputId, ref dataCollector, ignoreLocalvar );
 
 			string value =  m_inputPorts[ 0 ].GeneratePortInstructions( ref dataCollector );
-			value = string.Format( (( m_currentOption == 0 ) ? LinearEyeFuncFormat : Linear01FuncFormat), value );
+			if( dataCollector.IsSRP )
+			{
+				value = string.Format( ( ( m_currentOption == 0 ) ? LinearEyeFuncSRPFormat : Linear01FuncSRPFormat ), value );
+			}
+			else
+			{
+				value = string.Format( ( ( m_currentOption == 0 ) ? LinearEyeFuncFormat : Linear01FuncFormat ), value );
+			}
 			RegisterLocalVariable( 0, value, ref dataCollector, LinerValName + OutputId );
 			return m_outputPorts[ 0 ].LocalValue( dataCollector.PortCategory );
 		}

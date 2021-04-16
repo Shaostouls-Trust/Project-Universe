@@ -53,7 +53,7 @@ namespace AmplifyShaderEditor
 			"Clamp", 
 #if UNITY_2018_3_OR_NEWER
 			"Mirror",
-			"Mirror One",
+			"Mirror Once",
 			"Per-axis" 
 #endif
 		};

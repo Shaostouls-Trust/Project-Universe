@@ -184,6 +184,7 @@ namespace AmplifyShaderEditor
 			if( EditorGUI.EndChangeCheck() )
 			{
 				m_isDirty = true;
+				CustomEdited = true;
 			}
 		}
 
@@ -255,6 +256,7 @@ namespace AmplifyShaderEditor
 
 		public override void ReadFromString( ref uint index, ref string[] nodeParams )
 		{
+			base.ReadFromString( ref index, ref nodeParams );
 			ReadZWriteFromString( ref index, ref nodeParams );
 			ReadZTestFromString( ref index, ref nodeParams );
 			ReadOffsetFromString( ref index, ref nodeParams );
@@ -262,6 +264,7 @@ namespace AmplifyShaderEditor
 
 		public void WriteZWriteToString( ref string nodeInfo )
 		{
+			base.WriteToString( ref nodeInfo );
 			IOUtils.AddFieldValueToString( ref nodeInfo, m_validZWrite );
 			if( m_validZWrite )
 				m_zWriteMode.WriteToString( ref nodeInfo );

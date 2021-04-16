@@ -192,7 +192,7 @@ namespace AmplifyShaderEditor
 			m_prevReferenceId = m_referenceId;
 		}
 
-		void UpdateLocalVar()
+		public void UpdateLocalVar()
 		{
 			m_refSelect = false;
 			if( m_referenceId > -1 )

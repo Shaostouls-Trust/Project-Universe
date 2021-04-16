@@ -15,7 +15,9 @@ namespace AmplifyShaderEditor
 		public bool IsFull = false;
 		public int Usage = 0;
 		public string Name;
+		//https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-struct
 		public bool NoInterpolation;
+		public bool Sample;
 
 		public TemplateInterpElement( TemplateInterpElement other )
 		{
@@ -28,6 +30,7 @@ namespace AmplifyShaderEditor
 			Usage = other.Usage;
 			Name = other.Name;
 			NoInterpolation = other.NoInterpolation;
+			Sample = other.Sample;
 		}
 
 		public TemplateInterpElement( TemplateSemantics semantic )

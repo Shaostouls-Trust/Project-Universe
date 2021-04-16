@@ -96,7 +96,7 @@ public class IBreakerBox : MonoBehaviour
             }
             else
             {
-                Debug.Log("AAAAAAAAAAAA");
+                //Debug.Log("AAAAAAAAAAAA");
                 yellowSwitchRenderers[b].material = MaterialLibrary.GetPowerSystemStateMaterials(5);
                 //mySwitchLEDs[0].GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials(3);//green to off
                 //mySwitchLEDs[1].GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials(4);//red off

@@ -28,10 +28,24 @@ namespace AmplifyShaderEditor
 		[SerializeField]
 		protected bool m_independentModule = true;
 
+		[SerializeField]
+		private bool m_customEdited = false;
+
 		public TemplateModuleParent( string moduleName ) { m_moduleName = moduleName; m_unreadableMessage = UnreadableDataMessagePrefix + moduleName; }
 		public virtual void Draw( UndoParentNode owner , bool style = true) { }
-		public virtual void ReadFromString( ref uint index, ref string[] nodeParams ) { }
-		public virtual void WriteToString( ref string nodeInfo ) { }
+		public virtual void ReadFromString( ref uint index, ref string[] nodeParams )
+		{
+			if( UIUtils.CurrentShaderVersion() > 18805 )
+			{
+				CustomEdited = Convert.ToBoolean( nodeParams[ index++ ] );
+			}
+		}
+
+		public virtual void WriteToString( ref string nodeInfo )
+		{
+			IOUtils.AddFieldValueToString( ref nodeInfo, m_customEdited );
+		}
+
 		public virtual string GenerateShaderData( bool isSubShader ) { return string.Empty; }
 		public virtual void Destroy() { }
 		public bool ValidData { get { return m_validData; } }
@@ -57,6 +71,12 @@ namespace AmplifyShaderEditor
 		{
 			get { return m_independentModule; }
 			set { m_independentModule = value; }
+		}
+
+		public bool CustomEdited
+		{
+			get { return m_customEdited; }
+			set	{ m_customEdited = value; }
 		}
 	}
 }

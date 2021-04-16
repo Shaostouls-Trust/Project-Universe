@@ -412,6 +412,34 @@ namespace AmplifyShaderEditor
 
 		};
 
+		private static Dictionary<string, int> AvailableURPKeywordsDict = new Dictionary<string, int>();
+		public static readonly string[] AvailableURPKeywords =
+		{
+			"Custom",
+			"ETC1_EXTERNAL_ALPHA",
+			"PIXELSNAP_ON",
+			"SHADERPASS_EXTRA_PREPASS",
+			"SHADERPASS_FORWARD",
+			"SHADERPASS_SHADOWCASTER",
+			"SHADERPASS_DEPTHONLY",
+			"SHADERPASS_META",
+			"SHADERPASS_2D",
+			"UNITY_INSTANCING_ENABLED",
+			"DIRECTIONAL_COOKIE"
+		};
+
+		//private static Dictionary<string, string> URPToBultinKeywordsDict = new Dictionary<string, string>()
+		//{
+		//	{"SHADERPASS_FORWARD","UNITY_PASS_FORWARDBASE"},
+		//	{"SHADERPASS_SHADOWCASTER","UNITY_PASS_SHADOWCASTER"}
+		//};
+
+		//private static Dictionary<string, string> BultinToURPKeywordsDict = new Dictionary<string, string>()
+		//{
+		//	{"UNITY_PASS_FORWARDBASE","SHADERPASS_FORWARD"},
+		//	{"UNITY_PASS_SHADOWCASTER","SHADERPASS_SHADOWCASTER"}
+		//};
+
 		public static readonly string[] CategoryPresets =
 		{
 			"<Custom>",
@@ -1368,7 +1396,7 @@ namespace AmplifyShaderEditor
 				case WirePortDataType.SAMPLERCUBE:
 				case WirePortDataType.SAMPLER2DARRAY:
 				ParentGraph outsideGraph = UIUtils.CurrentWindow.OutsideGraph;
-				if( outsideGraph.SamplingMacros && !outsideGraph.IsStandardSurface )
+				if( outsideGraph.SamplingMacros /*&& !outsideGraph.IsStandardSurface*/ )
 				{
 					if( outsideGraph.IsSRP )
 						varType = string.Format( m_precisionWirePortToSRPMacroType[ type ], m_precisionTypeToCg[ precisionType ] );
@@ -2988,21 +3016,48 @@ namespace AmplifyShaderEditor
 			return false;
 		}
 
-		public static int GetKeywordId( string keyword )
+		public static int GetKeywordId( string keyword, TemplateSRPType type = TemplateSRPType.BuiltIn)
 		{
-			if( AvailableKeywordsDict.Count != AvailableKeywords.Length )
+			switch( type )
 			{
-				AvailableKeywordsDict.Clear();
-				for( int i = 1; i < AvailableKeywords.Length; i++ )
+				default:
+				case TemplateSRPType.BuiltIn:
 				{
-					AvailableKeywordsDict.Add( AvailableKeywords[ i ], i );
+					if( AvailableKeywordsDict.Count != AvailableKeywords.Length )
+					{
+						AvailableKeywordsDict.Clear();
+						for( int i = 1; i < AvailableKeywords.Length; i++ )
+						{
+							AvailableKeywordsDict.Add( AvailableKeywords[ i ], i );
+						}
+					}
+
+					if( AvailableKeywordsDict.ContainsKey( keyword ) )
+					{
+						return AvailableKeywordsDict[ keyword ];
+					}
 				}
+				break;
+				case TemplateSRPType.HD:
+				case TemplateSRPType.Lightweight:
+				{
+					if( AvailableURPKeywordsDict.Count != AvailableURPKeywords.Length )
+					{
+						AvailableURPKeywordsDict.Clear();
+						for( int i = 1; i < AvailableURPKeywords.Length; i++ )
+						{
+							AvailableURPKeywordsDict.Add( AvailableURPKeywords[ i ], i );
+						}
+					}
+
+					if( AvailableURPKeywordsDict.ContainsKey( keyword ) )
+					{
+						return AvailableURPKeywordsDict[ keyword ];
+					}
+				}
+				break;
 			}
 
-			if( AvailableKeywordsDict.ContainsKey( keyword ) )
-			{
-				return AvailableKeywordsDict[ keyword ];
-			}
 
 			return 0;
 		}

@@ -839,7 +839,7 @@ namespace AmplifyShaderEditor
 			return m_interpolatorData.HasRawInterpolatorOfName( name );
 		}
 
-		public TemplateVertexData RequestNewInterpolator( WirePortDataType dataType, bool isColor, string varName = null , bool noInterpolationFlag = false )
+		public TemplateVertexData RequestNewInterpolator( WirePortDataType dataType, bool isColor, string varName = null , bool noInterpolationFlag = false, bool sampleFlag = false )
 		{
 			if( varName != null && m_registeredVertexData.ContainsKey( varName ) )
 			{
@@ -850,7 +850,9 @@ namespace AmplifyShaderEditor
 			{
 				if( !m_interpolatorData.AvailableInterpolators[ i ].IsFull	)
 				{
-					if( m_interpolatorData.AvailableInterpolators[ i ].Usage != 0 && m_interpolatorData.AvailableInterpolators[ i ].NoInterpolation != noInterpolationFlag )
+					if( m_interpolatorData.AvailableInterpolators[ i ].Usage != 0 && 
+						(m_interpolatorData.AvailableInterpolators[ i ].NoInterpolation != noInterpolationFlag ||
+						m_interpolatorData.AvailableInterpolators[ i ].Sample != sampleFlag ))
 						continue;
 
 					TemplateVertexData data = m_interpolatorData.AvailableInterpolators[ i ].RequestChannels( dataType, isColor, varName );
@@ -864,11 +866,15 @@ namespace AmplifyShaderEditor
 						if( m_interpolatorData.AvailableInterpolators[ i ].Usage == 1 )
 						{
 							m_interpolatorData.AvailableInterpolators[ i ].NoInterpolation = noInterpolationFlag;
+							m_interpolatorData.AvailableInterpolators[ i ].Sample = sampleFlag;
 							// First time using this interpolator, so we need to register it
 							string interpolator = string.Format( TemplateHelperFunctions.TexFullSemantic,
 																	data.VarName, data.Semantics );
 							if( noInterpolationFlag )
 								interpolator = "nointerpolation " + interpolator;
+
+							if( sampleFlag)
+								interpolator = "sample " + interpolator;
 
 							m_currentDataCollector.AddToInterpolators( interpolator );
 						}
@@ -1803,7 +1809,8 @@ namespace AmplifyShaderEditor
 			return varName;
 		}
 
-		public void RegisterCustomInterpolatedData( string name, WirePortDataType dataType, PrecisionType precision, string vertexInstruction, bool useMasterNodeCategory = true, MasterNodePortCategory customCategory = MasterNodePortCategory.Fragment, bool noInterpolationFlag = false )
+		public void RegisterCustomInterpolatedData( string name, WirePortDataType dataType, PrecisionType precision, string vertexInstruction, bool useMasterNodeCategory = true, 
+													MasterNodePortCategory customCategory = MasterNodePortCategory.Fragment, bool noInterpolationFlag = false, bool sampleFlag = false )
 		{
 			bool addLocalVariable = !name.Equals( vertexInstruction );
 
@@ -1826,7 +1833,7 @@ namespace AmplifyShaderEditor
 				if( !m_customInterpolatedData[ name ].IsFragment )
 				{
 					m_customInterpolatedData[ name ].IsFragment = true;
-					TemplateVertexData interpData = RequestNewInterpolator( dataType, false,null, noInterpolationFlag );
+					TemplateVertexData interpData = RequestNewInterpolator( dataType, false,null, noInterpolationFlag,sampleFlag );
 					if( interpData == null )
 					{
 						Debug.LogErrorFormat( "Could not assign interpolator of type {0} to variable {1}", dataType, name );

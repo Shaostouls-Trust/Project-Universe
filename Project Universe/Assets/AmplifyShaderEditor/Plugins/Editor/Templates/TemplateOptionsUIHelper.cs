@@ -99,7 +99,7 @@ namespace AmplifyShaderEditor
 			EditorGUIUtility.labelWidth = currWidth;
 		}
 
-		public void OnCustomOptionSelected( bool isRefreshing, bool invertAction, TemplateMultiPassMasterNode owner, TemplateOptionUIItem uiItem, params TemplateActionItem[] validActions )
+		public void OnCustomOptionSelected( bool actionFromUser, bool isRefreshing, bool invertAction, TemplateMultiPassMasterNode owner, TemplateOptionUIItem uiItem, params TemplateActionItem[] validActions )
 		{
 			uiItem.CheckOnExecute = false;
 			for( int i = 0; i < validActions.Length; i++ )
@@ -112,6 +112,7 @@ namespace AmplifyShaderEditor
 						continue;
 					}
 				}
+
 
 				switch( actionType )
 				{
@@ -136,7 +137,7 @@ namespace AmplifyShaderEditor
 							if( !invertAction && validActions[ i ].ActionDataIdx > -1 )
 								item.CurrentOption = validActions[ i ].ActionDataIdx;
 
-							item.CheckEnDisable();
+							item.CheckEnDisable( actionFromUser );
 						}
 						else
 						{
@@ -160,7 +161,7 @@ namespace AmplifyShaderEditor
 							if( !invertAction && validActions[ i ].ActionDataIdx > -1 )
 								item.CurrentOption = validActions[ i ].ActionDataIdx;
 
-							item.CheckEnDisable();
+							item.CheckEnDisable( actionFromUser );
 						}
 						else
 						{
@@ -552,7 +553,7 @@ namespace AmplifyShaderEditor
 							TemplateMultiPassMasterNode passMasterNode = owner.ContainerGraph.GetMasterNodeOfPass( validActions[ i ].PassName, owner.LODIndex );
 							if( passMasterNode != null )
 							{
-								passMasterNode.SetPropertyActionFromItem( passMasterNode.PassModule, validActions[ i ] );
+								passMasterNode.SetPropertyActionFromItem( actionFromUser, passMasterNode.PassModule, validActions[ i ] );
 							}
 							else
 							{
@@ -561,7 +562,7 @@ namespace AmplifyShaderEditor
 						}
 						else
 						{
-							owner.SetPropertyActionFromItem( owner.PassModule, validActions[ i ] );
+							owner.SetPropertyActionFromItem( actionFromUser, owner.PassModule, validActions[ i ] );
 						}
 					}
 					break;
@@ -572,13 +573,19 @@ namespace AmplifyShaderEditor
 						if( isRefreshing )
 							continue;
 
-						owner.SetPropertyActionFromItem( owner.SubShaderModule, validActions[ i ] );
+						owner.SetPropertyActionFromItem( actionFromUser, owner.SubShaderModule, validActions[ i ] );
 					}
 					break;
 					case AseOptionsActionType.SetShaderProperty:
 					{
 						//This action is only check when shader is compiled over 
 						//the TemplateMultiPassMasterNode via the on CheckPropertyChangesOnOptions() method
+					}
+					break;
+					case AseOptionsActionType.ExcludeAllPassesBut:
+					{
+						//This action is only check when shader is compiled over 
+						//the TemplateMultiPassMasterNode via the on CheckExcludeAllPassOptions() method
 					}
 					break;
 					case AseOptionsActionType.SetMaterialProperty:
@@ -838,7 +845,7 @@ namespace AmplifyShaderEditor
 			int count = m_passCustomOptionsUI.Count;
 			for( int i = 0; i < count; i++ )
 			{
-				m_passCustomOptionsUI[ i ].CheckEnDisable();
+				m_passCustomOptionsUI[ i ].CheckEnDisable(false);
 			}
 		}
 

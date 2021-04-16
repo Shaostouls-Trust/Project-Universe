@@ -28,6 +28,9 @@ namespace AmplifyShaderEditor
 		public const string ObjectSelectorClosed = "ObjectSelectorClosed";
 		public const string LiveShaderError = "Live Shader only works with an assigned Master Node on the graph";
 
+		public const string AsyncMessage = "Detected Asynchronous Shader Compilation. This can cause slowdowns when saving not only ASE shaders but other shaders as well.\n" +
+											"Please consider turning it off ( Project Settings > Editor > Asynchronous Shader Compilation ) if detecting big slowdowns on shader save.\n" +
+											"This message can be turned off via Preferences > Amplify Shader Editor > Show Async Message.";
 		//public Texture2D MasterNodeOnTexture = null;
 		//public Texture2D MasterNodeOffTexture = null;
 
@@ -1433,8 +1436,10 @@ namespace AmplifyShaderEditor
 			//Need to force one graph draw because it wont call OnGui propertly since its focuses somewhere else
 			// Focus() doesn't fix this since it only changes keyboard focus
 			m_drawInfo.InvertedZoom = 1 / m_cameraZoom;
-			m_mainGraphInstance.Draw( m_drawInfo );
 
+			m_mainGraphInstance.IsLoading = true;
+			m_mainGraphInstance.Draw( m_drawInfo );
+			m_mainGraphInstance.IsLoading = false;
 			ShaderIsModified = false;
 			Focus();
 			Repaint();
@@ -1707,6 +1712,12 @@ namespace AmplifyShaderEditor
 					{
 						m_consoleLogWindow.ClearMessages();
 					}
+#if UNITY_2019_4_OR_NEWER
+					if( EditorSettings.asyncShaderCompilation && Preferences.GlobalShowAsyncMsg )
+					{
+						ShowMessage( AsyncMessage );
+					}
+#endif
 					SaveToDisk( false );
 				}
 				break;
@@ -5396,13 +5407,15 @@ namespace AmplifyShaderEditor
 			Debug.Log( node );
 		}
 
+		private const string ShaderIsModifiedMessage = "Click to save changes.";
+		private const string ShaderIsNotModified = "No changes to save, up-to-date.";
 		void OnMaterialUpdated( MasterNode masterNode )
 		{
 			if( masterNode != null )
 			{
 				if( masterNode.CurrentMaterial )
 				{
-					m_toolsWindow.SetStateOnButton( ToolButtonType.Update, ShaderIsModified ? 0 : 2, ShaderIsModified ? "Click to update Shader preview." : "Preview up-to-date." );
+					m_toolsWindow.SetStateOnButton( ToolButtonType.Update, ShaderIsModified ? 0 : 2, ShaderIsModified ? ShaderIsModifiedMessage : ShaderIsNotModified);
 				}
 				else
 				{
@@ -5771,7 +5784,12 @@ namespace AmplifyShaderEditor
 			m_replaceMasterNodeDataFromCache = cacheMasterNodes;
 			if( cacheMasterNodes )
 			{
-				m_clipboard.AddMultiPassNodesToClipboard( m_mainGraphInstance.MultiPassMasterNodes.NodesList );
+				m_clipboard.AddMultiPassNodesToClipboard( m_mainGraphInstance.MultiPassMasterNodes.NodesList, true, -1 );
+				for( int i = 0; i < m_mainGraphInstance.LodMultiPassMasternodes.Count; i++ )
+				{
+					if( m_mainGraphInstance.LodMultiPassMasternodes[ i ].Count > 0 )
+						m_clipboard.AddMultiPassNodesToClipboard( m_mainGraphInstance.LodMultiPassMasternodes[ i ].NodesList, false, i );
+				}
 			}
 		}
 
@@ -5798,8 +5816,21 @@ namespace AmplifyShaderEditor
 						TemplateDataParent templateData = m_templatesManager.GetTemplate( m_replaceMasterNodeData );
 						if( m_replaceMasterNodeDataFromCache )
 						{
-							m_mainGraphInstance.CrossCheckTemplateNodes( templateData );
-							m_clipboard.GetMultiPassNodesFromClipboard( m_mainGraphInstance.MultiPassMasterNodes.NodesList );
+							m_mainGraphInstance.CrossCheckTemplateNodes( templateData, m_mainGraphInstance.MultiPassMasterNodes.NodesList , -1 );
+							for( int i = 0; i < m_mainGraphInstance.LodMultiPassMasternodes.Count; i++ )
+							{
+								if( m_mainGraphInstance.LodMultiPassMasternodes[ i ].Count > 0 )
+									m_mainGraphInstance.CrossCheckTemplateNodes( templateData, m_mainGraphInstance.LodMultiPassMasternodes[ i ].NodesList, i );
+							}
+
+							//Getting data from clipboard must be done after cross check all lists
+							m_clipboard.GetMultiPassNodesFromClipboard( m_mainGraphInstance.MultiPassMasterNodes.NodesList,-1 );
+							for( int i = 0; i < m_mainGraphInstance.LodMultiPassMasternodes.Count; i++ )
+							{
+								if( m_mainGraphInstance.LodMultiPassMasternodes[ i ].Count > 0 )
+									m_clipboard.GetMultiPassNodesFromClipboard( m_mainGraphInstance.LodMultiPassMasternodes[i].NodesList,  i );
+							}
+							m_clipboard.ResetMultipassNodesData();
 						}
 						else
 						{
@@ -5923,7 +5954,7 @@ namespace AmplifyShaderEditor
 					MasterNode masterNode = m_mainGraphInstance.CurrentMasterNode;
 					if( masterNode != null && masterNode.CurrentShader != null )
 					{
-						m_toolsWindow.SetStateOnButton( ToolButtonType.Update, m_shaderIsModified ? 0 : 2 );
+						m_toolsWindow.SetStateOnButton( ToolButtonType.Update, ShaderIsModified ? 0 : 2, ShaderIsModified ? ShaderIsModifiedMessage : ShaderIsNotModified );
 						UpdateTabTitle( masterNode.ShaderName, m_shaderIsModified );
 					}
 					else

@@ -569,6 +569,12 @@ namespace AmplifyShaderEditor
 			return null;
 		}
 
+		public void CheckSamplingMacrosFlag()
+		{
+			if( ContainerGraph.SamplingMacros && m_currentDataCollector != null )
+				m_currentDataCollector.AddToDirectives( Constants.SamplingMacrosDirective );
+
+		}
 		protected void SortInputPorts( ref List<InputPort> vertexPorts, ref List<InputPort> fragmentPorts )
 		{
 			for( int i = 0; i < m_inputPorts.Count; i++ )
@@ -617,6 +623,7 @@ namespace AmplifyShaderEditor
 				AssetDatabase.Refresh( ImportAssetOptions.ForceUpdate );
 				CurrentShader = Shader.Find( ShaderName );
 			}
+
 			//else
 			//{
 			//	// need to always get asset datapath because a user can change and asset location from the project window 
@@ -982,6 +989,7 @@ namespace AmplifyShaderEditor
 				m_sizeIsDirty = true;
 			}
 		}
+		public string CurrentInspector { get { return m_customInspectorName; } }
 		public string CustomInspectorFormatted { get { return string.Format( CustomInspectorFormat, m_customInspectorName ); } }
 		public string CroppedShaderName { get { return m_croppedShaderName; } }
 		public virtual AvailableShaderTypes CurrentMasterNodeCategory { get { return ( m_masterNodeCategory == 0 ) ? AvailableShaderTypes.SurfaceShader : AvailableShaderTypes.Template; } }

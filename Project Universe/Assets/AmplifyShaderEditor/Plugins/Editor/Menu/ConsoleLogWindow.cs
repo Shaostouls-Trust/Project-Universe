@@ -108,7 +108,20 @@ namespace AmplifyShaderEditor
 
 						if( messages[ i ].ItemOwnerId < 0 )
 						{
-							GUILayout.Label( ( count - i ) + ": " + messages[ i ].ItemMessage, labelStyle );
+							if( Event.current.control && Event.current.shift )
+							{
+								if( GUILayout.Button( ( count - i ) + ": " + messages[ i ].ItemMessage, labelStyle ) )
+								{
+									if( Event.current.button == 1 )
+									{
+										EditorGUIUtility.systemCopyBuffer = messages[ i ].ItemMessage;
+									}
+								}
+							}
+							else
+							{
+								GUILayout.Label( ( count - i ) + ": " + messages[ i ].ItemMessage, labelStyle );
+							}
 						}
 						else
 						{

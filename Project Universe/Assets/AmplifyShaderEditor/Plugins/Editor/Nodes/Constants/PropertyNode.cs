@@ -27,10 +27,14 @@ namespace AmplifyShaderEditor
 	{
 		public string Name;
 		public string Attribute;
-		public PropertyAttributes( string name, string attribute )
+		public bool HasDeprecatedValue;
+		public string DeprecatedValue;
+		public PropertyAttributes( string name, string attribute , string deprecated = null )
 		{
 			Name = name;
 			Attribute = attribute;
+			DeprecatedValue = deprecated;
+			HasDeprecatedValue = deprecated != null;
 		}
 	}
 
@@ -40,7 +44,8 @@ namespace AmplifyShaderEditor
 		private const string LongNameEnder = "... )";
 		protected int m_longNameSize = 200;
 		//private const string InstancedPropertyWarning = "Instanced Property option shouldn't be used on official SRP templates as all property variables are already declared as instanced inside a CBuffer.\nPlease consider changing to Property option.";
-		private string TooltipFormatter = "{0}\n\nName: {1}\nValue: {2}";
+		private const string TooltipFormatter = "{0}\n\nName: {1}\nValue: {2}";
+		private const string InvalidAttributeFormatter = "Attribute {0} not found on node {1}. Please click on this message to select node and review its attributes section";
 		protected string GlobalTypeWarningText = "Global variables must be set via a C# script using the Shader.SetGlobal{0}(...) method.\nPlease note that setting a global variable will affect all shaders which are using it.";
 		private const string HybridInstancedStr = "Hybrid Instanced";
 		private const string AutoRegisterStr = "Auto-Register";
@@ -1599,10 +1604,11 @@ namespace AmplifyShaderEditor
 			int attribCount = m_availableAttribs.Count;
 			for( int i = 0; i < attribCount; i++ )
 			{
-				if( m_availableAttribs[ i ].Attribute.Equals( name ) )
+				if( m_availableAttribs[ i ].Attribute.Equals( name ) || 
+					(m_availableAttribs[ i ].HasDeprecatedValue && m_availableAttribs[ i ].DeprecatedValue.Equals( name ) ) )
 					return i;
 			}
-			return 0;
+			return -1;
 		}
 
 		public override void ReadFromString( ref string[] nodeParams )
@@ -1644,7 +1650,16 @@ namespace AmplifyShaderEditor
 				{
 					for( int i = 0; i < attribAmount; i++ )
 					{
-						m_selectedAttribs.Add( IdForAttrib( GetCurrentParam( ref nodeParams ) ) );
+						string attribute = GetCurrentParam( ref nodeParams );
+						int idForAttribute = IdForAttrib( attribute );
+						if( idForAttribute >= 0 )
+						{
+							m_selectedAttribs.Add( idForAttribute );
+						}
+						else
+						{
+							UIUtils.ShowMessage( UniqueId, string.Format( InvalidAttributeFormatter, attribute,m_propertyInspectorName ) , MessageSeverity.Warning );
+						}
 					}
 
 					m_visibleAttribsFoldout = true;

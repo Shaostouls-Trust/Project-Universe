@@ -109,6 +109,8 @@ public class PixelMap_Interpreter : MonoBehaviour
 
 	public void BitMapInterpreter(string mapName, Transform gameobjectTransform, bool myIgnoreR254, bool triscalar, int levelNumber)
 	{
+		
+
 		//Load the parameter bitmap
 		string path = SolvePath(mapName, ".png", GetPixelMapRootPath());// "\\Assets\\Resources\\Maps\\PixelMaps");
 		try
@@ -302,6 +304,7 @@ public class PixelMap_Interpreter : MonoBehaviour
 				}
 			}
 		}
+		
 	}
 
 	void Update()

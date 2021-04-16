@@ -239,8 +239,8 @@ namespace AmplifyShaderEditor
 
 				if( UIUtils.CurrentShaderVersion() > 15303 )
 				{
-					m_offsetFactor.ReadFromString( ref index, ref nodeParams );
-					m_offsetUnits.ReadFromString( ref index, ref nodeParams );
+					m_offsetFactor.ReadFromString( ref index , ref nodeParams , false );
+					m_offsetUnits.ReadFromString( ref index, ref nodeParams , false );
 				}
 				else
 				{

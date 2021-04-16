@@ -27,6 +27,7 @@ public class VolumeAtmosphereController : MonoBehaviour
         roomVolume = (gameObject.GetComponent<BoxCollider>().size.x *
             gameObject.GetComponent<BoxCollider>().size.y *
             gameObject.GetComponent<BoxCollider>().size.z);
+        roomGases.Add(new IGas("Oxygen", 70, roomVolume,1.0f,roomVolume));
     }
 
     ///check doors
@@ -101,12 +102,14 @@ public class VolumeAtmosphereController : MonoBehaviour
                         GameObject globalNeighbor = neighborEmpties[i].GetComponent<VolumeNode>().GetGlobalLink();
                         if (localNeighbor != null)
                         {
-                            VolumeAtmosphereController iNeighborVolume = neighborEmpties[i].GetComponent<VolumeNode>().GetVolumeLink().GetComponent<VolumeAtmosphereController>();
+                            VolumeAtmosphereController iNeighborVolume = 
+                                neighborEmpties[i].GetComponent<VolumeNode>().GetVolumeLink().GetComponent<VolumeAtmosphereController>();
                             LocalVolumeEqualizer(this, iNeighborVolume);
                         }
                         else if (globalNeighbor)
                         {
-                            VolumeGlobalAtmosphereController iGlobalNeighbor = neighborEmpties[i].GetComponent<VolumeNode>().GetGlobalLink().GetComponent<VolumeGlobalAtmosphereController>();
+                            VolumeGlobalAtmosphereController iGlobalNeighbor = 
+                                neighborEmpties[i].GetComponent<VolumeNode>().GetGlobalLink().GetComponent<VolumeGlobalAtmosphereController>();
                             GlobalVolumeEqualizer(this, iGlobalNeighbor);
                         }
                     }
@@ -150,6 +153,8 @@ public class VolumeAtmosphereController : MonoBehaviour
         }
         if(VACa.roomOxygenation != VACb.roomOxygenation)
         {
+            //Debug.Log(VACa.roomOxygenation);
+            //Debug.Log(VACb.roomOxygenation);
             float Voxy1 = VACaVolume * VACa.roomOxygenation;
             float Voxy2 = VACbVolume * VACb.roomOxygenation;
             float Vpt = Voxy1 + Voxy2;

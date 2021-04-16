@@ -15,10 +15,15 @@ namespace AmplifyShaderEditor
 	public sealed class VertexToFragmentNode : SingleInputOp
 	{
 		private const string DisabledInterpolatorMsg = "No Interpolation option cannot be used over Standard Surface type as we must be able to directly control interpolators registry, which does't happen over this shader type. Please disable it.";
-		private const string NoInterpolationUsageMsg = "Please note this option will not work across all API's and can even throw compilation errors on some of them ( p.e. Metal and GLES 2.0 )";
+		private const string NoInterpolationUsageMsg = "No interpolation is performed when passing value from vertex to fragment during rasterization. Please note this option will not work across all API's and can even throw compilation errors on some of them ( p.e. Metal and GLES 2.0 )";
+
+		private const string SampleInfoMessage = "Interpolate at sample location rather than at the pixel center. This causes the pixel shader to execute per-sample rather than per-pixel. Only available in shader model 4.1 or higher";
 
 		[SerializeField]
 		private bool m_noInterpolation;
+
+		[SerializeField]
+		private bool m_sample;
 
 		protected override void CommonInit( int uniqueId )
 		{
@@ -56,13 +61,21 @@ namespace AmplifyShaderEditor
 					EditorGUILayout.HelpBox( NoInterpolationUsageMsg, MessageType.Info );
 				}
 			}
+
+			EditorGUI.BeginDisabledGroup( isSurface && !m_sample );
+			m_sample = EditorGUILayoutToggle( "Sample" , m_sample );
+			EditorGUI.EndDisabledGroup();
+			if( m_sample )
+				EditorGUILayout.HelpBox( SampleInfoMessage , MessageType.Info ); 
 		}
 
 		public override void Draw( DrawInfo drawInfo )
 		{
 			base.Draw( drawInfo );
-			m_showErrorMessage = ContainerGraph.IsStandardSurface && m_noInterpolation;
+			m_showErrorMessage =	ContainerGraph.IsStandardSurface && m_noInterpolation ||
+									ContainerGraph.IsStandardSurface && m_sample;
 		}
+
 
 		public override string GenerateShaderForOutput( int outputId, ref MasterNodeDataCollector dataCollector, bool ignoreLocalVar )
 		{
@@ -70,7 +83,8 @@ namespace AmplifyShaderEditor
 				return m_outputPorts[ 0 ].LocalValue( dataCollector.PortCategory );
 
 			bool noInterpolationFlag = dataCollector.IsTemplate ? m_noInterpolation : false;
-			string varName = GenerateInputInVertex( ref dataCollector, 0, "vertexToFrag" + OutputId,true , noInterpolationFlag );
+			bool sampleFlag = dataCollector.IsTemplate ? m_sample : false;
+			string varName = GenerateInputInVertex( ref dataCollector, 0, "vertexToFrag" + OutputId,true, noInterpolationFlag, sampleFlag );
 			m_outputPorts[ 0 ].SetLocalValue( varName, dataCollector.PortCategory );
 
 			return varName;
@@ -158,12 +172,16 @@ namespace AmplifyShaderEditor
 			base.ReadFromString( ref nodeParams );
 			if( UIUtils.CurrentShaderVersion() > 18707 )
 				m_noInterpolation = Convert.ToBoolean( GetCurrentParam( ref nodeParams ) );
+
+			if( UIUtils.CurrentShaderVersion() > 18808 )
+				m_sample = Convert.ToBoolean( GetCurrentParam( ref nodeParams ) );
 		}
 
 		public override void WriteToString( ref string nodeInfo, ref string connectionsInfo )
 		{
 			base.WriteToString( ref nodeInfo, ref connectionsInfo );
 			IOUtils.AddFieldValueToString( ref nodeInfo, m_noInterpolation );
+			IOUtils.AddFieldValueToString( ref nodeInfo , m_sample );
 		}
 	}
 }
