@@ -79,6 +79,9 @@ public class WSButton1 : MonoBehaviour
             case "MiningDrone":
                 MiningDrone();
                 break;
+            case "DisplayInventory":
+                DisplayInventory();
+                break;
         }
     }
 
@@ -150,6 +153,10 @@ public class WSButton1 : MonoBehaviour
         scriptedObj.GetComponent<IMiningDrone>().EmptyInventory(player);
     }
 
+    public void DisplayInventory()
+    {
+        scriptedObj.GetComponent<CargoContainer>().DisplayInventory();
+    }
     void OnMouseOver()
     {
         if (!this.GetComponent<MeshRenderer>().enabled)

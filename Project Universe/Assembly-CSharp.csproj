@@ -60,6 +60,7 @@
     <Compile Include="Assets\Archimatix\Scripts\Core\DataHolders\AXGenratorProduct.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\ParticleCollision.cs" />
     <Compile Include="Assets\Scripts\ResizePanel.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\FloorMeshCombiner.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\IRoutingSubstation.cs" />
     <Compile Include="Assets\Scripts\DragPanel.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters\FloorRepeater.cs" />
@@ -118,7 +119,7 @@
     <Compile Include="Assets\Scripts\KhorneSyrup\InventoryController\InventoryManager.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters\PairRepeater.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Deformers\Deformers.cs" />
-    <Compile Include="Assets\Scripts\CMDRAsh\IMiningDrone.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Production\IMiningDrone.cs" />
     <Compile Include="Assets\SplineMesh\Scripts\Example\ExampleFollowSpline.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\ScaleBias.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Deformers\ShearDeformer.cs" />
@@ -150,6 +151,7 @@
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Utilities.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\AXThumbnail.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters\Replicant.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Inventory\CargoContainer.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core2D\AXSpriteCamera.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\AXExtensions.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\TriangulationConstraint.cs" />
@@ -167,6 +169,7 @@
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Tools\TextureTool.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\ScriptManager.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Deformers\PillowDeformer.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\UI\PlayerInventoryUIController.cs" />
     <Compile Include="Assets\Scripts\FarmingSystem\Crops.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Polygon\PolygonPoint.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Translate.cs" />
@@ -278,6 +281,7 @@
     <Compile Include="Assets\Scripts\CMDRAsh\SupplementalController.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Polygon\PolygonSet.cs" />
     <Compile Include="Assets\Scripts\ECS\Systems\PixelMap_System.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\UI\IInventoryIcon.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\ISubMachine.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Generator\Const.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Meshers\CityExtrude.cs" />
@@ -316,6 +320,7 @@
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Add.cs" />
     <Compile Include="Assets\Scenes\Koro\LightningBolt\LightningBoltScript.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\AXNode.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\UI\Atmo_Environ\RadiationUIController.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Geometry_3D\AXLatheGenerator.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Meshers\CurveSweeper3.cs" />
     <Compile Include="Assets\Scripts\Koro\WeaponSwitching.cs" />
@@ -324,6 +329,7 @@
     <Compile Include="Assets\Scripts\DropMe.cs" />
     <Compile Include="Assets\Scripts\Koro\MainGridPlanting.cs" />
     <Compile Include="Assets\SplineMesh\Scripts\Utils\UOUtility.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Inventory\CargoUIController.cs" />
     <Compile Include="Assets\Scripts\KhorneSyrup\Player Controller\PlayerGuiController.cs" />
     <Compile Include="Assets\Scripts\Koro\GrapplingGun.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Production\Consumable_Ingot.cs" />
@@ -341,6 +347,7 @@
     <Compile Include="Assets\Scripts\HaloReach252\Container.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\TriangulationMode.cs" />
     <Compile Include="Assets\Scripts\Koro\MoveCamera.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\UI\InventoryUIController.cs" />
     <Compile Include="Assets\Scripts\ECS\Components\Component_PrefabEntity.cs" />
     <Compile Include="Assets\Scripts\Koro\Farmingprototype.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\Sets\PointSet.cs" />

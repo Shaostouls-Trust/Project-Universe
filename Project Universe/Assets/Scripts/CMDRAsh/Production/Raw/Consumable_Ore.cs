@@ -16,7 +16,7 @@ public class Consumable_Ore : MonoBehaviour
     private OreDefinition OreDef;
     private Dictionary<OreDefinition, float> oreInclusionDict;
     private Dictionary<MaterialDefinition, float> matInclusionDict;
-    [SerializeField] public float OreMassKg;
+    [SerializeField] private float OreMassKg;
     //private ItemStack thisItemStack;
 
     public Consumable_Ore(string type, int quality, int zone, float mass)
@@ -64,7 +64,7 @@ public class Consumable_Ore : MonoBehaviour
     override
     public string ToString()
     {
-        return "Ore Type: "+OreTypeSingle+"; Ore Quality: " +OreQuality+ ".";
+        return OreTypeSingle+"; Quality: " +OreQuality+"; Zone: "+OreZone+"; Mass: "+OreMassKg;
     }
 
     public void PickUpConsumable(GameObject player)
@@ -90,7 +90,10 @@ public class Consumable_Ore : MonoBehaviour
         }
         return false;
     }
-
+    public float GetOreMass()
+    {
+        return OreMassKg;
+    }
     public string GetOreType()
     {
         return OreTypeSingle;

@@ -17,7 +17,12 @@ public class PlayerVolumeController : MonoBehaviour
     private float myRoomTemp;
     private float myRoomOxygenation;
     private float myRoomToxicity;
-    private float myRadExposureRateRaw;
+    //radiation
+    private float myRadExposureRateRaw=0;
+    private float myRadExposureTime=0;
+    private float myRadAbsorbtionRate = 1;
+    private float myRadAbsorbed =0;
+    private float myMaxRoentgenDetectable = 0;
     //Player stats:
     [SerializeField] private float playerHealth = 100f;
     [SerializeField] private float playerOxygen = 100;//hold breath %
@@ -120,14 +125,38 @@ public class PlayerVolumeController : MonoBehaviour
             //you dead, punk!
         }
     }
-
+    public void AddRadiationExposureTime(float time)
+    {
+        myRadExposureTime += time;
+    }
+    public void SetMaxRadsDetectable(float rnt)
+    {
+        myMaxRoentgenDetectable = rnt;
+    }
+    public float GetMaxRadsDetectable()
+    {
+        return myMaxRoentgenDetectable;
+    }
     public void SetRadiationExposureRate(float roentgen)
     {
         myRadExposureRateRaw = roentgen;
     }
+    public void CalculateAbsorbedDose()
+    {
+        myRadAbsorbed += (((myRadExposureRateRaw)*myRadAbsorbtionRate) * (Time.deltaTime/ 3600f)); //myRadExposureTime 
+    }
+    public float GetAbsorbedDose()
+    {
+        CalculateAbsorbedDose();
+        return myRadAbsorbed;
+    }
     public float GetRadiationExposureRate()
     {
         return myRadExposureRateRaw;
+    }
+    public float GetExposureTime()
+    {
+        return myRadExposureTime;
     }
 
     public void InflictPlayerDamage(float amount)

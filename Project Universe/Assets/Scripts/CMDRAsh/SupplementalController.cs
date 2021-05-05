@@ -80,6 +80,19 @@ public class SupplementalController : MonoBehaviour
                 //playerRoot.GetComponent<CapsuleCollider>().radius = shrinkerSize;
             }
         }
-
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            IPlayer_Inventory inventory = playerRoot.GetComponent<IPlayer_Inventory>();
+            inventory.GetPlayerInventoryUI().ToggleDisplay();
+            //inventory.GetPlayerInventoryUI().UpdateDisplay();
+        }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            IPlayer_Inventory inventory = playerRoot.GetComponent<IPlayer_Inventory>();
+            foreach(ItemStack stack in inventory.GetPlayerInventory())
+            {
+                Debug.Log(stack);
+            }
+        }
     }
 }

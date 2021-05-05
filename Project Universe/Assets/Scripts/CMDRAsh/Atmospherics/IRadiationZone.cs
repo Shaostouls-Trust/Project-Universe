@@ -9,25 +9,6 @@ public class IRadiationZone : MonoBehaviour
     [SerializeField] private float roentgen;
     private float rads;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        string comp = "";
-        comp += "Rads at d=0: " + roentgen * exposureFallOff.Evaluate(0)+"\n";
-        comp += "Rads at d=0.1: " + roentgen * exposureFallOff.Evaluate(0.1f) + "\n";
-        comp += "Rads at d=0.2: " + roentgen * exposureFallOff.Evaluate(0.2f) + "\n";
-        comp += "Rads at d=0.3: " + roentgen * exposureFallOff.Evaluate(0.3f) + "\n";
-        comp += "Rads at d=0.4: " + roentgen * exposureFallOff.Evaluate(0.4f) + "\n";
-        comp += "Rads at d=0.5: " + roentgen * exposureFallOff.Evaluate(0.5f) + "\n";
-        comp += "Rads at d=0.6: " + roentgen * exposureFallOff.Evaluate(0.6f) + "\n";
-        comp += "Rads at d=0.7: " + roentgen * exposureFallOff.Evaluate(0.7f) + "\n";
-        comp += "Rads at d=0.8: " + roentgen * exposureFallOff.Evaluate(0.8f) + "\n";
-        comp += "Rads at d=0.9: " + roentgen * exposureFallOff.Evaluate(0.9f) + "\n";
-        comp += "Rads at d=1.0: " + roentgen * exposureFallOff.Evaluate(1) + "\n";
-
-        Debug.Log(comp);
-    }
-
     void OnTriggerEnter(Collider other)
     {
         PlayerVolumeController playerVC;
@@ -63,6 +44,7 @@ public class IRadiationZone : MonoBehaviour
             float level = exposureFallOff.Evaluate((distance / radiationArea.radius));
             //Debug.Log("exposure: " + rads * level);
             playerVC.SetRadiationExposureRate(roentgen * level);
+            playerVC.AddRadiationExposureTime(Time.deltaTime);
         }
     }
 

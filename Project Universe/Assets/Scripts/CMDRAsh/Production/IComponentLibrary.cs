@@ -54,6 +54,7 @@ public class IComponentLibrary : MonoBehaviour
 							foreach (XElement comp in compDefs.Elements("Component"))
 							{
 								componentType = comp.Element("CompData").Attribute("Component_Type").Value;
+								//Debug.Log(componentType);
 								quantity = int.Parse(comp.Element("CompData").Attribute("Quantity").Value);
 								factory = comp.Element("Factory").Value;
 								RssPath = comp.Element("ResourcePath").Attribute("Path").Value;

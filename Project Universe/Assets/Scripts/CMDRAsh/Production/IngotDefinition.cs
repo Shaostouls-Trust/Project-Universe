@@ -25,4 +25,9 @@ public class IngotDefinition
 	{
 		return ingot_Type;
 	}
+
+	public float GetDensity()
+	{
+		return metalDensity;
+	}
 }

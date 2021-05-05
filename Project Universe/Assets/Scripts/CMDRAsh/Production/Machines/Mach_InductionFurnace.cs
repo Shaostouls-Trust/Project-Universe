@@ -34,7 +34,7 @@ public class Mach_InductionFurnace : MonoBehaviour
         //Get ore from the inputMaterials
         ItemStack processStack = inputMaterials[0].RemoveItemData(processAmount);
         Debug.Log(processStack.ToString());
-        availableToProcess = processStack.Length();
+        availableToProcess = processStack.GetRealLength();
         // Get ore definiton
         OreDefinition oreDef;
         if (OreLibrary.OreDictionary.TryGetValue(processStack.GetStackType(), out oreDef))

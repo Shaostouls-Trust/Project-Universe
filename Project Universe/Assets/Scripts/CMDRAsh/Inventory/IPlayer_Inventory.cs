@@ -23,11 +23,26 @@ public class IPlayer_Inventory : MonoBehaviour
     [Header("Inventory")]
     public float inventoryWeight;
     private List<ItemStack> p_inventory = new List<ItemStack>();
+    [SerializeField] private PlayerInventoryUIController inventoryUI;
 
     void Start()
     {
-        Consumable_Ingot ingot = new Consumable_Ingot("Ingot_Gold", 3, 50);
-        ItemStack devIngotStack = new ItemStack("Ingot_Gold", 100, typeof(Consumable_Ingot));
+        Consumable_Ore Gore = new Consumable_Ore("Ore_Gold", 5, 5, 10);
+        Consumable_Ore Iore = new Consumable_Ore("Ore_Iron", 5, 5, 25);
+        Consumable_Ore Nore = new Consumable_Ore("Ore_Nickel", 5, 5, 25);
+        Consumable_Ore Core = new Consumable_Ore("Ore_Copper", 5, 5, 25);
+        Consumable_Ingot ingot = new Consumable_Ingot("Ingot_Gold", 3, 10);
+
+        ItemStack devGOreStack = new ItemStack("Ore_Gold", 50, typeof(Consumable_Ore));
+        devGOreStack.AddItem(Gore);
+        ItemStack devIOreStack = new ItemStack("Ore_Iron", 50, typeof(Consumable_Ore));
+        devIOreStack.AddItem(Iore);
+        ItemStack devNOreStack = new ItemStack("Ore_Nickel", 50, typeof(Consumable_Ore));
+        devNOreStack.AddItem(Nore);
+        ItemStack devCOreStack = new ItemStack("Ore_Copper", 50, typeof(Consumable_Ore));
+        devCOreStack.AddItem(Core);
+
+        ItemStack devIngotStack = new ItemStack("Ingot_Gold", 150, typeof(Consumable_Ingot));
         int i = 0;
         while (i<10)
         {
@@ -35,19 +50,31 @@ public class IPlayer_Inventory : MonoBehaviour
             i += 1;
         }
         p_inventory.Add(devIngotStack);
+        p_inventory.Add(devGOreStack);
+        //p_inventory.Add(devIOreStack);
+        //p_inventory.Add(devNOreStack);
+       // p_inventory.Add(devCOreStack);
         Debug.Log("Start Length: " + p_inventory.Count);
     }
 
+    /*
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.I))
         {
-            Debug.Log("Length: " + p_inventory.Count);
+            inventoryUI.ToggleDisplay();
+            //Debug.Log("Length: " + p_inventory.Count);
             foreach(ItemStack itemstack in p_inventory)
             {
                 Debug.Log(itemstack.ToString());
             }
+            inventoryUI.UpdateDisplay();
         }
+    }
+    */
+    public PlayerInventoryUIController GetPlayerInventoryUI()
+    {
+        return inventoryUI;
     }
 
     public List<ItemStack> GetPlayerInventory()
@@ -57,6 +84,16 @@ public class IPlayer_Inventory : MonoBehaviour
     public bool RemoveFromPlayerInventory(ItemStack item)
     {
         return p_inventory.Remove(item);
+    }
+    public ItemStack RemoveFromPlayerInventory(int atIndex)
+    {
+        ItemStack returnstack = p_inventory[atIndex];
+        //p_inventory[atIndex].RemoveItemData(p_inventory[atIndex].Size());
+        Debug.Log("index: "+atIndex);
+        //Debug.Log("removing: "+p_inventory[atIndex]);
+        p_inventory.RemoveAt(atIndex);
+        //Debug.Log(p_inventory[0]);
+        return returnstack;
     }
     public ItemStack RemoveFromPlayerInventory(ItemStack item, int atIndex, float amount)
     {
@@ -116,10 +153,11 @@ public class IPlayer_Inventory : MonoBehaviour
                 {
                     if (p_inventory[j].CompareMetaData(p_inventory[i]))
                     {
-                        //No point running this if one or both stacks are maxed.
-                        if (p_inventory[j].Length() < p_inventory[j].GetMaxAmount() && p_inventory[i].Length() < p_inventory[i].GetMaxAmount())
+                        Debug.Log(p_inventory[j].GetRealLength() +"<"+ p_inventory[j].GetMaxAmount() + ";" + p_inventory[i].GetRealLength() + "<" + p_inventory[i].GetMaxAmount());
+                        //No point running this if one or both stacks are maxed. (GetRealLength was Length)
+                        if (p_inventory[j].GetRealLength() < p_inventory[j].GetMaxAmount() && p_inventory[i].GetRealLength() < p_inventory[i].GetMaxAmount())
                         {
-                            //Debug.Log("Add item at index "+i+" with index "+j);
+                            Debug.Log("Add item at index "+i+" with index "+j);
                             //Add the two stacks and return the remainder. If there is no remainder, return null.
                 //This part can be recursive
                 //This part needs reworked
@@ -167,9 +205,9 @@ public class IPlayer_Inventory : MonoBehaviour
     {
         Debug.Log("Split Stack Recurr");
         //if the added stack is larger than the allowed cap
-        if (overflow.Length() > overflow.GetMaxAmount())
+        if (overflow.GetRealLength() > overflow.GetMaxAmount())//Length
         {
-            float stacksToMake = overflow.Length() % overflow.GetMaxAmount();
+            float stacksToMake = overflow.GetRealLength() % overflow.GetMaxAmount();
             Debug.Log("Stacks remaining to be made: "+stacksToMake);
             //ItemStack newItemStack = new ItemStack(overflow.GetStackType(), overflow.Length(), overflow.GetMaxAmount());
             //ItemStack overflowItemStack = newItemStack.AddItemStack(overflow);

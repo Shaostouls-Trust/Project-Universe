@@ -9,7 +9,7 @@ public class Consumable_Material : MonoBehaviour
 {
     [SerializeField] private string MaterialType;
     private MaterialDefinition MatDef;
-    [SerializeField] public float MatMassKg;
+    [SerializeField] private float MatMassKg;
 
     public Consumable_Material(string materialID, float mass)
     {
@@ -37,6 +37,10 @@ public class Consumable_Material : MonoBehaviour
         }
     }
 
+    public float GetMaterialMass()
+    {
+        return MatMassKg;
+    }
     public bool CompareMetaData(Consumable_Material comparee)
     {
         if (GetMaterialID() == comparee.GetMaterialID())

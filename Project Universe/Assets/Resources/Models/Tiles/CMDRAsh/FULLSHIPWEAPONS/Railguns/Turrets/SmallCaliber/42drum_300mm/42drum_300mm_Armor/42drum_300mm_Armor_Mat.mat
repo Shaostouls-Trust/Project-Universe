@@ -34,7 +34,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Albedo:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: a82eae0e2ddb44c48aa229768a58c8ee, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Albedo1:
@@ -70,7 +70,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Depth:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: ddd72c8a5725fd64a9f46c698a6638cc, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Depth1:
@@ -110,7 +110,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Lighting:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: f3571fb1c49fe9d4384717e6551ef14b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Lighting1:
@@ -130,7 +130,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalSmoothness:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: a054cc41497a0e443a1900b81dcd750a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalSmoothness1:
@@ -233,7 +233,7 @@ Material:
     - _DoubleSidedNormalMode: 1
     - _DstBlend: 0
     - _EI: 0
-    - _EmissionIntensity: 50
+    - _EmissionIntensity: 0
     - _EmissionIntensity1: 1
     - _EmissiveColorMode: 1
     - _EmissiveExposureWeight: 1
@@ -281,7 +281,7 @@ Material:
     - _RequireSplitLighting: 0
     - _SAAThreshold: 0
     - _SAAThreshold1: 0
-    - _SAAVariance: 1
+    - _SAAVariance: 0
     - _SAAVariance1: 1
     - _SSRefractionProjectionModel: 0
     - _Smoothness: 0.5

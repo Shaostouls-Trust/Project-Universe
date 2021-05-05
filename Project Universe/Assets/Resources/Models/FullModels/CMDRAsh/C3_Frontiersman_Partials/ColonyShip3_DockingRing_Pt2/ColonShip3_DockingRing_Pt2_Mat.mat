@@ -47,7 +47,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Albedo:
-        m_Texture: {fileID: 2800000, guid: 156fc4b0537efe146a18ad60c0696135, type: 3}
+        m_Texture: {fileID: 2800000, guid: bfa12ca0bc8562e478a2ca03f84bbbaa, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Albedo1:
@@ -83,7 +83,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Depth:
-        m_Texture: {fileID: 2800000, guid: da922add224f10b48bec1dca7789ca1f, type: 3}
+        m_Texture: {fileID: 2800000, guid: a8a7b363ad6f8e449ab289b27d0e3239, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Depth1:
@@ -123,7 +123,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Lighting:
-        m_Texture: {fileID: 2800000, guid: 2536a1a37cd55594ab4c54d96e345847, type: 3}
+        m_Texture: {fileID: 2800000, guid: e827a90d8d65fbf4ab12533bdea86d74, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Lighting1:
@@ -143,7 +143,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalSmoothness:
-        m_Texture: {fileID: 2800000, guid: 7a368056ac3925848af99a500e74692a, type: 3}
+        m_Texture: {fileID: 2800000, guid: 010945327fc8a0f4790126278dfc78a1, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalSmoothness1:
@@ -294,7 +294,7 @@ Material:
     - _RequireSplitLighting: 0
     - _SAAThreshold: 0
     - _SAAThreshold1: 0
-    - _SAAVariance: 1
+    - _SAAVariance: 0
     - _SAAVariance1: 1
     - _SSRefractionProjectionModel: 0
     - _Smoothness: 0.5

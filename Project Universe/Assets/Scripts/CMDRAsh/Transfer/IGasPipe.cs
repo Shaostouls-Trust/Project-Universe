@@ -459,7 +459,7 @@ public class IGasPipe : MonoBehaviour
         {
             if (neighbors[i].GetInstanceID() != neighborDuct.GetInstanceID())
             {
-                Debug.Log(gameObject + " is adding duct to neighbor");
+                //Debug.Log(gameObject + " is adding duct to neighbor");
                 //Debug.Log("Current length: " + neighbors.Length);
                 IGasPipe[] neighborTemp = new IGasPipe[neighbors.Length + 1];
                 neighbors.CopyTo(neighborTemp, 0);

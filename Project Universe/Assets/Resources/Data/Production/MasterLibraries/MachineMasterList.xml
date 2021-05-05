@@ -7,8 +7,8 @@
 			<Part Component="Component_ElectroMechanicalGenerator" Quantity = "1"/>
 			<Part Component="Component_CompressionCylinder" Quantity = "2"/>
 			<Part Component="Component_BrassCogWheel" Quantity = "1"/>
-			<Part Ingot="Ingot_Iron" Quantity = "1"/>
-			<Part Ingot="Ingot_Steel" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
+			<Part Component="Component_SteelComponents" Quantity = "1"/>
 		</Recipe>
 		<BaseLevel Level="1" />
 		<Upgrades> 
@@ -16,8 +16,8 @@
 				<Part Component="Component_ElectroMechanicalGenerator" Quantity = "0.25"/>
 				<Part Component="Component_CompressionCylinder" Quantity = "2"/>
 				<Part Component="Component_BrassCogWheel" Quantity = "1"/>
-				<Part Ingot="Ingot_Iron" Quantity = "1"/>
-				<Part Ingot="Ingot_Steel" Quantity = "1"/>
+				<Part Component="Component_IronComponents" Quantity = "1"/>
+				<Part Component="Component_SteelComponents" Quantity = "1"/>
 			</Cost>
 			<Level Level="2" /> 
 			<Level Level="3" />
@@ -32,21 +32,21 @@
 		<MachData Machine_Type="Machine_HydrogenFuelCell"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
 		<Recipe>
-			<Part Ingot="Ingot_Aluminum" Quantity = "2"/>
-			<Part Ingot="Ingot_Platinum" Quantity = "1"/>
+			<Part Component="Component_AluminumComponents" Quantity = "2"/>
+			<Part Component="Component_PlatinumComponents" Quantity = "1"/>
 			<Part Component="Component_ParticleMembrane" Quantity = "1"/>
 			<Part Component="Component_ElectricalComponents" Quantity = "1"/>
-			<Part Ingot="Ingot_Iron" Quantity = "2"/>
-			<Part Ingot="Ingot_Palladium" Quantity = "0.5"/>
+			<Part Component="Component_IronComponents" Quantity = "2"/>
+			<Part Component="Component_PalladiumComponents" Quantity = "0.5"/>
 		</Recipe>
 		<BaseLevel Level="1" />
 		<Upgrades> 
 			<Cost>
-				<Part Ingot="Ingot_Aluminum" Quantity = "1"/>
-				<Part Ingot="Ingot_Platinum" Quantity = "1"/>
+				<Part Component="Component_AluminumComponents" Quantity = "1"/>
+				<Part Component="Component_PlatinumComponents" Quantity = "1"/>
 				<Part Component="Component_ParticleMembrane" Quantity = "1"/>
 				<Part Component="Component_ElectricalComponents" Quantity = "1"/>
-				<Part Ingot="Ingot_Iron" Quantity = "1"/>
+				<Part Component="Component_IronComponents" Quantity = "1"/>
 			</Cost>
 			<Level Level="2" /> 
 			<Level Level="3" />
@@ -61,9 +61,9 @@
 		<Recipe>
 			<Part Component="Component_CompressionCylinder" Quantity = "2"/>
 			<Part Component="Component_ElectroMechanicalGenerator" Quantity = "1"/>
-			<Part Ingot="Ingot_Aluminum" Quantity = "2"/>
+			<Part Component="Component_AluminumComponents" Quantity = "2"/>
 			<Part Component="Component_SteelTank" Quantity = "2"/>
-			<Part Ingot="Ingot_Steel" Quantity = "4"/>
+			<Part Component="Component_SteelComponents" Quantity = "4"/>
 			<Part Component="Component_SteelCrankshaft" Quantity = "1"/>
 			<Part Component="Component_Gearbox" Quantity = "1"/>
 		</Recipe>
@@ -72,8 +72,8 @@
 			<Cost>
 				<Part Component="Component_CompressionCylinder" Quantity = "2"/>
 				<Part Component="Component_ElectroMechanicalGenerator" Quantity = "0.25"/>
-				<Part Ingot="Ingot_Aluminum" Quantity = "1"/>
-				<Part Ingot="Ingot_Steel" Quantity = "1"/>
+				<Part Component="Component_AluminumComponents" Quantity = "1"/>
+				<Part Component="Component_SteelComponents" Quantity = "1"/>
 				<Part Component="Component_SteelCrankshaft" Quantity = "1"/>
 				<Part Component="Component_Gearbox" Quantity = "0.25"/>
 			</Cost>
@@ -96,7 +96,7 @@
 			<Part Component="Component_HeavyTurbineShaft" Quantity = "1"/>
 			<Part Component="Component_HeavyTurbineBlades" Quantity = "16"/>
 			<Part Component="Component_ElectromagneticCoils" Quantity = "4"/>
-			<Part Ingot="Ingot_Steel" Quantity = "5"/>
+			<Part Component="Component_SteelComponents" Quantity = "5"/>
 			<Part Component="Component_PressureVents" Quantity = "2"/>
 		</Recipe>
 		<BaseLevel Level="1" />
@@ -108,7 +108,7 @@
 				<Part Component="Component_HeavyTurbineShaft" Quantity = "1"/>
 				<Part Component="Component_HeavyTurbineBlades" Quantity = "4"/>
 				<Part Component="Component_ElectromagneticCoils" Quantity = "1"/>
-				<Part Ingot="Ingot_Steel" Quantity = "1"/>
+				<Part Component="Component_SteelComponents" Quantity = "1"/>
 				<Part Component="Component_PressureVents" Quantity = "2"/>
 			</Cost>
 			<Level Level="2" /> 
@@ -126,8 +126,8 @@
 			<Part Component="Component_GraphenePlates" Quantity = "8"/>
 			<Part Component="Component_LiquidCoolingComponents" Quantity = "2"/>
 			<Part Component="Component_ControlInterface" Quantity = "2"/>
-			<Part Ingot="Ingot_Steel" Quantity = "7"/>
-			<Part Ingot="Ingot_Lead" Quantity = "5"/>
+			<Part Component="Component_SteelComponents" Quantity = "7"/>
+			<Part Component="Component_LeadComponents" Quantity = "5"/>
 			<Part Component="Component_LeadPlating" Quantity = "5"/>
 			<Part Component="Component_Ceramic" Quantity = "4"/>
 		</Recipe>
@@ -139,7 +139,7 @@
 				<Part Component="Component_NuclearFuelRod" Quantity = "2"/>
 				<Part Component="Component_GraphenePlates" Quantity = "4"/>
 				<Part Component="Component_LiquidCoolingComponents" Quantity = "2"/>
-				<Part Ingot="Ingot_Steel" Quantity = "1"/>
+				<Part Component="Component_SteelComponents" Quantity = "1"/>
 				<Part Component="Component_LeadPlating" Quantity = "1"/>
 				<Part Component="Component_Ceramic" Quantity = "1"/>
 			</Cost>
@@ -161,8 +161,8 @@
 			<Part Component="Component_CoolingComponents" Quantity = "2"/>
 			<Part Component="Component_ControlInterface" Quantity = "1"/>
 			<Part Component="Component_Pump" Quantity = "2"/>
-			<Part Ingot="Ingot_Iron" Quantity = "3"/>
-			<Part Ingot="Ingot_Aluminum" Quantity = "3"/>
+			<Part Component="Component_IronComponents" Quantity = "3"/>
+			<Part Component="Component_AluminumComponents" Quantity = "3"/>
 			<Part Component="Component_CopperPipe" Quantity = "6"/>
 			<Part Component="Component_Ceramic" Quantity = "2"/>
 		</Recipe>
@@ -173,8 +173,8 @@
 				<Part Component="Component_HiCapSteelTank" Quantity = "2"/>
 				<Part Component="Component_CoolingComponents" Quantity = "2"/>
 				<Part Component="Component_Pump" Quantity = "2"/>
-				<Part Ingot="Ingot_Iron" Quantity = "1"/>
-				<Part Ingot="Ingot_Aluminum" Quantity = "1"/>
+				<Part Component="Component_IronComponents" Quantity = "1"/>
+				<Part Component="Component_AluminumComponents" Quantity = "1"/>
 				<Part Component="Component_CopperPipe" Quantity = "2"/>
 				<Part Component="Component_Ceramic" Quantity = "1"/>
 			</Cost>
@@ -192,7 +192,7 @@
 			<Part Component="Component_SuperHeatingElement" Quantity = "4"/>
 			<Part Component="Component_PressureVents" Quantity = "4"/>
 			<Part Component="Component_ControlInterface" Quantity = "1"/>
-			<Part Ingot="Ingot_Nickel" Quantity = "4"/>
+			<Part Component="Component_NickelComponents" Quantity = "4"/>
 			<Part Component="Component_Ceramic" Quantity = "4"/>
 		</Recipe>
 		<BaseLevel Level="1" />
@@ -202,7 +202,7 @@
 				<Part Component="Component_HiCapNiTiTank" Quantity = "2"/>
 				<Part Component="Component_SuperHeatingElement" Quantity = "2"/>
 				<Part Component="Component_PressureVents" Quantity = "2"/>
-				<Part Ingot="Ingot_Nickel" Quantity = "1"/>
+				<Part Component="Component_NickelComponents" Quantity = "1"/>
 				<Part Component="Component_Ceramic" Quantity = "1"/>
 			</Cost>
 			<Level Level="2" /> 
@@ -217,13 +217,13 @@
 			<Part Component="Component_HeavyPressureValves" Quantity = "8"/>
 			<Part Component="Component_FusionToroid" Quantity = "1"/>
 			<Part Component="Component_GraphenePlates" Quantity = "16"/>
-			<Part Ingot="Ingot_Nickel" Quantity = "15"/>
-			<Part Ingot="Ingot_Cobalt" Quantity = "10"/>
-			<Part Ingot="Ingot_Titanium" Quantity = "10"/>
-			<Part Ingot="Ingot_Steel" Quantity = "10"/>
+			<Part Component="Component_NickelComponents" Quantity = "15"/>
+			<Part Component="Component_CobaltComponents" Quantity = "10"/>
+			<Part Component="Component_TitaniumComponents" Quantity = "10"/>
+			<Part Component="Component_SteelComponents" Quantity = "10"/>
 			<Part Component="Component_SteelPlating" Quantity = "10"/>
 			<Part Component="Component_LiquidCoolingComponents" Quantity = "4"/>
-			<Part Ingot="Ingot_Lead" Quantity = "10"/>
+			<Part Component="Component_LeadComponents" Quantity = "10"/>
 			<Part Component="Component_ControlInterface" Quantity = "4"/>
 		</Recipe>
 		<BaseLevel Level="1" />
@@ -231,12 +231,12 @@
 			<Cost>
 				<Part Component="Component_FusionToroid" Quantity = "0.2"/>
 				<Part Component="Component_GraphenePlates" Quantity = "4"/>
-				<Part Ingot="Ingot_Nickel" Quantity = "1"/>
-				<Part Ingot="Ingot_Cobalt" Quantity = "1"/>
-				<Part Ingot="Ingot_Titanium" Quantity = "1"/>
+				<Part Component="Component_NickelComponents" Quantity = "1"/>
+				<Part Component="Component_CobaltComponents" Quantity = "1"/>
+				<Part Component="Component_TitaniumComponents" Quantity = "1"/>
 				<Part Component="Component_SteelPlating" Quantity = "2"/>
 				<Part Component="Component_LiquidCoolingComponents" Quantity = "2"/>
-				<Part Ingot="Ingot_Lead" Quantity = "2"/>
+				<Part Component="Component_LeadComponents" Quantity = "2"/>
 				<Part Component="Component_ControlInterface" Quantity = "4"/>
 			</Cost>
 			<Level Level="2" /> 
@@ -250,8 +250,8 @@
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
 		<Recipe>
 			<Part Component="Component_SolarPanel" Quantity = "4"/>
-			<Part Ingot="Ingot_Tin" Quantity = "2"/>
-			<Part Ingot="Ingot_Steel" Quantity = "2"/>
+			<Part Component="Component_TinComponents" Quantity = "2"/>
+			<Part Component="Component_SteelComponents" Quantity = "2"/>
 			<Part Component="Component_Motor" Quantity = "1"/>
 			<Part Component="Component_ControlInterface" Quantity = "1"/>
 			<Part Component="Component_ElectricalComponents" Quantity = "1"/>
@@ -260,8 +260,8 @@
 		<Upgrades> 
 			<Cost>
 				<Part Component="Component_SolarPanel" Quantity = "4"/>
-				<Part Ingot="Ingot_Tin" Quantity = "1"/>
-				<Part Ingot="Ingot_Steel" Quantity = "1"/>
+				<Part Component="Component_TinComponents" Quantity = "1"/>
+				<Part Component="Component_SteelComponents" Quantity = "1"/>
 				<Part Component="Component_ElectricalComponents" Quantity = "1"/>
 			</Cost>
 			<Level Level="2" /> 
@@ -279,14 +279,14 @@
 		<Recipe>
 			<Part Component="Component_PowerStorageModule" Quantity = "1"/>
 			<Part Component="Component_Plastic" Quantity = "2"/>
-			<Part Ingot="Ingot_Brass" Quantity = "2"/>
+			<Part Component="Component_BrassComponents" Quantity = "2"/>
 		</Recipe>
 		<BaseLevel Level="1" />
 		<Upgrades> 
 			<Cost>
 				<Part Component="Component_PowerStorageModule" Quantity = "1"/>
 				<Part Component="Component_Plastic" Quantity = "1"/>
-				<Part Ingot="Ingot_Brass" Quantity = "0.5"/>
+				<Part Component="Component_BrassComponents" Quantity = "0.5"/>
 			</Cost>
 			<Level Level="2" /> 
 			<Level Level="3" />
@@ -302,16 +302,16 @@
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
 		<Recipe>
 			<Part Component="Component_AdvancedPowerStorageModule" Quantity = "4"/>
-			<Part Ingot="Ingot_Nickel" Quantity = "1"/>
-			<Part Ingot="Ingot_Brass" Quantity = "2"/>
-			<Part Ingot="Ingot_Cobalt" Quantity = "1"/>
+			<Part Component="Component_NickelComponents" Quantity = "1"/>
+			<Part Component="Component_BrassComponents" Quantity = "2"/>
+			<Part Component="Component_CobaltComponents" Quantity = "1"/>
 		</Recipe>
 		<BaseLevel Level="1" />
 		<Upgrades> 
 			<Cost>
 				<Part Component="Component_AdvancedPowerStorageModule" Quantity = "2"/>
-				<Part Ingot="Ingot_Nickel" Quantity = "1"/>
-				<Part Ingot="Ingot_Brass" Quantity = "1"/>
+				<Part Component="Component_NickelComponents" Quantity = "1"/>
+				<Part Component="Component_BrassComponents" Quantity = "1"/>
 			</Cost>
 			<Level Level="2" /> 
 			<Level Level="3" />
@@ -325,18 +325,18 @@
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
 		<Recipe>
 			<Part Component="Component_InductionCell" Quantity = "2"/>
-			<Part Ingot="Ingot_Gold" Quantity = "1"/>
-			<Part Ingot="Ingot_Invar" Quantity = "1"/>
-			<Part Ingot="Ingot_Cobalt" Quantity = "1"/>
+			<Part Component="Component_GoldComponents" Quantity = "1"/>
+			<Part Component="Component_InvarComponents" Quantity = "1"/>
+			<Part Component="Component_CobaltComponents" Quantity = "1"/>
 			<Part Component="Component_SteelPlating" Quantity = "2"/>
 		</Recipe>
 		<BaseLevel Level="1" />
 		<Upgrades> 
 			<Cost>
 				<Part Component="Component_InductionCell" Quantity = "2"/>
-				<Part Ingot="Ingot_Gold" Quantity = "1"/>
-				<Part Ingot="Ingot_Invar" Quantity = "1"/>
-				<Part Ingot="Ingot_Cobalt" Quantity = "0.5"/>
+				<Part Component="Component_GoldComponents" Quantity = "1"/>
+				<Part Component="Component_InvarComponents" Quantity = "1"/>
+				<Part Component="Component_CobaltComponents" Quantity = "0.5"/>
 				<Part Component="Component_SteelPlating" Quantity = "2"/>
 			</Cost>
 			<Level Level="2" /> 
@@ -350,7 +350,7 @@
 		<MachData Machine_Type="Machine_BlastFurnace"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
 		<Recipe>
-			<Part Ingot="Ingot_Steel" Quantity = "20"/>
+			<Part Component="Component_SteelComponents" Quantity = "20"/>
 			<Part Component="Component_SuperHeatingElement" Quantity = "4"/>
 			<Part Component="Component_ControlInterface" Quantity = "1"/>
 			<Part Component="Component_Ceramic" Quantity = "10"/>
@@ -359,7 +359,7 @@
 		<BaseLevel Level="1" />
 		<Upgrades> 
 			<Cost>
-				<Part Ingot="Ingot_Steel" Quantity = "20"/>
+				<Part Component="Component_SteelComponents" Quantity = "20"/>
 				<Part Component="Component_SuperHeatingElement" Quantity = "2"/>
 				<Part Component="Component_Ceramic" Quantity = "5"/>
 				<Part Component="Component_HiCapSteelTank" Quantity = "2"/>
@@ -372,10 +372,10 @@
 		<MachData Machine_Type="Machine_ArcFurnace"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
 		<Recipe>
-			<Part Ingot="Ingot_Steel" Quantity = "10"/>
+			<Part Component="Component_SteelComponents" Quantity = "10"/>
 			<Part Component="Component_TitaniumSteelElectrode" Quantity = "3"/>
 			<Part Component="Component_ControlInterface" Quantity = "1"/>
-			<Part Ingot="Ingot_Invar" Quantity = "5"/>
+			<Part Component="Component_InvarComponents" Quantity = "5"/>
 			<Part Component="Component_HiCapSteelTank" Quantity = "4"/>
 			<Part Component="Component_SteelHingeBearing" Quantity = "2"/>
 			<Part Component="Component_HydraulicMotor" Quantity = "2"/>
@@ -383,8 +383,8 @@
 		<BaseLevel Level="1" />
 		<Upgrades> 
 			<Cost>
-				<Part Ingot="Ingot_Steel" Quantity = "2"/>
-				<Part Ingot="Ingot_Invar" Quantity = "1"/>
+				<Part Component="Component_SteelComponents" Quantity = "2"/>
+				<Part Component="Component_InvarComponents" Quantity = "1"/>
 				<Part Component="Component_HiCapSteelTank" Quantity = "2"/>
 			</Cost>
 			<Level Level="2" /> 
@@ -397,8 +397,8 @@
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
 		<Recipe>
 			<Part Component="Component_TitaniumSteelElectrode" Quantity = "1"/>
-			<Part Ingot="Ingot_Iron" Quantity = "2"/>
-			<Part Ingot="Ingot_Aluminum" Quantity = "5"/>
+			<Part Component="Component_IronComponents" Quantity = "2"/>
+			<Part Component="Component_AluminumComponents" Quantity = "5"/>
 			<Part Component="Component_ControlInterface" Quantity = "2"/>
 			<Part Component="Component_HiTempChromePlate" Quantity = "1"/>
 			<Part Component="Component_Motor" Quantity = "2"/>
@@ -407,8 +407,8 @@
 		<BaseLevel Level="1" />
 		<Upgrades> 
 			<Cost>
-				<Part Ingot="Ingot_Iron" Quantity = "1"/>
-				<Part Ingot="Ingot_Aluminum" Quantity = "1"/>
+				<Part Component="Component_IronComponents" Quantity = "1"/>
+				<Part Component="Component_AluminumComponents" Quantity = "1"/>
 				<Part Component="Component_HiTempChromePlate" Quantity = "1"/>
 				<Part Component="Component_BrassGuides" Quantity = "2"/>
 			</Cost>
@@ -425,7 +425,7 @@
 			<Part Component="Component_Motor" Quantity = "1"/>
 			<Part Component="Component_Gearbox" Quantity = "2"/>
 			<Part Component="Component_ControlInterface" Quantity = "2"/>
-			<Part Ingot="Ingot_Nickel" Quantity = "2"/>
+			<Part Component="Component_NickelComponents" Quantity = "2"/>
 			<Part Component="Component_HiCapNiTiTank" Quantity = "2"/>
 			<Part Component="Component_LiquidCoolingComponents" Quantity = "2"/>
 			<Part Component="Component_Ceramic" Quantity = "2"/>
@@ -434,7 +434,7 @@
 		<Upgrades> 
 			<Cost>
 				<Part Component="Component_SuperHeatingElement" Quantity = "1"/>
-				<Part Ingot="Ingot_Nickel" Quantity = "1"/>
+				<Part Component="Component_NickelComponents" Quantity = "1"/>
 				<Part Component="Component_HiCapNiTiTank" Quantity = "0.5"/>
 				<Part Component="Component_Ceramic" Quantity = "1"/>
 			</Cost>
@@ -449,21 +449,21 @@
 		<Recipe>
 			<Part Component="Component_InductionCell" Quantity = "2"/>
 			<Part Component="Component_ControlInterface" Quantity = "1"/>
-			<Part Ingot="Ingot_Invar" Quantity = "1"/>
+			<Part Component="Component_InvarComponents" Quantity = "1"/>
 			<Part Component="Component_HiCapSteelTank" Quantity = "2"/>
 			<Part Component="Component_CoolingComponents" Quantity = "1"/>
-			<Part Ingot="Ingot_Copper" Quantity = "2"/>
-			<Part Ingot="Ingot_Steel" Quantity = "1"/>
+			<Part Component="Component_CopperComponents" Quantity = "2"/>
+			<Part Component="Component_SteelComponents" Quantity = "1"/>
 		</Recipe>
 		<BaseLevel Level="1" />
 		<Upgrades> 
 			<Cost>
 				<Part Component="Component_InductionCell" Quantity = "2"/>
-				<Part Ingot="Ingot_Invar" Quantity = "1"/>
+				<Part Component="Component_InvarComponents" Quantity = "1"/>
 				<Part Component="Component_HiCapSteelTank" Quantity = "2"/>
 				<Part Component="Component_CoolingComponents" Quantity = "1"/>
-				<Part Ingot="Ingot_Copper" Quantity = "1"/>
-				<Part Ingot="Ingot_Steel" Quantity = "1"/>
+				<Part Component="Component_CopperComponents" Quantity = "1"/>
+				<Part Component="Component_SteelComponents" Quantity = "1"/>
 			</Cost>
 			<Level Level="2" /> 
 			<Level Level="3" />
@@ -475,10 +475,10 @@
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
 		<Recipe>
 			<Part Component="Component_HydraulicMotor" Quantity = "2"/>
-			<Part Ingot="Ingot_Aluminum" Quantity = "4"/>
-			<Part Ingot="Ingot_Copper" Quantity = "2"/>
+			<Part Component="Component_AluminumComponents" Quantity = "4"/>
+			<Part Component="Component_CopperComponents" Quantity = "2"/>
 			<Part Component="Component_ControlInterface" Quantity = "1"/>
-			<Part Ingot="Ingot_Steel" Quantity = "3"/>
+			<Part Component="Component_SteelComponents" Quantity = "3"/>
 			<Part Component="Component_SteelHingeBearing" Quantity = "2"/>
 			<Part Component="Component_SteelRod" Quantity = "2"/>
 		</Recipe>
@@ -486,9 +486,9 @@
 		<Upgrades> 
 			<Cost>
 				<Part Component="Component_HydraulicMotor" Quantity = "2"/>
-				<Part Ingot="Ingot_Aluminum" Quantity = "2"/>
-				<Part Ingot="Ingot_Copper" Quantity = "1"/>
-				<Part Ingot="Ingot_Steel" Quantity = "1"/>
+				<Part Component="Component_AluminumComponents" Quantity = "2"/>
+				<Part Component="Component_CopperComponents" Quantity = "1"/>
+				<Part Component="Component_SteelComponents" Quantity = "1"/>
 				<Part Component="Component_SteelRod" Quantity = "1"/>
 			</Cost>
 			<Level Level="2" /> 
@@ -504,18 +504,18 @@
 			<Part Component="Component_CoolingComponents" Quantity = "1"/>
 			<Part Component="Component_HydraulicMotor" Quantity = "1"/>
 			<Part Component="Component_ControlInterface" Quantity = "1"/>
-			<Part Ingot="Ingot_Steel" Quantity = "5"/>
-			<Part Ingot="Ingot_ChromeSteel" Quantity = "4"/>
-			<Part Ingot="Ingot_Aluminum" Quantity = "2"/>
+			<Part Component="Component_SteelComponents" Quantity = "5"/>
+			<Part Component="Component_ChromeSteelComponents" Quantity = "4"/>
+			<Part Component="Component_AluminumComponents" Quantity = "2"/>
 			<Part Component="Component_SteelRod" Quantity = "2"/>
 		</Recipe>
 		<BaseLevel Level="1" />
 		<Upgrades> 
 			<Cost>
 				<Part Component="Component_CoolingComponents" Quantity = "1"/>
-				<Part Ingot="Ingot_Steel" Quantity = "1"/>
-				<Part Ingot="Ingot_ChromeSteel" Quantity = "2"/>
-				<Part Ingot="Ingot_Aluminum" Quantity = "1"/>
+				<Part Component="Component_SteelComponents" Quantity = "1"/>
+				<Part Component="Component_ChromeSteelComponents" Quantity = "2"/>
+				<Part Component="Component_AluminumComponents" Quantity = "1"/>
 				<Part Component="Component_SteelRod" Quantity = "1"/>
 			</Cost>
 			<Level Level="2" /> 
@@ -527,23 +527,23 @@
 		<MachData Machine_Type="Machine_MetallurgicInfuser"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
 		<Recipe>
-			<Part Ingot="Ingot_Nickel" Quantity = "2"/>
+			<Part Component="Component_NickelComponents" Quantity = "2"/>
 			<Part Component="Component_TitaniumSteelElectrode" Quantity = "2"/>
 			<Part Component="Component_ChromeSteelTank" Quantity = "1"/>
 			<Part Component="Component_ControlInterface" Quantity = "2"/>
-			<Part Ingot="Ingot_Aluminum" Quantity = "5"/>
+			<Part Component="Component_AluminumComponents" Quantity = "5"/>
 			<Part Component="Component_CoolingComponents" Quantity = "1"/>
-			<Part Ingot="Ingot_Steel" Quantity = "1"/>
+			<Part Component="Component_SteelComponents" Quantity = "1"/>
 			<Part Component="Component_Motor" Quantity = "1"/>
 			<Part Component="Component_Ceramic" Quantity = "2"/>
 		</Recipe>
 		<BaseLevel Level="1" />
 		<Upgrades> 
 			<Cost>
-				<Part Ingot="Ingot_Nickel" Quantity = "1"/>
+				<Part Component="Component_NickelComponents" Quantity = "1"/>
 				<Part Component="Component_ChromeSteelTank" Quantity = "1"/>
-				<Part Ingot="Ingot_Aluminum" Quantity = "5"/>
-				<Part Ingot="Ingot_Steel" Quantity = "1"/>
+				<Part Component="Component_AluminumComponents" Quantity = "5"/>
+				<Part Component="Component_SteelComponents" Quantity = "1"/>
 				<Part Component="Component_Ceramic" Quantity = "2"/>
 			</Cost>
 			<Level Level="2" /> 
@@ -556,22 +556,22 @@
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
 		<Recipe>
 			<Part Component="Component_Motor" Quantity = "1"/>
-			<Part Ingot="Ingot_Tin" Quantity = "5"/>
-			<Part Ingot="Ingot_Titanium" Quantity = "1"/>
+			<Part Component="Component_TinComponents" Quantity = "5"/>
+			<Part Component="Component_TitaniumComponents" Quantity = "1"/>
 			<Part Component="Component_CoolingComponents" Quantity = "1"/>
 			<Part Component="Component_Gearbox" Quantity = "1"/>
 			<Part Component="Component_SteelRod" Quantity = "1"/>
 			<Part Component="Component_ControlInterface" Quantity = "1"/>
 			<Part Component="Component_MechanicalComponents" Quantity = "2"/>
-			<Part Ingot="Ingot_Iron" Quantity = "3"/>
+			<Part Component="Component_IronComponents" Quantity = "3"/>
 		</Recipe>
 		<BaseLevel Level="1" />
 		<Upgrades> 
 			<Cost>
-				<Part Ingot="Ingot_Tin" Quantity = "5"/>
+				<Part Component="Component_TinComponents" Quantity = "5"/>
 				<Part Component="Component_SteelRod" Quantity = "1"/>
 				<Part Component="Component_MechanicalComponents" Quantity = "2"/>
-				<Part Ingot="Ingot_Iron" Quantity = "1"/>
+				<Part Component="Component_IronComponents" Quantity = "1"/>
 			</Cost>
 			<Level Level="2" /> 
 			<Level Level="3" />
@@ -583,7 +583,7 @@
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
 		<Recipe>
 			<Part Component="Component_Motor" Quantity = "1"/>
-			<Part Ingot="Ingot_Aluminum" Quantity = "3"/>
+			<Part Component="Component_AluminumComponents" Quantity = "3"/>
 			<Part Component="Component_TinGuides" Quantity = "6"/>
 			<Part Component="Component_MechanicalComponents" Quantity = "2"/>
 			<Part Component="Component_ControlInterface" Quantity = "1"/>
@@ -610,8 +610,8 @@
 			<Part Component="Component_MechanicalComponents" Quantity = "4"/>
 			<Part Component="Component_TinGuides" Quantity = "4"/>
 			<Part Component="Component_ControlInterface" Quantity = "2"/>
-			<Part Ingot="Ingot_Aluminum" Quantity = "3"/>
-			<Part Ingot="Ingot_Cobalt" Quantity = "1"/>
+			<Part Component="Component_AluminumComponents" Quantity = "3"/>
+			<Part Component="Component_CobaltComponents" Quantity = "1"/>
 			<Part Component="Component_FiberglassInsulation" Quantity = "1"/>	
 			<Part Component="Component_Motor" Quantity = "2"/>
 			<Part Material="Material_Silicon" Quantity = "1"/>
@@ -621,7 +621,7 @@
 			<Cost>
 				<Part Component="Component_MechanicalComponents" Quantity = "1"/>
 				<Part Component="Component_TinGuides" Quantity = "2"/>
-				<Part Ingot="Ingot_Aluminum" Quantity = "1"/>
+				<Part Component="Component_AluminumComponents" Quantity = "1"/>
 				<Part Component="Component_FiberglassInsulation" Quantity = "0.5"/>	
 				<Part Material="Material_Silicon" Quantity = "1"/>
 			</Cost>
@@ -637,10 +637,10 @@
 			<Part Component="Component_MechanicalComponents" Quantity = "4"/>
 			<Part Component="Component_TinGuides" Quantity = "4"/>
 			<Part Component="Component_ControlInterface" Quantity = "2"/>
-			<Part Ingot="Ingot_Cobalt" Quantity = "1"/>
+			<Part Component="Component_CobaltComponents" Quantity = "1"/>
 			<Part Material="Material_Silicon" Quantity = "1"/>
 			<Part Component="Component_TitaniumSteelElectrode" Quantity = "1"/>
-			<Part Ingot="Ingot_Aluminum" Quantity = "4"/>
+			<Part Component="Component_AluminumComponents" Quantity = "4"/>
 			<Part Component="Component_HiTempChromePlate" Quantity = "1"/>	
 			<Part Component="Component_Motor" Quantity = "2"/>
 			<Part Component="Component_HeatingElement" Quantity = "1"/>
@@ -652,7 +652,7 @@
 				<Part Component="Component_MechanicalComponents" Quantity = "1"/>
 				<Part Component="Component_TinGuides" Quantity = "2"/>
 				<Part Material="Material_Silicon" Quantity = "1"/>
-				<Part Ingot="Ingot_Aluminum" Quantity = "1"/>
+				<Part Component="Component_AluminumComponents" Quantity = "1"/>
 				<Part Component="Component_HiTempChromePlate" Quantity = "0.5"/>	
 				<Part Component="Component_Glass" Quantity = "2"/>
 			</Cost>
@@ -668,12 +668,12 @@
 			<Part Component="Component_MechanicalComponents" Quantity = "4"/>
 			<Part Component="Component_TinGuides" Quantity = "4"/>
 			<Part Component="Component_ControlInterface" Quantity = "2"/>
-			<Part Ingot="Ingot_Cobalt" Quantity = "1"/>
+			<Part Component="Component_CobaltComponents" Quantity = "1"/>
 			<Part Material="Material_Silicon" Quantity = "1"/>
 			<Part Component="Component_HeatingElement" Quantity = "1"/>
 			<Part Component="Component_FiberglassInsulation" Quantity = "1"/>	
 			<Part Component="Component_Motor" Quantity = "2"/>
-			<Part Ingot="Ingot_Iron" Quantity = "5"/>
+			<Part Component="Component_IronComponents" Quantity = "5"/>
 		</Recipe>
 		<BaseLevel Level="1" />
 		<Upgrades> 
@@ -682,7 +682,7 @@
 				<Part Component="Component_TinGuides" Quantity = "4"/>
 				<Part Material="Material_Silicon" Quantity = "1"/>
 				<Part Component="Component_FiberglassInsulation" Quantity = "0.5"/>	
-				<Part Ingot="Ingot_Iron" Quantity = "1"/>
+				<Part Component="Component_IronComponents" Quantity = "1"/>
 			</Cost>
 			<Level Level="2" /> 
 			<Level Level="3" />
@@ -694,7 +694,7 @@
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
 		<Recipe>
 			<Part Component="Component_PlasticGuides" Quantity = "6"/>
-			<Part Ingot="Ingot_Iron" Quantity = "4"/>
+			<Part Component="Component_IronComponents" Quantity = "4"/>
 			<Part Component="Component_Pump" Quantity = "1"/>	
 			<Part Component="Component_CoolingComponents" Quantity = "1"/>
 			<Part Component="Component_Glass" Quantity = "4"/>
@@ -707,7 +707,7 @@
 		<Upgrades> 
 			<Cost>
 				<Part Component="Component_PlasticGuides" Quantity = "3"/>
-				<Part Ingot="Ingot_Iron" Quantity = "1"/>
+				<Part Component="Component_IronComponents" Quantity = "1"/>
 				<Part Component="Component_Glass" Quantity = "0.5"/>
 				<Part Component="Component_MechanicalComponents" Quantity = "1"/>
 				<Part Component="Component_HeatingElement" Quantity = "0.5"/>
@@ -722,11 +722,11 @@
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
 		<Recipe>
 			<Part Component="Component_BrassGuides" Quantity = "6"/>
-			<Part Ingot="Ingot_Cobalt" Quantity = "1"/>
+			<Part Component="Component_CobaltComponents" Quantity = "1"/>
 			<Part Component="Component_Glass" Quantity = "2"/>
-			<Part Ingot="Ingot_Aluminum" Quantity = "3"/>
+			<Part Component="Component_AluminumComponents" Quantity = "3"/>
 			<Part Component="Component_Motor" Quantity = "3"/>
-			<Part Ingot="Ingot_Steel" Quantity = "5"/>
+			<Part Component="Component_SteelComponents" Quantity = "5"/>
 			<Part Material="Material_Silicon" Quantity = "1"/>
 			<Part Component="Component_MechanicalComponents" Quantity = "2"/>
 			<Part Component="Component_ControlInterface" Quantity = "2"/>	
@@ -735,10 +735,10 @@
 		<Upgrades> 
 			<Cost>
 				<Part Component="Component_BrassGuides" Quantity = "3"/>
-				<Part Ingot="Ingot_Cobalt" Quantity = "1"/>
+				<Part Component="Component_CobaltComponents" Quantity = "1"/>
 				<Part Component="Component_Glass" Quantity = "1"/>
-				<Part Ingot="Ingot_Aluminum" Quantity = "1"/>
-				<Part Ingot="Ingot_Steel" Quantity = "1"/>
+				<Part Component="Component_AluminumComponents" Quantity = "1"/>
+				<Part Component="Component_SteelComponents" Quantity = "1"/>
 				<Part Material="Material_Silicon" Quantity = "1"/>
 				<Part Component="Component_MechanicalComponents" Quantity = "1"/>
 			</Cost>
@@ -756,9 +756,9 @@
 			<Part Component="Component_Pump" Quantity = "1"/>
 			<Part Component="Component_Motor" Quantity = "1"/>
 			<Part Component="Component_Ceramic" Quantity = "2"/>
-			<Part Ingot="Ingot_Steel" Quantity = "4"/>
+			<Part Component="Component_SteelComponents" Quantity = "4"/>
 			<Part Component="Component_ControlInterface" Quantity = "1"/>	
-			<Part Ingot="Ingot_Copper" Quantity = "2"/>
+			<Part Component="Component_CopperComponents" Quantity = "2"/>
 			<Part Component="Component_SteelHingeBearing" Quantity = "2"/>	
 			<Part Component="Component_SteelRod" Quantity = "2"/>	
 			<Part Component="Component_HiCapSteelTank" Quantity = "1"/>	
@@ -768,7 +768,7 @@
 			<Cost>
 				<Part Component="Component_IronPlating" Quantity = "2"/>
 				<Part Component="Component_Ceramic" Quantity = "2"/>
-				<Part Ingot="Ingot_Copper" Quantity = "2"/>
+				<Part Component="Component_CopperComponents" Quantity = "2"/>
 				<Part Component="Component_SteelRod" Quantity = "1"/>	
 				<Part Component="Component_HiCapSteelTank" Quantity = "1"/>	
 			</Cost>
@@ -782,24 +782,24 @@
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
 		<Recipe>
 			<Part Component="Component_Pump" Quantity = "2"/>
-			<Part Ingot="Ingot_Cobalt" Quantity = "1"/>
+			<Part Component="Component_CobaltComponents" Quantity = "1"/>
 			<Part Component="Component_SteelTank" Quantity = "2"/>	
 			<Part Component="Component_Motor" Quantity = "1"/>
 			<Part Component="Component_ControlInterface" Quantity = "1"/>	
-			<Part Ingot="Ingot_Aluminum" Quantity = "5"/>
+			<Part Component="Component_AluminumComponents" Quantity = "5"/>
 			<Part Component="Component_MechanicalComponents" Quantity = "1"/>	
 			<Part Component="Component_PressureValves" Quantity = "2"/>
-			<Part Ingot="Ingot_Steel" Quantity = "5"/>
+			<Part Component="Component_SteelComponents" Quantity = "5"/>
 			<Part Component="Component_Pump" Quantity = "2"/>	
 		</Recipe>
 		<BaseLevel Level="1" />
 		<Upgrades> 
 			<Cost>
-				<Part Ingot="Ingot_Cobalt" Quantity = "1"/>
+				<Part Component="Component_CobaltComponents" Quantity = "1"/>
 				<Part Component="Component_SteelTank" Quantity = "2"/>	
-				<Part Ingot="Ingot_Aluminum" Quantity = "5"/>
+				<Part Component="Component_AluminumComponents" Quantity = "5"/>
 				<Part Component="Component_MechanicalComponents" Quantity = "1"/>	
-				<Part Ingot="Ingot_Steel" Quantity = "1"/>
+				<Part Component="Component_SteelComponents" Quantity = "1"/>
 				<Part Component="Component_Pump" Quantity = "1"/>	
 			</Cost>
 			<Level Level="2" /> 
@@ -811,15 +811,15 @@
 		<MachData Machine_Type="Machine_EnrichmentChamber"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
 		<Recipe>
-			<Part Ingot="Ingot_Cobalt" Quantity = "2"/>
+			<Part Component="Component_CobaltComponents" Quantity = "2"/>
 			<Part Component="Component_SteelTank" Quantity = "2"/>	
 			<Part Component="Component_ControlInterface" Quantity = "2"/>	
 			<Part Component="Component_LeadPlating" Quantity = "4"/>
 			<Part Component="Component_PressureValves" Quantity = "2"/>
-			<Part Ingot="Ingot_Lead" Quantity = "2"/>
+			<Part Component="Component_LeadComponents" Quantity = "2"/>
 			<Part Component="Component_ParticleMembrane" Quantity = "2"/>
 			<Part Component="Component_Motor" Quantity = "1"/>	
-			<Part Ingot="Ingot_Steel" Quantity = "5"/>
+			<Part Component="Component_SteelComponents" Quantity = "5"/>
 			<Part Component="Component_CoolingComponents" Quantity = "2"/>	
 			<Part Component="Component_PressureVents" Quantity = "3"/>	
 			<Part Component="Component_Pump" Quantity = "2"/>	
@@ -827,12 +827,12 @@
 		<BaseLevel Level="1" />
 		<Upgrades> 
 			<Cost>
-				<Part Ingot="Ingot_Cobalt" Quantity = "1"/>
+				<Part Component="Component_CobaltComponents" Quantity = "1"/>
 				<Part Component="Component_SteelTank" Quantity = "1"/>	
 				<Part Component="Component_LeadPlating" Quantity = "1"/>
-				<Part Ingot="Ingot_Lead" Quantity = "2"/>
+				<Part Component="Component_LeadComponents" Quantity = "2"/>
 				<Part Component="Component_ParticleMembrane" Quantity = "2"/>
-				<Part Ingot="Ingot_Steel" Quantity = "1"/>
+				<Part Component="Component_SteelComponents" Quantity = "1"/>
 				<Part Component="Component_CoolingComponents" Quantity = "2"/>	
 				<Part Component="Component_PressureVents" Quantity = "1"/>	
 				<Part Component="Component_Pump" Quantity = "1"/>	
@@ -850,8 +850,8 @@
 			<Part Component="Component_HydraulicMotor" Quantity = "4"/>
 			<Part Component="Component_ControlInterface" Quantity = "1"/>	
 			<Part Component="Component_Motor" Quantity = "2"/>
-			<Part Ingot="Ingot_Steel" Quantity = "8"/>
-			<Part Ingot="Ingot_Iron" Quantity = "4"/>
+			<Part Component="Component_SteelComponents" Quantity = "8"/>
+			<Part Component="Component_IronComponents" Quantity = "4"/>
 			<Part Component="Component_Rubber" Quantity = "2"/>
 			<Part Component="Component_Gearbox" Quantity = "2"/>
 		</Recipe>
@@ -862,8 +862,8 @@
 				<Part Component="Component_HydraulicMotor" Quantity = "1"/>
 				<Part Component="Component_ControlInterface" Quantity = "1"/>	
 				<Part Component="Component_Motor" Quantity = "1"/>
-				<Part Ingot="Ingot_Steel" Quantity = "1"/>
-				<Part Ingot="Ingot_Iron" Quantity = "1"/>
+				<Part Component="Component_SteelComponents" Quantity = "1"/>
+				<Part Component="Component_IronComponents" Quantity = "1"/>
 				<Part Component="Component_Rubber" Quantity = "1"/>
 			</Cost>
 			<Level Level="2" /> 
@@ -883,7 +883,7 @@
 			<Part Component="Component_ControlInterface" Quantity = "1"/>	
 			<Part Component="Component_ParticleMembrane" Quantity = "4"/>
 			<Part Component="Component_Pump" Quantity = "2"/>
-			<Part Ingot="Ingot_Nickel" Quantity = "2"/>
+			<Part Component="Component_NickelComponents" Quantity = "2"/>
 		</Recipe>
 		<BaseLevel Level="1" />
 		<Upgrades> 
@@ -895,7 +895,7 @@
 				<Part Component="Component_HeavyPressureValves" Quantity = "1"/>
 				<Part Component="Component_ParticleMembrane" Quantity = "2"/>
 				<Part Component="Component_Pump" Quantity = "1"/>
-				<Part Ingot="Ingot_Nickel" Quantity = "1"/>
+				<Part Component="Component_NickelComponents" Quantity = "1"/>
 			</Cost>
 			<Level Level="2" /> 
 			<Level Level="3" />
@@ -913,10 +913,10 @@
 			<Part Component="Component_HiCapNiTiTank" Quantity = "2"/>	
 			<Part Component="Component_HeavyPressureValves" Quantity = "2"/>
 			<Part Component="Component_ControlInterface" Quantity = "2"/>
-			<Part Ingot="Ingot_Cobalt" Quantity = "2"/>
+			<Part Component="Component_CobaltComponents" Quantity = "2"/>
 			<Part Component="Component_Pump" Quantity = "2"/>
-			<Part Ingot="Ingot_Steel" Quantity = "5"/>
-			<Part Ingot="Ingot_Palladium" Quantity = "1"/>
+			<Part Component="Component_SteelComponents" Quantity = "5"/>
+			<Part Component="Component_PalladiumComponents" Quantity = "1"/>
 			<Part Component="Component_MechanicalComponents" Quantity = "1"/>
 			<Part Component="Component_ParticleMembrane" Quantity = "4"/>
 			<Part Component="Component_SuperHeatingElement" Quantity = "1"/>
@@ -928,10 +928,10 @@
 			<Cost>
 				<Part Component="Component_HiCapNiTiTank" Quantity = "2"/>	
 				<Part Component="Component_HeavyPressureValves" Quantity = "2"/>
-				<Part Ingot="Ingot_Cobalt" Quantity = "1"/>
+				<Part Component="Component_CobaltComponents" Quantity = "1"/>
 				<Part Component="Component_Pump" Quantity = "1"/>
-				<Part Ingot="Ingot_Steel" Quantity = "5"/>
-				<Part Ingot="Ingot_Palladium" Quantity = "0.5"/>
+				<Part Component="Component_SteelComponents" Quantity = "5"/>
+				<Part Component="Component_PalladiumComponents" Quantity = "0.5"/>
 				<Part Component="Component_MechanicalComponents" Quantity = "1"/>
 				<Part Component="Component_ParticleMembrane" Quantity = "2"/>
 				<Part Component="Component_SuperHeatingElement" Quantity = "0.5"/>
@@ -952,9 +952,9 @@
 			<Part Component="Component_ControlInterface" Quantity = "2"/>
 			<Part Component="Component_MechanicalComponents" Quantity = "2"/>
 			<Part Component="Component_Motor" Quantity = "2"/>
-			<Part Ingot="Ingot_Tin" Quantity = "4"/>
+			<Part Component="Component_TinComponents" Quantity = "4"/>
 			<Part Material="Material_Silicon" Quantity = "2"/>
-			<Part Ingot="Ingot_Palladium" Quantity = "1"/>
+			<Part Component="Component_PalladiumComponents" Quantity = "1"/>
 			<Part Component="Component_Pump" Quantity = "2"/>
 		</Recipe>
 		<BaseLevel Level="1" />
@@ -964,9 +964,9 @@
 				<Part Component="Component_HeavyPressureValves" Quantity = "1"/>
 				<Part Component="Component_MechanicalComponents" Quantity = "1"/>
 				<Part Component="Component_Motor" Quantity = "1"/>
-				<Part Ingot="Ingot_Tin" Quantity = "1"/>
+				<Part Component="Component_TinComponents" Quantity = "1"/>
 				<Part Material="Material_Silicon" Quantity = "1"/>
-				<Part Ingot="Ingot_Palladium" Quantity = "0.5"/>
+				<Part Component="Component_PalladiumComponents" Quantity = "0.5"/>
 				<Part Component="Component_Pump" Quantity = "1"/>
 			</Cost>
 			<Level Level="2" /> 
@@ -983,10 +983,10 @@
 			<Part Component="Component_ControlInterface" Quantity = "1"/>
 			<Part Component="Component_MechanicalComponents" Quantity = "3"/>
 			<Part Component="Component_Motor" Quantity = "2"/>
-			<Part Ingot="Ingot_Tin" Quantity = "4"/>
+			<Part Component="Component_TinComponents" Quantity = "4"/>
 			<Part Component="Component_Pump" Quantity = "3"/>
 			<Part Component="Component_ParticleMembrane" Quantity = "2"/>
-			<Part Ingot="Ingot_Invar" Quantity = "2"/>
+			<Part Component="Component_InvarComponents" Quantity = "2"/>
 		</Recipe>
 		<BaseLevel Level="1" />
 		<Upgrades> 
@@ -995,10 +995,10 @@
 				<Part Component="Component_HeavyPressureValves" Quantity = "1"/>
 				<Part Component="Component_MechanicalComponents" Quantity = "1"/>
 				<Part Component="Component_Motor" Quantity = "1"/>
-				<Part Ingot="Ingot_Tin" Quantity = "1"/>
+				<Part Component="Component_TinComponents" Quantity = "1"/>
 				<Part Component="Component_Pump" Quantity = "1"/>
 				<Part Component="Component_ParticleMembrane" Quantity = "1"/>
-				<Part Ingot="Ingot_Invar" Quantity = "1"/>
+				<Part Component="Component_InvarComponents" Quantity = "1"/>
 			</Cost>
 			<Level Level="2" /> 
 			<Level Level="3" />
@@ -1015,12 +1015,12 @@
 			<Part Component="Component_ParticleMembrane" Quantity = "4"/>
 			<Part Component="Component_MechanicalComponents" Quantity = "2"/>
 			<Part Component="Component_PressureValves" Quantity = "3"/>
-			<Part Ingot="Ingot_Aluminum" Quantity = "3"/>
-			<Part Ingot="Ingot_Iron" Quantity = "3"/>
+			<Part Component="Component_AluminumComponents" Quantity = "3"/>
+			<Part Component="Component_IronComponents" Quantity = "3"/>
 			<Part Component="Component_HeatingElement" Quantity = "2"/>
-			<Part Ingot="Ingot_Nickel" Quantity = "2"/>
+			<Part Component="Component_NickelComponents" Quantity = "2"/>
 			<Part Component="Component_TitaniumSteelElectrode" Quantity = "2"/>
-			<Part Ingot="Ingot_Palladium" Quantity = "1"/>
+			<Part Component="Component_PalladiumComponents" Quantity = "1"/>
 		</Recipe>
 		<BaseLevel Level="1" />
 		<Upgrades> 
@@ -1030,9 +1030,9 @@
 				<Part Component="Component_ParticleMembrane" Quantity = "2"/>
 				<Part Component="Component_MechanicalComponents" Quantity = "1"/>
 				<Part Component="Component_PressureValves" Quantity = "1"/>
-				<Part Ingot="Ingot_Aluminum" Quantity = "1"/>
-				<Part Ingot="Ingot_Iron" Quantity = "1"/>
-				<Part Ingot="Ingot_Nickel" Quantity = "1"/>
+				<Part Component="Component_AluminumComponents" Quantity = "1"/>
+				<Part Component="Component_IronComponents" Quantity = "1"/>
+				<Part Component="Component_NickelComponents" Quantity = "1"/>
 			</Cost>
 			<Level Level="2" /> 
 			<Level Level="3" />
@@ -1049,9 +1049,9 @@
 			<Part Component="Component_Pump" Quantity = "2"/>
 			<Part Component="Component_ParticleMembrane" Quantity = "3"/>	
 			<Part Component="Component_PressureValves" Quantity = "2"/>
-			<Part Ingot="Ingot_Invar" Quantity = "2"/>
-			<Part Ingot="Ingot_Iron" Quantity = "4"/>
-			<Part Ingot="Ingot_Cobalt" Quantity = "1"/>
+			<Part Component="Component_InvarComponents" Quantity = "2"/>
+			<Part Component="Component_IronComponents" Quantity = "4"/>
+			<Part Component="Component_CobaltComponents" Quantity = "1"/>
 		</Recipe>
 		<BaseLevel Level="1" />
 		<Upgrades> 
@@ -1061,9 +1061,9 @@
 				<Part Component="Component_Pump" Quantity = "1"/>
 				<Part Component="Component_ParticleMembrane" Quantity = "2"/>	
 				<Part Component="Component_PressureValves" Quantity = "1"/>
-				<Part Ingot="Ingot_Invar" Quantity = "1"/>
-				<Part Ingot="Ingot_Iron" Quantity = "1"/>
-				<Part Ingot="Ingot_Cobalt" Quantity = "1"/>
+				<Part Component="Component_InvarComponents" Quantity = "1"/>
+				<Part Component="Component_IronComponents" Quantity = "1"/>
+				<Part Component="Component_CobaltComponents" Quantity = "1"/>
 			</Cost>
 			<Level Level="2" /> 
 			<Level Level="3" />
@@ -1076,23 +1076,23 @@
 		<Recipe>
 			<Part Component="Component_ChromeSteelTank" Quantity = "2"/>
 			<Part Component="Component_ControlInterface" Quantity = "2"/>
-			<Part Ingot="Ingot_Nickel" Quantity = "2"/>
+			<Part Component="Component_NickelComponents" Quantity = "2"/>
 			<Part Component="Component_PressureValves" Quantity = "3"/>
 			<Part Component="Component_Pump" Quantity = "3"/>
 			<Part Component="Component_ParticleMembrane" Quantity = "4"/>
-			<Part Ingot="Ingot_Iron" Quantity = "3"/>
-			<Part Ingot="Ingot_Tin" Quantity = "3"/>
+			<Part Component="Component_IronComponents" Quantity = "3"/>
+			<Part Component="Component_TinComponents" Quantity = "3"/>
 		</Recipe>
 		<BaseLevel Level="1" />
 		<Upgrades> 
 			<Cost>
 				<Part Component="Component_ChromeSteelTank" Quantity = "1"/>
-				<Part Ingot="Ingot_Nickel" Quantity = "1"/>
+				<Part Component="Component_NickelComponents" Quantity = "1"/>
 				<Part Component="Component_PressureValves" Quantity = "1"/>
 				<Part Component="Component_Pump" Quantity = "1"/>
 				<Part Component="Component_ParticleMembrane" Quantity = "2"/>
-				<Part Ingot="Ingot_Iron" Quantity = "1"/>
-				<Part Ingot="Ingot_Tin" Quantity = "1"/>
+				<Part Component="Component_IronComponents" Quantity = "1"/>
+				<Part Component="Component_TinComponents" Quantity = "1"/>
 			</Cost>
 			<Level Level="2" /> 
 			<Level Level="3" />
@@ -1108,7 +1108,7 @@
 			<Part Component="Component_Motor" Quantity = "2"/>
 			<Part Component="Component_Pump" Quantity = "2"/>
 			<Part Component="Component_HiCapSteelTank" Quantity = "2"/>
-			<Part Ingot="Ingot_Nickel" Quantity = "2"/>
+			<Part Component="Component_NickelComponents" Quantity = "2"/>
 			<Part Component="Component_HeatingElement" Quantity = "2"/>
 			<Part Component="Component_LiquidCoolingComponents" Quantity = "1"/>
 			<Part Component="Component_PressureVents" Quantity = "1"/>
@@ -1120,7 +1120,7 @@
 				<Part Component="Component_Motor" Quantity = "1"/>
 				<Part Component="Component_Pump" Quantity = "1"/>
 				<Part Component="Component_HiCapSteelTank" Quantity = "2"/>
-				<Part Ingot="Ingot_Nickel" Quantity = "2"/>
+				<Part Component="Component_NickelComponents" Quantity = "2"/>
 				<Part Component="Component_HeatingElement" Quantity = "1"/>
 				<Part Component="Component_LiquidCoolingComponents" Quantity = "1"/>
 				<Part Component="Component_PressureVents" Quantity = "1"/>
@@ -1136,20 +1136,20 @@
 		<Recipe>
 			<Part Component="Component_ControlInterface" Quantity = "3"/>
 			<Part Component="Component_LiquidCoolingComponents" Quantity = "2"/>
-			<Part Ingot="Ingot_Lead" Quantity = "4"/>
-			<Part Ingot="Ingot_Steel" Quantity = "5"/>
+			<Part Component="Component_LeadComponents" Quantity = "4"/>
+			<Part Component="Component_SteelComponents" Quantity = "5"/>
 			<Part Component="Component_NiTiTank" Quantity = "2"/>
 			<Part Component="Component_ParticleMembrane" Quantity = "2"/>
 			<Part Component="Component_NeutronGenerator" Quantity = "1"/>
 			<Part Component="Component_LeadPlating" Quantity = "4"/>
-			<Part Ingot="Ingot_Iridium" Quantity = "0.5"/>
+			<Part Component="Component_IridiumComponents" Quantity = "1"/>
 		</Recipe>
 		<BaseLevel Level="1" />
 		<Upgrades> 
 			<Cost>
 				<Part Component="Component_LiquidCoolingComponents" Quantity = "0.5"/>
-				<Part Ingot="Ingot_Lead" Quantity = "1"/>
-				<Part Ingot="Ingot_Steel" Quantity = "1"/>
+				<Part Component="Component_LeadComponents" Quantity = "1"/>
+				<Part Component="Component_SteelComponents" Quantity = "1"/>
 				<Part Component="Component_NiTiTank" Quantity = "1"/>
 				<Part Component="Component_ParticleMembrane" Quantity = "1"/>
 				<Part Component="Component_NeutronGenerator" Quantity = "0.5"/>
@@ -1169,7 +1169,7 @@
 			<Part Component="Component_CompressionCylinder" Quantity = "2"/>
 			<Part Component="Component_PressureVents" Quantity = "2"/>
 			<Part Component="Component_Pump" Quantity = "3"/>
-			<Part Ingot="Ingot_Steel" Quantity = "5"/>
+			<Part Component="Component_SteelComponents" Quantity = "5"/>
 			<Part Component="Component_HiCapSteelTank" Quantity = "3"/>
 		</Recipe>
 		<BaseLevel Level="1" />
@@ -1179,7 +1179,7 @@
 				<Part Component="Component_CompressionCylinder" Quantity = "1"/>
 				<Part Component="Component_PressureVents" Quantity = "1"/>
 				<Part Component="Component_Pump" Quantity = "1"/>
-				<Part Ingot="Ingot_Steel" Quantity = "1"/>
+				<Part Component="Component_SteelComponents" Quantity = "1"/>
 				<Part Component="Component_HiCapSteelTank" Quantity = "1"/>
 			</Cost>
 			<Level Level="2" /> 
@@ -1196,7 +1196,7 @@
 			<Part Component="Component_Motor" Quantity = "2"/>
 			<Part Component="Component_Pump" Quantity = "2"/>
 			<Part Component="Component_CompressionCylinder" Quantity = "2"/>
-			<Part Ingot="Ingot_Iron" Quantity = "4"/>
+			<Part Component="Component_IronComponents" Quantity = "4"/>
 			<Part Component="Component_Plastic" Quantity = "4"/>
 			<Part Component="Component_SteelTank" Quantity = "1"/>
 		</Recipe>
@@ -1223,9 +1223,9 @@
 			<Part Component="Component_SuperHeatingElement" Quantity = "1"/>
 			<Part Component="Component_Motor" Quantity = "2"/>
 			<Part Component="Component_TitaniumTank" Quantity = "1"/>
-			<Part Ingot="Ingot_Nickel" Quantity = "3"/>
+			<Part Component="Component_NickelComponents" Quantity = "3"/>
 			<Part Component="Component_LeadPlating" Quantity = "4"/>
-			<Part Ingot="Ingot_Palladium" Quantity = "1"/>
+			<Part Component="Component_PalladiumComponents" Quantity = "1"/>
 			<Part Component="Component_HeavyPressureValves" Quantity = "2"/>
 		</Recipe>
 		<BaseLevel Level="1" />
@@ -1233,9 +1233,9 @@
 			<Cost>
 			<Part Component="Component_SuperHeatingElement" Quantity = "1"/>
 				<Part Component="Component_TitaniumTank" Quantity = "0.5"/>
-				<Part Ingot="Ingot_Nickel" Quantity = "1"/>
+				<Part Component="Component_NickelComponents" Quantity = "1"/>
 				<Part Component="Component_LeadPlating" Quantity = "1"/>
-				<Part Ingot="Ingot_Palladium" Quantity = "0.5"/>
+				<Part Component="Component_PalladiumComponents" Quantity = "0.5"/>
 				<Part Component="Component_HeavyPressureValves" Quantity = "1"/>
 			</Cost>
 			<Level Level="2" /> 
@@ -1249,21 +1249,21 @@
 		<Recipe>
 			<Part Component="Component_ControlInterface" Quantity = "3"/>
 			<Part Component="Component_LeadPlating" Quantity = "4"/>
-			<Part Ingot="Ingot_Lead" Quantity = "4"/>
+			<Part Component="Component_LeadComponents" Quantity = "4"/>
 			<Part Component="Component_Motor" Quantity = "1"/>
-			<Part Ingot="Ingot_Platinum" Quantity = "1"/>
-			<Part Ingot="Ingot_Nickel" Quantity = "4"/>
-			<Part Ingot="Ingot_Steel" Quantity = "4"/>
+			<Part Component="Component_PlatinumComponents" Quantity = "1"/>
+			<Part Component="Component_NickelComponents" Quantity = "4"/>
+			<Part Component="Component_SteelComponents" Quantity = "4"/>
 			<Part Component="Component_CoolingComponents" Quantity = "2"/>
 		</Recipe>
 		<BaseLevel Level="1" />
 		<Upgrades> 
 			<Cost>
 				<Part Component="Component_LeadPlating" Quantity = "1"/>
-				<Part Ingot="Ingot_Lead" Quantity = "1"/>
-				<Part Ingot="Ingot_Platinum" Quantity = "0.5"/>
-				<Part Ingot="Ingot_Nickel" Quantity = "1"/>
-				<Part Ingot="Ingot_Steel" Quantity = "1"/>
+				<Part Component="Component_LeadComponents" Quantity = "1"/>
+				<Part Component="Component_PlatinumComponents" Quantity = "0.5"/>
+				<Part Component="Component_NickelComponents" Quantity = "1"/>
+				<Part Component="Component_SteelComponents" Quantity = "1"/>
 				<Part Component="Component_CoolingComponents" Quantity = "2"/>
 			</Cost>
 			<Level Level="2" /> 
@@ -1279,9 +1279,9 @@
 			<Part Component="Component_Motor" Quantity = "2"/>
 			<Part Component="Component_Pump" Quantity = "2"/>
 			<Part Component="Component_LiquidCoolingComponents" Quantity = "4"/>
-			<Part Ingot="Ingot_Nickel" Quantity = "1"/>
+			<Part Component="Component_NickelComponents" Quantity = "1"/>
 			<Part Component="Component_NiTiTank" Quantity = "1"/>
-			<Part Ingot="Ingot_Platinum" Quantity = "1"/>
+			<Part Component="Component_PlatinumComponents" Quantity = "1"/>
 		</Recipe>
 		<BaseLevel Level="1" />
 		<Upgrades> 
@@ -1290,9 +1290,9 @@
 				<Part Component="Component_Motor" Quantity = "1"/>
 				<Part Component="Component_Pump" Quantity = "1"/>
 				<Part Component="Component_LiquidCoolingComponents" Quantity = "2"/>
-				<Part Ingot="Ingot_Nickel" Quantity = "1"/>
+				<Part Component="Component_NickelComponents" Quantity = "1"/>
 				<Part Component="Component_NiTiTank" Quantity = "0.5"/>
-				<Part Ingot="Ingot_Platinum" Quantity = "0.5"/>
+				<Part Component="Component_PlatinumComponents" Quantity = "0.5"/>
 			</Cost>
 			<Level Level="2" /> 
 			<Level Level="3" />
@@ -1305,9 +1305,9 @@
 		<Recipe>
 			<Part Component="Component_ControlInterface" Quantity = "2"/>
 			<Part Component="Component_LeadPlating" Quantity = "4"/>
-			<Part Ingot="Ingot_Lead" Quantity = "4"/>
+			<Part Component="Component_LeadComponents" Quantity = "4"/>
 			<Part Component="Component_Pump" Quantity = "1"/>
-			<Part Ingot="Ingot_Steel" Quantity = "4"/>
+			<Part Component="Component_SteelComponents" Quantity = "4"/>
 			<Part Component="Component_SuperHeatingElement" Quantity = "1"/>
 			<Part Component="Component_LiquidCoolingComponents" Quantity = "1"/>
 		</Recipe>
@@ -1315,7 +1315,7 @@
 		<Upgrades> 
 			<Cost>
 				<Part Component="Component_LeadPlating" Quantity = "1"/>
-				<Part Ingot="Ingot_Lead" Quantity = "1"/>
+				<Part Component="Component_LeadComponents" Quantity = "1"/>
 				<Part Component="Component_SuperHeatingElement" Quantity = "1"/>
 				<Part Component="Component_LiquidCoolingComponents" Quantity = "1"/>
 			</Cost>
@@ -1332,7 +1332,7 @@
 			<Part Component="Component_CoolingComponents" Quantity = "1"/>
 			<Part Component="Component_GeigerCounter" Quantity = "1"/>
 			<Part Component="Component_IronRod" Quantity = "8"/>
-			<Part Ingot="Ingot_Aluminum" Quantity = "4"/>
+			<Part Component="Component_AluminumComponents" Quantity = "4"/>
 			<Part Component="Component_CultureCell" Quantity = "8"/>
 			<Part Component="Component_JettisonBolts" Quantity = "8"/>
 		</Recipe>
@@ -1341,7 +1341,7 @@
 			<Cost>
 				<Part Component="Component_CoolingComponents" Quantity = "1"/>
 				<Part Component="Component_IronRod" Quantity = "8"/>
-				<Part Ingot="Ingot_Aluminum" Quantity = "4"/>
+				<Part Component="Component_AluminumComponents" Quantity = "4"/>
 				<Part Component="Component_CultureCell" Quantity = "8"/>
 				<Part Component="Component_JettisonBolts" Quantity = "8"/>
 			</Cost>
@@ -1356,8 +1356,8 @@
 		<Recipe>
 			<Part Component="Component_ControlInterface" Quantity = "1"/>
 			<Part Component="Component_HeatingElement" Quantity = "2"/>
-			<Part Ingot="Ingot_Copper" Quantity = "4"/>
-			<Part Ingot="Ingot_Iron" Quantity = "4"/>
+			<Part Component="Component_CopperComponents" Quantity = "4"/>
+			<Part Component="Component_IronComponents" Quantity = "4"/>
 			<Part Component="Component_CoolingComponents" Quantity = "1"/>
 			<Part Component="Component_Ceramic" Quantity = "2"/>
 		</Recipe>
@@ -1365,8 +1365,8 @@
 		<Upgrades> 
 			<Cost>
 				<Part Component="Component_HeatingElement" Quantity = "1"/>
-				<Part Ingot="Ingot_Copper" Quantity = "1"/>
-				<Part Ingot="Ingot_Iron" Quantity = "1"/>
+				<Part Component="Component_CopperComponents" Quantity = "1"/>
+				<Part Component="Component_IronComponents" Quantity = "1"/>
 				<Part Component="Component_CoolingComponents" Quantity = "0.5"/>
 				<Part Component="Component_Ceramic" Quantity = "1"/>
 			</Cost>
@@ -1454,7 +1454,7 @@
 			<Part Component="Component_Pump" Quantity = "2"/>
 			<Part Component="Component_MechanicalComponents" Quantity = "2"/>
 			<Part Component="Component_LiquidCoolingComponents" Quantity = "1"/>
-			<Part Ingot="Ingot_Steel" Quantity = "4"/>
+			<Part Component="Component_SteelComponents" Quantity = "4"/>
 			<Part Component="Component_HiCapSteelTank" Quantity = "2"/>
 		</Recipe>
 		<BaseLevel Level="1" />
@@ -1465,7 +1465,7 @@
 				<Part Component="Component_Pump" Quantity = "2"/>
 				<Part Component="Component_MechanicalComponents" Quantity = "1"/>
 				<Part Component="Component_LiquidCoolingComponents" Quantity = "1"/>
-				<Part Ingot="Ingot_Steel" Quantity = "1"/>
+				<Part Component="Component_SteelComponents" Quantity = "1"/>
 				<Part Component="Component_HiCapSteelTank" Quantity = "1"/>
 			</Cost>
 			<Level Level="2" /> 
@@ -1508,13 +1508,13 @@
 			<Part Component="Component_ElectronicsComponents" Quantity = "3"/>
 			<!--Component or machine?-->
 			<Part Component="Component_Lidar" Quantity = "1"/>
-			<Part Ingot="Ingot_Tin" Quantity = "2"/>
+			<Part Component="Component_TinComponents" Quantity = "2"/>
 		</Recipe>
 		<BaseLevel Level="1" />
 		<Upgrades> 
 			<Cost>
 				<Part Component="Component_ElectronicsComponents" Quantity = "1"/>
-				<Part Ingot="Ingot_Tin" Quantity = "1"/>
+				<Part Component="Component_TinComponents" Quantity = "1"/>
 			</Cost>
 			<Level Level="2" /> 
 			<Level Level="3" />
@@ -1545,14 +1545,14 @@
 			<Part Component="Component_ControlInterface" Quantity = "2"/>
 			<Part Component="Component_ElectronicsComponents" Quantity = "4"/>
 			<Part Component="Component_SmallGunMountingBracket" Quantity = "1"/>
-			<Part Ingot="Ingot_Steel" Quantity = "4"/>
+			<Part Component="Component_SteelComponents" Quantity = "4"/>
 		</Recipe>
 		<BaseLevel Level="1" />
 		<Upgrades> 
 			<Cost>
 				<Part Component="Component_ElectronicsComponents" Quantity = "2"/>
 				<Part Component="Component_SmallGunMountingBracket" Quantity = "1"/>
-				<Part Ingot="Ingot_Steel" Quantity = "2"/>
+				<Part Component="Component_SteelComponents" Quantity = "2"/>
 			</Cost>
 			<Level Level="2" /> 
 		</Upgrades>

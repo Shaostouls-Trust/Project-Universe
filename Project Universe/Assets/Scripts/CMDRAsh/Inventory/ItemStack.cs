@@ -27,12 +27,17 @@ public class ItemStack : MonoBehaviour
             for (int i = 0; i < lastIndex; i++)
             {
                 ore = (Consumable_Ore)TArray.GetValue(i);
-                assembly += "\n::" + ore.ToString();
+                assembly += "\n :" + ore.ToString();
             }
         }
         else if(_originalType == typeof(Consumable_Ingot))
         {
-
+            Consumable_Ingot ingot;
+            for(int i = 0; i < lastIndex; i++)
+            {
+                ingot = (Consumable_Ingot)TArray.GetValue(i);
+                assembly += "\n"+i+": "+ ingot.ToString();
+            }
         }
         else if (_originalType == typeof(Consumable_Material))
         {
@@ -91,20 +96,20 @@ public class ItemStack : MonoBehaviour
 
     public void AddItem(Consumable_Ore ore)
     {
-        Debug.Log("Adding ore...");
-        itemCount += ore.GetOreQuantity();//add the mass of the ore
+        //Debug.Log("Adding ore...");
+        itemCount += ore.GetOreQuantity();
         TArray.SetValue(ore, lastIndex++);
     }
     public void AddItem(Consumable_Ingot ingot)
     {
-        Debug.Log("Adding ingot...");
-        itemCount++;
+        //Debug.Log("Adding ingot...");
+        itemCount += ingot.GetIngotMass();
         TArray.SetValue(ingot, lastIndex++);
     }
     public void AddItem(Consumable_Material material)
     {
-        Debug.Log("Adding mat...");
-        itemCount++;
+        //Debug.Log("Adding mat...");
+        itemCount += material.GetMaterialMass();
         TArray.SetValue(material, lastIndex++);
     }
 
@@ -142,8 +147,10 @@ public class ItemStack : MonoBehaviour
     /// <returns>The stack of removed items</returns>
     public ItemStack RemoveItemData(float amountToRemove)
     {
+        if (amountToRemove < 0) { amountToRemove *= -1; }
         ItemStack returnStack;
         //itemCount is the total amount in all indicies.
+        Debug.Log("amountToRemove: "+amountToRemove);
         if (itemCount - amountToRemove > 0)
         {
             itemCount -= amountToRemove;
@@ -156,7 +163,7 @@ public class ItemStack : MonoBehaviour
             Debug.Log("all taken");
         }
         float runningAmount = 0.0f;
-        returnStack = new ItemStack(itemType, 100, _originalType);//create a standard sizzed container
+        returnStack = new ItemStack(itemType, 100, _originalType);//create a standard sized container
         for (int i = TArray.Length - 1; i >= 0; i--)
         {
             ///
@@ -218,7 +225,8 @@ public class ItemStack : MonoBehaviour
                     TArray.SetValue(null, i);//empty the TArray. May just need to create a new one.
                     lastIndex -= 1;
                     Debug.Log("Added: " + tempIng.ToString());
-                    amountToRemove--;
+                    //subtract the mass of the ingot, because the max value is mass not quantity.
+                    amountToRemove-=tempIng.GetIngotMass();
                 }   
             }
             ///
@@ -320,9 +328,14 @@ public class ItemStack : MonoBehaviour
                 //set the larger array as TArray
                 TArray = newArray;
             }
+            //Debug.Log("itemstack Lmax: "+itemstack.Length());
+            //Debug.Log("itemstack Lreal: "+ itemstack.GetRealLength());
+            Debug.Log(TArray.GetHashCode()+" v "+itemstack.GetItemArray().GetHashCode());
             for (int j = 0; j < itemstack.Length(); j++)
             {
                 //add every value in itemstack to TArray sequentially using lastIndex as the insertion point
+                //Debug.Log(j +" "+lastIndex);
+                //Debug.Log("Lreal: " + itemstack.GetRealLength());
                 TArray.SetValue(itemstack.GetItemArray().GetValue(j), lastIndex++);
             }
             if (itemCount > maxCount)
@@ -331,7 +344,8 @@ public class ItemStack : MonoBehaviour
                 //create a spillover itemstack that is as large as the surcharge
                 ItemStack overflowStack;// = new ItemStack(itemstack.GetStackType(), tempCap - maxCount, itemstack.GetOriginalType());
                 Debug.Log("Remove and add the surcharge to overflow");
-                //Remove the surcharge from the itemstack and put it into the overflow stack
+            //Remove the surcharge from the itemstack and put it into the overflow stack
+            Debug.Log("tempCap - maxCount:"+ (tempCap - maxCount));
                 overflowStack = RemoveItemData(tempCap - maxCount);
                 Debug.Log("Returning overflow: " + overflowStack.ToString());
                 return overflowStack;
@@ -351,23 +365,45 @@ public class ItemStack : MonoBehaviour
 
     public bool CompareMetaData(ItemStack comparee)//Type typePram
     {
+        Debug.Log(GetStackType() + " v " + comparee.GetStackType());
         if(GetStackType() == comparee.GetStackType())
         {
             if(_originalType == typeof(Consumable_Ore))//typePram
             {
-                Debug.Log("comparing meta...");
+                Debug.Log("comparing ore meta...");
                 ///
                 /// MIGHT MAKE IT SO THAT ORE ZONE AND QUALITY ARE 'HIDDEN' FROM META COMPS,
                 /// TO AVOID NEEDING AN ITEMSTACK FOR EVERY DIFFERENT ZONE/QUALITY COMBO
                 ///
                 Consumable_Ore compOre = comparee.TArray.GetValue(0) as Consumable_Ore;
                 Consumable_Ore oordOre = TArray.GetValue(0) as Consumable_Ore;
-                Debug.Log(compOre.ToString());
+                //Debug.Log(compOre.ToString());
                 if (oordOre.CompareMetaData(compOre))
                 {
                     return true;
                 }
                 Debug.Log("ItemStacks not equal");
+            }
+            else if(_originalType == typeof(Consumable_Ingot))
+            {
+                Debug.Log("comparing ingot meta...");
+                Consumable_Ingot compIng = comparee.TArray.GetValue(0) as Consumable_Ingot;
+                Consumable_Ingot oordIng = TArray.GetValue(0) as Consumable_Ingot;
+                //Only type and quality are checked. Mass and impurities are allowed to varry.
+                if (oordIng.CompareMetaData(compIng))
+                {
+                    Debug.Log("Itemstacks ARE EQUAL");
+                    return true;
+                }
+                Debug.Log("ItemStacks not equal");
+            }
+            else if(_originalType == typeof(Consumable_Material))
+            {
+
+            }
+            else if(_originalType == typeof(Consumable_Component))
+            {
+
             }
         }
         Debug.Log("Types not equal");
@@ -376,16 +412,50 @@ public class ItemStack : MonoBehaviour
    
     public int Length()
     {
-        /*
-       float size = 0.0f;
-       //itemData length is the summation of the counts of the itemData items
-       for(int i = 0; i < ItemData.Count; i++)
-       {
-           size += ItemData[i].GetComponent<Consumable_Ore>().GetOreQuantity();
-       }
-       return (int)size;
-       */
-        return TArray.Length;
+        float size = 0.0f;
+        for (int i = 0; i < TArray.Length; i++)
+        {
+            if(TArray.GetValue(i) != null)
+            {
+                size = i+1;
+            }
+        }
+        return (int)size;
+        //return TArray.Length;
+    }
+
+    public int GetRealLength()
+    {
+        float size = 0;
+        //itemData length is the summation of the counts of the itemData items
+        for (int i = 0; i < TArray.Length; i++)
+        {
+            if(TArray.GetValue(i) != null)
+            {
+                float mass = 0f;
+                if(_originalType == typeof(Consumable_Ingot)){
+                    Consumable_Ingot ingot = TArray.GetValue(i) as Consumable_Ingot;
+                    mass = ingot.GetIngotMass();
+                }
+                else if (_originalType == typeof(Consumable_Ore))
+                {
+                    Consumable_Ore ore = TArray.GetValue(i) as Consumable_Ore;
+                    mass = ore.GetOreMass();
+                }
+                else if (_originalType == typeof(Consumable_Material))
+                {
+                    Consumable_Material mat = TArray.GetValue(i) as Consumable_Material;
+                    mass = mat.GetMaterialMass();
+                }
+                else if (_originalType == typeof(Consumable_Component))
+                {
+                    Consumable_Component com = TArray.GetValue(i) as Consumable_Component;
+                    mass = com.GetQuantity();
+                }
+                size += mass;
+            }
+        }
+        return (int)size;
     }
 
     public float Size()

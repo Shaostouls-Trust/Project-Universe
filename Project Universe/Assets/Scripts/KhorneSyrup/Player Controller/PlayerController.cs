@@ -123,8 +123,8 @@ namespace ProjectUniverseData.PlayerController
                 cameraLocked = !cameraLocked;
             }
             if (Input.GetButtonDown(openInventoryInputName))
-                {
-                guiController.OpenWindow(0);
+            {
+                //guiController.OpenWindow(0);
             }
             if (Input.GetButtonDown(openMapInputName))
             {

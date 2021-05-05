@@ -49,6 +49,14 @@
 		</Recipe>
 	</Component>
 	<Component>
+		<CompData Component_Type="Component_AluminumComponents" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Recipe>
+			<Part Ingot="Ingot_Aluminum" Quantity = "1"/>
+		</Recipe>
+	</Component>
+	<Component>
 		<CompData Component_Type="Component_Adapter" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
@@ -70,6 +78,14 @@
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
+		</Recipe>
+	</Component>
+	<Component>
+		<CompData Component_Type="Component_BrassComponents" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Recipe>
+			<Part Ingot="Ingot_Brass" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -129,11 +145,35 @@
 		</Recipe>
 	</Component>
 	<Component>
+		<CompData Component_Type="Component_ChromeComponents" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Recipe>
+			<Part Ingot="Ingot_Chromium" Quantity = "1"/>
+		</Recipe>
+	</Component>
+	<Component>
+		<CompData Component_Type="Component_CobaltComponents" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Recipe>
+			<Part Ingot="Ingot_Cobalt" Quantity = "1"/>
+		</Recipe>
+	</Component>
+	<Component>
 		<CompData Component_Type="Component_CopperPlating" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
+		</Recipe>
+	</Component>
+	<Component>
+		<CompData Component_Type="Component_CopperComponents" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Recipe>
+			<Part Ingot="Ingot_Copper" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -297,6 +337,14 @@
 		</Recipe>
 	</Component>
 	<Component>
+		<CompData Component_Type="Component_GoldComponents" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Recipe>
+			<Part Ingot="Ingot_Gold" Quantity = "1"/>
+		</Recipe>
+	</Component>
+	<Component>
 		<CompData Component_Type="Component_GraphenePlates" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
@@ -401,6 +449,22 @@
 		</Recipe>
 	</Component>
 	<Component>
+		<CompData Component_Type="Component_IridiumComponents" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Recipe>
+			<Part Ingot="Ingot_Iridium" Quantity = "1"/>
+		</Recipe>
+	</Component>
+	<Component>
+		<CompData Component_Type="Component_IronComponents" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Recipe>
+			<Part Ingot="Ingot_Iron" Quantity = "1"/>
+		</Recipe>
+	</Component>
+	<Component>
 		<CompData Component_Type="Component_IronRod" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
@@ -414,6 +478,14 @@
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
+		</Recipe>
+	</Component>
+	<Component>
+		<CompData Component_Type="Component_InvarComponents" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Recipe>
+			<Part Ingot="Ingot_Invar" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -446,6 +518,14 @@
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
+		</Recipe>
+	</Component>
+	<Component>
+		<CompData Component_Type="Component_LeadComponents" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Recipe>
+			<Part Ingot="Ingot_Lead" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -513,6 +593,14 @@
 		</Recipe>
 	</Component>
 	<Component>
+		<CompData Component_Type="Component_NickelComponents" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Recipe>
+			<Part Ingot="Ingot_Nickel" Quantity = "1"/>
+		</Recipe>
+	</Component>
+	<Component>
 		<CompData Component_Type="Component_NiTiTank" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
@@ -545,6 +633,14 @@
 		</Recipe>
 	</Component>
 	<Component>
+		<CompData Component_Type="Component_OsmiumComponents" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Recipe>
+			<Part Ingot="Ingot_Osmium" Quantity = "1"/>
+		</Recipe>
+	</Component>
+	<Component>
 		<CompData Component_Type="Component_Pump" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
@@ -561,11 +657,35 @@
 		</Recipe>
 	</Component>
 	<Component>
+		<CompData Component_Type="Component_PlatinumComponents" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Recipe>
+			<Part Ingot="Ingot_Platinum" Quantity = "1"/>
+		</Recipe>
+	</Component>
+	<Component>
+		<CompData Component_Type="Component_PlutoniumComponents" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Recipe>
+			<Part Ingot="Ingot_Plutonium" Quantity = "1"/>
+		</Recipe>
+	</Component>
+	<Component>
 		<CompData Component_Type="Component_PowerStorageModule" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
+		</Recipe>
+	</Component>
+	<Component>
+		<CompData Component_Type="Component_PalladiumComponents" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Recipe>
+			<Part Ingot="Ingot_Palladium" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -697,6 +817,22 @@
 		</Recipe>
 	</Component>
 	<Component>
+		<CompData Component_Type="Component_SteelComponents" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Recipe>
+			<Part Ingot="Ingot_Steel" Quantity = "1"/>
+		</Recipe>
+	</Component>
+	<Component>
+		<CompData Component_Type="Component_ChromeSteelComponents" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Recipe>
+			<Part Ingot="Ingot_ChromeSteel" Quantity = "1"/>
+		</Recipe>
+	</Component>
+	<Component>
 		<CompData Component_Type="Component_Solder" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
@@ -738,11 +874,35 @@
 		</Recipe>
 	</Component>
 	<Component>
+		<CompData Component_Type="Component_TungstenComponents" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Recipe>
+			<Part Ingot="Ingot_Tungsten" Quantity = "1"/>
+		</Recipe>
+	</Component>
+	<Component>
+		<CompData Component_Type="Component_TinComponents" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Recipe>
+			<Part Ingot="Ingot_Tin" Quantity = "1"/>
+		</Recipe>
+	</Component>
+	<Component>
 		<CompData Component_Type="Component_TitaniumTank" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
+		</Recipe>
+	</Component>
+	<Component>
+		<CompData Component_Type="Component_TitaniumComponents" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Recipe>
+			<Part Ingot="Ingot_Titanium" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -855,6 +1015,14 @@
 			<Part Component="Component_Rubber" Quantity = "3"/>
 			<Part Component="Component_GoldWire" Quantity = "6"/>
 			<Part Component="Component_FiberglassInsulation" Quantity = "3"/>
+		</Recipe>
+	</Component>
+	<Component>
+		<CompData Component_Type="Component_ZincComponents" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Recipe>
+			<Part Ingot="Ingot_Zinc" Quantity = "1"/>
 		</Recipe>
 	</Component>
 </ComponentDefinitions>

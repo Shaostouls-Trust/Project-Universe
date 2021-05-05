@@ -11,6 +11,11 @@ public class DosimeterAudioController : MonoBehaviour
     public float SecondsPerAudioCycle;
     private float cyclesToPlaySound = 0;
 
+    private void Start()
+    {
+        PVC.SetMaxRadsDetectable(maxRads);
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -19,7 +24,7 @@ public class DosimeterAudioController : MonoBehaviour
         {
             //play dosimeter sfx at 1 to 10 persec rate
             //get 0-1 lerp
-            Debug.Log(detectedRoentgen + " / " + maxRads +"/ 20000");
+            //Debug.Log(detectedRoentgen + " / " + maxRads +"/ 20000");
             //if(detectedRoentgen > maxRads)
             //{
             //    detectedRoentgen = maxRads;
