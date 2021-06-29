@@ -3,59 +3,63 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using System.IO;
 using UnityEngine;
+using ProjectUniverse.Data.Libraries.Definitions;
 
-public class IngotLibrary
+namespace ProjectUniverse.Data.Libraries
 {
-	public static Dictionary<string, IngotDefinition> IngotDictionary;
-	private static Boolean isInitialized;
-
-	public class IngotDefinitionLibrary
+	public class IngotLibrary
 	{
-		public Dictionary<string, IngotDefinition> IL_IngotDictionary;
-		
-		public IngotDefinitionLibrary()
-		{
-			IL_IngotDictionary = new Dictionary<string, IngotDefinition>();
-		}
+		public static Dictionary<string, IngotDefinition> IngotDictionary;
+		private static Boolean isInitialized;
 
-		public void InitializeIngotDictionary()
+		public class IngotDefinitionLibrary
 		{
-			Debug.Log("Ingot Library Construction Initiated");
-			string ingotType;
-			string ingotRSPath;
-			float ingotDensity;
+			public Dictionary<string, IngotDefinition> IL_IngotDictionary;
 
-			//will ensure this only runs once (at Awake()).
-			if (!isInitialized)
+			public IngotDefinitionLibrary()
 			{
-				isInitialized = true;
-				//find the xmls
-				string xmlPath = "\\Assets\\Resources\\Data\\Production\\MasterLibraries\\";
-				string root = Directory.GetCurrentDirectory();
-				string[] filesInDir = Directory.GetFiles(root + xmlPath, "*.xml", SearchOption.TopDirectoryOnly);
+				IL_IngotDictionary = new Dictionary<string, IngotDefinition>();
+			}
 
-				foreach (string fileAndPath in filesInDir)
+			public void InitializeIngotDictionary()
+			{
+				Debug.Log("Ingot Library Construction Initiated");
+				string ingotType;
+				string ingotRSPath;
+				float ingotDensity;
+
+				//will ensure this only runs once (at Awake()).
+				if (!isInitialized)
 				{
-					string[] fpss = fileAndPath.Split('\\');
-					if (fpss[fpss.Length - 1] == "IngotMasterList.xml")
+					isInitialized = true;
+					//find the xmls
+					string xmlPath = "\\Assets\\Resources\\Data\\Production\\MasterLibraries\\";
+					string root = Directory.GetCurrentDirectory();
+					string[] filesInDir = Directory.GetFiles(root + xmlPath, "*.xml", SearchOption.TopDirectoryOnly);
+
+					foreach (string fileAndPath in filesInDir)
 					{
-						Debug.Log("Ingot Master Found");
-						XDocument doc = XDocument.Load(fileAndPath);
-						foreach (XElement ingotDefs in doc.Descendants("IngotDefinitions"))
+						string[] fpss = fileAndPath.Split('\\');
+						if (fpss[fpss.Length - 1] == "IngotMasterList.xml")
 						{
-							foreach (XElement ingot in ingotDefs.Elements("Ingot"))
+							Debug.Log("Ingot Master Found");
+							XDocument doc = XDocument.Load(fileAndPath);
+							foreach (XElement ingotDefs in doc.Descendants("IngotDefinitions"))
 							{
-								ingotType = ingot.Element("STR_ID").Attribute("Ingot_Type").Value;
-								ingotRSPath = ingot.Element("ResourcePath").Attribute("Path").Value;
-								ingotDensity = float.Parse(ingot.Element("Density").Attribute("Density").Value);
-								IngotDefinition newingotDef = new IngotDefinition(ingotType, ingotRSPath, ingotDensity);
-								IL_IngotDictionary.Add(ingotType, newingotDef);
+								foreach (XElement ingot in ingotDefs.Elements("Ingot"))
+								{
+									ingotType = ingot.Element("STR_ID").Attribute("Ingot_Type").Value;
+									ingotRSPath = ingot.Element("ResourcePath").Attribute("Path").Value;
+									ingotDensity = float.Parse(ingot.Element("Density").Attribute("Density").Value);
+									IngotDefinition newingotDef = new IngotDefinition(ingotType, ingotRSPath, ingotDensity);
+									IL_IngotDictionary.Add(ingotType, newingotDef);
+								}
 							}
 						}
 					}
+					Debug.Log("Ingot Library Construction Finished");
+					IngotDictionary = IL_IngotDictionary;
 				}
-				Debug.Log("Ingot Library Construction Finished");
-				IngotDictionary = IL_IngotDictionary;
 			}
 		}
 	}

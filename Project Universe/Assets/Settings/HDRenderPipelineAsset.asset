@@ -306,7 +306,7 @@ MonoBehaviour:
       maxPunctualShadowMapResolution: 2048
       maxAreaShadowMapResolution: 2048
       supportScreenSpaceShadows: 1
-      maxScreenSpaceShadowSlots: 9
+      maxScreenSpaceShadowSlots: 10
       screenSpaceShadowBufferFormat: 8
     decalSettings:
       drawDistance: 1000
@@ -358,12 +358,12 @@ MonoBehaviour:
         m_SchemaId:
           m_Id: 
     maximumLODLevel:
-      m_Values: 010000000000000000000000
+      m_Values: 000000000000000000000000
       m_SchemaId:
         m_Id: With3Levels
     lodBias:
       m_Values:
-      - 1
+      - 0
       - 1
       - 2
       m_SchemaId:
@@ -444,6 +444,7 @@ MonoBehaviour:
   diffusionProfileSettings: {fileID: 0}
   diffusionProfileSettingsList:
   - {fileID: 11400000, guid: 5d0becc9081392a48a3d4aed35c6734f, type: 2}
+  - {fileID: 11400000, guid: 1ea05d8974f55d6488ae31489ee8c6f9, type: 2}
   - {fileID: 11400000, guid: 78322c7f82657514ebe48203160e3f39, type: 2}
   - {fileID: 11400000, guid: faf9682c42d4bb64eb237cec38bcf8e0, type: 2}
   - {fileID: 11400000, guid: 26bdddf49760c61438938733f07fa2a2, type: 2}

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ProjectUniverseData.PlayerController
+namespace ProjectUniverse.Player.PlayerController
 {
-    public class PlayerController : MonoBehaviour
+    public sealed class PlayerController : MonoBehaviour
     {
         //Begin Input list add to seperate client side script later.
         [Header("Input Manager")]

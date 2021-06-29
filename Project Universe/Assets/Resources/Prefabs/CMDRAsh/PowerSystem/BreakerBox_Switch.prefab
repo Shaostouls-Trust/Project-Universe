@@ -164,9 +164,9 @@ GameObject:
   - component: {fileID: 2253697393614113856}
   - component: {fileID: 2253697393614113863}
   - component: {fileID: 2253697393614113862}
-  - component: {fileID: 2253697393614113861}
+  - component: {fileID: 7237218947801501818}
   m_Layer: 0
-  m_Name: WSButton3
+  m_Name: BreakerSwitchScript
   m_TagString: Button3D
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -248,7 +248,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2253697393614113861
+--- !u!114 &7237218947801501818
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -257,7 +257,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2253697393614113883}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9f1a5dfe1e49c640bef6cec4a9ea04c, type: 3}
+  m_Script: {fileID: 11500000, guid: af5d6d13cecf1f643bc499f3a6e4faf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   scriptedObj: {fileID: 7394765695762844759}

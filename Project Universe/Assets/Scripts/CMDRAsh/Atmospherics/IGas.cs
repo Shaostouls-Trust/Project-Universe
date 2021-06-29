@@ -6,23 +6,21 @@ using UnityEngine;
  Flamability 0-10 : how easily it catches fire
  Combustability 0-10 : How easily it 'splodes when exposed to sparks or fire
  Reactants[] : What it can combust with (proportion gas1 | proportion gas2 | proportion gas3 ||| pn)
- Volitility 0-10 : how quickly it turns to gas
  Nuclear: bool
  Toxicity 0-10 : Level of protection needed and dmg amount of exposure
  Temp:
  Density: 
  */
 
-namespace PU_Gases
-{
-    public class IGas : MonoBehaviour
+namespace ProjectUniverse.Environment.Gas { 
+    public class IGas //: MonoBehaviour
     {
         //Library properties
         [SerializeField] private string IDname;
         [SerializeField] private int flamability;
         [SerializeField] private int combustability;
         [SerializeField] private string[] reactants;
-        [SerializeField] private int volitility;
+        //[SerializeField] private int volitility;
         [SerializeField] private bool nuclear;
         [SerializeField] private int toxicity;
         [SerializeField] private float MolarMass = 31.9988f;//15.9994 is for one O. oxygen is diatomic, so 
@@ -48,6 +46,15 @@ namespace PU_Gases
             //localPressure = localpressure;
             concentration = myconcentration;
             //fill other values from gasID lib
+        }
+
+        public IGas(IGas otherGas)
+        {
+            IDname = otherGas.GetIDName();
+            temp = otherGas.GetTemp();
+            localPressure = otherGas.GetLocalPressure();
+            concentration = otherGas.GetConcentration();
+            volume_m3 = otherGas.GetLocalVolume();
         }
 
         public IGas(string gasID, float mytemp, float myconcentration, float localpressure, float localvolume)
@@ -76,10 +83,10 @@ namespace PU_Gases
         {
             return reactants;
         }
-        public int GetVolitility()
-        {
-            return volitility;
-        }
+        //public int GetVolitility()
+        //{
+        //    return volitility;
+        //}
         public bool GetNuclear()
         {
             return nuclear;

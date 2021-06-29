@@ -3,77 +3,80 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class VolumeGlobalAtmosphereController : MonoBehaviour
+namespace ProjectUniverse.Environment.Volumes
 {
-    private float roomPressure;
-    public float roomTemp;
-    public float roomOxygenation;
-    public float humidity;
-    public float toxicity;
-    public string[] globalGases;
-    private List<GameObject> exposedNodes = new List<GameObject>();
-
-    public void SetExposedNodes(List<GameObject> newNodes)
+    public sealed class VolumeGlobalAtmosphereController : MonoBehaviour
     {
-        exposedNodes = newNodes;
-    }
+        private float roomPressure;
+        public float roomTemp;
+        public float roomOxygenation;
+        public float humidity;
+        public float toxicity;
+        public string[] globalGases;
+        private List<GameObject> exposedNodes = new List<GameObject>();
 
-    public List<GameObject> GetExposedNodes()
-    {
-        return exposedNodes;
-    }
-
-    public void NullifyNodeLink(List<GameObject> nodesToNullify)
-    {
-        foreach(GameObject node in nodesToNullify)
+        public void SetExposedNodes(List<GameObject> newNodes)
         {
-            node.GetComponent<VolumeNode>().SetGlobalVolume(null);
+            exposedNodes = newNodes;
         }
-    }
-    public void NullifyNodeLink(GameObject nodeToNullify)
-    {
-        if (exposedNodes.Contains(nodeToNullify))
-        {
-            nodeToNullify.GetComponent<VolumeNode>().SetGlobalVolume(null);
-        }
-    }
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player"))
+        public List<GameObject> GetExposedNodes()
         {
-            //other.GetComponent<PlayerVolumeController>().OnVolumeEnter(roomPressure, roomTemp, roomOxygenation);
-            PlayerVolumeController player = other.GetComponent<PlayerVolumeController>();
-            player.OnVolumeEnter(roomPressure, roomTemp, roomOxygenation);
-            player.SetPlayerVolume(this.GetComponents<Volume>());
+            return exposedNodes;
         }
-    }
 
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.CompareTag("_VolumeNode"))
+        public void NullifyNodeLink(List<GameObject> nodesToNullify)
         {
-            //Add to list to compare. Whatever exists in VAC is removed from VGAC
-            if (!exposedNodes.Contains(other.gameObject))
+            foreach (GameObject node in nodesToNullify)
             {
-                //Debug.Log(this.name + " detecting VolumeNode: " + other.gameObject.name);
-                exposedNodes.Add(other.gameObject);
-                other.GetComponent<VolumeNode>().SetGlobalVolume(this.gameObject);
+                node.GetComponent<VolumeNode>().SetGlobalVolume(null);
             }
         }
-        if (other.gameObject.CompareTag("Player"))
+        public void NullifyNodeLink(GameObject nodeToNullify)
         {
-            PlayerVolumeController player = other.GetComponent<PlayerVolumeController>();
-            player.OnVolumeEnter(roomPressure, roomTemp, roomOxygenation);
-            player.SetPlayerVolume(this.GetComponents<Volume>());
+            if (exposedNodes.Contains(nodeToNullify))
+            {
+                nodeToNullify.GetComponent<VolumeNode>().SetGlobalVolume(null);
+            }
         }
-    }
-    public float GetPressure()
-    {
-        return roomPressure;
-    }
-    public void SetPressure(float value)
-    {
-        roomPressure = value;
+
+        void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.CompareTag("Player"))
+            {
+                //other.GetComponent<PlayerVolumeController>().OnVolumeEnter(roomPressure, roomTemp, roomOxygenation);
+                PlayerVolumeController player = other.GetComponent<PlayerVolumeController>();
+                player.OnVolumeEnter(roomPressure, roomTemp, roomOxygenation);
+                player.SetPlayerVolume(this.GetComponents<Volume>());
+            }
+        }
+
+        private void OnTriggerStay(Collider other)
+        {
+            if (other.gameObject.CompareTag("_VolumeNode"))
+            {
+                //Add to list to compare. Whatever exists in VAC is removed from VGAC
+                if (!exposedNodes.Contains(other.gameObject))
+                {
+                    //Debug.Log(this.name + " detecting VolumeNode: " + other.gameObject.name);
+                    exposedNodes.Add(other.gameObject);
+                    other.GetComponent<VolumeNode>().SetGlobalVolume(this.gameObject);
+                }
+            }
+            if (other.gameObject.CompareTag("Player"))
+            {
+                PlayerVolumeController player = other.GetComponent<PlayerVolumeController>();
+                player.OnVolumeEnter(roomPressure, roomTemp, roomOxygenation);
+                player.SetPlayerVolume(this.GetComponents<Volume>());
+            }
+        }
+        public float GetPressure()
+        {
+            return roomPressure;
+        }
+        public void SetPressure(float value)
+        {
+            roomPressure = value;
+        }
     }
 }

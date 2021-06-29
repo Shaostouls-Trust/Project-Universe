@@ -1,7 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using ProjectUniverse.Environment.Fluid;
+using ProjectUniverse.Items.Containers;
+using ProjectUniverse.Generation;
+using ProjectUniverse.Production.Machines;
+using ProjectUniverse.Production.Resources;
+using ProjectUniverse.Animation.Controllers;
 public class WSButton1 : MonoBehaviour
 {
 
@@ -59,15 +64,17 @@ public class WSButton1 : MonoBehaviour
                     Pickup<Consumable_Ore>();
                 }
                 break;
-            case "FillFurnace":
-                Debug.Log("FillFurnace");
-                FillFurnace();
+            case "OpenSmelterUI":
+                OpenSmelterUI();
                 break;
             case "EmptyFurnace":
                 EmptyFurnace();
                 break;
             case "FillFactory":
                 FillFactory();
+                break;
+            case "SelectComponent":
+                SelectComponent();
                 break;
             case "StartFactory":
                 Debug.Log("Trying to start Factory");
@@ -81,6 +88,9 @@ public class WSButton1 : MonoBehaviour
                 break;
             case "DisplayInventory":
                 DisplayInventory();
+                break;
+            case "Valve":
+                ToggleValve();
                 break;
         }
     }
@@ -125,10 +135,9 @@ public class WSButton1 : MonoBehaviour
             scriptedObj.GetComponentInParent<Consumable_Ore>().PickUpConsumable(player);
         }
     }
-
-    public void FillFurnace()
+    public void OpenSmelterUI()
     {
-        scriptedObj.GetComponent<Mach_InductionFurnace>().InputFromPlayer(player);
+        scriptedObj.GetComponent<Mach_InductionFurnace>().DisplaySmelterUI(player);
     }
     public void EmptyFurnace()
     {
@@ -143,9 +152,14 @@ public class WSButton1 : MonoBehaviour
     {
         scriptedObj.GetComponent<Mach_DevFactory>().OutputToPlayer(player);
     }
+    public void SelectComponent()
+    {
+        scriptedObj.GetComponent<Mach_DevFactory>().DisplayProductionUI();
+    }
     public void StartFactory()
     {
-        scriptedObj.GetComponent<Mach_DevFactory>().StartFactory();
+        Debug.Log("DEP. Use UI.");
+        //scriptedObj.GetComponent<Mach_DevFactory>().StartFactory();
     }
 
     public void MiningDrone()
@@ -157,6 +171,13 @@ public class WSButton1 : MonoBehaviour
     {
         scriptedObj.GetComponent<CargoContainer>().DisplayInventory();
     }
+
+    //Temp valve controls
+    public void ToggleValve()
+    {
+        scriptedObj.GetComponent<IFluidTank>().OnValueActivated(0);
+    }
+
     void OnMouseOver()
     {
         if (!this.GetComponent<MeshRenderer>().enabled)

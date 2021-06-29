@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using Unity.Entities;
 using Unity.Collections;
+using ProjectUniverse.Generation;
 
 /// <summary>
 /// This class is an attepted rewrite of the pixelmap interpreter using ECS

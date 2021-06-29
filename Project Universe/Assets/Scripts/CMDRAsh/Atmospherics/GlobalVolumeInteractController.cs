@@ -9,97 +9,100 @@ using UnityEngine;
 /// Check all LocalAtmosphere lists against all GlobalAtmosphere lists.
 /// Set/refreash the links and disable the colliders and rigidbodies.
 /// </summary>
-public class GlobalVolumeInteractController : MonoBehaviour
+namespace ProjectUniverse.Environment.Volumes
 {
-    private VolumeAtmosphereController[] VACs;
-    private VolumeGlobalAtmosphereController[] VGACs;
-    private int cycleNumber = 0;
-    private bool clear = false;
-    //private bool collidercycle = false;
-    //private bool updatecycle = false;
-
-    void Start()
+    public class GlobalVolumeInteractController : MonoBehaviour
     {
-        InvokeRepeating("CoroutineEncap", 0.0f, 3.0f);
-    }
+        private VolumeAtmosphereController[] VACs;
+        private VolumeGlobalAtmosphereController[] VGACs;
+        private int cycleNumber = 0;
+        private bool clear = false;
+        //private bool collidercycle = false;
+        //private bool updatecycle = false;
 
-    public void CoroutineEncap()
-    {
-        StartCoroutine(InstanceCollector());
-        //Debug.Log("Cycle: "+cycleNumber++);
-    }
-
-    IEnumerator InstanceCollector()
-    {
-        clear = false;
-        //get all script instances
-        //This will be from the children of this script's empty,
-        VGACs = this.gameObject.GetComponentsInChildren<VolumeGlobalAtmosphereController>();
-        yield return null;
-
-        //and from any "ShipHead" children.
-        GameObject[] shipHeads = GameObject.FindGameObjectsWithTag("ShipHead");
-        foreach (GameObject obj in shipHeads)
+        void Start()
         {
-            VACs = obj.GetComponentsInChildren<VolumeAtmosphereController>();
+            InvokeRepeating("CoroutineEncap", 0.0f, 3.0f);
         }
-        //clear was here
-        yield return null;
 
-        if(VACs != null && VGACs != null)
+        public void CoroutineEncap()
         {
-            //Debug.Log("Internal Reset and Colldier Cycle On");
-            for (int j = 0; j < VGACs.Length; j++)
-            {
-                for (int i = 0; i < VACs.Length; i++)
-                {
-                    foreach (GameObject node in VACs[i].GetConnectedNeighbors())
-                    {
-                        node.GetComponent<Rigidbody>().detectCollisions = true;
-                        node.GetComponent<BoxCollider>().enabled = true;
-                    }
-                    //functionally wipe the neighbormap
-                    VACs[i].SetConnectedNeighbors(new List<GameObject>());
-                }
-                VGACs[j].SetExposedNodes(new List<GameObject>());
-            }
+            StartCoroutine(InstanceCollector());
+            //Debug.Log("Cycle: "+cycleNumber++);
         }
-        clear = true;
-        StopCoroutine("InstaceCollector");
-    }
 
-    void Update()
-    {
-        //IE if the most recent coroutine run is completed
-        if (clear)
+        IEnumerator InstanceCollector()
         {
-            //Debug.Log("V(G)AC Cleaning and Colldier Cycle Off");
             clear = false;
+            //get all script instances
+            //This will be from the children of this script's empty,
+            VGACs = this.gameObject.GetComponentsInChildren<VolumeGlobalAtmosphereController>();
+            yield return null;
+
+            //and from any "ShipHead" children.
+            GameObject[] shipHeads = GameObject.FindGameObjectsWithTag("ShipHead");
+            foreach (GameObject obj in shipHeads)
+            {
+                VACs = obj.GetComponentsInChildren<VolumeAtmosphereController>();
+            }
+            //clear was here
+            yield return null;
+
             if (VACs != null && VGACs != null)
             {
-                //Check if a VAC node is in a VGAC nodelist
+                //Debug.Log("Internal Reset and Colldier Cycle On");
                 for (int j = 0; j < VGACs.Length; j++)
                 {
                     for (int i = 0; i < VACs.Length; i++)
                     {
                         foreach (GameObject node in VACs[i].GetConnectedNeighbors())
                         {
-                            if (VGACs[j].GetExposedNodes().Contains(node))
+                            node.GetComponent<Rigidbody>().detectCollisions = true;
+                            node.GetComponent<BoxCollider>().enabled = true;
+                        }
+                        //functionally wipe the neighbormap
+                        VACs[i].SetConnectedNeighbors(new List<GameObject>());
+                    }
+                    VGACs[j].SetExposedNodes(new List<GameObject>());
+                }
+            }
+            clear = true;
+            StopCoroutine("InstaceCollector");
+        }
+
+        void Update()
+        {
+            //IE if the most recent coroutine run is completed
+            if (clear)
+            {
+                //Debug.Log("V(G)AC Cleaning and Colldier Cycle Off");
+                clear = false;
+                if (VACs != null && VGACs != null)
+                {
+                    //Check if a VAC node is in a VGAC nodelist
+                    for (int j = 0; j < VGACs.Length; j++)
+                    {
+                        for (int i = 0; i < VACs.Length; i++)
+                        {
+                            foreach (GameObject node in VACs[i].GetConnectedNeighbors())
                             {
-                                //if it is in the node list, remove it from the globals list.
-                                //this way only the nodes that are actually exposed to space will be in the VGAC list.
-                                VGACs[j].NullifyNodeLink(VGACs[j].GetExposedNodes());
-                                List<GameObject> temp = VGACs[j].GetExposedNodes();
-                                temp.Remove(node);
-                                VGACs[j].SetExposedNodes(temp);
+                                if (VGACs[j].GetExposedNodes().Contains(node))
+                                {
+                                    //if it is in the node list, remove it from the globals list.
+                                    //this way only the nodes that are actually exposed to space will be in the VGAC list.
+                                    VGACs[j].NullifyNodeLink(VGACs[j].GetExposedNodes());
+                                    List<GameObject> temp = VGACs[j].GetExposedNodes();
+                                    temp.Remove(node);
+                                    VGACs[j].SetExposedNodes(temp);
+                                }
+                                node.GetComponent<Rigidbody>().detectCollisions = false;
+                                node.GetComponent<BoxCollider>().enabled = false;
                             }
-                            node.GetComponent<Rigidbody>().detectCollisions = false;
-                            node.GetComponent<BoxCollider>().enabled = false;
                         }
                     }
                 }
+
             }
-            
         }
     }
 }

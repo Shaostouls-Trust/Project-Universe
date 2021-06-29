@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ProjectUniverse.Generation;
+using ProjectUniverse.Animation.Controllers;
 
 public class WSButton2 : MonoBehaviour
 {

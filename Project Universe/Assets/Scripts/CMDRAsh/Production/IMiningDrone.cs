@@ -1,53 +1,58 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ProjectUniverse.Base;
+using ProjectUniverse.Player;
 
-public class IMiningDrone : MonoBehaviour
+namespace ProjectUniverse.Production.Machines
 {
-    //private List<Consumable_Ore> oreInventory = new List<Consumable_Ore>();
-    [SerializeField] private int maxMass;
-    [SerializeField] private int maxVolume;
-    private List<ItemStack> oreInventory = new List<ItemStack>();
-
-    public void AddOreInventory(ItemStack ore)
+    public class IMiningDrone : MonoBehaviour
     {
-        bool cont = true;
-        foreach(ItemStack stack in oreInventory)
+        //private List<Consumable_Ore> oreInventory = new List<Consumable_Ore>();
+        [SerializeField] private int maxMass;
+        //[SerializeField] private int maxVolume;
+        private List<ItemStack> oreInventory = new List<ItemStack>();
+
+        public void AddOreInventory(ItemStack ore)
         {
-            if(stack.CompareMetaData(ore))
+            bool cont = true;
+            foreach (ItemStack stack in oreInventory)
             {
-                cont = false;
-                stack.AddItemStack(ore);
-                break;
+                if (stack.CompareMetaData(ore))
+                {
+                    cont = false;
+                    stack.AddItemStack(ore);
+                    break;
+                }
+            }
+            if (cont)
+            {
+                oreInventory.Add(ore);
             }
         }
-        if (cont)
+        public void AddOreInventory(List<ItemStack> ores)
         {
-            oreInventory.Add(ore);
+            foreach (ItemStack stack in ores)
+            {
+                AddOreInventory(stack);
+            }
         }
-    }
-    public void AddOreInventory(List<ItemStack> ores)
-    {
-        foreach(ItemStack stack in ores)
+        public void AddOreInventory(ItemStack[] ores)
         {
-            AddOreInventory(stack);
+            foreach (ItemStack stack in ores)
+            {
+                AddOreInventory(stack);
+            }
         }
-    }
-    public void AddOreInventory(ItemStack[] ores)
-    {
-        foreach (ItemStack stack in ores)
-        {
-            AddOreInventory(stack);
-        }
-    }
 
-    public void EmptyInventory(GameObject player)
-    {
-        Debug.Log("Emptying Drone");
-        IPlayer_Inventory playerInventory = player.GetComponent<IPlayer_Inventory>();
-        for (int i = 0; i < oreInventory.Count; i++)
+        public void EmptyInventory(GameObject player)
         {
-            playerInventory.AddStackToPlayerInventory(oreInventory[i]);
+            Debug.Log("Emptying Drone");
+            IPlayer_Inventory playerInventory = player.GetComponent<IPlayer_Inventory>();
+            for (int i = 0; i < oreInventory.Count; i++)
+            {
+                playerInventory.AddStackToPlayerInventory(oreInventory[i]);
+            }
         }
     }
 }

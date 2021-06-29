@@ -3,7 +3,9 @@
 	<Component>
 		<CompData Component_Type="Component_" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="100"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Ingot = "Ingot_Gold" Quantity = "1"/>
 		</Recipe>
@@ -11,7 +13,9 @@
 	<Component>
 		<CompData Component_Type="Component_3DProjectorBase" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="275"/>
+		<Priority Value="5"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -19,7 +23,9 @@
 	<Component>
 		<CompData Component_Type="Component_APU" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="15"/>
+		<Priority Value="4"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -27,7 +33,9 @@
 	<Component>
 		<CompData Component_Type="Component_ArithmeticLogicUnit" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="15"/>
+		<Priority Value="4"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -35,7 +43,9 @@
 	<Component>
 		<CompData Component_Type="Component_AdvancedPowerStorageModule" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="325"/>
+		<Priority Value="5"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -43,7 +53,9 @@
 	<Component>
 		<CompData Component_Type="Component_AluminumCogWheel" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="30"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -51,7 +63,9 @@
 	<Component>
 		<CompData Component_Type="Component_AluminumComponents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="40"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Ingot="Ingot_Aluminum" Quantity = "1"/>
 		</Recipe>
@@ -59,7 +73,9 @@
 	<Component>
 		<CompData Component_Type="Component_Adapter" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="150"/>
+		<Priority Value="4"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -67,7 +83,9 @@
 	<Component>
 		<CompData Component_Type="Component_BrassCogWheel" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="35"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -75,7 +93,9 @@
 	<Component>
 		<CompData Component_Type="Component_BrassGuides" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="35"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -83,7 +103,9 @@
 	<Component>
 		<CompData Component_Type="Component_BrassComponents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="60"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Ingot="Ingot_Brass" Quantity = "1"/>
 		</Recipe>
@@ -91,7 +113,9 @@
 	<Component>
 		<CompData Component_Type="Component_BronzePlating" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="115"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -99,7 +123,9 @@
 	<Component>
 		<CompData Component_Type="Component_BulletproofGlass" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="100"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -107,7 +133,9 @@
 	<Component>
 		<CompData Component_Type="Component_CompressionCylinder" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="100"/>
+		<Priority Value="5"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -115,7 +143,9 @@
 	<Component>
 		<CompData Component_Type="Component_CoolingComponents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="125"/>
+		<Priority Value="4"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -123,7 +153,9 @@
 	<Component>
 		<CompData Component_Type="Component_CopperCoils" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="75"/>
+		<Priority Value="3"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -131,7 +163,9 @@
 	<Component>
 		<CompData Component_Type="Component_ControlInterface" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="75"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -139,7 +173,9 @@
 	<Component>
 		<CompData Component_Type="Component_Ceramic" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="20"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -147,7 +183,9 @@
 	<Component>
 		<CompData Component_Type="Component_ChromeComponents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="200"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Ingot="Ingot_Chromium" Quantity = "1"/>
 		</Recipe>
@@ -155,7 +193,9 @@
 	<Component>
 		<CompData Component_Type="Component_CobaltComponents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="115"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Ingot="Ingot_Cobalt" Quantity = "1"/>
 		</Recipe>
@@ -163,7 +203,9 @@
 	<Component>
 		<CompData Component_Type="Component_CopperPlating" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="75"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -171,7 +213,9 @@
 	<Component>
 		<CompData Component_Type="Component_CopperComponents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="65"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Ingot="Ingot_Copper" Quantity = "1"/>
 		</Recipe>
@@ -179,7 +223,9 @@
 	<Component>
 		<CompData Component_Type="Component_CopperPipe" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="65"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Ingot="Ingot_Copper" Quantity = "1"/>
 		</Recipe>
@@ -187,7 +233,9 @@
 	<Component>
 		<CompData Component_Type="Component_CultureCell" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="25"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -195,7 +243,9 @@
 	<Component>
 		<CompData Component_Type="Component_CopperWire" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="50"/>
+		<Priority Value="3"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Ingot="Ingot_Copper" Quantity = "1"/>
 		</Recipe>
@@ -203,7 +253,9 @@
 	<Component>
 		<CompData Component_Type="Component_ControlUnit" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="5"/>
+		<Priority Value="5"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -211,7 +263,9 @@
 	<Component>
 		<CompData Component_Type="Component_CardBase" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="20"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -219,7 +273,9 @@
 	<Component>
 		<CompData Component_Type="Component_Camera" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="100"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -227,7 +283,9 @@
 	<Component>
 		<CompData Component_Type="Component_ChromeSteelTank" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="275"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -235,7 +293,9 @@
 	<Component>
 		<CompData Component_Type="Component_DriveBay" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="50"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -243,7 +303,9 @@
 	<Component>
 		<CompData Component_Type="Component_ElectroMechanicalGenerator" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="325"/>
+		<Priority Value="6"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -251,7 +313,9 @@
 	<Component>
 		<CompData Component_Type="Component_ElectronicsComponents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="75"/>
+		<Priority Value="3"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -259,7 +323,9 @@
 	<Component>
 		<CompData Component_Type="Component_ElectromagneticCoils" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="225"/>
+		<Priority Value="5"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -267,7 +333,9 @@
 	<Component>
 		<CompData Component_Type="Component_ElectricalComponents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="75"/>
+		<Priority Value="3"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -275,7 +343,9 @@
 	<Component>
 		<CompData Component_Type="Component_FusionToroid" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="600"/>
+		<Priority Value="6"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -283,7 +353,9 @@
 	<Component>
 		<CompData Component_Type="Component_FiberglassInsulation" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="75"/>
+		<Priority Value="3"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -291,7 +363,9 @@
 	<Component>
 		<CompData Component_Type="Component_Filament" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="25"/>
+		<Priority Value="4"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -299,7 +373,9 @@
 	<Component>
 		<CompData Component_Type="Component_Gearbox" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="175"/>
+		<Priority Value="4"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -307,7 +383,9 @@
 	<Component>
 		<CompData Component_Type="Component_GeigerCounter" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="75"/>
+		<Priority Value="3"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -315,7 +393,9 @@
 	<Component>
 		<CompData Component_Type="Component_GlassLens" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="20"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -323,7 +403,9 @@
 	<Component>
 		<CompData Component_Type="Component_Glass" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="20"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -331,7 +413,9 @@
 	<Component>
 		<CompData Component_Type="Component_GlassRod" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="20"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -339,7 +423,9 @@
 	<Component>
 		<CompData Component_Type="Component_GoldComponents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="50"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Ingot="Ingot_Gold" Quantity = "1"/>
 		</Recipe>
@@ -347,7 +433,9 @@
 	<Component>
 		<CompData Component_Type="Component_GraphenePlates" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="500"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -355,7 +443,9 @@
 	<Component>
 		<CompData Component_Type="Component_GoldWire" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="50"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Ingot="Ingot_Gold" Quantity = "1"/>
 		</Recipe>
@@ -363,7 +453,9 @@
 	<Component>
 		<CompData Component_Type="Component_HeavyTurbineBlades" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="375"/>
+		<Priority Value="4"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -371,7 +463,9 @@
 	<Component>
 		<CompData Component_Type="Component_HeavyElectromagneticCoils" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="300"/>
+		<Priority Value="5"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -379,7 +473,9 @@
 	<Component>
 		<CompData Component_Type="Component_HeavyTurbineShaft" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="375"/>
+		<Priority Value="3"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -387,7 +483,9 @@
 	<Component>
 		<CompData Component_Type="Component_HiTempChromePlate" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="350"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -395,7 +493,9 @@
 	<Component>
 		<CompData Component_Type="Component_HydraulicMotor" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="225"/>
+		<Priority Value="4"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -403,7 +503,9 @@
 	<Component>
 		<CompData Component_Type="Component_HeatingElement" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="100"/>
+		<Priority Value="3"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -411,7 +513,9 @@
 	<Component>
 		<CompData Component_Type="Component_HiCapNiTiTank" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="275"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -419,7 +523,9 @@
 	<Component>
 		<CompData Component_Type="Component_HiDensityScanner" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="275"/>
+		<Priority Value="6"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -427,7 +533,9 @@
 	<Component>
 		<CompData Component_Type="Component_HiCapSteelTank" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="200"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -435,7 +543,9 @@
 	<Component>
 		<CompData Component_Type="Component_HeavyPressureValves" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="250"/>
+		<Priority Value="3"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -443,7 +553,9 @@
 	<Component>
 		<CompData Component_Type="Component_InductionCell" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="275"/>
+		<Priority Value="4"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -451,7 +563,9 @@
 	<Component>
 		<CompData Component_Type="Component_IridiumComponents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="500"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Ingot="Ingot_Iridium" Quantity = "1"/>
 		</Recipe>
@@ -459,7 +573,9 @@
 	<Component>
 		<CompData Component_Type="Component_IronComponents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="100"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Ingot="Ingot_Iron" Quantity = "1"/>
 		</Recipe>
@@ -467,7 +583,9 @@
 	<Component>
 		<CompData Component_Type="Component_IronRod" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="75"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -475,7 +593,9 @@
 	<Component>
 		<CompData Component_Type="Component_IronPlating" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="100"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -483,7 +603,9 @@
 	<Component>
 		<CompData Component_Type="Component_InvarComponents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="200"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Ingot="Ingot_Invar" Quantity = "1"/>
 		</Recipe>
@@ -491,7 +613,9 @@
 	<Component>
 		<CompData Component_Type="Component_JettisonBolts" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="150"/>
+		<Priority Value="3"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -499,7 +623,9 @@
 	<Component>
 		<CompData Component_Type="Component_LiquidCoolingComponents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="200"/>
+		<Priority Value="4"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -507,7 +633,9 @@
 	<Component>
 		<CompData Component_Type="Component_LightBulbRod" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="15"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -515,7 +643,9 @@
 	<Component>
 		<CompData Component_Type="Component_LightBulbBulb" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="15"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -523,7 +653,9 @@
 	<Component>
 		<CompData Component_Type="Component_LeadComponents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="350"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Ingot="Ingot_Lead" Quantity = "1"/>
 		</Recipe>
@@ -531,7 +663,9 @@
 	<Component>
 		<CompData Component_Type="Component_LeadPlating" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="375"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -539,7 +673,9 @@
 	<Component>
 		<CompData Component_Type="Component_LED" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="5"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -547,7 +683,9 @@
 	<Component>
 		<CompData Component_Type="Component_Lidar" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="225"/>
+		<Priority Value="6"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -555,7 +693,9 @@
 	<Component>
 		<CompData Component_Type="Component_MechanicalComponents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="175"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -563,7 +703,9 @@
 	<Component>
 		<CompData Component_Type="Component_MemoryChip" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="10"/>
+		<Priority Value="3"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -571,7 +713,9 @@
 	<Component>
 		<CompData Component_Type="Component_Motor" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="180"/>
+		<Priority Value="3"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -579,7 +723,9 @@
 	<Component>
 		<CompData Component_Type="Component_Microchip" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="5"/>
+		<Priority Value="4"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -587,7 +733,9 @@
 	<Component>
 		<CompData Component_Type="Component_Motherboard" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="75"/>
+		<Priority Value="5"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -595,7 +743,9 @@
 	<Component>
 		<CompData Component_Type="Component_NickelComponents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="130"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Ingot="Ingot_Nickel" Quantity = "1"/>
 		</Recipe>
@@ -603,7 +753,9 @@
 	<Component>
 		<CompData Component_Type="Component_NiTiTank" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="350"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -611,7 +763,9 @@
 	<Component>
 		<CompData Component_Type="Component_NuclearFuelRod" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="400"/>
+		<Priority Value="6"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -619,7 +773,9 @@
 	<Component>
 		<CompData Component_Type="Component_NeutronGenerator" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="400"/>
+		<Priority Value="6"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -627,7 +783,9 @@
 	<Component>
 		<CompData Component_Type="Component_NetworkCard" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="25"/>
+		<Priority Value="3"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -635,7 +793,9 @@
 	<Component>
 		<CompData Component_Type="Component_OsmiumComponents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="275"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Ingot="Ingot_Osmium" Quantity = "1"/>
 		</Recipe>
@@ -643,7 +803,9 @@
 	<Component>
 		<CompData Component_Type="Component_Pump" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="160"/>
+		<Priority Value="3"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -651,7 +813,9 @@
 	<Component>
 		<CompData Component_Type="Component_PlasticGuides" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="50"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -659,7 +823,9 @@
 	<Component>
 		<CompData Component_Type="Component_PlatinumComponents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="115"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Ingot="Ingot_Platinum" Quantity = "1"/>
 		</Recipe>
@@ -667,7 +833,9 @@
 	<Component>
 		<CompData Component_Type="Component_PlutoniumComponents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="110"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Ingot="Ingot_Plutonium" Quantity = "1"/>
 		</Recipe>
@@ -675,7 +843,9 @@
 	<Component>
 		<CompData Component_Type="Component_PowerStorageModule" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="250"/>
+		<Priority Value="5"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -683,7 +853,9 @@
 	<Component>
 		<CompData Component_Type="Component_PalladiumComponents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="105"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Ingot="Ingot_Palladium" Quantity = "1"/>
 		</Recipe>
@@ -691,7 +863,9 @@
 	<Component>
 		<CompData Component_Type="Component_ParticleMembrane" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="125"/>
+		<Priority Value="3"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -699,7 +873,9 @@
 	<Component>
 		<CompData Component_Type="Component_PressureVents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="200"/>
+		<Priority Value="4"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -707,7 +883,9 @@
 	<Component>
 		<CompData Component_Type="Component_PressureValves" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="250"/>
+		<Priority Value="4"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -715,7 +893,9 @@
 	<Component>
 		<CompData Component_Type="Component_PropulsionComponents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="225"/>
+		<Priority Value="4"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -723,7 +903,9 @@
 	<Component>
 		<CompData Component_Type="Component_PCB" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="25"/>
+		<Priority Value="3"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -731,7 +913,9 @@
 	<Component>
 		<CompData Component_Type="Component_Plastic" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="100"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Material="Material_Carbon" Quantity = "1"/>
 		</Recipe>
@@ -739,7 +923,9 @@
 	<Component>
 		<CompData Component_Type="Component_RAM" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="25"/>
+		<Priority Value="4"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -747,7 +933,9 @@
 	<Component>
 		<CompData Component_Type="Component_Rubber" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="50"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Material="Material_Carbon" Quantity = "1"/>
 		</Recipe>
@@ -755,7 +943,9 @@
 	<Component>
 		<CompData Component_Type="Component_RadioCommComponents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="75"/>
+		<Priority Value="4"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -763,7 +953,9 @@
 	<Component>
 		<CompData Component_Type="Component_SteelHingeBearing" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="175"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -771,7 +963,9 @@
 	<Component>
 		<CompData Component_Type="Component_ServerBoard" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="75"/>
+		<Priority Value="4"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -779,15 +973,9 @@
 	<Component>
 		<CompData Component_Type="Component_SmallGunMountingBracket" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
-		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
-		</Recipe>
-	</Component>
-	<Component>
-		<CompData Component_Type="Component_SolarBoard" Quantity = "1"/>
-		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="150"/>
+		<Priority Value="4"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -795,7 +983,9 @@
 	<Component>
 		<CompData Component_Type="Component_SolarPanel" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="75"/>
+		<Priority Value="4"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -803,7 +993,9 @@
 	<Component>
 		<CompData Component_Type="Component_SteelCrankshaft" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="175"/>
+		<Priority Value="3"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -811,7 +1003,9 @@
 	<Component>
 		<CompData Component_Type="Component_SteelRod" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="175"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -819,7 +1013,9 @@
 	<Component>
 		<CompData Component_Type="Component_SteelComponents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="175"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Ingot="Ingot_Steel" Quantity = "1"/>
 		</Recipe>
@@ -827,7 +1023,9 @@
 	<Component>
 		<CompData Component_Type="Component_ChromeSteelComponents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="225"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Ingot="Ingot_ChromeSteel" Quantity = "1"/>
 		</Recipe>
@@ -835,7 +1033,9 @@
 	<Component>
 		<CompData Component_Type="Component_Solder" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="15"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -843,7 +1043,9 @@
 	<Component>
 		<CompData Component_Type="Component_SteelPlating" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="175"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -851,7 +1053,9 @@
 	<Component>
 		<CompData Component_Type="Component_SuperHeatingElement" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="200"/>
+		<Priority Value="3"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -859,7 +1063,9 @@
 	<Component>
 		<CompData Component_Type="Component_SteelTank" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="200"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -867,7 +1073,9 @@
 	<Component>
 		<CompData Component_Type="Component_SuperConductor" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="175"/>
+		<Priority Value="3"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_Rubber" Quantity = "1"/>
 			<!--Part Material="Material_HDPE" Quantity = "2.5"/-->
@@ -876,7 +1084,9 @@
 	<Component>
 		<CompData Component_Type="Component_TungstenComponents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="200"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Ingot="Ingot_Tungsten" Quantity = "1"/>
 		</Recipe>
@@ -884,7 +1094,9 @@
 	<Component>
 		<CompData Component_Type="Component_TinComponents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="100"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Ingot="Ingot_Tin" Quantity = "1"/>
 		</Recipe>
@@ -892,7 +1104,9 @@
 	<Component>
 		<CompData Component_Type="Component_TitaniumTank" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="300"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -900,7 +1114,9 @@
 	<Component>
 		<CompData Component_Type="Component_TitaniumComponents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="150"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Ingot="Ingot_Titanium" Quantity = "1"/>
 		</Recipe>
@@ -908,7 +1124,9 @@
 	<Component>
 		<CompData Component_Type="Component_TitaniumSteelElectrode" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="100"/>
+		<Priority Value="5"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -916,7 +1134,9 @@
 	<Component>
 		<CompData Component_Type="Component_TurbineBlades" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="300"/>
+		<Priority Value="3"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -924,7 +1144,9 @@
 	<Component>
 		<CompData Component_Type="Component_TinGuides" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="25"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -932,7 +1154,9 @@
 	<Component>
 		<CompData Component_Type="Component_TinyAluminRod" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="15"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -940,7 +1164,9 @@
 	<Component>
 		<CompData Component_Type="Component_Transistor" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="10"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -948,15 +1174,29 @@
 	<Component>
 		<CompData Component_Type="Component_ThrustComponents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="300"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
+		<CompData Component_Type="Component_Thermocouple" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<Health Value="150"/>
+		<Priority Value="4"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
+		<Recipe>
+			<Part Component="Component_" Quantity = "2"/>
+		</Recipe>
+	</Component>
+	<Component>
 		<CompData Component_Type="Component_TurbineShaft" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="300"/>
+		<Priority Value="5"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -964,7 +1204,9 @@
 	<Component>
 		<CompData Component_Type="Component_VacuumTube" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="75"/>
+		<Priority Value="3"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
@@ -972,7 +1214,9 @@
 	<Component>
 		<CompData Component_Type="Component_ELVWiring" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="50"/>
+		<Priority Value="3"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_Rubber" Quantity = "1"/>
 			<Part Component="Component_CopperWire" Quantity = "1"/>
@@ -981,7 +1225,9 @@
 	<Component>
 		<CompData Component_Type="Component_LVWiring" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="75"/>
+		<Priority Value="3"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_Rubber" Quantity = "2"/>
 			<Part Component="Component_CopperWire" Quantity = "3"/>
@@ -990,7 +1236,9 @@
 	<Component>
 		<CompData Component_Type="Component_MVWiring" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="100"/>
+		<Priority Value="4"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_Rubber" Quantity = "2"/>
 			<Part Component="Component_CopperWire" Quantity = "4"/>
@@ -1000,7 +1248,9 @@
 	<Component>
 		<CompData Component_Type="Component_HVWiring" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="125"/>
+		<Priority Value="4"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_Rubber" Quantity = "2"/>
 			<Part Component="Component_CopperWire" Quantity = "5"/>
@@ -1010,7 +1260,9 @@
 	<Component>
 		<CompData Component_Type="Component_EHVWiring" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="150"/>
+		<Priority Value="4"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Component="Component_Rubber" Quantity = "3"/>
 			<Part Component="Component_GoldWire" Quantity = "6"/>
@@ -1020,9 +1272,83 @@
 	<Component>
 		<CompData Component_Type="Component_ZincComponents" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Health Value="100"/>
+		<Priority Value="1"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
 			<Part Ingot="Ingot_Zinc" Quantity = "1"/>
+		</Recipe>
+	</Component>
+	
+	<!--CRITICAL COMPONENTS -->
+	<Component>
+		<CompData Component_Type="Component_RTGCell" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<Health Value="250"/>
+		<Priority Value="5"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
+		<Recipe>
+			<Part Component="Component_" Quantity = "1"/>
+		</Recipe>
+	</Component>
+	<Component>
+		<CompData Component_Type="Component_Transformer" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<Health Value="250"/>
+		<Priority Value="5"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
+		<Recipe>
+			<Part Component="Component_" Quantity = "1"/>
+		</Recipe>
+	</Component>
+	<Component>
+		<CompData Component_Type="Component_HiLoadCircuit" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<Health Value="250"/>
+		<Priority Value="5"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
+		<Recipe>
+			<Part Component="Component_" Quantity = "1"/>
+		</Recipe>
+	</Component>
+	<Component>
+		<CompData Component_Type="Component_EHVConnector" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<Health Value="150"/>
+		<Priority Value="5"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
+		<Recipe>
+			<Part Component="Component_" Quantity = "1"/>
+		</Recipe>
+	</Component>
+	<Component>
+		<CompData Component_Type="Component_HVConnector" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<Health Value="150"/>
+		<Priority Value="5"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
+		<Recipe>
+			<Part Component="Component_" Quantity = "1"/>
+		</Recipe>
+	</Component>
+	<Component>
+		<CompData Component_Type="Component_Breakers" Quantity = "5"/>
+		<Factory/>DevFactory<Factory/>
+		<Health Value="25"/>
+		<Priority Value="5"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
+		<Recipe>
+			<Part Component="Component_" Quantity = "1"/>
+		</Recipe>
+	</Component>
+	<Component>
+		<CompData Component_Type="Component_ElectricalBox" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<Health Value="50"/>
+		<Priority Value="5"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
+		<Recipe>
+			<Part Component="Component_" Quantity = "1"/>
 		</Recipe>
 	</Component>
 </ComponentDefinitions>

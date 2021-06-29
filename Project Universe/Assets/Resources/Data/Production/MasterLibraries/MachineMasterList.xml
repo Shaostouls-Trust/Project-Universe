@@ -37,7 +37,7 @@
 			<Part Component="Component_ParticleMembrane" Quantity = "1"/>
 			<Part Component="Component_ElectricalComponents" Quantity = "1"/>
 			<Part Component="Component_IronComponents" Quantity = "2"/>
-			<Part Component="Component_PalladiumComponents" Quantity = "0.5"/>
+			<Part Component="Component_PalladiumComponents" Quantity = "1"/>
 		</Recipe>
 		<BaseLevel Level="1" />
 		<Upgrades> 
@@ -150,6 +150,28 @@
 			<Level Level="6" />
 			<Level Level="7" />
 			<Level Level="8" />
+		</Upgrades>
+	</Machine>
+	<Machine>
+		<MachData Machine_Type="Machine_RTG"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Recipe>
+			<Part Component="Component_NuclearFuelRod" Quantity = "1"/>
+			<Part Component="Component_ControlInterface" Quantity = "1"/>
+			<Part Component="Component_SteelComponents" Quantity = "2"/>
+			<Part Component="Component_LeadComponents" Quantity = "1"/>
+			<Part Component="Component_ElectricalComponents" Quantity = "2"/>
+			<Part Component="Component_Thermocouple" Quantity = "4"/>
+		</Recipe>
+		<BaseLevel Level="1" />
+		<Upgrades> 
+			<Cost>
+				<Part Component="Component_ElectricalComponents" Quantity = "2"/>
+				<Part Component="Component_Thermocouple" Quantity = "4"/>
+			</Cost>
+			<Level Level="2" /> 
+			<Level Level="3" />
+			<Level Level="4" />
 		</Upgrades>
 	</Machine>
 	<Machine>
@@ -1555,6 +1577,87 @@
 				<Part Component="Component_SteelComponents" Quantity = "2"/>
 			</Cost>
 			<Level Level="2" /> 
+		</Upgrades>
+	</Machine>
+	<!--Power System Machines-->
+	<Machine>
+		<MachData Machine_Type="Machine_PowerRouter"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Recipe>
+			<Part Component="Component_ControlInterface" Quantity = "3"/>
+			<Part Component="Component_ElectricalComponents" Quantity = "4"/>
+			<Part Component="Component_ElectronicsComponents" Quantity = "4"/>
+			<Part Component="Component_CopperComponents" Quantity = "2"/>
+			<Part Component="Component_FiberglassInsulation" Quantity = "4"/>
+			<Part Component="Component_NickelComponents" Quantity = "2"/>
+			<Part Component="Component_PalladiumComponents" Quantity = "2"/>
+		</Recipe>
+		<BaseLevel Level="1" />
+		<Upgrades> 
+			<Cost>
+				<Part Component="Component_ElectricalComponents" Quantity = "1"/>
+				<Part Component="Component_ElectronicsComponents" Quantity = "1"/>
+				<Part Component="Component_CopperComponents" Quantity = "1"/>
+				<Part Component="Component_FiberglassInsulation" Quantity = "2"/>
+				<Part Component="Component_NickelComponents" Quantity = "1"/>
+				<Part Component="Component_PalladiumComponents" Quantity = "0.5"/>
+			</Cost>
+			<Level Level="2" /> 
+			<Level Level="3" />
+			<Level Level="4" />
+		</Upgrades>
+	</Machine>
+	<Machine>
+		<MachData Machine_Type="Machine_PowerSubstation"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Recipe>
+			<Part Component="Component_ControlInterface" Quantity = "2"/>
+			<Part Component="Component_ElectricalComponents" Quantity = "3"/>
+			<Part Component="Component_ElectronicsComponents" Quantity = "3"/>
+			<Part Component="Component_CopperComponents" Quantity = "1"/>
+			<Part Component="Component_FiberglassInsulation" Quantity = "2"/>
+			<Part Component="Component_NickelComponents" Quantity = "1"/>
+			<Part Component="Component_PalladiumComponents" Quantity = "1"/>
+		</Recipe>
+		<BaseLevel Level="1" />
+		<Upgrades> 
+			<Cost>
+				<Part Component="Component_ElectricalComponents" Quantity = "1"/>
+				<Part Component="Component_ElectronicsComponents" Quantity = "1"/>
+				<Part Component="Component_CopperComponents" Quantity = "1"/>
+				<Part Component="Component_FiberglassInsulation" Quantity = "1"/>
+				<Part Component="Component_NickelComponents" Quantity = "1"/>
+				<Part Component="Component_PalladiumComponents" Quantity = "0.5"/>
+			</Cost>
+			<Level Level="2" /> 
+			<Level Level="3" />
+			<Level Level="4" />
+		</Upgrades>
+	</Machine>
+	<Machine>
+		<MachData Machine_Type="Machine_PowerBreaker"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Recipe>
+			<Part Component="Component_ControlInterface" Quantity = "1"/>
+			<Part Component="Component_ElectricalComponents" Quantity = "3"/>
+			<Part Component="Component_ElectronicsComponents" Quantity = "2"/>
+			<Part Component="Component_CopperComponents" Quantity = "1"/>
+			<Part Component="Component_FiberglassInsulation" Quantity = "1"/>
+			<Part Component="Component_NickelComponents" Quantity = "1"/>
+			<Part Component="Component_Plastic" Quantity = "2"/>
+		</Recipe>
+		<BaseLevel Level="1" />
+		<Upgrades> 
+			<Cost>
+				<Part Component="Component_ElectricalComponents" Quantity = "1"/>
+				<Part Component="Component_ElectronicsComponents" Quantity = "1"/>
+				<Part Component="Component_FiberglassInsulation" Quantity = "0.5"/>
+				<Part Component="Component_NickelComponents" Quantity = "1"/>
+				<Part Component="Component_Plastic" Quantity = "1"/>
+			</Cost>
+			<Level Level="2" /> 
+			<Level Level="3" />
+			<Level Level="4" />
 		</Upgrades>
 	</Machine>
 </MachineDefinitions>

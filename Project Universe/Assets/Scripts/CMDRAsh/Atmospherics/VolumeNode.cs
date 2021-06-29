@@ -1,40 +1,44 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ProjectUniverse.Animation.Controllers;
 
-public class VolumeNode : MonoBehaviour
+namespace ProjectUniverse.Environment.Volumes
 {
-    private GameObject linkedVolume;
-    private GameObject globalVolume;
-    [SerializeField] private GameObject originDoor;
-    
-    public void SetVolumeLink(GameObject volume)
+    public class VolumeNode : MonoBehaviour
     {
-        linkedVolume = volume;
-    }
+        private GameObject linkedVolume;
+        private GameObject globalVolume;
+        [SerializeField] private GameObject originDoor;
 
-    public void SetGlobalVolume(GameObject volume)
-    {
-        globalVolume = volume;
-    }
+        public void SetVolumeLink(GameObject volume)
+        {
+            linkedVolume = volume;
+        }
 
-    public GameObject GetDoor()
-    {
-        return originDoor;
-    }
+        public void SetGlobalVolume(GameObject volume)
+        {
+            globalVolume = volume;
+        }
 
-    public GameObject GetVolumeLink()
-    {
-        return linkedVolume;
-    }
+        public GameObject GetDoor()
+        {
+            return originDoor;
+        }
 
-    public GameObject GetGlobalLink()
-    {
-        return globalVolume;
-    }
+        public GameObject GetVolumeLink()
+        {
+            return linkedVolume;
+        }
 
-    public bool DoorState()
-    {
-        return originDoor.gameObject.GetComponent<DoorAnimator>().OpenOrOpening();
+        public GameObject GetGlobalLink()
+        {
+            return globalVolume;
+        }
+
+        public bool DoorState()
+        {
+            return originDoor.gameObject.GetComponent<DoorAnimator>().OpenOrOpening();
+        }
     }
 }

@@ -2,55 +2,58 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OreAndMatLibInitializer : MonoBehaviour
+namespace ProjectUniverse.Data.Libraries
 {
-    private OreLibrary.OreMaterialLibrary OreLib;
-    private InclusionLibrary.InclusionDictionary IDL;
-    private IngotLibrary.IngotDefinitionLibrary IngotLib;
-    private IComponentLibrary.ComponentDefinitionLibrary CDL;
-    private MachineLibrary.MachineDefinitionLibrary MDL;
-
-    void Awake()
+    public class OreAndMatLibInitializer : MonoBehaviour
     {
-        OreLib = new OreLibrary.OreMaterialLibrary();
-        OreLib.InitializeOreDictionary();
-        OreLib.InitializeMaterialDictionary();
+        private OreLibrary.OreMaterialLibrary OreLib;
+        private InclusionLibrary.InclusionDictionary IDL;
+        private IngotLibrary.IngotDefinitionLibrary IngotLib;
+        private IComponentLibrary.ComponentDefinitionLibrary CDL;
+        private MachineLibrary.MachineDefinitionLibrary MDL;
 
-        IDL = new InclusionLibrary.InclusionDictionary();
-        IDL.InitializeInclusionDictionary();
+        void Awake()
+        {
+            OreLib = new OreLibrary.OreMaterialLibrary();
+            OreLib.InitializeOreDictionary();
+            OreLib.InitializeMaterialDictionary();
 
-        IngotLib = new IngotLibrary.IngotDefinitionLibrary();
-        IngotLib.InitializeIngotDictionary();
+            IDL = new InclusionLibrary.InclusionDictionary();
+            IDL.InitializeInclusionDictionary();
 
-        CDL = new IComponentLibrary.ComponentDefinitionLibrary();
-        CDL.InitializeComponentDictionary();
+            IngotLib = new IngotLibrary.IngotDefinitionLibrary();
+            IngotLib.InitializeIngotDictionary();
 
-        MDL = new MachineLibrary.MachineDefinitionLibrary();
-        MDL.InitializeMachineDictionary();
-    }
+            CDL = new IComponentLibrary.ComponentDefinitionLibrary();
+            CDL.InitializeComponentDictionary();
 
-    public OreLibrary.OreMaterialLibrary GetOreDictionary()
-    {
-        return OreLib;
-    }
+            MDL = new MachineLibrary.MachineDefinitionLibrary();
+            MDL.InitializeMachineDictionary();
+        }
 
-    public InclusionLibrary.InclusionDictionary GetInclusionDictionary()
-    {
-        return IDL;
-    }
+        public OreLibrary.OreMaterialLibrary GetOreDictionary()
+        {
+            return OreLib;
+        }
 
-    public IngotLibrary.IngotDefinitionLibrary GetIngotDictionary()
-    {
-        return IngotLib;
-    }
+        public InclusionLibrary.InclusionDictionary GetInclusionDictionary()
+        {
+            return IDL;
+        }
 
-    public IComponentLibrary.ComponentDefinitionLibrary GetComponentDictionary()
-    {
-        return CDL;
-    }
+        public IngotLibrary.IngotDefinitionLibrary GetIngotDictionary()
+        {
+            return IngotLib;
+        }
 
-    public MachineLibrary.MachineDefinitionLibrary GetMachineDictionary()
-    {
-        return MDL;
+        public IComponentLibrary.ComponentDefinitionLibrary GetComponentDictionary()
+        {
+            return CDL;
+        }
+
+        public MachineLibrary.MachineDefinitionLibrary GetMachineDictionary()
+        {
+            return MDL;
+        }
     }
 }
