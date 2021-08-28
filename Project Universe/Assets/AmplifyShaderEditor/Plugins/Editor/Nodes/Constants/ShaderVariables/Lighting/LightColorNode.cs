@@ -31,14 +31,16 @@ namespace AmplifyShaderEditor
 
 			if( !PreviewIsDirty )
 				return;
-
-			int count = m_outputPorts.Count;
-			for( int i = 0; i < count; i++ )
+			if( !Preferences.GlobalDisablePreviews )
 			{
-				RenderTexture temp = RenderTexture.active;
-				RenderTexture.active = m_outputPorts[ i ].OutputPreviewTexture;
-				Graphics.Blit( null, m_outputPorts[ i ].OutputPreviewTexture, PreviewMaterial, i );
-				RenderTexture.active = temp;
+				int count = m_outputPorts.Count;
+				for( int i = 0 ; i < count ; i++ )
+				{
+					RenderTexture temp = RenderTexture.active;
+					RenderTexture.active = m_outputPorts[ i ].OutputPreviewTexture;
+					Graphics.Blit( null , m_outputPorts[ i ].OutputPreviewTexture , PreviewMaterial , i );
+					RenderTexture.active = temp;
+				}
 			}
 
 			PreviewIsDirty = m_continuousPreviewRefresh;

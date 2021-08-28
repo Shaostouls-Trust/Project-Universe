@@ -91,11 +91,15 @@ namespace AmplifyShaderEditor
 		d3d11_9x,
 		xbox360,
 		xboxone,
+		xboxseries,
 		ps4,
+		playstation,
 		psp2,
 		n3ds,
 		wiiu,
+		@switch,
 		vulkan,
+		nomrt,
 		all
 	}
 
@@ -1370,6 +1374,10 @@ namespace AmplifyShaderEditor
 			
 
 			m_currentDataCollector.TesselationActive = m_tessOpHelper.EnableTesselation;
+			#if UNITY_IOS
+			// On iOS custom app data must be used since fixed4 color from appdata_full generates an error on it when tessellation is active
+			m_currentDataCollector.ForceCustomAppDataUsage();
+			#endif
 			m_currentDataCollector.CurrentRenderPath = m_renderPath;
 
 			StandardShaderLightModel cachedLightModel = m_currentLightModel;
@@ -2188,7 +2196,7 @@ namespace AmplifyShaderEditor
 						//Tesselation
 						if( m_tessOpHelper.EnableTesselation && !usingDebugPort )
 						{
-							ShaderBody += m_tessOpHelper.GetCurrentTessellationFunction + "\n";
+							ShaderBody += m_tessOpHelper.GetCurrentTessellationFunction( ref m_currentDataCollector ) + "\n";
 						}
 
 						//Add Custom Vertex Data
@@ -2255,7 +2263,8 @@ namespace AmplifyShaderEditor
 							ShaderBody += "\t\tinline half4 Lighting" + m_currentLightModel.ToString() + Constants.CustomLightStructStr + "(" + outputStruct + " " + Constants.CustomLightOutputVarStr + ", half3 viewDir, UnityGI gi )\n\t\t{\n";
 							if( hasTranslucency )
 							{
-								ShaderBody += "\t\t\t#if !DIRECTIONAL\n";
+								//ShaderBody += "\t\t\t#if !DIRECTIONAL\n";
+								ShaderBody += "\t\t\t#if !defined(DIRECTIONAL)\n";
 								ShaderBody += "\t\t\tfloat3 lightAtten = gi.light.color;\n";
 								ShaderBody += "\t\t\t#else\n";
 								ShaderBody += "\t\t\tfloat3 lightAtten = lerp( _LightColor0.rgb, gi.light.color, _TransShadow );\n";
@@ -2463,7 +2472,7 @@ namespace AmplifyShaderEditor
 						ShaderBody += "\t\t\t\tUNITY_VERTEX_OUTPUT_STEREO\n";
 						ShaderBody += "\t\t\t};\n";
 
-						ShaderBody += "\t\t\tv2f vert( " + m_currentDataCollector.CustomAppDataName + " v )\n";
+						ShaderBody += "\t\t\tv2f vert( " + m_currentDataCollector.SurfaceVertexStructure + " v )\n";
 						ShaderBody += "\t\t\t{\n";
 						ShaderBody += "\t\t\t\tv2f o;\n";
 

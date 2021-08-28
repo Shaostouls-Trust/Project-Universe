@@ -18,22 +18,17 @@ namespace ProjectUniverse.PowerSystem
         [SerializeField] private float energyBufferMax;
         private float energyBufferMaxResetValue;
         private Mach_RoutingSubstation M_Substation;
-        [SerializeField]
-        private float bufferCurrent;
-        private float defecitVbreaker = 1.0f;
-        private float defecitVmachine = 1.0f;
+        [SerializeField] private float bufferCurrent;
+        private float deficitVbreaker = 1.0f;
+        private float deficitVmachine = 1.0f;
         private List<IRouter> myRouters = new List<IRouter>();
-
         //buildstate
         private bool buildState;
-
         //power legs update
         private int legsRequired = 3;//leg shortage willonly cut distributable power by 1/2/3 3rds
         private int legsReceived; //if lose a leg, increase demand through remaining.
         private int legsOut;//calculate based on machines linked and component health
-        [SerializeField]
-        private int availibleLegsOut;
-
+        [SerializeField] private int availibleLegsOut;
         //damage update
         private int _legRedux;
         private float _bufferCurrentRedux;
@@ -113,6 +108,7 @@ namespace ProjectUniverse.PowerSystem
                 if (targetMachine[i] != null)
                 {
                     totalMachineReq += targetMachine[i].RequestedEnergyAmount();
+                    //Debug.Log("machine "+i+": "+targetMachine[i].RequestedEnergyAmount());
                     totalRequiredPower += targetMachine[i].RequestedEnergyAmount();
                 }
             }
@@ -131,6 +127,7 @@ namespace ProjectUniverse.PowerSystem
             {
                 //request energy from Router
                 float requestPerRouter = totalRequiredPower / myRouters.Count;
+                //Debug.Log("Req: "+totalRequiredPower);
                 foreach (IRouter rout in myRouters)
                 {
                     rout.RequestPowerFromRouter(requestPerRouter, thisSubstation);
@@ -139,45 +136,59 @@ namespace ProjectUniverse.PowerSystem
             else if (bufferCurrent >= energyBufferMax)
             {
                 totalRequiredPower = 0;
+                //Debug.Log(bufferCurrent + " = " + energyBufferMax);
                 bufferCurrent = energyBufferMax;
             }
             //power will be divided equally among linked machines, sacrificing breaker power by as much as 75% in case of defecit.
             //ignore this division block if the substation buffer is empty
+            float deficit = 0f;
+            //Debug.Log(totalBreakerReq + totalMachineReq + ">" + bufferCurrent);
             if (totalBreakerReq + totalMachineReq > bufferCurrent)
             {
-                //Debug.Log("Requested exceeds buffer:"+bufferCurrent);
-                //difference between required and available power.
-                float deficit = totalRequiredPower - bufferCurrent;
-                if (targetBreakers.Length > 0)//no need to run the code below if there are no breakers.
+                if (targetBreakers.Length > 0 && totalBreakerReq > 0f)//no need to run the code below if there are no breakers.
                 {
-                    //defecitVbreaker = 1.0f;
-                    //determine the percent difference between defecit and the power required by the breakers
-                    if (totalBreakerReq > 0)//div by zero precaution
+                    /*
+                    //difference between required and available power.
+                    deficit = totalBreakerReq - bufferCurrent;
+                    if (deficit > 0.0f)//not enough power for the breakers
                     {
-                        //defecitVbreaker = totalBreakerReq / deficit; //backwards?
-                        defecitVbreaker = deficit / totalBreakerReq;
+                        //Debug.Log(deficit + "=" + totalBreakerReq + "-" + bufferCurrent);
+                        deficitVbreaker = 1f - (deficit / totalBreakerReq);
+                        if (deficitVbreaker > 0.75f)
+                        {
+                            deficitVbreaker = 0.75f;
+                        }
+                        Debug.Log("dvb = " + deficitVbreaker + ", " + (deficit + "/" + totalBreakerReq));
+
+                        totalBreakerReq -= (totalBreakerReq * deficitVbreaker);
+                        float newAvailablePower = bufferCurrent - totalBreakerReq;
+                        deficit = totalMachineReq - newAvailablePower;
+                        deficitVmachine = deficit / totalMachineReq;
+                        Debug.Log("dvm = " + deficitVmachine + ", " + (deficit + "/" + totalMachineReq));
                     }
-                    else { defecitVbreaker = 0.0f; }
+                    else//enough power for the breakers but not neccesarily the machines
+                    {
+                        deficit = totalMachineReq - bufferCurrent;
+                        deficitVmachine = 1f - (deficit / totalMachineReq);
+                        totalMachineReq -= (totalMachineReq * deficitVmachine);
+                        Debug.Log("dvm = " + deficitVmachine + ", " + (deficit + "/" + totalMachineReq));
+
+                        float newAvailablePower = bufferCurrent - totalMachineReq;
+                        deficit = totalBreakerReq - newAvailablePower;
+                        deficitVbreaker = deficit / totalBreakerReq;
+                        Debug.Log("dvb = " + deficitVbreaker + ", " + (deficit + "/" + totalBreakerReq));
+                    }
+                    */
+                    deficitVbreaker = 0.0f;
+                    deficitVmachine = 0.0f;
                 }
-                else { defecitVbreaker = 0.0f; }
-                //multiply by the ammount of power we are retaining for the breakers
-                totalBreakerReq *= defecitVbreaker;//-= (totalBreakerReq * defecitVbreaker);//0.25f;
-                                                    //get the new power requirement.
-                float newRequiredPower = totalMachineReq + totalBreakerReq;
-                //recompute deficit based on reduced breaker draw.
-                deficit = newRequiredPower - bufferCurrent;
-                //calculate the percent that we need to trim off of the machine requirement to settle deficit
-                //IE how much is the defecit when compared to the buffer (in %)
-                defecitVmachine = deficit / totalMachineReq;
-                //Debug.Log("Defecit v machine: " + defecitVmachine);
-                //Debug.Log("Defecit v breaker: " + defecitVbreaker);
+                else { deficitVbreaker = 0.0f; }
             }
             else
             {
-                defecitVbreaker = 0.0f;
-                defecitVmachine = 0.0f;
+                deficitVbreaker = 0.0f;
+                deficitVmachine = 0.0f;
             }
-
             //}
         }
 
@@ -209,7 +220,14 @@ namespace ProjectUniverse.PowerSystem
                         breakerLegReq = availibleLegsOut;
                     }
                     //adjust total power need by the breaker defecit
-                    requestedAmount -= (requestedAmount * defecitVbreaker);//new, was in for below
+                    //Debug.Log("request, "+requestedAmount + " -= " + (requestedAmount * defecitVbreaker));
+                    if(requestedAmount * deficitVbreaker < 0f)
+                    {
+                        Debug.LogError("NEGATIVE Power Request ("+ (requestedAmount * deficitVbreaker)+")");
+                        deficitVbreaker *= -1f;
+                    }
+                    //Debug.Log(requestedAmount +" -= "+ (requestedAmount * deficitVbreaker));
+                    requestedAmount -= (requestedAmount * deficitVbreaker);//new, was in for below
                                                                            //split power between legs
                     float[] powerAmount = new float[breakerLegReq];
                     for (int l = 0; l < breakerLegReq; l++)
@@ -221,16 +239,17 @@ namespace ProjectUniverse.PowerSystem
                         powerAmount[l] = (float)Math.Round(powerAmount[l], 3);
                     }
                     //Debug.Log("defecitVbreaker:" + defecitVbreaker);
-                    //requestedAmount = powerAmount[0] * breakerLegReq; //was included
+                    requestedAmount = powerAmount[0] * breakerLegReq; //was included
                     if (cable.CheckConnection(4))//transfer to breaker
                     {
                         //Debug.Log("buffer amount: "+bufferCurrent);
                         if (bufferCurrent - requestedAmount >= 0)
                         {
                             //transfer the uniquely requested amount to the machine
-                            //Debug.Log("Transfer power amount: "+(powerAmount[0]*breakerLegReq));
+                            //Debug.Log("req amount: "+(powerAmount[0]*breakerLegReq));
                             cable.TransferIn(breakerLegReq, powerAmount, 4);
                             availibleLegsOut -= breakerLegReq;
+                            //Debug.Log(bufferCurrent +"-="+requestedAmount);
                             bufferCurrent -= requestedAmount;
                         }
                         else if (bufferCurrent - requestedAmount < 0)
@@ -240,7 +259,9 @@ namespace ProjectUniverse.PowerSystem
                             //or transfer all that remains in the buffer
                             cable.TransferIn(breakerLegReq, tempfloat, 4);
                             availibleLegsOut -= breakerLegReq;
+                            //Debug.Log(bufferCurrent + "=0");
                             bufferCurrent = 0f;
+                            
                         }
                     }
                 }
@@ -265,7 +286,11 @@ namespace ProjectUniverse.PowerSystem
                         //Debug.Log("leg shortage ("+machineLegReq+")");
                     }
                     //
-                    requestedAmount -= (requestedAmount * defecitVmachine);
+                    if(deficitVmachine > 1.0f)
+                    {
+                        deficitVmachine = 1.0f;
+                    }
+                    requestedAmount -= (requestedAmount * deficitVmachine);
                     //split power between legs
                     float[] powerAmount = new float[machineLegReq];
                     //Debug.Log("splitting power between legs");
@@ -291,7 +316,9 @@ namespace ProjectUniverse.PowerSystem
                             // Debug.Log("Sufficient Power");
                             cable.TransferIn(machineLegReq, powerAmount, 3);
                             availibleLegsOut -= machineLegReq;
+                            //Debug.Log(bufferCurrent + "-=" + requestedAmount);
                             bufferCurrent -= requestedAmount;
+                            
                         }
                         else if (bufferCurrent - requestedAmount < 0)
                         {
@@ -300,6 +327,7 @@ namespace ProjectUniverse.PowerSystem
                             //or transfer all that remains in the buffer
                             cable.TransferIn(machineLegReq, tempfloat, 3);
                             availibleLegsOut -= machineLegReq;
+                            //Debug.Log(bufferCurrent + "=0");
                             bufferCurrent = 0f;
                         }
                     }
@@ -324,7 +352,7 @@ namespace ProjectUniverse.PowerSystem
 
         public void ReceivePowerFromRouter(int legCount, float[] powerAmounts)
         {
-            //Debug.Log("Receiving ");
+            //Debug.Log(bufferCurrent+" + "+(powerAmounts[0]*legCount));
             //receive 3 legs of X amount
             for (int i = 0; i < legCount; i++)
             {
@@ -355,7 +383,6 @@ namespace ProjectUniverse.PowerSystem
             //Debug.Log("legs af " + availibleLegsOut);
 
             bufferCurrent -= (bufferCurrent * _bufferCurrentRedux);
-
             energyBufferMax -= (energyBufferMax * _bufferMaxRedux);
         }
 

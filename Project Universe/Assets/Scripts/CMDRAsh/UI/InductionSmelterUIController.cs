@@ -1,3 +1,4 @@
+using MLAPI;
 using ProjectUniverse.Base;
 using ProjectUniverse.Data.Libraries.Definitions;
 using ProjectUniverse.Player;
@@ -14,7 +15,7 @@ namespace ProjectUniverse.UI
 {
     public class InductionSmelterUIController : MonoBehaviour
     {
-        [SerializeField] private GameObject player;
+        private GameObject player;
         [SerializeField] private GameObject Factory;
         private List<ItemStack> suppliedOres = new List<ItemStack>();//from smelter inventory
         private List<ItemStack> transfererinventory;//player inventory or transport pipe
@@ -46,6 +47,10 @@ namespace ProjectUniverse.UI
 
         void Start()
         {
+            if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
+            {
+                player = networkedClient.PlayerObject.gameObject;
+            }
             //UpdateProductionPanel();
             //for (int i = 0; i < OreInsertionButtons.Length; i++)
             //{
@@ -327,6 +332,13 @@ namespace ProjectUniverse.UI
 
         public void LockScreenAndFreeCursor()
         {
+            if (player == null)
+            {
+                if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
+                {
+                    player = networkedClient.PlayerObject.gameObject;
+                }
+            }
             player.GetComponent<PlayerController>().LockAndFreeCursor();
         }
 

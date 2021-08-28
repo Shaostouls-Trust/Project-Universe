@@ -41,6 +41,10 @@ namespace AmplifyShaderEditor
 		public static readonly string PrefShowAsyncMsg = "ASEShowAsync" + Application.productName;
 		public static bool GlobalShowAsyncMsg = true;
 #endif
+		private static readonly GUIContent DisablePreviews = new GUIContent( "Disable Node Previews" , "Disable preview on nodes from being updated to boost up performance on large graphs" );
+		public static readonly string PrefDisablePreviews = "ASEActivatePreviews" + Application.productName;
+		public static bool GlobalDisablePreviews = false;
+
 		private static bool PrefsLoaded = false;
 
 #if UNITY_2019_1_OR_NEWER
@@ -72,43 +76,64 @@ namespace AmplifyShaderEditor
 
 			var cache = EditorGUIUtility.labelWidth;
 			EditorGUIUtility.labelWidth = 250;
-			EditorGUI.BeginChangeCheck();
-			GlobalStartUp = (ShowOption)EditorGUILayout.EnumPopup( StartUp, GlobalStartUp );
-			if( EditorGUI.EndChangeCheck() )
 			{
-				EditorPrefs.SetInt( PrefStartUp, (int)GlobalStartUp );
+				EditorGUI.BeginChangeCheck();
+				GlobalStartUp = (ShowOption)EditorGUILayout.EnumPopup( StartUp , GlobalStartUp );
+				if( EditorGUI.EndChangeCheck() )
+				{
+					EditorPrefs.SetInt( PrefStartUp , (int)GlobalStartUp );
+				}
 			}
 
-			EditorGUI.BeginChangeCheck();
-			GlobalAutoSRP = EditorGUILayout.Toggle( AutoSRP, GlobalAutoSRP );
-			if( EditorGUI.EndChangeCheck() )
 			{
-				EditorPrefs.SetBool( PrefAutoSRP, GlobalAutoSRP );
+				EditorGUI.BeginChangeCheck();
+				GlobalAutoSRP = EditorGUILayout.Toggle( AutoSRP , GlobalAutoSRP );
+				if( EditorGUI.EndChangeCheck() )
+				{
+					EditorPrefs.SetBool( PrefAutoSRP , GlobalAutoSRP );
+				}
 			}
 
-			EditorGUI.BeginChangeCheck();
-			GlobalDefineSymbol = EditorGUILayout.Toggle( DefineSymbol, GlobalDefineSymbol );
-			if( EditorGUI.EndChangeCheck() )
 			{
-				EditorPrefs.SetBool( PrefDefineSymbol, GlobalDefineSymbol );
-				if( GlobalDefineSymbol )
-					IOUtils.SetAmplifyDefineSymbolOnBuildTargetGroup( EditorUserBuildSettings.selectedBuildTargetGroup );
-				else
-					IOUtils.RemoveAmplifyDefineSymbolOnBuildTargetGroup( EditorUserBuildSettings.selectedBuildTargetGroup );
+				EditorGUI.BeginChangeCheck();
+				GlobalDefineSymbol = EditorGUILayout.Toggle( DefineSymbol , GlobalDefineSymbol );
+				if( EditorGUI.EndChangeCheck() )
+				{
+					EditorPrefs.SetBool( PrefDefineSymbol , GlobalDefineSymbol );
+					if( GlobalDefineSymbol )
+						IOUtils.SetAmplifyDefineSymbolOnBuildTargetGroup( EditorUserBuildSettings.selectedBuildTargetGroup );
+					else
+						IOUtils.RemoveAmplifyDefineSymbolOnBuildTargetGroup( EditorUserBuildSettings.selectedBuildTargetGroup );
+				}
 			}
 
-			EditorGUI.BeginChangeCheck();
-			GlobalClearLog = EditorGUILayout.Toggle( ClearLog, GlobalClearLog );
-			if( EditorGUI.EndChangeCheck() )
 			{
-				EditorPrefs.SetBool( PrefClearLog, GlobalClearLog );
+				EditorGUI.BeginChangeCheck();
+				GlobalClearLog = EditorGUILayout.Toggle( ClearLog , GlobalClearLog );
+				if( EditorGUI.EndChangeCheck() )
+				{
+					EditorPrefs.SetBool( PrefClearLog , GlobalClearLog );
+				}
 			}
 
-			EditorGUI.BeginChangeCheck();
-			GlobalUpdateOnSceneSave = EditorGUILayout.Toggle( UpdateOnSceneSave , GlobalUpdateOnSceneSave );
-			if( EditorGUI.EndChangeCheck() )
 			{
-				EditorPrefs.SetBool( PrefUpdateOnSceneSave , GlobalUpdateOnSceneSave );
+				EditorGUI.BeginChangeCheck();
+				GlobalUpdateOnSceneSave = EditorGUILayout.Toggle( UpdateOnSceneSave , GlobalUpdateOnSceneSave );
+				if( EditorGUI.EndChangeCheck() )
+				{
+					EditorPrefs.SetBool( PrefUpdateOnSceneSave , GlobalUpdateOnSceneSave );
+				}
+			}
+
+
+			{
+				EditorGUI.BeginChangeCheck();
+				GlobalDisablePreviews = EditorGUILayout.Toggle( DisablePreviews , GlobalDisablePreviews );
+				if( EditorGUI.EndChangeCheck() )
+				{
+					EditorPrefs.SetBool( PrefDisablePreviews , GlobalDisablePreviews );
+					UIUtils.ActivatePreviews( !GlobalDisablePreviews );
+				}
 			}
 
 #if UNITY_2019_4_OR_NEWER
@@ -139,6 +164,9 @@ namespace AmplifyShaderEditor
 				EditorPrefs.DeleteKey( PrefUpdateOnSceneSave );
 				GlobalUpdateOnSceneSave = true;
 
+				EditorPrefs.DeleteKey( PrefDisablePreviews );
+				GlobalDisablePreviews = false;
+
 #if UNITY_2019_4_OR_NEWER
 				EditorPrefs.DeleteKey( PrefShowAsyncMsg );
 				GlobalShowAsyncMsg = true;
@@ -155,6 +183,7 @@ namespace AmplifyShaderEditor
 			GlobalDefineSymbol = EditorPrefs.GetBool( PrefDefineSymbol, true );
 			GlobalClearLog = EditorPrefs.GetBool( PrefClearLog, true );
 			GlobalUpdateOnSceneSave = EditorPrefs.GetBool( PrefUpdateOnSceneSave , true );
+			GlobalDisablePreviews = EditorPrefs.GetBool( PrefDisablePreviews , false );
 #if UNITY_2019_4_OR_NEWER
 			GlobalShowAsyncMsg = EditorPrefs.GetBool( PrefShowAsyncMsg, true );
 #endif

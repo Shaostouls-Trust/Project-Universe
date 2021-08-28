@@ -8,12 +8,13 @@ using ProjectUniverse.Base;
 using ProjectUniverse.Production.Machines;
 using ProjectUniverse.Data.Libraries.Definitions;
 using ProjectUniverse.Data.Libraries;
+using MLAPI;
 
 namespace ProjectUniverse.UI
 {
     public class ProductionUIController : MonoBehaviour
     {
-        [SerializeField] private GameObject player;
+        private GameObject player;
         [SerializeField] private GameObject Factory;
         public TMP_Text recipeList;
         public TMP_Dropdown dropDownMenu;
@@ -31,6 +32,10 @@ namespace ProjectUniverse.UI
         // Start is called before the first frame update
         void Start()
         {
+            if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
+            {
+                player = networkedClient.PlayerObject.gameObject;
+            }
             //temp
             productionAmount = 1;
             canProduce = true;

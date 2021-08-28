@@ -1,3 +1,6 @@
+using MLAPI;
+using MLAPI.Messaging;
+using MLAPI.NetworkVariable;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,7 +8,7 @@ using UnityEngine;
 
 namespace ProjectUniverse.Items.Weapons
 {
-    public class IGun_Customizable : MonoBehaviour
+    public class IGun_Customizable : NetworkBehaviour//MonoBehaviour
     {
         [SerializeField] private float Damage = 10f;
         [SerializeField] private float RoundsPerMinute = 180f;
@@ -49,84 +52,94 @@ namespace ProjectUniverse.Items.Weapons
         // Update is called once per frame
         void Update()
         {
-            if (nexttimetofire > 0)
+            if (IsLocalPlayer)
             {
-                nexttimetofire -= Time.deltaTime;
-            }
-            if (Input.GetKeyDown(KeyCode.Mouse0) && bulletsRemaining > 0)//&& nexttimetofire <= 0f
-            {
-                //Debug.Log("");
-                FireGun(FireMode);
-            }
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                ReloadGun();
+                if (nexttimetofire > 0)
+                {
+                    nexttimetofire -= Time.deltaTime;
+                }
+                if (Input.GetKeyDown(KeyCode.Mouse0) && bulletsRemaining > 0)//&& nexttimetofire <= 0f
+                {
+                    //Debug.Log("");
+                    //This connected client has tried to shoot (this goes to the server first, then back to this client. Can be optimized)
+                    if (FireMode == 0)
+                    {
+                        bulletsRemaining--;
+                        //FireGunServerRpc();
+                        FireGunServerRpc();
+                    }
+                    else if (FireMode == 1)
+                    {
+                        //fire bursts at normal weap speed
+                        //multiple bursts cannot be fired at once
+                        if (nexttimetofire <= 0f)
+                        {
+                            bulletsRemaining--;
+                            FireGunServerRpc();
+                        }
+                    }
+                    else if (FireMode == 2)
+                    {
+                        //fire continuously until ammo or mouse up at norm weap speed
+                        if (nexttimetofire <= 0f)
+                        {
+                            bulletsRemaining--;
+                            FireGunServerRpc();
+                        }
+                    }
+                    if (nexttimetofire <= 0)
+                    {
+                        //how will this calc burst fire?? Like really??
+                        CalcFireRate();
+                    }
+                    
+                }
+                if (Input.GetKeyDown(KeyCode.R))
+                {
+                    ReloadGun();
+                }
             }
         }
 
-        public void FireGun(int mode)
+        //run on server, called by client
+        [ServerRpc]
+        public void FireGunServerRpc()
         {
-
-            if (mode == 0)
-            {
-                //fire as fast as mouse can be clicked
-                bulletsRemaining--;
-                //place the muzzleEffectOnShot stack
-                for (int me = 0; me < MuzzleEffectOnShot.Length; me++)
-                {
-                    //play or place the effects
-                }
-
-                Speaker.clip = ShotSound;
-                Speaker.Play(0);
-                playerRB.AddForce(Vector3.back * RecoilForce);
-
-                //create a motion vector for the bullet based off the gun accuracy, the speed
-                Vector3 motionVector = CalculateBulletVector();
-                Vector3 rotation = MuzzleDummy.transform.rotation.eulerAngles + new Vector3(0, -90, 0);
-
-                //create a bullet to shoot
-                GameObject bullet = Instantiate(SlugToShoot, MuzzleDummy.transform.position, Quaternion.Euler(rotation), MuzzleDummy.transform);
-                bullet.SetActive(true);
-                bullet.GetComponent<Rigidbody>().velocity = motionVector;
-                bullet.transform.SetParent(null);
-                bullet.GetComponent<IBullet>().SetDamageAmount(Damage);
-
-                Vector3 casingRot = CasingDummy.transform.rotation.eulerAngles + new Vector3(0, 0, 0);
-                //create a casing and spit it out as well
-                GameObject casing = Instantiate(CasingToShoot, CasingDummy.transform.position, Quaternion.Euler(casingRot), CasingDummy.transform);
-                casing.SetActive(true);
-                casing.GetComponent<Rigidbody>().velocity = MuzzleDummy.transform.right * 3f + playerRB.velocity;
-                casing.transform.SetParent(null);
-
-                //place muzzle effect after shot
-                for (int mep = 0; mep < MuzzleEffectAfterShot.Length; mep++)
-                {
-
-                }
-            }
-            else if (mode == 1)
-            {
-                //fire bursts at normal weap speed
-                //multiple bursts cannot be fired at once
-                if (nexttimetofire <= 0f)
-                {
-
-                }
-            }
-            else if (mode == 2)
-            {
-                //fire continuously until ammo or mouse up at norm weap speed
-                if (nexttimetofire <= 0f)
-                {
-
-                }
-            }
-            if (nexttimetofire <= 0)
-            {
-                CalcFireRate();
-            }
+            //runs code on every client
+            FireGunClientRpc();
         }
+
+        //runs on clients, called by server
+        [ClientRpc]
+        public void FireGunClientRpc()//GameObject bullet, GameObject casing
+        {
+            Vector3 motionVector = CalculateBulletVector();
+            Vector3 rotation = MuzzleDummy.transform.rotation.eulerAngles + new Vector3(0, -90, 0);
+
+            //create a bullet to shoot
+            GameObject bullet = Instantiate(SlugToShoot, MuzzleDummy.transform.position, Quaternion.Euler(rotation), MuzzleDummy.transform);
+            bullet.SetActive(true);
+            bullet.GetComponent<Rigidbody>().velocity = motionVector;
+            bullet.transform.SetParent(null);
+            bullet.GetComponent<IBullet>().SetDamageAmount(Damage);
+
+            Vector3 casingRot = CasingDummy.transform.rotation.eulerAngles + new Vector3(0, 0, 0);
+            //create a casing and spit it out as well
+            GameObject casing = Instantiate(CasingToShoot, CasingDummy.transform.position, Quaternion.Euler(casingRot), CasingDummy.transform);
+            casing.SetActive(true);
+            casing.GetComponent<Rigidbody>().velocity = MuzzleDummy.transform.right * 3f + playerRB.velocity;
+            casing.transform.SetParent(null);
+            
+            Speaker.clip = ShotSound;
+            Speaker.Play(0);
+            playerRB.AddForce(Vector3.back * RecoilForce);
+
+            //place muzzle effect after shot
+            //for (int mep = 0; mep < MuzzleEffectAfterShot.Length; mep++)
+            //{
+            //}
+        }
+        
 
         public void ReloadGun()
         {

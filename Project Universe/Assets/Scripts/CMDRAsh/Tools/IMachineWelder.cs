@@ -8,13 +8,14 @@ using ProjectUniverse.Player;
 using ProjectUniverse.Base;
 using ProjectUniverse.Data.Libraries.Definitions;
 using ProjectUniverse.Production.Resources;
+using MLAPI;
 
 namespace ProjectUniverse.Items.Tools
 {
     public class IMachineWelder : MonoBehaviour
     {
         //player will provide their inventory
-        [SerializeField] private GameObject player;
+        private GameObject player;
         [SerializeField] private GameObject buildComponentPanel;
         [SerializeField] private TMP_Text machineName;
         //machine's recipe - UI use only
@@ -31,6 +32,14 @@ namespace ProjectUniverse.Items.Tools
         private RaycastHit lastHit;
         private RaycastHit current;
         private Color32 LIGHTGOLD = new Color32(238, 232, 70, 255);
+
+        private void Start()
+        {
+            if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
+            {
+                player = networkedClient.PlayerObject.gameObject;
+            }
+        }
 
         // Update is called once per frame
         void Update()

@@ -1,3 +1,4 @@
+using MLAPI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,7 @@ namespace ProjectUniverse.Items.Weapons
         private float damage;
         private float penData; //NYI
         [SerializeField] private AudioSource audSrc;
-
+        
         private void OnCollisionEnter(Collision collision)
         {
             //for now, only deal damage
@@ -17,6 +18,7 @@ namespace ProjectUniverse.Items.Weapons
             {
                 audSrc.Play(0);
             }
+            //Bullets not making it through to the limbs b/c of the char controller (even with collision layers)
             collision.gameObject.SendMessage("TakeDamageFromBullet", this, SendMessageOptions.DontRequireReceiver);
             ///Eventually play an impact sound and do all the ballistics stuff
             ///here

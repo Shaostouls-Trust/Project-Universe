@@ -941,7 +941,14 @@ public class ParameterGUI  {
 						options);
 					if (EditorGUI.EndChangeCheck ()) {
 						Undo.RegisterCompleteObjectUndo (p.Parent.model, "value change for " + p.Name);
-						p.parametricObject.model.autobuild();
+
+
+                                p.initiateRipple_setIntValueFromGUIChange(p.intval);
+                                
+                                p.parametricObject.generator.parameterWasModified(p);
+                        p.parametricObject.model.autobuild();
+
+                        
 
 						if (p.PType == AXParameter.ParameterType.PositionControl)
 							p.parametricObject.generator.adjustWorldMatrices();

@@ -26,7 +26,7 @@ using Perlin = LibNoise.Unity.Generator.Perlin;
 
 namespace AX.Generators
 {
-	public class ShapeNoiser  : AX.Generators.Generator2D, IShape, ICustomNode
+	public class ShapeNoiser  : AX.Generators.Generator2D, IShape
 	{
 
 		public AXParameter	P_Octaves;
@@ -136,7 +136,7 @@ namespace AX.Generators
 			//if (ArchimatixUtils.doDebug)
 			//Debug.Log (parametricObject.Name + " generate +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
-			Debug.Log("P_Output="+P_Output);
+			//Debug.Log("P_Output="+P_Output);
 
 			if (! parametricObject.isActive)
 				return null;
@@ -155,7 +155,7 @@ namespace AX.Generators
 			P_Input.polyTree = null;
 			AXShape.thickenAndOffset(ref P_Input, inputSrc_p);
 
-			Pather.printPaths(P_Input.getPaths());
+			//Pather.printPaths(P_Input.getPaths());
 
 			P_Output.polyTree = null;
 

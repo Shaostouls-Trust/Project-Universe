@@ -649,7 +649,10 @@ namespace AX.Generators
 								}
 
 								topMesh = AXPolygon.triangulate(resPolytree, topCapTex, seglen, useSubdivisionGrid);
-								 
+
+                                if (topMesh == null)
+                                    return null;
+
 								if (! planIsCCW || hasBackfaces)
 									topMesh.triangles = topMesh.triangles.Reverse().ToArray();
 

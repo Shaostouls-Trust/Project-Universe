@@ -1,4 +1,145 @@
 Release Notes:
+* Warning: 
+    * Some rendering platform tags changed across sub-SRP versions and we decided to update our templates to the latest ones.
+      On SRP 10 and above there's no issue as all versions are updated but on version 7, only the latest 7.6 version recognizes the new tags.
+      All other older SRP 7 versions as well as all SRP 8 versions don't recognize the new tags.
+      Over this new ASE version we added the Rendering Platforms menu over the Master Node properties window on SRP templates so if on your current SRP version p.e this warning appear
+        * Unrecognized renderer for #pragma only_renderers: xboxseries
+      You only need to go to the Rendering Platforms menu and deselect that specific tag.
+
+v1.8.9 rev 12:
+* Fixes:
+    * Fixed issue on incorrectly writing render platform info on shader meta even if none is present over its template
+
+* Improvements:
+    * Moved Render Platform declaration on URP templates to SubShader level so it can be properly used by latest Render Platform feature on templates
+
+v1.8.9 rev 11:
+* Fixes:
+    * Fixed missing link id over fragment Normal port on URP 10
+
+* Improvements:
+    * Added new NaN prevention checkbox over 'HeighMap Texture Blend' node
+    * Added support to Rendering Platform selection on templates API
+        * Not all templates have it implemented
+    * Added both switch and nomrt tags into Rendering Platforms list
+
+v1.8.9 rev 10:
+* New Nodes:
+    * Bone Blend Weights
+        * Only compatible with Unity 2019.1 or above and template type shaders
+    * Bone Blend Indices
+        * Only compatible with Unity 2019.1 or above and template type shaders
+
+* Fixes:
+    * Fixed issue on some port results not being correctly written on GBuffer pass over URP v.11
+    * Fixed yet another issue with ransomned property names
+    * Fixed redefinition error on 'Triplanar Sample'node
+    * Fixed undeclared standard surface Tessellation properties for both Edge Length and Edge Length with Cull
+    * Fixed warning on duplicates directives being set over options template type shaders
+    * Fixed truncation warning on Legacy Refraction over URP/PBR
+    * Fixed error on 'Global Array' node where index clamping was being done always with local value even on Reference setup
+    * Fixed multiple redefinition warnings on MultiPassUnlit template
+    * Fixed issue with obsolete Decal custom inspector on HDRP 10 being used on HDRP 11
+    * Fixed issue on incorrect naming when creating shaders/shader functions on local packages
+    * Had to revert node previews render texture format to its original one 
+        * Time based previews weren't working correctly due to lack of precision over new format
+
+* Improvements:
+    * Face type nodes now also using SRP core macros when on URP
+        * These macros use either VFACE or SV_IsFrontFace according to graphics API
+        * For Builtin pipeline custom Face macros were created similar to SRP ones
+
+v1.8.9 rev 09:
+* Fixes:
+    * Limiting new XBox and Playstation Render Platform tags to Unity 2019.4 and above
+        * They throw an unrecognized renderer warning on older versions
+    * Created new HDRP package for versions 7 prior to 7.5.1 to apply correct legacy render platform tags over those
+
+v1.8.9 rev 08:
+* New Community Sample:
+    * URP Reflection Probe by Dawie
+        * http://deenvironment.com/
+
+* Fixes:
+    * Fixed dummy render texture used when previews are off being lost on hot-code reload
+
+v1.8.9 rev 07:
+* Fixes:
+    * Fixed compilation errors shown when building with HDRP 10 Lit shaders
+    * Fixed incorrect normal usage order when dealing with Decals on HD Lit
+    * Fixed detected leak on nodes previews
+    * Fixed minor typo on matrix label over 'Global Array' node
+
+* Improvements:
+    * Updated Playstation and XBox HDRP template's render platforms
+    * Updated Render Platforms on Standard Surface with new Playstation and XBox
+    * Decreased memory usage by previews
+    * Added new 'Disable Node Previews' option on Preferences panel
+        * Completely disables all node previews to gain extra performance on large graphs
+
+v1.8.9 rev 06:
+* Fixes:
+    * Fixed issue with property nodes set in Fetch mode not properly releasing their property names
+    * Sampler state generation now takes node variable mode into account to prevent compilation errors
+        * Variable declaration disabled in Fetch mode 
+    * Fetch Lightmap Value SF 'Texture Object' node using unity_Lightmap now on Fetch mode
+        * Texture object and sampler state were being incorrectly declared over Unity Built In
+
+v1.8.9 rev 05:
+* Fixes:
+    * Fixed compilation error on 'Voronoi' node
+
+v1.8.9 rev 04:
+* Fixes:
+    * Removed duplicate Dependencies on URP Terrain sample
+    * Fixed issue on 'Camera Depth Fade', 'Depth Fade' and 'Surface Depth' nodes when used on vertex body alone and alongside fragment function
+    * Fixed incorrect code generation when using 'Depth Fade' on Surface's vertex function
+
+* Improvements:
+    * Added Diffuse Tint capabilities into Four Splats First Pass Terrain SF for URP
+        * User also needs to change the shader's Custom Inspector to UnityEditor.Rendering.Universal.TerrainLitShaderGUI
+            * A Unity restart is required after saving the shader for the Terrain inspector to correctly show the values
+            * This info is available inside the shader function over a sticky note
+
+v1.8.9 rev 03:
+* New Node:
+    * Reflection Probe
+        * Only available for URP
+
+* Improvements:
+    * Added Legacy Behavior for 'LOD Fade' node over 2019 and above 
+        * Values given by internal variable unity_LODFade.x now can be either positive (fade-out) or negative (fade-in)
+             * Toggling Legacy option makes that value given is similar to old one ( always positive and sum of fade in/out is 1 )
+    * Added new Apply To Id over 'Voronoi' node to apply smoothess to IDs
+        * Behavior similar to Blender Voronoi Smooth Ids
+    * Added Shadow Mask option for 'SRP Additional Light' shader function
+        * Only available for URP 10 and above
+
+* Fixes:
+    * Fixed issue with 'Billboard' node over URP
+
+v1.8.9 rev 02:
+* Fixes:
+    * Fixed conditional error thrown by Custom Lighting over Unity 2020.3
+    * Correct template is now imported on SRP 7.6.0
+    * Fixed issue on using undeclared clipPos variable on all URP Unlit versions
+    * Fixed issue on usage of undeclared struct over Decal HDRP 10
+
+* Improvements:
+    * Internal AddRGBToHSVFunction is now static (API)
+    * 'HD Emission' node is now imported with main package 
+        * Adding failsafe and error message to when used outside an HDRP shader
+    * Adding File mode into 'Custom Expression' node
+        * User can drag and drop a .cginc/.hsls file into the new Source field and will automatically include it on shader as an #include
+        * Function call uses value set on Name
+            * Can also automatically add precision suffix into call via the Precision Suffix toggle
+                * Behavior similar to Shader Graph
+
+v1.8.9 rev 01:
+* Fixes:
+    * Fixed issue when using Tessellation on Standard Surface type shaders over iOS
+
 v1.8.9 rev 00:
 * Improvements:
     * Added Safe Normalize option into 'Normalize' node to prevent division by zero warnings

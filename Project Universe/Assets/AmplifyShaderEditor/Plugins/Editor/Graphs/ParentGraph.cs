@@ -270,6 +270,25 @@ namespace AmplifyShaderEditor
 			}
 		}
 
+		public void ActivatePreviews( bool value )
+		{
+			int count = m_nodes.Count;
+			if( value )
+			{
+				for( int i = 0 ; i < count ; i++ )
+				{
+					m_nodes[ i ].PreviewIsDirty = true;
+				}
+			}
+			else
+			{
+				//for( int i = 0 ; i < count ; i++ )
+				//{
+				//	m_nodes[ i ].DisablePreview();
+				//}
+			}
+		}
+
 		private void OnUndoRedoCallback()
 		{
 			DeSelectAll();

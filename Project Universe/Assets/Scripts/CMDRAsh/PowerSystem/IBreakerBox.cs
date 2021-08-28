@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using ProjectUniverse.Data.Libraries;
+using MLAPI.NetworkVariable;
+using MLAPI.NetworkVariable.Collections;
+using MLAPI.Messaging;
 
 namespace ProjectUniverse.PowerSystem
 {
@@ -20,17 +23,25 @@ namespace ProjectUniverse.PowerSystem
         private LinkedList<ICable> iCableDLL = new LinkedList<ICable>();
         private float energyBufferMax;
         [SerializeField] private float bufferCurrent;
-        private int maxConnections = 30;
+        private readonly int maxConnections = 30;
         [SerializeField] private GameObject[] occupiedSwitches;
         public int switchCount;
         private float defecitVbreaker;
         private List<IRoutingSubstation> mySubstations = new List<IRoutingSubstation>();
         private List<Renderer> yellowSwitchRenderers = new List<Renderer>();
         [SerializeField] AudioSource soundsource;
-
         //power legs update
         private int legsRequired = 3;
         private int legsReceived;
+        //Network variable
+        private NetworkVariableFloat netTotalRequiredPower = new NetworkVariableFloat(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        private NetworkVariableFloat netEnergyBufferMax = new NetworkVariableFloat(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        private NetworkVariableFloat netBufferCurrent = new NetworkVariableFloat(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        private NetworkVariableInt netSwitchCount = new NetworkVariableInt(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        private NetworkVariableFloat netDefecitVBreaker = new NetworkVariableFloat(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        private NetworkVariableInt netLegsRequired = new NetworkVariableInt(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        private NetworkVariableInt netLegsReceived = new NetworkVariableInt(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        private NetworkList<GameObject> netOccupiedSwitches = new NetworkList<GameObject>(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
 
         void Start()
         {
@@ -40,13 +51,47 @@ namespace ProjectUniverse.PowerSystem
             bufferCurrent = 0f;
             totalRequiredPower = 0.0f;
             guid = Guid.NewGuid();
+            NetworkListeners();
             Debug.Log("Breaker Proxy");
             ProxyStart();
         }
 
+        private void NetworkListeners()
+        {
+            //set starting values
+            netTotalRequiredPower.Value = totalRequiredPower;
+            netEnergyBufferMax.Value = energyBufferMax;
+            netBufferCurrent.Value = bufferCurrent;
+            netSwitchCount.Value = switchCount;
+            netDefecitVBreaker.Value = defecitVbreaker;
+            netLegsReceived.Value = legsReceived;
+            netLegsRequired.Value = legsRequired;
+            //for(int i = 0; i < occupiedSwitches.Length; i++)
+            //{
+            //    netOccupiedSwitches.Add(occupiedSwitches[i]);
+           // }
+            
+            //Establish events
+            netTotalRequiredPower.OnValueChanged += delegate { totalRequiredPower = netTotalRequiredPower.Value; };
+            netEnergyBufferMax.OnValueChanged += delegate { energyBufferMax = netEnergyBufferMax.Value; };
+            netBufferCurrent.OnValueChanged += delegate { bufferCurrent = netBufferCurrent.Value; };
+            netSwitchCount.OnValueChanged += delegate { switchCount = netSwitchCount.Value; };
+            netDefecitVBreaker.OnValueChanged += delegate { defecitVbreaker = netDefecitVBreaker.Value; };
+            netLegsRequired.OnValueChanged += delegate { legsRequired = netLegsRequired.Value; };
+            netLegsReceived.OnValueChanged += delegate { legsReceived = netLegsReceived.Value; };
+            //netOccupiedSwitches.OnListChanged += delegate { 
+                
+            //};
+        }
+
         void Update()
         {
-            totalRequiredPower = 0f;
+            //Debug.Log("===============================");
+            netTotalRequiredPower.Value = 0f;
+            //if (bufferCurrent < 0.0f)
+            //{
+           //     netBufferCurrent.Value = 0f;
+            //}
             //int numSuppliers = 0;
             //requestedPower = new float[targetSubMachine.Length];
             //Uses the number and type of connections to predict how much power to allocate to each SubMachine.
@@ -54,13 +99,21 @@ namespace ProjectUniverse.PowerSystem
             {
                 if (targetSubMachine[i] != null)
                 {
-                    totalRequiredPower += targetSubMachine[i].RequestedEnergyAmount();//ref numSuppliers);
+                    netTotalRequiredPower.Value += (float)Math.Round(targetSubMachine[i].RequestedEnergyAmount(),2);
+                    //totalRequiredPower += targetSubMachine[i].RequestedEnergyAmount();//ref numSuppliers);
                 }
             }
             //Breaker Box power request to IRoutingSubstation
             if (bufferCurrent < energyBufferMax)
             {
-                float requestPerSubstation = (totalRequiredPower / mySubstations.Count);// + ((totalRequiredPower / mySubstations.Count) * 0.05f);
+                //determine amount to request
+                if (bufferCurrent + totalRequiredPower >= energyBufferMax)
+                {
+                    netTotalRequiredPower.Value = energyBufferMax - bufferCurrent;//enough to fill the buffer
+                    //netTotalRequiredPower.Value = (float)Math.Round(totalRequiredPower, 2);
+                }
+                
+                float requestPerSubstation = (totalRequiredPower / mySubstations.Count);
                 foreach (IRoutingSubstation subs in mySubstations)
                 {
                     subs.RequestPowerFromSubstation(requestPerSubstation, thisBreaker);
@@ -69,25 +122,31 @@ namespace ProjectUniverse.PowerSystem
             else if (bufferCurrent >= energyBufferMax)
             {
                 //Debug.Log("Overcap: "+bufferCurrent);
-                bufferCurrent = energyBufferMax;
+                //bufferCurrent = energyBufferMax;
+                netBufferCurrent.Value = netEnergyBufferMax.Value;
+            }
+            if (bufferCurrent < 0.0f)
+            {
+                netBufferCurrent.Value = 0f;
             }
             //power will be divided equally among linked machines. (BUGGED? If values not the same, non-uniform distribution?)
             if (bufferCurrent < totalRequiredPower)
             {
-                //Debug.Log("Breaker dividing:" + bufferCurrent);
                 float defecit = totalRequiredPower - bufferCurrent;
-                defecitVbreaker = defecit / totalRequiredPower;//dvb is broke?
-                                                               //Debug.Log(this.gameObject.name + " dvb=("+ totalRequiredPower + "-"+ bufferCurrent + ")/"+totalRequiredPower);
+                netDefecitVBreaker.Value = defecit / totalRequiredPower;
+                //netDefecitVBreaker.Value = 1.0f;
             }
             else
             {
-                defecitVbreaker = 0.0f;
+                //defecitVbreaker = 0.0f;
+                netDefecitVBreaker.Value = 0.0f;
             }
             //monitor the yellow power indicator lights
             for (int b = 0; b < yellowSwitchRenderers.Count; b++)
             {
-                if (targetSubMachine[b] != null)
+                if (targetSubMachine[b] != null && targetSubMachine[b].enabled)
                 {
+                    //Debug.Log(targetSubMachine[b] +" pwr: "+targetSubMachine[b].PowerMachine);
                     if (targetSubMachine[b].PowerMachine)
                     {
                         yellowSwitchRenderers[b].material = MaterialLibrary.GetPowerSystemStateMaterials(2);//yellow on
@@ -134,6 +193,7 @@ namespace ProjectUniverse.PowerSystem
                         powerAmount[l] = requestedAmount / machineLegReq;
                         //remove the resultant multiplicant from defecitVbreaker from the amount of power to be sent, then round off to three places
                         powerAmount[l] -= (powerAmount[l] * defecitVbreaker);
+                        //powerAmount[l] *= defecitVbreaker;
                         //Debug.Log("powerAmount after dVb: "+powerAmount[l]+" for "+powerAmount[l]* machineLegReq);
                         powerAmount[l] = (float)Math.Round(powerAmount[l], 3);
                     }
@@ -145,15 +205,21 @@ namespace ProjectUniverse.PowerSystem
                         if (bufferCurrent - requestedAmount >= 0)
                         {
                             //transfer the uniquely requested amount to the machine
+                            
                             cable.TransferIn(machineLegReq, powerAmount, 5);
-                            bufferCurrent -= requestedAmount;
+                            //bufferCurrent -= requestedAmount;
+                            netBufferCurrent.Value -= requestedAmount;
+                            //Debug.Log(netBufferCurrent.Value + ", - " + requestedAmount);
                         }
                         else if (bufferCurrent - requestedAmount < 0)
                         {
                             float[] tempfloat = new float[] { bufferCurrent / 3.0f, bufferCurrent / 3.0f, bufferCurrent / 3.0f };
                             //or transfer all that remains in the buffer
+                            
                             cable.TransferIn(machineLegReq, tempfloat, 5);
-                            bufferCurrent = 0f;
+                            //bufferCurrent = 0f;
+                            netBufferCurrent.Value = 0f;
+                            //Debug.Log("bufferCurrent = " + bufferCurrent);
                         }
                     }
                     break;
@@ -172,9 +238,18 @@ namespace ProjectUniverse.PowerSystem
             return true;
         }
 
-        public void SwitchToggle(int numID, ref GameObject[] mySwitchLEDs)
+        [ServerRpc(RequireOwnership = false)]
+        public void SwitchToggleServerRpc(int numID, ref GameObject[] mySwitchLEDs)
         {
-            if (targetSubMachine[numID] != null)
+            SwitchToggleClientRpc(numID, ref mySwitchLEDs);
+        }
+
+        [ClientRpc]
+        public void SwitchToggleClientRpc(int numID, ref GameObject[] mySwitchLEDs)
+        {
+            //targetSubMachine[numID] causes NullRef on some indexes even though the machine should exist
+            Debug.Log(numID);
+            if (targetSubMachine[numID] != null && targetSubMachine[numID].enabled)
             {
                 //play switch sound (It should not be set to loop).
                 soundsource.Play();
@@ -196,7 +271,7 @@ namespace ProjectUniverse.PowerSystem
             }
             else
             {
-                Debug.Log("AAAAAAAAAAAA");
+                Debug.Log("SubMachine Not Active In Scene");
                 mySwitchLEDs[0].GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials(3);//green to off
                 mySwitchLEDs[1].GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials(4);//red off
                 mySwitchLEDs[0].GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials(5);//yellow off
@@ -212,8 +287,7 @@ namespace ProjectUniverse.PowerSystem
             {
                 //update emissive to off
                 mySwitchLEDs[0].GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials(5);//yellow off
-            }
-            */
+            }*/
         }
 
         public void ProxyStart()
@@ -238,7 +312,7 @@ namespace ProjectUniverse.PowerSystem
                         ICable cable = new ICable(this, targetSubMachine[i]);
                         iCableDLL.AddLast(cable);
                         Debug.Log("Checking Submachine State " + i);
-                        targetSubMachine[i].CheckMachineState(ref thisBreaker);
+                        targetSubMachine[i].CheckMachineState(ref thisBreaker);//ServerRpc
                         //add one cell to occupiedSwitches
                         occupiedSwitches = new GameObject[i + 1];
                         //Debug.Log("New occSch: " + occupiedSwitches.Length);
@@ -257,6 +331,7 @@ namespace ProjectUniverse.PowerSystem
                         if (count < occupiedSwitches.Length && count < 30)
                         {
                             occupiedSwitches[count] = child.gameObject;
+                            //netOccupiedSwitches[count] = child.gameObject;//probs won't work
                         }
                         count++;
                     }
@@ -284,7 +359,7 @@ namespace ProjectUniverse.PowerSystem
                             child.GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials(3);//green off
                         }
                         //disable wsbutton3
-                        else if (child.gameObject.name == "WSButton3")
+                        else if (child.gameObject.name == "BreakerSwitchScript")
                         {
                             child.gameObject.SetActive(false);
                         }
@@ -316,6 +391,12 @@ namespace ProjectUniverse.PowerSystem
                         }
                     }
                 }
+                //update netOccupiedSwitches
+                netOccupiedSwitches.Clear();
+                for (int i = 0; i < occupiedSwitches.Length; i++)
+                {
+                    netOccupiedSwitches.Add(occupiedSwitches[i]);
+                }
             }
         }
 
@@ -333,13 +414,25 @@ namespace ProjectUniverse.PowerSystem
         {
             //Debug.Log("Breaker Received Power");
             //receive X legs with X amounts
+            //Debug.Log(netBufferCurrent.Value + " += " + amounts[0] * legCount);
             for (int i = 0; i < legCount; i++)
             {
                 //Debug.Log(legCount);
-                bufferCurrent += amounts[i];
+                //bufferCurrent += amounts[i];
+                netBufferCurrent.Value += amounts[i];
             }
-            legsReceived = legCount;
-            bufferCurrent = (float)Math.Round(bufferCurrent, 3);
+            //legsReceived = legCount;
+            netLegsReceived.Value = legCount;
+            if (netBufferCurrent.Value > energyBufferMax)
+            {
+                netBufferCurrent.Value = energyBufferMax;
+            }
+            else
+            {
+                netBufferCurrent.Value = (float)Math.Round(netBufferCurrent.Value, 3);
+            }
+            //Debug.Log("bufferCurrent: " + netBufferCurrent.Value);
+            //bufferCurrent = (float)Math.Round(bufferCurrent, 3);
         }
 
         public float GetTotalRequiredPower()

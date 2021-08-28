@@ -10,7 +10,7 @@ Material:
   m_Name: Flash_Anim
   m_Shader: {fileID: -6465566751694194690, guid: ddf0c0e603eae9b429928da8cc3b814f,
     type: 3}
-  m_ShaderKeywords: _BLENDMODE_ADD _ENABLE_FOG_ON_TRANSPARENT _SURFACE_TYPE_TRANSPARENT
+  m_ShaderKeywords: _ENABLE_FOG_ON_TRANSPARENT _SURFACE_TYPE_TRANSPARENT
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -19,9 +19,10 @@ Material:
     MotionVector: User
     RenderType: Transparent
   disabledShaderPasses:
-  - DistortionVectors
-  - MOTIONVECTORS
   - TransparentBackface
+  - MOTIONVECTORS
+  - TransparentDepthPrepass
+  - TransparentDepthPostpass
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -141,12 +142,25 @@ Material:
         m_Texture: {fileID: 2800000, guid: d0e81ab186cbc784098f270857ef0ed0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - Vector1_63175230: 0.5
     - _AORemapMax: 1
     - _AORemapMin: 0
     - _ATDistance: 1
     - _AddLightsPerPixel: 0
+    - _AddPrecomputedVelocity: 0
     - _AlbedoAffectEmissive: 0
     - _AlphaCutoff: 0.5
     - _AlphaCutoffEnable: 0
@@ -156,6 +170,8 @@ Material:
     - _AlphaDstBlend: 1
     - _AlphaInfluence: 1
     - _AlphaSrcBlend: 0
+    - _AlphaToMask: 0
+    - _AlphaToMaskInspectorValue: 0
     - _Anisotropy: 0
     - _BlendMode: 1
     - _BlendOp: 0
@@ -209,7 +225,7 @@ Material:
     - _EmissiveIntensity: 2
     - _EmissiveIntensityUnit: 0
     - _EnableAlbedo: 0
-    - _EnableBlendModePreserveSpecularLighting: 1
+    - _EnableBlendModePreserveSpecularLighting: 0
     - _EnableEmission: 1
     - _EnableFlipbookBlending: 1
     - _EnableFogOnTransparent: 1
@@ -246,6 +262,7 @@ Material:
     - _Mode: 0
     - _NormalMapSpace: 0
     - _NormalScale: 1
+    - _OpaqueCullMode: 2
     - _PPDLodThreshold: 5
     - _PPDMaxSamples: 15
     - _PPDMinSamples: 5
@@ -254,7 +271,7 @@ Material:
     - _PerPixelAmbientLighting: 0
     - _ReceivesSSR: 0
     - _RefractionModel: 0
-    - _RenderQueueType: 7
+    - _RenderQueueType: 6
     - _RequireSplitLighting: 0
     - _SSRefractionProjectionModel: 0
     - _ShadowDensity: 1
@@ -283,7 +300,6 @@ Material:
     - _StencilWriteMaskMV: 40
     - _Stiffness: 1
     - _SubsurfaceMask: 1
-    - _SupportDecals: 1
     - _SurfaceType: 1
     - _Tess: 3
     - _TexWorldScale: 1
@@ -336,6 +352,7 @@ Material:
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
     - _UnlitColor: {r: 0.5613208, g: 0.687738, b: 1, a: 1}
+  m_BuildTextureStacks: []
 --- !u!114 &8599541219752241341
 MonoBehaviour:
   m_ObjectHideFlags: 11
@@ -348,4 +365,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da692e001514ec24dbc4cca1949ff7e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 2
+  version: 11

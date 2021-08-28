@@ -14,7 +14,7 @@ namespace ProjectUniverse.Production.Machines
     public class Mach_DevFactory : IConstructible //MonoBehaviour,
     {
         [SerializeField] private string FactoryID;
-        [SerializeField] private GameObject ProductionUI;
+        [SerializeField] private GameObject ProductionUI;//From player
         private string produceComponentX;
         private List<ItemStack> inputMaterials = new List<ItemStack>();
         private List<ItemStack> outputMaterials = new List<ItemStack>();

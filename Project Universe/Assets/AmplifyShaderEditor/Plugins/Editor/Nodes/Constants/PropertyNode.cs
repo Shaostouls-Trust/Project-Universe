@@ -1756,9 +1756,10 @@ namespace AmplifyShaderEditor
 
 		public virtual void ReleaseRansomedProperty()
 		{
-			if( m_variableMode == VariableMode.Fetch && m_autoGlobalName )
+			if( m_variableMode == VariableMode.Fetch/* && m_autoGlobalName */)
 			{
-				CurrentVariableMode = VariableMode.Create;
+				//Fooling setter to have a different value 
+				m_variableMode = VariableMode.Create;
 				CurrentVariableMode = VariableMode.Fetch;
 			}
 		}
@@ -1824,6 +1825,11 @@ namespace AmplifyShaderEditor
 					m_variableMode = value;
 					if( value == VariableMode.Fetch )
 					{
+						// Release ownership on name
+						if( UIUtils.CheckUniformNameOwner( m_oldName ) == UniqueId )
+						{
+							UIUtils.ReleaseUniformName( UniqueId , m_oldName );
+						}
 						m_oldName = m_propertyName;
 					}
 					else
@@ -1843,11 +1849,18 @@ namespace AmplifyShaderEditor
 							m_propertyNameIsDirty = true;
 							OnPropertyNameChanged();
 						}
-						else if( UIUtils.CheckUniformNameOwner( m_propertyName ) != UniqueId )
+						else
 						{
-							string oldProperty = m_propertyName;
-							RegisterFirstAvailablePropertyName( false );
-							UIUtils.ShowMessage( UniqueId, string.Format( FetchToCreateOnDuplicateNodeMsg, m_propertyName, oldProperty ), MessageSeverity.Warning );
+							if( UIUtils.IsUniformNameAvailable( m_propertyName ) )
+							{
+								UIUtils.RegisterUniformName( UniqueId , m_propertyName );
+							}
+							else if( UIUtils.CheckUniformNameOwner( m_propertyName ) != UniqueId )
+							{
+								string oldProperty = m_propertyName;
+								RegisterFirstAvailablePropertyName( false );
+								UIUtils.ShowMessage( UniqueId, string.Format( FetchToCreateOnDuplicateNodeMsg, m_propertyName, oldProperty ), MessageSeverity.Warning );
+							}
 						}
 					}
 				}

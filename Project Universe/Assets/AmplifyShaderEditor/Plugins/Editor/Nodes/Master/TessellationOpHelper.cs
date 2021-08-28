@@ -49,7 +49,7 @@ namespace AmplifyShaderEditor
 		private const string TessMinProperty = "_TessMin( \"Tess Min Distance\", Float ) = {0}";
 		private const string TessMaxProperty = "_TessMax( \"Tess Max Distance\", Float ) = {0}";
 
-		private const string TessFunctionOpen = "\t\tfloat4 tessFunction( appdata_full v0, appdata_full v1, appdata_full v2 )\n\t\t{\n";
+		private const string TessFunctionOpen = "\t\tfloat4 tessFunction( {0} v0, {0} v1, {0} v2 )\n\t\t{{\n";
 		private const string TessFunctionClose = "\t\t}\n";
 
 		// Custom function
@@ -370,6 +370,19 @@ namespace AmplifyShaderEditor
 					uniforms += "\t\tuniform " + UIUtils.PrecisionWirePortToCgType( PrecisionType.Float, WirePortDataType.FLOAT ) + " " + TessUniformName + ";\n";
 				}
 				break;
+				case 2:
+				if( !m_hasCustomFunction )
+				{
+					uniforms += "\t\tuniform " + UIUtils.PrecisionWirePortToCgType( PrecisionType.Float , WirePortDataType.FLOAT ) + " " + EdgeLengthTessUniformName + ";\n";
+				}
+				break;
+				case 3:
+				if( !m_hasCustomFunction )
+				{
+					uniforms += "\t\tuniform " + UIUtils.PrecisionWirePortToCgType( PrecisionType.Float , WirePortDataType.FLOAT ) + " " + EdgeLengthTessUniformName + ";\n";
+					uniforms += "\t\tuniform " + UIUtils.PrecisionWirePortToCgType( PrecisionType.Float , WirePortDataType.FLOAT ) + " " + EdgeLengthTessMaxDispUniformName + ";\n";
+				}
+				break;
 			}
 
 			if( m_phongEnabled )
@@ -550,51 +563,50 @@ namespace AmplifyShaderEditor
 			}
 		}
 
-		public string GetCurrentTessellationFunction
+		public string GetCurrentTessellationFunction( ref MasterNodeDataCollector dataCollector )
 		{
-			get
-			{
-				if ( m_hasCustomFunction )
-				{
-					return TessFunctionOpen +
-							m_customFunction +
-							TessFunctionClose;
-				}
+			string finalTessFunctionOpen = string.Format( TessFunctionOpen , dataCollector.SurfaceVertexStructure );
 
-				string tessFunction = string.Empty;
-				switch ( m_tessType )
-				{
-					case 0:
-					{
-						tessFunction = TessFunctionOpen +
-										DistBasedTessFunctionBody +
-										TessFunctionClose;
-					}
-					break;
-					case 1:
-					{
-						tessFunction = FixedAmountTessFunctionOpen +
-										FixedAmountTessFunctionBody +
-										TessFunctionClose;
-					}
-					break;
-					case 2:
-					{
-						tessFunction = TessFunctionOpen +
-										EdgeLengthTessFunctionBody +
-										TessFunctionClose;
-					}
-					break;
-					case 3:
-					{
-						tessFunction = TessFunctionOpen +
-										EdgeLengthTessCullFunctionBody +
-										TessFunctionClose;
-					}
-					break;
-				}
-				return tessFunction;
+			if ( m_hasCustomFunction )
+			{
+				return finalTessFunctionOpen +
+						m_customFunction +
+						TessFunctionClose;
 			}
+
+			string tessFunction = string.Empty;
+			switch ( m_tessType )
+			{
+				case 0:
+				{
+					tessFunction = finalTessFunctionOpen +
+									DistBasedTessFunctionBody +
+									TessFunctionClose;
+				}
+				break;
+				case 1:
+				{
+					tessFunction = FixedAmountTessFunctionOpen +
+									FixedAmountTessFunctionBody +
+									TessFunctionClose;
+				}
+				break;
+				case 2:
+				{
+					tessFunction = finalTessFunctionOpen +
+									EdgeLengthTessFunctionBody +
+									TessFunctionClose;
+				}
+				break;
+				case 3:
+				{
+					tessFunction = finalTessFunctionOpen +
+									EdgeLengthTessCullFunctionBody +
+									TessFunctionClose;
+				}
+				break;
+			}
+			return tessFunction;	
 		}
 
 		public void AddAdditionalData( string data )

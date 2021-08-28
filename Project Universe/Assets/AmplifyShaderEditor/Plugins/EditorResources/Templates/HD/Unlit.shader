@@ -247,7 +247,7 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 
 		HLSLINCLUDE
 		#pragma target 4.5
-		#pragma only_renderers d3d11 ps4 xboxone vulkan metal switch
+		#pragma only_renderers d3d11 playstation xboxone xboxseries vulkan metal switch
 		#pragma instancing_options renderinglayer
 
 		#ifndef ASE_TESS_FUNCS

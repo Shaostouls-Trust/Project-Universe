@@ -347,6 +347,7 @@ namespace AX
                                     case "TaperDeformer":
                                     case "InflateDeformer":
                                     case "PlanDeformer":
+                                    case "UVProjector":
 
                                         po.getParameter("Input Mesh").makeDependentOn(editor.OutputParameterBeingDragged);
                                         break;

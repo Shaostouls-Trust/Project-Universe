@@ -1,11 +1,21 @@
-﻿using System.Collections;
+﻿using MLAPI;
+using MLAPI.Messaging;
+using MLAPI.NetworkVariable;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace ProjectUniverse.Player.PlayerController
 {
-    public sealed class PlayerController : MonoBehaviour
+    public sealed class PlayerController : NetworkBehaviour
     {
+        [Header("NetworkVariables")]
+        //[SerializeField] private NetworkVariableVector3 Position = new NetworkVariableVector3(new NetworkVariableSettings
+       // {
+        //    WritePermission = NetworkVariablePermission.ServerOnly,
+        //    ReadPermission = NetworkVariablePermission.Everyone
+        //});
         //Begin Input list add to seperate client side script later.
         [Header("Input Manager")]
         [SerializeField] private string mouseXInputName;
@@ -34,6 +44,9 @@ namespace ProjectUniverse.Player.PlayerController
         [SerializeField] private string openCharacterMenuInputName;
         [SerializeField] private string openSkillsManagementMenuInputName;
         [SerializeField] private string openAbilitiesMenuInputName;
+        //Pointer lock and centering
+        [SerializeField] int CursorCase = 0;
+        [SerializeField] private bool toggleCursorLock = false;
 
         //End Input List
         [Header("AssetData")]
@@ -77,38 +90,77 @@ namespace ProjectUniverse.Player.PlayerController
         void Start()
         {
             //Lock Cursor to center by default
-            guiController.LockCursor();
+            //LockCursor();
+
+            if (IsLocalPlayer)
+            {
+                charController = GetComponent<CharacterController>();
+                charController.enabled = true;
+            }
+            else
+            {
+                charController.enabled = false;
+                //turn off the camera and audio listener
+                firstPersonCamera.enabled = false;
+                firstPersonCamera.GetComponent<AudioListener>().enabled = false;
+            }
         }
 
         void Awake()
         {
             //LockCursor();
-            lookClamp = 0;
+            //lookClamp = 0;
         }
         //Lock the cursor to the center of screen.
-        void LockCursor()
+        public void LockCursor()
         {
-            Cursor.lockState = CursorLockMode.Locked;
+
+            if (toggleCursorLock == false)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = true;
+                CursorCase = 1;
+            }
+            if (toggleCursorLock == true)
+            {
+                Cursor.lockState = CursorLockMode.Confined;
+                Cursor.visible = false;
+                CursorCase = 2;
+            }
+            toggleCursorLock = !toggleCursorLock;
         }
+
         // Update is called once per frame
         void Update()
         {
-            CameraControl();
-            PlayerControl();
-            GuiUpdate();
+            if (IsLocalPlayer)
+            {
+                CameraControl();
+                PlayerControl();
+                //GuiUpdate();
+            }
+            //else
+            //{
+            //    charController.gameObject.transform.position = Position.Value;
+            //}
+        }
+
+        public override void NetworkStart()
+        {
+            //Move();
         }
 
         ///Temp location - Technically belongs in a GUI controller
         ///Used with GUIs to free the cursor for GUI interaction
         public void LockAndFreeCursor()
         {
-            guiController.LockCursor();
+            LockCursor();//guiController.
             cameraLocked = !cameraLocked;
             Cursor.visible = true;
         }
         public void UnlockCursor()
         {
-            guiController.LockCursor();
+            LockCursor();
             cameraLocked = !cameraLocked;
             Cursor.visible = false;
         }
@@ -140,7 +192,7 @@ namespace ProjectUniverse.Player.PlayerController
         private void PlayerControl()
         {
             PlayerMovement();
-            PlayerInteraction();
+            //PlayerInteraction();
             FlashLight();
         }
         private void PlayerInteraction()
@@ -206,6 +258,13 @@ namespace ProjectUniverse.Player.PlayerController
         //Control the camera during regular movement.
         private void CameraControl()
         {
+            if (Input.GetButtonDown(lockCursorInputName))
+            {
+                Debug.Log("LeftAlt Pressed!");
+                LockCursor();
+                cameraLocked = !cameraLocked;
+            }
+
             if (cameraLocked == false) { 
             float mouseX = Input.GetAxis(mouseXInputName) * mouseXSensitivity * Time.deltaTime;
             float mouseY = Input.GetAxis(mouseYInputName) * mouseYSensitivity * Time.deltaTime;
@@ -251,7 +310,6 @@ namespace ProjectUniverse.Player.PlayerController
             {
                 jumpInput();
             }
-
             setMovementSpeed();
 
         }

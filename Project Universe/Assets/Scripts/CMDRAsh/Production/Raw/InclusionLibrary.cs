@@ -94,6 +94,7 @@ namespace ProjectUniverse.Data.Libraries
 
                 if (!isInitialized)
                 {
+                    int zoneint = 0;//max is 7
                     isInitialized = true;
                     Debug.Log("Inclusion Library Construction Initiated");
                     //find the xmls
@@ -101,16 +102,16 @@ namespace ProjectUniverse.Data.Libraries
                     string root = Directory.GetCurrentDirectory();
                     string[] filesInDir = Directory.GetFiles(root + xmlPath, "*.xml", SearchOption.TopDirectoryOnly);
 
-                    foreach (string fileAndPath in filesInDir)
+                    for(;zoneint <= 7; zoneint++)
                     {
-                        //Debug.Log("FandP: " + fileAndPath);
-                        XDocument doc = XDocument.Load(fileAndPath);
-                        foreach (XElement oreDefs in doc.Descendants("ZoneDefinitions"))
+                        //Debug.Log("Load Zone "+zoneint);
+                        TextAsset _rawText = Resources.Load<TextAsset>("Data/Production/QualityZone" + zoneint);
+                        XDocument xmlDoc = XDocument.Parse(_rawText.text, LoadOptions.PreserveWhitespace);
+                        foreach (XElement oreDefs in xmlDoc.Descendants("ZoneDefinitions"))
                         {
                             //RSZone is the region of space in which these asteroids or whatnot may be.
                             //The above dictionaries are divided by zone
                             RSZone = int.Parse(oreDefs.Element("RSZone").Value);
-                            //Debug.Log("---RSZone: "+RSZone);
                             foreach (XElement zone in oreDefs.Elements("Zone"))
                             {
                                 //A sub-zone inside of each zone/region.
@@ -123,10 +124,8 @@ namespace ProjectUniverse.Data.Libraries
                                 {
                                     foreach (XElement materials in inclusionSet.Elements("Materials"))
                                     {
-                                        //Debug.Log("Material: "+materials.Element("STR_ID").Attribute("Material_Type").Value);
                                         type = materials.Element("STR_ID").Attribute("Material_Type").Value;
                                         ratio = float.Parse(materials.Element("Ratio").Attribute("Ratio").Value);
-                                        //use the material_type to get the MaterialDefinition from the MatDefLib
                                         if (OreLibrary.MaterialDictionary.TryGetValue(type, out tempMatDef))
                                         {
                                             tempMatDic.Add(tempMatDef, ratio);
@@ -136,10 +135,8 @@ namespace ProjectUniverse.Data.Libraries
                                             Debug.Log("Invalid Material ID Detected.");
                                         }
                                     }
-                                    //Debug.Log("------------------------------------------------------------------------");
                                     foreach (XElement ores in inclusionSet.Elements("Ore"))
                                     {
-                                        //Debug.Log("Ore: "+ores.Element("STR_ID").Attribute("Ore_Type").Value);
                                         type = ores.Element("STR_ID").Attribute("Ore_Type").Value;
                                         ratio = float.Parse(ores.Element("Ratio").Attribute("Ratio").Value);
                                         if (OreLibrary.OreDictionary.TryGetValue(type, out tempOreDef))
@@ -153,7 +150,6 @@ namespace ProjectUniverse.Data.Libraries
                                     }
                                 }
                                 //assign the above per-subzone compile to the appropriate zone dictionary
-                                //Debug.Log("Switch RSZ: " + RSZone);
                                 switch (RSZone)
                                 {
                                     case 0:
@@ -192,6 +188,7 @@ namespace ProjectUniverse.Data.Libraries
                                 }
                             }
                         }
+                        Resources.UnloadAsset(_rawText);
                     }
                     Debug.Log("Inclusion Library Construction Finished");
                     Zone0_Ores = IL_Zone0_Ores;

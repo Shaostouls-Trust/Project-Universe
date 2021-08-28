@@ -12,18 +12,18 @@ namespace ProjectUniverse.Animation.Controllers
 
         public void emissionStateYellow()
         {
-            parentObject.GetComponent<DoorAnimator>().animEventOpen();
+            parentObject.GetComponent<DoorAnimator>().AnimEventOpenServerRpc();
         }
 
         public void emissionStateGreen()
         {
-            parentObject.GetComponent<DoorAnimator>().animEventOpenDone();
+            parentObject.GetComponent<DoorAnimator>().AnimEventDoneServerRpc();
         }
 
         public void stopAllAnimations()
         {
 
-            parentObject.GetComponent<DoorAnimator>().haltAllAnimations();
+            parentObject.GetComponent<DoorAnimator>().HaltAllAnimationsServerRpc();
         }
     }
 }

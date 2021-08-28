@@ -13,6 +13,7 @@ namespace ProjectUniverse.Serialization
     [Serializable]
     public sealed class PlayerData
     {
+        SceneDataHelper playerSceneData;
         //player Transform
         public Vector3 Position;
         public Quaternion Rotation;
@@ -21,7 +22,7 @@ namespace ProjectUniverse.Serialization
 
         //private Matrix4x4 TransformLTW;
         //ID
-        private readonly GUID _PlayerID;
+        private readonly Guid _PlayerID;
         //Inventory
         public float InventoryWeight;
         /// <summary>
@@ -35,10 +36,11 @@ namespace ProjectUniverse.Serialization
         //All Items in hands (later this will be determined by/part of the player inventory)
         //etc
 
-        public PlayerData(GUID guid, Transform transform, Vector3 lookDirection, IPlayer_Inventory inventory, PlayerVolumeController pvc,
+        public PlayerData(Guid guid, SceneDataHelper sceneData ,Transform transform, Vector3 lookDirection, IPlayer_Inventory inventory, PlayerVolumeController pvc,
             SupplementalController statsController)
         {
             _PlayerID = guid;
+            playerSceneData = sceneData;
             Position = transform.position;
             Rotation = Quaternion.Euler(new Vector3(lookDirection.x, transform.rotation.y, lookDirection.z));
             Scale = transform.localScale;
@@ -50,7 +52,11 @@ namespace ProjectUniverse.Serialization
             StatsSupplement = statsController;
         }
 
-        public GUID GetGUID()
+        public SceneDataHelper PlayerSceneData
+        {
+            get { return playerSceneData; }
+        }
+        public Guid GetGUID()
         {
             //Debug.Log(_PlayerID);
             return _PlayerID;

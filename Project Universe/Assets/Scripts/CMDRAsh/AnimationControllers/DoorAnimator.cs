@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using ProjectUniverse.PowerSystem;
 using ProjectUniverse.Data.Libraries;
+using MLAPI.NetworkVariable;
+using MLAPI;
+using MLAPI.Messaging;
 
 namespace ProjectUniverse.Animation.Controllers
 {
-    public class DoorAnimator : MonoBehaviour
+    public class DoorAnimator : NetworkBehaviour
     {
         [SerializeField]
         private BoxCollider trigger;
@@ -41,7 +44,7 @@ namespace ProjectUniverse.Animation.Controllers
         private bool isPowered;
         private bool isRunning;
         //speed at which to run animation.
-        private float animSpeed;
+        //private float animSpeed;
 
         private Transform doorL_TF;
         private Transform doorR_TF;
@@ -53,13 +56,22 @@ namespace ProjectUniverse.Animation.Controllers
         public bool doorAnimIsInX;
         //private ISubMachine doorMachine;
         private bool thisRunMachine = false;
+        [Space]
+        private NetworkVariableBool netLocked = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        private NetworkVariableBool netWeldedClosed = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        private NetworkVariableBool netWeldedOpen = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        private NetworkVariableBool netIsPowered = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        private NetworkVariableBool netIsRunning = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        private NetworkVariableBool netThisRunMachine = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        //private NetworkVariableFloat netAnimSpeed = new NetworkVariableFloat(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
 
         void Start()
         {
+            NetworkListeners();
             panelRenderer = new Renderer[controlPanelScreens.Length];
             //doorMachine = GetComponent<ISubMachine>();
             //thisRunMachine = doorMachine.RunMachine;
-            thisRunMachine = GetComponent<ISubMachine>().GetRunMachine();
+            netThisRunMachine.Value = GetComponent<ISubMachine>().GetRunMachine();
             //Debug.Log(thisRunMachine);
             doorL_TF = anim[0].gameObject.transform;
             doorR_TF = anim[1].gameObject.transform;
@@ -80,11 +92,31 @@ namespace ProjectUniverse.Animation.Controllers
             }
         }
 
+        private void NetworkListeners()
+        {
+            //set starting values
+            netLocked.Value = locked;
+            netWeldedClosed.Value = weldedClosed;
+            netWeldedOpen.Value = weldedOpen;
+            netIsPowered.Value = isPowered;
+            netIsRunning.Value = isPowered;
+            netThisRunMachine.Value = thisRunMachine;
+            //set up events
+            netLocked.OnValueChanged += delegate { locked = netLocked.Value; };
+            netWeldedClosed.OnValueChanged += delegate { weldedClosed = netWeldedClosed.Value; };
+            netWeldedOpen.OnValueChanged += delegate { weldedOpen = netWeldedOpen.Value; };
+            netIsPowered.OnValueChanged += delegate { isPowered = netIsPowered.Value; };
+            netIsRunning.OnValueChanged += delegate { isRunning = netIsRunning.Value; };
+            netThisRunMachine.OnValueChanged += delegate { thisRunMachine = netThisRunMachine.Value; };
+            //netAnimSpeed.OnValueChanged += delegate { animSpeed = netAnimSpeed.Value; };
+        }
+
         void Update()
         {
             if (thisRunMachine)
             {
-                isRunning = true;
+                //isRunning = true;
+                netIsRunning.Value = true;
                 if (!locked)
                 {
                     emissRenderer.material = MaterialLibrary.GetDoorStateMaterials(0);
@@ -104,7 +136,8 @@ namespace ProjectUniverse.Animation.Controllers
             }
             else
             {
-                isRunning = false;
+                //isRunning = false;
+                netIsRunning.Value = false;
                 emissRenderer.material = MaterialLibrary.GetDoorStateMaterials(2);
                 for (int i = 0; i < panelRenderer.Length; i++)
                 {
@@ -124,6 +157,7 @@ namespace ProjectUniverse.Animation.Controllers
                         anim[1].enabled = false;
                         //doorL_TF.localPosition = new Vector3(doorL_TF.localPosition.x, doorL_TF.localPosition.y, leftBoundOpen);
                         doorL_TF.localPosition = new Vector3(leftBoundOpen, doorL_TF.localPosition.y, doorL_TF.localPosition.z);
+
                     }
                     else
                     {
@@ -242,6 +276,8 @@ namespace ProjectUniverse.Animation.Controllers
                         anim[1].enabled = true;
                     }
                 }
+                //netDoorL_Position.Value = doorL_TF.position;
+                //netDoorR_Position.Value = doorR_TF.position;
             }
             else
             {
@@ -252,24 +288,63 @@ namespace ProjectUniverse.Animation.Controllers
                     panelRenderer[i].material = MaterialLibrary.GetDoorDisplayMaterials(2);
                 }
             }
+
+        }
+
+        /// <summary>
+        /// open this door
+        /// </summary>
+        [ServerRpc(RequireOwnership = false)]
+        private void OpenDoorServerRpc()
+        {
+            OpenDoorClientRpc();
+        }
+
+        /// <summary>
+        /// Show other clients that this door is being opened
+        /// </summary>
+        [ClientRpc]
+        private void OpenDoorClientRpc()
+        {
+            //Debug.Log("ClientDoorOpen");
+            //yellow blinking
+            doorRIsOpening();
+            doorLIsOpening();
+            anim[0].Play("DoorLeftOpen");
+            anim[1].Play("DoorRightOpen");
+            doorLIsOpen();
+            doorRIsOpen();
+            //green
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void CloseDoorServerRpc()
+        {
+            CloseDoorClientRpc();
+        }
+        [ClientRpc]
+        private void CloseDoorClientRpc()
+        {
+            //yellow blinking
+            doorRIsClosing();
+            doorLIsClosing();
+            anim[0].Play("DoorLeftClose");
+            anim[1].Play("DoorRightClose");
+            doorLIsClosed();
+            doorRIsClosed();
+            //green
         }
 
         void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("Player"))
+            if (other.CompareTag("Player"))//replace with a collision layer that only detects actors
             {
                 if (isPowered && (!locked && isRunning))
                 {
-                    if (!isLOpening && !isROpening)
+                    if (!isLOpening && !isROpening)//should these be network vars?
                     {
-                        //yellow blinking
-                        doorRIsOpening();
-                        doorLIsOpening();
-                        anim[0].Play("DoorLeftOpen");
-                        anim[1].Play("DoorRightOpen");
-                        doorLIsOpen();
-                        doorRIsOpen();
-                        //green
+                        //Debug.Log(isPowered + "," + isRunning + "," + !locked + "," + !isLOpening + "," + !isROpening);
+                        OpenDoorServerRpc();
                     }
                 }
             }
@@ -284,14 +359,7 @@ namespace ProjectUniverse.Animation.Controllers
                     //both doors are open (eval to false) or opening already.
                     if ((!isLOpen && !isROpen) || (isROpening && isLOpening))
                     {
-                        //yellow blinking
-                        doorRIsOpening();
-                        doorLIsOpening();
-                        anim[0].Play("DoorLeftOpen");
-                        anim[1].Play("DoorRightOpen");
-                        doorLIsOpen();
-                        doorRIsOpen();
-                        //green
+                        OpenDoorServerRpc();
                     }
                 }
             }
@@ -305,17 +373,16 @@ namespace ProjectUniverse.Animation.Controllers
                 {
                     if (!isLClosing && !isRClosing)
                     {
-                        //yellow blinking
-                        doorRIsClosing();
-                        doorLIsClosing();
-                        anim[0].Play("DoorLeftClose");
-                        anim[1].Play("DoorRightClose");
-                        doorLIsClosed();
-                        doorRIsClosed();
-                        //green
+                        CloseDoorServerRpc();
                     }
                 }
             }
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        public void RunSubmachineServerRpc(int powerLevel)
+        {
+            runSubMachine(powerLevel);
         }
 
         public void runSubMachine(int powerLevel)
@@ -326,31 +393,38 @@ namespace ProjectUniverse.Animation.Controllers
                 case 0:
                     setPoweredState(true);
                     setRunningState(true);
-                    setAnimSpeed(1.0f);
+                    setAnimSpeedServerRpc(1.0f);
+                    //Debug.Log("Case 0");
                     break;
                 case 1:
                     setPoweredState(true);
                     setRunningState(true);
-                    setAnimSpeed(0.75f);
+                    setAnimSpeedServerRpc(0.75f);
+                    //Debug.Log("Case 1");
                     break;
                 case 2:
                     setPoweredState(true);
                     setRunningState(true);
-                    setAnimSpeed(0.5f);
+                    setAnimSpeedServerRpc(0.5f);
+                    //Debug.Log("Case 2");
                     break;
                 case 3:
                     setPoweredState(true);
                     setRunningState(true);
-                    setAnimSpeed(0.15f);
+                    setAnimSpeedServerRpc(0.15f);
+                    //Debug.Log("Case 3");
                     break;
                 case 4:
                     setPoweredState(false);
                     setRunningState(false);//was true
-                    setAnimSpeed(0.0f);
+                    setAnimSpeedServerRpc(0.0f);
+                    //Debug.Log("Case 4");
                     break;
                 case 5:
-                    setPoweredState(true);//wasn't present
+                    setPoweredState(false);//wasn't present
                     setRunningState(false);
+                    setAnimSpeedServerRpc(0.0f);
+                    //Debug.Log("Case 5");
                     break;
             }
             //temp override for ship construction sake
@@ -368,18 +442,32 @@ namespace ProjectUniverse.Animation.Controllers
             return state;
         }
 
-        public void haltAllAnimations()
+        [ServerRpc(RequireOwnership = false)]
+        public void HaltAllAnimationsServerRpc()
+        {
+            haltAllAnimationsClientRpc();
+        }
+
+        [ClientRpc]
+        public void haltAllAnimationsClientRpc()
         {
             anim[0].enabled = false;
             anim[1].enabled = false;
         }
 
-        public void lockDoor()
+        [ServerRpc(RequireOwnership = false)]
+        private void lockDoorServerRpc()
+        {
+            lockDoorClientRpc();
+        }
+
+        [ClientRpc]
+        private void lockDoorClientRpc()
         {
             if (isRunning && isPowered)
             {
                 //close door
-                locked = true;
+                netLocked.Value = true;
                 emissRenderer.material = MaterialLibrary.GetDoorStateMaterials(2);
                 for (int i = 0; i < panelRenderer.Length; i++)
                 {
@@ -400,11 +488,18 @@ namespace ProjectUniverse.Animation.Controllers
             }
         }
 
-        public void unlockDoor()
+        [ServerRpc(RequireOwnership = false)]
+        private void unlockDoorServerRpc()
+        {
+            unlockDoorClientRpc();
+        }
+
+        [ClientRpc]
+        private void unlockDoorClientRpc()
         {
             if (isRunning && isPowered)
             {
-                locked = false;
+                netLocked.Value = false;
                 emissRenderer.material = MaterialLibrary.GetDoorStateMaterials(0);
                 for (int i = 0; i < panelRenderer.Length; i++)
                 {
@@ -426,16 +521,23 @@ namespace ProjectUniverse.Animation.Controllers
         {
             if (!locked)
             {
-                lockDoor();
+                lockDoorServerRpc();
             }
             else if (locked)
             {
-                unlockDoor();
+                unlockDoorServerRpc();
             }
         }
 
+        [ServerRpc(RequireOwnership = false)]
+        public void AnimEventOpenServerRpc()
+        {
+            AnimEventOpenClientRpc();
+        }
+
         //universal
-        public void animEventOpen()
+        [ClientRpc]
+        public void AnimEventOpenClientRpc()
         {
             //if locked, change to flashing red
             if (locked)
@@ -463,8 +565,15 @@ namespace ProjectUniverse.Animation.Controllers
             }
         }
 
+        [ServerRpc(RequireOwnership = false)]
+        public void AnimEventDoneServerRpc()
+        {
+            animEventOpenDoneClientRpc();
+        }
+
         //universal
-        public void animEventOpenDone()
+        [ClientRpc]
+        public void animEventOpenDoneClientRpc()
         {
             //if locked, change to solid red
             if (locked)
@@ -494,15 +603,34 @@ namespace ProjectUniverse.Animation.Controllers
 
         public void setPoweredState(bool value)
         {
-            isPowered = value;
+            netIsPowered.Value = value;
+            //isPowered = value;
         }
         public void setRunningState(bool value)
         {
-            isRunning = value;
+            netIsRunning.Value = value;
+            //isRunning = value;
         }
 
-        public void setAnimSpeed(float speed)
+        [ServerRpc(RequireOwnership = false)]
+        public void setAnimSpeedServerRpc(float speed)
         {
+            setAnimSpeedClientRpc(speed);
+        }
+
+        [ClientRpc]
+        public void setAnimSpeedClientRpc(float speed)
+        {
+            if(speed == 0f)
+            {
+                anim[0].enabled = false;
+                anim[1].enabled = false;
+            }
+            else
+            {
+                anim[0].enabled = true;
+                anim[1].enabled = true;
+            }
             anim[0].SetFloat("AnimSpeed", speed);
             anim[1].SetFloat("AnimSpeed", speed);
         }

@@ -7,6 +7,8 @@ using ProjectUniverse.Generation;
 using ProjectUniverse.Production.Machines;
 using ProjectUniverse.Production.Resources;
 using ProjectUniverse.Animation.Controllers;
+using MLAPI;
+
 public class WSButton1 : MonoBehaviour
 {
 
@@ -15,12 +17,17 @@ public class WSButton1 : MonoBehaviour
     private GameObject scriptedObj;
     [SerializeField]
     private string type;
-    public GameObject player;
+    private GameObject player;
 
     void Start()
     {
         this.GetComponent<MeshRenderer>().enabled = false;
         //renderer.enabled = false;
+        if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
+        {
+            player = networkedClient.PlayerObject.gameObject;
+        }
+        else player = null;
     }
 
     /// <summary>
@@ -132,25 +139,25 @@ public class WSButton1 : MonoBehaviour
         Debug.Log("Pickup type: "+typeof(pickupType));
         if(typeof(pickupType) == typeof(Consumable_Ore))
         {
-            scriptedObj.GetComponentInParent<Consumable_Ore>().PickUpConsumable(player);
+            if(player != null) scriptedObj.GetComponentInParent<Consumable_Ore>().PickUpConsumable(player);
         }
     }
     public void OpenSmelterUI()
     {
-        scriptedObj.GetComponent<Mach_InductionFurnace>().DisplaySmelterUI(player);
+        if (player != null) scriptedObj.GetComponent<Mach_InductionFurnace>().DisplaySmelterUI(player);
     }
     public void EmptyFurnace()
     {
-        scriptedObj.GetComponent<Mach_InductionFurnace>().OutputToPlayer(player);
+        if (player != null) scriptedObj.GetComponent<Mach_InductionFurnace>().OutputToPlayer(player);
     }
     public void FillFactory()
     {
         Debug.Log("FillFactory");
-        scriptedObj.GetComponent<Mach_DevFactory>().InputFromPlayer(player);
+        if (player != null) scriptedObj.GetComponent<Mach_DevFactory>().InputFromPlayer(player);
     }
     public void EmptyFactory()
     {
-        scriptedObj.GetComponent<Mach_DevFactory>().OutputToPlayer(player);
+        if (player != null) scriptedObj.GetComponent<Mach_DevFactory>().OutputToPlayer(player);
     }
     public void SelectComponent()
     {
@@ -164,7 +171,7 @@ public class WSButton1 : MonoBehaviour
 
     public void MiningDrone()
     {
-        scriptedObj.GetComponent<IMiningDrone>().EmptyInventory(player);
+        if (player != null) scriptedObj.GetComponent<IMiningDrone>().EmptyInventory(player);
     }
 
     public void DisplayInventory()

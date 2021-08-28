@@ -305,9 +305,11 @@ namespace AmplifyShaderEditor
 						{
 							string actionData = validActions[ i ].ActionData;
 							string defineValue = string.Empty;
+							bool isPragma = false;
 							if( actionData.StartsWith( "pragma" ) )
 							{
 								defineValue = "#" + actionData;
+								isPragma = true;
 							}
 							else
 							{
@@ -321,7 +323,7 @@ namespace AmplifyShaderEditor
 							int count = nodes.Count;
 							for( int nodeIdx = 0; nodeIdx < count; nodeIdx++ )
 							{
-								nodes[ nodeIdx ].OptionsDefineContainer.AddDefine( defineValue, false );
+								nodes[ nodeIdx ].OptionsDefineContainer.AddDirective( defineValue, false, isPragma );
 							}
 						}
 						else if( !string.IsNullOrEmpty( validActions[ i ].PassName ) )
@@ -331,9 +333,11 @@ namespace AmplifyShaderEditor
 							{
 								string actionData = validActions[ i ].ActionData;
 								string defineValue = string.Empty;
+								bool isPragma = false;
 								if( actionData.StartsWith( "pragma" ) )
 								{
 									defineValue = "#" + actionData;
+									isPragma = true;
 								}
 								else
 								{
@@ -344,7 +348,7 @@ namespace AmplifyShaderEditor
 									string optionsId = validActions[ i ].PassName + defineValue;
 									owner.ContainerGraph.ParentWindow.TemplatesManagerInstance.SetOptionsValue( optionsId, true );
 								}
-								passMasterNode.OptionsDefineContainer.AddDefine( defineValue, false );
+								passMasterNode.OptionsDefineContainer.AddDirective( defineValue, false, isPragma );
 							}
 							else
 							{
@@ -385,7 +389,7 @@ namespace AmplifyShaderEditor
 								int count = nodes.Count;
 								for( int nodeIdx = 0; nodeIdx < count; nodeIdx++ )
 								{
-									nodes[ nodeIdx ].OptionsDefineContainer.RemoveDefine( defineValue );
+									nodes[ nodeIdx ].OptionsDefineContainer.RemoveDirective( defineValue );
 								}
 							}
 						}
@@ -412,7 +416,7 @@ namespace AmplifyShaderEditor
 								}
 								if( !flag )
 								{
-									passMasterNode.OptionsDefineContainer.RemoveDefine( defineValue );
+									passMasterNode.OptionsDefineContainer.RemoveDirective( defineValue );
 								}
 							}
 							else
@@ -445,7 +449,7 @@ namespace AmplifyShaderEditor
 							int count = nodes.Count;
 							for( int nodeIdx = 0; nodeIdx < count; nodeIdx++ )
 							{
-								nodes[ nodeIdx ].OptionsDefineContainer.AddDefine( defineValue, false );
+								nodes[ nodeIdx ].OptionsDefineContainer.AddDirective( defineValue, false );
 							}
 						}
 						else if( !string.IsNullOrEmpty( validActions[ i ].PassName ) )
@@ -459,7 +463,7 @@ namespace AmplifyShaderEditor
 									string optionsId = validActions[ i ].PassName + defineValue;
 									owner.ContainerGraph.ParentWindow.TemplatesManagerInstance.SetOptionsValue( optionsId, true );
 								}
-								passMasterNode.OptionsDefineContainer.AddDefine( defineValue, false );
+								passMasterNode.OptionsDefineContainer.AddDirective( defineValue, false );
 							}
 							else
 							{
@@ -489,7 +493,7 @@ namespace AmplifyShaderEditor
 								int count = nodes.Count;
 								for( int nodeIdx = 0; nodeIdx < count; nodeIdx++ )
 								{
-									nodes[ nodeIdx ].OptionsDefineContainer.RemoveDefine( defineValue );
+									nodes[ nodeIdx ].OptionsDefineContainer.RemoveDirective( defineValue );
 								}
 							}
 						}
@@ -508,7 +512,7 @@ namespace AmplifyShaderEditor
 
 								if( !flag )
 								{
-									passMasterNode.OptionsDefineContainer.RemoveDefine( defineValue );
+									passMasterNode.OptionsDefineContainer.RemoveDirective( defineValue );
 								}
 							}
 							else

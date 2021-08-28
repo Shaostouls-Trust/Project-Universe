@@ -65,7 +65,7 @@ Shader /*ase_name*/ "Hidden/HD/Decal" /*end*/
 
 		HLSLINCLUDE
 		#pragma target 4.5
-		#pragma only_renderers d3d11 playstation xboxone vulkan metal switch
+		#pragma only_renderers d3d11 playstation xboxone xboxseries vulkan metal switch
 
 		struct SurfaceDescription
         {
@@ -271,7 +271,7 @@ Shader /*ase_name*/ "Hidden/HD/Decal" /*end*/
 				
 				output.positionCS = TransformWorldToHClip(positionRWS);
 				#if defined(ASE_NEEDS_FRAG_RELATIVE_WORLD_POS)
-				o.positionRWS = positionRWS;
+				output.positionRWS = positionRWS;
 				#endif
 		
 				return output;
@@ -566,7 +566,7 @@ Shader /*ase_name*/ "Hidden/HD/Decal" /*end*/
 				
 				output.positionCS = TransformWorldToHClip(positionRWS);
 				#if defined(ASE_NEEDS_FRAG_RELATIVE_WORLD_POS)
-				o.positionRWS = positionRWS;
+				output.positionRWS = positionRWS;
 				#endif
 		
 				return output;
@@ -721,7 +721,6 @@ Shader /*ase_name*/ "Hidden/HD/Decal" /*end*/
     
             #pragma vertex Vert
             #pragma fragment Frag
-            #pragma only_renderers d3d11 playstation xboxone vulkan metal switch
             #pragma multi_compile_instancing
     
             #pragma multi_compile DECALS_3RT DECALS_4RT
@@ -1058,7 +1057,6 @@ Shader /*ase_name*/ "Hidden/HD/Decal" /*end*/
     
             #pragma vertex Vert
             #pragma fragment Frag
-            #pragma only_renderers d3d11 playstation xboxone vulkan metal switch
             #pragma multi_compile_instancing
     
             

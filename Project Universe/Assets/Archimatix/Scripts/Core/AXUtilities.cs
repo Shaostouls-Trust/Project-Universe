@@ -170,12 +170,16 @@ namespace AX
 			case "OpenEndType":
 				menu =  "Butt|Square|Round";
 				break;
-				
-			case "Axis":
-				menu = "None|X|Y|Z|-X|-Y|-Z";
-				break;
-				
-			case "Align_X":
+
+            case "Axis":
+                menu = "None|X|Y|Z|-X|-Y|-Z";
+                break;
+
+            case "ProjectionAxis":
+                menu = "None|X|Y|Z|-X|-Y|-Z";
+                break;
+
+                case "Align_X":
 				menu = "None|Left|Center|Right";
 				break;
 				

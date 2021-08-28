@@ -49,144 +49,145 @@ using AXEditor;
 
 namespace AX.GeneratorHandlers
 {
-    public class GeneratorHandler
-    {
+	public class GeneratorHandler
+	{
 
 
 
-        public AXParametricObject parametricObject;
-        public AX.Generators.Generator generator;
+		public AXParametricObject parametricObject;
+		public AX.Generators.Generator generator;
 
-        public static float handleScale = .15f;
+		public static float handleScale = .15f;
 
 
 
 
-        public static GeneratorHandler getGeneratorHandler(AXParametricObject po)
-        {
+		public static GeneratorHandler getGeneratorHandler(AXParametricObject po)
+		{
 
-            GeneratorHandler generatorHandler = null;
+			GeneratorHandler generatorHandler = null;
 
-            //			if (po != null && po.generator != null)
-            //			{
-            //				if (! ArchimatixEngine.generatorHandlerCache.ContainsKey(po.Guid))
-            //				{
+			//			if (po != null && po.generator != null)
+			//			{
+			//				if (! ArchimatixEngine.generatorHandlerCache.ContainsKey(po.Guid))
+			//				{
 
 
 
-           // Debug.Log(" ++++++++++++++++++++++++++++++++ " + po.Name);
-            Type typeBasedOnString = po.generator.getGeneratorHandlerType(); //.generatorHandlerType;
+			//Debug.Log(" ++++++++++++++++++++++++++++++++ " + po.Name);
+			//Debug.Log(" ++++++++++++++++++++++++++++++++ " + po.generator);
+			Type typeBasedOnString = po.generator.getGeneratorHandlerType(); //.generatorHandlerType;
 
-            if (typeBasedOnString != null)
-            {
-                generatorHandler = (GeneratorHandler)Activator.CreateInstance(typeBasedOnString);
-                generatorHandler.parametricObject = po;
-                generatorHandler.generator = po.generator;
-            }
+			if (typeBasedOnString != null)
+			{
+				generatorHandler = (GeneratorHandler)Activator.CreateInstance(typeBasedOnString);
+				generatorHandler.parametricObject = po;
+				generatorHandler.generator = po.generator;
+			}
 
 
 
 
-            //					ArchimatixEngine.generatorHandlerCache.Add(po.Guid, generatorHandler);
-            //				}
-            //				else
-            //				{
-            //					generatorHandler = ArchimatixEngine.generatorHandlerCache[po.Guid];
-            //				}
-            //			}
+			//					ArchimatixEngine.generatorHandlerCache.Add(po.Guid, generatorHandler);
+			//				}
+			//				else
+			//				{
+			//					generatorHandler = ArchimatixEngine.generatorHandlerCache[po.Guid];
+			//				}
+			//			}
 
 
 
 
-            return generatorHandler;
+			return generatorHandler;
 
-        }
+		}
 
 
 
 
 
-        // These function are called as the Node Graph window draws a node palette GUI.
-        // They should return cur_y
-        public virtual int customNodeGUIZone_1(int cur_y, AXNodeGraphEditorWindow editor, AXParametricObject po)
-        {
+		// These function are called as the Node Graph window draws a node palette GUI.
+		// They should return cur_y
+		public virtual int customNodeGUIZone_1(int cur_y, AXNodeGraphEditorWindow editor, AXParametricObject po)
+		{
 
-            return cur_y;
-        }
-        public virtual int customNodeGUIZone_2(int cur_y, AXNodeGraphEditorWindow editor, AXParametricObject po)
-        {
+			return cur_y;
+		}
+		public virtual int customNodeGUIZone_2(int cur_y, AXNodeGraphEditorWindow editor, AXParametricObject po)
+		{
 
 
-            return cur_y;
-        }
-        public virtual int customNodeGUIZone_3(int cur_y, AXNodeGraphEditorWindow editor, AXParametricObject po)
-        {
+			return cur_y;
+		}
+		public virtual int customNodeGUIZone_3(int cur_y, AXNodeGraphEditorWindow editor, AXParametricObject po)
+		{
 
 
-            return cur_y;
-        }
-        public virtual int customNodeGUIZone_4(int cur_y, AXNodeGraphEditorWindow editor, AXParametricObject po, float x = 0, float w = 150)
-        {
+			return cur_y;
+		}
+		public virtual int customNodeGUIZone_4(int cur_y, AXNodeGraphEditorWindow editor, AXParametricObject po, float x = 0, float w = 150)
+		{
 
 
-            return cur_y;
-        }
+			return cur_y;
+		}
 
 
 
-        // DRAW_HANDLES
-        // -------------------------------------------------------------------------
-        public virtual void drawHandles()
-        {
+		// DRAW_HANDLES
+		// -------------------------------------------------------------------------
+		public virtual void drawHandles()
+		{
 
 
-            AXModel model = parametricObject.model;
+			AXModel model = parametricObject.model;
 
-            if (model == null)
-                return;
+			if (model == null)
+				return;
 
 
-            Matrix4x4 consumerM = Matrix4x4.identity;// model.transform.localToWorldMatrix * parametricObject.generator.parametricObject.worldDisplayMatrix;		
+			Matrix4x4 consumerM = Matrix4x4.identity;// model.transform.localToWorldMatrix * parametricObject.generator.parametricObject.worldDisplayMatrix;		
 
 
-            if (!parametricObject.is2D())
-                consumerM *= parametricObject.getLocalMatrix().inverse;
+			if (!parametricObject.is2D())
+				consumerM *= parametricObject.getLocalMatrix().inverse;
 
-            //drawTransformHandles(new List<string>(), consumerM);			
-            drawTransformHandles(new List<string>(), consumerM);
+			//drawTransformHandles(new List<string>(), consumerM);			
+			drawTransformHandles(new List<string>(), consumerM);
 
-            List<string> visited = new List<string>();
-            drawControlHandles(ref visited, consumerM, false);
-        }
+			List<string> visited = new List<string>();
+			drawControlHandles(ref visited, consumerM, false);
+		}
 
 
 
 
-        public virtual void drawHandlesUnselected()
-        {
-            // mostly for 2D shapes
-        }
+		public virtual void drawHandlesUnselected()
+		{
+			// mostly for 2D shapes
+		}
 
 
 
 
 
-        public virtual void drawTransformHandles(List<string> visited, Matrix4x4 consumerM, bool addLocalMatrix = false)
-        {
+		public virtual void drawTransformHandles(List<string> visited, Matrix4x4 consumerM, bool addLocalMatrix = false)
+		{
 
-            //Debug.Log (".............................................. drawHandles NO-D");
+			//Debug.Log (".............................................. drawHandles NO-D");
 
-            // Implemented differently in 2D and 3D PO's 
+			// Implemented differently in 2D and 3D PO's 
 
-            // See Generator2D and AX.Generators.Generator3D
+			// See Generator2D and AX.Generators.Generator3D
 
-        }
+		}
 
 
-        public virtual void OnSceneGUI()
-        {
-            // 
-        }
+		public virtual void OnSceneGUI()
+		{
+			// 
+		}
 
 
 
@@ -194,642 +195,657 @@ namespace AX.GeneratorHandlers
 
 
 
-        #region Control Handles
-        // CONTROL HANDLES
+		#region Control Handles
+		// CONTROL HANDLES
 
-        public virtual void drawControlHandlesofInputParametricObjects(ref List<string> visited, Matrix4x4 consumerM)
-        {
-            drawControlHandlesofInputParametricObjects(ref visited, consumerM, true);
-        }
+		public virtual void drawControlHandlesofInputParametricObjects(ref List<string> visited, Matrix4x4 consumerM)
+		{
+			drawControlHandlesofInputParametricObjects(ref visited, consumerM, true);
+		}
 
 
-        public virtual void drawControlHandlesofInputParametricObjects(ref List<string> visited, Matrix4x4 consumerM, bool beingDrawnFromConsumer)
-        {
+		public virtual void drawControlHandlesofInputParametricObjects(ref List<string> visited, Matrix4x4 consumerM, bool beingDrawnFromConsumer)
+		{
 
-        }
+		}
 
 
 
 
-        public virtual void drawControlHandles(ref List<string> visited)
-        {
-            drawControlHandles(ref visited, Matrix4x4.identity, false);
-        }
+		public virtual void drawControlHandles(ref List<string> visited)
+		{
+			drawControlHandles(ref visited, Matrix4x4.identity, false);
+		}
 
 
 
-        public bool alreadyVisited(ref List<string> visited, string callerClass)
-        {
-            string key = "c_" + parametricObject.Guid + "_" + callerClass;
+		public bool alreadyVisited(ref List<string> visited, string callerClass)
+		{
+			string key = "c_" + parametricObject.Guid + "_" + callerClass;
 
 
-            if (visited.Contains(key))
-                return true;
+			if (visited.Contains(key))
+				return true;
 
-            // mark as visited
-            visited.Add(key);
+			// mark as visited
+			visited.Add(key);
 
-            //Debug.Log("visit: "  + parametricObject.Name + " :: " + key );
+			//Debug.Log("visit: "  + parametricObject.Name + " :: " + key );
 
-            return false;
-        }
+			return false;
+		}
 
 
 
-        public virtual void drawControlHandles(ref List<string> visited, Matrix4x4 consumerM, bool beingDrawnFromConsumer)
-        {
-           
+		public virtual void drawControlHandles(ref List<string> visited, Matrix4x4 consumerM, bool beingDrawnFromConsumer)
+		{
 
-            if (parametricObject == null || !parametricObject.isActive)
-                return;
 
+			if (parametricObject == null || !parametricObject.isActive)
+				return;
 
-            if (alreadyVisited(ref visited, "GeneratorHandler"))
-                return;
 
+			if (alreadyVisited(ref visited, "GeneratorHandler"))
+				return;
 
-            //Debug.Log(parametricObject.Name + " drawControlHandles");
 
-            // CUSTOM HANDLES GENERALIZED IN THE DATA OF EACH ParmetricObject
-            // Each PO has a List of AXHandles that define their own location and use of their 
-            // reserved variable: han_x, han_y, han_z
+			//Debug.Log(parametricObject.Name + " drawControlHandles");
 
-            // The transformation matrix passed in as an argument has thisPO's local transform, 
-            // as well as the model's and the counsmer's
+			// CUSTOM HANDLES GENERALIZED IN THE DATA OF EACH ParmetricObject
+			// Each PO has a List of AXHandles that define their own location and use of their 
+			// reserved variable: han_x, han_y, han_z
 
-            Matrix4x4 prevhandlesMatrix = Handles.matrix;
-            Color prevColor = Handles.color;
+			// The transformation matrix passed in as an argument has thisPO's local transform, 
+			// as well as the model's and the counsmer's
 
+			Matrix4x4 prevhandlesMatrix = Handles.matrix;
+			Color prevColor = Handles.color;
 
-            Matrix4x4 flipM = Matrix4x4.identity;
-            if (generator.P_Output != null && generator.P_Output.flipX)
-                flipM = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(-1, 1, 1));
 
-            Matrix4x4 context = parametricObject.model.transform.localToWorldMatrix * generator.parametricObject.worldDisplayMatrix;
-            //if (parametricObject.is2D() && ! generator.hasOutputsConnected())
-            //	context *=  parametricObject.getAxisRotationMatrix().inverse  * generator.localMatrix.inverse * parametricObject.getAxisRotationMatrix()  * generator.localMatrix;
+			Matrix4x4 flipM = Matrix4x4.identity;
+			if (generator.P_Output != null && generator.P_Output.flipX)
+				flipM = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(-1, 1, 1));
 
-            Handles.matrix = context * generator.localMatrix.inverse * flipM * generator.localMatrix; //consumerM;
+			Matrix4x4 context = parametricObject.model.transform.localToWorldMatrix * generator.parametricObject.worldDisplayMatrix;
+			//if (parametricObject.is2D() && ! generator.hasOutputsConnected())
+			//	context *=  parametricObject.getAxisRotationMatrix().inverse  * generator.localMatrix.inverse * parametricObject.getAxisRotationMatrix()  * generator.localMatrix;
 
+			Handles.matrix = context * generator.localMatrix.inverse * flipM * generator.localMatrix; //consumerM;
 
 
-            if (parametricObject.is2D())
-            {
-                Handles.matrix = generator.getLocalAlignMatrix() * Handles.matrix;
-            }
 
+			if (parametricObject.is2D())
+			{
+				Handles.matrix = generator.getLocalAlignMatrix() * Handles.matrix;
+			}
 
-            float handlesMatrixScaleAdjuster = 1.442f / AXUtilities.GetScale(Handles.matrix).magnitude;
 
+			float handlesMatrixScaleAdjuster = 1.442f / AXUtilities.GetScale(Handles.matrix).magnitude;
 
-            if (!(this.generator is Replicant))
-            {
-                drawControlHandlesofInputParametricObjects(ref visited, context * generator.getLocalConsumerMatrixPerInputSocket(parametricObject));
 
-            }
+			if (!(this.generator is Replicant))
+			{
+				drawControlHandlesofInputParametricObjects(ref visited, context * generator.getLocalConsumerMatrixPerInputSocket(parametricObject));
 
+			}
 
 
-            if (parametricObject.handles != null)
-            {
 
 
-                foreach (AXHandle han in parametricObject.handles)
-                {
 
+			if (parametricObject.handles != null)
+			{
 
 
+				foreach (AXHandle han in parametricObject.handles)
+				{
 
 
-                    //// TANGENT
-                    float tangent = han.getTangent();
 
 
-                    //// RADIUS
-                    float radius = han.getRadius();// han.radiusCache;
 
+					//// TANGENT
+					float tangent = han.getTangent();
 
 
-                    // SET POSITION OF HANDLE
-                    //
-                    //					float x = 0;
-                    //					float y = 0;
-                    //					float z = 0;
-                    //
-                    //					try {	
-                    //						x = (float) parametricObject.parseMath(han.pos_x);
-                    //					} catch(Exception e) {
-                    //						parametricObject.codeWarning = "3. Handle error: Please check syntax of: \"" + han.pos_x+"\" " + e ;
-                    //					}
-                    //
-                    //					try {	
-                    //						//Debug.Log(han.pos_y);
-                    //						y = (float) parametricObject.parseMath(han.pos_y);
-                    //					} catch(Exception e) {
-                    //						parametricObject.codeWarning = "4. Handle error: Please check syntax of: \"" + han.pos_y+"\" " + e ;
-                    //					}
-                    //
-                    //					try {	
-                    //						z = (float) parametricObject.parseMath(han.pos_z);
-                    //					} catch(Exception e) {
-                    //						parametricObject.codeWarning = "5. Handle error: Please check syntax of: \"" + han.pos_z+"\" "+e.Message;
-                    //					}
-                    //
-                    //
-                    //
-                    //
-                    //					Vector3 pos = new Vector3(x, y, z);
-                    //
+					//// RADIUS
+					float radius = han.getRadius();// han.radiusCache;
 
 
-                    Vector3 pos = han.getPointPosition();
 
+					// SET POSITION OF HANDLE
+					//
+					//					float x = 0;
+					//					float y = 0;
+					//					float z = 0;
+					//
+					//					try {	
+					//						x = (float) parametricObject.parseMath(han.pos_x);
+					//					} catch(Exception e) {
+					//						parametricObject.codeWarning = "3. Handle error: Please check syntax of: \"" + han.pos_x+"\" " + e ;
+					//					}
+					//
+					//					try {	
+					//						//Debug.Log(han.pos_y);
+					//						y = (float) parametricObject.parseMath(han.pos_y);
+					//					} catch(Exception e) {
+					//						parametricObject.codeWarning = "4. Handle error: Please check syntax of: \"" + han.pos_y+"\" " + e ;
+					//					}
+					//
+					//					try {	
+					//						z = (float) parametricObject.parseMath(han.pos_z);
+					//					} catch(Exception e) {
+					//						parametricObject.codeWarning = "5. Handle error: Please check syntax of: \"" + han.pos_z+"\" "+e.Message;
+					//					}
+					//
+					//
+					//
+					//
+					//					Vector3 pos = new Vector3(x, y, z);
+					//
 
-                    bool handleHasChanged = false;
-                    string handleChangedVar = null;
 
+					Vector3 pos = han.getPointPosition();
 
 
+					bool handleHasChanged = false;
+					string handleChangedVar = null;
 
 
-                    switch (han.Type)
-                    {
 
 
 
+					switch (han.Type)
+					{
 
-                        // POINT HANDLE
-                        // -------------------------------------------------------------------------------------------
 
-                        case AXHandle.HandleType.Point:
 
-                            // get to world space
-                            //Debug.Log(pos);
-                            EditorGUI.BeginChangeCheck();
-                            pos = Handles.FreeMoveHandle(
-                                pos,
-                                Quaternion.identity,
-                                handleScale * HandleUtility.GetHandleSize(pos) * handlesMatrixScaleAdjuster,
-                                Vector3.zero,
-                                (controlID, positione, rotation, size, type) =>
-                                {
-                                    if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
-                                        ArchimatixEngine.mouseDownOnSceneViewHandle();
-                                    Handles.SphereHandleCap(controlID, positione, rotation, size, type);
-                                });
 
+						// POINT HANDLE
+						// -------------------------------------------------------------------------------------------
 
+						case AXHandle.HandleType.Point:
 
-                            if (EditorGUI.EndChangeCheck())
-                            {
+							Handles.color = han.color;
+							// get to world space
+							//Debug.Log(pos);
+							EditorGUI.BeginChangeCheck();
+							pos = Handles.FreeMoveHandle(
+								pos,
+								Quaternion.identity,
+								handleScale * HandleUtility.GetHandleSize(pos) * handlesMatrixScaleAdjuster,
+								Vector3.zero,
+								(controlID, positione, rotation, size, type) =>
+								{
+									if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
+									{
+										ArchimatixEngine.mouseDownOnSceneViewHandle();
+										han.parametricObject.model.latestHandleClicked = han;
+										//Debug.Log(han.Name);
+									}
 
-                                if (!float.IsNaN(pos.x))
-                                {
-                                    Undo.RegisterCompleteObjectUndo(parametricObject.model, "Point Handle");
+									Handles.SphereHandleCap(controlID, positione, rotation, size, type);
+								});
 
-                                    handleHasChanged = true;
-                                    parametricObject.geometryControls.isOpen = true;
 
-                                    //gener.parametricObject.model.isAltered(23);
-                                    for (int i = 0; i < generator.P_Output.Dependents.Count; i++)
-                                        generator.P_Output.Dependents[i].parametricObject.generator.adjustWorldMatrices();
 
-                                }
+							if (EditorGUI.EndChangeCheck())
+							{
 
+								if (!float.IsNaN(pos.x))
+								{
+									Undo.RegisterCompleteObjectUndo(parametricObject.model, "Point Handle");
 
-                                // update these vars so math parsing has them as special variables...
-                                if (ArchimatixEngine.snappingOn())
-                                    pos = AXGeometry.Utilities.SnapToGrid(pos, parametricObject.model.snapSizeGrid);
+									handleHasChanged = true;
+									parametricObject.geometryControls.isOpen = true;
 
-                                parametricObject.setVar("han_x", pos.x);
-                                parametricObject.setVar("han_y", pos.y);
-                                parametricObject.setVar("han_z", pos.z);
+									//gener.parametricObject.model.isAltered(23);
+									for (int i = 0; i < generator.P_Output.Dependents.Count; i++)
+										generator.P_Output.Dependents[i].parametricObject.generator.adjustWorldMatrices();
 
-                                han.processExpressionsAfterHandleChange();
-                            }
+								}
 
-                            break;
 
+								// update these vars so math parsing has them as special variables...
+								if (ArchimatixEngine.snappingOn())
+									pos = AXGeometry.Utilities.SnapToGrid(pos, parametricObject.model.snapSizeGrid);
 
+								parametricObject.setVar("han_x", pos.x);
+								parametricObject.setVar("han_y", pos.y);
+								parametricObject.setVar("han_z", pos.z);
 
+								han.processExpressionsAfterHandleChange();
+							}
 
+							break;
 
-                            // CIRCLE HANDLE
-                            // -------------------------------------------------------------------------------------------
-                        case AXHandle.HandleType.Circle:
 
-                            // get to world space
-                            Matrix4x4 prevMatrix = Handles.matrix;
 
-                            Matrix4x4 rotang = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0), Vector3.one);
 
-                            Handles.matrix *= rotang;
 
-                            parametricObject.setVar("han_r", radius);
+						// CIRCLE HANDLE
+						// -------------------------------------------------------------------------------------------
+						case AXHandle.HandleType.Circle:
 
-                            parametricObject.setVar("han_t", tangent);
+							// get to world space
+							Matrix4x4 prevMatrix = Handles.matrix;
 
+							Matrix4x4 rotang = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0), Vector3.one);
 
+							Handles.matrix *= rotang;
 
-                            Vector3 radpos = pos + new Vector3(radius, 0, 0);
-                            Vector3 tanpos = pos + new Vector3(radius, tangent * (radius / 10), 0);
+							parametricObject.setVar("han_r", radius);
 
-                            //Color prevColor = Handles.color;
+							parametricObject.setVar("han_t", tangent);
 
 
 
+							Vector3 radpos = pos + new Vector3(radius, 0, 0);
+							Vector3 tanpos = pos + new Vector3(radius, tangent * (radius / 10), 0);
 
+							//Color prevColor = Handles.color;
 
-                            // TANGENT
-                            Color preTanCOlor = Handles.color;
-                            Color tanColor = Color.cyan;
-                            tanColor.a *= .5f;
-                            Handles.color = tanColor;
 
-                            Vector3[] tanLine = new Vector3[2];
-                            tanLine[0] = radpos;
-                            tanLine[1] = tanpos;
-                            Handles.DrawAAPolyLine(5, tanLine);
 
 
-                            Handles.DrawWireDisc(pos, Vector3.forward, radius);
 
-                            EditorGUI.BeginChangeCheck();
-                            tanpos = Handles.FreeMoveHandle(
-                                tanpos,
-                                Quaternion.identity,
-                                handleScale * HandleUtility.GetHandleSize(tanpos) * handlesMatrixScaleAdjuster,
-                                Vector3.zero,
-                                (controlID, positione, rotation, size, type) =>
-                                {
+							// TANGENT
+							Color preTanColor = Handles.color;
+							Color tanColor = Color.cyan;
+							tanColor.a *= .5f;
+							Handles.color = tanColor;
 
-                                    if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
-                                    {
-                                        ArchimatixEngine.mouseDownOnSceneViewHandle();
-                                    //ArchimatixEngine.selectedFreeCurve = gener;
-                                }
-                                    Handles.SphereHandleCap(controlID, positione, rotation, size, type);
-                                });
+							Vector3[] tanLine = new Vector3[2];
+							tanLine[0] = radpos;
+							tanLine[1] = tanpos;
+							Handles.DrawAAPolyLine(5, tanLine);
 
 
-                            tangent = tanpos.y / (radius / 10);
-                            if (EditorGUI.EndChangeCheck())
-                            {
-                                Undo.RegisterCompleteObjectUndo(parametricObject.model, "Circle Handle");
-                                parametricObject.setVar("han_t", tangent);
-                                han.tangentCache = tangent;
-                                handleHasChanged = true;
-                                handleChangedVar = "han_t";
-                                parametricObject.geometryControls.isOpen = true;
-                            }
-                            Handles.color = preTanCOlor;
+							Handles.DrawWireDisc(pos, Vector3.forward, radius);
 
-                            // RADIUS
-                            EditorGUI.BeginChangeCheck();
-                            radpos = Handles.FreeMoveHandle(
-                                radpos,
-                                Quaternion.identity,
-                                handleScale * HandleUtility.GetHandleSize(radpos) * handlesMatrixScaleAdjuster,
-                                Vector3.zero,
-                                (controlID, positione, rotation, size, type) =>
-                                {
+							EditorGUI.BeginChangeCheck();
+							tanpos = Handles.FreeMoveHandle(
+								tanpos,
+								Quaternion.identity,
+								handleScale * HandleUtility.GetHandleSize(tanpos) * handlesMatrixScaleAdjuster,
+								Vector3.zero,
+								(controlID, positione, rotation, size, type) =>
+								{
 
-                                    if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
-                                    {
-                                        ArchimatixEngine.mouseDownOnSceneViewHandle();
-                                    //ArchimatixEngine.selectedFreeCurve = gener;
-                                }
-                                    Handles.SphereHandleCap(controlID, positione, rotation, size, type);
-                                });
+									if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
+									{
+										ArchimatixEngine.mouseDownOnSceneViewHandle();
+										han.parametricObject.model.latestHandleClicked = han;
+										//ArchimatixEngine.selectedFreeCurve = gener;
+									}
+									Handles.SphereHandleCap(controlID, positione, rotation, size, type);
+								});
 
-                            radius = (radpos - pos).x;
-                            if (EditorGUI.EndChangeCheck())
-                            {
-                                Undo.RegisterCompleteObjectUndo(parametricObject.model, "Radius Handle");
-                                parametricObject.setVar("han_r", radius);
-                                han.radiusCache = radius;
-                                handleHasChanged = true;
-                                handleChangedVar = "han_r";
-                                parametricObject.geometryControls.isOpen = true;
-                            }
 
+							tangent = tanpos.y / (radius / 10);
+							if (EditorGUI.EndChangeCheck())
+							{
+								Undo.RegisterCompleteObjectUndo(parametricObject.model, "Circle Handle");
+								parametricObject.setVar("han_t", tangent);
+								han.tangentCache = tangent;
+								handleHasChanged = true;
+								handleChangedVar = "han_t";
+								parametricObject.geometryControls.isOpen = true;
+							}
+							Handles.color = preTanColor;
 
+							// RADIUS
+							EditorGUI.BeginChangeCheck();
+							radpos = Handles.FreeMoveHandle(
+								radpos,
+								Quaternion.identity,
+								handleScale * HandleUtility.GetHandleSize(radpos) * handlesMatrixScaleAdjuster,
+								Vector3.zero,
+								(controlID, positione, rotation, size, type) =>
+								{
 
+									if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
+									{
+										ArchimatixEngine.mouseDownOnSceneViewHandle();
+										han.parametricObject.model.latestHandleClicked = han;
+										//ArchimatixEngine.selectedFreeCurve = gener;
+									}
+									Handles.SphereHandleCap(controlID, positione, rotation, size, type);
+								});
 
+							radius = (radpos - pos).x;
+							if (EditorGUI.EndChangeCheck())
+							{
+								Undo.RegisterCompleteObjectUndo(parametricObject.model, "Radius Handle");
+								parametricObject.setVar("han_r", radius);
+								han.radiusCache = radius;
+								handleHasChanged = true;
+								handleChangedVar = "han_r";
+								parametricObject.geometryControls.isOpen = true;
+							}
 
 
 
 
-                            // update these vars so math parsing has them as special variables...
 
 
 
 
-                            Handles.matrix = prevMatrix;
-                            break;
+							// update these vars so math parsing has them as special variables...
 
 
 
 
+							Handles.matrix = prevMatrix;
+							break;
 
 
 
 
 
 
-                        // ANGLE HANDLE
-                        case AXHandle.HandleType.Angle:
 
-                            // Debug.Log("ANGLE HANDLE");
-                            Handles.color = Color.red;
 
-                            float len = 2;
-                            float ang = 10;
-                            try
-                            {
-                                ang = han.angleCache;  // (float)parametricObject.parseMath(han.angle );
-                            }
-                            catch (Exception e)
-                            {
-                                parametricObject.codeWarning = "Handle error: Please check syntax of: \"" + han.angle + "\" " + e.Message;
-                            }
-                            try
-                            {
-                                len = han.lenCache;  // (float) parametricObject.parseMath(han.len);
-                            }
-                            catch (Exception e)
-                            {
-                                parametricObject.codeWarning = "Handle error: Please check syntax of: \"" + han.len + "\" " + e.Message;
-                            }
 
-                            float lenx = len * Mathf.Cos(ang * Mathf.Deg2Rad);
-                            float leny = len * Mathf.Sin(ang * Mathf.Deg2Rad);
 
+						// ANGLE HANDLE
+						case AXHandle.HandleType.Angle:
 
-                            Vector3 angpos = new Vector3(lenx, 0, leny);
-                            angpos += pos;
+							// Debug.Log("ANGLE HANDLE");
+							Handles.color = Color.red;
 
+							float len = 2;
+							float ang = 10;
+							try
+							{
+								ang = han.angleCache;  // (float)parametricObject.parseMath(han.angle );
+							}
+							catch (Exception e)
+							{
+								parametricObject.codeWarning = "Handle error: Please check syntax of: \"" + han.angle + "\" " + e.Message;
+							}
+							try
+							{
+								len = han.lenCache;  // (float) parametricObject.parseMath(han.len);
+							}
+							catch (Exception e)
+							{
+								parametricObject.codeWarning = "Handle error: Please check syntax of: \"" + han.len + "\" " + e.Message;
+							}
 
+							float lenx = len * Mathf.Cos(ang * Mathf.Deg2Rad);
+							float leny = len * Mathf.Sin(ang * Mathf.Deg2Rad);
 
-                            Handles.color = Color.yellow;
-                            Handles.DrawWireArc(pos, Vector3.up, Vector3.right, -ang * 1.25f, len);
 
+							Vector3 angpos = new Vector3(lenx, 0, leny);
+							angpos += pos;
 
-                            Handles.color = Color.yellow;
-                            Handles.Label(angpos, ("" + ang));
 
-                            Handles.DrawLine(pos, angpos);
 
-                            Handles.color = Color.red;
+							Handles.color = Color.yellow;
+							Handles.DrawWireArc(pos, Vector3.up, Vector3.right, -ang * 1.25f, len);
 
 
-                            // ANGLE -- POSITION
-                            EditorGUI.BeginChangeCheck();
-                            angpos = Handles.FreeMoveHandle(
-                            angpos,
-                            Quaternion.identity,
-                            handleScale * HandleUtility.GetHandleSize(angpos) * handlesMatrixScaleAdjuster,
-                            Vector3.zero,
-                            (controlID, positione, rotation, size, type) =>
-                            {
+							Handles.color = Color.yellow;
+							Handles.Label(angpos, ("" + ang));
 
-                                if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
-                                {
-                                    ArchimatixEngine.mouseDownOnSceneViewHandle();
-                                    //ArchimatixEngine.selectedFreeCurve = gener;
-                                }
-                                Handles.SphereHandleCap(controlID, positione, rotation, size, type);
-                            });
-                            if (EditorGUI.EndChangeCheck())
-                            {
+							Handles.DrawLine(pos, angpos);
 
-                                angpos -= pos;
+							Handles.color = Color.red;
 
 
-                                parametricObject.setVar("han_x", angpos.x);
-                                parametricObject.setVar("han_y", angpos.y);
-                                parametricObject.setVar("han_z", angpos.z);
+							// ANGLE -- POSITION
+							EditorGUI.BeginChangeCheck();
+							angpos = Handles.FreeMoveHandle(
+							angpos,
+							Quaternion.identity,
+							handleScale * HandleUtility.GetHandleSize(angpos) * handlesMatrixScaleAdjuster,
+							Vector3.zero,
+							(controlID, positione, rotation, size, type) =>
+							{
 
-                                han.processExpressionsAfterHandleChange();
-                            }
-                            break;
+								if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
+								{
+									ArchimatixEngine.mouseDownOnSceneViewHandle();
+									han.parametricObject.model.latestHandleClicked = han;
+									//ArchimatixEngine.selectedFreeCurve = gener;
+								}
+								Handles.SphereHandleCap(controlID, positione, rotation, size, type);
+							});
+							if (EditorGUI.EndChangeCheck())
+							{
 
+								angpos -= pos;
 
 
+								parametricObject.setVar("han_x", angpos.x);
+								parametricObject.setVar("han_y", angpos.y);
+								parametricObject.setVar("han_z", angpos.z);
 
+								han.processExpressionsAfterHandleChange();
+							}
+							break;
 
 
 
 
 
 
-                        case AXHandle.HandleType.Position:
 
-                            // get to world space
 
-                            EditorGUI.BeginChangeCheck();
-                            Handles.color = han.color;
-                            Vector3 posNew = Handles.PositionHandle(pos, AXUtilities.QuaternionFromMatrix(consumerM));
 
-                            Debug.Log("posNew=" + posNew);
 
-                            if (posNew == pos)
-                                ArchimatixEngine.mouseDownOnSceneViewHandle();
+						case AXHandle.HandleType.Position:
 
-                            pos = posNew;
+							// get to world space
 
+							EditorGUI.BeginChangeCheck();
+							Handles.color = han.color;
+							Vector3 posNew = Handles.PositionHandle(pos, AXUtilities.QuaternionFromMatrix(consumerM));
 
-                            if (EditorGUI.EndChangeCheck())
-                            {
-                                Undo.RegisterCompleteObjectUndo(parametricObject.model, "Position Handle");
+							//Debug.Log("posNew=" + posNew);
 
-                                handleHasChanged = true;
-                                parametricObject.geometryControls.isOpen = true;
-                            }
-                            else
-                                ArchimatixEngine.mouseDownOnSceneViewHandle();
+							if (posNew == pos)
+							{
+								ArchimatixEngine.mouseDownOnSceneViewHandle();
+								han.parametricObject.model.latestHandleClicked = han;
+							}
+							pos = posNew;
 
 
-                            if (ArchimatixEngine.snappingOn())
-                                pos = AXGeometry.Utilities.SnapToGrid(pos, parametricObject.model.snapSizeGrid);
+							if (EditorGUI.EndChangeCheck())
+							{
+								Undo.RegisterCompleteObjectUndo(parametricObject.model, "Position Handle");
 
-                            // update these vars so math parsing has them as special variables...
-                            parametricObject.setVar("han_x", pos.x);
-                            parametricObject.setVar("han_y", pos.y);
-                            parametricObject.setVar("han_z", pos.z);
+								handleHasChanged = true;
+								parametricObject.geometryControls.isOpen = true;
+							}
+							else
+							{
+								ArchimatixEngine.mouseDownOnSceneViewHandle();
+								han.parametricObject.model.latestHandleClicked = han;
+							}
 
+							if (ArchimatixEngine.snappingOn())
+								pos = AXGeometry.Utilities.SnapToGrid(pos, parametricObject.model.snapSizeGrid);
 
+							// update these vars so math parsing has them as special variables...
+							parametricObject.setVar("han_x", pos.x);
+							parametricObject.setVar("han_y", pos.y);
+							parametricObject.setVar("han_z", pos.z);
 
-                            break;
 
-                    }
 
-                    // set values for han_x, han_y, han_z, han_t and han_r... then process expression and ripple result from parameter
+							break;
 
+					}
 
-                    // RIPPLE CHANGES IN OTHER PARAMETERS BASED ON HANDLE'S EXPRESSIONS
-                    // now set all the param=descrip items stored in the handle
-                    if (handleHasChanged && han.expressions != null)
-                    {
-                        Undo.RegisterCompleteObjectUndo(parametricObject.model, "Parameter Changed");
+					// set values for han_x, han_y, han_z, han_t and han_r... then process expression and ripple result from parameter
 
-                        for (int i = 0; i < han.expressions.Count; i++)
-                        {
-                            if (han.expressions[i] == "")
-                                continue;
 
-                            if (!String.IsNullOrEmpty(handleChangedVar))
-                            {
-                                // only use expressions that have the changed variable in them.
-                                if (!han.expressions[i].Contains(handleChangedVar))
-                                    continue;
-                            }
+					// RIPPLE CHANGES IN OTHER PARAMETERS BASED ON HANDLE'S EXPRESSIONS
+					// now set all the param=descrip items stored in the handle
+					if (handleHasChanged && han.expressions != null)
+					{
+						Undo.RegisterCompleteObjectUndo(parametricObject.model, "Parameter Changed");
 
-                            string expression = Regex.Replace(han.expressions[i], @"\s+", "");
+						for (int i = 0; i < han.expressions.Count; i++)
+						{
+							if (han.expressions[i] == "")
+								continue;
 
-                            string paramName = expression.Substring(0, expression.IndexOf("="));
-                            string definition = expression.Substring(expression.IndexOf("=") + 1);
-                            //Debug.Log (param + " --- " + definition);
+							if (!String.IsNullOrEmpty(handleChangedVar))
+							{
+								// only use expressions that have the changed variable in them.
+								if (!han.expressions[i].Contains(handleChangedVar))
+									continue;
+							}
 
-                            try
-                            {
-                                //setParameterValueByName(param, (float) parseMath(definition));
-                                if (parametricObject.getParameter(paramName).Type == AXParameter.DataType.Int)
-                                    parametricObject.initiateRipple_setIntValueFromGUIChange(paramName, Mathf.RoundToInt((float)parametricObject.parseMath_ValueOnly(definition)));
+							string expression = Regex.Replace(han.expressions[i], @"\s+", "");
 
-                                else
-                                    parametricObject.initiateRipple_setFloatValueFromGUIChange(paramName, (float)parametricObject.parseMath_ValueOnly(definition));
+							string paramName = expression.Substring(0, expression.IndexOf("="));
+							string definition = expression.Substring(expression.IndexOf("=") + 1);
+							//Debug.Log (param + " --- " + definition);
 
+							try
+							{
+								//setParameterValueByName(param, (float) parseMath(definition));
+								if (parametricObject.getParameter(paramName).Type == AXParameter.DataType.Int)
+									parametricObject.initiateRipple_setIntValueFromGUIChange(paramName, Mathf.RoundToInt((float)parametricObject.parseMath_ValueOnly(definition)));
 
-                                SceneView.RepaintAll();
-                                //parametricObject.model.sw.milestone("intiateRipple_setIntValueFromGUIChange ");
+								else
+									parametricObject.initiateRipple_setFloatValueFromGUIChange(paramName, (float)parametricObject.parseMath_ValueOnly(definition));
 
-                            }
-                            catch (Exception e)
-                            {
-                                parametricObject.codeWarning = "10. Handle error: Please check syntax of: \"" + definition + "\" " + e.Message;
-                            }
-                        }
-                    }
 
-                    if (handleHasChanged)
-                    {
-                        //parametricObject.model.generate("Generator[base]::drawControlHandles");
+								SceneView.RepaintAll();
+								//parametricObject.model.sw.milestone("intiateRipple_setIntValueFromGUIChange ");
 
-                        parametricObject.model.isAltered();
-                    }
+							}
+							catch (Exception e)
+							{
+								parametricObject.codeWarning = "10. Handle error: Please check syntax of: \"" + definition + "\" " + e.Message;
+							}
+						}
+					}
 
+					if (handleHasChanged)
+					{
+						//parametricObject.model.generate("Generator[base]::drawControlHandles");
 
-                }
+						parametricObject.model.isAltered();
+					}
 
-            }
 
+				}
 
+			}
 
-            Handles.matrix = prevhandlesMatrix;
-            Handles.color = prevColor;
 
 
-           
-        }
+			Handles.matrix = prevhandlesMatrix;
+			Handles.color = prevColor;
 
 
 
+		}
 
-        #endregion
 
 
 
+		#endregion
 
 
-        public virtual void drawLineCube(Vector3 v1, Vector3 v2)
-        {
-            Color yellow = Color.green;
-            yellow.a = .3f;
-            drawLineCube(v1, v2, yellow);
-        }
 
-        public virtual void drawLineCube(Vector3 v1, Vector3 v2, Color c)
-        {
 
-            Vector3[] b = new Vector3[5];
-            Vector3[] m = new Vector3[5];
-            Vector3[] e = new Vector3[5];
 
-            b[0] = v1;
-            b[1] = new Vector3(v2.x, v1.y, v1.z);
-            b[2] = new Vector3(v2.x, v1.y, v2.z);
-            b[3] = new Vector3(v1.x, v1.y, v2.z);
-            b[4] = v1;
+		public virtual void drawLineCube(Vector3 v1, Vector3 v2)
+		{
+			Color yellow = Color.green;
+			yellow.a = .3f;
+			drawLineCube(v1, v2, yellow);
+		}
 
-            m[0] = new Vector3(v1.x, v2.y / 2, v1.z);
-            m[1] = new Vector3(v2.x, v2.y / 2, v1.z);
-            m[2] = new Vector3(v2.x, v2.y / 2, v2.z);
-            m[3] = new Vector3(v1.x, v2.y / 2, v2.z);
-            m[4] = new Vector3(v1.x, v2.y / 2, v1.z);
+		public virtual void drawLineCube(Vector3 v1, Vector3 v2, Color c)
+		{
 
-            e[0] = new Vector3(v1.x, v2.y, v1.z);
-            e[1] = new Vector3(v2.x, v2.y, v1.z);
-            e[2] = v2;
-            e[3] = new Vector3(v1.x, v2.y, v2.z);
-            e[4] = new Vector3(v1.x, v2.y, v1.z);
+			Vector3[] b = new Vector3[5];
+			Vector3[] m = new Vector3[5];
+			Vector3[] e = new Vector3[5];
 
+			b[0] = v1;
+			b[1] = new Vector3(v2.x, v1.y, v1.z);
+			b[2] = new Vector3(v2.x, v1.y, v2.z);
+			b[3] = new Vector3(v1.x, v1.y, v2.z);
+			b[4] = v1;
 
+			m[0] = new Vector3(v1.x, v2.y / 2, v1.z);
+			m[1] = new Vector3(v2.x, v2.y / 2, v1.z);
+			m[2] = new Vector3(v2.x, v2.y / 2, v2.z);
+			m[3] = new Vector3(v1.x, v2.y / 2, v2.z);
+			m[4] = new Vector3(v1.x, v2.y / 2, v1.z);
 
+			e[0] = new Vector3(v1.x, v2.y, v1.z);
+			e[1] = new Vector3(v2.x, v2.y, v1.z);
+			e[2] = v2;
+			e[3] = new Vector3(v1.x, v2.y, v2.z);
+			e[4] = new Vector3(v1.x, v2.y, v1.z);
 
-            Handles.color = c;
 
-            Handles.DrawPolyLine(b);
-            //Handles.DrawPolyLine(m);
-            Handles.DrawPolyLine(e);
 
-            Handles.DrawDottedLine(b[0], e[0], 5);
-            Handles.DrawDottedLine(b[1], e[1], 5);
-            Handles.DrawDottedLine(b[2], e[2], 5);
-            Handles.DrawDottedLine(b[3], e[3], 5);
 
+			Handles.color = c;
 
-            /*
+			Handles.DrawPolyLine(b);
+			//Handles.DrawPolyLine(m);
+			Handles.DrawPolyLine(e);
+
+			Handles.DrawDottedLine(b[0], e[0], 5);
+			Handles.DrawDottedLine(b[1], e[1], 5);
+			Handles.DrawDottedLine(b[2], e[2], 5);
+			Handles.DrawDottedLine(b[3], e[3], 5);
+
+
+			/*
 			Handles.DrawLine(new Vector3(v1.x, v1.y, 0), new Vector3(v1.x, v2.y, 0));
 			Handles.DrawLine(new Vector3(v2.x, v1.y, 0), new Vector3(v2.x, v2.y, 0));
 			Handles.DrawLine(new Vector3(0, v1.y, v1.z), new Vector3(0, v2.y, v1.z));
 			Handles.DrawLine(new Vector3(0, v1.y, v2.z), new Vector3(0, v2.y, v2.z));
 			*/
-        }
+		}
 
 
 
-        public virtual void drawBoundsHandles(Matrix4x4 consumerM, bool forceDraw = false)
-        {
-            if (parametricObject == null || !parametricObject.isActive)
-                return;
+		public virtual void drawBoundsHandles(Matrix4x4 consumerM, bool forceDraw = false)
+		{
+			if (parametricObject == null || !parametricObject.isActive)
+				return;
 
 
-            if (parametricObject.model.isSelected(parametricObject))
-                drawLineCube(-parametricObject.bounds.extents, parametricObject.bounds.extents);
-        }
+			if (parametricObject.model.isSelected(parametricObject))
+				drawLineCube(-parametricObject.bounds.extents, parametricObject.bounds.extents);
+		}
 
-        public virtual void drawTextureHandles(Matrix4x4 consumerM)
-        {
+		public virtual void drawTextureHandles(Matrix4x4 consumerM)
+		{
 
-        }
+		}
 
 
 
 
 
-        public virtual void addContextMenuItems(GenericMenu menu)
-        {
+		public virtual void addContextMenuItems(GenericMenu menu)
+		{
 
-        }
+		}
 
 
 
-        public virtual Color getGUIColor()
-        {
+		public virtual Color getGUIColor()
+		{
 
-            return Color.white;
-        }
+			return Color.white;
+		}
 
 
 
@@ -841,106 +857,107 @@ namespace AX.GeneratorHandlers
 
 
 
-        public void drawCircleHandle(AXParametricObject po, string radiusName, float radiusValue, string segsName, int segsValue, float segsHandleScale = 1)
-        {
-            // TANGENT
-            Debug.Log("YUBBA");
+		public void drawCircleHandle(AXParametricObject po, string radiusName, float radiusValue, string segsName, int segsValue, float segsHandleScale = 1)
+		{
+			// TANGENT
 
-            // get to world space
 
+			// get to world space
 
-            Vector3 radpos = new Vector3(radiusValue, 0, 0);
 
-            segsHandleScale *= HandleUtility.GetHandleSize(radpos);
+			Vector3 radpos = new Vector3(radiusValue, 0, 0);
 
-            Vector3 tanpos = new Vector3(radiusValue, segsHandleScale * segsValue, 0);
+			segsHandleScale *= HandleUtility.GetHandleSize(radpos);
 
+			Vector3 tanpos = new Vector3(radiusValue, segsHandleScale * segsValue, 0);
 
 
 
-            Color prevColor = Handles.color;
 
-            // TANGENT
-            Handles.color = Color.cyan;
+			Color prevColor = Handles.color;
 
-            //tmpColor.a /= 3;
+			// TANGENT
+			Handles.color = Color.cyan;
 
-            Handles.DrawWireDisc(Vector3.zero, Vector3.forward, radiusValue);
+			//tmpColor.a /= 3;
 
-            Handles.DrawLine(radpos, tanpos);
+			Handles.DrawWireDisc(Vector3.zero, Vector3.forward, radiusValue);
 
+			Handles.DrawLine(radpos, tanpos);
 
 
 
 
-            EditorGUI.BeginChangeCheck();
-            tanpos = Handles.FreeMoveHandle(
-                tanpos,
-                Quaternion.identity,
-                handleScale * HandleUtility.GetHandleSize(tanpos),
-                Vector3.zero,
-                (controlID, positione, rotation, size, type) =>
-                {
 
-                    if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
-                    {
-                        ArchimatixEngine.mouseDownOnSceneViewHandle();
-                        //ArchimatixEngine.selectedFreeCurve = gener;
-                    }
-                    Handles.SphereHandleCap(controlID, positione, rotation, size, type);
-                });
+			EditorGUI.BeginChangeCheck();
+			tanpos = Handles.FreeMoveHandle(
+				tanpos,
+				Quaternion.identity,
+				handleScale * HandleUtility.GetHandleSize(tanpos),
+				Vector3.zero,
+				(controlID, positione, rotation, size, type) =>
+				{
 
+					if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
+					{
+						ArchimatixEngine.mouseDownOnSceneViewHandle();
+						parametricObject.model.latestHandleClicked = null;
+						//ArchimatixEngine.selectedFreeCurve = gener;
+					}
+					Handles.SphereHandleCap(controlID, positione, rotation, size, type);
+				});
 
-            if (EditorGUI.EndChangeCheck())
-            {
-                Undo.RegisterCompleteObjectUndo(parametricObject.model, "Circle Handle");
 
-                segsValue = Mathf.FloorToInt(tanpos.y / segsHandleScale);
-                parametricObject.intValue(segsName, segsValue);
-                parametricObject.model.isAltered(30);
+			if (EditorGUI.EndChangeCheck())
+			{
+				Undo.RegisterCompleteObjectUndo(parametricObject.model, "Circle Handle");
 
-            }
+				segsValue = Mathf.FloorToInt(tanpos.y / segsHandleScale);
+				parametricObject.intValue(segsName, segsValue);
+				parametricObject.model.isAltered(30);
 
+			}
 
 
 
-            Handles.color = Color.magenta;
 
+			Handles.color = Color.magenta;
 
-            // RADIUS
-            EditorGUI.BeginChangeCheck();
-            radpos = Handles.FreeMoveHandle(
-                radpos,
-                Quaternion.identity,
-                handleScale * HandleUtility.GetHandleSize(radpos),
-                Vector3.zero,
-                (controlID, positione, rotation, size, type) =>
-                {
 
-                    if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
-                    {
-                        ArchimatixEngine.mouseDownOnSceneViewHandle();
-                        //ArchimatixEngine.selectedFreeCurve = gener;
-                    }
-                    Handles.SphereHandleCap(controlID, positione, rotation, size, type);
-                });
-            if (EditorGUI.EndChangeCheck())
-            {
-                Undo.RegisterCompleteObjectUndo(parametricObject.model, "Circle Handle");
+			// RADIUS
+			EditorGUI.BeginChangeCheck();
+			radpos = Handles.FreeMoveHandle(
+				radpos,
+				Quaternion.identity,
+				handleScale * HandleUtility.GetHandleSize(radpos),
+				Vector3.zero,
+				(controlID, positione, rotation, size, type) =>
+				{
 
-                parametricObject.floatValue(radiusName, radpos.x);
-                parametricObject.model.isAltered(29);
-            }
-            Handles.Label(radpos + Vector3.right * segsHandleScale * .5f, radpos.x.ToString("F2"), ArchimatixEngine.sceneViewLabelStyle);
+					if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
+					{
+						ArchimatixEngine.mouseDownOnSceneViewHandle();
+						parametricObject.model.latestHandleClicked = null;
+						//ArchimatixEngine.selectedFreeCurve = gener;
+					}
+					Handles.SphereHandleCap(controlID, positione, rotation, size, type);
+				});
+			if (EditorGUI.EndChangeCheck())
+			{
+				Undo.RegisterCompleteObjectUndo(parametricObject.model, "Circle Handle");
 
+				parametricObject.floatValue(radiusName, radpos.x);
+				parametricObject.model.isAltered(29);
+			}
+			Handles.Label(radpos + Vector3.right * segsHandleScale * .5f, radpos.x.ToString("F2"), ArchimatixEngine.sceneViewLabelStyle);
 
 
 
-            Handles.Label(tanpos + Vector3.up * segsHandleScale * .5f, segsValue.ToString(), ArchimatixEngine.sceneViewLabelStyle);
 
-            Handles.color = prevColor;
-        }
+			Handles.Label(tanpos + Vector3.up * segsHandleScale * .5f, segsValue.ToString(), ArchimatixEngine.sceneViewLabelStyle);
 
+			Handles.color = prevColor;
+		}
 
 
 
@@ -950,424 +967,426 @@ namespace AX.GeneratorHandlers
 
 
 
-        /// <summary>
-        /// Draws the paths.
-        /// </summary>
-        /// <param name="p">P.</param>
 
-        public void drawPaths(AXParameter p)
-        {
+		/// <summary>
+		/// Draws the paths.
+		/// </summary>
+		/// <param name="p">P.</param>
 
+		public void drawPaths(AXParameter p)
+		{
 
 
-            if (p == null)
-                return;
 
-            //Debug.Log("p=" + p);
+			if (p == null)
+				return;
 
-            Handles.BeginGUI();
+			//Debug.Log("p=" + p);
 
-            // Actual shape verts:						
-            Paths actualPaths = p.getPaths();
-            if (actualPaths != null)
-            {
-                foreach (Path path in actualPaths)
-                {
+			Handles.BeginGUI();
 
+			// Actual shape verts:						
+			Paths actualPaths = p.getPaths();
+			if (actualPaths != null)
+			{
+				foreach (Path path in actualPaths)
+				{
 
-                    Vector3[] verts3d = AXGeometry.Utilities.path2Vec3s(path, Axis.Z, (p.drawClosed || (p.shapeState == ShapeState.Closed)));
 
-                    Handles.DrawAAPolyLine(5, verts3d);
-                }
-            }
+					Vector3[] verts3d = AXGeometry.Utilities.path2Vec3s(path, Axis.Z, (p.drawClosed || (p.shapeState == ShapeState.Closed)));
 
-            Handles.EndGUI();
+					Handles.DrawAAPolyLine(5, verts3d);
+				}
+			}
 
+			Handles.EndGUI();
 
-        }
 
+		}
 
-        /// <summary>
-        /// Draws the paths.
-        /// </summary>
-        /// <param name="p">P.</param>
 
-        public void drawPathsForEditor(AXParameter p)
-        {
+		/// <summary>
+		/// Draws the paths.
+		/// </summary>
+		/// <param name="p">P.</param>
 
+		public void drawPathsForEditor(AXParameter p)
+		{
 
 
-            if (p == null)
-                return;
 
+			if (p == null)
+				return;
 
 
-            Handles.BeginGUI();
 
-            // Actual shape verts:                      
-            Paths actualPaths = p.getPaths();
-            if (actualPaths != null)
-            {
-                foreach (Path path in actualPaths)
-                {
+			Handles.BeginGUI();
 
+			// Actual shape verts:                      
+			Paths actualPaths = p.getPaths();
+			if (actualPaths != null)
+			{
+				foreach (Path path in actualPaths)
+				{
 
-                    Vector3[] verts3d = AXGeometry.Utilities.path2Vec3s(path, Axis.Z, (p.drawClosed || (p.shapeState == ShapeState.Closed)));
 
-                    for (int i = 0; i < verts3d.Length; i++)
-                        verts3d[i].z *= -1;
-                    Handles.DrawAAPolyLine(5, verts3d);
-                }
-            }
+					Vector3[] verts3d = AXGeometry.Utilities.path2Vec3s(path, Axis.Z, (p.drawClosed || (p.shapeState == ShapeState.Closed)));
 
-            Handles.EndGUI();
+					for (int i = 0; i < verts3d.Length; i++)
+						verts3d[i].z *= -1;
+					Handles.DrawAAPolyLine(5, verts3d);
+				}
+			}
 
+			Handles.EndGUI();
 
-        }
 
+		}
 
 
 
 
 
-        public static float snapValue(float dec, float inc)
-        {
-            var mod = (dec % inc);
-            return dec - Math.Abs(mod) + (inc < 0 && mod != 0 ? Math.Abs(inc) : 0) + inc;
-        }
 
+		public static float snapValue(float dec, float inc)
+		{
+			var mod = (dec % inc);
+			return dec - Math.Abs(mod) + (inc < 0 && mod != 0 ? Math.Abs(inc) : 0) + inc;
+		}
 
 
-    }
 
+	}
 
 
-    public class GeneratorHandler2D : GeneratorHandler
-    {
 
-        private Color m_shapeColor;
-        public Color shapeColor
-        {
-            get
-            {
-                return m_shapeColor;
-            }
-            set { m_shapeColor = value; }
-        }
+	public class GeneratorHandler2D : GeneratorHandler
+	{
 
+		private Color m_shapeColor;
+		public Color shapeColor
+		{
+			get
+			{
+				return m_shapeColor;
+			}
+			set { m_shapeColor = value; }
+		}
 
 
 
-        // DRAW_TRANSFORM_HANDLES for a 2D Shape
 
-        public override void drawTransformHandles(List<string> visited, Matrix4x4 consumerM, bool beingDrawnFromConsumer = false)
-        {
+		// DRAW_TRANSFORM_HANDLES for a 2D Shape
 
-            if (visited.Contains("t_" + parametricObject.Guid))
-                return;
-            visited.Add("t_" + parametricObject.Guid);
+		public override void drawTransformHandles(List<string> visited, Matrix4x4 consumerM, bool beingDrawnFromConsumer = false)
+		{
 
+			if (visited.Contains("t_" + parametricObject.Guid))
+				return;
+			visited.Add("t_" + parametricObject.Guid);
 
 
-            //	if (p == nfdiscull)
-            //		return;
 
+			//	if (p == nfdiscull)
+			//		return;
 
 
-            //Debug.Log(parametricObject.getAxisRotationMatrix());
 
-            AX.Generators.Generator2D gener2D = generator as AX.Generators.Generator2D;
+			//Debug.Log(parametricObject.getAxisRotationMatrix());
 
+			AX.Generators.Generator2D gener2D = generator as AX.Generators.Generator2D;
 
-            Matrix4x4 flipM = Matrix4x4.identity;
-            if (generator.P_Output != null && generator.P_Output.flipX)
-                flipM = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(-1, 1, 1));
 
+			Matrix4x4 flipM = Matrix4x4.identity;
+			if (generator.P_Output != null && generator.P_Output.flipX)
+				flipM = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(-1, 1, 1));
 
 
-            Matrix4x4 context = parametricObject.model.transform.localToWorldMatrix * generator.parametricObject.worldDisplayMatrix;
 
-            if (generator.hasOutputsConnected() || parametricObject.is2D())
-                context *= generator.localMatrix.inverse * flipM;
-            else
-                context *= parametricObject.getAxisRotationMatrix().inverse * generator.localMatrix.inverse * parametricObject.getAxisRotationMatrix();
+			Matrix4x4 context = parametricObject.model.transform.localToWorldMatrix * generator.parametricObject.worldDisplayMatrix;
 
-            Matrix4x4 prevHandlesMatrix = Handles.matrix;
+			if (generator.hasOutputsConnected() || parametricObject.is2D())
+				context *= generator.localMatrix.inverse * flipM;
+			else
+				context *= parametricObject.getAxisRotationMatrix().inverse * generator.localMatrix.inverse * parametricObject.getAxisRotationMatrix();
 
-            Handles.matrix = context;
+			Matrix4x4 prevHandlesMatrix = Handles.matrix;
 
-            //Handles.matrix = flipM * Handles.matrix;
+			Handles.matrix = context;
 
-            Vector3 cen = AXUtilities.GetPosition(generator.localMatrix);
+			//Handles.matrix = flipM * Handles.matrix;
 
+			Vector3 cen = AXUtilities.GetPosition(generator.localMatrix);
 
 
-            //Debug.Log(Handles.matrix);
 
-            // DRAW 2D CENTROID																											
+			//Debug.Log(Handles.matrix);
 
-            // Scale adjuster so handles are not too large in scaled up PO
-            float handlesMatrixScaleAdjuster = 1.442f / AXUtilities.GetScale(Handles.matrix).magnitude;
+			// DRAW 2D CENTROID																											
 
-            float handleRadius = 1.6f * handleScale * HandleUtility.GetHandleSize(cen) * handlesMatrixScaleAdjuster;
-            float handlesScale = 0.8f * handleRadius;
+			// Scale adjuster so handles are not too large in scaled up PO
+			float handlesMatrixScaleAdjuster = 1.442f / AXUtilities.GetScale(Handles.matrix).magnitude;
 
-            float crosshairRadius = 1.3f * handleRadius;
+			float handleRadius = 1.6f * handleScale * HandleUtility.GetHandleSize(cen) * handlesMatrixScaleAdjuster;
+			float handlesScale = 0.8f * handleRadius;
 
-            Vector3 v1 = generator.localMatrix.MultiplyPoint3x4(new Vector3(crosshairRadius, 0, 0));
-            Vector3 v2 = generator.localMatrix.MultiplyPoint3x4(new Vector3(0, crosshairRadius, 0));
-            Vector3 nv1 = generator.localMatrix.MultiplyPoint3x4(new Vector3(-crosshairRadius, 0, 0));
-            Vector3 nv2 = generator.localMatrix.MultiplyPoint3x4(new Vector3(0, -crosshairRadius, 0));
+			float crosshairRadius = 1.3f * handleRadius;
 
-            Vector3 n = Vector3.Cross(v1 - nv1, v2 - nv2);
+			Vector3 v1 = generator.localMatrix.MultiplyPoint3x4(new Vector3(crosshairRadius, 0, 0));
+			Vector3 v2 = generator.localMatrix.MultiplyPoint3x4(new Vector3(0, crosshairRadius, 0));
+			Vector3 nv1 = generator.localMatrix.MultiplyPoint3x4(new Vector3(-crosshairRadius, 0, 0));
+			Vector3 nv2 = generator.localMatrix.MultiplyPoint3x4(new Vector3(0, -crosshairRadius, 0));
 
-            Handles.color = new Color(.5f, .7f, 1f, 0.2f);
+			Vector3 n = Vector3.Cross(v1 - nv1, v2 - nv2);
 
+			Handles.color = new Color(.5f, .7f, 1f, 0.2f);
 
 
 
-            Handles.DrawSolidArc(cen,
-                n,
-                v1 - cen,
-                90,
-                handlesScale);
 
-            Handles.DrawSolidArc(cen,
-                n,
-                nv1 - cen,
-                90,
-                handlesScale);
-            Handles.color = new Color(.5f, .7f, 1f, 0.8f);
+			Handles.DrawSolidArc(cen,
+				n,
+				v1 - cen,
+				90,
+				handlesScale);
 
-            Handles.DrawLine(nv1, v1);
-            Handles.DrawLine(nv2, v2);
+			Handles.DrawSolidArc(cen,
+				n,
+				nv1 - cen,
+				90,
+				handlesScale);
+			Handles.color = new Color(.5f, .7f, 1f, 0.8f);
 
+			Handles.DrawLine(nv1, v1);
+			Handles.DrawLine(nv2, v2);
 
 
 
 
-            // POSITION HANDLE
 
-            Handles.color = Color.cyan;
+			// POSITION HANDLE
 
-            if (ArchimatixEngine.sceneViewState != ArchimatixEngine.SceneViewState.AddPoint)
-            {
-                EditorGUI.BeginChangeCheck();
+			Handles.color = Color.cyan;
 
-                cen = Handles.FreeMoveHandle(
-                    cen,
-                    Quaternion.identity,
-                    .3f * handleRadius,
-                    Vector3.zero,
-                    (controlID, positione, rotation, size, type) =>
-                    {
+			if (ArchimatixEngine.sceneViewState != ArchimatixEngine.SceneViewState.AddPoint)
+			{
+				EditorGUI.BeginChangeCheck();
 
-                        if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
-                        {
-                            ArchimatixEngine.mouseDownOnSceneViewHandle();
-                            //ArchimatixEngine.selectedFreeCurve = gener;
-                        }
-                        Handles.SphereHandleCap(controlID, positione, rotation, size, type);
-                    });
+				cen = Handles.FreeMoveHandle(
+					cen,
+					Quaternion.identity,
+					.3f * handleRadius,
+					Vector3.zero,
+					(controlID, positione, rotation, size, type) =>
+					{
 
-                // convert to local space
-                if (EditorGUI.EndChangeCheck())
-                {
-                    Undo.RegisterCompleteObjectUndo(parametricObject.model, "Move");
+						if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
+						{
+							ArchimatixEngine.mouseDownOnSceneViewHandle();
+							parametricObject.model.latestHandleClicked = null;
+							//ArchimatixEngine.selectedFreeCurve = gener;
+						}
+						Handles.SphereHandleCap(controlID, positione, rotation, size, type);
+					});
 
-                    // ONLY USE LOCAL AXIS ROTATION IF FREE FLOATING PALETTE WITH NO DEPENDENTS
-                    //if (p.Dependents == null || p.Dependents.Count == 0)	
+				// convert to local space
+				if (EditorGUI.EndChangeCheck())
+				{
+					Undo.RegisterCompleteObjectUndo(parametricObject.model, "Move");
 
-                    if (ArchimatixEngine.optionClick)
-                    {
-                        //Debug.Log("Make new SHAPE!");
-                        ArchimatixEngine.optionClick = false;
+					// ONLY USE LOCAL AXIS ROTATION IF FREE FLOATING PALETTE WITH NO DEPENDENTS
+					//if (p.Dependents == null || p.Dependents.Count == 0)	
 
+					if (ArchimatixEngine.optionClick)
+					{
+						//Debug.Log("Make new SHAPE!");
+						ArchimatixEngine.optionClick = false;
 
-                        AXEditorUtilities.instancePO(parametricObject);
-                        //adjustparametricObject.model.selectPO(npo);
 
-                    }
+						AXEditorUtilities.instancePO(parametricObject);
+						//adjustparametricObject.model.selectPO(npo);
 
+					}
 
-                    // lock movement of the cent in one axis, that of the axis orientation 
 
-                    //parametricObject.setParameterValueByName("Trans_X", cen.x);
-                    //parametricObject.setParameterValueByName("Trans_Y", cen.y);
-                    if (ArchimatixEngine.snappingOn())
-                        cen = AXGeometry.Utilities.SnapToGrid(cen, parametricObject.model.snapSizeGrid);
+					// lock movement of the cent in one axis, that of the axis orientation 
 
-                    parametricObject.initiateRipple_setFloatValueFromGUIChange("Trans_X", cen.x);
-                    parametricObject.initiateRipple_setFloatValueFromGUIChange("Trans_Y", cen.y);
+					//parametricObject.setParameterValueByName("Trans_X", cen.x);
+					//parametricObject.setParameterValueByName("Trans_Y", cen.y);
+					if (ArchimatixEngine.snappingOn())
+						cen = AXGeometry.Utilities.SnapToGrid(cen, parametricObject.model.snapSizeGrid);
 
-                    //parametricObject.model.generate("Generator2D::drawTransformHandles.trans_x");
-                    parametricObject.model.isAltered();
+					parametricObject.initiateRipple_setFloatValueFromGUIChange("Trans_X", cen.x);
+					parametricObject.initiateRipple_setFloatValueFromGUIChange("Trans_Y", cen.y);
 
-                    //generator.adjustWorldMatrices();
-                }
-            }
+					//parametricObject.model.generate("Generator2D::drawTransformHandles.trans_x");
+					parametricObject.model.isAltered();
 
+					//generator.adjustWorldMatrices();
+				}
+			}
 
 
 
 
 
 
-            Color tmp = Handles.color;
 
+			Color tmp = Handles.color;
 
 
-            // ROTATION HANDLE
-            Handles.color = Color.cyan;
 
-            Quaternion rot = AXUtilities.QuaternionFromMatrix(generator.localMatrix);
-            EditorGUI.BeginChangeCheck();
+			// ROTATION HANDLE
+			Handles.color = Color.cyan;
 
-            Quaternion rot2 =
-                Handles.Disc(rot,
-                    cen,
-                    n,
-                    handleRadius,
-                    false,
-                    1);
-            if (EditorGUI.EndChangeCheck())
-            {
-                Undo.RegisterCompleteObjectUndo(parametricObject.model, "Rotation");
+			Quaternion rot = AXUtilities.QuaternionFromMatrix(generator.localMatrix);
+			EditorGUI.BeginChangeCheck();
 
-                float rot2z = (gener2D.flipX) ? -rot2.eulerAngles.z : rot2.eulerAngles.z;
+			Quaternion rot2 =
+				Handles.Disc(rot,
+					cen,
+					n,
+					handleRadius,
+					false,
+					1);
+			if (EditorGUI.EndChangeCheck())
+			{
+				Undo.RegisterCompleteObjectUndo(parametricObject.model, "Rotation");
 
+				float rot2z = (gener2D.flipX) ? -rot2.eulerAngles.z : rot2.eulerAngles.z;
 
 
-                if (ArchimatixEngine.snappingOn())
-                    rot2z = snapValue(rot2z, 10);
 
-                parametricObject.initiateRipple_setFloatValueFromGUIChange("Rot_Z", rot2z);
+				if (ArchimatixEngine.snappingOn())
+					rot2z = snapValue(rot2z, 10);
 
-                //parametricObject.model.generate("Generator2D::drawTransformHandles.rot_z");
-                parametricObject.model.isAltered();
+				parametricObject.initiateRipple_setFloatValueFromGUIChange("Rot_Z", rot2z);
 
+				//parametricObject.model.generate("Generator2D::drawTransformHandles.rot_z");
+				parametricObject.model.isAltered();
 
-                generator.adjustWorldMatrices();
-            }
 
+				generator.adjustWorldMatrices();
+			}
 
-            Handles.color = tmp;
 
+			Handles.color = tmp;
 
-            Handles.matrix = prevHandlesMatrix;
 
+			Handles.matrix = prevHandlesMatrix;
 
-          
-        }
 
 
+		}
 
 
 
 
 
 
-        #region Control Handels 2D
-        public override void drawControlHandles(ref List<string> visited, Matrix4x4 consumerM, bool beingDrawnFromConsumer)
-        {
-            if (alreadyVisited(ref visited, "GeneratorHandler2D"))
-                return;
 
 
-            Matrix4x4 prevHandlesMatrix = Handles.matrix;
+		#region Control Handels 2D
+		public override void drawControlHandles(ref List<string> visited, Matrix4x4 consumerM, bool beingDrawnFromConsumer)
+		{
+			if (alreadyVisited(ref visited, "GeneratorHandler2D"))
+				return;
 
 
-            AXParameter p = parametricObject.generator.getPreferredOutputParameter();//.P_Output;
+			Matrix4x4 prevHandlesMatrix = Handles.matrix;
 
-            if (p == null)
-                return;
 
-            Paths paths = p.getPaths();
+			AXParameter p = parametricObject.generator.getPreferredOutputParameter();//.P_Output;
 
+			if (p == null)
+				return;
 
-            if (paths == null)
-                return;
+			Paths paths = p.getPaths();
 
 
-            //if (! skip)
-            //	consumerType = ConsumerType.None;
+			if (paths == null)
+				return;
 
-            consumerM = parametricObject.model.transform.localToWorldMatrix * generator.parametricObject.worldDisplayMatrix;
 
-            Matrix4x4 context = parametricObject.model.transform.localToWorldMatrix * generator.parametricObject.worldDisplayMatrix;
+			//if (! skip)
+			//	consumerType = ConsumerType.None;
 
-            if (generator.hasOutputsConnected() || parametricObject.is2D())
-                context *= generator.localMatrix.inverse;
+			consumerM = parametricObject.model.transform.localToWorldMatrix * generator.parametricObject.worldDisplayMatrix;
 
-            else
-                context *= parametricObject.getAxisRotationMatrix().inverse * generator.localMatrix.inverse * parametricObject.getAxisRotationMatrix();
+			Matrix4x4 context = parametricObject.model.transform.localToWorldMatrix * generator.parametricObject.worldDisplayMatrix;
 
+			if (generator.hasOutputsConnected() || parametricObject.is2D())
+				context *= generator.localMatrix.inverse;
 
+			else
+				context *= parametricObject.getAxisRotationMatrix().inverse * generator.localMatrix.inverse * parametricObject.getAxisRotationMatrix();
 
-            Handles.matrix = context;
 
 
+			Handles.matrix = context;
 
 
-            //Debug.Log(generator.parametricObject.Name + " AAA: " + Handles.matrix);
 
 
-            Color col;
-            if (beingDrawnFromConsumer == true)
-                col = new Color(.5f, .5f, .5f, .2f);
-            else
-                col = Color.magenta;
+			//Debug.Log(generator.parametricObject.Name + " AAA: " + Handles.matrix);
 
 
-            col.a *= .5f;
-            Handles.color = col;
+			Color col;
+			if (beingDrawnFromConsumer == true)
+				col = new Color(.5f, .5f, .5f, .2f);
+			else
+				col = Color.magenta;
 
 
+			col.a *= .5f;
+			Handles.color = col;
 
-            Vector3[] verts3d;
 
-            // DRAW THE SHAPE
-            if ((!(generator is ShapeMerger)) && !visited.Contains("c_" + parametricObject.Guid))
-            {
-                //Debug.Log(parametricObject.Name + " -- --- --- ");
 
-                // Since the paths points are transformed, we have to adjust the handles matrix
-                //Handles.matrix = context;
+			Vector3[] verts3d;
 
-                //if (! generator.hasOutputsConnected())
-                //	Handles.matrix *= parametricObject.getAxisRotationMatrix2D();
+			// DRAW THE SHAPE
+			if ((!(generator is ShapeMerger)) && !visited.Contains("c_" + parametricObject.Guid))
+			{
+				//Debug.Log(parametricObject.Name + " -- --- --- ");
 
+				// Since the paths points are transformed, we have to adjust the handles matrix
+				//Handles.matrix = context;
 
-                // unscaled and unoffset
-                Handles.color = Color.gray;
-                if (p.transformedButUnscaledOutputPaths != null)
-                {
-                    for (int i = 0; i < p.transformedButUnscaledOutputPaths.Count; i++)
-                    {
+				//if (! generator.hasOutputsConnected())
+				//	Handles.matrix *= parametricObject.getAxisRotationMatrix2D();
 
-                        verts3d = AXGeometry.Utilities.path2Vec3s(p.transformedButUnscaledOutputPaths[i], Axis.Z, (p.shapeState == ShapeState.Closed));
 
-                        //Handles.DrawPolyLine(verts3d);
-                        Handles.DrawAAPolyLine(5, verts3d);
-                    }
-                }
+				// unscaled and unoffset
+				Handles.color = Color.gray;
+				if (p.transformedButUnscaledOutputPaths != null)
+				{
+					for (int i = 0; i < p.transformedButUnscaledOutputPaths.Count; i++)
+					{
 
+						verts3d = AXGeometry.Utilities.path2Vec3s(p.transformedButUnscaledOutputPaths[i], Axis.Z, (p.shapeState == ShapeState.Closed));
 
+						//Handles.DrawPolyLine(verts3d);
+						Handles.DrawAAPolyLine(5, verts3d);
+					}
+				}
 
-                Handles.color = Color.cyan;
-                //Debug.Log("YO: "+p.transformedAndScaledButNotOffsetdOutputPaths);
-                if (p.offset != 0 && p.transformedAndScaledButNotOffsetdOutputPaths != null)
-                {
-                    for (int i = 0; i < p.transformedAndScaledButNotOffsetdOutputPaths.Count; i++)
-                    {
-                        verts3d = AXGeometry.Utilities.path2Vec3s(p.transformedAndScaledButNotOffsetdOutputPaths[i], Axis.Z, (p.shapeState == ShapeState.Closed));
 
-                        //Handles.DrawPolyLine(verts3d);
-                        Handles.DrawAAPolyLine(5, verts3d);
-                    }
-                }
 
-                /*
+				Handles.color = Color.cyan;
+				//Debug.Log("YO: "+p.transformedAndScaledButNotOffsetdOutputPaths);
+				if (p.offset != 0 && p.transformedAndScaledButNotOffsetdOutputPaths != null)
+				{
+					for (int i = 0; i < p.transformedAndScaledButNotOffsetdOutputPaths.Count; i++)
+					{
+						verts3d = AXGeometry.Utilities.path2Vec3s(p.transformedAndScaledButNotOffsetdOutputPaths[i], Axis.Z, (p.shapeState == ShapeState.Closed));
+
+						//Handles.DrawPolyLine(verts3d);
+						Handles.DrawAAPolyLine(5, verts3d);
+					}
+				}
+
+				/*
 				Handles.color = Color.yellow;
 				if (p.transformedFullyAndOffsetdButNotThickenedOutputPaths != null)
 				{
@@ -1382,7 +1401,7 @@ namespace AX.GeneratorHandlers
 				*/
 
 
-                /*
+				/*
 				foreach(Path path in paths)
 				{
 					verts3d = Archimatix.path2Vec3s(path, Axis.Z, (p.shapeState == ShapeState.Closed));
@@ -1397,352 +1416,352 @@ namespace AX.GeneratorHandlers
 
 
 
-                Handles.color = Color.magenta;
-                // Actual shape verts:		
+				Handles.color = Color.magenta;
+				// Actual shape verts:		
 
-                foreach (Path path in p.getPaths())
-                {
+				foreach (Path path in p.getPaths())
+				{
 
-                    verts3d = AXGeometry.Utilities.path2Vec3s(path, Axis.Z, (p.drawClosed || (p.shapeState == ShapeState.Closed)));
-                    Handles.DrawAAPolyLine(12, verts3d);
-                }
+					verts3d = AXGeometry.Utilities.path2Vec3s(path, Axis.Z, (p.drawClosed || (p.shapeState == ShapeState.Closed)));
+					Handles.DrawAAPolyLine(12, verts3d);
+				}
 
 
-            }
+			}
 
 
 
 
-            //Handles.matrix = parametricObject.model.transform.localToWorldMatrix * generator.parametricObject.worldDisplayMatrix;
-            //Handles.matrix = prevHandlesMatrix;
-            //Handles.matrix = context;
-            //handleMatrix *= parametricObject.getTransMatrix2D();	
+			//Handles.matrix = parametricObject.model.transform.localToWorldMatrix * generator.parametricObject.worldDisplayMatrix;
+			//Handles.matrix = prevHandlesMatrix;
+			//Handles.matrix = context;
+			//handleMatrix *= parametricObject.getTransMatrix2D();	
 
-            // NOW DRAW THE HANDLES
+			// NOW DRAW THE HANDLES
 
 
 
 
-            base.drawControlHandles(ref visited, context, beingDrawnFromConsumer);
+			base.drawControlHandles(ref visited, context, beingDrawnFromConsumer);
 
 
 
 
-            //if (visited.Contains ("c_"+parametricObject.Guid))
-            //	return;
+			//if (visited.Contains ("c_"+parametricObject.Guid))
+			//	return;
 
-            Matrix4x4 flipM = Matrix4x4.identity;
+			Matrix4x4 flipM = Matrix4x4.identity;
 
-            if (generator.P_Output != null && generator.P_Output.flipX)
-                flipM = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(-1, 1, 1));
+			if (generator.P_Output != null && generator.P_Output.flipX)
+				flipM = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(-1, 1, 1));
 
 
-            Handles.matrix = context * flipM;
+			Handles.matrix = context * flipM;
 
 
 
 
-            //Debug.Log("----=> " +parametricObject.Name+ " " +generator.P_Output.Name+ ".flipX="+ generator.P_Output.flipX);
+			//Debug.Log("----=> " +parametricObject.Name+ " " +generator.P_Output.Name+ ".flipX="+ generator.P_Output.flipX);
 
 
 
-            // draw consumer origin CENTROID...
-            Handles.color = Color.red;
+			// draw consumer origin CENTROID...
+			Handles.color = Color.red;
 
 
 
-            Vector3 vo = new Vector3(0, 0, 0);
+			Vector3 vo = new Vector3(0, 0, 0);
 
-            Vector3 vx = new Vector3(.5f, 0, 0);
-            Vector3 vy = new Vector3(0, .5f, 0);
-            Vector3 vz = new Vector3(0, 0, .5f);
+			Vector3 vx = new Vector3(.5f, 0, 0);
+			Vector3 vy = new Vector3(0, .5f, 0);
+			Vector3 vz = new Vector3(0, 0, .5f);
 
-            Handles.color = Handles.xAxisColor;
-            Handles.DrawLine(vo, vx);
-            Handles.DrawLine(vo, vx);
-            Handles.DrawLine(vo, vx);
+			Handles.color = Handles.xAxisColor;
+			Handles.DrawLine(vo, vx);
+			Handles.DrawLine(vo, vx);
+			Handles.DrawLine(vo, vx);
 
-            Handles.color = Handles.yAxisColor;
-            Handles.DrawLine(vo, vy);
-            Handles.color = Handles.zAxisColor;
-            Handles.DrawLine(vo, vz);
-            Handles.DrawLine(vo, vz);
-            Handles.DrawLine(vo, vz);
+			Handles.color = Handles.yAxisColor;
+			Handles.DrawLine(vo, vy);
+			Handles.color = Handles.zAxisColor;
+			Handles.DrawLine(vo, vz);
+			Handles.DrawLine(vo, vz);
+			Handles.DrawLine(vo, vz);
 
 
-            Handles.color = Color.yellow;
-            Handles.DrawDottedLine(new Vector3(0, 0, 0), generator.localMatrix.MultiplyPoint3x4(new Vector3(0, 0, 0)), 3);
+			Handles.color = Color.yellow;
+			Handles.DrawDottedLine(new Vector3(0, 0, 0), generator.localMatrix.MultiplyPoint3x4(new Vector3(0, 0, 0)), 3);
 
-            Handles.matrix = prevHandlesMatrix;
+			Handles.matrix = prevHandlesMatrix;
 
 
 
 
 
-        }
+		}
 
-        // GENERATOR_2D
-        //		public override void drawHandlesUnselected()
-        //		{
-        //		}
-        public override void drawHandlesUnselected()
-        {
-            if (!ArchimatixEngine.drawGuides)
-                return;
+		// GENERATOR_2D
+		//		public override void drawHandlesUnselected()
+		//		{
+		//		}
+		public override void drawHandlesUnselected()
+		{
+			if (!ArchimatixEngine.drawGuides)
+				return;
 
-            //AXParameter p = parametricObject.getParameter("Output Spline");
-            AXParameter p = parametricObject.generator.P_Output;
+			//AXParameter p = parametricObject.getParameter("Output Spline");
+			AXParameter p = parametricObject.generator.P_Output;
 
 
-            if (p == null || p.getPaths() == null)
-                return;
+			if (p == null || p.getPaths() == null)
+				return;
 
 
-            // MATRIX
-            Matrix4x4 prevHandlesMatrix = Handles.matrix;
+			// MATRIX
+			Matrix4x4 prevHandlesMatrix = Handles.matrix;
 
-            //Debug.Log(model);
-            //Debug.Log(model.transform.localToWorldMatrix);
-            //Debug.Log(parametricObject.getConsumerMatrix());
+			//Debug.Log(model);
+			//Debug.Log(model.transform.localToWorldMatrix);
+			//Debug.Log(parametricObject.getConsumerMatrix());
 
 
-            Matrix4x4 context = parametricObject.model.transform.localToWorldMatrix * generator.parametricObject.worldDisplayMatrix;
+			Matrix4x4 context = parametricObject.model.transform.localToWorldMatrix * generator.parametricObject.worldDisplayMatrix;
 
 
-            if (generator.hasOutputsConnected() || parametricObject.is2D())
-                context *= generator.localMatrix.inverse;
-            else
-                context *= parametricObject.getAxisRotationMatrix().inverse * generator.localMatrix.inverse * parametricObject.getAxisRotationMatrix();
+			if (generator.hasOutputsConnected() || parametricObject.is2D())
+				context *= generator.localMatrix.inverse;
+			else
+				context *= parametricObject.getAxisRotationMatrix().inverse * generator.localMatrix.inverse * parametricObject.getAxisRotationMatrix();
 
 
-            Handles.matrix = context;
+			Handles.matrix = context;
 
 
 
 
 
-            // COLOR
+			// COLOR
 
-            Vector3[] verts3d;
-            Color prevColor = Handles.color;
+			Vector3[] verts3d;
+			Color prevColor = Handles.color;
 
-            Color col = Color.cyan;
-            col.a = .5f;
+			Color col = Color.cyan;
+			col.a = .5f;
 
-            Handles.color = col;
+			Handles.color = col;
 
 
-            // control shape verts:
-            if (!p.drawClosed)
-            {
+			// control shape verts:
+			if (!p.drawClosed)
+			{
 
-                foreach (Path path in p.getPaths())//p.getTransformedControlPaths())
-                {
+				foreach (Path path in p.getPaths())//p.getTransformedControlPaths())
+				{
 
 
-                    verts3d = AXGeometry.Utilities.path2Vec3s(path, Axis.Z, (p.shapeState == ShapeState.Closed));
-                    Handles.DrawAAPolyLine(2, verts3d);
-                }
-            }
-            else
-            {
-                // actual shape verts:						
-                foreach (Path path in p.getPaths())
-                {
-                    verts3d = AXGeometry.Utilities.path2Vec3s(path, Axis.Z, (p.drawClosed || (p.shapeState == ShapeState.Closed)));
-                    //Handles.DrawPolyLine(verts3d);
-                    Handles.DrawAAPolyLine(2, verts3d);
-                }
-            }
+					verts3d = AXGeometry.Utilities.path2Vec3s(path, Axis.Z, (p.shapeState == ShapeState.Closed));
+					Handles.DrawAAPolyLine(2, verts3d);
+				}
+			}
+			else
+			{
+				// actual shape verts:						
+				foreach (Path path in p.getPaths())
+				{
+					verts3d = AXGeometry.Utilities.path2Vec3s(path, Axis.Z, (p.drawClosed || (p.shapeState == ShapeState.Closed)));
+					//Handles.DrawPolyLine(verts3d);
+					Handles.DrawAAPolyLine(2, verts3d);
+				}
+			}
 
 
-            Handles.color = prevColor;
-            Handles.matrix = prevHandlesMatrix;
-        }
+			Handles.color = prevColor;
+			Handles.matrix = prevHandlesMatrix;
+		}
 
 
 
 
-        public override void drawControlHandlesofInputParametricObjects(ref List<string> visited, Matrix4x4 consumerM, bool beingDrawnFromConsumer)
-        {
+		public override void drawControlHandlesofInputParametricObjects(ref List<string> visited, Matrix4x4 consumerM, bool beingDrawnFromConsumer)
+		{
 
-            //if (visited.Contains ("c_"+parametricObject.Guid))
-            //	return;
-            //visited.Add ("c_"+parametricObject.Guid);
+			//if (visited.Contains ("c_"+parametricObject.Guid))
+			//	return;
+			//visited.Add ("c_"+parametricObject.Guid);
 
-            // by default, draw all of them here
-            // Override this to treat particular inputs individually
+			// by default, draw all of them here
+			// Override this to treat particular inputs individually
 
-            //Debug.Log("DC: " + parametricObject.Name);
-            //foreach (AXParameter input_p in parametricObject.parameters)
-            foreach (AXParameter input_p in parametricObject.getAllInputs())
-            {
+			//Debug.Log("DC: " + parametricObject.Name);
+			//foreach (AXParameter input_p in parametricObject.parameters)
+			foreach (AXParameter input_p in parametricObject.getAllInputs())
+			{
 
-                if (input_p.PType == AXParameter.ParameterType.Input && input_p.DependsOn != null)
-                {
-                    //Debug.Log(" -- " + input_p.Name + " -> " + input_p.DependsOn.parametricObject.Name);
+				if (input_p.PType == AXParameter.ParameterType.Input && input_p.DependsOn != null)
+				{
+					//Debug.Log(" -- " + input_p.Name + " -> " + input_p.DependsOn.parametricObject.Name);
 
 
-                    AXParametricObject src_po = input_p.DependsOn.parametricObject;
+					AXParametricObject src_po = input_p.DependsOn.parametricObject;
 
-                    if (parametricObject.is3D() && src_po.is2D())
-                        consumerM *= parametricObject.getAxisRotationMatrix2D(Axis.Y);
+					if (parametricObject.is3D() && src_po.is2D())
+						consumerM *= parametricObject.getAxisRotationMatrix2D(Axis.Y);
 
-                    consumerM = Matrix4x4.identity; //*= generator.getLocalConsumerMatrixPerInputSocket(src_po);
+					consumerM = Matrix4x4.identity; //*= generator.getLocalConsumerMatrixPerInputSocket(src_po);
 
-                    GeneratorHandler gh = GeneratorHandler.getGeneratorHandler(src_po);
-                    if (gh != null)
-                        gh.drawControlHandles(ref visited, consumerM, true);
+					GeneratorHandler gh = GeneratorHandler.getGeneratorHandler(src_po);
+					if (gh != null)
+						gh.drawControlHandles(ref visited, consumerM, true);
 
-                }
+				}
 
-            }
+			}
 
-        }
+		}
 
 
-        #endregion
+		#endregion
 
 
 
 
 
 
-        public override Color getGUIColor()
-        {
-            if (EditorGUIUtility.isProSkin)
-                return Color.magenta;
+		public override Color getGUIColor()
+		{
+			if (EditorGUIUtility.isProSkin)
+				return Color.magenta;
 
-            return new Color(.7f, .5f, .65f, .7f);
-        }
+			return new Color(.7f, .5f, .65f, .7f);
+		}
 
 
-    }
+	}
 
-    public class GeneratorHandler3D : GeneratorHandler
-    {
+	public class GeneratorHandler3D : GeneratorHandler
+	{
 
 
 
-        // TRANSFORM HANDLES
-        public override void drawTransformHandles(List<string> visited, Matrix4x4 consumerM, bool addLocalMatrix = false)
-        {
-            if (parametricObject == null || !parametricObject.isActive)
-                return;
+		// TRANSFORM HANDLES
+		public override void drawTransformHandles(List<string> visited, Matrix4x4 consumerM, bool addLocalMatrix = false)
+		{
+			if (parametricObject == null || !parametricObject.isActive)
+				return;
 
 
 
-            if (visited.Contains("t_" + parametricObject.Guid))
-                return;
-            visited.Add("t_" + parametricObject.Guid);
+			if (visited.Contains("t_" + parametricObject.Guid))
+				return;
+			visited.Add("t_" + parametricObject.Guid);
 
-            Matrix4x4 context = parametricObject.model.transform.localToWorldMatrix * generator.parametricObject.worldDisplayMatrix * (parametricObject.getAxisRotationMatrix() * generator.getLocalAlignMatrix()).inverse * generator.localMatrix.inverse;
+			Matrix4x4 context = parametricObject.model.transform.localToWorldMatrix * generator.parametricObject.worldDisplayMatrix * (parametricObject.getAxisRotationMatrix() * generator.getLocalAlignMatrix()).inverse * generator.localMatrix.inverse;
 
-            Matrix4x4 prevHandlesMatrix = Handles.matrix;
-            Handles.matrix = context;
+			Matrix4x4 prevHandlesMatrix = Handles.matrix;
+			Handles.matrix = context;
 
-            Vector3 cen = AXUtilities.GetPosition(generator.localMatrix);
-            Quaternion rot = AXUtilities.QuaternionFromMatrix(generator.localMatrix);
+			Vector3 cen = AXUtilities.GetPosition(generator.localMatrix);
+			Quaternion rot = AXUtilities.QuaternionFromMatrix(generator.localMatrix);
 
 
-            switch (UnityEditor.Tools.current)
-            {
-                case UnityEditor.Tool.Move:
+			switch (UnityEditor.Tools.current)
+			{
+				case UnityEditor.Tool.Move:
 
-                    EditorGUI.BeginChangeCheck();
+					EditorGUI.BeginChangeCheck();
 
-                    cen = Handles.PositionHandle(cen, rot);
+					cen = Handles.PositionHandle(cen, rot);
 
-                    if (EditorGUI.EndChangeCheck())
-                    {
-                        Undo.RegisterCompleteObjectUndo(parametricObject.model, "Translate");
+					if (EditorGUI.EndChangeCheck())
+					{
+						Undo.RegisterCompleteObjectUndo(parametricObject.model, "Translate");
 
-                        if (ArchimatixEngine.optionClick)
-                        {
-                            //Debug.Log("Make new PO!");
-                            ArchimatixEngine.optionClick = false;
+						if (ArchimatixEngine.optionClick)
+						{
+							//Debug.Log("Make new PO!");
+							ArchimatixEngine.optionClick = false;
 
 
-                            AXParametricObject npo = AXEditorUtilities.instancePO(parametricObject);
-                            parametricObject.model.selectPO(npo);
+							AXParametricObject npo = AXEditorUtilities.instancePO(parametricObject);
+							parametricObject.model.selectPO(npo);
 
-                        }
-                        // convert to local space
-                        //cen = (consumerM*parametricObject.getAxisRotationMatrix() * generator.getLocalAlignMatrix()).inverse.MultiplyPoint3x4(cen);
+						}
+						// convert to local space
+						//cen = (consumerM*parametricObject.getAxisRotationMatrix() * generator.getLocalAlignMatrix()).inverse.MultiplyPoint3x4(cen);
 
-                        if (ArchimatixEngine.snappingOn())
-                            cen = AXGeometry.Utilities.SnapToGrid(cen, parametricObject.model.snapSizeGrid);
+						if (ArchimatixEngine.snappingOn())
+							cen = AXGeometry.Utilities.SnapToGrid(cen, parametricObject.model.snapSizeGrid);
 
 
-                        parametricObject.initiateRipple_setFloatValueFromGUIChange("Trans_X", cen.x);
-                        parametricObject.initiateRipple_setFloatValueFromGUIChange("Trans_Y", cen.y);
-                        parametricObject.initiateRipple_setFloatValueFromGUIChange("Trans_Z", cen.z);
+						parametricObject.initiateRipple_setFloatValueFromGUIChange("Trans_X", cen.x);
+						parametricObject.initiateRipple_setFloatValueFromGUIChange("Trans_Y", cen.y);
+						parametricObject.initiateRipple_setFloatValueFromGUIChange("Trans_Z", cen.z);
 
 
-                        //parametricObject.model.generate("Generator3D::drawTransformHandles.trans");
-                        parametricObject.model.isAltered();
+						//parametricObject.model.generate("Generator3D::drawTransformHandles.trans");
+						parametricObject.model.isAltered();
 
 
-                        generator.parametricObject.worldDisplayMatrix = context * Matrix4x4.TRS(cen, rot, Vector3.one) * parametricObject.getAxisRotationMatrix() * generator.getLocalAlignMatrix();
-                        generator.adjustWorldMatrices();
-                    }
+						generator.parametricObject.worldDisplayMatrix = context * Matrix4x4.TRS(cen, rot, Vector3.one) * parametricObject.getAxisRotationMatrix() * generator.getLocalAlignMatrix();
+						generator.adjustWorldMatrices();
+					}
 
-                    break;
+					break;
 
-                case Tool.Rotate:
+				case Tool.Rotate:
 
-                    //Quaternion rot = AXUtilities.QuaternionFromMatrix(centerMatrix);
+					//Quaternion rot = AXUtilities.QuaternionFromMatrix(centerMatrix);
 
-                    EditorGUI.BeginChangeCheck();
-                    Quaternion rot2 = Handles.RotationHandle(rot, cen);
-                    if (EditorGUI.EndChangeCheck())
-                    {
-                        Undo.RegisterCompleteObjectUndo(parametricObject.model, "Rotate");
+					EditorGUI.BeginChangeCheck();
+					Quaternion rot2 = Handles.RotationHandle(rot, cen);
+					if (EditorGUI.EndChangeCheck())
+					{
+						Undo.RegisterCompleteObjectUndo(parametricObject.model, "Rotate");
 
-                        Vector3 rotAngs = rot2.eulerAngles;
+						Vector3 rotAngs = rot2.eulerAngles;
 
-                        if (ArchimatixEngine.snappingOn())
-                            rotAngs = AXGeometry.Utilities.SnapToGrid(rotAngs, 10);
+						if (ArchimatixEngine.snappingOn())
+							rotAngs = AXGeometry.Utilities.SnapToGrid(rotAngs, 10);
 
-                        parametricObject.initiateRipple_setFloatValueFromGUIChange("Rot_X", rotAngs.x);
-                        parametricObject.initiateRipple_setFloatValueFromGUIChange("Rot_Y", rotAngs.y);
-                        parametricObject.initiateRipple_setFloatValueFromGUIChange("Rot_Z", rotAngs.z);
+						parametricObject.initiateRipple_setFloatValueFromGUIChange("Rot_X", rotAngs.x);
+						parametricObject.initiateRipple_setFloatValueFromGUIChange("Rot_Y", rotAngs.y);
+						parametricObject.initiateRipple_setFloatValueFromGUIChange("Rot_Z", rotAngs.z);
 
-                        //parametricObject.model.generate("Generator3D::drawTransformHandles.rot");
-                        parametricObject.model.isAltered();
+						//parametricObject.model.generate("Generator3D::drawTransformHandles.rot");
+						parametricObject.model.isAltered();
 
 
-                        generator.parametricObject.worldDisplayMatrix = context * Matrix4x4.TRS(cen, rot2, Vector3.one) * parametricObject.getAxisRotationMatrix() * generator.getLocalAlignMatrix();
-                        generator.adjustWorldMatrices();
+						generator.parametricObject.worldDisplayMatrix = context * Matrix4x4.TRS(cen, rot2, Vector3.one) * parametricObject.getAxisRotationMatrix() * generator.getLocalAlignMatrix();
+						generator.adjustWorldMatrices();
 
-                    }
-                    break;
+					}
+					break;
 
-                case Tool.Scale:
+				case Tool.Scale:
 
-                    cen = AXUtilities.GetPosition(generator.localMatrix);
+					cen = AXUtilities.GetPosition(generator.localMatrix);
 
-                    Vector3 scale = parametricObject.getLocalScale();
+					Vector3 scale = parametricObject.getLocalScale();
 
-                    EditorGUI.BeginChangeCheck();
-                    scale = Handles.ScaleHandle(scale, cen, rot, HandleUtility.GetHandleSize(cen));
-                    if (EditorGUI.EndChangeCheck())
-                    {
-                        Undo.RegisterCompleteObjectUndo(parametricObject.model, "Scale");
+					EditorGUI.BeginChangeCheck();
+					scale = Handles.ScaleHandle(scale, cen, rot, HandleUtility.GetHandleSize(cen));
+					if (EditorGUI.EndChangeCheck())
+					{
+						Undo.RegisterCompleteObjectUndo(parametricObject.model, "Scale");
 
-                        parametricObject.initiateRipple_setFloatValueFromGUIChange("Scale_X", scale.x);
-                        parametricObject.initiateRipple_setFloatValueFromGUIChange("Scale_Y", scale.y);
-                        parametricObject.initiateRipple_setFloatValueFromGUIChange("Scale_Z", scale.z);
+						parametricObject.initiateRipple_setFloatValueFromGUIChange("Scale_X", scale.x);
+						parametricObject.initiateRipple_setFloatValueFromGUIChange("Scale_Y", scale.y);
+						parametricObject.initiateRipple_setFloatValueFromGUIChange("Scale_Z", scale.z);
 
-                        //parametricObject.model.generate("Generator3D::drawTransformHandles.scale");
-                        parametricObject.model.isAltered();
+						//parametricObject.model.generate("Generator3D::drawTransformHandles.scale");
+						parametricObject.model.isAltered();
 
 
-                        generator.adjustWorldMatrices();
+						generator.adjustWorldMatrices();
 
-                    }
-                    break;
-            }
+					}
+					break;
+			}
 
 
 
@@ -1753,32 +1772,32 @@ namespace AX.GeneratorHandlers
 
 
 
-            // bounds handles
+			// bounds handles
 
-            drawBoundsHandles(generator.localMatrix);
+			drawBoundsHandles(generator.localMatrix);
 
 
-            // Texture Handles
-            //if (parametricObject.Mat != null)
-            //	drawTextureHandles(consumerM);
+			// Texture Handles
+			//if (parametricObject.Mat != null)
+			//	drawTextureHandles(consumerM);
 
 
-            Handles.matrix = prevHandlesMatrix;
+			Handles.matrix = prevHandlesMatrix;
 
-        }
+		}
 
 
 
 
 
 
-        public override void drawControlHandles(ref List<string> visited, Matrix4x4 consumerM, bool beingDrawnFromConsumer)
-        {
-            if (alreadyVisited(ref visited, "GeneratorHandler3D"))
-                return;
+		public override void drawControlHandles(ref List<string> visited, Matrix4x4 consumerM, bool beingDrawnFromConsumer)
+		{
+			if (alreadyVisited(ref visited, "GeneratorHandler3D"))
+				return;
 
-            // getTransMatrix translates then rotates
-            /*
+			// getTransMatrix translates then rotates
+			/*
 			if (beingDrawnFromConsumer)
 				thisM *= generator.parametricObject.getLocalMatrix();
 			else	
@@ -1786,32 +1805,32 @@ namespace AX.GeneratorHandlers
 				consumerM *= generator.parametricObject.getLocalMatrix().inverse;
 			}
 			*/
-            if (parametricObject == null || !parametricObject.isActive)
-                return;
+			if (parametricObject == null || !parametricObject.isActive)
+				return;
 
 
 
-            if (beingDrawnFromConsumer)
-            {
-                //Debug.Log("Here: " + generator.parametricObject.Name);	
-                consumerM *= parametricObject.getAxisRotationMatrix() * generator.getLocalAlignMatrix();
-            }
-            else
-            {
-                //Debug.Log(parametricObject.Name+" add local");
-                consumerM *= parametricObject.getLocalMatrix();
+			if (beingDrawnFromConsumer)
+			{
+				//Debug.Log("Here: " + generator.parametricObject.Name);	
+				consumerM *= parametricObject.getAxisRotationMatrix() * generator.getLocalAlignMatrix();
+			}
+			else
+			{
+				//Debug.Log(parametricObject.Name+" add local");
+				consumerM *= parametricObject.getLocalMatrix();
 
-            }
+			}
 
 
 
 
 
-            base.drawControlHandles(ref visited, consumerM, true);// beingDrawnFromConsumer);
+			base.drawControlHandles(ref visited, consumerM, true);// beingDrawnFromConsumer);
 
 
 
-        }
+		}
 
 
 
@@ -1819,338 +1838,343 @@ namespace AX.GeneratorHandlers
 
 
 
-        public override void drawBoundsHandles(Matrix4x4 consumerM, bool forceDraw = false)
-        {
-            
-            //if (!ArchimatixEngine.drawGuides)
-            //    return;
+		public override void drawBoundsHandles(Matrix4x4 consumerM, bool forceDraw = false)
+		{
 
+			//if (!ArchimatixEngine.drawGuides)
+			//    return;
 
-            if (parametricObject == null || !parametricObject.isActive)
-                return;
 
-            if (!forceDraw && !parametricObject.model.isSelected(parametricObject))
-                return;
+			if (parametricObject == null || !parametricObject.isActive)
+				return;
 
-           
+			if (!forceDraw && !parametricObject.model.isSelected(parametricObject))
+				return;
 
 
-            Matrix4x4 prevHandlesMatrix = Handles.matrix;
 
-            Handles.matrix = parametricObject.model.transform.localToWorldMatrix * generator.parametricObject.worldDisplayMatrix;//  consumerM * parametricObject.getAxisRotationMatrix() * generator.getLocalAlignMatrix() ;
 
-            Color prevc = Handles.color;
-            Handles.color = new Color(.9f, .9f, 1f, .3f);
-            Handles.color = new Color(.3f, .3f, 3f, .5f);
+			Matrix4x4 prevHandlesMatrix = Handles.matrix;
 
+			Handles.matrix = parametricObject.model.transform.localToWorldMatrix * generator.parametricObject.worldDisplayMatrix;//  consumerM * parametricObject.getAxisRotationMatrix() * generator.getLocalAlignMatrix() ;
 
+			Color prevc = Handles.color;
+			Handles.color = new Color(.9f, .9f, 1f, .3f);
+			Handles.color = new Color(.3f, .3f, 3f, .5f);
 
 
 
 
 
-            //Bounds amalgamBounds = parametricObject.getBoundsAdjustedForAxis();
-            Bounds amalgamBounds = parametricObject.bounds;
-            Vector3 amalgamCenter = parametricObject.bounds.center;
 
 
-            // BOUNDING BOX 
-            if (ArchimatixEngine.drawGuides)
-                drawLineCube(amalgamCenter - amalgamBounds.extents, amalgamCenter + amalgamBounds.extents);
+			//Bounds amalgamBounds = parametricObject.getBoundsAdjustedForAxis();
+			Bounds amalgamBounds = parametricObject.bounds;
+			Vector3 amalgamCenter = parametricObject.bounds.center;
 
 
-            Handles.matrix *= Matrix4x4.TRS(new Vector3(amalgamCenter.x, 0, amalgamCenter.z), Quaternion.identity, Vector3.one);
+			// BOUNDING BOX 
+			if (ArchimatixEngine.drawGuides)
+				drawLineCube(amalgamCenter - amalgamBounds.extents, amalgamCenter + amalgamBounds.extents);
 
-            float handlesMatrixScaleAdjuster = AXEditorUtilities.getHandlesMatrixScaleAdjuster();
 
+			Handles.matrix *= Matrix4x4.TRS(new Vector3(amalgamCenter.x, 0, amalgamCenter.z), Quaternion.identity, Vector3.one);
 
-            // BINDING BOX
+			float handlesMatrixScaleAdjuster = AXEditorUtilities.getHandlesMatrixScaleAdjuster();
 
-            // Is differnt from Bounding Box which is based on where the objects are.
-            // BindingBox is a control volume which may not align with where the objects end up.
 
+			// BINDING BOX
 
-            Handles.color = Color.green;
-            AXEditorUtilities.drawCrosshair(amalgamCenter);
+			// Is differnt from Bounding Box which is based on where the objects are.
+			// BindingBox is a control volume which may not align with where the objects end up.
 
 
-            Handles.color = Color.cyan;
+			Handles.color = Color.green;
+			AXEditorUtilities.drawCrosshair(amalgamCenter);
 
 
-            float leverscale = 2 * handleScale;
+			Handles.color = Color.cyan;
 
-            float lever;
 
+			float leverscale = 2 * handleScale;
 
-           
-            AXParameter P_X = generator.P_BoundsX;
-            AXParameter P_Y = generator.P_BoundsY;
-            AXParameter P_Z = generator.P_BoundsZ;
+			float lever;
 
-            bool doX = (P_X != null && (!(generator is Grouper) || P_X.hasRelations() || P_X.hasExpressions()));
-            bool doY = (P_Y != null && (!(generator is Grouper) || P_Y.hasRelations() || P_Y.hasExpressions()));
-            bool doZ = (P_Z != null && (!(generator is Grouper) || P_Z.hasRelations() || P_Z.hasExpressions()));
 
-            
 
-            float bx = doX ? P_X.FloatVal / 2 : generator.parametricObject.bounds.size.x / 2;
-            float by = doY ? P_Y.FloatVal : generator.parametricObject.bounds.size.y;
-            float bz = doZ ? P_Z.FloatVal / 2 : generator.parametricObject.bounds.size.z / 2;
+			AXParameter P_X = generator.P_BoundsX;
+			AXParameter P_Y = generator.P_BoundsY;
+			AXParameter P_Z = generator.P_BoundsZ;
 
+			bool doX = (P_X != null && (!(generator is Grouper) || P_X.hasRelations() || P_X.hasExpressions()));
+			bool doY = (P_Y != null && (!(generator is Grouper) || P_Y.hasRelations() || P_Y.hasExpressions()));
+			bool doZ = (P_Z != null && (!(generator is Grouper) || P_Z.hasRelations() || P_Z.hasExpressions()));
 
 
-            if (P_X != null && P_Y != null && P_Z != null)
-            {
-                Vector3 v1 = new Vector3(-bx, 0, -bz);
-                Vector3 v2 = new Vector3(bx, by, bz);
 
-                drawLineCube(v1, v2, Color.cyan);
+			float bx = doX ? P_X.FloatVal / 2 : generator.parametricObject.bounds.size.x / 2;
+			float by = doY ? P_Y.FloatVal : generator.parametricObject.bounds.size.y;
+			float bz = doZ ? P_Z.FloatVal / 2 : generator.parametricObject.bounds.size.z / 2;
 
-            }
 
-            // X_HANDLE
 
+			if (P_X != null && P_Y != null && P_Z != null)
+			{
+				Vector3 v1 = new Vector3(-bx, 0, -bz);
+				Vector3 v2 = new Vector3(bx, by, bz);
 
-            if (doX)
-            {
-                // xAxisBinding
+				drawLineCube(v1, v2, Color.cyan);
 
-                //Vector3 posx = new Vector3(center.x+b.extents.x, center.y, center.z);
-                Vector3 posx = new Vector3(P_X.FloatVal / 2, parametricObject.bounds.center.y, 0);
+			}
 
-                lever = leverscale * HandleUtility.GetHandleSize(posx) * handlesMatrixScaleAdjuster;
+			// X_HANDLE
 
-                Handles.color = new Color(Handles.xAxisColor.r, Handles.xAxisColor.g, Handles.xAxisColor.b, .5f);
-                Handles.DrawSolidDisc(posx, Vector3.right, lever / 4);
-                Handles.DrawLine(posx, posx + new Vector3(lever, 0, 0));
-                Handles.DrawLine(posx, posx + new Vector3(lever, 0, 0));
-                Handles.DrawLine(posx, posx + new Vector3(lever, 0, 0));
 
+			if (doX)
+			{
+				// xAxisBinding
 
-                posx.x += lever;
+				//Vector3 posx = new Vector3(center.x+b.extents.x, center.y, center.z);
+				Vector3 posx = new Vector3(P_X.FloatVal / 2, parametricObject.bounds.center.y, 0);
 
-                EditorGUI.BeginChangeCheck();
-                posx = Handles.FreeMoveHandle(
-                    posx,
-                    Quaternion.identity,
-                    handleScale * HandleUtility.GetHandleSize(posx),
-                    Vector3.zero,
-                    (controlID, positione, rotation, size, type) =>
-                    {
-                        if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
-                            ArchimatixEngine.mouseDownOnSceneViewHandle();
+				lever = leverscale * HandleUtility.GetHandleSize(posx) * handlesMatrixScaleAdjuster;
 
-                        Handles.SphereHandleCap(controlID, positione, rotation, size, type);
-                    });
+				Handles.color = new Color(Handles.xAxisColor.r, Handles.xAxisColor.g, Handles.xAxisColor.b, .5f);
+				Handles.DrawSolidDisc(posx, Vector3.right, lever / 4);
+				Handles.DrawLine(posx, posx + new Vector3(lever, 0, 0));
+				Handles.DrawLine(posx, posx + new Vector3(lever, 0, 0));
+				Handles.DrawLine(posx, posx + new Vector3(lever, 0, 0));
 
 
+				posx.x += lever;
 
-                if (EditorGUI.EndChangeCheck())
-                {
-                    Undo.RegisterCompleteObjectUndo(parametricObject.model, "Bounds Handles");
-                    //parametricObject.propagateParameterByBinding(Axis.X, 2*(posx.x-center.x-lever-parametricObject.margin.x/2));
+				EditorGUI.BeginChangeCheck();
+				posx = Handles.FreeMoveHandle(
+					posx,
+					Quaternion.identity,
+					handleScale * HandleUtility.GetHandleSize(posx),
+					Vector3.zero,
+					(controlID, positione, rotation, size, type) =>
+					{
+						if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
+						{
+							ArchimatixEngine.mouseDownOnSceneViewHandle();
+							parametricObject.model.latestHandleClicked = null;
+						}
 
-                    if (ArchimatixEngine.snappingOn())
-                        posx.x = AXGeometry.Utilities.SnapToGrid(posx.x, parametricObject.model.snapSizeGrid) + lever;
 
+						Handles.SphereHandleCap(controlID, positione, rotation, size, type);
+					});
 
-                    P_X.initiatePARAMETER_Ripple_setFloatValueFromGUIChange(2 * (posx.x - lever));
 
-                    //parametricObject.model.generate ("Generator3D::drawBoundsHandles.x");
-                    parametricObject.model.isAltered();
 
-                    generator.adjustWorldMatrices();
-                }
-            }
+				if (EditorGUI.EndChangeCheck())
+				{
+					Undo.RegisterCompleteObjectUndo(parametricObject.model, "Bounds Handles");
+					//parametricObject.propagateParameterByBinding(Axis.X, 2*(posx.x-center.x-lever-parametricObject.margin.x/2));
 
+					if (ArchimatixEngine.snappingOn())
+						posx.x = AXGeometry.Utilities.SnapToGrid(posx.x, parametricObject.model.snapSizeGrid) + lever;
 
 
-            // Y AXIS
+					P_X.initiatePARAMETER_Ripple_setFloatValueFromGUIChange(2 * (posx.x - lever));
 
-            if (doY)
-            {
+					//parametricObject.model.generate ("Generator3D::drawBoundsHandles.x");
+					parametricObject.model.isAltered();
 
-                //Vector3 posy = new Vector3(center.x, center.y+b.extents.y, center.z);
-                Vector3 posy = new Vector3(0, P_Y.FloatVal, 0);
+					generator.adjustWorldMatrices();
+				}
+			}
 
-                lever = leverscale * HandleUtility.GetHandleSize(posy) * handlesMatrixScaleAdjuster;
 
-                Handles.color = new Color(Handles.yAxisColor.r, Handles.yAxisColor.g, Handles.yAxisColor.b, 1f);
-                Handles.DrawSolidDisc(posy, Vector3.up, lever / 4);
-                Handles.DrawLine(posy, posy + new Vector3(0, lever, 0));
-                Handles.DrawLine(posy, posy + new Vector3(0, lever, 0));
-                Handles.DrawLine(posy, posy + new Vector3(0, lever, 0));
 
+			// Y AXIS
 
-                posy.y += lever;
-                EditorGUI.BeginChangeCheck();
-                posy = Handles.FreeMoveHandle(
-                    posy,
-                    Quaternion.identity,
-                    handleScale * HandleUtility.GetHandleSize(posy),
-                    Vector3.zero,
-                    (controlID, positione, rotation, size, type) =>
-                    {
-                        if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
-                            ArchimatixEngine.mouseDownOnSceneViewHandle();
+			if (doY)
+			{
 
-                        Handles.SphereHandleCap(controlID, positione, rotation, size, type);
-                    });
+				//Vector3 posy = new Vector3(center.x, center.y+b.extents.y, center.z);
+				Vector3 posy = new Vector3(0, P_Y.FloatVal, 0);
 
-                if (EditorGUI.EndChangeCheck())
-                {
-                    Undo.RegisterCompleteObjectUndo(parametricObject.model, "Bounds Handles");
+				lever = leverscale * HandleUtility.GetHandleSize(posy) * handlesMatrixScaleAdjuster;
 
-                    //parametricObject.propagateParameterByBinding(Axis.Y, (posy.y-lever-2*parametricObject.margin.y/2));
+				Handles.color = new Color(Handles.yAxisColor.r, Handles.yAxisColor.g, Handles.yAxisColor.b, 1f);
+				Handles.DrawSolidDisc(posy, Vector3.up, lever / 4);
+				Handles.DrawLine(posy, posy + new Vector3(0, lever, 0));
+				Handles.DrawLine(posy, posy + new Vector3(0, lever, 0));
+				Handles.DrawLine(posy, posy + new Vector3(0, lever, 0));
 
-                    if (ArchimatixEngine.snappingOn())
-                        posy.y = AXGeometry.Utilities.SnapToGrid(posy.y, parametricObject.model.snapSizeGrid) + lever;
 
-                    //Debug.Log(posy.y + " ... " + lever);
-                    P_Y.initiatePARAMETER_Ripple_setFloatValueFromGUIChange((posy.y - lever));
+				posy.y += lever;
+				EditorGUI.BeginChangeCheck();
+				posy = Handles.FreeMoveHandle(
+					posy,
+					Quaternion.identity,
+					handleScale * HandleUtility.GetHandleSize(posy),
+					Vector3.zero,
+					(controlID, positione, rotation, size, type) =>
+					{
+						if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
+						{
+							ArchimatixEngine.mouseDownOnSceneViewHandle();
+							parametricObject.model.latestHandleClicked = null;
+						}
+						Handles.SphereHandleCap(controlID, positione, rotation, size, type);
+					});
 
-                    //parametricObject.model.generate ("Generator3D::drawBoundsHandles.y");
-                    parametricObject.model.isAltered();
+				if (EditorGUI.EndChangeCheck())
+				{
+					Undo.RegisterCompleteObjectUndo(parametricObject.model, "Bounds Handles");
 
-                    generator.adjustWorldMatrices();
-                }
+					//parametricObject.propagateParameterByBinding(Axis.Y, (posy.y-lever-2*parametricObject.margin.y/2));
 
-            }
+					if (ArchimatixEngine.snappingOn())
+						posy.y = AXGeometry.Utilities.SnapToGrid(posy.y, parametricObject.model.snapSizeGrid) + lever;
 
+					//Debug.Log(posy.y + " ... " + lever);
+					P_Y.initiatePARAMETER_Ripple_setFloatValueFromGUIChange((posy.y - lever));
 
-            // Z-AXIS
-            if (doZ)
-            {
-                //Vector3 posz = new Vector3(center.x, center.y, center.z+b.extents.z);
-                Vector3 posz = new Vector3(0, parametricObject.bounds.center.y, P_Z.FloatVal / 2);
+					//parametricObject.model.generate ("Generator3D::drawBoundsHandles.y");
+					parametricObject.model.isAltered();
 
-                lever = leverscale * HandleUtility.GetHandleSize(posz) * handlesMatrixScaleAdjuster;
+					generator.adjustWorldMatrices();
+				}
 
-                Handles.color = new Color(Handles.zAxisColor.r, Handles.zAxisColor.g, Handles.zAxisColor.b, 1f);
-                Handles.DrawSolidDisc(posz, Vector3.forward, lever / 4);
-                Handles.DrawLine(posz, posz + new Vector3(0, 0, lever));
-                Handles.DrawLine(posz, posz + new Vector3(0, 0, lever));
-                Handles.DrawLine(posz, posz + new Vector3(0, 0, lever));
+			}
 
 
-                posz.z += lever;
-                EditorGUI.BeginChangeCheck();
-                posz = Handles.FreeMoveHandle(
-                    posz,
-                    Quaternion.identity,
-                    handleScale * HandleUtility.GetHandleSize(posz),
-                    Vector3.zero,
-                    (controlID, positione, rotation, size, type) =>
-                    {
-                        if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
-                            ArchimatixEngine.mouseDownOnSceneViewHandle();
+			// Z-AXIS
+			if (doZ)
+			{
+				//Vector3 posz = new Vector3(center.x, center.y, center.z+b.extents.z);
+				Vector3 posz = new Vector3(0, parametricObject.bounds.center.y, P_Z.FloatVal / 2);
 
-                        Handles.SphereHandleCap(controlID, positione, rotation, size, type);
-                    });
+				lever = leverscale * HandleUtility.GetHandleSize(posz) * handlesMatrixScaleAdjuster;
 
-                if (EditorGUI.EndChangeCheck())
-                {
-                    Undo.RegisterCompleteObjectUndo(parametricObject.model, "Bounds Handles");
-                    //Debug.Log("===========================================================");
+				Handles.color = new Color(Handles.zAxisColor.r, Handles.zAxisColor.g, Handles.zAxisColor.b, 1f);
+				Handles.DrawSolidDisc(posz, Vector3.forward, lever / 4);
+				Handles.DrawLine(posz, posz + new Vector3(0, 0, lever));
+				Handles.DrawLine(posz, posz + new Vector3(0, 0, lever));
+				Handles.DrawLine(posz, posz + new Vector3(0, 0, lever));
 
-                    //parametricObject.propagateParameterByBinding(Axis.Z, 2*(posz.z-center.z-lever-parametricObject.margin.z/2));
 
-                    if (ArchimatixEngine.snappingOn())
-                        posz.z = AXGeometry.Utilities.SnapToGrid(posz.z, parametricObject.model.snapSizeGrid) + lever;
+				posz.z += lever;
+				EditorGUI.BeginChangeCheck();
+				posz = Handles.FreeMoveHandle(
+					posz,
+					Quaternion.identity,
+					handleScale * HandleUtility.GetHandleSize(posz),
+					Vector3.zero,
+					(controlID, positione, rotation, size, type) =>
+					{
+						if (GUIUtility.hotControl > 0 && controlID == GUIUtility.hotControl)
+						{
+							ArchimatixEngine.mouseDownOnSceneViewHandle();
+							parametricObject.model.latestHandleClicked = null;
+						}
+						Handles.SphereHandleCap(controlID, positione, rotation, size, type);
+					});
 
-                    P_Z.initiatePARAMETER_Ripple_setFloatValueFromGUIChange(2 * (posz.z - lever));
-                    parametricObject.model.isAltered();// generate ("Generator3D::drawBoundsHandles.z");
+				if (EditorGUI.EndChangeCheck())
+				{
+					Undo.RegisterCompleteObjectUndo(parametricObject.model, "Bounds Handles");
+					//Debug.Log("===========================================================");
 
-                    generator.adjustWorldMatrices();
+					//parametricObject.propagateParameterByBinding(Axis.Z, 2*(posz.z-center.z-lever-parametricObject.margin.z/2));
 
-                    HandleUtility.Repaint();
-                }
+					if (ArchimatixEngine.snappingOn())
+						posz.z = AXGeometry.Utilities.SnapToGrid(posz.z, parametricObject.model.snapSizeGrid) + lever;
 
-            }
+					P_Z.initiatePARAMETER_Ripple_setFloatValueFromGUIChange(2 * (posz.z - lever));
+					parametricObject.model.isAltered();// generate ("Generator3D::drawBoundsHandles.z");
 
+					generator.adjustWorldMatrices();
 
-            Handles.Label(amalgamCenter + amalgamBounds.extents + Vector3.up * 3f, parametricObject.Name);
+					HandleUtility.Repaint();
+				}
 
+			}
 
 
+			Handles.Label(amalgamCenter + amalgamBounds.extents + Vector3.up * 3f, parametricObject.Name);
 
-            Handles.color = prevc;
-            Handles.matrix = prevHandlesMatrix;
 
 
-        }
 
+			Handles.color = prevc;
+			Handles.matrix = prevHandlesMatrix;
 
 
+		}
 
 
-        // DRAW_TEXTURE_HANDLES
-        public override void drawTextureHandles(Matrix4x4 consumerM)
-        {
-            if (parametricObject == null || !parametricObject.isActive)
-                return;
 
 
-            if (!parametricObject.model.isSelected(parametricObject))
-                return;
 
-            Matrix4x4 prevHandlesMatrix = Handles.matrix;
+		// DRAW_TEXTURE_HANDLES
+		public override void drawTextureHandles(Matrix4x4 consumerM)
+		{
+			if (parametricObject == null || !parametricObject.isActive)
+				return;
 
 
-            Matrix4x4 centerMatrix = parametricObject.model.transform.localToWorldMatrix * generator.parametricObject.worldDisplayMatrix * parametricObject.getLocalTransformMatrix();
-            Handles.matrix = centerMatrix;
+			if (!parametricObject.model.isSelected(parametricObject))
+				return;
 
+			Matrix4x4 prevHandlesMatrix = Handles.matrix;
 
-            //Handles.matrix = consumerM * generator.getLocalAlignMatrix() * parametricObject.getAxisRotationMatrix();
 
+			Matrix4x4 centerMatrix = parametricObject.model.transform.localToWorldMatrix * generator.parametricObject.worldDisplayMatrix * parametricObject.getLocalTransformMatrix();
+			Handles.matrix = centerMatrix;
 
 
+			//Handles.matrix = consumerM * generator.getLocalAlignMatrix() * parametricObject.getAxisRotationMatrix();
 
-            float uShift = parametricObject.floatValue("uShift");
-            float vShift = parametricObject.floatValue("vShift");
 
-            float uScale = parametricObject.floatValue("uScale");
-            float vScale = parametricObject.floatValue("vScale");
 
-            float shiftScale = .5f;
 
+			float uShift = parametricObject.floatValue("uShift");
+			float vShift = parametricObject.floatValue("vShift");
 
-            Vector3 texcen = new Vector3(1.7f * parametricObject.bounds.extents.x, -vShift / shiftScale, uShift / shiftScale);
-            //Vector3 texcenZ = new Vector3(1.3f*parametricObject.bounds.extents.x, 2, 0);
+			float uScale = parametricObject.floatValue("uScale");
+			float vScale = parametricObject.floatValue("vScale");
 
-            //Vector3 texcen = centerMatrix.MultiplyPoint3x4(texcenLocal);
+			float shiftScale = .5f;
 
 
-            float side = handleScale * HandleUtility.GetHandleSize(texcen);
-            Vector3[] verts = new Vector3[4];
+			Vector3 texcen = new Vector3(1.7f * parametricObject.bounds.extents.x, -vShift / shiftScale, uShift / shiftScale);
+			//Vector3 texcenZ = new Vector3(1.3f*parametricObject.bounds.extents.x, 2, 0);
 
-            verts[0] = new Vector3(texcen.x, texcen.y - side, texcen.z - side);
-            verts[1] = new Vector3(texcen.x, texcen.y + side, texcen.z - side);
-            verts[2] = new Vector3(texcen.x, texcen.y + side, texcen.z + side);
-            verts[3] = new Vector3(texcen.x, texcen.y - side, texcen.z + side);
+			//Vector3 texcen = centerMatrix.MultiplyPoint3x4(texcenLocal);
 
-            Handles.DrawSolidRectangleWithOutline(verts, new Color(1, 1, 1, 0.2f), new Color(0, 0, 0, 1));
 
-            Vector3[] verts_UR = new Vector3[4];
-            verts_UR[0] = new Vector3(texcen.x, texcen.y, texcen.z);
-            verts_UR[1] = new Vector3(texcen.x, texcen.y + side, texcen.z);
-            verts_UR[2] = new Vector3(texcen.x, texcen.y + side, texcen.z + side);
-            verts_UR[3] = new Vector3(texcen.x, texcen.y, texcen.z + side);
+			float side = handleScale * HandleUtility.GetHandleSize(texcen);
+			Vector3[] verts = new Vector3[4];
 
-            //Handles.color = Color.black;
-            Handles.DrawSolidRectangleWithOutline(verts_UR, new Color(0, 0, 0, 0.3f), new Color(0, 0, 0, 1));
+			verts[0] = new Vector3(texcen.x, texcen.y - side, texcen.z - side);
+			verts[1] = new Vector3(texcen.x, texcen.y + side, texcen.z - side);
+			verts[2] = new Vector3(texcen.x, texcen.y + side, texcen.z + side);
+			verts[3] = new Vector3(texcen.x, texcen.y - side, texcen.z + side);
 
-            Vector3[] verts_LL = new Vector3[4];
-            verts_LL[0] = new Vector3(texcen.x, texcen.y - side, texcen.z - side);
-            verts_LL[1] = new Vector3(texcen.x, texcen.y, texcen.z - side);
-            verts_LL[2] = new Vector3(texcen.x, texcen.y, texcen.z);
-            verts_LL[3] = new Vector3(texcen.x, texcen.y - side, texcen.z);
+			Handles.DrawSolidRectangleWithOutline(verts, new Color(1, 1, 1, 0.2f), new Color(0, 0, 0, 1));
 
-            //Handles.color = Color.black;
-            Handles.DrawSolidRectangleWithOutline(verts_LL, new Color(0, 0, 0, 0.3f), new Color(0, 0, 0, 1));
+			Vector3[] verts_UR = new Vector3[4];
+			verts_UR[0] = new Vector3(texcen.x, texcen.y, texcen.z);
+			verts_UR[1] = new Vector3(texcen.x, texcen.y + side, texcen.z);
+			verts_UR[2] = new Vector3(texcen.x, texcen.y + side, texcen.z + side);
+			verts_UR[3] = new Vector3(texcen.x, texcen.y, texcen.z + side);
 
+			//Handles.color = Color.black;
+			Handles.DrawSolidRectangleWithOutline(verts_UR, new Color(0, 0, 0, 0.3f), new Color(0, 0, 0, 1));
 
+			Vector3[] verts_LL = new Vector3[4];
+			verts_LL[0] = new Vector3(texcen.x, texcen.y - side, texcen.z - side);
+			verts_LL[1] = new Vector3(texcen.x, texcen.y, texcen.z - side);
+			verts_LL[2] = new Vector3(texcen.x, texcen.y, texcen.z);
+			verts_LL[3] = new Vector3(texcen.x, texcen.y - side, texcen.z);
 
+			//Handles.color = Color.black;
+			Handles.DrawSolidRectangleWithOutline(verts_LL, new Color(0, 0, 0, 0.3f), new Color(0, 0, 0, 1));
 
 
 
@@ -2158,72 +2182,75 @@ namespace AX.GeneratorHandlers
 
 
 
-            Quaternion yrot = Quaternion.Euler(-90, 0, 0);
 
-            // Shifting
-            EditorGUI.BeginChangeCheck();
 
-            if (UnityEditor.Tools.current == UnityEditor.Tool.Move)
-            {
 
+			Quaternion yrot = Quaternion.Euler(-90, 0, 0);
 
+			// Shifting
+			EditorGUI.BeginChangeCheck();
 
-                // U
-                Handles.color = Handles.xAxisColor;
-                texcen = Handles.Slider(texcen, Vector3.forward);
-                parametricObject.setParameterValueByName("uShift", shiftScale * texcen.z);
+			if (UnityEditor.Tools.current == UnityEditor.Tool.Move)
+			{
 
-                // V
-                Handles.color = Handles.yAxisColor;
-                texcen = Handles.Slider(texcen, Vector3.up);
-                parametricObject.setParameterValueByName("vShift", -shiftScale * texcen.y);
-            }
 
 
+				// U
+				Handles.color = Handles.xAxisColor;
+				texcen = Handles.Slider(texcen, Vector3.forward);
+				parametricObject.setParameterValueByName("uShift", shiftScale * texcen.z);
 
-            // Scaling
-            if (UnityEditor.Tools.current == UnityEditor.Tool.Scale)
-            {
+				// V
+				Handles.color = Handles.yAxisColor;
+				texcen = Handles.Slider(texcen, Vector3.up);
+				parametricObject.setParameterValueByName("vShift", -shiftScale * texcen.y);
+			}
 
 
-                Handles.color = Handles.yAxisColor;
 
-                uScale = Handles.ScaleSlider(uScale,
-                    texcen,
-                    Vector3.forward,
-                    Quaternion.identity,
-                    handleScale * HandleUtility.GetHandleSize(texcen),
-                    .005f);
-                parametricObject.setParameterValueByName("uScale", uScale);
+			// Scaling
+			if (UnityEditor.Tools.current == UnityEditor.Tool.Scale)
+			{
 
 
-                Handles.color = Handles.xAxisColor;
+				Handles.color = Handles.yAxisColor;
 
-                vScale = Handles.ScaleSlider(vScale,
-                    texcen,
-                    Vector3.up,
-                    yrot,
-                    handleScale * HandleUtility.GetHandleSize(texcen),
-                    .005f);
-                parametricObject.setParameterValueByName("vScale", vScale);
+				uScale = Handles.ScaleSlider(uScale,
+					texcen,
+					Vector3.forward,
+					Quaternion.identity,
+					handleScale * HandleUtility.GetHandleSize(texcen),
+					.005f);
+				parametricObject.setParameterValueByName("uScale", uScale);
 
-            }
 
-            if (EditorGUI.EndChangeCheck())
-            {
-                Undo.RegisterCompleteObjectUndo(parametricObject.model, "Material");
+				Handles.color = Handles.xAxisColor;
 
-                //parametricObject.model.generate("Generator3D::drawTextureHandles");
-                parametricObject.model.isAltered();
+				vScale = Handles.ScaleSlider(vScale,
+					texcen,
+					Vector3.up,
+					yrot,
+					handleScale * HandleUtility.GetHandleSize(texcen),
+					.005f);
+				parametricObject.setParameterValueByName("vScale", vScale);
 
-            }
+			}
 
+			if (EditorGUI.EndChangeCheck())
+			{
+				Undo.RegisterCompleteObjectUndo(parametricObject.model, "Material");
 
+				//parametricObject.model.generate("Generator3D::drawTextureHandles");
+				parametricObject.model.isAltered();
 
-            Handles.matrix = prevHandlesMatrix;
+			}
 
-        }
 
 
-    }
+			Handles.matrix = prevHandlesMatrix;
+
+		}
+
+
+	}
 }

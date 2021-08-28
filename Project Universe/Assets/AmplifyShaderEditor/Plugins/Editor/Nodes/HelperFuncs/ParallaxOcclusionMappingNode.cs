@@ -344,7 +344,7 @@ namespace AmplifyShaderEditor
 				}
 				else
 				{
-					sampler = GeneratorUtils.GenerateSamplerState( ref dataCollector, UniqueId, texture );
+					sampler = GeneratorUtils.GenerateSamplerState( ref dataCollector, UniqueId, texture , VariableMode.Create );
 				}
 				if( outsideGraph.IsSRP )
 				{

@@ -264,7 +264,7 @@ Shader /*ase_name*/ "Hidden/HD/Fabric" /*end*/
 
 		HLSLINCLUDE
 		#pragma target 4.5
-		#pragma only_renderers d3d11 ps4 xboxone vulkan metal switch
+		#pragma only_renderers d3d11 playstation xboxone xboxseries vulkan metal switch
 		#pragma multi_compile_instancing
 		#pragma instancing_options renderinglayer
 		

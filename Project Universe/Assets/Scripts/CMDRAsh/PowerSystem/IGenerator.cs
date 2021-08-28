@@ -12,7 +12,7 @@ namespace ProjectUniverse.PowerSystem
         [SerializeField]
         private int generatorLevel;
         public string powerGrid;//grid that this generator is part of
-        [SerializeField]
+        [SerializeField] private float lastOutput;//OutputCurrent resets every update, so we never see it
         private float outputCurrent;//duh
         [SerializeField]
         private int maxRouters; //level * 4
@@ -47,9 +47,6 @@ namespace ProjectUniverse.PowerSystem
                     routTemp[i] = routers[i];
                 }
                 routers = routTemp;
-                //Array.Copy(routers, routTemp, routers.Length - maxRouters);
-                //routers.CopyTo(routTemp, 3);
-                //routTemp = routers;// = new IRouter[4];
             }
             outputCurrent = 0f;
             //look for routers based on max amount (level * 4)
@@ -97,31 +94,26 @@ namespace ProjectUniverse.PowerSystem
                     {
                         powerAmount[l] = requestedAmount / routerLegReq;
                     }
-                    //Debug.Log("Request is " + requestedAmount);
 
                     if (outputCurrent + requestedAmount <= outputMax)
                     {
                         //transfer as much power as is needed, up until capacity is met.
-                        //cable.transferIn(requestedRouterPower[itteration], 1);
                         availibleLegsOut -= routerLegReq;
                         outputCurrent += requestedAmount;
                         cable.TransferIn(routerLegReq, powerAmount, 1);
-
-                        //Debug.Log("Transfer for Output of: " + outputCurrent);
                     }
                     else
                     {
-                        //Debug.Log("Output MAX!");
-                        //Debug.Log("Request is "+requestedRouterPower[itteration]+" and current output is "+outputCurrent);
-
-                        float[] tempfloat = new float[] { outputMax - outputCurrent / 3, outputMax - outputCurrent / 3, outputMax - outputCurrent / 3 };
+                        float[] tempfloat = new float[] { (outputMax - outputCurrent)/ 3f, (outputMax - outputCurrent) / 3f, (outputMax - outputCurrent) / 3f };
+                        //Debug.Log("gen out: " + (outputMax - outputCurrent) 
+                        //+ " or " + ((outputMax - outputCurrent) / 3f) + "+" + ((outputMax - outputCurrent) / 3f) 
+                        //+ "+" + ((outputMax - outputCurrent) / 3f));
                         outputCurrent = outputMax;
                         cable.TransferIn(routerLegReq, tempfloat, 1);
-
-                        //Debug.Log("Transfer for Output of: " + outputCurrent);
                     }
                 }
             }
+            lastOutput = outputCurrent;
         }
 
         public void SetRouters(IRouter[] newRouters)

@@ -750,14 +750,14 @@ namespace AmplifyShaderEditor
 				RegisterProperty( ref dataCollector );
 				if( m_autoRegister && m_containerGraph.ParentWindow.OutsideGraph.SamplingMacros )
 				{
-					GeneratorUtils.GenerateSamplerState( ref dataCollector, UniqueId, PropertyName );
+					GeneratorUtils.GenerateSamplerState( ref dataCollector, UniqueId, PropertyName , m_variableMode );
 				}
 			}
 		}
 
 		public string GenerateSamplerState( ref MasterNodeDataCollector dataCollector )
 		{
-			return GeneratorUtils.GenerateSamplerState( ref dataCollector, UniqueId, PropertyName );
+			return GeneratorUtils.GenerateSamplerState( ref dataCollector, UniqueId, PropertyName , m_variableMode );
 		}
 
 		public virtual string GenerateSamplerPropertyName( int outputId, ref MasterNodeDataCollector dataCollector )
@@ -766,7 +766,7 @@ namespace AmplifyShaderEditor
 
 			if( outputId > 0 || m_forceSamplingMacrosGen )
 			{
-				generatedSamplerState = GeneratorUtils.GenerateSamplerState( ref dataCollector, UniqueId, PropertyName );
+				generatedSamplerState = GeneratorUtils.GenerateSamplerState( ref dataCollector, UniqueId, PropertyName , m_variableMode );
 			}
 
 			if( outputId > 0 )

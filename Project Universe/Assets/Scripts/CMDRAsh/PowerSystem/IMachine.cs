@@ -61,16 +61,16 @@ namespace ProjectUniverse.PowerSystem
                     //Debug.Log(this.gameObject.name + " Request Helper");
                     RequestHelper();
                 }
-                else if (deficit == requiredEnergy)
-                {
-                    requestedEnergy = requiredEnergy;
-                    //Debug.Log(this.gameObject.name + " Request Helper");
-                    RequestHelper();
-                }
                 else if (deficit < drawToFill && deficit > requiredEnergy)
                 {
                     requestedEnergy = deficit + requiredEnergy;
+                    //Debug.Log("Requested energy "+requestedEnergy +" => "+ (deficit + requiredEnergy));
                     //Debug.Log(this.gameObject.name + " Request Helper");
+                    RequestHelper();
+                }
+                else
+                {
+                    requestedEnergy = requiredEnergy;
                     RequestHelper();
                 }
             }
@@ -113,7 +113,7 @@ namespace ProjectUniverse.PowerSystem
         {
             foreach (IRoutingSubstation subs in substations)
             {
-                //Debug.Log(this.gameObject.name + " machine has Requested " + requestedEnergy / substations.Count);
+                //Debug.Log(this.gameObject.name + " has Requested " + requestedEnergy / substations.Count);
                 subs.RequestPowerFromSubstation(requestedEnergy / substations.Count, this.GetComponent<IMachine>());
             }
         }
@@ -194,6 +194,7 @@ namespace ProjectUniverse.PowerSystem
             //numSuppliers += 1;
             if (iCableDLL.Count > 1)
             {
+                //Debug.Log(iCableDLL.Count+" cables");
                 //correct for multiple inputs
                 return requestedEnergy / iCableDLL.Count;
             }

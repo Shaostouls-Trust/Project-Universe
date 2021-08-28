@@ -269,10 +269,20 @@ namespace AmplifyShaderEditor
 #if UNITY_2018_3_OR_NEWER
 					if( ASEPackageManagerHelper.CurrentHDVersion > ASESRPVersions.ASE_SRP_6_9_1 )
 					{
-						if( ASEPackageManagerHelper.CurrentHDVersion > ASESRPVersions.ASE_SRP_10_0_0 )
+						if( ASEPackageManagerHelper.CurrentHDVersion >= ASESRPVersions.ASE_SRP_11_0_0 )
 						{
-							AddMenuItem( menu, "Rendering.HighDefinition.LightingShaderGraphGUI" );
-							AddMenuItem( menu, "Rendering.HighDefinition.HDUnlitGUI" );
+							AddMenuItem( menu , "Rendering.HighDefinition.DecalShaderGraphGUI" );
+							AddMenuItem( menu , "Rendering.HighDefinition.LightingShaderGraphGUI" );
+							AddMenuItem( menu , "Rendering.HighDefinition.LitShaderGraphGUI" );
+							AddMenuItem( menu , "Rendering.HighDefinition.HDUnlitGUI" );
+						}
+						else
+						if( ASEPackageManagerHelper.CurrentHDVersion >= ASESRPVersions.ASE_SRP_10_0_0 )
+						{
+							AddMenuItem( menu , "Rendering.HighDefinition.DecalGUI" );
+							AddMenuItem( menu , "Rendering.HighDefinition.LitShaderGraphGUI" );
+							AddMenuItem( menu , "Rendering.HighDefinition.LightingShaderGraphGUI" );
+							AddMenuItem( menu , "Rendering.HighDefinition.HDUnlitGUI" );
 						}
 						else
 						{

@@ -94,20 +94,23 @@ namespace AmplifyShaderEditor
 			if( m_proceduralMaterial == null )
 				return;
 
-			Texture[] texs = m_proceduralMaterial.GetGeneratedTextures();
-			int count = m_outputPorts.Count;
-			for( int i = 0; i < count; i++ )
+			if( !Preferences.GlobalDisablePreviews )
 			{
-				RenderTexture temp = RenderTexture.active;
-				RenderTexture.active = m_outputPorts[ i ].OutputPreviewTexture;
+				Texture[] texs = m_proceduralMaterial.GetGeneratedTextures();
+				int count = m_outputPorts.Count;
+				for( int i = 0 ; i < count ; i++ )
+				{
+					RenderTexture temp = RenderTexture.active;
+					RenderTexture.active = m_outputPorts[ i ].OutputPreviewTexture;
 
-				PreviewMaterial.SetTexture( "_GenTex", texs[ i ] );
+					PreviewMaterial.SetTexture( "_GenTex" , texs[ i ] );
 
-				if( m_autoNormal && m_textureTypes[ i ] == ProceduralOutputType.Normal )
-					Graphics.Blit( null, m_outputPorts[ i ].OutputPreviewTexture, PreviewMaterial, 1 );
-				else
-					Graphics.Blit( null, m_outputPorts[ i ].OutputPreviewTexture, PreviewMaterial, 0 );
-				RenderTexture.active = temp;
+					if( m_autoNormal && m_textureTypes[ i ] == ProceduralOutputType.Normal )
+						Graphics.Blit( null , m_outputPorts[ i ].OutputPreviewTexture , PreviewMaterial , 1 );
+					else
+						Graphics.Blit( null , m_outputPorts[ i ].OutputPreviewTexture , PreviewMaterial , 0 );
+					RenderTexture.active = temp;
+				}
 			}
 
 			PreviewIsDirty = m_continuousPreviewRefresh;

@@ -25,22 +25,23 @@ using AX.GeneratorHandlers;
 
 using Debug = UnityEngine.Debug;
 
- 
-namespace AXEditor	 
+
+namespace AXEditor
 {
 
-	
-	 
+
+
 
 	[InitializeOnLoad]
-	public class ArchimatixEngine  {
-		
+	public class ArchimatixEngine
+	{
+
 		// This singleton manages SceneView, Commands-keys, etc. 
 		// It also manages Selection, which is a layer on top of Unity GameObject selection. 
 		// Individual AWGameObjects may be selected in the scene, but the AXEngine knows 
 		// the "currentModel" and AXParametricObject that created these objects.
 
-		public enum SceneViewState {Default,   AddPoint};
+		public enum SceneViewState { Default, AddPoint };
 
 		[System.NonSerialized]
 		public static SceneViewState sceneViewState;
@@ -52,7 +53,7 @@ namespace AXEditor
 
 
 
-		public static string version 	= "1.0.5";
+		public static string version = "1.0.5";
 		public static string identifier = "TH_AX";
 
 		public static bool libraryInitCalled;
@@ -65,37 +66,37 @@ namespace AXEditor
 
 
 		static int windowPickerID;
-         
 
 
-		[System.NonSerialized] 
+
+		[System.NonSerialized]
 		public static Dictionary<string, Texture2D> nodeIcons;
 
-		[System.NonSerialized] 
+		[System.NonSerialized]
 		public static Dictionary<string, Texture2D> uiIcons;
 
-          
+
 		//														"CSGCombiner",
 
 		//public static string[] nodeStrings 					= {  "FreeCurve", "ShapeOffsetter", "ShapeMerger", "GridRepeater2D", "ShapeDistributer", "Curve2D", "Library2D", "PlanePrimitive", "BoxPrimitive", "Polygon", "Extrude", "Lathe", "PlanSweep",  "Grouper", "PairRepeater", "LinearRepeater", "GridRepeater", "FloorRepeater", "StepRepeater", "RadialRepeater",  "PlanRepeater", "RepeaterTool", "MaterialTool","JitterTool", "RandomTool"  };
-		public static string[] nodeStrings 					= {   "FreeCurve", "ShapeDistributor","ShapeChanneler", "ShapeConnector", "ShapeMerger", "ShapeOffsetter",    "PairRepeater2D", "LinearRepeater2D", "GridRepeater2D", "RadialRepeater2D",  "PlanRepeater2D", "ImageShaper", "PlanePrimitive", "BoxPrimitive", "Polygon", "Extrude", "Lathe", "PlanSweep",  "ContourExtruder", "Grouper", "Channeler", "PairRepeater", "LinearRepeater", "GridRepeater", "FloorRepeater", "StepRepeater", "RadialRepeater", "RadialStepRepeater", "PlanPlacer", "PlanRepeater", "NoiseDeformer", "TaperDeformer",  "ShearDeformer", "TwistDeformer", "DomicalDeformer",  "InflateDeformer",  "PlanDeformer", "TerrainDeformer", "TerrainStamper", "PhysicsJoiner", "PrefabInstancer", "RepeaterTool", "RadialRepeaterTool", "UVProjector", "MaterialTool","TextureTool", "JitterTool"  };
+		public static string[] nodeStrings = { "FreeCurve", "ShapeDistributor", "ShapeChanneler", "ShapeConnector", "ShapeMerger", "ShapeOffsetter", "PairRepeater2D", "LinearRepeater2D", "GridRepeater2D", "RadialRepeater2D", "PlanRepeater2D", "ImageShaper", "ShapeNoiser", "PlanePrimitive", "BoxPrimitive", "Polygon", "Extrude", "Lathe", "PlanSweep", "ContourExtruder", "Grouper", "Channeler", "PairRepeater", "LinearRepeater", "GridRepeater", "FloorRepeater", "StepRepeater", "RadialRepeater", "RadialStepRepeater", "PlanPlacer", "PlanRepeater", "NoiseDeformer", "TaperDeformer", "ShearDeformer", "TwistDeformer", "DomicalDeformer", "InflateDeformer", "PlanDeformer", "TerrainDeformer", "TerrainStamper", "PhysicsJoiner", "PrefabInstancer", "RepeaterTool", "RadialRepeaterTool", "UVProjector", "MaterialTool", "TextureTool", "JitterTool" };
 
 		//"Replicator",  
 
-		public static string[] nodeStringsFrom2DOutput 		= { "ShapeDistributor", "ShapeChanneler", "ShapeConnector", "ShapeMerger",  "ShapeOffsetter",   "PairRepeater2D", "LinearRepeater2D", "RadialRepeater2D_Node", "RadialRepeater2D_Cell", "GridRepeater2D_Node", "GridRepeater2D_Cell",  "RadialRepeater2D",  "PlanRepeater2D_Plan", "PlanRepeater2D_Corner", "Polygon_Plan",  "Extrude_Plan", "Lathe_Section", "PlanSweep_Plan",  "PlanSweep_Section", "ContourExtruder_Plan", "ContourExtruder_Section", "PlanPlacer_Plan", "PlanRepeater_Plan", "PlanRepeater_Section", "PlanDeformer_Plan" };
+		public static string[] nodeStringsFrom2DOutput = { "ShapeDistributor", "ShapeChanneler", "ShapeConnector", "ShapeMerger", "ShapeOffsetter", "PairRepeater2D", "LinearRepeater2D", "RadialRepeater2D_Node", "RadialRepeater2D_Cell", "GridRepeater2D_Node", "GridRepeater2D_Cell", "RadialRepeater2D", "PlanRepeater2D_Plan", "PlanRepeater2D_Corner", "ShapeNoiser", "Polygon_Plan", "Extrude_Plan", "Lathe_Section", "PlanSweep_Plan", "PlanSweep_Section", "ContourExtruder_Plan", "ContourExtruder_Section", "PlanPlacer_Plan", "PlanRepeater_Plan", "PlanRepeater_Section", "PlanDeformer_Plan" };
 
-		public static string[] nodeStringsFrom3DOutput 		= {  "Grouper", "Channeler", "PairRepeater", "LinearRepeater_Node", "LinearRepeater_Cell", "LinearRepeater_Span", "GridRepeater_Node", "GridRepeater_Cell", "GridRepeater_Span", "FloorRepeater", "StepRepeater", "RadialRepeater_Node","RadialRepeater_Span", "RadialStepRepeater", "PlanPlacer_Mesh", "PlanRepeater_Node",  "PlanRepeater_Cell", "PlanRepeater_Corner", "NoiseDeformer", "TaperDeformer",  "ShearDeformer", "TwistDeformer", "DomicalDeformer", "InflateDeformer", "PlanDeformer", "RepeaterTool", "MaterialTool"  };
+		public static string[] nodeStringsFrom3DOutput = { "Grouper", "Channeler", "PairRepeater", "LinearRepeater_Node", "LinearRepeater_Cell", "LinearRepeater_Span", "GridRepeater_Node", "GridRepeater_Cell", "GridRepeater_Span", "FloorRepeater", "StepRepeater", "RadialRepeater_Node", "RadialRepeater_Span", "RadialStepRepeater", "PlanPlacer_Mesh", "PlanRepeater_Node", "PlanRepeater_Cell", "PlanRepeater_Corner", "NoiseDeformer", "TaperDeformer", "ShearDeformer", "TwistDeformer", "DomicalDeformer", "InflateDeformer", "PlanDeformer", "RepeaterTool", "MaterialTool", "UVProjector" };
 
-		public static string[] nodeStringsFromRepeaterTool 	= {"Grouper", "Channeler", "LinearRepeater", "GridRepeater",  "FloorRepeater" };
+		public static string[] nodeStringsFromRepeaterTool = { "Grouper", "Channeler", "LinearRepeater", "GridRepeater", "FloorRepeater" };
 
-		public static string[] nodeStringsFrom2DMultiSelect 	= {"ShapeMerger", "ShapeChanneler"};
-		public static string[] nodeStringsFrom3DMultiSelect 	= {"Grouper", "Channeler"};
-		public static string[] nodeStringsFromMultiSelect 		= {"ShapeMerger", "ShapeChanneler", "Grouper", "Channeler"};
+		public static string[] nodeStringsFrom2DMultiSelect = { "ShapeMerger", "ShapeChanneler" };
+		public static string[] nodeStringsFrom3DMultiSelect = { "Grouper", "Channeler" };
+		public static string[] nodeStringsFromMultiSelect = { "ShapeMerger", "ShapeChanneler", "Grouper", "Channeler" };
 
 		public static float buttonSize = 16;
-         
+
 		public static bool keyIsDown = false;
-		 
+
 		// PROXY FOR NODE_GRAPH_EDITOR... if it is included in this installation
 		public static bool NodeGraphEditorIsInstalled;
 		public static Type NodeGraphEditorType;
@@ -105,17 +106,19 @@ namespace AXEditor
 
 		public static bool meshBufferJustClearedOnUpdate;
 
-		public static Texture2D menubarTexture; 
+		public static Texture2D menubarTexture;
 
 		// SCEN_VIEW MEMBERS
 
-		public static bool 		snappingIsOn 		= false;
-		public static bool 		useKyle				= true;
+		public static bool snappingIsOn = false;
+		public static bool useKyle = true;
 
-		public static bool 		justClickedOnHandle;
-		public static long		lastHandleClick;
+		public static bool shiftIsDown;
 
-		public static int 		isPseudoDraggingSelectedPoint = -1;
+		public static bool justClickedOnHandle;
+		public static long lastHandleClick;
+
+		public static int isPseudoDraggingSelectedPoint = -1;
 		[System.NonSerialized]
 		public static int draggingNewPointAt = -1;
 
@@ -147,7 +150,7 @@ namespace AXEditor
 		[System.NonSerialized]
 		public static Library library;
 
-		 
+
 
 		// PATHS
 
@@ -164,15 +167,15 @@ namespace AXEditor
 
 		public static List<UserMessage> userMessages;
 
-		public static Color ccc = new Color(1,1,1,1);
+		public static Color ccc = new Color(1, 1, 1, 1);
 
 		public static Vector3 sceneViewCameraPosition;
 		public static GameObject ScalingFigureBillboardPrefab;
 		public static GameObject ScalingFigureBillboard;
-		public static Transform  ScalingFigureBillboardTransform;
+		public static Transform ScalingFigureBillboardTransform;
 
 		public static bool lookForScalingBillboard = true;
-		 
+
 		//public static Texture2D infoIconTexture;
 
 
@@ -201,18 +204,18 @@ namespace AXEditor
 
 
 		[UnityEditor.Callbacks.DidReloadScripts]
-		 private static void OnScriptsReloaded() {
+		private static void OnScriptsReloaded()
+		{
 
-             
-		 	
-		       // do something
-		     //Debug.Log("COMPILE DONE");
+
+			// do something
+			//Debug.Log("COMPILE DONE");
 			//Debug.Log("LOAD DEFAULT");
 			loadDefaultMaterial();
 
 
 
-			AXModel[] axModels =  GameObject.FindObjectsOfType(typeof(AXModel)) as AXModel[];
+			AXModel[] axModels = GameObject.FindObjectsOfType(typeof(AXModel)) as AXModel[];
 			foreach (AXModel m in axModels)
 			{
 				//Debug.Log(m.name);
@@ -220,29 +223,29 @@ namespace AXEditor
 				m.assertDefaultMaterial();
 
 				m.regenerateAXMeshes(true);
-               
-            } 
+
+			}
 
 
 			// DO WE NEED TO CONNECT A NEWLY CREATED SCRIPT TO AN A GAMEOBJECT?
 			string AddComponentByGUIDS = EditorPrefs.GetString("AddComponentByGameObjectIDAndClassname");
-			if (! string.IsNullOrEmpty(AddComponentByGUIDS))
+			if (!string.IsNullOrEmpty(AddComponentByGUIDS))
 			{
 				string[] data = AddComponentByGUIDS.Split('_');
 
-				if (data != null && data.Length == 2 && ! string.IsNullOrEmpty(data[0]) && ! string.IsNullOrEmpty(data[0]))
+				if (data != null && data.Length == 2 && !string.IsNullOrEmpty(data[0]) && !string.IsNullOrEmpty(data[0]))
 				{
-					GameObject go = (GameObject) EditorUtility.InstanceIDToObject(int.Parse(data[0]));
+					GameObject go = (GameObject)EditorUtility.InstanceIDToObject(int.Parse(data[0]));
 					System.Type theType = ArchimatixUtils.AXGetType(data[1]);
-                    //Debug.Log(" ------------------------ " + theType);
+					//Debug.Log(" ------------------------ " + theType);
 					if (go != null && theType != null)
 						go.AddComponent(theType);
-				} 
+				}
 				EditorPrefs.DeleteKey("AddComponentByGameObjectIDAndClassname");
 			}
 
-		 }
-		     
+		}
+
 
 
 
@@ -250,83 +253,90 @@ namespace AXEditor
 		{
 
 
-//			if (fileInfo != null) {
-//				StreamReader sr = fileInfo.OpenText();
-//				version = sr.ReadLine();
-//				sr.Close();
-//
-//				return version;
-//
-//			}
-//			 
-			   
-			     
-			TextAsset asset = (TextAsset) AssetDatabase.LoadAssetAtPath (ArchimatixEngine.ArchimatixAssetPath + "/Scripts/AXChangeLog.txt", typeof(TextAsset));
+			//			if (fileInfo != null) {
+			//				StreamReader sr = fileInfo.OpenText();
+			//				version = sr.ReadLine();
+			//				sr.Close();
+			//
+			//				return version;
+			//
+			//			}
+			//			 
+
+
+			TextAsset asset = (TextAsset)AssetDatabase.LoadAssetAtPath(ArchimatixEngine.ArchimatixAssetPath + "/Scripts/AXChangeLog.txt", typeof(TextAsset));
 			if (asset != null)
 			{
-				string[] fLines = Regex.Split ( asset.text, "\n|\r|\r\n" );
-				if (fLines != null && fLines.Length > 0) {
-					version = fLines [0];
+				string[] fLines = Regex.Split(asset.text, "\n|\r|\r\n");
+				if (fLines != null && fLines.Length > 0)
+				{
+					version = fLines[0];
 					//Debug.Log (version);
 				}
 			}
-			     
-			  
+
+
 			return "no version found";
 		}
-		
-       
 
 
-        public static void establishPaths()
+
+
+		public static void establishPaths()
 		{
 			//Debug.Log("establishPaths..."); 
-//			if (String.IsNullOrEmpty(Archimatix.ArchimatixAssetPath))
-//			{
+			//			if (String.IsNullOrEmpty(Archimatix.ArchimatixAssetPath))
+			//			{
 
-				String priorArchimatixAssetPath = EditorPrefs.GetString ("priorArchimatixAssetPath");
-
-
-				if (AssetDatabase.IsValidFolder ("Assets/Archimatix")) {
-					// path is a directory.
-
-					ArchimatixEngine.ArchimatixAssetPath 	= "Assets/Archimatix";
-					Archimatix.ArchimatixAssetPath 			= "Assets/Archimatix";
-
-				} else if (! string.IsNullOrEmpty(priorArchimatixAssetPath)  && AssetDatabase.IsValidFolder (priorArchimatixAssetPath)) {
-					ArchimatixEngine.ArchimatixAssetPath 	= priorArchimatixAssetPath;
-					Archimatix.ArchimatixAssetPath 			= priorArchimatixAssetPath;
-				
-				} else {
-					// Find the Archimatix folder, whereever the user may have placed it in the Assets folder.
-
-					string[] dirs = Directory.GetDirectories (Application.dataPath, "Archimatix", SearchOption.AllDirectories);
+			String priorArchimatixAssetPath = EditorPrefs.GetString("priorArchimatixAssetPath");
 
 
-					if (dirs != null && dirs.Length > 0) {
-						//Debug.Log (dirs[0].ToString());
-						ArchimatixEngine.ArchimatixAssetPath = ArchimatixUtils.getRelativeFilePath (dirs [0].ToString ());
-						Archimatix.ArchimatixAssetPath 		 = ArchimatixEngine.ArchimatixAssetPath;
-					}
-				}   
-				   
-				//Debug.Log(Archimatix.ArchimatixAssetPath);
+			if (AssetDatabase.IsValidFolder("Assets/Archimatix"))
+			{
+				// path is a directory.
 
-				if (! string.IsNullOrEmpty(priorArchimatixAssetPath) && Archimatix.ArchimatixAssetPath != priorArchimatixAssetPath)
+				ArchimatixEngine.ArchimatixAssetPath = "Assets/Archimatix";
+				Archimatix.ArchimatixAssetPath = "Assets/Archimatix";
+
+			}
+			else if (!string.IsNullOrEmpty(priorArchimatixAssetPath) && AssetDatabase.IsValidFolder(priorArchimatixAssetPath))
+			{
+				ArchimatixEngine.ArchimatixAssetPath = priorArchimatixAssetPath;
+				Archimatix.ArchimatixAssetPath = priorArchimatixAssetPath;
+
+			}
+			else
+			{
+				// Find the Archimatix folder, whereever the user may have placed it in the Assets folder.
+
+				string[] dirs = Directory.GetDirectories(Application.dataPath, "Archimatix", SearchOption.AllDirectories);
+
+
+				if (dirs != null && dirs.Length > 0)
 				{
-					EditorPrefs.SetString ("priorArchimatixAssetPath", Archimatix.ArchimatixAssetPath);
-					//Debug.Log("folder moved");
-					createLibraryFromJSONFiles();
+					//Debug.Log (dirs[0].ToString());
+					ArchimatixEngine.ArchimatixAssetPath = ArchimatixUtils.getRelativeFilePath(dirs[0].ToString());
+					Archimatix.ArchimatixAssetPath = ArchimatixEngine.ArchimatixAssetPath;
 				}
+			}
 
-				  
+			//Debug.Log(Archimatix.ArchimatixAssetPath);
+
+			if (!string.IsNullOrEmpty(priorArchimatixAssetPath) && Archimatix.ArchimatixAssetPath != priorArchimatixAssetPath)
+			{
+				EditorPrefs.SetString("priorArchimatixAssetPath", Archimatix.ArchimatixAssetPath);
+				//Debug.Log("folder moved");
+				createLibraryFromJSONFiles();
+			}
+
+
 			//}
 			// The pathChangelog by default is Assets/Archimatix/Scripts
 			pathChangelog = ArchimatixEngine.ArchimatixAssetPath + "/Scripts/AXChangeLog.txt";
 			GetVersion();
-				 
-			  
-		 
+
+
+
 			sceneViewLabelStyle = new GUIStyle();
 			sceneViewLabelStyle.alignment = TextAnchor.MiddleCenter;
 			sceneViewLabelStyle.normal.textColor = Color.white;
@@ -351,7 +361,7 @@ namespace AXEditor
 		{
 
 
-			 
+
 
 			//string filepath = ArchimatixEngine.ArchimatixAssetPath +"/
 
@@ -361,40 +371,40 @@ namespace AXEditor
 
 			if (EditorGUIUtility.isProSkin)
 			{
-				AXGUIColors.Add("GridColor", 				new Color(0.6f, 0.6f, .6f, .65f));
-				AXGUIColors.Add("AxisColor", 				new Color(0.8f, 0.33f, .33f, .85f));
-				AXGUIColors.Add("ConnectorShadowColor", 	new Color(.1f,.1f,.1f,.6f));
-				AXGUIColors.Add("ConnectorColor", 			new Color(0.9f, .6f, .65f, 1.0f));
+				AXGUIColors.Add("GridColor", new Color(0.6f, 0.6f, .6f, .65f));
+				AXGUIColors.Add("AxisColor", new Color(0.8f, 0.33f, .33f, .85f));
+				AXGUIColors.Add("ConnectorShadowColor", new Color(.1f, .1f, .1f, .6f));
+				AXGUIColors.Add("ConnectorColor", new Color(0.9f, .6f, .65f, 1.0f));
 
 
 				//AXGUIColors.Add("NodePaletteBG", 			new Color(.9f, .9f, .9f, 1));
-				AXGUIColors.Add("NodePaletteBG", 			new Color(.99f, .99f, .99f, 1));
-				AXGUIColors.Add("NodePaletteHighlight",  	new Color(1f, 1f, 1, 1f));
+				AXGUIColors.Add("NodePaletteBG", new Color(.99f, .99f, .99f, 1));
+				AXGUIColors.Add("NodePaletteHighlight", new Color(1f, 1f, 1, 1f));
 				AXGUIColors.Add("NodePaletteHighlightRect", new Color(.7f, .7f, 1, 1f));
 
 
 
-				AXGUIColors.Add("Float", 					new Color(1.0f,.5f,.4f,1));	
-				AXGUIColors.Add("Int",  					new Color(.8f,.9f,.9f,1));
-				AXGUIColors.Add("Bool", 					new Color(1f,1f,.3f,1));
-				AXGUIColors.Add("Spline",  					new Color(.8f,.5f,.9f,1));
-				AXGUIColors.Add("Shape",  					new Color(.6f,.3f,.7f,1));
-				AXGUIColors.Add("Mesh",  					new Color(.5f,.9f,.5f,1));
-				AXGUIColors.Add("Plane",  					new Color(1.0f,.7f,.1f,1));
-				AXGUIColors.Add("Data",  					new Color(0.99f,.9f,.1f, 1));
-				AXGUIColors.Add("MaterialTool",  			new Color(0.99f,.9f,.1f, 1));
-				AXGUIColors.Add("RepeaterTool",  			new Color(0.99f,.9f,.1f, 1));
-				AXGUIColors.Add("JitterTool",  				new Color(0.99f,.7f,.1f, 1));
+				AXGUIColors.Add("Float", new Color(1.0f, .5f, .4f, 1));
+				AXGUIColors.Add("Int", new Color(.8f, .9f, .9f, 1));
+				AXGUIColors.Add("Bool", new Color(1f, 1f, .3f, 1));
+				AXGUIColors.Add("Spline", new Color(.8f, .5f, .9f, 1));
+				AXGUIColors.Add("Shape", new Color(.6f, .3f, .7f, 1));
+				AXGUIColors.Add("Mesh", new Color(.5f, .9f, .5f, 1));
+				AXGUIColors.Add("Plane", new Color(1.0f, .7f, .1f, 1));
+				AXGUIColors.Add("Data", new Color(0.99f, .9f, .1f, 1));
+				AXGUIColors.Add("MaterialTool", new Color(0.99f, .9f, .1f, 1));
+				AXGUIColors.Add("RepeaterTool", new Color(0.99f, .9f, .1f, 1));
+				AXGUIColors.Add("JitterTool", new Color(0.99f, .7f, .1f, 1));
 
 
-				AXGUIColors.Add("NameColor",  				new Color(0.75f,.7f,1f, 1));
+				AXGUIColors.Add("NameColor", new Color(0.75f, .7f, 1f, 1));
 
-				AXGUIColors.Add("GrayText", 				new Color(0.8f, 0.8f, .8f, .85f));
+				AXGUIColors.Add("GrayText", new Color(0.8f, 0.8f, .8f, .85f));
 
-				defaultDataColor = new Color(.8f,.8f,.8f,1);	
+				defaultDataColor = new Color(.8f, .8f, .8f, 1);
 
 				//AXGUIColors.Add("Default",  				new Color(.8f,.8f,.8f,1));	
-			 
+
 
 
 
@@ -405,52 +415,52 @@ namespace AXEditor
 				//AXGUIColors.Add("AxisColor", 				new Color(0.5f, 0.33f, .33f, .15f));
 
 				//AXGUIColors.Add("GridColor", 				new Color(0.65f, 0.65f, .75f, .1f));
-				AXGUIColors.Add("GridColor", 				new Color(0.45f, 0.45f, .55f, .1f));
+				AXGUIColors.Add("GridColor", new Color(0.45f, 0.45f, .55f, .1f));
 
 				// AXGUIColors.Add("AxisColor", 				new Color(1f, 0.53f, .53f, .995f));
-				AXGUIColors.Add("AxisColor", 				new Color(.9f, 0.33f, .33f, .995f));
+				AXGUIColors.Add("AxisColor", new Color(.9f, 0.33f, .33f, .995f));
 
-				AXGUIColors.Add("ConnectorShadowColor", 	new Color(.2f,.2f,.2f,.6f));
-				AXGUIColors.Add("ConnectorColor", 			new Color(0.6f, .3f, .35f, 1.0f));
+				AXGUIColors.Add("ConnectorShadowColor", new Color(.2f, .2f, .2f, .6f));
+				AXGUIColors.Add("ConnectorColor", new Color(0.6f, .3f, .35f, 1.0f));
 
-//				AXGUIColors.Add("NodePaletteBG", 			new Color(.8f, .85f, .9f, 1));
-//				AXGUIColors.Add("NodePaletteHighlight", 	new Color( .93f,  .98f,  1f, 1f));
-//				AXGUIColors.Add("NodePaletteHighlightRect", new Color(.1f, .1f,  1f, 1f));
-				AXGUIColors.Add("NodePaletteBG", 			new Color(.74f, .75f, .8f, 1));
-				AXGUIColors.Add("NodePaletteHighlight",  	new Color(.9f, .9f, .9f, 1f));
+				//				AXGUIColors.Add("NodePaletteBG", 			new Color(.8f, .85f, .9f, 1));
+				//				AXGUIColors.Add("NodePaletteHighlight", 	new Color( .93f,  .98f,  1f, 1f));
+				//				AXGUIColors.Add("NodePaletteHighlightRect", new Color(.1f, .1f,  1f, 1f));
+				AXGUIColors.Add("NodePaletteBG", new Color(.74f, .75f, .8f, 1));
+				AXGUIColors.Add("NodePaletteHighlight", new Color(.9f, .9f, .9f, 1f));
 				AXGUIColors.Add("NodePaletteHighlightRect", new Color(.5f, .5f, .7f, 1f));
 
 
-//				AXGUIColors.Add("Float", 					new Color(1.0f,.6f,.5f,1));	
-//				AXGUIColors.Add("Int",  					new Color(.8f,.9f,.9f,1));
-//				AXGUIColors.Add("Bool", 					new Color(1f,1f,.6f,1));
-//				AXGUIColors.Add("Spline",  					new Color(.8f,.65f,.9f,1));
-//				AXGUIColors.Add("Shape",  					new Color(.8f,.65f,.9f,1));
-//				AXGUIColors.Add("Mesh",  					new Color(.5f,.9f,.5f,1));
-//				AXGUIColors.Add("Plane",  					new Color(.9f,.9f,.5f,1));
-//				AXGUIColors.Add("Data",  					new Color(0.99f,.9f,.1f, 1));
-//				AXGUIColors.Add("MaterialTool",  			new Color(0.99f,.9f,.6f, 1));
-//				AXGUIColors.Add("RepeaterTool",  			new Color(0.99f,.9f,.6f, 1));
-//				AXGUIColors.Add("JitterTool",  				new Color(0.99f,.9f,.6f, 1));	
+				//				AXGUIColors.Add("Float", 					new Color(1.0f,.6f,.5f,1));	
+				//				AXGUIColors.Add("Int",  					new Color(.8f,.9f,.9f,1));
+				//				AXGUIColors.Add("Bool", 					new Color(1f,1f,.6f,1));
+				//				AXGUIColors.Add("Spline",  					new Color(.8f,.65f,.9f,1));
+				//				AXGUIColors.Add("Shape",  					new Color(.8f,.65f,.9f,1));
+				//				AXGUIColors.Add("Mesh",  					new Color(.5f,.9f,.5f,1));
+				//				AXGUIColors.Add("Plane",  					new Color(.9f,.9f,.5f,1));
+				//				AXGUIColors.Add("Data",  					new Color(0.99f,.9f,.1f, 1));
+				//				AXGUIColors.Add("MaterialTool",  			new Color(0.99f,.9f,.6f, 1));
+				//				AXGUIColors.Add("RepeaterTool",  			new Color(0.99f,.9f,.6f, 1));
+				//				AXGUIColors.Add("JitterTool",  				new Color(0.99f,.9f,.6f, 1));	
 
-				AXGUIColors.Add("Float", 					new Color(1.0f,.6f,.5f,1));	
-				AXGUIColors.Add("Int",  					new Color(.8f,.9f,.9f,1));
-				AXGUIColors.Add("Bool", 					new Color(1f,1f,.6f,1));
-				AXGUIColors.Add("Spline",  					new Color(.7f,.55f,.8f,1));
-				AXGUIColors.Add("Shape",  					new Color(.6f,.45f,.7f,1));
-				AXGUIColors.Add("Mesh",  					new Color(.5f,.8f,.5f,1));
-				AXGUIColors.Add("Plane",  					new Color(.9f,.9f,.5f,1));
-				AXGUIColors.Add("Data",  					new Color(0.99f,.9f,.1f, 1));
-				AXGUIColors.Add("MaterialTool",  			new Color(0.89f,.8f,.5f, 1));
-				AXGUIColors.Add("RepeaterTool",  			new Color(0.89f,.8f,.5f, 1));
-				AXGUIColors.Add("JitterTool",  				new Color(0.89f,.8f,.5f, 1));	
+				AXGUIColors.Add("Float", new Color(1.0f, .6f, .5f, 1));
+				AXGUIColors.Add("Int", new Color(.8f, .9f, .9f, 1));
+				AXGUIColors.Add("Bool", new Color(1f, 1f, .6f, 1));
+				AXGUIColors.Add("Spline", new Color(.7f, .55f, .8f, 1));
+				AXGUIColors.Add("Shape", new Color(.6f, .45f, .7f, 1));
+				AXGUIColors.Add("Mesh", new Color(.5f, .8f, .5f, 1));
+				AXGUIColors.Add("Plane", new Color(.9f, .9f, .5f, 1));
+				AXGUIColors.Add("Data", new Color(0.99f, .9f, .1f, 1));
+				AXGUIColors.Add("MaterialTool", new Color(0.89f, .8f, .5f, 1));
+				AXGUIColors.Add("RepeaterTool", new Color(0.89f, .8f, .5f, 1));
+				AXGUIColors.Add("JitterTool", new Color(0.89f, .8f, .5f, 1));
 
-				AXGUIColors.Add("NameColor",  				new Color(0.45f,.1f,.3f, 1));
+				AXGUIColors.Add("NameColor", new Color(0.45f, .1f, .3f, 1));
 
 				//AXGUIColors.Add("GrayText", 				new Color(0.8f, 0.8f, .8f, .85f));
-				AXGUIColors.Add("GrayText", 				new Color(0.1f, 0.1f, .1f, .85f));
+				AXGUIColors.Add("GrayText", new Color(0.1f, 0.1f, .1f, .85f));
 
-				defaultDataColor = new Color(0.89f,.8f,.5f, 1);
+				defaultDataColor = new Color(0.89f, .8f, .5f, 1);
 				//AXGUIColors.Add("Default",  				new Color(.9f,.7f,.2f,1));
 			}
 			AXGUIColors.Add("ShapeColor", new Color(.88f, .70f, 1f, 1f));
@@ -458,38 +468,38 @@ namespace AXEditor
 		}
 
 
-			 
+
 		// Use this for initialization, check version, etc.
-		static ArchimatixEngine  ()
+		static ArchimatixEngine()
 		{
 			version = "";
 
-            // DELEGATES
+			// DELEGATES
 
-            //SceneView.onSceneGUIDelegate				-= SceneGUI;
-            //SceneView.onSceneGUIDelegate				+= SceneGUI;
+			//SceneView.onSceneGUIDelegate				-= SceneGUI;
+			//SceneView.onSceneGUIDelegate				+= SceneGUI;
 
 #if UNITY_2019_2_OR_NEWER
             SceneView.duringSceneGui += SceneGUI;
 #else
-            SceneView.onSceneGUIDelegate += SceneGUI;
+			SceneView.onSceneGUIDelegate += SceneGUI;
 #endif
 
 
-            EditorApplication.update     				-= Update;
-			EditorApplication.update     				+= Update;
+			EditorApplication.update -= Update;
+			EditorApplication.update += Update;
 			//EditorApplication.hierarchyWindowChanged 	+= hierarchyWindowChanged;	
 			//EditorApplication.hierarchyWindowItemOnGUI 	+= hierarchyWindowChanged;	
 			//EditorApplication.projectWindowChanged += projectWindowChanged;
 
 			Undo.undoRedoPerformed -= OnUndoRedo; // subscribe to the event
 			Undo.undoRedoPerformed += OnUndoRedo; // subscribe to the event
- 
+
 			//Selection.selectionChanged 				+= OnSceneSelectionChanged;
 
 
 			//Type type = typeof(EditorWindow).Assembly.GetType("UnityEditor.SceneHierarchyWindow");
-     		//EditorWindow hierarchyWindow = EditorWindow.GetWindow(type);
+			//EditorWindow hierarchyWindow = EditorWindow.GetWindow(type);
 
 
 			// load ui images
@@ -506,7 +516,7 @@ namespace AXEditor
 
 
 
-			 
+
 		}
 
 		public static void scheduleBuild()
@@ -515,16 +525,16 @@ namespace AXEditor
 			{
 				if (buildStopwatch == null)
 					buildStopwatch = new Stopwatch();
-				
+
 				buildStopwatch.Reset();
 				buildStopwatch.Start();
 			}
-			
+
 		}
 		public static void doneBuild()
 		{
 			if (buildStopwatch == null)
-					buildStopwatch = new Stopwatch();
+				buildStopwatch = new Stopwatch();
 
 			buildStopwatch.Reset();
 
@@ -537,30 +547,30 @@ namespace AXEditor
 
 			buildStopwatch = new Stopwatch();
 
-            // This was bad! Thought it would fix international issues.
-            //Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+			// This was bad! Thought it would fix international issues.
+			//Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
-            if (currentModel != null)
-            {
-                currentModel.snapSizeGrid = EditorPrefs.GetFloat("snapSizeGrid");
-                if (currentModel.snapSizeGrid == 0)
-                {
-                    currentModel.snapSizeGrid = .25f;
-                    EditorPrefs.SetFloat("snapSizeGrid", .25f);
-                }
-            }
+			if (currentModel != null)
+			{
+				currentModel.snapSizeGrid = EditorPrefs.GetFloat("snapSizeGrid");
+				if (currentModel.snapSizeGrid == 0)
+				{
+					currentModel.snapSizeGrid = .25f;
+					EditorPrefs.SetFloat("snapSizeGrid", .25f);
+				}
+			}
 
 
-            updateCounter = 0;
+			updateCounter = 0;
 
 			establishPaths();
 			//Debug.Log(ArchimatixAssetPath+"/Prefabs/RobotKyleBillboard");
-			ScalingFigureBillboardPrefab = AssetDatabase.LoadAssetAtPath(ArchimatixAssetPath+"/Prefabs/RobotKyleBillboard.prefab", (typeof(GameObject))) as GameObject;
+			ScalingFigureBillboardPrefab = AssetDatabase.LoadAssetAtPath(ArchimatixAssetPath + "/Prefabs/RobotKyleBillboard.prefab", (typeof(GameObject))) as GameObject;
 
 			//Debug.Log(" ------- ScalingFigureBillboardPrefab="+ScalingFigureBillboardPrefab);
-			 
+
 			//ScalingFigureBillboardTransform = ScalingFigureBillboard.GetComponentInChildren<Transform>();
-			 
+
 
 			// ASSERT DEFAULT MATERIAL FOR MODELS IN SCENE
 			loadDefaultMaterial();
@@ -576,12 +586,12 @@ namespace AXEditor
 
 			if (EditorGUIUtility.isProSkin)
 			{
-				menubarTexture 			= (Texture2D) AssetDatabase.LoadAssetAtPath(ArchimatixEngine.ArchimatixAssetPath+"/ui/GeneralIcons/zz-AXIcons-MenubarDark.png", typeof(Texture2D));		
+				menubarTexture = (Texture2D)AssetDatabase.LoadAssetAtPath(ArchimatixEngine.ArchimatixAssetPath + "/ui/GeneralIcons/zz-AXIcons-MenubarDark.png", typeof(Texture2D));
 
 			}
 			else
 			{
-				menubarTexture 			= (Texture2D) AssetDatabase.LoadAssetAtPath(ArchimatixEngine.ArchimatixAssetPath+"/ui/GeneralIcons/zz-AXIcons-MenubarLight.png", typeof(Texture2D));		
+				menubarTexture = (Texture2D)AssetDatabase.LoadAssetAtPath(ArchimatixEngine.ArchimatixAssetPath + "/ui/GeneralIcons/zz-AXIcons-MenubarLight.png", typeof(Texture2D));
 
 			}
 
@@ -589,32 +599,32 @@ namespace AXEditor
 			// RUNTIME
 
 			//string relativepath = ArchimatixEngine.ArchimatixAssetPath+"/Prefabs/Resources/RuntimeHandlePrefab_PlanarKnob.prefab";
-			string relativepath = ArchimatixEngine.ArchimatixAssetPath+"/Scenes Runtime/Resources/RuntimeHandlePrefab_PlanarKnob.prefab";
+			string relativepath = ArchimatixEngine.ArchimatixAssetPath + "/Scenes Runtime/Resources/RuntimeHandlePrefab_PlanarKnob.prefab";
 			//string absolutpath  = ArchimatixUtils.getAbsoluteLibraryPath(relativepath);
 
-			ArchimatixEngine.RuntimeHandlePrefab_PlanarKnob = (GameObject) AssetDatabase.LoadAssetAtPath(relativepath, typeof(GameObject));
+			ArchimatixEngine.RuntimeHandlePrefab_PlanarKnob = (GameObject)AssetDatabase.LoadAssetAtPath(relativepath, typeof(GameObject));
 
 
-            //Debug.Log(" *********** " + ArchimatixEngine.RuntimeHandlePrefab_PlanarKnob);
-		 
-            if (!Application.isPlaying)
-            {
+			//Debug.Log(" *********** " + ArchimatixEngine.RuntimeHandlePrefab_PlanarKnob);
 
-                //createLibrary();
-                if (library == null)
-                    library = Library.loadLibraryMetadata();
+			if (!Application.isPlaying)
+			{
 
-
-
-                if (library == null)
-                    createLibraryFromJSONFiles();
-
-            }
+				//createLibrary();
+				if (library == null)
+					library = Library.loadLibraryMetadata();
 
 
-            //Debug.Log("Library: " + library);
 
-            if (userMessages == null)
+				if (library == null)
+					createLibraryFromJSONFiles();
+
+			}
+
+
+			//Debug.Log("Library: " + library);
+
+			if (userMessages == null)
 				userMessages = new List<UserMessage>();
 
 
@@ -623,38 +633,38 @@ namespace AXEditor
 
 
 
-			
-
-		} 
-
-        public static void assertRuntimeHandlePrefab_PlanarKnob()
-        {
-            if (ArchimatixEngine.RuntimeHandlePrefab_PlanarKnob == null)
-            {
-                string relativepath = ArchimatixEngine.ArchimatixAssetPath + "/Scenes Runtime/Resources/RuntimeHandlePrefab_PlanarKnob.prefab";
-                ArchimatixEngine.RuntimeHandlePrefab_PlanarKnob = (GameObject)AssetDatabase.LoadAssetAtPath(relativepath, typeof(GameObject));
-            }
-           
 
 
+		}
 
-        }
+		public static void assertRuntimeHandlePrefab_PlanarKnob()
+		{
+			if (ArchimatixEngine.RuntimeHandlePrefab_PlanarKnob == null)
+			{
+				string relativepath = ArchimatixEngine.ArchimatixAssetPath + "/Scenes Runtime/Resources/RuntimeHandlePrefab_PlanarKnob.prefab";
+				ArchimatixEngine.RuntimeHandlePrefab_PlanarKnob = (GameObject)AssetDatabase.LoadAssetAtPath(relativepath, typeof(GameObject));
+			}
 
 
-        public static void loadDefaultMaterial()
+
+
+		}
+
+
+		public static void loadDefaultMaterial()
 		{
 			if (string.IsNullOrEmpty(ArchimatixEngine.ArchimatixAssetPath))
 				ArchimatixEngine.establishPaths();
 
-			AXModel.defaultMaterial 		= (Material) AssetDatabase.LoadAssetAtPath(ArchimatixEngine.ArchimatixAssetPath+"/Materials/AX_GridPurple.mat", typeof(Material));
-			AXModel.defaultPhysicMaterial 	= (PhysicMaterial) 	AssetDatabase.LoadAssetAtPath(ArchimatixEngine.ArchimatixAssetPath+"/Materials/AX_DefaultPhysicMaterial.mat", 	typeof(PhysicMaterial));
+			AXModel.defaultMaterial = (Material)AssetDatabase.LoadAssetAtPath(ArchimatixEngine.ArchimatixAssetPath + "/Materials/AX_GridPurple.mat", typeof(Material));
+			AXModel.defaultPhysicMaterial = (PhysicMaterial)AssetDatabase.LoadAssetAtPath(ArchimatixEngine.ArchimatixAssetPath + "/Materials/AX_DefaultPhysicMaterial.mat", typeof(PhysicMaterial));
 
 		}
 
 
 		public static void assertDefaultMaterialForAllModels()
 		{
-			AXModel[] axModels =  GameObject.FindObjectsOfType(typeof(AXModel)) as AXModel[];
+			AXModel[] axModels = GameObject.FindObjectsOfType(typeof(AXModel)) as AXModel[];
 			foreach (AXModel m in axModels)
 			{
 				if (m != null)
@@ -666,7 +676,7 @@ namespace AXEditor
 		public static void createLibraryFromJSONFiles()
 		{
 			//Debug.Log("CreateLibrary");
-			library = new AX.Library(); 
+			library = new AX.Library();
 			//if (library.parametricObjects == null)
 			library.readLibraryFromFiles();
 
@@ -693,8 +703,9 @@ namespace AXEditor
 
 
 
-		public static void OnUndoRedo() {
-    		 // some code here
+		public static void OnUndoRedo()
+		{
+			// some code here
 			//Debug.Log("Undo currentModel=" + currentModel);
 
 			AXEditorUtilities.clearFocus(); // GUI.FocusControl("dummy_label"); 
@@ -703,13 +714,13 @@ namespace AXEditor
 			if (currentModel != null)
 			{
 
-//				foreach (AXParametricObject po in currentModel.parametricObjects)
-//				{
-//					//string grouperName = (po.grouper != null) ? po.grouper.Name : " None";
-//
-//					//Debug.Log(po.Name + " :: " + grouperName + " " + po.grouperKey);
-//
-//				}
+				//				foreach (AXParametricObject po in currentModel.parametricObjects)
+				//				{
+				//					//string grouperName = (po.grouper != null) ? po.grouper.Name : " None";
+				//
+				//					//Debug.Log(po.Name + " :: " + grouperName + " " + po.grouperKey);
+				//
+				//				}
 
 				/*
 				if (currentModel.currentWorkingGroupPO != null)
@@ -732,17 +743,17 @@ namespace AXEditor
 
 				currentModel.cleanGraph();
 				currentModel.autobuild();
-				EditorUtility.SetDirty( currentModel.gameObject );
-			}	
+				EditorUtility.SetDirty(currentModel.gameObject);
+			}
 
- 		}
+		}
 
-		[System.NonSerialized] 
+		[System.NonSerialized]
 		public static AXModel _currentModel;
-		public static AXModel  currentModel
+		public static AXModel currentModel
 		{
 			get { return _currentModel; }
-			set 
+			set
 			{
 				//Debug.Log ("SET CURRENT MODEL");
 				_currentModel = value;
@@ -761,11 +772,11 @@ namespace AXEditor
 
 		[System.NonSerialized]
 		public static long lastAXGOselectionTime;
-		
+
 
 		[System.NonSerialized]
 		public static bool optionClick;
-		
+
 		[System.NonSerialized]
 		public static int workingAxis;
 
@@ -776,7 +787,7 @@ namespace AXEditor
 
 			if (NodeGraphEditorType != null && RepaintGraphEditorIfOpenMethodInfo != null)
 				RepaintGraphEditorIfOpenMethodInfo.Invoke(null, null);
- 
+
 
 			//AXNodeGraphEditorWindow.repaintIfOpen();
 		}
@@ -801,14 +812,14 @@ namespace AXEditor
 
 
 		}
-		 
+
 		public static void createScalingFigure()
 		{
 
 
 
 			if (ScalingFigureBillboardPrefab == null)
-				ScalingFigureBillboardPrefab = AssetDatabase.LoadAssetAtPath(ArchimatixAssetPath+"/Prefabs/RobotKyleBillboard.prefab", (typeof(GameObject))) as GameObject;
+				ScalingFigureBillboardPrefab = AssetDatabase.LoadAssetAtPath(ArchimatixAssetPath + "/Prefabs/RobotKyleBillboard.prefab", (typeof(GameObject))) as GameObject;
 
 
 			if (ScalingFigureBillboard == null && ScalingFigureBillboardPrefab != null)
@@ -851,21 +862,22 @@ namespace AXEditor
 
 		public static bool isModel(GameObject go)
 		{
-	
+
 			if (go != null && go.GetComponent<AXModel>())
 				return true;
 
 			return false;
 
 		}
-		 
+
 
 
 		// Update is called once per frame
 		// There is not much computation going on here, 
 		// just a check to see if the currently selected GameObject has an AXGameObject attached.
 		// If it does, then this is a special selection event.
-		static void Update () {
+		static void Update()
+		{
 
 
 			if (updateCounter++ > 500)
@@ -886,7 +898,7 @@ namespace AXEditor
 
 			}
 
-			
+
 			if (library == null && !Application.isPlaying)
 			{
 				ArchimatixEngine.Init();
@@ -895,7 +907,7 @@ namespace AXEditor
 			//Debug.Log(library.allLibraryThumbnailsLoaded);
 
 			// Make sure library thumbnails (icons) are loaded. 
-			if (!Application.isPlaying && library != null &&  ! library.allLibraryThumbnailsLoaded && updateCounter == 499)
+			if (!Application.isPlaying && library != null && !library.allLibraryThumbnailsLoaded && updateCounter == 499)
 			{
 				//Debug.Log("Loading Library thumbnails...");
 				library.loadThumnails();
@@ -903,12 +915,12 @@ namespace AXEditor
 
 			//Debug.Log("------------------------------ Update");
 
-			if (currentModel != null && ! Application.isPlaying)
+			if (currentModel != null && !Application.isPlaying)
 			{
 				currentModel.canRegenerate = true;
 
 				//if (currentModel.isDirty)
-					//currentModel.generateIfDirty();
+				//currentModel.generateIfDirty();
 
 			}
 
@@ -919,9 +931,9 @@ namespace AXEditor
 			// DETECT IF THERE HAS BEEN A VERSION CHANGE
 			//if (string.IsNullOrEmpty(EditorPrefs.GetString(ArchimatixEngine.identifier)) ||  EditorPrefs.GetString(ArchimatixEngine.identifier) != AXStartupWindow.GetVersion())
 
-			if (! string.IsNullOrEmpty(version))
+			if (!string.IsNullOrEmpty(version))
 			{
-				if (string.IsNullOrEmpty(EditorPrefs.GetString(ArchimatixEngine.identifier)) ||  EditorPrefs.GetString(ArchimatixEngine.identifier) != version)
+				if (string.IsNullOrEmpty(EditorPrefs.GetString(ArchimatixEngine.identifier)) || EditorPrefs.GetString(ArchimatixEngine.identifier) != version)
 				{
 					AXStartupWindow.open();
 					EditorPrefs.SetString(ArchimatixEngine.identifier, version);
@@ -931,14 +943,14 @@ namespace AXEditor
 
 
 
-			GameObject currentGO =  Selection.activeGameObject;
+			GameObject currentGO = Selection.activeGameObject;
 
 			if (currentGO != null)
 			{
 				AXModel currentGOModel = currentGO.GetComponent<AXModel>();
 
 				// Ok, the currently selected GO has a model. 
-				if (currentGOModel != null && (currentModel == null || currentGO != currentModel.gameObject) )
+				if (currentGOModel != null && (currentModel == null || currentGO != currentModel.gameObject))
 				{
 					// model change!!!! Probably from heirarchy window...
 					currentModel = currentGOModel;
@@ -948,10 +960,10 @@ namespace AXEditor
 			else
 			{
 				// no AXModel selected
-				currentModel  = null;
+				currentModel = null;
 
 			}
-			  
+
 
 
 			if (lookForScalingBillboard)
@@ -961,24 +973,24 @@ namespace AXEditor
 
 
 			//Debug.Log("="+RenderSettings.ambientIntensity + ", " + RenderSettings.ambientLight + ", " + RenderSettings.ambientMode);
-			workingAxis = (int) Axis.NONE;
+			workingAxis = (int)Axis.NONE;
 
 			// if an axGameObject is selected, hide tools 
 			bool axGameObjectIsSelected = false;
 
 
 
-		
+
 
 			// CUSTOM SELECTION SYSTEM -- for hierarchy selection
 			// Since we can't get events from the Hiearchy View, 
 			// Try to detect if a new AWGameObject was select in the Hiearchy
 			// by seeing if the last and previous AWGO's selected are different.
 
-			if(Selection.activeGameObject != null)
-			{ 
-				
-				 
+			if (Selection.activeGameObject != null)
+			{
+
+
 
 				AXGameObject axgo = Selection.activeGameObject.GetComponent<AXGameObject>();
 
@@ -998,8 +1010,8 @@ namespace AXEditor
 					// then it must have been selected in the SceneView
 					//Debug.Log("CARCAR "+axgo);
 
-					axGameObjectIsSelected = true;		
-	
+					axGameObjectIsSelected = true;
+
 					// Make sure the parent model of this AXGO becomes the currentModel for graph display, etc.
 					if (axgo.model != null)
 						currentModel = axgo.model;
@@ -1019,22 +1031,22 @@ namespace AXEditor
 						EditorUtility.SetDirty(currentModel);
 					}
 
-				} 
-
-								
-			} 
+				}
 
 
-			if (   (axGameObjectIsSelected || isModel(Selection.activeGameObject))  &&  (currentModel != null && currentModel.selectedPOs != null && currentModel.selectedPOs.Count > 0) )
+			}
+
+
+			if ((axGameObjectIsSelected || isModel(Selection.activeGameObject)) && (currentModel != null && currentModel.selectedPOs != null && currentModel.selectedPOs.Count > 0))
 			{
 				// SOMETHING OTHER GAME_OBJECT WAS SELECTED (i.e., not AXModel and note AXGameObject
 
 				UnityEditor.Tools.hidden = true;
 			}
-			else 
+			else
 				UnityEditor.Tools.hidden = false;
-	
-			
+
+
 
 			/*
 			if (sceneViewClickRegisteredAt > 0)
@@ -1060,50 +1072,50 @@ namespace AXEditor
 			}
 
 		}
-		
 
 
-		 
-		
-		
-		
-		
+
+
+
+
+
+
 		// SCENE_GUI
 		//
 		//----------------------------------------------------------------------------
-		
+
 		public static void SceneGUI(SceneView sceneView)
-		{ 
+		{
 
 
 			Event e = Event.current;
 
-//			if (e.type != EventType.Layout && e.type != EventType.Repaint && e.type != EventType.MouseMove)
-//				Debug.Log("sceneGUI: " + e.type + " " + e.keyCode);
+			//			if (e.type != EventType.Layout && e.type != EventType.Repaint && e.type != EventType.MouseMove)
+			//				Debug.Log("sceneGUI: " + e.type + " " + e.keyCode);
 
+			shiftIsDown = e.shift;
 
-
-			if (currentModel != null &&  e.type == EventType.Layout && meshBufferJustClearedOnUpdate)
+			if (currentModel != null && e.type == EventType.Layout && meshBufferJustClearedOnUpdate)
 			{
 				//Debug.Log("SceneGUI: " + currentModel.axRenderMeshCount);
 
-				if (! Application.isPlaying)
+				if (!Application.isPlaying)
 					currentModel.drawMeshesInScene();
 
 				meshBufferJustClearedOnUpdate = false;
 			}
-			 
+
 			if (e.type == EventType.Repaint)
 			{
-				
 
-			 	//Debug.Log("OnSceneView Repaint ==================================");
-				if (currentModel != null && ! Application.isPlaying)
+
+				//Debug.Log("OnSceneView Repaint ==================================");
+				if (currentModel != null && !Application.isPlaying)
 				{
 					currentModel.canRegenerate = true;
 
 					//if (currentModel.isDirty)
-						//currentModel.generateIfDirty();
+					//currentModel.generateIfDirty();
 				}
 
 			}
@@ -1116,11 +1128,11 @@ namespace AXEditor
 			//if (currentModel != null && currentModel.activeFreeCurves.Count > 0 || sceneViewState == SceneViewState.AddPoint) 
 			//{
 
-			if (e.type == EventType.Layout && currentModel != null) 
-				{
+			if (e.type == EventType.Layout && currentModel != null)
+			{
 
-					HandleUtility.AddDefaultControl(0);
-				}
+				HandleUtility.AddDefaultControl(0);
+			}
 			//}
 
 
@@ -1130,7 +1142,7 @@ namespace AXEditor
 			// Since each click on an AX GameObject selects the model (as far as the scene is concerned)
 			// and then internally selects an GameObject instance stored via its AWGameObject,
 			// we can't use the unity engine selection event.
-			
+
 
 			//Debug.Log(e.type);
 			//int controlIDD = GUIUtility.GetControlID(GetHashCode(), FocusType.Passive); // Save editor click data first thing
@@ -1155,40 +1167,40 @@ namespace AXEditor
 				//if (currentModel.selectedPOs != null && currentModel.selectedPOs.Count == 1 &&  currentModel.selectedPOs[0] != null)
 				//	currentPO = currentModel.selectedPOs[0];
 
-	
-				 
+
+
 
 
 				// FREE_CURVES: Process OnSceneGUI to support controlPoint editing
 				if (currentModel.activeFreeCurves != null && currentModel.activeFreeCurves.Count == 1)
 				{
-		
-                    if (currentModel.activeFreeCurves[0].generator is FreeCurve3D)
-                    {
-                        FreeCurve3DHandler gh = (FreeCurve3DHandler) GeneratorHandler.getGeneratorHandler(currentModel.activeFreeCurves[0]);
-                        gh.OnSceneGUI();
-                    }
-                    else
-                    {
-                        if (e.keyCode == KeyCode.Backspace)
-                        {
-                            FreeCurve gener = (FreeCurve)currentModel.activeFreeCurves[0].generator;
 
-                            //Debug.Log("gener.hasSelectedPoints()="+gener.hasSelectedPoints());
-                            if (gener.hasSelectedPoints())
-                            {
-                                //Debug.Log("delete");
-                                gener.DeleteSelected();
-                                gener.generate(false, null, false);
-                                // SCENEVIEW
-                                if (SceneView.lastActiveSceneView != null)
-                                    SceneView.lastActiveSceneView.Repaint();
-                            }
-                        }
-                        FreeCurveHandler gh = (FreeCurveHandler)GeneratorHandler.getGeneratorHandler(currentModel.activeFreeCurves[0]);
-                        gh.OnSceneGUI();
-                    }
-		
+					if (currentModel.activeFreeCurves[0].generator is FreeCurve3D)
+					{
+						FreeCurve3DHandler gh = (FreeCurve3DHandler)GeneratorHandler.getGeneratorHandler(currentModel.activeFreeCurves[0]);
+						gh.OnSceneGUI();
+					}
+					else
+					{
+						if (e.keyCode == KeyCode.Backspace)
+						{
+							FreeCurve gener = (FreeCurve)currentModel.activeFreeCurves[0].generator;
+
+							//Debug.Log("gener.hasSelectedPoints()="+gener.hasSelectedPoints());
+							if (gener.hasSelectedPoints())
+							{
+								//Debug.Log("delete");
+								gener.DeleteSelected();
+								gener.generate(false, null, false);
+								// SCENEVIEW
+								if (SceneView.lastActiveSceneView != null)
+									SceneView.lastActiveSceneView.Repaint();
+							}
+						}
+						FreeCurveHandler gh = (FreeCurveHandler)GeneratorHandler.getGeneratorHandler(currentModel.activeFreeCurves[0]);
+						gh.OnSceneGUI();
+					}
+
 				}
 
 
@@ -1197,19 +1209,19 @@ namespace AXEditor
 
 
 				Handles.BeginGUI();
-				
-					/*
-				if (! AXNodeGraphEditorWindow.IsOpen)
+
+				/*
+			if (! AXNodeGraphEditorWindow.IsOpen)
+			{
+				if (GUI.Button(new Rect(10, 10, 80, 20), "Graph Editor"))
 				{
-					if (GUI.Button(new Rect(10, 10, 80, 20), "Graph Editor"))
-					{
-						Debug.Log("Pressed");
-						EditorWindow.GetWindow(typeof(AXNodeGraphEditorWindow));
-						currentModel.isAltered(5);
-						e.Use ();
-					}
+					Debug.Log("Pressed");
+					EditorWindow.GetWindow(typeof(AXNodeGraphEditorWindow));
+					currentModel.isAltered(5);
+					e.Use ();
 				}
-				*/
+			}
+			*/
 
 
 
@@ -1220,11 +1232,11 @@ namespace AXEditor
 
 				// 2D GUI
 
-				GUIStyle buttonStyle = GUI.skin.GetStyle ("Button");
+				GUIStyle buttonStyle = GUI.skin.GetStyle("Button");
 				RectOffset prevButtonMargin = buttonStyle.margin;
 
-				buttonStyle.alignment = TextAnchor.MiddleCenter;
-				buttonStyle.margin = new RectOffset(0, 0, -1, 0);	 
+				buttonStyle.alignment = TextAnchor.MiddleLeft;
+				buttonStyle.margin = new RectOffset(0, 0, -1, 0);
 				buttonStyle.fontSize = 12;
 
 				float prevFixedWidth = buttonStyle.fixedWidth;
@@ -1236,10 +1248,15 @@ namespace AXEditor
 				//GUIStyle areaStyle = new GUIStyle();
 				//areaStyle. = MakeTex(600, 1, new Color(1.0f, 1.0f, 1.0f, 0.1f));
 
-				GUIStyle labelStyle = GUI.skin.GetStyle ("Label");
+				GUIStyle labelStyle = GUI.skin.GetStyle("Label");
 				labelStyle.alignment = TextAnchor.MiddleLeft;
+				labelStyle.fontSize = 20;
 
-				GUIStyle boxStyle = GUI.skin.GetStyle ("Box");
+				GUIStyle paramLabelStyle = GUI.skin.GetStyle("Label");
+				paramLabelStyle.alignment = TextAnchor.MiddleLeft;
+				paramLabelStyle.fontSize = 18;
+
+				GUIStyle boxStyle = GUI.skin.GetStyle("Box");
 				boxStyle.alignment = TextAnchor.UpperLeft;
 				boxStyle.normal.textColor = Color.white;
 
@@ -1251,29 +1268,70 @@ namespace AXEditor
 				//float windowWidth 	= (Application.platform == RuntimePlatform.OSXEditor) ? Screen.width/2 : Screen.width;
 				//float windowHeight 	= (Application.platform == RuntimePlatform.OSXEditor) ? Screen.height/2 : Screen.height;
 
-				float windowWidth 	= (SceneView.lastActiveSceneView != null) ? SceneView.lastActiveSceneView.position.width : Screen.width;
-				float windowHeight 	= (SceneView.lastActiveSceneView != null) ? SceneView.lastActiveSceneView.position.height : Screen.height;
+				float windowWidth = (SceneView.lastActiveSceneView != null) ? SceneView.lastActiveSceneView.position.width : Screen.width;
+				float windowHeight = (SceneView.lastActiveSceneView != null) ? SceneView.lastActiveSceneView.position.height : Screen.height;
 
 
 
-				float panelWidth 	= Mathf.Min(windowWidth, 530);
-				float panelHeight 	=  43;
+				float panelWidth = Mathf.Min(windowWidth, 530);
+				float panelHeight = 43;
 
-				Rect footerBoxRect 	= new Rect(windowWidth/2-(panelWidth+10)/2,    windowHeight-panelHeight, panelWidth+20, panelHeight);
-				Rect footerRect 	= new Rect(     windowWidth/2-panelWidth/2, windowHeight-panelHeight+2,    panelWidth, 		 22);
-
-
+				Rect footerBoxRect = new Rect(windowWidth / 2 - (panelWidth + 10) / 2, windowHeight - panelHeight, panelWidth + 20, panelHeight);
+				Rect footerRect = new Rect(windowWidth / 2 - panelWidth / 2, windowHeight - panelHeight + 2, panelWidth, 22);
 
 
-				if(mouseIsDownOnHandle && currentModel.latestEditedParameter != null)
+
+
+				if (mouseIsDownOnHandle)
 				{
-					string val = ""+currentModel.latestEditedParameter.FloatVal.ToString("0.00");
-					if (currentModel.latestEditedParameter.Type == AXParameter.DataType.Int)
-						val = ""+currentModel.latestEditedParameter.IntVal;
+					if (currentModel.latestHandleClicked != null)
+					{
 
-					GUI.Label(new Rect(windowWidth/2-100, windowHeight-100, 220, 20), currentModel.latestEditedParameter.parametricObject.Name+"."+currentModel.latestEditedParameter.Name+": " + val);
+						AXHandle han = currentModel.latestHandleClicked;
+
+						if (han.expressions.Count == 1)
+						{
+							string exp = han.expressions[0];
+							string pName = exp.Substring(0, exp.IndexOf("="));
+							AXParameter p = han.parametricObject.getParameter(pName);
+
+							if (p != null)
+								GUI.Label(new Rect(windowWidth / 2 - 100, windowHeight - 100, 220, 20), han.Name + ": " + p.FloatVal, labelStyle);
+						}
+						else
+						{
+							float y = windowHeight - 200;
+							GUI.Label(new Rect(windowWidth / 2 - 100, y, 220, 20), han.Name, labelStyle);
+
+							y += 5;
+							foreach (string exp in han.expressions)
+							{
+								y += 20;
+								string pName = exp.Substring(0, exp.IndexOf("="));
+								AXParameter p = han.parametricObject.getParameter(pName);
+								GUI.Label(new Rect(windowWidth / 2 - 100, y, 220, 20), p.Name + ": " + p.FloatVal, paramLabelStyle);
+
+							}
+						}
+					}
+
+					else if (currentModel.latestEditedParameter != null)
+					{
+						string val = "" + currentModel.latestEditedParameter.FloatVal.ToString("0.00");
+						if (currentModel.latestEditedParameter.Type == AXParameter.DataType.Int)
+							val = "" + currentModel.latestEditedParameter.IntVal;
+						GUI.Label(new Rect(windowWidth / 2 - 100, windowHeight - 100, 220, 20), currentModel.latestEditedParameter.parametricObject.Name + "." + currentModel.latestEditedParameter.Name + ": " + val, labelStyle);
+
+					}
+					//GUI.Label(new Rect(windowWidth / 2 - 100, windowHeight - 100, 220, 20), currentModel.latestEditedParameter.parametricObject.Name + "." + currentModel.latestEditedParameter.Name + ": " + val, labelStyle);
+					// GUI.Label(new Rect(windowWidth / 2 - 100, windowHeight - 150, 220, 20), currentModel.latestHandleClicked. + ": " + val, labelStyle);
+
+
+
 				}
 
+
+				labelStyle.fontSize = 12;
 
 
 
@@ -1283,7 +1341,7 @@ namespace AXEditor
 
 				buttonStyle.margin = prevButtonMargin;
 
-	
+
 
 				EditorGUILayout.BeginHorizontal();
 
@@ -1293,17 +1351,17 @@ namespace AXEditor
 
 				// SNAPPING TOGGLE
 				EditorGUIUtility.labelWidth = 33;
-                ArchimatixEngine.snappingIsOn = EditorPrefs.GetBool("snappingIsOn");
+				ArchimatixEngine.snappingIsOn = EditorPrefs.GetBool("snappingIsOn");
 
-                EditorGUI.BeginChangeCheck();
-                ArchimatixEngine.snappingIsOn = EditorGUILayout.Toggle("Snap", ArchimatixEngine.snappingIsOn);
-                if (EditorGUI.EndChangeCheck())
-                {
-                    EditorPrefs.SetBool("snappingIsOn", ArchimatixEngine.snappingIsOn);
-                }
+				EditorGUI.BeginChangeCheck();
+				ArchimatixEngine.snappingIsOn = EditorGUILayout.Toggle("Snap", ArchimatixEngine.snappingIsOn);
+				if (EditorGUI.EndChangeCheck())
+				{
+					EditorPrefs.SetBool("snappingIsOn", ArchimatixEngine.snappingIsOn);
+				}
 
 
-                GUILayout.Space(8);
+				GUILayout.Space(8);
 
 
 
@@ -1317,42 +1375,42 @@ namespace AXEditor
 
 				//GUI.skin.settings.selectionColor = new Color(.2f,.2f,.3f);
 				//GUI.skin.settings.cursorColor = Color.white;
-			
+
 				EditorGUIUtility.labelWidth = 31;
-                float snapSizeGrid = EditorPrefs.GetFloat("snapSizeGrid");
-                if (snapSizeGrid < .01f)
-                    snapSizeGrid = .01f;
-                //currentModel.snapSizeGrid = EditorGUILayout.FloatField("Grid", currentModel.snapSizeGrid, style, new GUILayoutOption[] { GUILayout.Width(100), GUILayout.Height(15) });
-                EditorGUI.BeginChangeCheck(); 
-                snapSizeGrid = EditorGUILayout.FloatField("Grid", snapSizeGrid, style, new GUILayoutOption[] { GUILayout.Width(100), GUILayout.Height(15) });
-                if (EditorGUI.EndChangeCheck())
-                {
-                    if (snapSizeGrid < .01f)
-                        snapSizeGrid = .01f;
-                    EditorPrefs.SetFloat("snapSizeGrid", snapSizeGrid);
-                    currentModel.snapSizeGrid = snapSizeGrid;
-                     
-                }
+				float snapSizeGrid = EditorPrefs.GetFloat("snapSizeGrid");
+				if (snapSizeGrid < .01f)
+					snapSizeGrid = .01f;
+				//currentModel.snapSizeGrid = EditorGUILayout.FloatField("Grid", currentModel.snapSizeGrid, style, new GUILayoutOption[] { GUILayout.Width(100), GUILayout.Height(15) });
+				EditorGUI.BeginChangeCheck();
+				snapSizeGrid = EditorGUILayout.FloatField("Grid", snapSizeGrid, style, new GUILayoutOption[] { GUILayout.Width(100), GUILayout.Height(15) });
+				if (EditorGUI.EndChangeCheck())
+				{
+					if (snapSizeGrid < .01f)
+						snapSizeGrid = .01f;
+					EditorPrefs.SetFloat("snapSizeGrid", snapSizeGrid);
+					currentModel.snapSizeGrid = snapSizeGrid;
 
-                GUILayout.Space(8);
-                // GUIDES TOGGLE
-                EditorGUIUtility.labelWidth = 63;
-                EditorGUI.BeginChangeCheck();
-                ArchimatixEngine.drawGuides = EditorGUILayout.Toggle("Unselected", ArchimatixEngine.drawGuides);
-                if (EditorGUI.EndChangeCheck())
-                {
-                    //currentModel.autobuild();
-                }
-               
+				}
 
-                GUILayout.Space(10);
+				GUILayout.Space(8);
+				// GUIDES TOGGLE
+				EditorGUIUtility.labelWidth = 63;
+				EditorGUI.BeginChangeCheck();
+				ArchimatixEngine.drawGuides = EditorGUILayout.Toggle("Unselected", ArchimatixEngine.drawGuides);
+				if (EditorGUI.EndChangeCheck())
+				{
+					//currentModel.autobuild();
+				}
+
+
+				GUILayout.Space(10);
 
 
 				// KYLE
 				EditorGUIUtility.labelWidth = 33;
 
 
-					
+
 				EditorGUI.BeginChangeCheck();
 				ArchimatixEngine.useKyle = EditorGUILayout.Toggle("Kyle", ArchimatixEngine.useKyle);
 
@@ -1363,7 +1421,7 @@ namespace AXEditor
 						ScalingFigureBillboard.SetActive(useKyle);
 
 					}
-					else if (useKyle) 
+					else if (useKyle)
 					{
 						createScalingFigure();
 					}
@@ -1380,26 +1438,26 @@ namespace AXEditor
 					}
 				}
 
-				if( Event.current.commandName == "ObjectSelectorUpdated" && EditorGUIUtility.GetObjectPickerControlID() == windowPickerID )
-				 {        
-				     
-					currentModel.axMat.mat = (Material) EditorGUIUtility.GetObjectPickerObject();
+				if (Event.current.commandName == "ObjectSelectorUpdated" && EditorGUIUtility.GetObjectPickerControlID() == windowPickerID)
+				{
+
+					currentModel.axMat.mat = (Material)EditorGUIUtility.GetObjectPickerObject();
 					windowPickerID = -1;
-				 
-					currentModel.remapMaterialTools ();
-					currentModel.autobuild ();
 
-				 }
+					currentModel.remapMaterialTools();
+					currentModel.autobuild();
+
+				}
 
 
-				
+
 				GUILayout.FlexibleSpace();
 
 				// STAMP BUTTON
 				if (GUILayout.Button("Stamp"))
 				{
 					currentModel.stamp();
-					e.Use ();
+					e.Use();
 				}
 				if (GUILayout.Button("Prefab"))
 				{
@@ -1408,44 +1466,44 @@ namespace AXEditor
 					string path = EditorUtility.SaveFilePanel(
 						"Save Prefab",
 						startDir,
-						(""+currentModel.name),
+						("" + currentModel.name),
 						"prefab");
 
-					if (! string.IsNullOrEmpty(path))
+					if (!string.IsNullOrEmpty(path))
 						AXPrefabWindow.makePrefab(currentModel, path, null);
 				}
 
 				// Material
 
 
-//				if (currentModel != null)// &&  e.type == EventType.Layout)
-//				{ 
-//					GUILayout.FlexibleSpace();
-//
-//					Debug.Log("currentModel="+currentModel);
-//
-//
-//					if (GUILayout.Button("Material"))
-//					{
-//					int controlId = EditorGUIUtility.GetControlID(FocusType.Passive);
-//
-//						EditorGUIUtility.ShowObjectPicker<Material>(null, false, "", controlId);
-//
-//					}
-//
-//
-////
-////					EditorGUI.BeginChangeCheck ();
-////
-////
-////					currentModel.axMat.mat = (Material)EditorGUILayout.ObjectField (currentModel.axMat.mat, typeof(Material), true);
-////					if (EditorGUI.EndChangeCheck ()) {
-////						Undo.RegisterCompleteObjectUndo (currentModel, "Default material for " + currentModel.name);
-////						currentModel.remapMaterialTools ();
-////						currentModel.autobuild ();
-////
-////					}
-//				}
+				//				if (currentModel != null)// &&  e.type == EventType.Layout)
+				//				{ 
+				//					GUILayout.FlexibleSpace();
+				//
+				//					Debug.Log("currentModel="+currentModel);
+				//
+				//
+				//					if (GUILayout.Button("Material"))
+				//					{
+				//					int controlId = EditorGUIUtility.GetControlID(FocusType.Passive);
+				//
+				//						EditorGUIUtility.ShowObjectPicker<Material>(null, false, "", controlId);
+				//
+				//					}
+				//
+				//
+				////
+				////					EditorGUI.BeginChangeCheck ();
+				////
+				////
+				////					currentModel.axMat.mat = (Material)EditorGUILayout.ObjectField (currentModel.axMat.mat, typeof(Material), true);
+				////					if (EditorGUI.EndChangeCheck ()) {
+				////						Undo.RegisterCompleteObjectUndo (currentModel, "Default material for " + currentModel.name);
+				////						currentModel.remapMaterialTools ();
+				////						currentModel.autobuild ();
+				////
+				////					}
+				//				}
 
 
 
@@ -1460,7 +1518,7 @@ namespace AXEditor
 
 
 
-				
+
 				Handles.EndGUI();
 
 
@@ -1471,34 +1529,34 @@ namespace AXEditor
 
 					e.Use();
 				}
-									
-			}
-				
 
-					
+			}
+
+
+
 			switch (e.type)
 			{
 
-				case EventType.ValidateCommand: 
-					
-					e.Use ();
+				case EventType.ValidateCommand:
+
+					e.Use();
 					break;
 
-				
-				
+
+
 				case EventType.ExecuteCommand:
-					
-					if ( currentModel != null)
+
+					if (currentModel != null)
 						AXEditorUtilities.processEventCommand(e, currentModel);
-					
+
 					break;
-					
-					
+
+
 				case EventType.KeyDown:
 
 					//if ( (currentModel != null && currentModel.selectedPOs != null && currentModel.selectedPOs.Count > 0) && (e.command || e.control))
-					if ( (currentModel != null && currentModel.selectedPOs != null && currentModel.selectedPOs.Count > 0) && (e.command || e.control))
-							AXEditorUtilities.processEventCommandKeyDown(e, currentModel);
+					if ((currentModel != null && currentModel.selectedPOs != null && currentModel.selectedPOs.Count > 0) && (e.command || e.control))
+						AXEditorUtilities.processEventCommandKeyDown(e, currentModel);
 					break;
 
 
@@ -1527,89 +1585,89 @@ namespace AXEditor
 
 					//if (GUIUtility.hotControl != 0 || (currentModel != null && currentModel.activeFreeCurves != null && currentModel.activeFreeCurves.Count > 0))
 					//	{
-							// We are not on a handle!
-							// This is a click that did not land on a SceneView Handle.
-							// See if it hit an object and if that object is an AXGameObject
-							//Debug.Log("hotcontrol != 0..... " + GUI.GetNameOfFocusedControl());
-							clickedObject = null;
-							 
-							RaycastHit hit;
-							if (Physics.Raycast( HandleUtility.GUIPointToWorldRay(e.mousePosition), out hit))
-								clickedObject = hit.collider.gameObject;
+					// We are not on a handle!
+					// This is a click that did not land on a SceneView Handle.
+					// See if it hit an object and if that object is an AXGameObject
+					//Debug.Log("hotcontrol != 0..... " + GUI.GetNameOfFocusedControl());
+					clickedObject = null;
 
-					
-							int nearId = HandleUtility.nearestControl;
+					RaycastHit hit;
+					if (Physics.Raycast(HandleUtility.GUIPointToWorldRay(e.mousePosition), out hit))
+						clickedObject = hit.collider.gameObject;
+
+
+					int nearId = HandleUtility.nearestControl;
 
 					//Debug.Log("Ya Ya A clickedObject="+clickedObject + "; nearId="+nearId);
 
 
-							if (nearId == 0)
-							if (! optionClick && sceneViewState != SceneViewState.AddPoint && Event.current.button == 0)
-							{
-								//Debug.Log("Ya Ya B");
-								//registerScenViewClick(clickedObject);
-								executeSceneViewClick();
-						
-							}
+					if (nearId == 0)
+						if (!optionClick && sceneViewState != SceneViewState.AddPoint && Event.current.button == 0)
+						{
+							//Debug.Log("Ya Ya B");
+							//registerScenViewClick(clickedObject);
+							executeSceneViewClick();
+
+						}
 
 
-							/*
-							if(clickedObject == null)
-							{	
-								// A click into the void!
+					/*
+					if(clickedObject == null)
+					{	
+						// A click into the void!
 
-								registerVoidClick();
+						registerVoidClick();
 
-								clickedInVoid = true;
-							}
-							else
-							{
-								OnSceneView_ColliderClicked(clickedObject);
-								e.Use ();
-							}
-							*/
+						clickedInVoid = true;
+					}
+					else
+					{
+						OnSceneView_ColliderClicked(clickedObject);
+						e.Use ();
+					}
+					*/
 
 					SceneView sv = SceneView.lastActiveSceneView;
 					if (sv != null)
 						sv.Repaint();
 
 
-						//}
+					//}
 
 
-					
+
 					break;  // mouseDown
-			
-			
-			
+
+
+
 			} // end switch
-			
+
 			switch (e.rawType)
 			{
-			case EventType.MouseUp:
-				// mouse up is only called when mousing up from a handle...not sure why.
-				//Debug.Log ("MOUSE UP -- GUIUtility.hotControl="+GUIUtility.hotControl);
-				mouseIsDownOnHandle = false;
-				isPseudoDraggingSelectedPoint = -1;
+				case EventType.MouseUp:
+					// mouse up is only called when mousing up from a handle...not sure why.
+					//Debug.Log ("MOUSE UP -- GUIUtility.hotControl="+GUIUtility.hotControl);
+					mouseIsDownOnHandle = false;
+					isPseudoDraggingSelectedPoint = -1;
 
 
-			
 
-				optionClick = false;
 
-				if (currentModel != null && currentModel.buildStatus == AXModel.BuildStatus.Generated)
-				{
-					currentModel.renderMode = AXModel.RenderMode.GameObjects;
+					optionClick = false;
 
-					if (currentModel.buildStatus == AXModel.BuildStatus.Generated)
-						currentModel.build();
+					if (currentModel != null && currentModel.buildStatus == AXModel.BuildStatus.Generated)
+					{
+						currentModel.renderMode = AXModel.RenderMode.GameObjects;
 
-				}
-					
-				//Debug.Log("MOUSE UP");
+						if (currentModel.buildStatus == AXModel.BuildStatus.Generated)
+							currentModel.build();
 
-				break; // end OnMouseUp
-				
+					}
+
+					//Debug.Log("MOUSE UP");
+
+					break; // end OnMouseUp
+
 			}
 
 
@@ -1628,79 +1686,81 @@ namespace AXEditor
 				// Unselected
 
 
-				foreach(AXParametricObject po in currentModel.parametricObjects)
+				foreach (AXParametricObject po in currentModel.parametricObjects)
 				{
-					
-					if (po.is2D()) 
+
+					if (po.is2D())
 					{
 
 						//if (po.getConsumer() == null)
 						//{ 
-							GeneratorHandler gh = GeneratorHandler.getGeneratorHandler(po);
-							if (gh != null)
-								gh.drawHandlesUnselected();
+						GeneratorHandler gh = GeneratorHandler.getGeneratorHandler(po);
+						if (gh != null)
+							gh.drawHandlesUnselected();
 						//}
 					}
 				}
 
-				
-				
-				Handles.color = Color.red; 
+
+
+				Handles.color = Color.red;
 
 				// DRAW PO HANDLES
 				//Debug.Log("currentModel.selectedPOs.Count="+currentModel.selectedPOs.Count);
 				//Debug.Log("============================");
-				for (int i = 0; i < currentModel.selectedPOs.Count; i++) {
-					AXParametricObject po = currentModel.selectedPOs [i];
-					if (po.GeneratorTypeString == "Turtle" || po.GeneratorTypeString == "Shape") {
+				for (int i = 0; i < currentModel.selectedPOs.Count; i++)
+				{
+					AXParametricObject po = currentModel.selectedPOs[i];
+					if (po.GeneratorTypeString == "Turtle" || po.GeneratorTypeString == "Shape")
+					{
 						Handles.color = Color.magenta;
 					}
 					po.codeWarning = "";
 
 					//Debug.Log("* Draw " + po.Name);
-					GeneratorHandler gh = GeneratorHandler.getGeneratorHandler (po);
+					GeneratorHandler gh = GeneratorHandler.getGeneratorHandler(po);
 					if (gh != null)
-						gh.drawHandles ();
+						gh.drawHandles();
 				}
-				
-				
+
+
 
 
 				//if (e.type == EventType.MouseDown)
 
-				
+
 				// use the selected PO's of this model and 
 				// make handles for any of its parameters that have been designated as handlable 
-				
-				
-				
+
+
+
 				if (GUI.changed)
 				{
 					if (mouseJustDown)
 					{
 						//Debug.Log ("ModelInspector::mouseJustDown Register Undo");
 						mouseJustDown = false;
-						
+
 						//Undo.RegisterCompleteObjectUndo (currentModel, "Scene Handle Drag");
-						
-						currentModel.setRenderMode( AXModel.RenderMode.DrawMesh );
-						
+
+						currentModel.setRenderMode(AXModel.RenderMode.DrawMesh);
+
 					}
 					//model.generate(); <-- NOW DONE BEFORE ANY CALL TO Parameter::intiateRipple_setFloatValueFromGUIChange
-					
+
 					//EditorUtility.SetDirty (target);
 				}
-				
+
 			}
-			
-			
+
+
 
 		}
-		
 
 
-		public static long 			sceneViewClickRegisteredAt = 0;
-		public static GameObject 		clickedObject;
+
+		public static long sceneViewClickRegisteredAt = 0;
+		public static GameObject clickedObject;
 
 		public static void registerScenViewClick(GameObject go = null)
 		{
@@ -1710,7 +1770,7 @@ namespace AXEditor
 				clickedObject = go;
 
 		}
-		 
+
 
 		public static void mouseDownOnSceneViewHandle()
 		{
@@ -1741,7 +1801,7 @@ namespace AXEditor
 				if (currentModel != null)
 				{
 					//if ( currentModel.selectedPOs != null && currentModel.selectedPOs.Count == 1 &&  currentModel.selectedPOs[0] != null && currentModel.selectedPOs[0].generator != null &&  currentModel.selectedPOs[0].generator is FreeCurve)
-						//selectedFreeCurve = (FreeCurve) currentModel.selectedPOs[0].generator;
+					//selectedFreeCurve = (FreeCurve) currentModel.selectedPOs[0].generator;
 				}
 
 
@@ -1752,9 +1812,9 @@ namespace AXEditor
 
 					bool foundSelectedPoints = false;
 
-					for (int i=0; i<currentModel.activeFreeCurves.Count; i++)
+					for (int i = 0; i < currentModel.activeFreeCurves.Count; i++)
 					{
-                        Generator gener = currentModel.activeFreeCurves[i].generator;
+						Generator gener = currentModel.activeFreeCurves[i].generator;
 						if (gener.hasSelectedPoints())
 						{
 							foundSelectedPoints = true;
@@ -1763,12 +1823,12 @@ namespace AXEditor
 
 					}
 
-					if (! foundSelectedPoints)
+					if (!foundSelectedPoints)
 					{
 						if (currentModel != null)
 							currentModel.deselectAll();
-						currentModel 				= null;
-						Selection.activeGameObject 	= null;
+						currentModel = null;
+						Selection.activeGameObject = null;
 						mouseIsDownOnHandle = false;
 
 					}
@@ -1777,20 +1837,20 @@ namespace AXEditor
 				{
 					if (currentModel != null)
 						currentModel.deselectAll();
-					currentModel 				= null;
-					Selection.activeGameObject 	= null;
+					currentModel = null;
+					Selection.activeGameObject = null;
 					mouseIsDownOnHandle = false;
 				}
 			}
 			else
 			{
-				
+
 				OnSceneView_ColliderClicked(clickedObject);
 
 			}
 			SceneView sv = SceneView.lastActiveSceneView;
-					if (sv != null)
-						sv.Repaint();
+			if (sv != null)
+				sv.Repaint();
 
 		}
 
@@ -1802,7 +1862,7 @@ namespace AXEditor
 		public static void OnSceneView_ColliderClicked(GameObject clickedObject)
 		{
 			// we did hit a collider. Is this a AXGameObject? Or some other scene object?
-			AXGameObject 	 axgo = clickedObject.GetComponent<AXGameObject>();
+			AXGameObject axgo = clickedObject.GetComponent<AXGameObject>();
 
 
 			if (axgo != null)
@@ -1816,14 +1876,14 @@ namespace AXEditor
 				currentModel = axgo.model;
 
 
-				
+
 				if (currentModel != null && currentModel.selectedPOs != null)
 				{
 					Selection.activeGameObject = currentModel.gameObject;
 					currentModel.selectedPOs.Clear();
 				}
 
-				
+
 
 				// Is there a contectual click for a menu?
 
@@ -1838,12 +1898,13 @@ namespace AXEditor
 				{
 					//Debug.Log("Cycle select B " + currentModel.clickSelectedAXGO.parametricObject.Name);
 					// repeat click on this object - cycle select...
-					if (Event.current == null || ! Event.current.control)
+					if (Event.current == null || !Event.current.control)
 					{
 						Transform t = currentModel.nextAncestor();
 						//Debug.Log("t="+t);
 						if (t != null)
 						{
+							//Debug.Log("t="+t.gameObject.name);
 							currentModel.cycleSelectedAXGO = t.gameObject.GetComponent<AXGameObject>();
 
 							// SKIP OVER NULL GAME_OBJECTS
@@ -1862,8 +1923,8 @@ namespace AXEditor
 									currentModel.cycleSelectedAXGO = t.gameObject.GetComponent<AXGameObject>();
 							}
 
-							
-							   
+
+
 							currentModel.cycleSelectedPO = currentModel.cycleSelectedAXGO.parametricObject;
 
 							//currentModel.selectAndPanToPO(currentModel.cycleSelectedAXGO.parametricObject);
@@ -1872,25 +1933,32 @@ namespace AXEditor
 						}
 						else
 						{
+							//Debug.Log("yo");
 							currentModel.clickSelectedAXGO = null;
 							currentModel.cycleSelectedPO = null;
+
+
+
+							// ADDED 2021_04_11
+							// New Behavior: first handles already showing when object is first selected
+							axgo.OnSelect();
 						}
 
-						lastAXGOselectionTime = StopWatch.now ();
+						lastAXGOselectionTime = StopWatch.now();
 
 
 					}
-					
-				} 
+
+				}
 				else
-				{	
-					
+				{
+					//Debug.Log("ak");
 					axgo.OnSelect();
 
 					//Debug.Log("First click: " + currentModel.clickSelectedAXGO);
-					lastAXGOselectionTime = StopWatch.now ();
+					lastAXGOselectionTime = StopWatch.now();
 				}
-				
+
 				/*
 				if (Event.current.control && currentModel != null)
 				{
@@ -1910,7 +1978,7 @@ namespace AXEditor
 				currentModel = null;
 				Selection.activeGameObject = clickedObject;
 			}
-			
+
 		}
 
 
@@ -1934,7 +2002,7 @@ namespace AXEditor
 
 				//return Convert.ChangeType(EditorWindow.GetWindow(NodeGraphEditorType), NodeGraphEditorType);
 
-			
+
 
 			}
 
@@ -1944,10 +2012,10 @@ namespace AXEditor
 		public static bool snappingOn()
 		{
 
-			if ( (ArchimatixEngine.snappingIsOn  && ! Event.current.control) || (! ArchimatixEngine.snappingIsOn  && Event.current.control) )
+			if ((ArchimatixEngine.snappingIsOn && !Event.current.control) || (!ArchimatixEngine.snappingIsOn && Event.current.control))
 				return true;
 
-				return false;
+			return false;
 		}
 
 		public static void openLibrary3D()
@@ -1962,7 +2030,7 @@ namespace AXEditor
 		public static void openLibrary(int showClass = 3)
 		{
 
-			LibraryEditorWindow libwin3D = (LibraryEditorWindow) EditorWindow.GetWindow(typeof(LibraryEditorWindow), false, "AX Library", true);
+			LibraryEditorWindow libwin3D = (LibraryEditorWindow)EditorWindow.GetWindow(typeof(LibraryEditorWindow), false, "AX Library", true);
 			LibraryEditorWindow.showClass = showClass;
 			libwin3D.autoRepaintOnSceneChange = true;
 			libwin3D.setPositionIfNotDocked();
@@ -1986,27 +2054,29 @@ namespace AXEditor
 		
 			Vector3 worldPointForMousePositon = rayCameraThroughMouse.GetPoint( distanceAlongRay );
 		*/
-		
-		
-		
-	
-	}   
 
 
-	public class AXAssetPostprocessor : AssetPostprocessor {
-	    void OnPostprocessTexture(Texture2D texture) {
-			 
-	    } 
 
-	    private static bool libraryLoadStarted;
 
-		static void OnPostprocessAllAssets (string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths) 
+	}
+
+
+	public class AXAssetPostprocessor : AssetPostprocessor
+	{
+		void OnPostprocessTexture(Texture2D texture)
 		{
-            //Debug.Log("OnPostprocessAllAssets " + ArchimatixEngine.library);
+
+		}
+
+		private static bool libraryLoadStarted;
+
+		static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
+		{
+			//Debug.Log("OnPostprocessAllAssets " + ArchimatixEngine.library);
 
 
-            if (Application.isPlaying)
-                return;
+			if (Application.isPlaying)
+				return;
 
 			// in case the Archimatix folder was moved
 			ArchimatixEngine.establishPaths();
@@ -2026,71 +2096,71 @@ namespace AXEditor
 				ArchimatixEngine.createLibraryFromJSONFiles();
 				return;
 			}
-			
-//			if (ArchimatixEngine.library == null)
-//				ArchimatixEngine.library = Library.loadLibrary();
+
+			//			if (ArchimatixEngine.library == null)
+			//				ArchimatixEngine.library = Library.loadLibrary();
 
 			//else // && ! libraryLoadStarted)
 			//{
 
-				
-				foreach (string str in importedAssets)
-		        {
-					if (str.Contains(".axobj"))
-					{
-						string nodeName = System.IO.Path.GetFileNameWithoutExtension(str);
 
-						if (! ArchimatixEngine.library.hasItem(nodeName))
-						{
-							// some new item was added to Assets, not saved from Editor
-							recreateLibrary = true;
-						}
+			foreach (string str in importedAssets)
+			{
+				if (str.Contains(".axobj"))
+				{
+					string nodeName = System.IO.Path.GetFileNameWithoutExtension(str);
 
-					}
-					 
-					
-		        }
-		        foreach (string str in deletedAssets)
-		        {
-		            //Debug.Log("Deleted Asset: " + str);
-					if (str.Contains(".axobj"))
+					if (!ArchimatixEngine.library.hasItem(nodeName))
 					{
-						string nodeName = System.IO.Path.GetFileNameWithoutExtension(str);
-
-						if (ArchimatixEngine.library.hasItem(nodeName))
-						{
-							// Since the library still thinks its there, this must have been 
-							// a deleteion of a file from the assts folder.
-							recreateLibrary = true;
-						}
-					}
-		        }
-		         
-				foreach (string str in movedAssets)
-		        {
-		            //Debug.Log("Moved Asset: " + movedAssets[i] + " from: " + movedFromAssetPaths[i]);
-					if (str.Contains(".axobj"))
-					{
+						// some new item was added to Assets, not saved from Editor
 						recreateLibrary = true;
 					}
 
-		        }
-
-
-
-		        if (! recreateLibrary)
-		        {
-
-		        	// Check if the number of 
-		        }
-
-
-				if (recreateLibrary)
-				{
-					//ArchimatixEngine.library.readLibraryFromFiles();
-					ArchimatixEngine.createLibraryFromJSONFiles();
 				}
-				
+
+
+			}
+			foreach (string str in deletedAssets)
+			{
+				//Debug.Log("Deleted Asset: " + str);
+				if (str.Contains(".axobj"))
+				{
+					string nodeName = System.IO.Path.GetFileNameWithoutExtension(str);
+
+					if (ArchimatixEngine.library.hasItem(nodeName))
+					{
+						// Since the library still thinks its there, this must have been 
+						// a deleteion of a file from the assts folder.
+						recreateLibrary = true;
+					}
+				}
+			}
+
+			foreach (string str in movedAssets)
+			{
+				//Debug.Log("Moved Asset: " + movedAssets[i] + " from: " + movedFromAssetPaths[i]);
+				if (str.Contains(".axobj"))
+				{
+					recreateLibrary = true;
+				}
+
+			}
+
+
+
+			if (!recreateLibrary)
+			{
+
+				// Check if the number of 
+			}
+
+
+			if (recreateLibrary)
+			{
+				//ArchimatixEngine.library.readLibraryFromFiles();
+				ArchimatixEngine.createLibraryFromJSONFiles();
+			}
+
 			//}
 
 
@@ -2102,7 +2172,7 @@ namespace AXEditor
 
 			if (model != null && model.parametricObjects != null)
 			{
-				for (int i=0; i<model.parametricObjects.Count; i++)
+				for (int i = 0; i < model.parametricObjects.Count; i++)
 				{
 					if (model.parametricObjects[i].generator is MaterialTool)
 						(model.parametricObjects[i].generator as MaterialTool).setTexelsPerUnit();
@@ -2121,7 +2191,7 @@ namespace AXEditor
 	}
 
 
-	public class UserMessage 
+	public class UserMessage
 	{
 		public DateTime createdate;
 		public string message;

@@ -388,7 +388,7 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 
 		HLSLINCLUDE
 		#pragma target 4.5
-		#pragma only_renderers d3d11 ps4 xboxone vulkan metal switch
+		#pragma only_renderers d3d11 playstation xboxone xboxseries vulkan metal switch
 		#pragma multi_compile_instancing
 		#pragma instancing_options renderinglayer
 
@@ -835,17 +835,7 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 				GetNormalWS( fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants );
 
 				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
-
-				bentNormalWS = surfaceData.normalWS;
-				#ifdef ASE_BENT_NORMAL
-				GetNormalWS( fragInputs, surfaceDescription.BentNormal, bentNormalWS, doubleSidedConstants );
-				#endif
-
 				surfaceData.tangentWS = normalize( fragInputs.tangentToWorld[ 0 ].xyz );
-				#ifdef _MATERIAL_FEATURE_ANISOTROPY
-				surfaceData.tangentWS = TransformTangentToWorld( surfaceDescription.Tangent, fragInputs.tangentToWorld );
-				#endif
-				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
 
 				// decals
 				#if HAVE_DECALS
@@ -855,6 +845,18 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 					ApplyDecalToSurfaceData(decalSurfaceData, fragInputs.tangentToWorld[2], surfaceData);
 				}
 				#endif
+
+				bentNormalWS = surfaceData.normalWS;
+
+				#ifdef ASE_BENT_NORMAL
+				GetNormalWS( fragInputs, surfaceDescription.BentNormal, bentNormalWS, doubleSidedConstants );
+				#endif
+
+				#ifdef _MATERIAL_FEATURE_ANISOTROPY
+				surfaceData.tangentWS = TransformTangentToWorld( surfaceDescription.Tangent, fragInputs.tangentToWorld );
+				#endif
+				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
+
 
 				#if defined(_SPECULAR_OCCLUSION_CUSTOM)
 				#elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
@@ -1414,17 +1416,7 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 				GetNormalWS( fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants );
 
 				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
-
-				bentNormalWS = surfaceData.normalWS;
-				#ifdef ASE_BENT_NORMAL
-				GetNormalWS( fragInputs, surfaceDescription.BentNormal, bentNormalWS, doubleSidedConstants );
-				#endif
-
 				surfaceData.tangentWS = normalize( fragInputs.tangentToWorld[ 0 ].xyz );
-				#ifdef _MATERIAL_FEATURE_ANISOTROPY
-				surfaceData.tangentWS = TransformTangentToWorld( surfaceDescription.Tangent, fragInputs.tangentToWorld );
-				#endif
-				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
 
 				// decals
 				#if HAVE_DECALS
@@ -1434,6 +1426,18 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 					ApplyDecalToSurfaceData(decalSurfaceData, fragInputs.tangentToWorld[2], surfaceData);
 				}
 				#endif
+
+				bentNormalWS = surfaceData.normalWS;
+				
+				#ifdef ASE_BENT_NORMAL
+				GetNormalWS( fragInputs, surfaceDescription.BentNormal, bentNormalWS, doubleSidedConstants );
+				#endif
+
+				#ifdef _MATERIAL_FEATURE_ANISOTROPY
+				surfaceData.tangentWS = TransformTangentToWorld( surfaceDescription.Tangent, fragInputs.tangentToWorld );
+				#endif
+				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
+
 
 				#if defined(_SPECULAR_OCCLUSION_CUSTOM)
 				#elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
@@ -1942,12 +1946,8 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 				GetNormalWS( fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants );
 
 				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
-
-				bentNormalWS = surfaceData.normalWS;
-
 				surfaceData.tangentWS = normalize( fragInputs.tangentToWorld[ 0 ].xyz );
-				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
-
+				
 				// decals
 				#if HAVE_DECALS
 				if( _EnableDecals )
@@ -1956,6 +1956,9 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 					ApplyDecalToSurfaceData(decalSurfaceData, fragInputs.tangentToWorld[2], surfaceData);
 				}
 				#endif
+
+				bentNormalWS = surfaceData.normalWS;
+				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
 
 				#if defined(_SPECULAR_OCCLUSION_CUSTOM)
 				#elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
@@ -2405,11 +2408,7 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 				GetNormalWS( fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants );
 
 				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
-
-				bentNormalWS = surfaceData.normalWS;
-
 				surfaceData.tangentWS = normalize( fragInputs.tangentToWorld[ 0 ].xyz );
-				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
 
 				// decals
 				#if HAVE_DECALS
@@ -2419,6 +2418,9 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 					ApplyDecalToSurfaceData(decalSurfaceData, fragInputs.tangentToWorld[2], surfaceData);
 				}
 				#endif
+
+				bentNormalWS = surfaceData.normalWS;
+				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
 
 				#if defined(_SPECULAR_OCCLUSION_CUSTOM)
 				#elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
@@ -2874,12 +2876,8 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 				GetNormalWS( fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants );
 
 				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
-
-				bentNormalWS = surfaceData.normalWS;
-
 				surfaceData.tangentWS = normalize( fragInputs.tangentToWorld[ 0 ].xyz );
-				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
-
+				
 				// decals
 				#if HAVE_DECALS
 				if( _EnableDecals )
@@ -2888,6 +2886,9 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 					ApplyDecalToSurfaceData(decalSurfaceData, fragInputs.tangentToWorld[2], surfaceData);
 				}
 				#endif
+
+				bentNormalWS = surfaceData.normalWS;
+				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
 
 				#if defined(_SPECULAR_OCCLUSION_CUSTOM)
 				#elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
@@ -3067,7 +3068,7 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 			#if defined(WRITE_NORMAL_BUFFER) && defined(WRITE_MSAA_DEPTH)
 				#define SV_TARGET_DECAL SV_Target2
 			#elif defined(WRITE_NORMAL_BUFFER) || defined(WRITE_MSAA_DEPTH)
-				#define SV_TARGET_DECAL SV_Target1
+				#define SV_TARGET_DECAL SV_Target2
 			#else
 				#define SV_TARGET_DECAL SV_Target0
 			#endif
@@ -3383,11 +3384,7 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 				GetNormalWS( fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants );
 
 				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
-
-				bentNormalWS = surfaceData.normalWS;
-
 				surfaceData.tangentWS = normalize( fragInputs.tangentToWorld[ 0 ].xyz );
-				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
 
 				// decals
 				#if HAVE_DECALS
@@ -3397,6 +3394,9 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 					ApplyDecalToSurfaceData(decalSurfaceData, fragInputs.tangentToWorld[2], surfaceData);
 				}
 				#endif
+
+				bentNormalWS = surfaceData.normalWS;
+				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
 
 				#if defined(_SPECULAR_OCCLUSION_CUSTOM)
 				#elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
@@ -3918,12 +3918,8 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 				GetNormalWS( fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants );
 
 				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
-
-				bentNormalWS = surfaceData.normalWS;
-
 				surfaceData.tangentWS = normalize( fragInputs.tangentToWorld[ 0 ].xyz );
-				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
-
+				
 				// decals
 				#if HAVE_DECALS
 				if( _EnableDecals )
@@ -3932,6 +3928,9 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 					ApplyDecalToSurfaceData(decalSurfaceData, fragInputs.tangentToWorld[2], surfaceData);
 				}
 				#endif
+
+				bentNormalWS = surfaceData.normalWS;
+				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
 
 				#if defined(_SPECULAR_OCCLUSION_CUSTOM)
 				#elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
@@ -4396,16 +4395,7 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 
 				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
 
-				bentNormalWS = surfaceData.normalWS;
-				#ifdef ASE_BENT_NORMAL
-				GetNormalWS( fragInputs, surfaceDescription.BentNormal, bentNormalWS, doubleSidedConstants );
-				#endif
-
 				surfaceData.tangentWS = normalize( fragInputs.tangentToWorld[ 0 ].xyz );
-				#ifdef _MATERIAL_FEATURE_ANISOTROPY
-				surfaceData.tangentWS = TransformTangentToWorld( surfaceDescription.Tangent, fragInputs.tangentToWorld );
-				#endif
-				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
 
 				// decals
 				#if HAVE_DECALS
@@ -4415,6 +4405,17 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 					ApplyDecalToSurfaceData(decalSurfaceData, fragInputs.tangentToWorld[2], surfaceData);
 				}
 				#endif
+
+				bentNormalWS = surfaceData.normalWS;
+
+				#ifdef ASE_BENT_NORMAL
+				GetNormalWS( fragInputs, surfaceDescription.BentNormal, bentNormalWS, doubleSidedConstants );
+				#endif
+
+				#ifdef _MATERIAL_FEATURE_ANISOTROPY
+				surfaceData.tangentWS = TransformTangentToWorld( surfaceDescription.Tangent, fragInputs.tangentToWorld );
+				#endif
+				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
 
 				#if defined(_SPECULAR_OCCLUSION_CUSTOM)
 				#elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
@@ -4819,7 +4820,7 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 				#endif
 
 				bool viewMaterial = false;
-				int bufferSize = int(_DebugViewMaterialArray[0]);
+				int bufferSize = _DebugViewMaterialArray[0].x;
 				if (bufferSize != 0)
 				{
 					bool needLinearToSRGB = false;
@@ -4827,7 +4828,7 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 
 					for (int index = 1; index <= bufferSize; index++)
 					{
-						int indexMaterialProperty = int(_DebugViewMaterialArray[index]);
+						int indexMaterialProperty = _DebugViewMaterialArray[index].x;
 
 						if (indexMaterialProperty != 0)
 						{
@@ -4835,7 +4836,7 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 
 							GetPropertiesDataDebug(indexMaterialProperty, result, needLinearToSRGB);
 							GetVaryingsDataDebug(indexMaterialProperty, input, result, needLinearToSRGB);
-							GetBuiltinDataDebug(indexMaterialProperty, builtinData, result, needLinearToSRGB);
+							GetBuiltinDataDebug(indexMaterialProperty, builtinData, posInput, result, needLinearToSRGB);
 							GetSurfaceDataDebug(indexMaterialProperty, surfaceData, result, needLinearToSRGB);
 							GetBSDFDataDebug(indexMaterialProperty, bsdfData, result, needLinearToSRGB);
 						}
@@ -5140,11 +5141,7 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 				GetNormalWS( fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants );
 
 				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
-
-				bentNormalWS = surfaceData.normalWS;
-
 				surfaceData.tangentWS = normalize( fragInputs.tangentToWorld[ 0 ].xyz );
-				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
 
 				// decals
 				#if HAVE_DECALS
@@ -5154,6 +5151,10 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 					ApplyDecalToSurfaceData(decalSurfaceData, fragInputs.tangentToWorld[2], surfaceData);
 				}
 				#endif
+
+				bentNormalWS = surfaceData.normalWS;
+
+				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
 
 				#if defined(_SPECULAR_OCCLUSION_CUSTOM)
 				#elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
@@ -5607,11 +5608,7 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 				GetNormalWS( fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants );
 
 				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
-
-				bentNormalWS = surfaceData.normalWS;
-
 				surfaceData.tangentWS = normalize( fragInputs.tangentToWorld[ 0 ].xyz );
-				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
 
 				// decals
 				#if HAVE_DECALS
@@ -5621,6 +5618,10 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 					ApplyDecalToSurfaceData(decalSurfaceData, fragInputs.tangentToWorld[2], surfaceData);
 				}
 				#endif
+
+				bentNormalWS = surfaceData.normalWS;
+
+				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
 
 				#if defined(_SPECULAR_OCCLUSION_CUSTOM)
 				#elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
@@ -6135,17 +6136,7 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 				GetNormalWS( fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants );
 
 				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
-
-				bentNormalWS = surfaceData.normalWS;
-				#ifdef ASE_BENT_NORMAL
-				GetNormalWS( fragInputs, surfaceDescription.BentNormal, bentNormalWS, doubleSidedConstants );
-				#endif
-
 				surfaceData.tangentWS = normalize( fragInputs.tangentToWorld[ 0 ].xyz );
-				#ifdef _MATERIAL_FEATURE_ANISOTROPY
-				surfaceData.tangentWS = TransformTangentToWorld( surfaceDescription.Tangent, fragInputs.tangentToWorld );
-				#endif
-				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
 
 				// decals
 				#if HAVE_DECALS
@@ -6155,6 +6146,18 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 					ApplyDecalToSurfaceData(decalSurfaceData, fragInputs.tangentToWorld[2], surfaceData);
 				}
 				#endif
+
+				bentNormalWS = surfaceData.normalWS;
+				
+				#ifdef ASE_BENT_NORMAL
+				GetNormalWS( fragInputs, surfaceDescription.BentNormal, bentNormalWS, doubleSidedConstants );
+				#endif
+
+				#ifdef _MATERIAL_FEATURE_ANISOTROPY
+				surfaceData.tangentWS = TransformTangentToWorld( surfaceDescription.Tangent, fragInputs.tangentToWorld );
+				#endif
+				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
+
 
 				#if defined(_SPECULAR_OCCLUSION_CUSTOM)
 				#elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
@@ -6559,7 +6562,7 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 				#endif
 
 				bool viewMaterial = false;
-				int bufferSize = int(_DebugViewMaterialArray[0].x);
+				int bufferSize = _DebugViewMaterialArray[0].x;
 				if (bufferSize != 0)
 				{
 					bool needLinearToSRGB = false;
@@ -6567,7 +6570,7 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 
 					for (int index = 1; index <= bufferSize; index++)
 					{
-						int indexMaterialProperty = int(_DebugViewMaterialArray[index].x);
+						int indexMaterialProperty = _DebugViewMaterialArray[index].x;
 
 						if (indexMaterialProperty != 0)
 						{

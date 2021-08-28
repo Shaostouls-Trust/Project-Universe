@@ -44,12 +44,15 @@ namespace ProjectUniverse.UI
             else if (rate <= PVC.GetMaxRadsDetectable() + 1000) { rateDis.text = PVC.GetMaxRadsDetectable() + " R"; }
             else { rateDis.text = "ERR"; }
             //rateDis.text = Math.Round(rate,1)+" R";
+            
             Image rateBar = rateBarParent.transform.GetChild(0).GetComponent<Image>();
+            /*
             if (rate <= 300) { rateDis.color = GREEN; rateBar.color = GREEN; }
             else if (rate < 600) { rateDis.color = YELLOW; rateBar.color = YELLOW; }
             else if (rate < 2000) { rateDis.color = RED; rateBar.color = RED; }
             else if (rate < 5000) { rateDis.color = DARKRED; rateBar.color = DARKRED; }
             else if (rate >= 5000) { rateDis.color = DARKRED; rateBar.color = DARKRED; }//5000
+            */
             float barmax = rateBarParent.rectTransform.rect.height;
             float y = 0;
             if (rate < 5000)
@@ -58,7 +61,10 @@ namespace ProjectUniverse.UI
                 {
                     y = barmax;
                 }
-                y = (rate / PVC.GetMaxRadsDetectable()) * barmax;
+                else 
+                { 
+                    y = (rate / PVC.GetMaxRadsDetectable()) * barmax; 
+                }
             }
             else { y = barmax; }
             rateBar.rectTransform.transform.localScale = new Vector3(1, y, 1);
@@ -66,9 +72,11 @@ namespace ProjectUniverse.UI
             dose = PVC.AbsorbedDose;
             doseDis.text = Math.Round(dose, 2) + " rads";
             Image doseBar = doseMeter.transform.GetChild(0).GetComponent<Image>();
+            /*
             if (dose <= 300) { doseDis.color = GREEN; doseBar.color = GREEN; }
             else if (dose <= 2000) { doseDis.color = YELLOW; doseBar.color = YELLOW; }
             else if (dose > 2000) { doseDis.color = RED; doseBar.color = RED; }
+            */
             float dosebar = rateBarParent.rectTransform.rect.height;
             float y2 = 0;
             if (dose < 5000f)

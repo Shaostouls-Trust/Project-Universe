@@ -368,7 +368,7 @@ namespace AmplifyShaderEditor
 		public string GetVFace( int uniqueId )
 		{
 			#if UNITY_2018_3_OR_NEWER
-			if( IsHDRP && ASEPackageManagerHelper.CurrentHDVersion >= ASESRPVersions.ASE_SRP_6_9_0 )
+			if( IsSRP && ASEPackageManagerHelper.CurrentHDVersion >= ASESRPVersions.ASE_SRP_6_9_0 )
 			{
 				string result = string.Empty;
 				if( GetCustomInterpolatedData( TemplateInfoOnSematics.VFACE, WirePortDataType.FLOAT, PrecisionType.Float, ref result, true, MasterNodePortCategory.Fragment ) )
@@ -391,11 +391,20 @@ namespace AmplifyShaderEditor
 			else
 			#endif
 			{
+				m_currentDataCollector.AddFaceMacros();
+
+				//if( m_fragmentInputParams != null && m_fragmentInputParams.ContainsKey( TemplateSemantics.VFACE ) )
+				//	return m_fragmentInputParams[ TemplateSemantics.VFACE ].Name;
+
+				//RegisterFragInputParams( WirePortDataType.FLOAT, PrecisionType.Half, TemplateHelperFunctions.SemanticsDefaultName[ TemplateSemantics.VFACE ], TemplateSemantics.VFACE );
+				//return m_fragmentInputParams[ TemplateSemantics.VFACE ].Name;
 				if( m_fragmentInputParams != null && m_fragmentInputParams.ContainsKey( TemplateSemantics.VFACE ) )
 					return m_fragmentInputParams[ TemplateSemantics.VFACE ].Name;
 
-				RegisterFragInputParams( WirePortDataType.FLOAT, PrecisionType.Half, TemplateHelperFunctions.SemanticsDefaultName[ TemplateSemantics.VFACE ], TemplateSemantics.VFACE );
+				string custom = "FRONT_FACE_TYPE " + TemplateHelperFunctions.SemanticsDefaultName[ TemplateSemantics.VFACE ] + " : FRONT_FACE_SEMANTIC";
+				RegisterFragInputParams( WirePortDataType.FLOAT , PrecisionType.Half , TemplateHelperFunctions.SemanticsDefaultName[ TemplateSemantics.VFACE ] , TemplateSemantics.VFACE , custom );
 				return m_fragmentInputParams[ TemplateSemantics.VFACE ].Name;
+
 			}
 		}
 
@@ -567,6 +576,7 @@ namespace AmplifyShaderEditor
 					case WirePortDataType.FLOAT3:
 					finalVarName += ".xyz";
 					break;
+					case WirePortDataType.UINT4:
 					case WirePortDataType.FLOAT4:
 					case WirePortDataType.COLOR:
 					case WirePortDataType.FLOAT3x3:
@@ -1027,6 +1037,12 @@ namespace AmplifyShaderEditor
 			return false;
 		}
 
+		public WirePortDataType GetVertexPositionDataType()
+		{
+			InterpDataHelper info = GetInfo( TemplateInfoOnSematics.POSITION , false, MasterNodePortCategory.Vertex);
+			return info.VarType;
+		}
+
 		public string GetVertexPosition( WirePortDataType type, PrecisionType precisionType, bool useMasterNodeCategory = true, MasterNodePortCategory customCategory = MasterNodePortCategory.Fragment )
 		{
 			if( HasInfo( TemplateInfoOnSematics.POSITION, useMasterNodeCategory, customCategory ) )
@@ -1164,7 +1180,40 @@ namespace AmplifyShaderEditor
 					return varName;
 			}
 		}
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		public string GetBlendWeights( bool useMasterNodeCategory = true , MasterNodePortCategory customCategory = MasterNodePortCategory.Fragment )
+		{
+			if( HasInfo( TemplateInfoOnSematics.BLENDWEIGHTS , useMasterNodeCategory , customCategory ) )
+			{
+				InterpDataHelper info = GetInfo( TemplateInfoOnSematics.BLENDWEIGHTS , useMasterNodeCategory , customCategory );
+				return info.VarName;
+			}
+			else
+			{
+				MasterNodePortCategory category = useMasterNodeCategory ? m_currentDataCollector.PortCategory : customCategory;
+				string name = GeneratorUtils.VertexBlendWeightsStr;
+				string varName = RegisterInfoOnSemantic( category , TemplateInfoOnSematics.BLENDWEIGHTS , TemplateSemantics.BLENDWEIGHTS , name , WirePortDataType.FLOAT4 ,PrecisionType.Float , false , name );
+				return varName;
+			}
+		}
 
+		public string GetBlendIndices( bool useMasterNodeCategory = true , MasterNodePortCategory customCategory = MasterNodePortCategory.Fragment )
+		{
+			if( HasInfo( TemplateInfoOnSematics.BLENDINDICES , useMasterNodeCategory , customCategory ) )
+			{
+				InterpDataHelper info = GetInfo( TemplateInfoOnSematics.BLENDINDICES , useMasterNodeCategory , customCategory );
+				return info.VarName;
+			}
+			else
+			{
+				MasterNodePortCategory category = useMasterNodeCategory ? m_currentDataCollector.PortCategory : customCategory;
+				string name = GeneratorUtils.VertexBlendIndicesStr;
+				string varName = RegisterInfoOnSemantic( category , TemplateInfoOnSematics.BLENDINDICES , TemplateSemantics.BLENDINDICES , name , WirePortDataType.UINT4 , PrecisionType.Float , false , name );
+				return varName;
+			}
+		}
+
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		public string GetVertexBitangent( PrecisionType precisionType, bool useMasterNodeCategory = true, MasterNodePortCategory customCategory = MasterNodePortCategory.Fragment )
 		{
 			string varName = GeneratorUtils.VertexBitangentStr;

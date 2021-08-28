@@ -4,27 +4,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using ProjectUniverse.Data.Libraries;
 using ProjectUniverse.Animation.Controllers;
+using MLAPI.NetworkVariable;
+using MLAPI;
+using MLAPI.NetworkVariable.Collections;
+using MLAPI.Messaging;
 
 namespace ProjectUniverse.PowerSystem
 {
-    public sealed class ISubMachine : MonoBehaviour
+    public sealed class ISubMachine : NetworkBehaviour
     {
         //Amount required (requested) to run machine
-        [SerializeField]
-        private float requestedEnergy;
+        [SerializeField] private float requestedEnergy;
         //unadjusted amount required to run the machine
-        [SerializeField]
-        private float requiredEnergy;
-        [SerializeField]
-        private int percentDrawToFill;
+        [SerializeField] private float requiredEnergy;
+        [SerializeField] private int percentDrawToFill;
         //amount to draw when filling the interal buffer
         private float drawToFill;
-        [SerializeField]
-        private float energyBuffer; //Machines shouldn't store more than 10 frames worth of power.
+        [SerializeField] private float energyBuffer; //Machines shouldn't store more than 10 frames worth of power.
         [SerializeField]
         private float bufferCurrent;
-        [SerializeField]
-        private string machineType;
+        [SerializeField] private string machineType;
         [SerializeField] private bool runMachine;
         private bool isPowered;
         //private ICable cable;
@@ -32,15 +31,26 @@ namespace ProjectUniverse.PowerSystem
         //backend of power cables
         private LinkedList<ICable> iCableDLL = new LinkedList<ICable>();
         private MeshRenderer renderer;
-
         private Light lightComponent;
         public float maxLightIntensity;
         public float maxLightRange;
-
         //power legs update
         [SerializeField]
         private int legsRequired;
         private int legsReceived;
+        //network vars
+        private NetworkVariableFloat netRequestedEnergy = new NetworkVariableFloat(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        private NetworkVariableFloat netRequiredEnergy = new NetworkVariableFloat(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        private NetworkVariableFloat netEnergyBuffer = new NetworkVariableFloat(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        private NetworkVariableFloat netBufferCurrent = new NetworkVariableFloat(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        private NetworkVariableBool netIsPowered = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        private NetworkVariableBool netRunMachine = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        private NetworkVariableFloat netMaxLightIntensity = new NetworkVariableFloat(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        private NetworkVariableFloat netMaxLightRange = new NetworkVariableFloat(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        private NetworkVariableInt netLegsRequired = new NetworkVariableInt(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        private NetworkVariableInt netLegsReceived = new NetworkVariableInt(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        private NetworkVariableBool netLightEnabled = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+
         void Start()
         {
             //RunMachine = true;
@@ -51,6 +61,45 @@ namespace ProjectUniverse.PowerSystem
             {
                 renderer = GetComponentInChildren<MeshRenderer>();
             }
+            lightComponent = this.gameObject.GetComponentInChildren<Light>();
+            //if(isHost){
+            //}?
+            NetworkListeners();
+        }
+
+        private void NetworkListeners()
+        {
+            //set starting values
+            netRequestedEnergy.Value = requestedEnergy;
+            netRequiredEnergy.Value = requiredEnergy;
+            netEnergyBuffer.Value = energyBuffer;
+            netBufferCurrent.Value = bufferCurrent;
+            netIsPowered.Value = isPowered;
+            netRunMachine.Value = runMachine;
+            netMaxLightIntensity.Value = maxLightIntensity;
+            netMaxLightRange.Value = maxLightRange;
+            netLegsReceived.Value = legsReceived;
+            netLegsRequired.Value = legsRequired;
+            if(lightComponent != null)
+            {
+                netLightEnabled.Value = lightComponent.enabled;
+            }
+
+            //Establish events
+            netRequestedEnergy.OnValueChanged += delegate { requestedEnergy = netRequestedEnergy.Value; };
+            netRequiredEnergy.OnValueChanged += delegate { requiredEnergy = netRequiredEnergy.Value; };
+            netEnergyBuffer.OnValueChanged += delegate { energyBuffer = netEnergyBuffer.Value; };
+            netBufferCurrent.OnValueChanged += delegate { bufferCurrent = netBufferCurrent.Value; };
+            netIsPowered.OnValueChanged += delegate { isPowered = netIsPowered.Value; };
+            netRunMachine.OnValueChanged += delegate { runMachine = netRunMachine.Value; };
+            netMaxLightIntensity.OnValueChanged += delegate { maxLightIntensity = netMaxLightIntensity.Value; };
+            netMaxLightRange.OnValueChanged += delegate { maxLightRange = netMaxLightRange.Value; };
+            netLegsRequired.OnValueChanged += delegate { legsRequired = netLegsRequired.Value; };
+            netLegsReceived.OnValueChanged += delegate { legsReceived = netLegsReceived.Value; };
+            if (lightComponent != null)
+            {
+                netLightEnabled.OnValueChanged += delegate { lightComponent.enabled = netLightEnabled.Value; };
+            }
         }
 
         /// <summary>
@@ -59,7 +108,8 @@ namespace ProjectUniverse.PowerSystem
         void Update()
         {
             //reset requestedEnergy
-            requestedEnergy = requiredEnergy;
+            netRequestedEnergy.Value = requiredEnergy;
+            //requestedEnergy = requiredEnergy;
             //Recalculate drawToFill based on draw percent
             float floatDrawToFill = (float)percentDrawToFill;
             drawToFill = requiredEnergy + (requiredEnergy * (floatDrawToFill / 100)); //105% or 110% draw
@@ -71,21 +121,15 @@ namespace ProjectUniverse.PowerSystem
                 if (deficit >= drawToFill)
                 {
                     //send energy request
-                    requestedEnergy = drawToFill;
-                    //Debug.Log(this.gameObject.name+" Request Helper");
+                    netRequestedEnergy.Value = drawToFill;
+                    //requestedEnergy = drawToFill;
                     RequestHelper();
 
                 }
-                else if (deficit == requiredEnergy)
-                {
-                    //send energy request
-                    requestedEnergy = requiredEnergy;
-                    //Debug.Log(this.gameObject.name + " Request Helper");
-                    RequestHelper();
-                }
                 else if (deficit < drawToFill && deficit > requiredEnergy)
                 {
-                    requestedEnergy = deficit + requiredEnergy;
+                    netRequestedEnergy.Value = deficit + netRequiredEnergy.Value;
+                    //requestedEnergy = deficit + requiredEnergy;
                     //Debug.Log(this.gameObject.name + " Request Helper");
                     RequestHelper();
                 }
@@ -95,15 +139,22 @@ namespace ProjectUniverse.PowerSystem
                     //Debug.Log(this.gameObject.name + " Request Helper");
                     RequestHelper();
                 }
+                if(bufferCurrent < 0f)
+                {
+                    bufferCurrent = 0f;
+                }
             }
             else if (bufferCurrent >= energyBuffer)
             {
                 //send request
+                //netRequestedEnergy.Value = netRequiredEnergy.Value;
                 requestedEnergy = requiredEnergy;
+                bufferCurrent = energyBuffer;
                 //requestedEnergy = 0.0f;
                 //Debug.Log(this.gameObject.name + " Request Helper");
                 RequestHelper();
             }
+            
             /*
             else
             {
@@ -127,14 +178,14 @@ namespace ProjectUniverse.PowerSystem
 
         public bool GetRunMachine()
         {
-            return runMachine;
+            return netRunMachine.Value;//runMachine;
         }
 
         public void RequestHelper()
         {
             foreach (IBreakerBox box in breakers)
             {
-                //Debug.Log("request/breakCount: "+requestedEnergy/breakers.Count);
+                //Debug.Log("request from breakers: "+requestedEnergy/breakers.Count);
                 box.RequestPowerFromBreaker(requestedEnergy / breakers.Count, this);//this.GetComponent<ISubMachine>()
             }
         }
@@ -151,7 +202,8 @@ namespace ProjectUniverse.PowerSystem
                     //Debug.Log("Legs received");
                     if (bufferCurrent > 0f)
                     {
-                        isPowered = true;
+                        netIsPowered.Value = true;
+                        //isPowered = true;
                         if (bufferCurrent - requiredEnergy < 0.0f)//not enough power to run at full
                         {
                             if (bufferCurrent >= requiredEnergy * 0.75f)//75% power
@@ -167,18 +219,21 @@ namespace ProjectUniverse.PowerSystem
                                 RunMachineSelector(machineType, 3);
                             }
                             //no matter what, the buffer is emptied
-                            bufferCurrent = 0.0f;
+                            netBufferCurrent.Value = 0.0f;
+                            //bufferCurrent = 0.0f;
                         }
                         else
                         {
                             //run full power
                             RunMachineSelector(machineType, 0);
-                            bufferCurrent -= requiredEnergy;
+                            //bufferCurrent -= requiredEnergy;
+                            netBufferCurrent.Value -= requiredEnergy;
                         }
                     }
                     else
                     {
-                        isPowered = false;
+                        netIsPowered.Value = false;
+                        //isPowered = false;
                         //'run' at 0 power
                         RunMachineSelector(machineType, 4);
                     }
@@ -215,7 +270,7 @@ namespace ProjectUniverse.PowerSystem
         public bool RunMachine
         {
             get { return runMachine; }
-            set { runMachine = value; }
+            set { netRunMachine.Value = value; }
         }
 
         public bool PowerMachine
@@ -242,39 +297,59 @@ namespace ProjectUniverse.PowerSystem
             //receive X legs with X amounts
             for (int i = 0; i < legCount; i++)
             {
-                bufferCurrent += amounts[i];
+                netBufferCurrent.Value += amounts[i];
+                //bufferCurrent += amounts[i];
             }
             //Debug.Log(this + " submachine buffer at: " + bufferCurrent);
-            legsReceived = legCount;
+            //legsReceived = legCount;
+            netLegsReceived.Value = legCount;
             //Debug.Log("submachine has "+legsReceived+" legs");
             //bufferCurrent += amount;
             //round buffer current to 3 places to avoid having a psychotic meltdown
-            bufferCurrent = (float)Math.Round(bufferCurrent, 3);
+            netBufferCurrent.Value = (float)Math.Round(netBufferCurrent.Value, 3);
+            //bufferCurrent = (float)Math.Round(bufferCurrent, 3);
 
             if (!iCableDLL.Contains(cable))
             {
+                //netICableDLL.Add(cable);
                 iCableDLL.AddLast(cable);
             }
             if (bufferCurrent > energyBuffer)
             {
                 //trim off excess power. Buffers cannot overcharge
-                bufferCurrent = energyBuffer;
+                netBufferCurrent.Value = energyBuffer;
+                //bufferCurrent = energyBuffer;
             }
         }
-
-        //called on cable disconnect (NYI)
-        public void RemoveCableConnection(ICable cable)
+        /*
+        [ServerRpc(RequireOwnership = false)]
+        public void RemoveCableConnectionServerRpc(ICable cable)
         {
-            iCableDLL.Remove(cable);
+            RemoveCableConnectionClientRpc(cable);
         }
+        //called on cable disconnect (NYI)
+        [ClientRpc]
+        public void RemoveCableConnectionClientRpc(ICable cable)
+        {
+            //netICableDLL.Remove(cable);
+            iCableDLL.Remove(cable);
+        }*/
+
+        //[ServerRpc(RequireOwnership = false)]
+       // public void CheckMachineStateServerRpc(ref IBreakerBox myBreaker)
+       // {
+      //      CheckMachineStateClientRpc(ref myBreaker);
+      //  }
 
         //called at the start of the breaker update block
-        public bool CheckMachineState(ref IBreakerBox myBreaker)
+        //[ClientRpc]
+        public bool CheckMachineState(ref IBreakerBox myBreaker)//ClientRpc
         {
             if (!breakers.Contains(myBreaker))
             {
                 //Debug.Log("breaker added");
-                breakers.Add(myBreaker);
+                //netBreakers.Add(myBreaker);
+                breakers.Add(myBreaker);//NEED TO BE ABLE TO SYNC CHANGES HERE
             }
             return true;
         }
@@ -286,18 +361,20 @@ namespace ProjectUniverse.PowerSystem
             switch (ImachineType)
             {
                 case "light_point":
-                    this.RunMachinePointLight(powerLevel);
+                    this.RunMachinePointLightServerRpc(powerLevel);
                     break;
                 case "door":
-                    this.gameObject.GetComponent<DoorAnimator>().runSubMachine(powerLevel);
+                    //this.gameObject.GetComponent<DoorAnimator>().runSubMachine(powerLevel);
+                    this.gameObject.GetComponent<DoorAnimator>().RunSubmachineServerRpc(powerLevel);//runSubMachine
                     break;
             }//*/
         }
 
-        public void RunMachinePointLight(int powerLevel)
+        [ServerRpc(RequireOwnership = false)]
+        public void RunMachinePointLightServerRpc(int powerLevel)
         {
-            lightComponent = this.gameObject.GetComponentInChildren<Light>();
-            lightComponent.enabled = true;
+            netLightEnabled.Value = true;
+            //lightComponent.enabled = true;
             MaterialPropertyBlock MPB = MaterialLibrary.GetMaterialPropertyBlockForCommonLights();
             switch (powerLevel)
             {
@@ -315,7 +392,7 @@ namespace ProjectUniverse.PowerSystem
                 case 1:
                     lightComponent.intensity = maxLightIntensity * 0.5f; //50
                     lightComponent.range = maxLightRange * 0.75f; //3.75
-                                                                  //set material emissive to 50%
+                    //set material emissive to 50%
                     renderer.GetPropertyBlock(MPB);
                     MPB.SetFloat("_EmissionIntensity", 40f);//50f is current emissive level for lights
                     renderer.SetPropertyBlock(MPB);
@@ -345,7 +422,70 @@ namespace ProjectUniverse.PowerSystem
                     renderer.SetPropertyBlock(MPB);
                     break;
                 case 5:
-                    lightComponent.enabled = false;
+                    netLightEnabled.Value = false;
+                    //lightComponent.enabled = false;
+                    //set material emissive to 0%
+                    renderer.GetPropertyBlock(MPB);
+                    MPB.SetFloat("_EmissionIntensity", 0f);//50f is current emissive level for lights
+                    renderer.SetPropertyBlock(MPB);
+                    break;
+            }
+        }
+
+        [ClientRpc]
+        public void RunMachinePointLightClientRpc(int powerLevel)
+        {
+            netLightEnabled.Value = true;
+            //lightComponent.enabled = true;
+            MaterialPropertyBlock MPB = MaterialLibrary.GetMaterialPropertyBlockForCommonLights();
+            switch (powerLevel)
+            {
+                //base is 100.0f
+                //base is 5.0f
+                case 0:
+                    lightComponent.intensity = maxLightIntensity;
+                    lightComponent.range = maxLightRange;
+                    //set material emissive to default
+                    //MaterialPropertyBlock to manage the emissive material values for all our common lights
+                    renderer.GetPropertyBlock(MPB);
+                    MPB.SetFloat("_EmissionIntensity", 50f);//50f is current emissive level for lights
+                    renderer.SetPropertyBlock(MPB);
+                    break;
+                case 1:
+                    lightComponent.intensity = maxLightIntensity * 0.5f; //50
+                    lightComponent.range = maxLightRange * 0.75f; //3.75
+                    //set material emissive to 50%
+                    renderer.GetPropertyBlock(MPB);
+                    MPB.SetFloat("_EmissionIntensity", 40f);//50f is current emissive level for lights
+                    renderer.SetPropertyBlock(MPB);
+                    break;
+                case 2:
+                    lightComponent.intensity = maxLightIntensity * UnityEngine.Random.Range(0.35f, 0.25f);//35 - 25
+                    lightComponent.range = maxLightRange * UnityEngine.Random.Range(0.5f, 0.6f);//6.0f; (2.5 to 3)
+                                                                                                //set material emissive to 35%
+                    renderer.GetPropertyBlock(MPB);
+                    MPB.SetFloat("_EmissionIntensity", 25f);//50f is current emissive level for lights
+                    renderer.SetPropertyBlock(MPB);
+                    break;
+                case 3:
+                    lightComponent.intensity = maxLightIntensity * UnityEngine.Random.Range(0.05f, 0.1f);//5 - 10
+                    lightComponent.range = maxLightRange * UnityEngine.Random.Range(0.2f, 0.30f); //4.0f; (1 to 1.5)
+                                                                                                  //set material emissive to 10%
+                    renderer.GetPropertyBlock(MPB);
+                    MPB.SetFloat("_EmissionIntensity", 10f);//50f is current emissive level for lights
+                    renderer.SetPropertyBlock(MPB);
+                    break;
+                case 4:
+                    lightComponent.intensity = 0.0f;
+                    lightComponent.range = 0.0f;
+                    //set material emissive to 0%
+                    renderer.GetPropertyBlock(MPB);
+                    MPB.SetFloat("_EmissionIntensity", 0f);//50f is current emissive level for lights
+                    renderer.SetPropertyBlock(MPB);
+                    break;
+                case 5:
+                    netLightEnabled.Value = false;
+                    //lightComponent.enabled = false;
                     //set material emissive to 0%
                     renderer.GetPropertyBlock(MPB);
                     MPB.SetFloat("_EmissionIntensity", 0f);//50f is current emissive level for lights

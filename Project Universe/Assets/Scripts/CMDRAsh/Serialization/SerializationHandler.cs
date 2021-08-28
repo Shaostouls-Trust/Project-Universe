@@ -10,6 +10,7 @@ using ProjectUniverse.Production.Resources;
 using UnityEditor;
 using UnityEngine;
 using ProjectUniverse.Player.PlayerController;
+using System;
 
 namespace ProjectUniverse.Serialization.Handler
 {
@@ -75,7 +76,7 @@ namespace ProjectUniverse.Serialization.Handler
 			selector.AddSurrogate(typeof(Vector3), new StreamingContext(StreamingContextStates.All), v3s);
 			selector.AddSurrogate(typeof(Quaternion), new StreamingContext(StreamingContextStates.All), qts);
 			selector.AddSurrogate(typeof(Matrix4x4), new StreamingContext(StreamingContextStates.All), m44s);
-			selector.AddSurrogate(typeof(GUID), new StreamingContext(StreamingContextStates.All), gds);
+			selector.AddSurrogate(typeof(Guid), new StreamingContext(StreamingContextStates.All), gds);
 			selector.AddSurrogate(typeof(Rigidbody), new StreamingContext(StreamingContextStates.All), rbs);
 			selector.AddSurrogate(typeof(BoxCollider), new StreamingContext(StreamingContextStates.All), bcs);
 			selector.AddSurrogate(typeof(MeshCollider), new StreamingContext(StreamingContextStates.All), mcs);

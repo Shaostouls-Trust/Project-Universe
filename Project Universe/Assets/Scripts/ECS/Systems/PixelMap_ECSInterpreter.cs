@@ -114,8 +114,8 @@ public class PixelMap_ECSInterpreter : MonoBehaviour//, IConvertGameObjectToEnti
 						prefab = Resources.Load(fullpath) as GameObject;
 						EntityManager myEntityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 						//GameObject instanceObject = Instantiate(prefab, new Vector3(transform.position.x + x3D + 0.5f, transform.position.y, transform.position.z + z3D - 0.5f), new Quaternion(0.0f, 0.0f, 0.0f, 1.0f), transform);
-						Entity tileEntity = myEntityManager.Instantiate(prefab); 
-						myEntityManager.SetName(tileEntity, prefabID + " " + count++);
+						//Entity tileEntity = myEntityManager.Instantiate(prefab); 
+						//myEntityManager.SetName(tileEntity, prefabID + " " + count++);
 						//set the rotation of the object. No idea if the other components need set or not.
 						//myEntityManager.SetComponentData(tileEntity,
 						//	new Translation { Value = Quaternion.Euler(0.0f, rotation, 0.0f).eulerAngles });

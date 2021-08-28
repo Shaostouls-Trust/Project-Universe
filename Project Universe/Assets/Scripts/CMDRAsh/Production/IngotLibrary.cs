@@ -32,33 +32,23 @@ namespace ProjectUniverse.Data.Libraries
 				if (!isInitialized)
 				{
 					isInitialized = true;
-					//find the xmls
-					string xmlPath = "\\Assets\\Resources\\Data\\Production\\MasterLibraries\\";
-					string root = Directory.GetCurrentDirectory();
-					string[] filesInDir = Directory.GetFiles(root + xmlPath, "*.xml", SearchOption.TopDirectoryOnly);
-
-					foreach (string fileAndPath in filesInDir)
+					TextAsset _rawText = Resources.Load<TextAsset>("Data/Production/MasterLibraries/IngotMasterList");
+					XDocument xmlDoc = XDocument.Parse(_rawText.text, LoadOptions.PreserveWhitespace);
+					Debug.Log("Ingot Master Found");
+					foreach (XElement ingotDefs in xmlDoc.Descendants("IngotDefinitions"))
 					{
-						string[] fpss = fileAndPath.Split('\\');
-						if (fpss[fpss.Length - 1] == "IngotMasterList.xml")
+						foreach (XElement ingot in ingotDefs.Elements("Ingot"))
 						{
-							Debug.Log("Ingot Master Found");
-							XDocument doc = XDocument.Load(fileAndPath);
-							foreach (XElement ingotDefs in doc.Descendants("IngotDefinitions"))
-							{
-								foreach (XElement ingot in ingotDefs.Elements("Ingot"))
-								{
-									ingotType = ingot.Element("STR_ID").Attribute("Ingot_Type").Value;
-									ingotRSPath = ingot.Element("ResourcePath").Attribute("Path").Value;
-									ingotDensity = float.Parse(ingot.Element("Density").Attribute("Density").Value);
-									IngotDefinition newingotDef = new IngotDefinition(ingotType, ingotRSPath, ingotDensity);
-									IL_IngotDictionary.Add(ingotType, newingotDef);
-								}
-							}
+							ingotType = ingot.Element("STR_ID").Attribute("Ingot_Type").Value;
+							ingotRSPath = ingot.Element("ResourcePath").Attribute("Path").Value;
+							ingotDensity = float.Parse(ingot.Element("Density").Attribute("Density").Value);
+							IngotDefinition newingotDef = new IngotDefinition(ingotType, ingotRSPath, ingotDensity);
+							IL_IngotDictionary.Add(ingotType, newingotDef);
 						}
 					}
 					Debug.Log("Ingot Library Construction Finished");
 					IngotDictionary = IL_IngotDictionary;
+					Resources.UnloadUnusedAssets();
 				}
 			}
 		}

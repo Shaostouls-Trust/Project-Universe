@@ -19,6 +19,7 @@ namespace ProjectUniverse.PowerSystem
         private float bufferCurrent;
         private float[] requestedPower;
         private float totalRequiredPower;
+        private float deficitVsubMachine;
         private int routerCap;
         private IRouter thisRouter;
         private IGenerator supplyingGenerator;
@@ -90,7 +91,10 @@ namespace ProjectUniverse.PowerSystem
             //get requested power amount
             for (int i = 0; i < subRouters.Length; i++)
             {
-                totalRequiredPower += subRouters[i].GetTotalRequiredPower();
+                if(subRouters[i] != null)
+                {
+                    totalRequiredPower += subRouters[i].GetTotalRequiredPower();
+                }
             }
             //power request to generator logic
             if (bufferCurrent < energyBufferMax)
@@ -98,8 +102,13 @@ namespace ProjectUniverse.PowerSystem
                 if (supplyingGenerator != null)
                 {
                     //request power from generator
+                    //Debug.Log(totalRequiredPower);
                     supplyingGenerator.RequestPowerFromGenerator(totalRequiredPower, thisRouter);
                 }
+                //if(bufferCurrent < 0f)
+                //{
+                //    bufferCurrent = 0f;
+                //}
             }
             if (bufferCurrent >= energyBufferMax)
             {
@@ -107,31 +116,16 @@ namespace ProjectUniverse.PowerSystem
                 bufferCurrent = energyBufferMax;
             }
 
-            /*
-            requestedPower = new float[iCableDLL.Count];
-            for (int i = 0; i < iCableDLL.Count; i++)
-            {
-                float uniqueRouterAmount;
-                //power required by the subrouter;
-                uniqueRouterAmount = subRouters[i].getTotalRequiredPower();
-                //For the case in which machines have different power draws, or otherwise do not require uniform amounts of power.
-                //Power is tracked differently per machine
-                requestedPower[i] = uniqueRouterAmount;
-                totalRequiredPower += uniqueRouterAmount;
-            }
-            */
             //power will be divided equally among linked substations.
             if (totalRequiredPower > bufferCurrent)
             {
                 float defecit = totalRequiredPower - bufferCurrent;
-                float defecitVsubs = defecit / totalRequiredPower;
-                //  Debug.Log(defecitVsubs);
-                //  for (int j = 0; j < subRouters.Length; j++)
-                // {
-                //subtract the amount to reduce (a percent of the requested amount)
-                //requestedPower[j] -= (requestedPower[j] * defecitVsubs);
-                //requestedPower[j] = (float)Math.Round(requestedPower[j], 3);
-                // }
+                deficitVsubMachine = defecit / totalRequiredPower;
+                //Debug.Log(deficitVsubMachine);
+            }
+            else
+            {
+                deficitVsubMachine = 0f;
             }
             //Debug.Log("Total Required: " + totalRequiredPower);
         }
@@ -156,6 +150,10 @@ namespace ProjectUniverse.PowerSystem
                         //we will temporarily change the required leg count to what we can provide
                         routerLegReq = availibleLegsOut;
                     }
+                    //apply deficitVsubMachine
+                    //Debug.Log("req: "+requestedAmount +" -= "+ (requestedAmount * deficitVsubMachine));
+                    requestedAmount -= (requestedAmount * deficitVsubMachine);//breaks low-power-output (buffer/3f)
+                    requestedAmount = (float)Math.Round(requestedAmount, 2);
                     //split power between legs
                     float[] powerAmount = new float[routerLegReq];
                     for (int l = 0; l < routerLegReq; l++)
@@ -174,7 +172,7 @@ namespace ProjectUniverse.PowerSystem
                         }
                         else if (bufferCurrent - requestedAmount < 0)
                         {
-                            float[] tempfloat = new float[] { bufferCurrent / 3, bufferCurrent / 3, bufferCurrent / 3 };
+                            float[] tempfloat = new float[] { bufferCurrent / 3f, bufferCurrent / 3f, bufferCurrent / 3f };
                             //or transfer all that remains in the buffer
                             cable.TransferIn(routerLegReq, tempfloat, 2);
                             bufferCurrent = 0f;
@@ -205,7 +203,7 @@ namespace ProjectUniverse.PowerSystem
 
         public void ReceivePowerFromGenerator(int legCount, float[] powerAmounts)
         {
-            //Debug.Log("Received power from generator: "+ powerAmounts[0]+" X3");
+            //Debug.Log("Received power from generator: "+ (powerAmounts[0]*legCount));
             //receive 3 legs of X amount
             for (int i = 0; i < legCount; i++)
             {

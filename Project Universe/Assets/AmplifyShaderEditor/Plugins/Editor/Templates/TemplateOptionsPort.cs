@@ -52,7 +52,7 @@ namespace AmplifyShaderEditor
 							int count = nodes.Count;
 							for( int nodeIdx = 0; nodeIdx < count; nodeIdx++ )
 							{
-								nodes[ nodeIdx ].OptionsDefineContainer.AddDefine( "#define "+m_options.ActionsPerOption[ optionId ][ i ].ActionData, false );
+								nodes[ nodeIdx ].OptionsDefineContainer.AddDirective( "#define "+m_options.ActionsPerOption[ optionId ][ i ].ActionData, false );
 							}
 							//dataCollector.AddToDefines( -1, m_options.ActionsPerOption[ optionId ][ i ].ActionData );
 						}
@@ -63,7 +63,7 @@ namespace AmplifyShaderEditor
 							int count = nodes.Count;
 							for( int nodeIdx = 0; nodeIdx < count; nodeIdx++ )
 							{
-								nodes[ nodeIdx ].OptionsDefineContainer.AddDefine( "#undef " + m_options.ActionsPerOption[ optionId ][ i ].ActionData, false );
+								nodes[ nodeIdx ].OptionsDefineContainer.AddDirective( "#undef " + m_options.ActionsPerOption[ optionId ][ i ].ActionData, false );
 							}
 							//dataCollector.AddToDefines( -1, m_options.ActionsPerOption[ optionId ][ i ].ActionData, false );
 						}
@@ -113,12 +113,12 @@ namespace AmplifyShaderEditor
 						{
 							case AseOptionsActionType.SetDefine:
 							{
-								owner.OptionsDefineContainer.AddDefine( "#define " + m_options.ActionsPerOption[ optionId ][ i ].ActionData, true );
+								owner.OptionsDefineContainer.AddDirective( "#define " + m_options.ActionsPerOption[ optionId ][ i ].ActionData, true );
 							}
 							break;
 							case AseOptionsActionType.SetUndefine:
 							{
-								owner.OptionsDefineContainer.AddDefine( "#undef " + m_options.ActionsPerOption[ optionId ][ i ].ActionData, true );
+								owner.OptionsDefineContainer.AddDirective( "#undef " + m_options.ActionsPerOption[ optionId ][ i ].ActionData, true );
 							}
 							break;
 							case AseOptionsActionType.SetShaderProperty:

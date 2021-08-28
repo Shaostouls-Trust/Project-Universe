@@ -260,7 +260,7 @@ namespace AmplifyShaderEditor
 							}
 							else
 							{
-								sampler = GeneratorUtils.GenerateSamplerState( ref dataCollector, UniqueId, noiseTex );
+								sampler = GeneratorUtils.GenerateSamplerState( ref dataCollector, UniqueId, noiseTex, VariableMode.Create );
 							}
 							//if( outsideGraph.IsSRP )
 							//	functionResult = dataCollector.AddFunctions( m_functionHeader, m_functionBody, varName, noiseTex + ", " + sampler, noiseTex + "_TexelSize" );

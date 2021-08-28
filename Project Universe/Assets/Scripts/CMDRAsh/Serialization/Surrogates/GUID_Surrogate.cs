@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Runtime.Serialization;
 using UnityEditor;
+using System;
 
 namespace ProjectUniverse.Serialization.Surrogates
 {
@@ -10,15 +11,15 @@ namespace ProjectUniverse.Serialization.Surrogates
     {
         public void GetObjectData(object obj, SerializationInfo info, StreamingContext context)
         {
-            GUID guid = (GUID)obj;
+            Guid guid = (Guid)obj;
             info.AddValue("hex", guid.ToString());
         }
 
         public object SetObjectData(object obj, SerializationInfo info, StreamingContext context, ISurrogateSelector selector)
         {
-            GUID guid;
-            guid = new GUID((string)info.GetValue("hex", typeof(string)));
-            //GUID.TryParse(info, out GUID) instead?
+            Guid guid;
+            guid = new Guid((string)info.GetValue("hex", typeof(string)));
+            // Guid.TryParse(info, out GUID) instead?
             obj = guid;
             return obj;
         }

@@ -107,6 +107,7 @@ namespace AmplifyShaderEditor
 		{
 			base.ReadFromString( ref nodeParams );
 			m_billboardType = (BillboardType)Enum.Parse( typeof( BillboardType ), GetCurrentParam( ref nodeParams ) );
+			SetAdditonalTitleText( string.Format( Constants.SubTitleTypeFormatStr , m_billboardType ) );
 			m_rotationIndependent = Convert.ToBoolean( GetCurrentParam( ref nodeParams ) );
 		}
 

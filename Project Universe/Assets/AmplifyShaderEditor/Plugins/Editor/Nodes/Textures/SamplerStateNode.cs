@@ -339,7 +339,7 @@ namespace AmplifyShaderEditor
 					propertyOrOptions = GenerateSamplerAttributes();
 				}
 
-				string sampler = GeneratorUtils.GenerateSamplerState( ref dataCollector, UniqueId, propertyOrOptions );
+				string sampler = GeneratorUtils.GenerateSamplerState( ref dataCollector, UniqueId, propertyOrOptions , VariableMode.Create );
 
 				m_outputPorts[ 0 ].SetLocalValue( sampler, dataCollector.PortCategory );
 			}

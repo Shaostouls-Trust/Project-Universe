@@ -5,6 +5,8 @@ namespace AmplifyShaderEditor
 {
 	public static class GeneratorUtils
 	{
+		public const string VertexBlendWeightsStr = "ase_blendWeights";
+		public const string VertexBlendIndicesStr = "ase_blendIndices";
 		public const string ObjectScaleStr = "ase_objectScale";
 		public const string ParentObjectScaleStr = "ase_parentObjectScale";
 		public const string ScreenDepthStr = "ase_screenDepth";
@@ -300,7 +302,7 @@ namespace AmplifyShaderEditor
 		}
 
 		// SAMPLER STATES
-		static public string GenerateSamplerState( ref MasterNodeDataCollector dataCollector, int uniqueId, string propertyName, bool returnPropertyName = false )
+		static public string GenerateSamplerState( ref MasterNodeDataCollector dataCollector, int uniqueId, string propertyName, VariableMode varMode,  bool returnPropertyName = false )
 		{
 
 			string sampler = string.Format( Constants.SamplerFormat, propertyName );
@@ -316,7 +318,8 @@ namespace AmplifyShaderEditor
 				samplerDecl = string.Format( Constants.SamplerDeclSRPFormat, sampler ) + ";";
 			else
 				samplerDecl = string.Format( Constants.SamplerDeclFormat, sampler ) + ";";
-			dataCollector.AddToUniforms( uniqueId, samplerDecl );
+			if( varMode == VariableMode.Create )
+				dataCollector.AddToUniforms( uniqueId, samplerDecl );
 
 			if( returnPropertyName )
 				return propertyName;
@@ -642,9 +645,17 @@ namespace AmplifyShaderEditor
 
 
 			string value = GenerateVertexScreenPositionForValue( customVertexPosition, outputId, ref dataCollector, uniqueId, precision );
+
+			if( !dataCollector.IsFragmentCategory )
+			{
+				return value;
+			}
+
 			string screenPosVarName = "screenPosition" + outputId;
 			dataCollector.AddToInput( uniqueId, screenPosVarName, WirePortDataType.FLOAT4, precision );
 			dataCollector.AddToVertexLocalVariables( uniqueId, Constants.VertexShaderOutputStr + "." + screenPosVarName + " = " + value + ";" );
+
+			
 
 			string screenPosVarNameOnFrag = ScreenPositionStr + outputId;
 			string globalResult = Constants.InputVarStr + "." + screenPosVarName;
@@ -1019,6 +1030,7 @@ namespace AmplifyShaderEditor
 					case WirePortDataType.SAMPLER3D:
 					case WirePortDataType.SAMPLERCUBE:
 					case WirePortDataType.UINT:
+					case WirePortDataType.UINT4:
 					case WirePortDataType.SAMPLER2DARRAY:
 					case WirePortDataType.SAMPLERSTATE:return value;
 				}

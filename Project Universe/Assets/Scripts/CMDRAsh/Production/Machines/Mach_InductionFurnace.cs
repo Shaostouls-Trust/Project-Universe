@@ -8,6 +8,8 @@ using ProjectUniverse.Production.Resources;
 using ProjectUniverse.Data.Libraries.Definitions;
 using ProjectUniverse.Data.Libraries;
 using ProjectUniverse.UI;
+using MLAPI;
+using MLAPI.Messaging;
 
 namespace ProjectUniverse.Production.Machines
 {
@@ -15,7 +17,7 @@ namespace ProjectUniverse.Production.Machines
     {
         [SerializeField] private List<ItemStack> inputMaterials;
         [SerializeField] private List<ItemStack> outputMaterials;
-        [SerializeField] private GameObject SmelterUI;
+        [SerializeField] private GameObject SmelterUI;//probably just have this UI tied to this object, rather than the player
 
         private List<ItemStack> byproducts;
         //Refinery level determines quality (and speed for now). Higher tier will take longer (more steps).
@@ -171,6 +173,7 @@ namespace ProjectUniverse.Production.Machines
         }
 
         //Try to load in a whole stack of ore for processing
+        //ClientRpc?
         public void DisplaySmelterUI(GameObject player)
         {
             SmelterUI.GetComponent<InductionSmelterUIController>().LockScreenAndFreeCursor();

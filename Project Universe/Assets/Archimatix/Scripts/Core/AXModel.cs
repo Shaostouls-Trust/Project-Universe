@@ -55,17 +55,17 @@ namespace AX
 
 
 
-        // DELEGATE: Build
-        public delegate void ModelGenerateHandler(AXModel m, EventArgs e = null);
-        public event ModelGenerateHandler ModelDidGenerate;
+		// DELEGATE: Build
+		public delegate void ModelGenerateHandler(AXModel m, EventArgs e = null);
+		public event ModelGenerateHandler ModelDidGenerate;
 
-        public delegate void BuildHandler(AXModel m, EventArgs e = null);
-        public event BuildHandler ModelDidBuild;
+		public delegate void BuildHandler(AXModel m, EventArgs e = null);
+		public event BuildHandler ModelDidBuild;
 
 
 
-        // DELEGATE: RuntimeHandleDownHandler
-        public delegate void RuntimeHandleDownHandler(AXModel m, EventArgs e);
+		// DELEGATE: RuntimeHandleDownHandler
+		public delegate void RuntimeHandleDownHandler(AXModel m, EventArgs e);
 		public event RuntimeHandleDownHandler RuntimeHandleDown;
 
 		// DELEGATE: RuntimeHandleUpHandler
@@ -116,10 +116,10 @@ namespace AX
 
 		public float totalVolume;
 		public float volume;
-        public float mass;
-        public float height;
+		public float mass;
+		public float height;
 
-        private int m_stats_VertCount = 0;
+		private int m_stats_VertCount = 0;
 		public int stats_VertCount
 		{
 			get { return m_stats_VertCount; }
@@ -156,6 +156,8 @@ namespace AX
 		[System.NonSerialized]
 		public AXParameter latestEditedParameter;
 
+		[System.NonSerialized]
+		public AXHandle latestHandleClicked;
 
 		[System.NonSerialized]
 		public int axRenderMeshCount = 0;
@@ -200,6 +202,7 @@ namespace AX
 		public StopWatch autoBuildStopwatch;
 		//public 
 
+		public bool rigidbodiesUndergroundAreKinematic = false;
 
 		// Graph Editor State
 		public Vector2 focusPointInGraphEditor;
@@ -986,18 +989,18 @@ namespace AX
 			return null;
 		}
 
-        public AXParametricObject getParametricObjectByGUID(string g)
-        {
-            AXParametricObject po = parametricObjects.Find(x => x.Guid.Equals(g));
-            return po;
-        }
-        public AXParametricObject getParametricObjectByName(string n)
-        {
-            AXParametricObject po = parametricObjects.Find(x => x.Name.Equals(n));
-            return po;
-        }
+		public AXParametricObject getParametricObjectByGUID(string g)
+		{
+			AXParametricObject po = parametricObjects.Find(x => x.Guid.Equals(g));
+			return po;
+		}
+		public AXParametricObject getParametricObjectByName(string n)
+		{
+			AXParametricObject po = parametricObjects.Find(x => x.Name.Equals(n));
+			return po;
+		}
 
-        public AXParameter getParameterByGUID(string guidKey)
+		public AXParameter getParameterByGUID(string guidKey)
 		{
 			if (String.IsNullOrEmpty(guidKey))
 				return null;
@@ -3031,10 +3034,10 @@ namespace AX
 			if (Application.isPlaying)
 				canRegenerate = true;
 
-            if (ModelDidGenerate != null)
-                ModelDidGenerate(this, new EventArgs());
+			if (ModelDidGenerate != null)
+				ModelDidGenerate(this, new EventArgs());
 
-        }
+		}
 
 
 
@@ -4300,45 +4303,43 @@ namespace AX
 
 
 			// add isKinematic to any rigidbodies underground
-			Terrain terrain = Terrain.activeTerrain;
-			if (terrain != null)
+			if (rigidbodiesUndergroundAreKinematic)
 			{
-				Rigidbody[] rbs = FindObjectsOfType(typeof(Rigidbody)) as Rigidbody[];
-				foreach (Rigidbody rb in rbs)
+				Terrain terrain = Terrain.activeTerrain;
+				if (terrain != null)
 				{
-
-					if (!rb.isKinematic)
+					Rigidbody[] rbs = FindObjectsOfType(typeof(Rigidbody)) as Rigidbody[];
+					foreach (Rigidbody rb in rbs)
 					{
-						MeshFilter mf = rb.gameObject.GetComponent<MeshFilter>();
 
-						if (mf != null && mf.sharedMesh != null)
+						if (!rb.isKinematic)
 						{
-							Mesh mesh = mf.sharedMesh;
+							MeshFilter mf = rb.gameObject.GetComponent<MeshFilter>();
 
-							float testHgt;
-
-							// if any point is underground, make kinematic
-							for (int i = 0; i < mesh.vertices.Length; i++)
+							if (mf != null && mf.sharedMesh != null)
 							{
-								Vector3 gVert = rb.gameObject.transform.TransformPoint(mesh.vertices[i]);
-								testHgt = terrain.SampleHeight(gVert);
-								if (gVert.y < testHgt)
-								{
-									rb.isKinematic = true;
-									break;
-								}
+								Mesh mesh = mf.sharedMesh;
 
+								float testHgt;
+
+								// if any point is underground, make kinematic
+								for (int i = 0; i < mesh.vertices.Length; i++)
+								{
+									Vector3 gVert = rb.gameObject.transform.TransformPoint(mesh.vertices[i]);
+									testHgt = terrain.SampleHeight(gVert);
+									if (gVert.y < testHgt)
+									{
+										rb.isKinematic = true;
+										break;
+									}
+
+								}
 							}
 						}
 					}
 				}
-
-
-
-
-
-
 			}
+
 
 
 

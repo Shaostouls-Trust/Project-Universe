@@ -166,7 +166,7 @@ namespace AmplifyShaderEditor
 					{
 						string precisionType = UIUtils.PrecisionWirePortToCgType( UIUtils.CurrentWindow.CurrentGraph.CurrentPrecision, WirePortDataType.FLOAT3 );
 
-						dataCollector.AddToLocalVariables( UniqueId, string.Format( ReflectionVecDecStr, precisionType, ReflectionVecValStr + OutputId, result ) );
+						dataCollector.AddToFragmentLocalVariables( UniqueId, string.Format( ReflectionVecDecStr, precisionType, ReflectionVecValStr + OutputId, result ) );
 						RegisterLocalVariable( 0, result, ref dataCollector, ReflectionVecValStr + OutputId );
 						return GetOutputVectorItem( 0, outputId, m_outputPorts[ 0 ].LocalValue( dataCollector.PortCategory ) );
 					}

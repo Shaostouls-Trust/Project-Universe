@@ -439,7 +439,7 @@ namespace AmplifyShaderEditor
 				if( tessOpHelper.EnableTesselation && !isShadowCaster )
 				{
 					body.Add( tessOpHelper.Uniforms().TrimStart( '\t' ) );
-					body.Add( tessOpHelper.GetCurrentTessellationFunction.Trim( '\t', '\n' ) + "\n" );
+					body.Add( tessOpHelper.GetCurrentTessellationFunction( ref dataCollector ).Trim( '\t', '\n' ) + "\n" );
 				}
 
 				if( tessOpHelper.EnableTesselation )
@@ -530,7 +530,7 @@ namespace AmplifyShaderEditor
 				if( tessOpHelper.EnableTesselation && !isShadowCaster )
 				{
 					body.Add( tessOpHelper.Uniforms().TrimStart( '\t' ) );
-					body.Add( tessOpHelper.GetCurrentTessellationFunction.Trim( '\t', '\n' ) + "\n" );
+					body.Add( tessOpHelper.GetCurrentTessellationFunction( ref dataCollector ).Trim( '\t', '\n' ) + "\n" );
 				}
 
 				if( tessOpHelper.EnableTesselation )

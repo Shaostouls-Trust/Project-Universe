@@ -139,46 +139,50 @@ namespace AX.Generators
 
             Mesh mesh = AXPolygon.triangulate(_polyTree, new AXTexCoords(), 1000000) ;
 
-            Vector3[] verts = mesh.vertices;
-            //Debug.Log("verts.Length="+ verts.Length);
-            // Move any verts similar to ones on innerPath up.
-
-            // Just a search PAth, so combine any Paths resulting from the offset:
-            Path combinedInnerPath = new Path();
-            foreach (Path p in innerPaths)
-                combinedInnerPath.AddRange(p);
-
-            Vector2[] innerVerts = Pather.path2Vector2Array(combinedInnerPath);
-
-            //Debug.Log("verts.Length=" + verts.Length);
-            for (int i = 0; i < verts.Length; i++)
+            if (mesh != null)
             {
-                Vector2 v2 = new Vector2(verts[i].x, verts[i].z);
+                Vector3[] verts = mesh.vertices;
+                //Debug.Log("verts.Length="+ verts.Length);
+                // Move any verts similar to ones on innerPath up.
 
-                //Debug.Log(i + ") " + i + " v2=" + v2.x + ", " + v2.y);
-                if (innerVerts != null && innerVerts.Length > 0)
+                // Just a search PAth, so combine any Paths resulting from the offset:
+                Path combinedInnerPath = new Path();
+                foreach (Path p in innerPaths)
+                    combinedInnerPath.AddRange(p);
+
+                Vector2[] innerVerts = Pather.path2Vector2Array(combinedInnerPath);
+
+                //Debug.Log("verts.Length=" + verts.Length);
+                for (int i = 0; i < verts.Length; i++)
                 {
-                    foreach (Vector2 iv2 in innerVerts)
-                    {
-                        if ((v2 - iv2).sqrMagnitude < .0000001f)
-                        {
-                            verts[i].y = e;
-                            break;
-                        }
-                        else
-                            verts[i].y = b;
-                    }
-                }
-                else
-                { 
-                    verts[i].y = b;
-                }
-                
-            }
+                    Vector2 v2 = new Vector2(verts[i].x, verts[i].z);
 
-            
-            
-            mesh.vertices = verts;
+                    //Debug.Log(i + ") " + i + " v2=" + v2.x + ", " + v2.y);
+                    if (innerVerts != null && innerVerts.Length > 0)
+                    {
+                        foreach (Vector2 iv2 in innerVerts)
+                        {
+                            if ((v2 - iv2).sqrMagnitude < .0000001f)
+                            {
+                                verts[i].y = e;
+                                break;
+                            }
+                            else
+                                verts[i].y = b;
+                        }
+                    }
+                    else
+                    {
+                        verts[i].y = b;
+                    }
+
+                }
+
+
+
+                mesh.vertices = verts;
+
+            }
 
             return mesh;
         }
@@ -481,6 +485,9 @@ namespace AX.Generators
                     //    Debug.Log("[" + v.x + ", " + v.z + "], [" + v.y + "]");
                     //}
                 }
+
+                if (meshStrip == null)
+                    return null;
                
                 //if (meshStrip.vertices.Length == 0)
                 //{
@@ -639,6 +646,9 @@ namespace AX.Generators
 
             Vector2[] uvs = new Vector2[mainMesh.vertices.Length];
 
+            float meshWidth = mainMesh.bounds.size.x;
+            float meshHeight = mainMesh.bounds.size.z;
+
 
             float xmin = mainMesh.bounds.center.x - mainMesh.bounds.size.x / 2; //b.min.x;
             float xmax = xmin + mainMesh.bounds.size.x;
@@ -646,13 +656,18 @@ namespace AX.Generators
             float zmin = mainMesh.bounds.center.z - mainMesh.bounds.size.z / 2; //b.min.x;
             float zmax = zmin + mainMesh.bounds.size.z;
 
-
-
+    
             for (int i=0; i< mainMesh.vertices.Length; i++)
             {
 
-                float u = uShift + (mainMesh.vertices[i].x - xmin) / (uScale*mainMesh.bounds.size.x);
-                float v = vShift + (mainMesh.vertices[i].z - xmin) / (vScale * mainMesh.bounds.size.z);
+                float u = uShift + (mainMesh.vertices[i].x - xmin) / (uScale * mainMesh.bounds.size.x);
+                //u = ((mainMesh.vertices[i].x - xmin) - (meshWidth / 2 * (1 - uScale))) / (meshWidth * uScale);
+                //u -= uShift;
+
+
+                float v = vShift + (mainMesh.vertices[i].z - zmin) / (vScale * mainMesh.bounds.size.z);
+                //v = ((mainMesh.vertices[i].z - ymin) - (meshHeight * scaleCenY * (1 - vScale))) / (meshHeight * vScale);
+                //v -= vShift;
 
                 uvs[i] = new Vector2(u, v);
             }

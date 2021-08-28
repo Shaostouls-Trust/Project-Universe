@@ -6,6 +6,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 using ProjectUniverse.Player;
 using ProjectUniverse.Player.PlayerController;
+using UnityEngine.UI;
 //using UnityEngine.Rendering.PostProcessing;
 
 /// <summary>
@@ -18,6 +19,7 @@ namespace ProjectUniverse.Environment.Volumes
     //[Serializable]
     public sealed class PlayerVolumeController : MonoBehaviour
     {
+        public Text atmodata;
         private float myRoomPressure;
         private float myLastRoomPress;
         private float myRoomTemp;
@@ -35,6 +37,7 @@ namespace ProjectUniverse.Environment.Volumes
         [SerializeField] private float playerTemp = 98.6f;
         [SerializeField] private float oxyUseRate = 3.2f;//1.6 is for 60 seconds hold breath
         private Volume[] volumesPlayerIsIn;
+        public string CurrentVolumeOfPlayer;
         private SupplementalController playerControllerSup;
 
         // Start is called before the first frame update
@@ -73,7 +76,7 @@ namespace ProjectUniverse.Environment.Volumes
             if (playerOxygen <= 0)
             {
                 //take suffocation damage
-                playerControllerSup.InflictPlayerDamage(3.2f * Time.deltaTime);
+                playerControllerSup.InflictPlayerDamageServerRpc(3.2f * Time.deltaTime);
                 //playerHealth -= (3.2f * Time.deltaTime);//suffocate to death in 30 seconds
             }
             if (myRoomOxygenation < 0.5f)//if the air is too thin (shouldn't it be 50.0f?)
@@ -99,7 +102,7 @@ namespace ProjectUniverse.Environment.Volumes
             }
 
             //inflict toxicity damage
-            playerControllerSup.InflictPlayerDamage(Mathf.Lerp(0.0f, 3.0f, myRoomToxicity));
+            playerControllerSup.InflictPlayerDamageServerRpc(Mathf.Lerp(0.0f, 3.0f, myRoomToxicity));
 
             if (myRoomPressure < 0.12f)//~121 millibar. 121 is lowest survivable w/ pure oxygen.
             {
@@ -121,7 +124,7 @@ namespace ProjectUniverse.Environment.Volumes
             }
             if (playerTemp < 65f)//critical hypothermia
             {
-                playerControllerSup.InflictPlayerDamage(0.5f * Time.deltaTime);
+                playerControllerSup.InflictPlayerDamageServerRpc(0.5f * Time.deltaTime);
                 //playerHealth -= (0.5f*Time.deltaTime);
             }
             //update last room pressure
@@ -132,6 +135,9 @@ namespace ProjectUniverse.Environment.Volumes
             {
                 //you dead, punk!
             }
+//#if Build
+            DisplayDebugInfo();
+//#endif
         }
         public void AddRadiationExposureTime(float time)
         {
@@ -234,6 +240,20 @@ namespace ProjectUniverse.Environment.Volumes
             playerOxygen = pvc.PlayerOxygen;
             playerTemp = pvc.PlayerTemp;
             oxyUseRate = pvc.OxygenUseRate;
+        }
+
+        private void DisplayDebugInfo()
+        {
+            if(atmodata != null)
+            {
+                atmodata.text = "Pressure: " + myRoomPressure +
+                "\n Temp: " + myRoomTemp +
+                "\n Oxygenation: " + myRoomOxygenation +
+                "\n Toxicity: " + myRoomToxicity +
+                "\n Rads: " + myRadExposureRateRaw +
+                "\n PlayerOxygen: " + playerOxygen +
+                "\n PlayerTemp: " + playerTemp;
+            }
         }
     }
 }

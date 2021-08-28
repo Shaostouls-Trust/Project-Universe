@@ -5,16 +5,21 @@ using ProjectUniverse.Player;
 using ProjectUniverse.Base;
 using ProjectUniverse.Serialization.Handler;
 using ProjectUniverse.Serialization;
-using UnityEditor;
+//using UnityEditor;
 using ProjectUniverse.Environment.Volumes;
 using System;
+using UnityEngine.SceneManagement;
+using MLAPI;
+using MLAPI.NetworkVariable;
+using ProjectUniverse.Items.Weapons;
+using MLAPI.Messaging;
 
 namespace ProjectUniverse.Player.PlayerController
 {
     [Serializable]
-    public class SupplementalController : MonoBehaviour
+    public class SupplementalController : NetworkBehaviour
     {
-        private GUID guid;
+        private Guid guid;
         public string crouchKey;
         public string proneKey;
         public bool crouchToggle;
@@ -27,7 +32,10 @@ namespace ProjectUniverse.Player.PlayerController
         [SerializeField] private float shrinkerSize;
         [SerializeField] private float defaultHeight;
         //Player stats2
+        private NetworkVariableFloat playerNetHealth = new NetworkVariableFloat(100f);
         [SerializeField] private float playerHealth = 100f;//Non-standard. Radiation, suffocation, etc.
+        //[SerializeField] private MyLimb head;//0
+        //[SerializeField] private MyLimb chest;//1
         [SerializeField] private float headHealth = 45f;
         [SerializeField] private float chestHealth = 225f;
         [SerializeField] private float lArmHealth = 110f;
@@ -104,12 +112,16 @@ namespace ProjectUniverse.Player.PlayerController
 
         private void Awake()
         {
-            guid = GUID.Generate();
+            //if(guid == null)
+            //{
+            //    guid = Guid.NewGuid();
+            //}
         }
 
         // Update is called once per frame
         void Update()
         {
+            playerHealth = playerNetHealth.Value;
             //crouch (hold c)
             if (!crouchToggle)
             {
@@ -188,7 +200,8 @@ namespace ProjectUniverse.Player.PlayerController
             }
         }
 
-        public void InflictPlayerDamage(float amount)
+        [ServerRpc(RequireOwnership = false)]
+        public void InflictPlayerDamageServerRpc(float amount)
         {
 
             // \/ Naw. Let health be negative. Competative dying.
@@ -196,7 +209,7 @@ namespace ProjectUniverse.Player.PlayerController
             //{
             //    playerHealth = 0;
             //}
-            playerHealth -= amount;
+            playerNetHealth.Value -= amount;
         }
         public float PlayerHealth
         {
@@ -204,10 +217,11 @@ namespace ProjectUniverse.Player.PlayerController
             set { playerHealth = value; }
         }
 
-
+        
         public void SavePlayer()
         {
-            PlayerData data = new PlayerData(guid, playerRoot.transform,cameraRoot.transform.rotation.eulerAngles,
+            SceneDataHelper sdh = new SceneDataHelper(SceneManager.GetActiveScene().name, "Adrian Expanse Sector 1", DateTime.Now.ToString(), "CMDR Ash");
+            PlayerData data = new PlayerData(guid, sdh, playerRoot.transform,cameraRoot.transform.rotation.eulerAngles,
                 GetComponent<IPlayer_Inventory>(), GetComponent<PlayerVolumeController>(),this);
             SerializationHandler.SavePlayer("Player_current",data);
             Debug.Log("Saved");

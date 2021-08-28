@@ -608,6 +608,10 @@ namespace AmplifyShaderEditor
 			return currTime - m_inactivityTime;
 		}
 
+		public void ActivatePreviews( bool value )
+		{
+			m_mainGraphInstance.ActivatePreviews( value );
+		}
 
 		// Shader Graph window
 		public override void OnEnable()
@@ -621,7 +625,7 @@ namespace AmplifyShaderEditor
 			ASEPackageManagerHelper.Update();
 #endif
 
-			Shader.SetGlobalVector( PreviewSizeGlobalVariable, new Vector4( ParentNode.PreviewWidth, ParentNode.PreviewHeight, 0, 0 ) );
+			Shader.SetGlobalVector( PreviewSizeGlobalVariable, new Vector4( Constants.PreviewSize , Constants.PreviewSize , 0, 0 ) );
 
 			if( m_templatesManager == null )
 			{
@@ -1151,19 +1155,19 @@ namespace AmplifyShaderEditor
 		[MenuItem( "Assets/Create/Shader/Amplify Surface Shader" )]
 		static void CreateConfirmationStandardShader()
 		{
-			string path = AssetDatabase.GetAssetPath( Selection.activeObject );
-			if( path == "" )
-			{
-				path = "Assets";
-			}
-			else if( System.IO.Path.GetExtension( path ) != "" )
-			{
-				path = path.Replace( System.IO.Path.GetFileName( AssetDatabase.GetAssetPath( Selection.activeObject ) ), "" );
-			}
+			//string path = AssetDatabase.GetAssetPath( Selection.activeObject );
+			//if( path == "" )
+			//{
+			//	path = "Assets";
+			//}
+			//else if( System.IO.Path.GetExtension( path ) != "" )
+			//{
+			//	path = path.Replace( System.IO.Path.GetFileName( AssetDatabase.GetAssetPath( Selection.activeObject ) ), "" );
+			//}
 
-			string assetPathAndName = AssetDatabase.GenerateUniqueAssetPath( path + "/New Amplify Shader.shader" );
+			//string assetPathAndName = AssetDatabase.GenerateUniqueAssetPath( path + "/New Amplify Shader.shader" );
 			var endNameEditAction = ScriptableObject.CreateInstance<DoCreateStandardShader>();
-			ProjectWindowUtil.StartNameEditingIfProjectWindowExists( 0, endNameEditAction, assetPathAndName, AssetPreview.GetMiniTypeThumbnail( typeof( Shader ) ), null );
+			ProjectWindowUtil.StartNameEditingIfProjectWindowExists( 0, endNameEditAction, "New Amplify Shader.shader"/*assetPathAndName*/, AssetPreview.GetMiniTypeThumbnail( typeof( Shader ) ), null );
 		}
 		//static void CreateNewShader(  )
 		//{
@@ -1227,19 +1231,19 @@ namespace AmplifyShaderEditor
 		public static void CreateConfirmationTemplateShader( string templateGuid )
 		{
 			UIUtils.NewTemplateGUID = templateGuid;
-			string path = AssetDatabase.GetAssetPath( Selection.activeObject );
-			if( path == "" )
-			{
-				path = "Assets";
-			}
-			else if( System.IO.Path.GetExtension( path ) != "" )
-			{
-				path = path.Replace( System.IO.Path.GetFileName( AssetDatabase.GetAssetPath( Selection.activeObject ) ), "" );
-			}
+			//string path = AssetDatabase.GetAssetPath( Selection.activeObject );
+			//if( path == "" )
+			//{
+			//	path = "Assets";
+			//}
+			//else if( System.IO.Path.GetExtension( path ) != "" )
+			//{
+			//	path = path.Replace( System.IO.Path.GetFileName( AssetDatabase.GetAssetPath( Selection.activeObject ) ), "" );
+			//}
 
-			string assetPathAndName = AssetDatabase.GenerateUniqueAssetPath( path + "/New Amplify Shader.shader" );
+			//string assetPathAndName = AssetDatabase.GenerateUniqueAssetPath( path + "/New Amplify Shader.shader" );
 			var endNameEditAction = ScriptableObject.CreateInstance<DoCreateTemplateShader>();
-			ProjectWindowUtil.StartNameEditingIfProjectWindowExists( 0, endNameEditAction, assetPathAndName, AssetPreview.GetMiniTypeThumbnail( typeof( Shader ) ), null );
+			ProjectWindowUtil.StartNameEditingIfProjectWindowExists( 0, endNameEditAction, "New Amplify Shader.shader"/*assetPathAndName*/, AssetPreview.GetMiniTypeThumbnail( typeof( Shader ) ), null );
 		}
 
 		public static Shader CreateNewTemplateShader( string templateGUID , string customPath = null, string customShaderName = null )
@@ -1286,20 +1290,20 @@ namespace AmplifyShaderEditor
 		{
 			AmplifyShaderFunction asset = ScriptableObject.CreateInstance<AmplifyShaderFunction>();
 
-			string path = AssetDatabase.GetAssetPath( Selection.activeObject );
-			if( path == "" )
-			{
-				path = "Assets";
-			}
-			else if( System.IO.Path.GetExtension( path ) != "" )
-			{
-				path = path.Replace( System.IO.Path.GetFileName( AssetDatabase.GetAssetPath( Selection.activeObject ) ), "" );
-			}
+			//string path = AssetDatabase.GetAssetPath( Selection.activeObject );
+			//if( path == "" )
+			//{
+			//	path = "Assets";
+			//}
+			//else if( System.IO.Path.GetExtension( path ) != "" )
+			//{
+			//	path = path.Replace( System.IO.Path.GetFileName( AssetDatabase.GetAssetPath( Selection.activeObject ) ), "" );
+			//}
 
-			string assetPathAndName = AssetDatabase.GenerateUniqueAssetPath( path + "/New ShaderFunction.asset" );
+			//string assetPathAndName = AssetDatabase.GenerateUniqueAssetPath( path + "/New ShaderFunction.asset" );
 
 			var endNameEditAction = ScriptableObject.CreateInstance<DoCreateFunction>();
-			ProjectWindowUtil.StartNameEditingIfProjectWindowExists( asset.GetInstanceID(), endNameEditAction, assetPathAndName, AssetPreview.GetMiniThumbnail( asset ), null );
+			ProjectWindowUtil.StartNameEditingIfProjectWindowExists( asset.GetInstanceID(), endNameEditAction, "New ShaderFunction.asset"/*assetPathAndName*/, AssetPreview.GetMiniThumbnail( asset ), null );
 		}
 
 		public void UpdateTabTitle( string newTitle, bool modified )

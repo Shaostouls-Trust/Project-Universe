@@ -11,7 +11,6 @@ namespace ProjectUniverse.Base
     [Serializable]
     public class ItemStack
     {
-        //Probably need to accept lists of all pickipable items to avoid casting hell
         private string itemType;//Use strings for ore/mat Dict compat
         private float itemCount = 0f;//be it quantity or mass. Item count is not the array size.
         private int maxCount;

@@ -114,7 +114,7 @@ namespace AmplifyShaderEditor
 
 					if( connCount > 1 )
 					{
-						dataCollector.AddToLocalVariables( UniqueId, string.Format( NormalVecDecStr, NormalVecValStr + OutputId, result ) );
+						dataCollector.AddToFragmentLocalVariables( UniqueId, string.Format( NormalVecDecStr, NormalVecValStr + OutputId, result ) );
 						return GetOutputVectorItem( 0, outputId, NormalVecValStr + OutputId );
 					}
 				}
