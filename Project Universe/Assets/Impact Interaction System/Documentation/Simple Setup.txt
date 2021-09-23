@@ -1,0 +1,57 @@
+For more detailed documentation and explanations please visit:
+https://roadturtlegames.com/impact-interaction-system/documentation/
+
+-------- Installation --------
+If you would like to have special icons for Impact assets and components, move the included Gizmos folder into the root of your project.
+
+Otherwise, no special installation steps are required and you can delete the Gizmos folder if you wish. The Impact Interaction System folder can be moved anywhere in your project.
+
+-------- Simple Setup --------
+1) Create an Impact Tag Library asset
+	- Create a new Impact Tag Library asset by going to Assets > Create > Impact > Impact Tag Library.
+	- Fill out the fields with the tags you need. For example: Hard, Soft, Metal, Dirt, Bullet Impact, Footstep.
+
+2) Create an Impact Material asset
+	- Create a new Impact Material by going to Assets > Create > Impact > Impact Material
+	- Assign a Tag Library so that you can see tag names rather than raw integer values.
+	- Select one or more Material Tags for the material.
+	- Create Interaction Sets so that interactions can be played when interacting with other objects
+	- Set the Include Tags that will trigger the interaction set, or the Exclude Tags which will cause the interaction set to NOT be triggered.
+
+3) Create an Audio Interaction 
+	- Create an Audio Interaction by going to Assets > Create > Impact > Audio Interaction.
+	- Assign Audio Clips, a template Audio Source, and set up the interaction properties.
+		- The Audio Source Template must have an Impact Audio Source component attached to it.
+		- Add an Impact Particles component by going to Add Component > Impact > Impact Audio Source
+
+4) Create a Particle Interaction
+	- Create a Particle Interaction by going to Assets > Create > Impact > Particle Interaction.
+	- Assign the Particle Prefab. 
+		- The Prefab must have an Impact Particles component attached to it.
+		- Add an Impact Particles component by going to Add Component > Impact > Impact Particles.
+
+5) Create a Decal Interaction
+	- Create a Decal Interaction by going to Assets > Create > Impact > Decal Interaction.
+	- Assign the Decal Prefab. 
+		- The Prefab must have an Impact Decal component attached to it.
+		- Add an Impact Decal component by going to Add Component > Impact > Impact Decal.
+
+6) Assign Interactions to Impact Materials
+	- Assign the Interactions from steps 3 - 5 to the Interaction Set(s) of the Impact Material(s) from step 2.
+
+7) Add Impact Object components to your game objects.
+	- Go to Add Component > Impact and choose the appropriate Impact Object component
+		- Impact Object Single Material: Good for static objects.
+		- Impact Object Rigidbody: For objects that have a 3D or 2D Rigidbody.
+		- Impact Terrain: For terrains.
+	- Assign the Impact Material(s) from step 2.
+
+8) Add Impact Trigger components to your Impact Objects.
+	- Go to Add Component > Impact and choose from 3D or 2D Collision Triggers.
+		- Impact Collision Trigger: Handles single collisions (with OnCollisionEnter).
+		- Impact Slide and Roll Trigger: Handles sliding and rolling (with OnCollisionStay).
+		- Impact Simple Collision Trigger: Handles single collisions but does not recieve any data about collision velocity or what object was hit. Only useful if very high performance is needed.
+	- Assign the Impact Object collision data will be sent to.
+	- Typically only dynamic objects such as objects with Rigidbodies will need to have triggers.
+
+Now you are ready to go!

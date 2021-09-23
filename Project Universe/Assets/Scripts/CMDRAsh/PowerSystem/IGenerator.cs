@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using MLAPI.NetworkVariable;
+using MLAPI;
 
 namespace ProjectUniverse.PowerSystem
 {
-    public sealed class IGenerator : MonoBehaviour
+    public sealed class IGenerator : NetworkBehaviour
     {
         [SerializeField]
         private int outputMax;//duh
@@ -28,13 +30,28 @@ namespace ProjectUniverse.PowerSystem
         [SerializeField]
         private int availibleLegsOut;
 
+        //MLAPI
+        private NetworkVariableInt netOutputMax = new NetworkVariableInt(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        private NetworkVariableInt netLegsOut = new NetworkVariableInt(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+
         // Start is called before the first frame update
         void Start()
         {
+            NetworkListeners();
             //create GUID
             //guid = Guid.NewGuid();
             myGenerator = this.gameObject.GetComponent<IGenerator>();
             ProxyStart();
+        }
+
+        private void NetworkListeners()
+        {
+            //set starting values
+            netOutputMax.Value = outputMax;
+            //netLegsOut.Value = routers.Length * 3;
+            //set up events
+            netOutputMax.OnValueChanged += delegate { outputMax = netOutputMax.Value; };
+            netLegsOut.OnValueChanged += delegate { legsOut = netLegsOut.Value; };
         }
 
         public void ProxyStart()
@@ -62,12 +79,13 @@ namespace ProjectUniverse.PowerSystem
                     routers[i].CheckMachineState(ref myGenerator);
                 }
             }
+            netLegsOut.Value = routers.Length * 3;
         }
 
         // Update is called once per frame
         void Update()
         {
-            availibleLegsOut = routers.Length * 3;//needs to stick to the hard value, not x3
+            availibleLegsOut = legsOut;//needs to stick to the hard value, not x3
             outputCurrent = 0f;
             //get leg states - this will be for when we have levers that close off indiv legs.
             //NYI

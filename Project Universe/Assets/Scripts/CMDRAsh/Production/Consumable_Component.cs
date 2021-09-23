@@ -108,5 +108,15 @@ namespace ProjectUniverse.Production.Resources
             get { return HealthCurrent; }
             set { HealthCurrent = value; }
         }
+
+        public bool CompareMetaData(Consumable_Component comparee)
+        {
+            if (GetComponentID() == comparee.GetComponentID())
+            {
+                return true;
+            }
+            Debug.Log("METADATA ERROR");
+            return false;
+        }
     }
 }

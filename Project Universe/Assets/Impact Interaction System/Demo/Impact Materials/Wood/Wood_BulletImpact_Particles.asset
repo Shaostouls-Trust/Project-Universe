@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92a67f5bf319f4b4299b6659ada46bd2, type: 3}
+  m_Name: Wood_BulletImpact_Particles
+  m_EditorClassIdentifier: 
+  _minimumVelocity: 1
+  _collisionNormalInfluence: 1
+  _particlePrefab: {fileID: 193844039944324848, guid: 4f3f6f6a5f60cfe4896d9bfa2dec08cb,
+    type: 3}
+  _isParticleLooped: 0
+  _emissionInterval:
+    Min: 0.25
+    Max: 0.5
+  _emissionIntervalType: 1
+  _emitOnCollision: 1
+  _emitOnSlide: 0
+  _emitOnRoll: 0

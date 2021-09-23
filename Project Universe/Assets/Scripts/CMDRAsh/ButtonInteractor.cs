@@ -16,7 +16,7 @@ namespace ProjectUniverse.Environment.Interactable
         void Update()
         {
             Vector3 forward = transform.TransformDirection(0f, 0f, 1f) * 1.5f;//1.5m reach
-            Debug.DrawRay(transform.position, forward, Color.green, 1.5f);
+            Debug.DrawRay(transform.position, forward, Color.green);
             //if a 1m.5 raycast hits an object collider
             RaycastHit hit;
             if (Physics.Raycast(transform.position, forward, out hit, 1.5f))
@@ -47,6 +47,17 @@ namespace ProjectUniverse.Environment.Interactable
                         else if(script2 != null)
                         {
                             script2.externalInteractFunc();
+                        }
+                    }
+                }
+                else if(hit.collider.gameObject.tag == "Plant")
+                {
+                    if (Input.GetKeyUp(KeyCode.E))
+                    {
+                        var scriptFruit = hit.collider.gameObject.GetComponent<FarmPlant>();
+                        if(scriptFruit != null)
+                        {
+                            scriptFruit.PickupPlant();
                         }
                     }
                 }

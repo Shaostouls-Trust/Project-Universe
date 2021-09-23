@@ -7,9 +7,9 @@ namespace ProjectUniverse.Animation.Controllers
 {
     public class SwitchAnimationController : MonoBehaviour
     {
-        private bool on;
-        private bool turningon;
-        private bool turningoff;
+        private bool on = true;
+        private bool turningon = false;
+        private bool turningoff = false;
         [SerializeField]
         private GameObject greenObj;
         [SerializeField]
@@ -17,28 +17,19 @@ namespace ProjectUniverse.Animation.Controllers
         [SerializeField]
         private GameObject yellowObj;
 
-        void Update()
+        public GameObject GreenLED
         {
-            //rotation cannot exceed 180 or 0
-            /*
-            if (turningon || on)//turningon || on
-            {
-                if(transform.rotation.eulerAngles.y > 0.0)
-                {
-                    transform.localRotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
-                }
-            }
-
-            else if (turningoff || !on)//turningoff || !on
-            {
-                if (transform.rotation.eulerAngles.y < 180)
-                {
-                    transform.localRotation = Quaternion.Euler(0.0f, 180.0f, 0.0f);
-                }
-            }
-            */
+            get { return greenObj; }
         }
-
+        public GameObject RedLED
+        {
+            get { return redObj; }
+        }
+        public GameObject YellowLED
+        {
+            get { return YellowLED; }
+        }
+        
         public void OnSwitch(int numID)
         {
             //play animation
@@ -63,7 +54,8 @@ namespace ProjectUniverse.Animation.Controllers
             //pass in the emissive meshes
 
             GameObject[] objs = { greenObj, redObj, yellowObj };
-            GetComponentInParent<IBreakerBox>().SwitchToggleServerRpc(numID, ref objs);
+            Debug.Log("Server Switch Toggle");
+            GetComponentInParent<IBreakerBox>().SwitchToggleServerRpc(numID);//, ref objs);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using ProjectUniverse.Production.Resources;
+using ProjectUniverse.Items.Consumable;
 /// <summary>
 /// Item container
 /// </summary>
@@ -99,6 +100,10 @@ namespace ProjectUniverse.Base
             {
                 return new Consumable_Component[maxCap];
             }
+            else if(_originalType == typeof(Consumable_Produce))
+            {
+                return new Consumable_Produce[maxCap];
+            }
             else
             {
                 return new GameObject[maxCap];
@@ -159,6 +164,21 @@ namespace ProjectUniverse.Base
             //Debug.Log(component.ToString());
             //Debug.Log(lastIndex++);
             TArray.SetValue(component, lastIndex++);//cast exception on component addition
+
+        }
+
+        public void AddItem(Consumable_Produce produce)
+        {
+            //Debug.Log("Adding comp...");
+            itemCount += produce.GetProduceCount();
+            //check the length of TArray. Increase size if need be.
+            if (TArray.Length < lastIndex)
+            {
+                TArray = ExpandArrayBy(1);
+            }
+            //Debug.Log(component.ToString());
+            //Debug.Log(lastIndex++);
+            TArray.SetValue(produce, lastIndex++);//cast exception on component addition
 
         }
 
@@ -332,6 +352,27 @@ namespace ProjectUniverse.Base
                             lastIndex -= 1;
                         }
                     }
+                    ///
+                    /// Remove Produce
+                    ///
+                    else if (TArray.GetValue(i) != null && _originalType == typeof(Consumable_Produce))
+                    {
+                        Consumable_Produce tempProd = TArray.GetValue(i) as Consumable_Produce;//May throw null pointer
+                        if (amountToRemove > 0)
+                        {
+                            //remove this ingot from TArray
+                            returnStack.AddItem(tempProd);
+                            TArray.SetValue(null, i);//empty the TArray. May just need to create a new one.
+                            lastIndex -= 1;
+                            //Debug.Log("Added: " + tempIng.ToString());
+                            amountToRemove -= tempProd.GetProduceCount();
+                        }
+                        if (tempProd.GetProduceCount() == 0)
+                        {
+                            TArray.SetValue(null, i);
+                            lastIndex -= 1;
+                        }
+                    }
                 }
             }
             //check if this ItemStack realLength is 0
@@ -441,8 +482,29 @@ namespace ProjectUniverse.Base
                 }
                 else if (_originalType == typeof(Consumable_Component))
                 {
-                    //temporary
-                    return true;
+                    //Consumable_Component compCom = comparee.TArray.GetValue(0) as Consumable_Component;
+                    //Consumable_Component oordCom = TArray.GetValue(0) as Consumable_Component;
+                    //if(oordCom != null)
+                    //{
+                    //    if (oordCom.CompareMetaData(compCom))
+                    //    {
+                    //        Debug.Log("Itemstacks ARE EQUAL");
+                            return true;
+                    //    }
+                    //    Debug.Log("ItemStacks not equal");
+                    //}
+                }
+                else if(_originalType == typeof(Consumable_Produce))
+                {
+                    Consumable_Produce compProd = comparee.TArray.GetValue(0) as Consumable_Produce;
+                    Consumable_Produce oordProd = TArray.GetValue(0) as Consumable_Produce;
+                    //Only type and quality are checked. Mass and impurities are allowed to varry.
+                    if (oordProd.CompareMetaData(compProd))
+                    {
+                        Debug.Log("Itemstacks ARE EQUAL");
+                        return true;
+                    }
+                    Debug.Log("ItemStacks not equal");
                 }
             }
             //Debug.Log("Types not equal");
@@ -501,6 +563,11 @@ namespace ProjectUniverse.Base
                     {
                         Consumable_Component com = TArray.GetValue(i) as Consumable_Component;
                         mass = com.GetQuantity();
+                    }
+                    else if (_originalType == typeof(Consumable_Produce))
+                    {
+                        Consumable_Produce prod = TArray.GetValue(i) as Consumable_Produce;
+                        mass = prod.GetProduceCount();
                     }
                     size += mass;
                 }

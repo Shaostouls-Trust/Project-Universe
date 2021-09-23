@@ -10,12 +10,10 @@ public class ChildPlant : MonoBehaviour
     public float range = 5f;
     public Quaternion rotation;
     private Vector3 pos;
+
     public void Plusoneplantinchild()
     {
-
         Plants += 1;
-
-
     }
     private void Update()
     {
@@ -29,14 +27,6 @@ public class ChildPlant : MonoBehaviour
                 pos.y += 1;
             }
             Plants -= 1;
-            
-                
-            
-            
-            
-            
-            
-
         }
     }
 }

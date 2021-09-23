@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a0ffe4c3c08f1541b395e43f5145429, type: 3}
+  m_Name: Wood_BulletImpact_Decal
+  m_EditorClassIdentifier: 
+  _minimumVelocity: 1
+  _collisionNormalInfluence: 1
+  _decalPrefab: {fileID: 1461672161187014403, guid: 29598cd2394b2b24096e6e12e0a8e073,
+    type: 3}
+  _creationInterval:
+    Min: 0.25
+    Max: 0.5
+  _creationIntervalType: 1
+  _createOnCollision: 1
+  _createOnSlide: 0
+  _createOnRoll: 0

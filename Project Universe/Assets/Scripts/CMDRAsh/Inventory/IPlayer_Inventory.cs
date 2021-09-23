@@ -194,7 +194,7 @@ namespace ProjectUniverse.Player
                 for (int j = 0; j < p_inventory.Count; j++)
                 {
                     //Debug.Log("j:" + j);
-                    if (i != j)
+                    if (i != j && p_inventory[j] != null && p_inventory[i] != null)
                     {
                         if (p_inventory[j].CompareMetaData(p_inventory[i]))
                         {

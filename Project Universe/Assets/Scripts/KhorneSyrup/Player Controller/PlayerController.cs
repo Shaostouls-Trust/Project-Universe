@@ -86,12 +86,14 @@ namespace ProjectUniverse.Player.PlayerController
         private float lookClamp;
         private float timeInAir = 0.0f;
 
+        private NetworkVariableBool netFlashlightState = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+
         // Start is called before the first frame update
         void Start()
         {
             //Lock Cursor to center by default
             //LockCursor();
-
+            NetworkListeners();
             if (IsLocalPlayer)
             {
                 charController = GetComponent<CharacterController>();
@@ -104,6 +106,13 @@ namespace ProjectUniverse.Player.PlayerController
                 firstPersonCamera.enabled = false;
                 firstPersonCamera.GetComponent<AudioListener>().enabled = false;
             }
+        }
+
+        public void NetworkListeners()
+        {
+            flashLight.enabled = false;
+            netFlashlightState.Value = false;
+            netFlashlightState.OnValueChanged += delegate { flashLight.enabled = netFlashlightState.Value; };
         }
 
         void Awake()
@@ -389,18 +398,32 @@ namespace ProjectUniverse.Player.PlayerController
             /// On Hold F and Mousewheel, allow flashlight OuterAngle to go from 10 to 120deg
             /// Decrease range as the angle broadens
             ///
-            if (Input.GetButtonDown(flashLightInputName) && activeFL <= 0)
+            if (Input.GetButtonDown(flashLightInputName))// && activeFL <= 0)
             {
-                flashLight.enabled = true;
-                activeFL = 1;
+                FlashLightToggleServerRpc(!flashLight.enabled);
+                //flashLight.enabled = true;
+                //activeFL = 1;
             }
-            else if (Input.GetButtonDown(flashLightInputName) && activeFL >= 1)
-            {
-                flashLight.enabled = false;
-                activeFL = 0;
-            }
+            //else if (Input.GetButtonDown(flashLightInputName) && activeFL >= 1)
+            //{
+            //    flashLight.enabled = false;
+            //    activeFL = 0;
+            //}
         //Do flashlight stuff
         }
+
+        [ServerRpc]
+        private void FlashLightToggleServerRpc(bool state)
+        {
+            FlashLightToggleClientRpc(state);
+        }
+
+        [ClientRpc]
+        private void FlashLightToggleClientRpc(bool state)
+        {
+            netFlashlightState.Value = state;
+        }
+
         //Kinda primitive, may adjust later.
         //Locks player camera so they can not look up and down in a 360 deg arc.
         private void ClampLookRotationToValue(float value)

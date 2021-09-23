@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Farmingprototype : MonoBehaviour
 {
-    public float TimerAmmount = 10f;
+    public float TimerAmmount = 1f;
     private float timer;
     public GameObject plant;
     private Vector3 DirtPos;
@@ -13,8 +13,18 @@ public class Farmingprototype : MonoBehaviour
     private bool cantakeplant = false;
     public GameObject PlantUI;
     public GameObject plantchild;
+    public float timeramount2;
+    public bool text;
+    public bool isinrange = false;
 
-    
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            isinrange = true;
+        }
+        else { isinrange = false; }
+    }
 
     void Start()
     {
@@ -24,12 +34,23 @@ public class Farmingprototype : MonoBehaviour
     }
 
 
+
+
     void Update()
     {
-        //if (Input.GetKey(KeyCode.F))
-        //{
-        //    timer -= Time.deltaTime;
-        //}
+        if (text == true)
+        {
+            timeramount2 -= Time.deltaTime;
+        }
+        if (timeramount2 <= 0)
+        {
+            PlantUI.SetActive(false);
+            text = false;
+        }
+        if (Input.GetKey(KeyCode.F) && isinrange)
+        {
+            timer -= Time.deltaTime;
+        }
         if (timer <= 0 && CanPlant)
         {
 
@@ -38,30 +59,34 @@ public class Farmingprototype : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.E))
         {
             if (cantakeplant)
+        {
+            if (plantchild.active == false)
             {
-                if (plantchild.active == false)
-                {
-                    plantchild.SetActive(true);
-                    plantchild.SendMessage("Plusoneplantinchild");
+                plantchild.SetActive(true);
+                plantchild.SendMessage("Plusoneplantinchild");
                     plant.SetActive(true);
                 }
-                else
-                {
+            else
+            {
                     
-                    plantchild.SendMessage("Plusoneplantinchild");
+                plantchild.SendMessage("Plusoneplantinchild");
                     plant.SetActive(true);
 
-                }
             }
+
+
+        }
         } 
     }
-
+    
     private void FinishFarming()
     {
         GameObject PlantSpawned = Instantiate(plant, DirtPos, transform.rotation);
         
-        //PlantUI.SetActive(true);
+        PlantUI.SetActive(true);
         cantakeplant = true;
         CanPlant = false;
+        text = true;
+       
     }
 }

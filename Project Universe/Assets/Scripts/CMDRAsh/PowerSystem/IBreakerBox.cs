@@ -6,13 +6,15 @@ using ProjectUniverse.Data.Libraries;
 using MLAPI.NetworkVariable;
 using MLAPI.NetworkVariable.Collections;
 using MLAPI.Messaging;
+using MLAPI;
+using ProjectUniverse.Animation.Controllers;
 
 namespace ProjectUniverse.PowerSystem
 {
     /*
      * The purpose of this class is to distribute power to large amounts of small IMachines (not unlike IRoutingSubtation, save simpler).
      */
-    public sealed class IBreakerBox : MonoBehaviour
+    public sealed class IBreakerBox : MonoBehaviour//NetworkBehaviour
     {
         private Guid guid;
         //power group or machine this unit provides power to.
@@ -41,7 +43,7 @@ namespace ProjectUniverse.PowerSystem
         private NetworkVariableFloat netDefecitVBreaker = new NetworkVariableFloat(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
         private NetworkVariableInt netLegsRequired = new NetworkVariableInt(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
         private NetworkVariableInt netLegsReceived = new NetworkVariableInt(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
-        private NetworkList<GameObject> netOccupiedSwitches = new NetworkList<GameObject>(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        //private NetworkList<GameObject> netOccupiedSwitches = new NetworkList<GameObject>(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
 
         void Start()
         {
@@ -239,14 +241,19 @@ namespace ProjectUniverse.PowerSystem
         }
 
         [ServerRpc(RequireOwnership = false)]
-        public void SwitchToggleServerRpc(int numID, ref GameObject[] mySwitchLEDs)
+        public void SwitchToggleServerRpc(int numID)//, ref GameObject[] mySwitchLEDs)
         {
-            SwitchToggleClientRpc(numID, ref mySwitchLEDs);
+            SwitchToggleClientRpc(numID);//, ref mySwitchLEDs);
         }
 
         [ClientRpc]
-        public void SwitchToggleClientRpc(int numID, ref GameObject[] mySwitchLEDs)
+        public void SwitchToggleClientRpc(int numID)//, ref GameObject[] mySwitchLEDs)
         {
+            Debug.Log("Attempt to get LEDs from occupiedSwitches");
+            //use the numid to get the switchAnimController and therefore access the mySwitchLEDs
+            SwitchAnimationController sac = occupiedSwitches[numID].transform.GetChild(4).GetComponent<SwitchAnimationController>();
+            GameObject[] mySwitchLEDs = { sac.GreenLED, sac.RedLED, sac.YellowLED };
+
             //targetSubMachine[numID] causes NullRef on some indexes even though the machine should exist
             Debug.Log(numID);
             if (targetSubMachine[numID] != null && targetSubMachine[numID].enabled)
@@ -392,11 +399,11 @@ namespace ProjectUniverse.PowerSystem
                     }
                 }
                 //update netOccupiedSwitches
-                netOccupiedSwitches.Clear();
-                for (int i = 0; i < occupiedSwitches.Length; i++)
-                {
-                    netOccupiedSwitches.Add(occupiedSwitches[i]);
-                }
+                //netOccupiedSwitches.Clear();
+                //for (int i = 0; i < occupiedSwitches.Length; i++)
+                //{
+                //    netOccupiedSwitches.Add(occupiedSwitches[i]);
+                //}
             }
         }
 

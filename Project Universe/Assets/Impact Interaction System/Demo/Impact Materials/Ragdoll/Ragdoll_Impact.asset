@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5248e80a89c7fa84280bb5bfc63e8fd0, type: 3}
+  m_Name: Ragdoll_Impact
+  m_EditorClassIdentifier: 
+  _velocityRange:
+    Min: 2
+    Max: 9
+  _randomPitchRange:
+    Min: 0.9
+    Max: 1.1
+  _randomVolumeRange:
+    Min: 0.9
+    Max: 1.1
+  _scaleVolumeWithVelocity: 1
+  _velocityVolumeScaleCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _collisionNormalInfluence: 1
+  _slideVelocityPitchMultiplier: 0.025
+  _audioSourceTemplate: {fileID: 114720828026483632, guid: 8c79b185e521b1d45ad9648d834deecb,
+    type: 3}
+  _collisionAudioSelectionMode: 1
+  _collisionAudioClips:
+  - {fileID: 8300000, guid: 2560f4fbee1a59645924fcdc116f29fe, type: 3}
+  - {fileID: 8300000, guid: 57cf56b1a9bf7004e946462bfd563780, type: 3}
+  - {fileID: 8300000, guid: 1e9cad99e71d68948846ff27e211c1a9, type: 3}
+  - {fileID: 8300000, guid: 1d1ca12d8fed9de408361969fa659d56, type: 3}
+  _slideAudioClip: {fileID: 0}
+  _rollAudioClip: {fileID: 0}

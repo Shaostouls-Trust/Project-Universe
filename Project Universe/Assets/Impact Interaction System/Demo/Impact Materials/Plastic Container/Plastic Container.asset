@@ -1,0 +1,104 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cecd4675b635efd41bcbcb0a0eeb3b6e, type: 3}
+  m_Name: Plastic Container
+  m_EditorClassIdentifier: 
+  _tagLibrary: {fileID: 11400000, guid: 0f721be14c9d97e4a891f3a9e411bff6, type: 2}
+  _materialTagsMask:
+    _value: 1
+    _tagLibrary: {fileID: 0}
+  _interactionSets:
+  - _name: Hard
+    _includeTagsFilter:
+      TagMask:
+        _value: 17
+        _tagLibrary: {fileID: 0}
+      ExactMatch: 0
+    _excludeTagsFilter:
+      TagMask:
+        _value: 0
+        _tagLibrary: {fileID: 0}
+      ExactMatch: 0
+    _interactions:
+    - {fileID: 11400000, guid: 6c350a939d0704146a0b7e797723f040, type: 2}
+    - {fileID: 11400000, guid: db17c5aff99d5aa42849207ea348934e, type: 2}
+  - _name: Soft
+    _includeTagsFilter:
+      TagMask:
+        _value: 2
+        _tagLibrary: {fileID: 0}
+      ExactMatch: 0
+    _excludeTagsFilter:
+      TagMask:
+        _value: 0
+        _tagLibrary: {fileID: 0}
+      ExactMatch: 0
+    _interactions:
+    - {fileID: 11400000, guid: 8fbab2031ae5e124c85614f7cffcd1b9, type: 2}
+  - _name: Footsteps Left
+    _includeTagsFilter:
+      TagMask:
+        _value: 4
+        _tagLibrary: {fileID: 0}
+      ExactMatch: 0
+    _excludeTagsFilter:
+      TagMask:
+        _value: 0
+        _tagLibrary: {fileID: 0}
+      ExactMatch: 0
+    _interactions:
+    - {fileID: 11400000, guid: a6794b31c69659248954e400a190d86d, type: 2}
+  - _name: Footsteps Right
+    _includeTagsFilter:
+      TagMask:
+        _value: 8
+        _tagLibrary: {fileID: 0}
+      ExactMatch: 0
+    _excludeTagsFilter:
+      TagMask:
+        _value: 0
+        _tagLibrary: {fileID: 0}
+      ExactMatch: 0
+    _interactions:
+    - {fileID: 11400000, guid: 51929f24bfe3cd84eb76232ebcf143e0, type: 2}
+  - _name: Bullet Impact
+    _includeTagsFilter:
+      TagMask:
+        _value: 16
+        _tagLibrary: {fileID: 0}
+      ExactMatch: 0
+    _excludeTagsFilter:
+      TagMask:
+        _value: 0
+        _tagLibrary: {fileID: 0}
+      ExactMatch: 0
+    _interactions:
+    - {fileID: 11400000, guid: ef99dadbe9e78ee4bb83777313e586dc, type: 2}
+    - {fileID: 11400000, guid: 7fa53c02095856d4eab6404d13519c63, type: 2}
+    - {fileID: 11400000, guid: 50f7edac24680ed45905be0bceba62ed, type: 2}
+  - _name: Dust
+    _includeTagsFilter:
+      TagMask:
+        _value: 64
+        _tagLibrary: {fileID: 0}
+      ExactMatch: 0
+    _excludeTagsFilter:
+      TagMask:
+        _value: 0
+        _tagLibrary: {fileID: 0}
+      ExactMatch: 0
+    _interactions:
+    - {fileID: 11400000, guid: 8dee0a7cd7f833548b81c2cc483e5b21, type: 2}
+    - {fileID: 11400000, guid: 805e133f27a3c0248add18c88f6ededf, type: 2}
+  _fallbackTagMask:
+    _value: 1
+    _tagLibrary: {fileID: 0}

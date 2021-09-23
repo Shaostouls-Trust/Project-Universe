@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5248e80a89c7fa84280bb5bfc63e8fd0, type: 3}
+  m_Name: Shell_Impact
+  m_EditorClassIdentifier: 
+  _velocityRange:
+    Min: 2
+    Max: 9
+  _randomPitchRange:
+    Min: 0.9
+    Max: 1.1
+  _randomVolumeRange:
+    Min: 0.9
+    Max: 1.1
+  _scaleVolumeWithVelocity: 1
+  _velocityVolumeScaleCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _collisionNormalInfluence: 1
+  _slideVelocityPitchMultiplier: 0.025
+  _audioSourceTemplate: {fileID: 114720828026483632, guid: 8c79b185e521b1d45ad9648d834deecb,
+    type: 3}
+  _collisionAudioSelectionMode: 0
+  _collisionAudioClips:
+  - {fileID: 8300000, guid: 7b6e216cbeefa974bb1e0f6fd50cbff2, type: 3}
+  - {fileID: 8300000, guid: 9ad34dff9f511b04c81e14b6160cbe7d, type: 3}
+  - {fileID: 8300000, guid: 1949e5a286bd14844b0ee1c8c851d8e2, type: 3}
+  - {fileID: 8300000, guid: 29a5f631e5802af4abe710f9d2453224, type: 3}
+  - {fileID: 8300000, guid: 1d18a5f49d5023342bb59d8095af5f6a, type: 3}
+  _slideAudioClip: {fileID: 0}
+  _rollAudioClip: {fileID: 0}
