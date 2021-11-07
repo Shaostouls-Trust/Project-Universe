@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using ProjectUniverse.Base;
 using ProjectUniverse.Player;
+using MLAPI;
 
 namespace ProjectUniverse.Production.Machines
 {
@@ -45,14 +46,18 @@ namespace ProjectUniverse.Production.Machines
             }
         }
 
-        public void EmptyInventory(GameObject player)
+        public void ExternalInteractFunc()
         {
-            Debug.Log("Emptying Drone");
-            IPlayer_Inventory playerInventory = player.GetComponent<IPlayer_Inventory>();
-            for (int i = 0; i < oreInventory.Count; i++)
+            if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
             {
-                playerInventory.AddStackToPlayerInventory(oreInventory[i]);
+                Debug.Log("Emptying Drone");
+                IPlayer_Inventory playerInventory = networkedClient.PlayerObject.gameObject.GetComponent<IPlayer_Inventory>();
+                for (int i = 0; i < oreInventory.Count; i++)
+                {
+                    playerInventory.AddStackToPlayerInventory(oreInventory[i]);
+                }
             }
+
         }
     }
 }

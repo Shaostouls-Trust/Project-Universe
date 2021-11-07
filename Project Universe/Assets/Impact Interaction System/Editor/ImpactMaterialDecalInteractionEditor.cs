@@ -26,7 +26,7 @@ namespace Impact.EditorScripts
 
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(new GUIContent("Decal Prefab", "The decal prefab to use."), GUILayout.Width(180));
-            interaction.DecalPrefab = EditorGUILayout.ObjectField(interaction.DecalPrefab, typeof(ImpactDecal), false) as ImpactDecal;
+            interaction.DecalPrefab = EditorGUILayout.ObjectField(interaction.DecalPrefab, typeof(ImpactDecalBase), false) as ImpactDecalBase;
             EditorGUILayout.EndHorizontal();
 
             if (interaction.DecalPrefab == null)

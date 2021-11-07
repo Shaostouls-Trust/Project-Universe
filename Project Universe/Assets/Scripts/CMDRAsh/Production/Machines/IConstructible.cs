@@ -321,7 +321,7 @@ namespace ProjectUniverse.Base
 		private void SortComponentsByPriority()
 		{
 			MethodInfo info = IConstructible_ComponentsReal[0].GetItemArray().GetValue(0).GetType().GetMethod("GetPriority");
-			Utils.InsertionSort<int>(ref IConstructible_ComponentsReal, info);
+			Utils.InsertionSort<int>(ref IConstructible_ComponentsReal, info,false);
 		}
 
 		public void TakeDamageFromBullet(IBullet bullet)

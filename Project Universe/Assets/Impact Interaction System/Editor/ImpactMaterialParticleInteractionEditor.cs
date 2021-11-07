@@ -26,7 +26,7 @@ namespace Impact.EditorScripts
 
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(new GUIContent("Particle Prefab", "The particle prefab to use."), GUILayout.Width(180));
-            interaction.ParticlePrefab = EditorGUILayout.ObjectField(interaction.ParticlePrefab, typeof(ImpactParticles), false) as ImpactParticles;
+            interaction.ParticlePrefab = EditorGUILayout.ObjectField(interaction.ParticlePrefab, typeof(ImpactParticlesBase), false) as ImpactParticlesBase;
             EditorGUILayout.EndHorizontal();
 
             if (interaction.ParticlePrefab == null)

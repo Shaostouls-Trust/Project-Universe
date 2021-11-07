@@ -287,7 +287,6 @@ namespace ProjectUniverse.UI
                     }
                 }
             }
-
         }
 
         public void UpdateAvailableOres()
@@ -301,11 +300,15 @@ namespace ProjectUniverse.UI
                 for (int j = 0; j < transfererinventory.Count; j++)
                 {
                     //Debug.Log(transfererinventory[j].GetStackType().Split('_')[1] + " V " + OreInsertionButtons[k].transform.GetChild(1).GetChild(0).GetComponent<TMP_Text>().text.Split(' ')[0]);
-                    if (transfererinventory[j].GetStackType().Split('_')[1]
-                        == OreInsertionButtons[k].transform.GetChild(1).GetChild(0).GetComponent<TMP_Text>().text.Split(' ')[0])
+                    //filter out anything that isn't delimed with a '_'
+                    if(transfererinventory[j].GetStackType().Split('_').Length >= 2)
                     {
-                        OreInsertionButtons[k].transform.GetChild(2).GetComponent<TMP_Text>().text
-                            = "" + transfererinventory[j].GetRealLength();
+                        if (transfererinventory[j].GetStackType().Split('_')[1]
+                        == OreInsertionButtons[k].transform.GetChild(1).GetChild(0).GetComponent<TMP_Text>().text.Split(' ')[0])
+                        {
+                            OreInsertionButtons[k].transform.GetChild(2).GetComponent<TMP_Text>().text
+                                = "" + transfererinventory[j].GetRealLength();
+                        }
                     }
                 }
             }

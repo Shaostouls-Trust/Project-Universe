@@ -23,17 +23,21 @@ public class WeaponSwitching : NetworkBehaviour
 
             if (Input.GetAxis("Mouse ScrollWheel") < 0f)
             {
-                Debug.Log(selectedWeapon);
                 if (selectedWeapon >= transform.childCount - 1)
-                    selectedWeapon = 0;
+                {
+                    //selectedWeapon = 0;
+                    netSelectedWeapon.Value = 0;
+                }
                 netSelectedWeapon.Value++;
                 selectedWeapon = netSelectedWeapon.Value;
             }
             if (Input.GetAxis("Mouse ScrollWheel") > 0f)
             {
-                Debug.Log(selectedWeapon);
                 if (selectedWeapon <= 0)
-                    selectedWeapon = transform.childCount - 1;
+                {
+                    //selectedWeapon = transform.childCount - 1;
+                    netSelectedWeapon.Value = transform.childCount - 1;
+                }
                 netSelectedWeapon.Value--;
                 selectedWeapon = netSelectedWeapon.Value;
             }

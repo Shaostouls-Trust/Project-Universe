@@ -73,6 +73,11 @@ public class FarmPlant : MonoBehaviour
         
     }
 
+    public void ExternalInteractFunc()
+    {
+        PickupPlant();
+    }
+
     /// <summary>
     /// get fruit and seeds added to player inventory
     /// </summary>
@@ -91,10 +96,10 @@ public class FarmPlant : MonoBehaviour
             {
                 IPlayer_Inventory playerInventory = networkedClient.PlayerObject.GetComponent<IPlayer_Inventory>();
                 Consumable_Produce produce = new Consumable_Produce(plantType.ToString(), yield);
-                Consumable_Produce produceSeeds = new Consumable_Produce(plantType.ToString() + " Seeds", 2);
+                Consumable_Produce produceSeeds = new Consumable_Produce(plantType.ToString() + "_Seeds", 2);
                 ItemStack produceStack = new ItemStack(plantType.ToString(), 999, typeof(Consumable_Produce));
                 produceStack.AddItem(produce);
-                ItemStack seedStack = new ItemStack(plantType.ToString()+" Seeds", 999, typeof(Consumable_Produce));
+                ItemStack seedStack = new ItemStack(plantType.ToString()+"_Seeds", 999, typeof(Consumable_Produce));
                 seedStack.AddItem(produceSeeds);
                 Debug.Log("Add produce");
                 playerInventory.AddStackToPlayerInventory(produceStack);

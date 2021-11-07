@@ -70,11 +70,8 @@ public class ShutterAnimator : MonoBehaviour
         }
     }
     
-
-    //open or close the shutters
-    public void buttonResponse()
+    public void ExternalInteractFunc()
     {
-        //Debug.Log("nya nya nya");
         if (isPowered && !isLocked)
         {
             if (isOpen || isOpening)

@@ -147,6 +147,34 @@ namespace ProjectUniverse.Player
             return p_inventory[atIndex].RemoveItemData(amount);
             //return p_inventory.Find(x => x.GetStackType() == item.GetStackType()).RemoveItemData(amount);
         }
+        /// <summary>
+        /// Remove a certain index from a certain itemstack
+        /// </summary>
+        public ItemStack RemoveFromPlayerInventory<stacktype>(ItemStack removeFromStack, int atIndex)
+        {
+            int stackIndex = -1;
+            for (int i = 0; i < p_inventory.Count; i++)
+            {
+                if(p_inventory[i] == removeFromStack)
+                {
+                    stackIndex = i;
+                }
+            }
+            if(stackIndex != -1)
+            {
+                Debug.Log("Removing: " + p_inventory[stackIndex].GetItemArray().GetValue(atIndex));
+                p_inventory[stackIndex].RemoveTArrayIndex<stacktype>(atIndex, out ItemStack stack);
+                if(p_inventory[stackIndex].GetRealLength() <= 0f)
+                {
+                    p_inventory.RemoveAt(stackIndex);
+                }
+                return stack;
+            }
+            else
+            {
+                return null;
+            }
+        }
 
         //Called by pickupable to be picked up
         public bool AddToPlayerInventory<itemtype>(Consumable_Ore item)//THIS ADDS 45Kg OF ORE INTO ONE INDEX?

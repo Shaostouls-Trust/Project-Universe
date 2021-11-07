@@ -517,7 +517,7 @@ namespace ProjectUniverse.Animation.Controllers
             }
         }
 
-        public void ButtonResponse()
+        public void ExternalInteractFunc()
         {
             if (!locked)
             {

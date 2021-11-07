@@ -33,18 +33,6 @@ public class FarmPlotController : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     void LookInfoMsg(LookInfo linf)
     {
         string[] data = { soiltype.ToString() };

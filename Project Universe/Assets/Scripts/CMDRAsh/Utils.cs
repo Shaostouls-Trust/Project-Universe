@@ -15,20 +15,47 @@ namespace ProjectUniverse.Util
 		/// </summary>
 		/// <param name="list">, the ItemStack to be sorted according to:</param>
 		/// <param name="sortBy">, the Method that each TArray item in the Itemstack will Invoke</param>
-		public static void InsertionSort<T>(ref List<ItemStack> list, MethodInfo sortBy) where T:IComparable//List<ItemStack>
+		/// <param name="highlevelsort">, true sorts list at the ItemStack level, false sorts at an index 0 low level.</param>
+		public static void InsertionSort<T>(ref List<ItemStack> list, MethodInfo sortBy, bool highlevelsort) where T:IComparable//List<ItemStack>
 		{
 			for (int outer = 1; outer < list.Count; outer++)
 			{
 				int position = outer;
 				//get the value to compare to position-1 (this value is the type we are comparing, IE an int/float/string/etc)
 				ItemStack tempStack = new ItemStack(list[position]);
-				var KeyZero = (T)sortBy.Invoke(list[position].GetItemArray().GetValue(0), null);	
-				while(position > 0 && KeyZero.CompareTo((T)sortBy.Invoke(list[position - 1].GetItemArray().GetValue(0), null)) <0)//keyZero < KeyNext
+				if (highlevelsort)
 				{
-					list[position] = list[position - 1];
-					position--;
+					var KeyZero = (T)sortBy.Invoke(list[position], null);
+					while (position > 0 && KeyZero.CompareTo((T)sortBy.Invoke(list[position - 1], null)) < 0)//keyZero < KeyNext
+					{
+						list[position] = list[position - 1];
+						position--;
+					}
+				}
+				else
+				{
+					var KeyZero = (T)sortBy.Invoke(list[position].GetItemArray().GetValue(0), null);
+					while (position > 0 && KeyZero.CompareTo((T)sortBy.Invoke(list[position - 1].GetItemArray().GetValue(0), null)) < 0)//keyZero < KeyNext
+					{
+						list[position] = list[position - 1];
+						position--;
+					}
 				}
 				list[position] = tempStack;
+			}
+		}
+
+		/// <summary>
+		/// Sort Itemstacks by category in inventory displays
+		/// </summary>
+		public static void CategorySort(ref List<GameObject> fbibs)
+		{
+			//FleetBoyItemButton fbib;
+			for (int outer = 1; outer < fbibs.Count; outer++)
+			{
+				int position = outer;
+				FleetBoyItemButton tempButton = fbibs[outer].GetComponent<FleetBoyItemButton>();
+				//tempButton.ItemCategory
 			}
 		}
     }

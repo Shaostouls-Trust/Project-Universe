@@ -15,6 +15,7 @@ namespace ProjectUniverse.Items.Tools
     public class IMachineWelder : MonoBehaviour
     {
         //player will provide their inventory
+        //will need reset if dropped and picked up
         private GameObject player;
         [SerializeField] private GameObject buildComponentPanel;
         [SerializeField] private TMP_Text machineName;
@@ -44,12 +45,13 @@ namespace ProjectUniverse.Items.Tools
         // Update is called once per frame
         void Update()
         {
+            Vector3 forward = Camera.main.transform.TransformDirection(0f, 0f, 1f) * 1f;
             //try to raycast to a machine
             if (Physics.Raycast(
                     new Vector3(welderRaycastPoint.transform.position.x,
                     welderRaycastPoint.transform.position.y,
                     welderRaycastPoint.transform.position.z),
-                    Vector3.back, out RaycastHit hit, 1.0f))
+                    forward, out RaycastHit hit, 1.0f))//Vector.Back
             {
                 object[] prams;
                 IConstructible cons;

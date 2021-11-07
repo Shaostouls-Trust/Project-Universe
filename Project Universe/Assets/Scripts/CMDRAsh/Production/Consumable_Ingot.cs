@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using ProjectUniverse.Data.Libraries.Definitions;
 using ProjectUniverse.Data.Libraries;
+using MLAPI;
+using ProjectUniverse.Player;
 
 namespace ProjectUniverse.Production.Resources
 {
@@ -34,6 +36,16 @@ namespace ProjectUniverse.Production.Resources
             InclusionLibrary.GetZone3Ores().TryGetValue(ingotQuality, out oreInclusionDict);
             InclusionLibrary.GetZone3Mats().TryGetValue(ingotQuality, out matInclusionDict);
             ingotMassKg = mass;
+        }
+
+        public void RegenerateIngot(Consumable_Ingot ingot)
+        {
+            typeSingle = ingot.GetIngotType();
+            ingotQuality = ingot.ingotQuality;
+            IngotDef = ingot.IngotDef;
+            oreInclusionDict = ingot.oreInclusionDict;
+            matInclusionDict = ingot.matInclusionDict;
+            ingotMassKg = ingot.ingotMassKg;
         }
 
         override
@@ -68,6 +80,17 @@ namespace ProjectUniverse.Production.Resources
             }
             Debug.Log("METADATA ERROR");
             return false;
+        }
+
+        public void ExternalInteractFunc()
+        {
+            if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
+            {
+                networkedClient.PlayerObject.gameObject.GetComponent<IPlayer_Inventory>().AddToPlayerInventory<Consumable_Ingot>(
+                this.gameObject.GetComponent<Consumable_Ingot>()
+                );
+                Destroy(gameObject);
+            }
         }
     }
 }

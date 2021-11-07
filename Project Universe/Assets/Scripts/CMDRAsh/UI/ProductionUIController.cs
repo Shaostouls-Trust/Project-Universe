@@ -32,6 +32,7 @@ namespace ProjectUniverse.UI
         // Start is called before the first frame update
         void Start()
         {
+            Debug.Log("START");
             if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
             {
                 player = networkedClient.PlayerObject.gameObject;

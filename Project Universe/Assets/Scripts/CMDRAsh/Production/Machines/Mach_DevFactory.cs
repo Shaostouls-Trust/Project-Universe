@@ -289,6 +289,14 @@ namespace ProjectUniverse.Production.Machines
             outputMaterials.Clear();
         }
 
+        public void ExternalInteractFunc()
+        {
+            ProductionUI.GetComponent<ProductionUIController>().LockScreenAndFreeCursor();
+            ProductionUI.SetActive(true);
+            ProductionUI.GetComponent<ProductionUIController>().UpdateInputMaterials(inputMaterials);//inputMaterials
+            ProductionUI.GetComponent<ProductionUIController>().UpdateProductionInventory();//inputMaterials
+        }
+
         public void DisplayProductionUI()
         {
             ProductionUI.GetComponent<ProductionUIController>().LockScreenAndFreeCursor();

@@ -30,8 +30,8 @@ public class PlantSeed : MonoBehaviour
         {
             playerInventory = networkedClient.PlayerObject.GetComponent<IPlayer_Inventory>();
 
-            Consumable_Produce produceSeeds = new Consumable_Produce(plantType.ToString() + " Seeds", 1);
-            ItemStack seedStack = new ItemStack(plantType.ToString() + " Seeds", 999, typeof(Consumable_Produce));
+            Consumable_Produce produceSeeds = new Consumable_Produce(plantType.ToString() + "_Seeds", 1);
+            ItemStack seedStack = new ItemStack(plantType.ToString() + "_Seeds", 999, typeof(Consumable_Produce));
             seedStack.AddItem(produceSeeds);
             Debug.Log("Add 1 seed at start");
             playerInventory.AddStackToPlayerInventory(seedStack);
@@ -41,8 +41,8 @@ public class PlantSeed : MonoBehaviour
 
     public void RemoveSeedFromPlayerInventory()
     {
-        Consumable_Produce produceSeeds = new Consumable_Produce(plantType.ToString() + " Seeds", 1);
-        ItemStack seedStack = new ItemStack(plantType.ToString() + " Seeds", 999, typeof(Consumable_Produce));
+        Consumable_Produce produceSeeds = new Consumable_Produce(plantType.ToString() + "_Seeds", 1);
+        ItemStack seedStack = new ItemStack(plantType.ToString() + "_Seeds", 999, typeof(Consumable_Produce));
         seedStack.AddItem(produceSeeds);
         playerInventory.RemoveFromPlayerInventory(seedStack);
         Debug.Log("Remove seed");
@@ -57,7 +57,7 @@ public class PlantSeed : MonoBehaviour
             List<ItemStack> inv = playerInventory.GetPlayerInventory();
             for (int i = 0; i < inv.Count; i++)
             {
-                if (inv[i].GetStackType() == plantType.ToString() + " Seeds")
+                if (inv[i].GetStackType() == plantType.ToString() + "_Seeds")
                 {
                     seedStack = inv[i];
                     seeds = inv[i].GetRealLength();

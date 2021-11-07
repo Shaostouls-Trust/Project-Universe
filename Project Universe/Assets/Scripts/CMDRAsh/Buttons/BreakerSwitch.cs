@@ -24,7 +24,7 @@ namespace ProjectUniverse.Environment.Interactable
         /// Universal linking function to be present in all button classes. A universal backend.
         /// This button specifically for powersystem control switches.
         /// </summary>
-        public void externalInteractFunc()
+        public void ExternalInteractFunc()
         {
             scriptedObj.GetComponent<SwitchAnimationController>().OnSwitch(numID);
         }

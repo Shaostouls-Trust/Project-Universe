@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using ProjectUniverse.Production.Resources;
 using ProjectUniverse.Items.Consumable;
+using ProjectUniverse.Items.Weapons;
+using ProjectUniverse.Items.Tools;
+using ProjectUniverse.Items;
 /// <summary>
 /// Item container
 /// </summary>
@@ -18,6 +21,7 @@ namespace ProjectUniverse.Base
         private Type _originalType;
         private Array TArray;
         private int lastIndex = 0;
+        private Category stackCategory;
 
         override
         public string ToString()
@@ -51,6 +55,18 @@ namespace ProjectUniverse.Base
             }
             return assembly;
         }
+
+        public enum Category
+        {
+            Weapon,
+            Gadget,
+            Gear,
+            Consumable,
+            Ammo,
+            Resource,
+            Misc
+        }
+
         public ItemStack(ItemStack stack)
         {
             itemType = stack.GetStackType();
@@ -59,6 +75,7 @@ namespace ProjectUniverse.Base
             TArray = stack.GetItemArray();
             itemCount = stack.Size();
             lastIndex = stack.lastIndex;
+            stackCategory = stack.stackCategory;
         }
 
         public ItemStack(string myItemType, int myMaxCount, Type sourceType)
@@ -68,6 +85,7 @@ namespace ProjectUniverse.Base
             _originalType = sourceType;
             //Create an array with a starting length of 1
             TArray = CreateArrayOfOriginalType(1);//maxCount
+            stackCategory = CalcSortCategory();
         }
         /// <summary>
         /// Set the ItemStack's TArray to the passed param. <br/>
@@ -190,7 +208,54 @@ namespace ProjectUniverse.Base
             {
                 TArray.SetValue(TArray.GetValue(i + 1), i);
             }
-            Debug.Log(TArray.GetValue(0)+"->"+TArray.GetValue(TArray.Length-1));
+            LastIndex--;
+            Debug.Log(TArray.GetValue(0)+"->"+TArray.GetValue(LastIndex-1));
+        }
+
+        public void RemoveTArrayIndex<stacktype>(int index, out ItemStack returnstack)
+        {
+            if(typeof(stacktype) == typeof(Consumable_Ore))
+            {
+                Consumable_Ore ore = TArray.GetValue(index) as Consumable_Ore;
+                returnstack = new ItemStack(ore.GetOreType(), 999, typeof(Consumable_Ore));
+                returnstack.AddItem(ore);
+                Debug.Log("return stack: " + returnstack);
+            }
+            else if (typeof(stacktype) == typeof(Consumable_Ingot))
+            {
+                Consumable_Ingot ingot = TArray.GetValue(index) as Consumable_Ingot;
+                returnstack = new ItemStack(ingot.GetIngotType(), 99, typeof(Consumable_Ingot));
+                returnstack.AddItem(ingot);
+            }
+            else if (typeof(stacktype) == typeof(Consumable_Material))
+            {
+                Consumable_Material mat = TArray.GetValue(index) as Consumable_Material;
+                returnstack = new ItemStack(mat.GetMaterialID(), 99, typeof(Consumable_Material));
+                returnstack.AddItem(mat);
+            }
+            else if (typeof(stacktype) == typeof(Consumable_Produce))
+            {
+                Consumable_Produce prod = TArray.GetValue(index) as Consumable_Produce;
+                returnstack = new ItemStack(prod.ProduceType, 99, typeof(Consumable_Produce));
+                returnstack.AddItem(prod);
+            }
+            else if (typeof(stacktype) == typeof(Consumable_Component))
+            {
+                Consumable_Component comp = TArray.GetValue(index) as Consumable_Component;
+                returnstack = new ItemStack(comp.GetComponentID(), 99, typeof(Consumable_Component));
+                returnstack.AddItem(comp);
+            }
+            else
+            {
+                returnstack = null;
+            }
+            TArray.SetValue(null, index);
+            LastIndex--;
+            //contract the TArray around this index
+            for (int i = index; i < TArray.Length - 1; i++)
+            {
+                TArray.SetValue(TArray.GetValue(i + 1), i);
+            }
         }
 
         /// <summary>
@@ -600,6 +665,67 @@ namespace ProjectUniverse.Base
         public void SetItemCount(float cnt)
         {
             itemCount = cnt;
+        }
+
+        //used in reflection, insertion sorts
+        public Category GetStackCategory()
+        {
+            return StackCategory;
+        }
+
+        public Category StackCategory
+        {
+            get { return stackCategory; }
+            set { stackCategory = value; }
+        }
+
+        /// <summary>
+		/// Use the type of the itemstack to determine the sorting inventory category
+		/// </summary>
+		private Category CalcSortCategory()
+        {
+            //weps
+            if(_originalType == typeof(IGun_Customizable))
+            {
+                return Category.Weapon;
+            }
+
+            //gadgets
+            else if(_originalType == typeof(IMachineWelder) || _originalType == typeof(MiningDrill))
+            {
+                return Category.Gadget;
+            }
+
+            //gear
+            else if(_originalType == typeof(IEquipable))
+            {
+                return Category.Gear;
+            }
+
+            //consumables
+            else if (_originalType == typeof(Consumable_Component) || _originalType == typeof(Consumable_Produce))
+            {
+                return Category.Consumable;
+            }
+
+            //ammo
+            else if(_originalType == typeof(IBullet))
+            {
+                return Category.Ammo;
+            }
+
+            //rss
+            if(_originalType == typeof(Consumable_Ingot) || _originalType == typeof(Consumable_Material) || _originalType == typeof(Consumable_Ore))
+            {
+                return Category.Resource;
+            }
+
+            //misc
+            else
+            {
+                return Category.Misc;
+            }
+            
         }
     }
 }

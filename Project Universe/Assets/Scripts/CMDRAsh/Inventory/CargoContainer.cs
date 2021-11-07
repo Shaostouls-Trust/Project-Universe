@@ -81,6 +81,13 @@ namespace ProjectUniverse.Items.Containers
             }
         }
 
+        public void ExternalInteractFunc()
+        {
+            invUI.SetCargoContainer(this);
+            invUI.SetContName(this.gameObject.name);
+            invUI.UpdateDisplay();
+        }
+
         public void DisplayInventory()
         {
             invUI.SetCargoContainer(this);

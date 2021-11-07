@@ -27,6 +27,7 @@ namespace ProjectUniverse.Player.PlayerController
         public bool prone;
         [SerializeField] GameObject playerRoot;
         [SerializeField] GameObject cameraRoot;
+        [SerializeField] GameObject fleetBoy;
         [SerializeField] private float crouchHeight;
         [SerializeField] private float proneHeight;
         [SerializeField] private float shrinkerSize;
@@ -48,6 +49,7 @@ namespace ProjectUniverse.Player.PlayerController
         [SerializeField] private float rFootHealth = 25f;
         [SerializeField] private float playerHydration = 100f;
         [SerializeField] private float playerHappyStomach = 100f;
+        private bool fleetBoyOut = false;
 
         public float HeadHealth
         {
@@ -186,9 +188,20 @@ namespace ProjectUniverse.Player.PlayerController
             }
             if (Input.GetKeyDown(KeyCode.I))
             {
-                IPlayer_Inventory inventory = playerRoot.GetComponent<IPlayer_Inventory>();
-                inventory.GetPlayerInventoryUI().ToggleDisplay();
-                //inventory.GetPlayerInventoryUI().UpdateDisplay();
+                if (!fleetBoyOut)
+                {
+                    //disable other controls like LMB, E, Enter, R, etc.
+                    playerRoot.GetComponent<PlayerController>().LockAndFreeCursor();
+                    fleetBoy.SetActive(true);
+                    fleetBoy.GetComponent<FleetBoy2000UIController>().Refresh();
+                    fleetBoyOut = true;
+                }
+                else
+                {
+                    playerRoot.GetComponent<PlayerController>().UnlockCursor();
+                    fleetBoy.SetActive(false);
+                    fleetBoyOut = false;
+                }
             }
             if (Input.GetKeyDown(KeyCode.Q))
             {

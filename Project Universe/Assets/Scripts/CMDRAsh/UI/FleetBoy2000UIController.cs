@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using ProjectUniverse.Player;
+using ProjectUniverse.Base;
+using System;
+using ProjectUniverse.Production.Resources;
 
 public class FleetBoy2000UIController : MonoBehaviour
 {
@@ -23,7 +27,8 @@ public class FleetBoy2000UIController : MonoBehaviour
     [SerializeField] private GameObject TRANSTAB;
 
     //You tab
-    public RenderTexture playerRender;
+    //public RenderTexture playerRender;
+    [SerializeField] private GameObject player;
     [SerializeField] private TMP_Text head;
     [SerializeField] private TMP_Text chest;
     [SerializeField] private TMP_Text Larm;
@@ -37,9 +42,17 @@ public class FleetBoy2000UIController : MonoBehaviour
     [SerializeField] private GameObject radsBar;//Non-standard health
     [SerializeField] private GameObject hydrationBar;
     [SerializeField] private GameObject foodBar;
-    [SerializeField] private Button perksExpandBttn;
-    [SerializeField] private Button perksRetrackBttn;
-    [SerializeField] private GameObject perksPanel;
+
+    private bool invOpen = false;
+    private bool mapOpen = false;
+    private bool transOpen = false;
+    private bool remoOpen = false;
+    private bool cmndOpen = false;
+
+    //inv
+    [SerializeField] private InventoryUI invUI;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -50,15 +63,44 @@ public class FleetBoy2000UIController : MonoBehaviour
         mapBttn.onClick.AddListener(delegate { SetTopBarButton3Color(); ChangeActiveDisplay(3); });
         cmndBttn.onClick.AddListener(delegate { SetTopBarButton4Color(); ChangeActiveDisplay(4); });
         transBttn.onClick.AddListener(delegate { SetTopBarButton5Color(); ChangeActiveDisplay(5); });
-
-        perksPanel.SetActive(false);
-        perksRetrackBttn.gameObject.SetActive(false);
-        perksExpandBttn.gameObject.SetActive(true);
     }
 
     // Update is called once per frame
     void Update()
     {
+        
+    }
+
+    /// <summary>
+    /// Update or reload the screen of the fleetboy
+    /// </summary>
+    public void Refresh()
+    {
+        if (invOpen)
+        {
+            //refresh inventory.
+            invUI.PopulateInventoryScreen();
+        }
+        else if (remoOpen)
+        {
+            //refresh remote lists and selected object
+        } 
+        else if (mapOpen)
+        {
+            //refresh map
+        }
+        else if (cmndOpen)
+        {
+            //refresh cmnd
+        }
+        else if (transOpen)
+        {
+            //refresh trans tab
+        }
+        else
+        {
+            //refresh player tab
+        }
         
     }
 
@@ -162,6 +204,11 @@ public class FleetBoy2000UIController : MonoBehaviour
                 CMNDTAB.SetActive(false);
                 MAPTAB.SetActive(false);
                 TRANSTAB.SetActive(false);
+                invOpen = false;
+                mapOpen = false;
+                remoOpen = false;
+                transOpen = false;
+                cmndOpen = false;
                 break;
             case 1:
                 YOUTAB.SetActive(false);
@@ -170,6 +217,11 @@ public class FleetBoy2000UIController : MonoBehaviour
                 CMNDTAB.SetActive(false);
                 MAPTAB.SetActive(false);
                 TRANSTAB.SetActive(false);
+                invOpen = true;
+                mapOpen = false;
+                remoOpen = false;
+                transOpen = false;
+                cmndOpen = false;
                 break;
             case 2:
                 YOUTAB.SetActive(false);
@@ -178,6 +230,11 @@ public class FleetBoy2000UIController : MonoBehaviour
                 CMNDTAB.SetActive(false);
                 MAPTAB.SetActive(false);
                 TRANSTAB.SetActive(false);
+                invOpen = false;
+                mapOpen = false;
+                remoOpen = true;
+                transOpen = false;
+                cmndOpen = false;
                 break;
             case 3:
                 YOUTAB.SetActive(false);
@@ -186,6 +243,11 @@ public class FleetBoy2000UIController : MonoBehaviour
                 CMNDTAB.SetActive(true);
                 MAPTAB.SetActive(false);
                 TRANSTAB.SetActive(false);
+                invOpen = false;
+                mapOpen = false;
+                remoOpen = false;
+                transOpen = false;
+                cmndOpen = true;
                 break;
             case 4:
                 YOUTAB.SetActive(false);
@@ -194,6 +256,11 @@ public class FleetBoy2000UIController : MonoBehaviour
                 CMNDTAB.SetActive(false);
                 MAPTAB.SetActive(true);
                 TRANSTAB.SetActive(false);
+                invOpen = false;
+                mapOpen = true;
+                remoOpen = false;
+                transOpen = false;
+                cmndOpen = false;
                 break;
             case 5:
                 YOUTAB.SetActive(false);
@@ -202,16 +269,13 @@ public class FleetBoy2000UIController : MonoBehaviour
                 CMNDTAB.SetActive(false);
                 MAPTAB.SetActive(false);
                 TRANSTAB.SetActive(true);
+                invOpen = false;
+                mapOpen = true;
+                remoOpen = false;
+                transOpen = true;
+                cmndOpen = false;
                 break;
         }
-    }
-
-    private void ExtendPerksPanel()
-    {
-
-    }
-    private void RetractPerksPanel()
-    {
-
+        Refresh();
     }
 }

@@ -49,7 +49,12 @@ namespace ProjectUniverse.Environment.Fluid
             }
         }
 
-        public void OnValueActivated(int mode)
+        public void ExternalInteractFunc()
+        {
+            valveState = !valveState;
+        }
+
+        /*public void OnValueActivated(int mode)
         {
             switch (mode)
             {
@@ -57,6 +62,6 @@ namespace ProjectUniverse.Environment.Fluid
                     valveState = !valveState;
                     break;
             }
-        }
+        }*/
     }
 }

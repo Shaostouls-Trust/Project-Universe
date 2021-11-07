@@ -394,7 +394,7 @@ namespace ProjectUniverse.Generation
 			return filePath;
 		}
 
-		public void ButtonResponse()
+		public void ExternalInteractFunc()
 		{
 			if (!generated)
 			{

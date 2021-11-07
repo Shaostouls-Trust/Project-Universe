@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using MLAPI;
 
 public class IControllableWeapon : MonoBehaviour
 {
@@ -59,11 +60,15 @@ public class IControllableWeapon : MonoBehaviour
         
     }
 
-    public void ButtonResponse(GameObject thisPlayer)
+    public void ExternalInteractFunc()
     {
-        player = thisPlayer;
+        if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
+        {
+            player = networkedClient.PlayerObject.gameObject;
+        }
+        else player = null;
         isControllerActive = true;
-        
+
         //Disable the player camera
         GameObject.FindGameObjectWithTag("MainCamera").SetActive(false);
         Debug.Log("Rendering on Gunsight?");
@@ -71,13 +76,4 @@ public class IControllableWeapon : MonoBehaviour
         //GameObject.FindGameObjectWithTag("ControlCam").SetActive(true);
         StartCoroutine(MyCannonControlUpdate());
     }
-
-    /*
-    // Update is called once per frame
-    void Update()
-    {
-        
-        
-    }
-    */
 }

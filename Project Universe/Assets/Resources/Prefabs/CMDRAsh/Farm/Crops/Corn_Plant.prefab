@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 7222412144394489484}
   - component: {fileID: 7267679221385530667}
   - component: {fileID: 7267679221385530666}
+  - component: {fileID: 4425938396044854813}
   m_Layer: 0
   m_Name: Corn_Plant
   m_TagString: Plant
@@ -166,6 +167,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.075, y: 2, z: 0.075}
   m_Center: {x: 0.175, y: 1, z: 0.0825}
+--- !u!114 &4425938396044854813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7267679221385530668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afe2faeaa186396439f257d422c9acc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scriptedObject: {fileID: 7267679221385530668}
 --- !u!1001 &6762515531625921472
 PrefabInstance:
   m_ObjectHideFlags: 0

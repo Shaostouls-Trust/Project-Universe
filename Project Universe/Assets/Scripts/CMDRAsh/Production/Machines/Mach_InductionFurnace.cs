@@ -172,13 +172,24 @@ namespace ProjectUniverse.Production.Machines
             }
         }
 
+        public void ExternalInteractFunc()
+        {
+            if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
+            {
+                SmelterUI.GetComponent<InductionSmelterUIController>().LockScreenAndFreeCursor();
+                SmelterUI.GetComponent<InductionSmelterUIController>().SetInputInventory(
+                    networkedClient.PlayerObject.gameObject.GetComponent<IPlayer_Inventory>().GetPlayerInventory());
+                SmelterUI.SetActive(true);
+            }
+        }
+
         //Try to load in a whole stack of ore for processing
         //ClientRpc?
         public void DisplaySmelterUI(GameObject player)
         {
             SmelterUI.GetComponent<InductionSmelterUIController>().LockScreenAndFreeCursor();
-            SmelterUI.SetActive(true);
             SmelterUI.GetComponent<InductionSmelterUIController>().SetInputInventory(player.GetComponent<IPlayer_Inventory>().GetPlayerInventory());
+            SmelterUI.SetActive(true);
             //SmelterUI.GetComponent<InductionSmelterUIController>().UpdateProductionInventory();
         }
 

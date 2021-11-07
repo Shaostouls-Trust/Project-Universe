@@ -8,6 +8,7 @@ using ProjectUniverse.Player.PlayerController;
 using ProjectUniverse.Base;
 using ProjectUniverse.Player;
 using ProjectUniverse.Items.Containers;
+using MLAPI;
 
 namespace ProjectUniverse.UI
 {
@@ -32,6 +33,10 @@ namespace ProjectUniverse.UI
         void Start()
         {
             closeButton.onClick.AddListener(delegate { CloseUI(); });
+            if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
+            {
+                player_Inventory = networkedClient.PlayerObject.gameObject.GetComponent<IPlayer_Inventory>();
+            }
         }
 
         public void CloseUI()

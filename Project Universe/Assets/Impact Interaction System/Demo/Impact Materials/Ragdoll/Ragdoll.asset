@@ -15,15 +15,18 @@ MonoBehaviour:
   _tagLibrary: {fileID: 11400000, guid: 0f721be14c9d97e4a891f3a9e411bff6, type: 2}
   _materialTagsMask:
     _value: 2
+    _tagLibrary: {fileID: 0}
   _interactionSets:
   - _name: Impacts
     _includeTagsFilter:
       TagMask:
         _value: 31
+        _tagLibrary: {fileID: 0}
       ExactMatch: 0
     _excludeTagsFilter:
       TagMask:
         _value: 0
+        _tagLibrary: {fileID: 0}
       ExactMatch: 0
     _interactions:
     - {fileID: 11400000, guid: 8e32c5313523cfd4faff65111a220ae7, type: 2}
@@ -31,11 +34,15 @@ MonoBehaviour:
     _includeTagsFilter:
       TagMask:
         _value: 64
+        _tagLibrary: {fileID: 0}
       ExactMatch: 0
     _excludeTagsFilter:
       TagMask:
         _value: 0
+        _tagLibrary: {fileID: 0}
       ExactMatch: 0
     _interactions:
     - {fileID: 11400000, guid: 8dee0a7cd7f833548b81c2cc483e5b21, type: 2}
-  _fallbackInteractionSetIndex: -1
+  _fallbackTagMask:
+    _value: 1
+    _tagLibrary: {fileID: 0}

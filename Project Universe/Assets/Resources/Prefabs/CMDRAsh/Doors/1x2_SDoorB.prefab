@@ -390,7 +390,7 @@ GameObject:
   - component: {fileID: 5031683766785380600}
   - component: {fileID: 5031683766785380601}
   - component: {fileID: 5031683766785380606}
-  - component: {fileID: 5031683766785380607}
+  - component: {fileID: 5447702054476286629}
   m_Layer: 0
   m_Name: WSButton1
   m_TagString: Button3D
@@ -427,7 +427,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5031683766785380605}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -474,7 +474,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5031683766785380607
+--- !u!114 &5447702054476286629
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -483,11 +483,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5031683766785380605}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e7baf349b5aeb84e842c648a2fb5e66, type: 3}
+  m_Script: {fileID: 11500000, guid: afe2faeaa186396439f257d422c9acc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptedObj: {fileID: 2571420840576186781}
-  type: door
+  scriptedObject: {fileID: 2571420840576186781}
 --- !u!1 &7637236856349651257
 GameObject:
   m_ObjectHideFlags: 0

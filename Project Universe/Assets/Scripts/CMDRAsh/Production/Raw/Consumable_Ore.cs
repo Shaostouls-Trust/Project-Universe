@@ -4,6 +4,7 @@ using UnityEngine;
 using ProjectUniverse.Player;
 using ProjectUniverse.Data.Libraries.Definitions;
 using ProjectUniverse.Data.Libraries;
+using MLAPI;
 
 namespace ProjectUniverse.Production.Resources
 {
@@ -72,6 +73,18 @@ namespace ProjectUniverse.Production.Resources
             return OreTypeSingle + "; Quality: " + OreQuality + "; Zone: " + OreZone + "; Mass: " + OreMassKg;
         }
 
+        public void ExternalInteractFunc()
+        {
+            if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
+            {
+                networkedClient.PlayerObject.gameObject.GetComponent<IPlayer_Inventory>().AddToPlayerInventory<Consumable_Ore>(
+                this.gameObject.GetComponent<Consumable_Ore>()
+                );
+                Destroy(gameObject);
+            }
+        }
+
+        /*
         public void PickUpConsumable(GameObject player)
         {
             bool pickedup = player.GetComponent<IPlayer_Inventory>().AddToPlayerInventory<Consumable_Ore>(
@@ -82,7 +95,7 @@ namespace ProjectUniverse.Production.Resources
             {
                 gameObject.SetActive(false);
             }
-        }
+        }*/
 
         public bool CompareMetaData(Consumable_Ore comparee)
         {
@@ -95,6 +108,54 @@ namespace ProjectUniverse.Production.Resources
             }
             return false;
         }
+
+        public void RegenerateOre(Consumable_Ore ore)
+        {
+            OreTypeSingle = ore.OreTypeSingle;//load in the ore definition
+            OreQuality = ore.OreQuality;
+            OreZone = ore.OreZone;
+            if (OreLibrary.OreDictionary.TryGetValue(OreTypeSingle, out OreDef))
+            {
+                switch (OreZone)
+                {
+                    case 0:
+                        InclusionLibrary.Zone0_Ores.TryGetValue(OreQuality, out oreInclusionDict);
+                        InclusionLibrary.Zone0_Mats.TryGetValue(OreQuality, out matInclusionDict);
+                        break;
+                    case 1:
+                        InclusionLibrary.Zone1_Ores.TryGetValue(OreQuality, out oreInclusionDict);
+                        InclusionLibrary.Zone1_Mats.TryGetValue(OreQuality, out matInclusionDict);
+                        break;
+                    case 2:
+                        InclusionLibrary.Zone2_Ores.TryGetValue(OreQuality, out oreInclusionDict);
+                        InclusionLibrary.Zone2_Mats.TryGetValue(OreQuality, out matInclusionDict);
+                        break;
+                    case 3:
+                        InclusionLibrary.Zone3_Ores.TryGetValue(OreQuality, out oreInclusionDict);
+                        InclusionLibrary.Zone3_Mats.TryGetValue(OreQuality, out matInclusionDict);
+                        break;
+                    case 4:
+                        InclusionLibrary.Zone4_Ores.TryGetValue(OreQuality, out oreInclusionDict);
+                        InclusionLibrary.Zone4_Mats.TryGetValue(OreQuality, out matInclusionDict);
+                        break;
+                    case 5:
+                        InclusionLibrary.Zone5_Ores.TryGetValue(OreQuality, out oreInclusionDict);
+                        InclusionLibrary.Zone5_Mats.TryGetValue(OreQuality, out matInclusionDict);
+                        break;
+                    case 6:
+                        InclusionLibrary.Zone6_Ores.TryGetValue(OreQuality, out oreInclusionDict);
+                        InclusionLibrary.Zone6_Mats.TryGetValue(OreQuality, out matInclusionDict);
+                        break;
+                }
+            }
+            OreMassKg = ore.OreMassKg;
+            //set rigidbody data
+            if(transform.GetComponent<Rigidbody>() != null)
+            {
+                transform.GetComponent<Rigidbody>().mass = OreMassKg;
+            }
+        }
+
         public float GetOreMass()
         {
             return OreMassKg;

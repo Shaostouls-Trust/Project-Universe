@@ -171,10 +171,16 @@ namespace Impact.Interactions.Audio
         /// <returns>A new AudioInteractionResult.</returns>
         public override IInteractionResult GetInteractionResult<T>(T interactionData)
         {
+            float intensity = 0;
+
             //Immediately break out if intensity is less than the velocity range minimum, since any result would be invalid anyways.
-            float intensity = ImpactInteractionUtilities.GetCollisionIntensity(interactionData, CollisionNormalInfluence);
-            if (intensity < VelocityRange.Min)
-                return null;
+            //Don't do this for simple interactions
+            if (interactionData.InteractionType != InteractionData.InteractionTypeSimple)
+            {
+                intensity = ImpactInteractionUtilities.GetCollisionIntensity(interactionData, CollisionNormalInfluence);
+                if (intensity < VelocityRange.Min)
+                    return null;
+            }
 
             long key = 0;
             if (!ImpactInteractionUtilities.GetKeyAndValidate(interactionData, this, out key))
@@ -185,7 +191,7 @@ namespace Impact.Interactions.Audio
             if (ImpactManagerInstance.TryGetInteractionResultFromPool(interactionResultPoolKey, out c))
             {
                 c.OriginalData = InteractionDataUtilities.ToInteractionData(interactionData);
-                c.LoopAudio = interactionData.InteractionType != InteractionData.InteractionTypeCollision;
+                c.LoopAudio = interactionData.InteractionType == InteractionData.InteractionTypeSlide || interactionData.InteractionType == InteractionData.InteractionTypeRoll;
                 c.Interaction = this;
                 c.AudioSourceTemplate = AudioSourceTemplate;
 

@@ -27,7 +27,7 @@ namespace ProjectUniverse.Animation.Controllers
         }
         public GameObject YellowLED
         {
-            get { return YellowLED; }
+            get { return yellowObj; }
         }
         
         public void OnSwitch(int numID)

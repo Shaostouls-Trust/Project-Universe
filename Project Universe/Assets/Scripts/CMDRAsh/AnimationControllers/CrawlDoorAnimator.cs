@@ -19,7 +19,7 @@ namespace ProjectUniverse.Animation.Controllers
 
         private Transform doorTF;
 
-        public void ButtonResponse()
+        public void ExternalInteractFunc()
         {
             //Debug.Log("Crawl Door");
             if (isClosed || isClosing)
@@ -40,7 +40,6 @@ namespace ProjectUniverse.Animation.Controllers
                 isOpen = false;
                 isClosed = true;
             }
-
         }
 
         void Start()

@@ -195,7 +195,12 @@ namespace Impact.EditorScripts
             {
                 EditorGUILayout.BeginHorizontal();
 
+                EditorGUI.BeginChangeCheck();
+
                 interactionSet[i] = EditorGUILayout.ObjectField(interactionSet[i], typeof(ImpactInteractionBase), false) as ImpactInteractionBase;
+
+                if (EditorGUI.EndChangeCheck())
+                    EditorUtility.SetDirty(target);
 
                 Color originalColor = GUI.color;
                 GUI.color = warningColor;

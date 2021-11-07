@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: 1963995224484526362}
   - component: {fileID: 2181721435154111581}
   - component: {fileID: 6711454791931823404}
+  - component: {fileID: 3747560663184597250}
   m_Layer: 0
   m_Name: Tomato_Plant
   m_TagString: Plant
@@ -168,6 +169,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.1, y: 1.56, z: 0.1}
   m_Center: {x: 0, y: 0.78, z: 0.18}
+--- !u!114 &3747560663184597250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990962042100964138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afe2faeaa186396439f257d422c9acc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scriptedObject: {fileID: 1990962042100964138}
 --- !u!1001 &642579834334004415
 PrefabInstance:
   m_ObjectHideFlags: 0

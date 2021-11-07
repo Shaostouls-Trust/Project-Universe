@@ -11,6 +11,7 @@ namespace ProjectUniverse.Data.Libraries
         private IngotLibrary.IngotDefinitionLibrary IngotLib;
         private IComponentLibrary.ComponentDefinitionLibrary CDL;
         private MachineLibrary.MachineDefinitionLibrary MDL;
+        private ProbabilityLibrary.ProbabilityDictionary PBD;
 
         void Awake()
         {
@@ -29,6 +30,10 @@ namespace ProjectUniverse.Data.Libraries
 
             MDL = new MachineLibrary.MachineDefinitionLibrary();
             MDL.InitializeMachineDictionary();
+
+            PBD = new ProbabilityLibrary.ProbabilityDictionary();
+            PBD.InitializeProbabilityDictionary();
+
         }
 
         public OreLibrary.OreMaterialLibrary GetOreDictionary()
@@ -54,6 +59,11 @@ namespace ProjectUniverse.Data.Libraries
         public MachineLibrary.MachineDefinitionLibrary GetMachineDictionary()
         {
             return MDL;
+        }
+
+        public ProbabilityLibrary.ProbabilityDictionary GetProbabilityDictionary()
+        {
+            return PBD;
         }
     }
 }

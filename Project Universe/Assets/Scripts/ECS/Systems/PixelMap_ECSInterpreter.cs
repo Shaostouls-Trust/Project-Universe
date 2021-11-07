@@ -175,7 +175,7 @@ public class PixelMap_ECSInterpreter : MonoBehaviour//, IConvertGameObjectToEnti
 		return filePath;
 	}
 
-	public void ButtonResponse()
+	public void ExternalInteractFunc()
 	{
 		if (!generated)
 		{

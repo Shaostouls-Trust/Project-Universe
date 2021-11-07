@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProbabilityDefinitions>
+	<Zone>
+		<ZoneID>0</ZoneID><!--SInner-->
+		<Probability>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Iron" />
+				<Ratio Ratio="12" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Copper" />
+				<Ratio Ratio="10" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Nickel" />
+				<Ratio Ratio="10" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Tin" />
+				<Ratio Ratio="13" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Aluminum" />
+				<Ratio Ratio="5" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Lithium" />
+				<Ratio Ratio="5" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Titanium" />
+				<Ratio Ratio="11" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Tungsten" />
+				<Ratio Ratio="17" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Gold" />
+				<Ratio Ratio="17" />
+			</Ore>
+		</Probability>
+	</Zone>
+	<Zone>
+		<ZoneID>1</ZoneID><!--NSInner-->
+		<Probability>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Iron" />
+				<Ratio Ratio="14" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Copper" />
+				<Ratio Ratio="10" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Nickel" />
+				<Ratio Ratio="10" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Tin" />
+				<Ratio Ratio="10" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Aluminum" />
+				<Ratio Ratio="8" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Lithium" />
+				<Ratio Ratio="5" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Titanium" />
+				<Ratio Ratio="13" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Tungsten" />
+				<Ratio Ratio="15" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Gold" />
+				<Ratio Ratio="15" />
+			</Ore>
+		</Probability>
+	</Zone>
+	<Zone>
+		<ZoneID>2</ZoneID><!--AstMid-->
+		<Probability>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Iron" />
+				<Ratio Ratio="16" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Copper" />
+				<Ratio Ratio="10" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Nickel" />
+				<Ratio Ratio="11" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Tin" />
+				<Ratio Ratio="10" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Aluminum" />
+				<Ratio Ratio="10" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Lithium" />
+				<Ratio Ratio="5" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Titanium" />
+				<Ratio Ratio="16" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Tungsten" />
+				<Ratio Ratio="12" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Gold" />
+				<Ratio Ratio="10" />
+			</Ore>
+		</Probability>
+	</Zone>
+	<Zone>
+		<ZoneID>3</ZoneID><!--NonNebMid-->
+		<Probability>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Iron" />
+				<Ratio Ratio="18" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Copper" />
+				<Ratio Ratio="12" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Nickel" />
+				<Ratio Ratio="12" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Tin" />
+				<Ratio Ratio="8" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Aluminum" />
+				<Ratio Ratio="10" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Lithium" />
+				<Ratio Ratio="7" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Titanium" />
+				<Ratio Ratio="16" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Tungsten" />
+				<Ratio Ratio="10" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Gold" />
+				<Ratio Ratio="7" />
+			</Ore>
+		</Probability>
+	</Zone>
+	<Zone>
+		<ZoneID>4</ZoneID><!--NebInnerFar-->
+		<Probability>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Iron" />
+				<Ratio Ratio="16" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Copper" />
+				<Ratio Ratio="10" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Nickel" />
+				<Ratio Ratio="10" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Tin" />
+				<Ratio Ratio="6" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Aluminum" />
+				<Ratio Ratio="20" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Lithium" />
+				<Ratio Ratio="15" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Titanium" />
+				<Ratio Ratio="11" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Tungsten" />
+				<Ratio Ratio="7" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Gold" />
+				<Ratio Ratio="5" />
+			</Ore>
+		</Probability>
+	</Zone>
+	<Zone>
+		<ZoneID>5</ZoneID><!--NebFar-->
+		<Probability>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Iron" />
+				<Ratio Ratio="12" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Copper" />
+				<Ratio Ratio="8" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Nickel" />
+				<Ratio Ratio="9" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Tin" />
+				<Ratio Ratio="6" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Aluminum" />
+				<Ratio Ratio="20" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Lithium" />
+				<Ratio Ratio="28" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Titanium" />
+				<Ratio Ratio="10" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Tungsten" />
+				<Ratio Ratio="4" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Gold" />
+				<Ratio Ratio="3" />
+			</Ore>
+		</Probability>
+	</Zone>
+	<Zone>
+		<ZoneID>6</ZoneID><!--NonNebOuterFar-->
+		<Probability>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Iron" />
+				<Ratio Ratio="8" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Copper" />
+				<Ratio Ratio="5" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Nickel" />
+				<Ratio Ratio="7" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Tin" />
+				<Ratio Ratio="5" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Aluminum" />
+				<Ratio Ratio="21" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Lithium" />
+				<Ratio Ratio="44" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Titanium" />
+				<Ratio Ratio="10" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Tungsten" />
+				<Ratio Ratio="0" />
+			</Ore>
+			<Ore>
+				<STR_ID Ore_Type="Ore_Gold" />
+				<Ratio Ratio="0" />
+			</Ore>
+		</Probability>
+	</Zone>
+</ProbabilityDefinitions>

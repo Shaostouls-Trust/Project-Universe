@@ -28,6 +28,7 @@ namespace ProjectUniverse.UI
             RaycastHit hit;
             if (Physics.Raycast(cam.transform.position, forward, out hit, 5f))
             {
+                //Debug.Log(hit.transform.gameObject);
                 infoBox.SetActive(false);
                 //send a message to 'LookInfoMsg'
                 hit.transform.gameObject.SendMessage("LookInfoMsg", this, SendMessageOptions.DontRequireReceiver);

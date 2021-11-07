@@ -118,10 +118,14 @@ namespace Impact.Interactions.Particles
         /// <returns>A new ParticleInteractionResult.</returns>
         public override IInteractionResult GetInteractionResult<T>(T interactionData)
         {
-            //Immediately break out if intensity is less than the velocity minimum, since any result would be invalid anyways.
-            float intensity = ImpactInteractionUtilities.GetCollisionIntensity(interactionData, CollisionNormalInfluence);
-            if (intensity < MinimumVelocity)
-                return null;
+            //Return if intensity is less than the minimum velocity.
+            //Don't do this for simple interactions
+            if (interactionData.InteractionType != InteractionData.InteractionTypeSimple)
+            {
+                float intensity = ImpactInteractionUtilities.GetCollisionIntensity(interactionData, CollisionNormalInfluence);
+                if (intensity < MinimumVelocity)
+                    return null;
+            }
 
             long key = 0;
             if (!ImpactInteractionUtilities.GetKeyAndValidate(interactionData, this, out key))
@@ -147,7 +151,8 @@ namespace Impact.Interactions.Particles
 
         private bool shouldEmit(int collisionParameterType)
         {
-            return (collisionParameterType == InteractionData.InteractionTypeCollision && EmitOnCollision) ||
+            return (collisionParameterType == InteractionData.InteractionTypeSimple && EmitOnCollision) ||
+                (collisionParameterType == InteractionData.InteractionTypeCollision && EmitOnCollision) ||
                 (collisionParameterType == InteractionData.InteractionTypeSlide && EmitOnSlide) ||
                 (collisionParameterType == InteractionData.InteractionTypeRoll && EmitOnRoll);
         }

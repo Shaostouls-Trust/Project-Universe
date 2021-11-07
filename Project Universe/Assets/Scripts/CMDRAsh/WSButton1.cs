@@ -16,7 +16,7 @@ public class WSButton1 : MonoBehaviour
     [SerializeField]
     private GameObject scriptedObj;
     [SerializeField]
-    private string type;
+    private string DEPRECATED;
     private GameObject player;
 
     void Start()
@@ -35,7 +35,7 @@ public class WSButton1 : MonoBehaviour
     /// </summary>
     public void externalInteractFunc()
     {
-        switch (type)
+        switch (DEPRECATED)
         {
             case "shutter":
                 shutterButton();
@@ -105,32 +105,32 @@ public class WSButton1 : MonoBehaviour
     //close and lock door, or unlock if locked.
     public void doorButtonOverride()
     {
-        scriptedObj.GetComponentInChildren<DoorAnimator>().ButtonResponse();
+        //scriptedObj.GetComponentInChildren<DoorAnimator>().ButtonResponse();
     }
 
     public void shutterButton()
     {
-        scriptedObj.GetComponentInChildren<ShutterAnimator>().buttonResponse();
+        //scriptedObj.GetComponentInChildren<ShutterAnimator>().buttonResponse();
     }
 
     public void func0001_Generator()
     {
-        scriptedObj.GetComponentInChildren<PixelMap_Interpreter>().ButtonResponse();
+        //scriptedObj.GetComponentInChildren<PixelMap_Interpreter>().ButtonResponse();
     }
 
     public void func0002_Generator()
     {
-        scriptedObj.GetComponentInChildren<PixelMap_ECSInterpreter>().ButtonResponse();
+        //scriptedObj.GetComponentInChildren<PixelMap_ECSInterpreter>().ButtonResponse();
     }
 
     public void IMyCannonInteract()//GameObject player)
     {
-        scriptedObj.GetComponent<IControllableWeapon>().ButtonResponse(player);
+        //scriptedObj.GetComponent<IControllableWeapon>().ButtonResponse(player);
     }
 
     public void crawlDoorOpen()
     {
-        scriptedObj.GetComponent<CrawlDoorAnimator>().ButtonResponse();
+        //scriptedObj.GetComponent<CrawlDoorAnimator>().ButtonResponse();
     }
 
     public void Pickup<pickupType>()//GameObject player)
@@ -139,29 +139,45 @@ public class WSButton1 : MonoBehaviour
         Debug.Log("Pickup type: "+typeof(pickupType));
         if(typeof(pickupType) == typeof(Consumable_Ore))
         {
-            if(player != null) scriptedObj.GetComponentInParent<Consumable_Ore>().PickUpConsumable(player);
+            //if(player != null) scriptedObj.GetComponentInParent<Consumable_Ore>().PickUpConsumable(player);
         }
     }
     public void OpenSmelterUI()
     {
-        if (player != null) scriptedObj.GetComponent<Mach_InductionFurnace>().DisplaySmelterUI(player);
+        if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
+        {
+            //scriptedObj.GetComponent<Mach_InductionFurnace>().DisplaySmelterUI(networkedClient.PlayerObject.gameObject);
+        }
+        //if (player != null) scriptedObj.GetComponent<Mach_InductionFurnace>().DisplaySmelterUI(player);
     }
     public void EmptyFurnace()
     {
-        if (player != null) scriptedObj.GetComponent<Mach_InductionFurnace>().OutputToPlayer(player);
+        if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
+        {
+            //scriptedObj.GetComponent<Mach_InductionFurnace>().DisplaySmelterUI(networkedClient.PlayerObject.gameObject);
+        }
+        //if (player != null) scriptedObj.GetComponent<Mach_InductionFurnace>().OutputToPlayer(player);
     }
     public void FillFactory()
     {
         Debug.Log("FillFactory");
-        if (player != null) scriptedObj.GetComponent<Mach_DevFactory>().InputFromPlayer(player);
+        if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
+        {
+            //scriptedObj.GetComponent<Mach_InductionFurnace>().DisplaySmelterUI(networkedClient.PlayerObject.gameObject);
+        }
+        //if (player != null) scriptedObj.GetComponent<Mach_DevFactory>().InputFromPlayer(player);
     }
     public void EmptyFactory()
     {
-        if (player != null) scriptedObj.GetComponent<Mach_DevFactory>().OutputToPlayer(player);
+        if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
+        {
+            //scriptedObj.GetComponent<Mach_InductionFurnace>().DisplaySmelterUI(networkedClient.PlayerObject.gameObject);
+        }
+        //if (player != null) scriptedObj.GetComponent<Mach_DevFactory>().OutputToPlayer(player);
     }
     public void SelectComponent()
     {
-        scriptedObj.GetComponent<Mach_DevFactory>().DisplayProductionUI();
+        //scriptedObj.GetComponent<Mach_DevFactory>().DisplayProductionUI();
     }
     public void StartFactory()
     {
@@ -171,18 +187,19 @@ public class WSButton1 : MonoBehaviour
 
     public void MiningDrone()
     {
-        if (player != null) scriptedObj.GetComponent<IMiningDrone>().EmptyInventory(player);
+        
+        //if (player != null) scriptedObj.GetComponent<IMiningDrone>().EmptyInventory(player);
     }
 
     public void DisplayInventory()
     {
-        scriptedObj.GetComponent<CargoContainer>().DisplayInventory();
+        //scriptedObj.GetComponent<CargoContainer>().DisplayInventory();
     }
 
     //Temp valve controls
     public void ToggleValve()
     {
-        scriptedObj.GetComponent<IFluidTank>().OnValueActivated(0);
+        //scriptedObj.GetComponent<IFluidTank>().OnValueActivated(0);
     }
 
     void OnMouseOver()
