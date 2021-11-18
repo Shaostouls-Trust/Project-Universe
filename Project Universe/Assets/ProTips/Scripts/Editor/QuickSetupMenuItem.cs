@@ -22,7 +22,7 @@ namespace ModelShark
                 return;
             }
             tooltipManager = Instantiate(tooltipManagerPrefab);
-            tooltipManager.name = "TooltipMananger";
+            tooltipManager.name = "TooltipManager";
             tooltipManager.transform.SetAsFirstSibling();
         }
     }

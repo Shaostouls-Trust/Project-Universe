@@ -853,6 +853,9 @@ namespace AmplifyShaderEditor
 				IOUtils.AllOpenedWindows.Clear();
 			}
 
+#if UNITY_2018_3_OR_NEWER
+			IOUtils.ClearLoadedAssemblies();
+#endif
 			Initialized = false;
 
 			if( m_dummyPreviewRT != null )
@@ -2624,6 +2627,11 @@ namespace AmplifyShaderEditor
 
 		public static string GetUniqueUniformName( string name )
 		{
+			if( CurrentWindow.DuplicatePrevBufferInstance.IsUniformNameAvailable( name ) )
+			{
+				return name;
+			}
+
 			int num = 0;
 			Regex reg = new Regex( @"([0-9]+)$" );
 			Match match = reg.Match( name );

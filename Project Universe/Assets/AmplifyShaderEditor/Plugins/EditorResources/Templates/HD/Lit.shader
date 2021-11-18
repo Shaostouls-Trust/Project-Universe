@@ -2126,19 +2126,37 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 			}
 			#endif
 			
+			#if defined(WRITE_NORMAL_BUFFER) && defined(WRITE_MSAA_DEPTH)
+			#define SV_TARGET_DECAL SV_Target2
+			#elif defined(WRITE_NORMAL_BUFFER) || defined(WRITE_MSAA_DEPTH)
+			#define SV_TARGET_DECAL SV_Target1
+			#else
+			#define SV_TARGET_DECAL SV_Target0
+			#endif
+
 			void Frag( PackedVaryingsMeshToPS packedInput
-						#ifdef WRITE_NORMAL_BUFFER
-						, out float4 outNormalBuffer : SV_Target0
-							#ifdef WRITE_MSAA_DEPTH
-							, out float1 depthColor : SV_Target1
-							#endif
-						#elif defined(WRITE_MSAA_DEPTH)
-						, out float4 outNormalBuffer : SV_Target0
-						, out float1 depthColor : SV_Target1
-						#elif defined(SCENESELECTIONPASS)
+						#if defined(SCENESELECTIONPASS) || defined(SCENEPICKINGPASS)
 						, out float4 outColor : SV_Target0
+						#else
+							#ifdef WRITE_MSAA_DEPTH
+							// We need the depth color as SV_Target0 for alpha to coverage
+							, out float4 depthColor : SV_Target0
+								#ifdef WRITE_NORMAL_BUFFER
+								, out float4 outNormalBuffer : SV_Target1
+								#endif
+							#else
+								#ifdef WRITE_NORMAL_BUFFER
+								, out float4 outNormalBuffer : SV_Target0
+								#endif
+							#endif
+
+							// Decal buffer must be last as it is bind but we can optionally write into it (based on _DISABLE_DECALS)
+							#if defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)
+							, out float4 outDecalBuffer : SV_TARGET_DECAL
+							#endif
 						#endif
-						#ifdef _DEPTHOFFSET_ON
+
+						#if defined(_DEPTHOFFSET_ON) && !defined(SCENEPICKINGPASS)
 						, out float outputDepth : SV_Depth
 						#endif
 						/*ase_frag_input*/
@@ -2200,7 +2218,7 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 				depthColor = packedInput.positionCS.z;
 				#endif
 				#elif defined(WRITE_MSAA_DEPTH)
-				outNormalBuffer = float4( 0.0, 0.0, 0.0, 1.0 );
+				//outNormalBuffer = float4( 0.0, 0.0, 0.0, 1.0 );
 				depthColor = packedInput.positionCS.z;
 				#elif defined(SCENESELECTIONPASS)
 				outColor = float4( _ObjectId, _PassValue, 1.0, 1.0 );
@@ -2583,20 +2601,38 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 				return VertexFunction( v );
 			}
 			#endif
+			
+			#if defined(WRITE_NORMAL_BUFFER) && defined(WRITE_MSAA_DEPTH)
+			#define SV_TARGET_DECAL SV_Target2
+			#elif defined(WRITE_NORMAL_BUFFER) || defined(WRITE_MSAA_DEPTH)
+			#define SV_TARGET_DECAL SV_Target1
+			#else
+			#define SV_TARGET_DECAL SV_Target0
+			#endif
 
 			void Frag( PackedVaryingsMeshToPS packedInput
-						#ifdef WRITE_NORMAL_BUFFER
-						, out float4 outNormalBuffer : SV_Target0
-							#ifdef WRITE_MSAA_DEPTH
-							, out float1 depthColor : SV_Target1
-							#endif
-						#elif defined(WRITE_MSAA_DEPTH)
-						, out float4 outNormalBuffer : SV_Target0
-						, out float1 depthColor : SV_Target1
-						#elif defined(SCENESELECTIONPASS)
+						#if defined(SCENESELECTIONPASS) || defined(SCENEPICKINGPASS)
 						, out float4 outColor : SV_Target0
+						#else
+							#ifdef WRITE_MSAA_DEPTH
+							// We need the depth color as SV_Target0 for alpha to coverage
+							, out float4 depthColor : SV_Target0
+								#ifdef WRITE_NORMAL_BUFFER
+								, out float4 outNormalBuffer : SV_Target1
+								#endif
+							#else
+								#ifdef WRITE_NORMAL_BUFFER
+								, out float4 outNormalBuffer : SV_Target0
+								#endif
+							#endif
+
+							// Decal buffer must be last as it is bind but we can optionally write into it (based on _DISABLE_DECALS)
+							#if defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)
+							, out float4 outDecalBuffer : SV_TARGET_DECAL
+							#endif
 						#endif
-						#ifdef _DEPTHOFFSET_ON
+
+						#if defined(_DEPTHOFFSET_ON) && !defined(SCENEPICKINGPASS)
 						, out float outputDepth : SV_Depth
 						#endif
 						/*ase_frag_input*/
@@ -2654,7 +2690,7 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 				depthColor = packedInput.positionCS.z;
 				#endif
 				#elif defined(WRITE_MSAA_DEPTH)
-				outNormalBuffer = float4( 0.0, 0.0, 0.0, 1.0 );
+				//outNormalBuffer = float4( 0.0, 0.0, 0.0, 1.0 );
 				depthColor = packedInput.positionCS.z;
 				#elif defined(SCENESELECTIONPASS)
 				outColor = float4( _ObjectId, _PassValue, 1.0, 1.0 );
@@ -3066,28 +3102,36 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 			#endif
 
 			#if defined(WRITE_NORMAL_BUFFER) && defined(WRITE_MSAA_DEPTH)
-				#define SV_TARGET_DECAL SV_Target2
+			#define SV_TARGET_DECAL SV_Target2
 			#elif defined(WRITE_NORMAL_BUFFER) || defined(WRITE_MSAA_DEPTH)
-				#define SV_TARGET_DECAL SV_Target2
+			#define SV_TARGET_DECAL SV_Target1
 			#else
-				#define SV_TARGET_DECAL SV_Target0
+			#define SV_TARGET_DECAL SV_Target0
 			#endif
+
 			void Frag( PackedVaryingsMeshToPS packedInput
-						#ifdef WRITE_NORMAL_BUFFER
-						, out float4 outNormalBuffer : SV_Target0
-							#ifdef WRITE_MSAA_DEPTH
-							, out float1 depthColor : SV_Target1
-							#endif
-						#elif defined(WRITE_MSAA_DEPTH)
-						, out float4 outNormalBuffer : SV_Target0
-						, out float1 depthColor : SV_Target1
-						#elif defined(SCENESELECTIONPASS)
+						#if defined(SCENESELECTIONPASS) || defined(SCENEPICKINGPASS)
 						, out float4 outColor : SV_Target0
+						#else
+							#ifdef WRITE_MSAA_DEPTH
+							// We need the depth color as SV_Target0 for alpha to coverage
+							, out float4 depthColor : SV_Target0
+								#ifdef WRITE_NORMAL_BUFFER
+								, out float4 outNormalBuffer : SV_Target1
+								#endif
+							#else
+								#ifdef WRITE_NORMAL_BUFFER
+								, out float4 outNormalBuffer : SV_Target0
+								#endif
+							#endif
+
+							// Decal buffer must be last as it is bind but we can optionally write into it (based on _DISABLE_DECALS)
+							#if defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)
+							, out float4 outDecalBuffer : SV_TARGET_DECAL
+							#endif
 						#endif
-						#if defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)
-						, out float4 outDecalBuffer : SV_TARGET_DECAL
-						#endif
-						#ifdef _DEPTHOFFSET_ON
+
+						#if defined(_DEPTHOFFSET_ON) && !defined(SCENEPICKINGPASS)
 						, out float outputDepth : SV_Depth
 						#endif
 						/*ase_frag_input*/
@@ -3150,7 +3194,7 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 				depthColor = packedInput.positionCS.z;
 				#endif
 				#elif defined(WRITE_MSAA_DEPTH)
-				outNormalBuffer = float4( 0.0, 0.0, 0.0, 1.0 );
+				//outNormalBuffer = float4( 0.0, 0.0, 0.0, 1.0 );
 				depthColor = packedInput.positionCS.z;
 				#elif defined(SCENESELECTIONPASS)
 				outColor = float4( _ObjectId, _PassValue, 1.0, 1.0 );
@@ -3629,21 +3673,38 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 			}
 			#endif
 
-			void Frag( PackedVaryingsMeshToPS packedInput
-				, out float4 outMotionVector : SV_Target0
-				#ifdef WRITE_NORMAL_BUFFER
-				, out float4 outNormalBuffer : SV_Target1
-					#ifdef WRITE_MSAA_DEPTH
-						, out float1 depthColor : SV_Target2
-					#endif
-				#elif defined(WRITE_MSAA_DEPTH)
-				, out float4 outNormalBuffer : SV_Target1
-				, out float1 depthColor : SV_Target2
-				#endif
+			#if defined(WRITE_DECAL_BUFFER) && defined(WRITE_MSAA_DEPTH)
+			#define SV_TARGET_NORMAL SV_Target3
+			#elif defined(WRITE_DECAL_BUFFER) || defined(WRITE_MSAA_DEPTH)
+			#define SV_TARGET_NORMAL SV_Target2
+			#else
+			#define SV_TARGET_NORMAL SV_Target1
+			#endif
 
-				#ifdef _DEPTHOFFSET_ON
+			void Frag( PackedVaryingsMeshToPS packedInput
+				#ifdef WRITE_MSAA_DEPTH
+					// We need the depth color as SV_Target0 for alpha to coverage
+					, out float4 depthColor : SV_Target0
+					, out float4 outMotionVector : SV_Target1
+						#ifdef WRITE_DECAL_BUFFER
+						, out float4 outDecalBuffer : SV_Target2
+						#endif
+					#else
+					// When no MSAA, the motion vector is always the first buffer
+					, out float4 outMotionVector : SV_Target0
+						#ifdef WRITE_DECAL_BUFFER
+						, out float4 outDecalBuffer : SV_Target1
+						#endif
+					#endif
+
+					// Decal buffer must be last as it is bind but we can optionally write into it (based on _DISABLE_DECALS)
+					#ifdef WRITE_NORMAL_BUFFER
+					, out float4 outNormalBuffer : SV_TARGET_NORMAL
+					#endif
+
+					#ifdef _DEPTHOFFSET_ON
 					, out float outputDepth : SV_Depth
-				#endif
+					#endif
 				/*ase_frag_input*/
 				)
 			{
@@ -3700,7 +3761,7 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 				depthColor = packedInput.vmeshPositionCS.z;
 				#endif
 				#elif defined(WRITE_MSAA_DEPTH)
-				outNormalBuffer = float4( 0.0, 0.0, 0.0, 1.0 );
+				//outNormalBuffer = float4( 0.0, 0.0, 0.0, 1.0 );
 				depthColor = packedInput.vmeshPositionCS.z;
 				#endif
 
@@ -5327,19 +5388,37 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 			}
 			#endif
 
+			#if defined(WRITE_NORMAL_BUFFER) && defined(WRITE_MSAA_DEPTH)
+			#define SV_TARGET_DECAL SV_Target2
+			#elif defined(WRITE_NORMAL_BUFFER) || defined(WRITE_MSAA_DEPTH)
+			#define SV_TARGET_DECAL SV_Target1
+			#else
+			#define SV_TARGET_DECAL SV_Target0
+			#endif
+
 			void Frag( PackedVaryingsMeshToPS packedInput
-						#ifdef WRITE_NORMAL_BUFFER
-						, out float4 outNormalBuffer : SV_Target0
-							#ifdef WRITE_MSAA_DEPTH
-							, out float1 depthColor : SV_Target1
-							#endif
-						#elif defined(WRITE_MSAA_DEPTH)
-						, out float4 outNormalBuffer : SV_Target0
-						, out float1 depthColor : SV_Target1
-						#elif defined(SCENESELECTIONPASS)
+						#if defined(SCENESELECTIONPASS) || defined(SCENEPICKINGPASS)
 						, out float4 outColor : SV_Target0
+						#else
+							#ifdef WRITE_MSAA_DEPTH
+							// We need the depth color as SV_Target0 for alpha to coverage
+							, out float4 depthColor : SV_Target0
+								#ifdef WRITE_NORMAL_BUFFER
+								, out float4 outNormalBuffer : SV_Target1
+								#endif
+							#else
+								#ifdef WRITE_NORMAL_BUFFER
+								, out float4 outNormalBuffer : SV_Target0
+								#endif
+							#endif
+
+							// Decal buffer must be last as it is bind but we can optionally write into it (based on _DISABLE_DECALS)
+							#if defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)
+							, out float4 outDecalBuffer : SV_TARGET_DECAL
+							#endif
 						#endif
-						#ifdef _DEPTHOFFSET_ON
+
+						#if defined(_DEPTHOFFSET_ON) && !defined(SCENEPICKINGPASS)
 						, out float outputDepth : SV_Depth
 						#endif
 						/*ase_frag_input*/
@@ -5400,7 +5479,7 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 				depthColor = packedInput.positionCS.z;
 				#endif
 				#elif defined(WRITE_MSAA_DEPTH)
-				outNormalBuffer = float4( 0.0, 0.0, 0.0, 1.0 );
+				//outNormalBuffer = float4( 0.0, 0.0, 0.0, 1.0 );
 				depthColor = packedInput.positionCS.z;
 				#elif defined(SCENESELECTIONPASS)
 				outColor = float4( _ObjectId, _PassValue, 1.0, 1.0 );
@@ -5784,20 +5863,38 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 				return VertexFunction( v );
 			}
 			#endif
+			
+			#if defined(WRITE_NORMAL_BUFFER) && defined(WRITE_MSAA_DEPTH)
+			#define SV_TARGET_DECAL SV_Target2
+			#elif defined(WRITE_NORMAL_BUFFER) || defined(WRITE_MSAA_DEPTH)
+			#define SV_TARGET_DECAL SV_Target1
+			#else
+			#define SV_TARGET_DECAL SV_Target0
+			#endif
 
 			void Frag( PackedVaryingsMeshToPS packedInput
-						#ifdef WRITE_NORMAL_BUFFER
-						, out float4 outNormalBuffer : SV_Target0
-							#ifdef WRITE_MSAA_DEPTH
-							, out float1 depthColor : SV_Target1
-							#endif
-						#elif defined(WRITE_MSAA_DEPTH)
-						, out float4 outNormalBuffer : SV_Target0
-						, out float1 depthColor : SV_Target1
-						#elif defined(SCENESELECTIONPASS)
+						#if defined(SCENESELECTIONPASS) || defined(SCENEPICKINGPASS)
 						, out float4 outColor : SV_Target0
+						#else
+							#ifdef WRITE_MSAA_DEPTH
+							// We need the depth color as SV_Target0 for alpha to coverage
+							, out float4 depthColor : SV_Target0
+								#ifdef WRITE_NORMAL_BUFFER
+								, out float4 outNormalBuffer : SV_Target1
+								#endif
+							#else
+								#ifdef WRITE_NORMAL_BUFFER
+								, out float4 outNormalBuffer : SV_Target0
+								#endif
+							#endif
+
+							// Decal buffer must be last as it is bind but we can optionally write into it (based on _DISABLE_DECALS)
+							#if defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)
+							, out float4 outDecalBuffer : SV_TARGET_DECAL
+							#endif
 						#endif
-						#ifdef _DEPTHOFFSET_ON
+
+						#if defined(_DEPTHOFFSET_ON) && !defined(SCENEPICKINGPASS)
 						, out float outputDepth : SV_Depth
 						#endif
 						/*ase_frag_input*/
@@ -5853,7 +5950,7 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 				depthColor = packedInput.positionCS.z;
 				#endif
 				#elif defined(WRITE_MSAA_DEPTH)
-				outNormalBuffer = float4( 0.0, 0.0, 0.0, 1.0 );
+				//outNormalBuffer = float4( 0.0, 0.0, 0.0, 1.0 );
 				depthColor = packedInput.positionCS.z;
 				#elif defined(SCENESELECTIONPASS)
 				outColor = float4( _ObjectId, _PassValue, 1.0, 1.0 );
@@ -6667,5 +6764,6 @@ Shader /*ase_name*/ "Hidden/HD/Lit" /*end*/
 		}
 		/*ase_pass_end*/
 	}
+	/*ase_lod*/
 	CustomEditor "Rendering.HighDefinition.LightingShaderGraphGUI"
 }

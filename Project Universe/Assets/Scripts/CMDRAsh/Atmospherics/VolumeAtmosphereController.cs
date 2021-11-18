@@ -12,12 +12,11 @@ namespace ProjectUniverse.Environment.Volumes
     public sealed class VolumeAtmosphereController : MonoBehaviour
     {
         private float roomPressure;
-        [SerializeField] float pressureReport;
-        public float roomTemp;
-        public float roomOxygenation;
-        private float roomVolume;
-        public float humidity;
-        public float toxicity;
+        [SerializeField] private float roomTemp;
+        [SerializeField] private float roomOxygenation;
+        [SerializeField] private float roomVolume;
+        [SerializeField] private float humidity;
+        [SerializeField] private float toxicity;
         private List<IGas> roomGases = new List<IGas>();
         private List<IGas> gasesToEq = new List<IGas>();
         private List<IFluid> roomFluids = new List<IFluid>();
@@ -33,7 +32,25 @@ namespace ProjectUniverse.Environment.Volumes
             roomVolume = (gameObject.GetComponent<BoxCollider>().size.x *
                 gameObject.GetComponent<BoxCollider>().size.y *
                 gameObject.GetComponent<BoxCollider>().size.z);
-            roomGases.Add(new IGas("Oxygen", 70, roomVolume, 1.0f, roomVolume));
+            //roomGases.Add(new IGas("Oxygen", 70, roomVolume, 1.0f, roomVolume));
+        }
+
+        public float Temperature
+        {
+            get { return roomTemp; }
+        }
+        public float Oxygenation
+        {
+            get { return roomOxygenation; }
+            set { roomOxygenation = value; }
+        }
+        public float Pressure
+        {
+            get { return roomPressure; }
+        }
+        public float Toxicity
+        {
+            get { return toxicity; }
         }
 
         ///check doors
@@ -438,10 +455,14 @@ namespace ProjectUniverse.Environment.Volumes
                         add = true;
                     }
                 }
-                if (add)
-                {
+                //if (add)
+                //{
                     roomGases.Add(gas);
-                }
+                //}
+                //else
+               // {
+
+               // }
             }
             else
             {
@@ -512,6 +533,7 @@ namespace ProjectUniverse.Environment.Volumes
                     oxygenation += roomGases[i].GetConcentration();//gasesToEq
                 }
             }
+            //Debug.Log("Gasses: "+ totalGasses + " in " + this.name);
             //the above calcs are full oxygenation at 1.0, not 100.0f, so mult by 100
             roomOxygenation = (oxygenation /= roomVolume) * 100f;
             //float oxygenTemp = (oxygenation /= roomVolume)*100f;
@@ -560,7 +582,6 @@ namespace ProjectUniverse.Environment.Volumes
                 p2 += (p1 * v1 * t2) / (t1 * v2);
             }
             roomPressure = p2 / roomGases.Count;
-            pressureReport = roomPressure;
             //Debug.Log("Pressure recal: " + roomPressure);
             foreach (IGas setGases in roomGases)
             {

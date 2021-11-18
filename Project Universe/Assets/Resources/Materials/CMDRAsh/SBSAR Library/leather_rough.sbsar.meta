@@ -260,8 +260,12 @@ ScriptedImporter:
         float: 1
       - name: _PPDPrimitiveWidth
         float: 1
+      - name: _RayTracing
+        float: 0
       - name: _ReceivesSSR
         float: 1
+      - name: _ReceivesSSRTransparent
+        float: 0
       - name: _RefractionModel
         float: 0
       - name: _Smoothness
@@ -319,8 +323,6 @@ ScriptedImporter:
       - name: _TexWorldScaleEmissive
         float: 1
       - name: _Thickness
-        float: 1
-      - name: _ThicknessMultiplier
         float: 1
       - name: _TransmissionEnable
         float: 1

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 172193660173122086}
   - component: {fileID: 2704189961579630316}
   - component: {fileID: 3622763066221073002}
+  - component: {fileID: 4228160091609898513}
   m_Layer: 0
   m_Name: Overhead_LargeDuct2WayBranch
   m_TagString: Untagged
@@ -96,3 +97,32 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4936758908911758699, guid: 2c9afeca9f542e94187c01301a64d389, type: 3}
+--- !u!114 &4228160091609898513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4505792059588620089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7937c6540c271584688a51ff10620548, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  neighbors: []
+  temp: 70
+  tempTol:
+  - 0
+  - 0
+  globalPressure: 0
+  appliedPressure: 0
+  maxP: 1.25
+  volume_m3: 0.425
+  health: 100
+  leakRate: 0
+  bulletHoles: []
+  throughput_m3: 3
+  vent: {fileID: 0}
+  ductVolume: {fileID: 0}
+  insulationRating: 0.1
+  burst: 0

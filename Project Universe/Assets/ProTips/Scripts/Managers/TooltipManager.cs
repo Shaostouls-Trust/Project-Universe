@@ -1,8 +1,11 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+// ReSharper disable InconsistentNaming
+// ReSharper disable ForCanBeConvertedToForeach
+// ReSharper disable LoopCanBeConvertedToQuery
 
 namespace ModelShark
 {
@@ -28,7 +31,7 @@ namespace ModelShark
         public PositionBounds positionBounds = 0;
 
         /// <summary>If you have multiple canvases in your scene, this is the one that will be used by ProTips.</summary>
-        public Canvas GuiCanvas { get; private set; }
+        public Canvas GuiCanvas;
 
         /// <summary>For tooltip prefabs, the start/end character that signifies a dynamic field.</summary>
         public string TextFieldDelimiter { get { return "%"; } }
@@ -133,30 +136,63 @@ namespace ModelShark
 
             LayoutElement mainTextContainer = tooltip.TooltipStyle.mainTextContainer;
             if (mainTextContainer == null)
-                Debug.LogWarning(String.Format("No main text container defined on tooltip style \"{0}\". Note: This LayoutElement is needed in order to resize text appropriately.", trigger.Tooltip.GameObject.name));
+                Debug.LogWarning($"No main text container defined on tooltip style \"{trigger.Tooltip.GameObject.name}\". Note: This LayoutElement is needed in order to resize text appropriately.");
             else
                 mainTextContainer.preferredWidth = trigger.minTextWidth;
 
             for (int i = 0; i < tooltip.TextFields.Count; i++)
             {
                 Text txt = tooltip.TextFields[i].Text;
-                if (txt.text.Length < 3) continue; // text is too short to contain a parameter, so skip it.
 
-                for (int j = 0; j < trigger.parameterizedTextFields.Count; j++)
+                TextMeshProUGUI txtTMP = tooltip.TextFields[i].TextTMP;
+                if (txtTMP != null)
                 {
-                    if (!String.IsNullOrEmpty(trigger.parameterizedTextFields[j].value))
-                        txt.text = txt.text.Replace(trigger.parameterizedTextFields[j].placeholder, trigger.parameterizedTextFields[j].value);
+                    SetTextAndSizeTMP(txtTMP, trigger, mainTextContainer);
+                    continue;
                 }
+                SetTextAndSizeUI(txt, trigger, mainTextContainer);
+            }
+        }
 
-                if (mainTextContainer != null)
-                {
-                    // if the text would be wider than allowed, constrain the main text container to that limit.
-                    if (txt.preferredWidth > trigger.maxTextWidth)
-                        mainTextContainer.preferredWidth = trigger.maxTextWidth;
-                    // otherwise, if it's within the allotted space but bigger than the text container's default width, expand the main text container to accommodate.
-                    else if (txt.preferredWidth > trigger.minTextWidth && txt.preferredWidth > mainTextContainer.preferredWidth)
-                        mainTextContainer.preferredWidth = txt.preferredWidth;
-                }
+        private void SetTextAndSizeUI(Text txt, TooltipTrigger trigger, LayoutElement mainTextContainer)
+        {
+            if (txt.text.Length < 3) return; // text is too short to contain a parameter, so skip it.
+
+            for (int j = 0; j < trigger.parameterizedTextFields.Count; j++)
+            {
+                if (!string.IsNullOrEmpty(trigger.parameterizedTextFields[j].value))
+                    txt.text = txt.text.Replace(trigger.parameterizedTextFields[j].placeholder, trigger.parameterizedTextFields[j].value);
+            }
+
+            if (mainTextContainer != null)
+            {
+                // if the text would be wider than allowed, constrain the main text container to that limit.
+                if (txt.preferredWidth > trigger.maxTextWidth)
+                    mainTextContainer.preferredWidth = trigger.maxTextWidth;
+                // otherwise, if it's within the allotted space but bigger than the text container's default width, expand the main text container to accommodate.
+                else if (txt.preferredWidth > trigger.minTextWidth && txt.preferredWidth > mainTextContainer.preferredWidth)
+                    mainTextContainer.preferredWidth = txt.preferredWidth;
+            }
+        }
+
+        private void SetTextAndSizeTMP(TextMeshProUGUI txt, TooltipTrigger trigger, LayoutElement mainTextContainer)
+        {
+            if (txt.text.Length < 3) return; // text is too short to contain a parameter, so skip it.
+
+            for (int j = 0; j < trigger.parameterizedTextFields.Count; j++)
+            {
+                if (!string.IsNullOrEmpty(trigger.parameterizedTextFields[j].value))
+                    txt.text = txt.text.Replace(trigger.parameterizedTextFields[j].placeholder, trigger.parameterizedTextFields[j].value);
+            }
+
+            if (mainTextContainer != null)
+            {
+                // if the text would be wider than allowed, constrain the main text container to that limit.
+                if (txt.preferredWidth > trigger.maxTextWidth)
+                    mainTextContainer.preferredWidth = trigger.maxTextWidth;
+                // otherwise, if it's within the allotted space but bigger than the text container's default width, expand the main text container to accommodate.
+                else if (txt.preferredWidth > trigger.minTextWidth && txt.preferredWidth > mainTextContainer.preferredWidth)
+                    mainTextContainer.preferredWidth = txt.preferredWidth;
             }
         }
 
@@ -232,17 +268,18 @@ namespace ModelShark
             // Parent the tooltip container under the correct canvas.
             TooltipContainer.transform.SetParent(GuiCanvas.transform, false);
 
+            tooltip.TooltipTrigger = trigger;
+
             // Set the position of the tooltip.
             tooltip.SetPosition(trigger, GuiCanvas, guiCamera);
 
             // Set the tint color of the tooltip panel and tips.
-            tooltipBkgImg.color = trigger.backgroundTint;
+            if (tooltipBkgImg != null)
+                tooltipBkgImg.color = trigger.backgroundTint;
 
             // If this is a blocking tooltip, assign it as such.
             if (tooltip.IsBlocking)
                 BlockingTooltip = tooltip;
-
-            tooltip.TooltipTrigger = trigger;
 
             // Display the tooltip.
             tooltip.Display(fadeDuration);

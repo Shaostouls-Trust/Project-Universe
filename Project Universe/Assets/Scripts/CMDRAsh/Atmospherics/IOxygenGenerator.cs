@@ -47,9 +47,9 @@ namespace ProjectUniverse.Environment.Gas
             if (isPowered && isRunning)
             {
 
-                if (genRoom.roomOxygenation < 1.0f)
+                if (genRoom.Oxygenation < 1.0f)
                 {
-                    genRoom.roomOxygenation += (oxyGenRate_m3s * Time.deltaTime);
+                    genRoom.Oxygenation += (oxyGenRate_m3s * Time.deltaTime);
                 }
                 //transfer air into the linked airvents
                 float oxyGenRateThisUpdate = 0.0f;

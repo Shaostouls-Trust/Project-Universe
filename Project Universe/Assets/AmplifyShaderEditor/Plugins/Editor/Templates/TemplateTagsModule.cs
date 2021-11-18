@@ -329,7 +329,7 @@ namespace AmplifyShaderEditor
 
 				if( !m_availableTagsDict.ContainsKey( name ) )
 				{
-					CustomTagData tagData = new CustomTagData( data, m_availableTags.Count - 1 );
+					CustomTagData tagData = new CustomTagData( data, m_availableTags.Count );
 					m_availableTags.Add( tagData );
 					m_availableTagsDict.Add( name, tagData );
 				}

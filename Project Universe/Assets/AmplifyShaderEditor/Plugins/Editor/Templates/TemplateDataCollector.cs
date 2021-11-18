@@ -312,6 +312,14 @@ namespace AmplifyShaderEditor
 			m_fragmentInputParams.Add( semantic, new TemplateInputParameters( type, precision, name, semantic ) );
 		}
 
+		public void RegisterVertexInputParams( WirePortDataType type , PrecisionType precision , string name , TemplateSemantics semantic, string custom )
+		{
+			if( m_vertexInputParams == null )
+				m_vertexInputParams = new Dictionary<TemplateSemantics , TemplateInputParameters>();
+
+			m_vertexInputParams.Add( semantic , new TemplateInputParameters( type , precision , name , semantic, custom ) );
+		}
+
 		public void RegisterVertexInputParams( WirePortDataType type, PrecisionType precision, string name, TemplateSemantics semantic )
 		{
 			if( m_vertexInputParams == null )
@@ -365,6 +373,18 @@ namespace AmplifyShaderEditor
 			return m_fragmentInputParams[ TemplateSemantics.SV_PrimitiveID ].Name;
 		}
 #endif
+
+		public string GetURPMainLight( int uniqueId, string shadowCoords = null )
+		{
+			if( string.IsNullOrEmpty( shadowCoords ) )
+			{
+				shadowCoords = GetShadowCoords( uniqueId );
+			}
+			m_currentDataCollector.AddLocalVariable( uniqueId , string.Format( "Light ase_mainLight = GetMainLight( {0} );",shadowCoords) );
+
+			return "ase_mainLight";
+		}
+
 		public string GetVFace( int uniqueId )
 		{
 			#if UNITY_2018_3_OR_NEWER
@@ -405,6 +425,29 @@ namespace AmplifyShaderEditor
 				RegisterFragInputParams( WirePortDataType.FLOAT , PrecisionType.Half , TemplateHelperFunctions.SemanticsDefaultName[ TemplateSemantics.VFACE ] , TemplateSemantics.VFACE , custom );
 				return m_fragmentInputParams[ TemplateSemantics.VFACE ].Name;
 
+			}
+		}
+
+		public string GetSVInstanceId( ref MasterNodeDataCollector dataCollector )
+		{
+
+			if( dataCollector.IsFragmentCategory )
+			{
+				if( m_fragmentInputParams != null && m_fragmentInputParams.ContainsKey( TemplateSemantics.SV_InstanceID ) )
+					return m_fragmentInputParams[ TemplateSemantics.SV_InstanceID ].Name;
+
+				string custom = "uint " + TemplateHelperFunctions.SemanticsDefaultName[ TemplateSemantics.SV_InstanceID ] + " : SV_InstanceId";
+				RegisterFragInputParams( WirePortDataType.INT , PrecisionType.Half , TemplateHelperFunctions.SemanticsDefaultName[ TemplateSemantics.SV_InstanceID ] , TemplateSemantics.SV_InstanceID , custom );
+				return m_fragmentInputParams[ TemplateSemantics.SV_InstanceID ].Name;
+			}
+			else
+			{
+				if( m_vertexInputParams != null && m_vertexInputParams.ContainsKey( TemplateSemantics.SV_InstanceID ) )
+					return m_vertexInputParams[ TemplateSemantics.SV_InstanceID ].Name;
+
+				string custom = "uint " + TemplateHelperFunctions.SemanticsDefaultName[ TemplateSemantics.SV_InstanceID ] + " : SV_InstanceId";
+				RegisterVertexInputParams( WirePortDataType.INT, PrecisionType.Half , TemplateHelperFunctions.SemanticsDefaultName[ TemplateSemantics.SV_InstanceID ] , TemplateSemantics.SV_InstanceID, custom  );
+				return m_vertexInputParams[ TemplateSemantics.SV_InstanceID ].Name;
 			}
 		}
 

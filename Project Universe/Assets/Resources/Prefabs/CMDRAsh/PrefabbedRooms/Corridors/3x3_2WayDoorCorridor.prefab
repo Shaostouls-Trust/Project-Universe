@@ -295,11 +295,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bee3edb4596cea4449eed55bd12bdd43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pressureReport: 0
   roomTemp: 70
   roomOxygenation: 100
+  roomVolume: 27
   humidity: 25
   toxicity: 0
+  roomFluidPlanes: []
   neighborEmpties: []
   OxygenatedRoom_Priority: 10
   DeOxygenatedRoom_Priority: 9

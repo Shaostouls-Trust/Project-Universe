@@ -24,7 +24,9 @@ namespace AmplifyShaderEditor
 		private const string MaskedModePortNamStr = "Opacity Mask";
 		private const string OutlineAlphaModeStr = "Alpha Mode";
 		private const string OpacityMaskClipValueStr = "Mask Clip Value";
-		private const string ErrorMessage = "Outline node should only be connected to vertex ports.";
+		private const string FragmentErrorMessage = "Outline node should only be connected to vertex ports.";
+
+		private const string TemplateErrorMessage = "Outline node is only valid on the Standard Surface type";
 
 		[SerializeField]
 		private bool m_noFog = true;
@@ -196,17 +198,25 @@ namespace AmplifyShaderEditor
 			{
 				GetInputPortByUniqueId( 1 ).ChangeProperties( "Width", WirePortDataType.FLOAT, false );
 			}
+		}
 
+		public override void OnNodeLogicUpdate( DrawInfo drawInfo )
+		{
+			base.OnNodeLogicUpdate( drawInfo );
+			m_showErrorMessage = ( m_containerGraph.CurrentShaderFunction == null ) ? !m_containerGraph.IsStandardSurface : false;
 		}
 
 		public override string GenerateShaderForOutput( int outputId, ref MasterNodeDataCollector dataCollector, bool ignoreLocalvar )
 		{
 			if( dataCollector.IsTemplate )
-				return m_outputPorts[0].ErrorValue;
+			{
+				UIUtils.ShowMessage( UniqueId , TemplateErrorMessage, MessageSeverity.Error );
+				return m_outputPorts[ 0 ].ErrorValue;
+			}
 
 			if( dataCollector.IsFragmentCategory )
 			{
-				UIUtils.ShowMessage( UniqueId, ErrorMessage );
+				UIUtils.ShowMessage( UniqueId, FragmentErrorMessage , MessageSeverity.Error );
 				return m_outputPorts[ 0 ].ErrorValue;
 			}
 

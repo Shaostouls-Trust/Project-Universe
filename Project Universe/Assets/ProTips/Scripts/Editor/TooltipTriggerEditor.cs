@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+
+// ReSharper disable InconsistentNaming
 
 namespace ModelShark
 {
@@ -14,6 +17,10 @@ namespace ModelShark
         private SerializedProperty staysOpen;
         private SerializedProperty neverRotate;
         private SerializedProperty isBlocking;
+        private SerializedProperty shouldOverridePosition;
+        private SerializedProperty overridePositionType;
+        private SerializedProperty overridePositionTransform;
+        private SerializedProperty overridePositionVector;
         private static readonly string[] dontIncludeMe = { "m_Script" };
 
         private void OnEnable()
@@ -24,6 +31,10 @@ namespace ModelShark
             staysOpen = serializedObject.FindProperty("staysOpen");
             neverRotate = serializedObject.FindProperty("neverRotate");
             isBlocking = serializedObject.FindProperty("isBlocking");
+            overridePositionType = serializedObject.FindProperty("overridePositionType");
+            shouldOverridePosition = serializedObject.FindProperty("shouldOverridePosition");
+            overridePositionTransform = serializedObject.FindProperty("overridePositionTransform");
+            overridePositionVector = serializedObject.FindProperty("overridePositionVector");
         }
 
         public override void OnInspectorGUI()
@@ -31,6 +42,10 @@ namespace ModelShark
             serializedObject.Update();
 
             TooltipTrigger tooltipTrigger = target as TooltipTrigger;
+            int[] validTooltipPosValues = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 };
+            string[] validTooltipPosDisplay = { "TopRightCorner", "BottomRightCorner", "TopLeftCorner", "BottomLeftCorner", "MouseTopRightCorner", "MouseBottomRightCorner", 
+                "MouseTopLeftCorner", "MouseBottomLeftCorner", "TopMiddle", "BottomMiddle", "RightMiddle", "LeftMiddle", "MouseTopMiddle", "MouseBottomMiddle",
+                "MouseRightMiddle", "MouseLeftMiddle", "CanvasTopMiddle", "CanvasBottomMiddle" };
 
             if (tooltipTrigger != null)
             {
@@ -46,22 +61,26 @@ namespace ModelShark
                     tooltipTrigger.dynamicImageFields = new List<DynamicImageField>();
                 if (tooltipTrigger.dynamicSectionFields == null)
                     tooltipTrigger.dynamicSectionFields = new List<DynamicSectionField>();
-
+                
                 if (tooltipTrigger.tooltipStyle != null)
                 {
                     // Retrieve dynamic text and image fields on the tooltip.
+                    List<string> textFieldsText = new List<string>();
+                    TextMeshProUGUI[] textFieldsTMP = tooltipTrigger.tooltipStyle.GetComponentsInChildren<TextMeshProUGUI>(true);
+                    foreach (TextMeshProUGUI textFieldTMP in textFieldsTMP)
+                        textFieldsText.Add(textFieldTMP.text);
                     Text[] textFields = tooltipTrigger.tooltipStyle.GetComponentsInChildren<Text>(true);
+                    foreach (Text textField in textFields)
+                        textFieldsText.Add(textField.text);
+
                     DynamicImage[] imageFields = tooltipTrigger.tooltipStyle.GetComponentsInChildren<DynamicImage>(true);
-                    DynamicSection[] sectionFields =
-                        tooltipTrigger.tooltipStyle.GetComponentsInChildren<DynamicSection>(true);
+                    DynamicSection[] sectionFields = tooltipTrigger.tooltipStyle.GetComponentsInChildren<DynamicSection>(true);
 
                     // Fill and configure the dynamic text and image field collections on the tooltip trigger.
-                    textFields.FillParameterizedTextFields(ref tooltipTrigger.parameterizedTextFields, "%");
-                        // <= if you want to use a different field delimiter, change it here.
+                    textFieldsText.FillParameterizedTextFields(ref tooltipTrigger.parameterizedTextFields, "%");
+
                     imageFields.FillDynamicImageFields(ref tooltipTrigger.dynamicImageFields, "%");
-                        // <= if you want to use a different field delimiter, change it here.
                     sectionFields.FillDynamicSectionFields(ref tooltipTrigger.dynamicSectionFields, "%");
-                        // <= if you want to use a different field delimiter, change it here.
 
                     // DYNAMIC TEXT FIELDS
                     if (tooltipTrigger.parameterizedTextFields.Count > 0)
@@ -137,6 +156,51 @@ namespace ModelShark
                 // NEVER ROTATE?
                 EditorGUILayout.PropertyField(neverRotate, new GUIContent("Never Rotate"));
                 tooltipTrigger.neverRotate = neverRotate.boolValue;
+
+                // OVERRIDE POSITION?
+                EditorGUILayout.PropertyField(shouldOverridePosition, new GUIContent("Override Position?"));
+                tooltipTrigger.shouldOverridePosition = shouldOverridePosition.boolValue;
+
+                // OVERRIDE POSITION TYPE SELECTOR
+                if (tooltipTrigger.shouldOverridePosition)
+                {
+                    EditorGUILayout.PropertyField(overridePositionType, new GUIContent("    Override Type"));
+                    tooltipTrigger.overridePositionType = (PositionOverride)overridePositionType.enumValueIndex;
+
+                    if (tooltipTrigger.overridePositionType == PositionOverride.Transform)
+                    {
+                        EditorGUILayout.PropertyField(overridePositionTransform, new GUIContent("    Transform"));
+                        tooltipTrigger.overridePositionTransform = overridePositionTransform.objectReferenceValue as Transform;
+
+                        validTooltipPosValues = new[] {0, 1, 2, 3, 8, 9, 10, 11};
+                        validTooltipPosDisplay = new[]{"TopRightCorner","BottomRightCorner","TopLeftCorner","BottomLeftCorner","TopMiddle","BottomMiddle","RightMiddle","LeftMiddle"};
+                    }
+                    else if (tooltipTrigger.overridePositionType == PositionOverride.Vector)
+                    {
+                        EditorGUILayout.PropertyField(overridePositionVector, new GUIContent("    Vector"));
+                        tooltipTrigger.overridePositionVector = overridePositionVector.vector3Value;
+
+                        validTooltipPosValues = new[] { 0, 1, 2, 3, 8, 9, 10, 11 };
+                        validTooltipPosDisplay = new[] { "TopRightCorner", "BottomRightCorner", "TopLeftCorner", "BottomLeftCorner", "TopMiddle", "BottomMiddle", "RightMiddle", "LeftMiddle" };
+                    }
+                    else if (tooltipTrigger.overridePositionType == PositionOverride.MouseCursor)
+                    {
+                        validTooltipPosValues = new[] { 4, 5, 6, 7, 12, 13, 14, 15 };
+                        validTooltipPosDisplay = new[] { "MouseTopRightCorner", "MouseBottomRightCorner", "MouseTopLeftCorner", "MouseBottomLeftCorner", "MouseTopMiddle", "MouseBottomMiddle", "MouseRightMiddle", "MouseLeftMiddle" };
+                    }
+                }
+
+                bool isCurrentTooltipPosValid = false;
+                for (int i = 0; i < validTooltipPosValues.Length; i++)
+                {
+                    if ((int) tooltipTrigger.tipPosition == validTooltipPosValues[i])
+                        isCurrentTooltipPosValid = true;
+                }
+
+                if (!isCurrentTooltipPosValid)
+                    tooltipTrigger.tipPosition = (TipPosition) validTooltipPosValues[0];
+
+                tooltipTrigger.tipPosition = (TipPosition)EditorGUILayout.IntPopup("Tip Position", (int)tooltipTrigger.tipPosition, validTooltipPosDisplay, validTooltipPosValues);
             }
 
             // Draw the rest of the fields using the default inspector.

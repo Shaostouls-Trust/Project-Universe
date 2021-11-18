@@ -5,6 +5,7 @@ using ProjectUniverse.Player;
 using ProjectUniverse.Player.PlayerController;
 using ProjectUniverse.Production.Machines;
 using ProjectUniverse.Production.Resources;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -29,8 +30,12 @@ namespace ProjectUniverse.UI
         /// </summary>
         public GameObject[] OreInsertionButtons;
         public GameObject OreRemoveButton;
+        public GameObject TransferDisconnectIcon;
+        public GameObject TransferFullIcon;
+        public GameObject InternalFullIcon;
         public Button OreToPlayerButton;
         public Button OreToNextButton;
+        [SerializeField] private Button CollectOres;
         [SerializeField] private Color32 normalColor;
         [SerializeField] private bool OreToPlayer = true;//true is to player, false is to next (if next exists)
 
@@ -81,6 +86,7 @@ namespace ProjectUniverse.UI
             OreToNextButton.onClick.AddListener(delegate { NextLocationIsPlayer(false); });
             startButton.onClick.AddListener(delegate { StartFactory(); });
             stopButton.onClick.AddListener(delegate { CloseUI(); });
+            CollectOres.onClick.AddListener(delegate { Factory.GetComponent<Mach_InductionFurnace>().TransferInventoryToPlayer(); });
             //transfererinventory = player.GetComponent<IPlayer_Inventory>().GetPlayerInventory();
             //UpdateAvailableOres();
         }
@@ -246,6 +252,11 @@ namespace ProjectUniverse.UI
                 colorBlockNext.normalColor = normalColor;
                 OreToPlayerButton.colors = colorBlockPlayer;
                 OreToNextButton.colors = colorBlockNext;
+                //push to internal inventory if not full
+                Factory.GetComponent<Mach_InductionFurnace>().TransferToInternalInventory();
+                UpdateProductionPanel();
+                OnIngotsProduced(Factory.GetComponent<Mach_InductionFurnace>().OutputMaterials);
+
             }
             else
             {
@@ -255,6 +266,8 @@ namespace ProjectUniverse.UI
                 colorBlockNext.normalColor = OreToNextButton.colors.selectedColor;
                 OreToPlayerButton.colors = colorBlockPlayer;
                 OreToNextButton.colors = colorBlockNext;
+                //push to next inventory if not full
+                //NYI
             }
         }
 
@@ -287,6 +300,30 @@ namespace ProjectUniverse.UI
                     }
                 }
             }
+            Mach_InductionFurnace mif = Factory.GetComponent<Mach_InductionFurnace>();
+            if(mif.TransferDuct == null)
+            {
+                TransferDisconnectIcon.SetActive(true);
+                OreToNextButton.interactable = false;
+            }
+            else
+            {
+                TransferDisconnectIcon.SetActive(false);
+                OreToNextButton.interactable = true;
+            }
+            //Next is Full (NYI)
+
+            //Internal if full
+            if (mif.Inventory.IsFull())
+            {
+                InternalFullIcon.SetActive(true);
+                OreToPlayerButton.interactable = false;
+            }
+            else
+            {
+                InternalFullIcon.SetActive(false);
+                OreToPlayerButton.interactable = true;
+            }
         }
 
         public void UpdateAvailableOres()
@@ -316,8 +353,15 @@ namespace ProjectUniverse.UI
 
         public void OnIngotsProduced(List<ItemStack> ingots)
         {
-            ProducedIngotName.text = (ingots[0].GetItemArray().GetValue(0) as Consumable_Ingot).GetIngotType().Split('_')[1] + " Ingot";
-            ProducedIngotCount.text = ""+ingots.Count;
+            try 
+            { 
+                ProducedIngotName.text = (ingots[0].GetItemArray().GetValue(0) as Consumable_Ingot).GetIngotType().Split('_')[1] + " Ingot";
+                ProducedIngotCount.text = "" + ingots.Count;
+            }
+            catch (Exception e)
+            {
+
+            }
         }
 
         public void SetInputInventory(List<ItemStack> inventory)

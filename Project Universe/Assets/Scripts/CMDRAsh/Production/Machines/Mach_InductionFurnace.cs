@@ -10,6 +10,7 @@ using ProjectUniverse.Data.Libraries;
 using ProjectUniverse.UI;
 using MLAPI;
 using MLAPI.Messaging;
+using ProjectUniverse.Items;
 
 namespace ProjectUniverse.Production.Machines
 {
@@ -17,7 +18,9 @@ namespace ProjectUniverse.Production.Machines
     {
         [SerializeField] private List<ItemStack> inputMaterials;
         [SerializeField] private List<ItemStack> outputMaterials;
-        [SerializeField] private GameObject SmelterUI;//probably just have this UI tied to this object, rather than the player
+        [SerializeField] private GameObject SmelterUI;
+        [SerializeField] private GameObject transferDuct;
+        [SerializeField] private Inventory inventory;
 
         private List<ItemStack> byproducts;
         //Refinery level determines quality (and speed for now). Higher tier will take longer (more steps).
@@ -31,6 +34,22 @@ namespace ProjectUniverse.Production.Machines
         private bool Stop = false;
         //Also means we don't need an update method.
         //[SerializeField] private IMachine thisIMachineScript;
+
+        public GameObject TransferDuct
+        {
+            get { return transferDuct; }
+            set { transferDuct = value; }
+        }
+
+        public Inventory Inventory
+        {
+            get { return inventory; }
+        }
+
+        public List<ItemStack> OutputMaterials
+        {
+            get { return outputMaterials; }
+        }
 
         override
         public string ToString()
@@ -59,7 +78,6 @@ namespace ProjectUniverse.Production.Machines
                 //get the ore inclusions from the inclusion library
                 if (processStack.GetOriginalType() == typeof(Consumable_Ore))
                 {
-                    //Consumable_Ore ore = processStack.gameObject.GetComponent<Consumable_Ore>();
                     ///
                     /// THIS ONLY GETS THE FIRST ORE!! WILL THIS BE AN ISSUE?
                     ///
@@ -79,7 +97,7 @@ namespace ProjectUniverse.Production.Machines
                 }
                 //get the ingot definition from the ingot library (produces: ingotDef)
                 IngotLibrary.IngotDictionary.TryGetValue(oreDef.GetProductionID(), out ingotDef);
-                Debug.Log(smeltTime);
+                //Debug.Log(smeltTime);
                 return smeltTime;
             }
             else
@@ -99,31 +117,35 @@ namespace ProjectUniverse.Production.Machines
         ///
         private IEnumerator ProxyUpdate()
         {
+            float remaining = inputMaterials[0].GetRealLength();
             float availableToProcess = 0f;
             IngotDefinition ingotDef = null;
             Dictionary<OreDefinition, float> oreInclusions;
             Dictionary<MaterialDefinition, float> matInclusions;
             int oreQuality;
             Consumable_Ingot newIngot = null;
-            //Debug.Log(inputMaterials.Count);
-            //Debug.Log(Stop);
-            while (inputMaterials.Count > 0 && inputMaterials[0].GetRealLength() != 0 && !Stop)
+            InductionSmelterUIController smelter = SmelterUI.GetComponent<InductionSmelterUIController>();
+
+            while (remaining > 0f && inputMaterials[0].GetRealLength() >= 0 && !Stop)//the last ingot turns this into input == 0
             {
                 if (isRunning && isPowered)
                 {
-                    if (timer <= 0.0f)
+                    if (inputMaterials.Count > 0f)
                     {
-                        totaltime = ProxyUpdateHelper(out oreInclusions, out matInclusions, out ingotDef, out oreQuality, out availableToProcess);
-                        timer = totaltime;
-                        newIngot = new Consumable_Ingot(ingotDef.GetIngotType(), oreQuality, ingotDef,
-                            oreInclusions, matInclusions, availableToProcess);
-                    }
-                    else
-                    {
-                        //smelting timer. When it reaches zero, the ore has been turned into an ingot.
-                        timer -= Time.deltaTime;
-                        SmelterUI.GetComponent<InductionSmelterUIController>().UpdateProgressBar(timer / totaltime);
-                        //Debug.Log(timer);
+                        if (timer <= 0.0f)
+                        {
+                            totaltime = ProxyUpdateHelper(out oreInclusions, out matInclusions, out ingotDef, out oreQuality, out availableToProcess);
+                            timer = totaltime;
+                            newIngot = new Consumable_Ingot(ingotDef.GetIngotType(), oreQuality, ingotDef,
+                                oreInclusions, matInclusions, availableToProcess);
+                        }
+                        else
+                        {
+                            //smelting timer. When it reaches zero, the ore has been turned into an ingot.
+                            timer -= Time.deltaTime;
+                            smelter.UpdateProgressBar(timer / totaltime);
+                            //Debug.Log(timer);
+                        }
                     }
 
                     ///
@@ -131,26 +153,37 @@ namespace ProjectUniverse.Production.Machines
                     ///
                     if (timer <= 0.0f)
                     {
-                       
+                        remaining--;
                         //Ore was removed to process it. Only add the process amount to the ingot itemstack
                         ItemStack ingotStack = new ItemStack(ingotDef.GetIngotType(), 999, typeof(Consumable_Ingot));
                         //Add the itemstack or whatever
                         ingotStack.AddItem(newIngot);
+                        Debug.Log("Adding "+newIngot+" to ingotStack");
                         ///
                         /// THERE IS A HIGH LIKELYHOOD THAT NO INGOTS WILL BE STRICTLY EQUIVALENT IN METADATA DUE TO IMPURITIES!!
                         ///
                         
                         //Debug.Log("Outputting");
                         outputMaterials.Add(ingotStack);
-                        SmelterUI.GetComponent<InductionSmelterUIController>().UpdateProductionPanel();
-                        SmelterUI.GetComponent<InductionSmelterUIController>().UpdateAvailableOres();
-                        SmelterUI.GetComponent<InductionSmelterUIController>().OnIngotsProduced(outputMaterials);
+                        //Attempt to push the ingots to Next or dump in output stack for player
+                        if (smelter.OutputMode)
+                        {
+                            TransferToInternalInventory();
+                            //true means to internal inventory
 
+                            //false means to Next (NYI)
+                        }
+                        smelter.UpdateProductionPanel();
+                        smelter.UpdateAvailableOres();
+                        smelter.OnIngotsProduced(outputMaterials);
                         //Debug.Log("Materials left: "+inputMaterials[0]);
                     }
                     if (inputMaterials.Count == 0 && availableToProcess <= 0)
                     {
-                        //Debug.Log("STOPPING");
+                        smelter.UpdateProductionPanel();
+                        smelter.UpdateAvailableOres();
+                        smelter.OnIngotsProduced(outputMaterials);
+                        Debug.Log("STOPPING");
                         Stop = true;
                         //When all ore is processed, stop the update coroutine.
                         StopCoroutine(ProxyUpdate());
@@ -158,18 +191,14 @@ namespace ProjectUniverse.Production.Machines
                 }
                 else
                 {
+                    smelter.UpdateProductionPanel();
+                    smelter.OnIngotsProduced(outputMaterials);
                     Stop = true;
+                    Debug.Log("STOPPING");
                 }
                 yield return null;
             }
             //Debug.Log("Termino");
-            //Attempt to push the ingots to Next or dump in output stack for player
-            if (SmelterUI.GetComponent<InductionSmelterUIController>().OutputMode)
-            {
-                //true means to player
-
-                //false means to Next (NYI)
-            }
         }
 
         public void ExternalInteractFunc()
@@ -212,16 +241,48 @@ namespace ProjectUniverse.Production.Machines
             }
         }
 
-        //remove the processed metal from the furnace
-        public void OutputToPlayer(GameObject player)
+        public void TransferToInternalInventory()
         {
-            Debug.Log("gimme!");
-            IPlayer_Inventory playerInventory = player.GetComponent<IPlayer_Inventory>();
-            for (int i = 0; i < outputMaterials.Count; i++)
+            for(int i  = OutputMaterials.Count - 1; i >= 0; i--)
             {
-                playerInventory.AddStackToPlayerInventory(outputMaterials[i]);
-                //playerInventory.AddToPlayerInventory<Consumable_Ingot>(outputMaterials[i].GetItemArray().);
+                
+                if (!Inventory.IsFull())
+                {
+                    if(OutputMaterials[i] != null)
+                    {
+                        Debug.Log(OutputMaterials[i]);
+                        Debug.Log("Transfer to internal");
+                        Inventory.Add(OutputMaterials[i]);
+                        OutputMaterials.RemoveAt(i);
+                    }
+                }
             }
+            InductionSmelterUIController smelter = SmelterUI.GetComponent<InductionSmelterUIController>();
+            smelter.UpdateProductionPanel();
+            smelter.UpdateAvailableOres();
+            smelter.OnIngotsProduced(OutputMaterials);
+        }
+
+        public void TransferInventoryToPlayer()
+        {
+            if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
+            {
+                Debug.Log("TTP");
+                IPlayer_Inventory inv = networkedClient.PlayerObject.gameObject.GetComponent<IPlayer_Inventory>();
+                Debug.Log(Inventory.GetInventory().Count);
+                for (int i = Inventory.GetInventory().Count - 1; i >= 0; i--)
+                {
+                    if(Inventory.GetInventory()[i] != null)
+                    {
+                        Debug.Log(Inventory.GetInventory()[i]);//stacks are empty
+                        inv.AddStackToPlayerInventory(Inventory.Remove(i));
+                    }
+                }
+            }
+            InductionSmelterUIController smelter = SmelterUI.GetComponent<InductionSmelterUIController>();
+            smelter.UpdateProductionPanel();
+            smelter.UpdateAvailableOres();
+            smelter.OnIngotsProduced(OutputMaterials);
         }
 
         public void BouncedMessageReceiver(params object[] data)

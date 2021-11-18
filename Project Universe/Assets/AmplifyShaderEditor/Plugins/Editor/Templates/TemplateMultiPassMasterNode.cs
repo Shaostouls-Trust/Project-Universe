@@ -2138,7 +2138,7 @@ namespace AmplifyShaderEditor
 
 			//BUILD LOD
 			string allLodSubShaders = string.Empty;
-			if( ContainerGraph.HasLODs )
+			if( m_templateMultiPass.CanAddLODs && ContainerGraph.HasLODs )
 			{
 				for( int lod = 0 ; lod < ContainerGraph.LodMultiPassMasternodes.Count ; lod++ )
 				{
@@ -2158,9 +2158,13 @@ namespace AmplifyShaderEditor
 			MasterNodeDataCollector dummy = new MasterNodeDataCollector();
 			string shaderBody = BuildShaderBody( overallDataCollector , ref dummy );
 
-			//COMBINE LOD WITH MAIN
-			if( !string.IsNullOrEmpty( allLodSubShaders ) )
+			if( m_templateMultiPass.CanAddLODs )
+			{
+				//COMBINE LOD WITH MAIN
+				// Commented the if out since we always want to replace the tag with something, even string.empty to clean the tag out of the final shader
+				//if( !string.IsNullOrEmpty( allLodSubShaders ) )
 				shaderBody = shaderBody.Replace( TemplatesManager.TemplateLODsTag , allLodSubShaders );
+			}
 
 			UpdateShaderAsset( ref pathname , ref shaderBody , isFullPath );
 			return m_currentShader;

@@ -154,6 +154,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _AOLDodge: 0
     - _AOLDodge1: 0
     - _AORemapMax: 1
     - _AORemapMin: 0
@@ -199,7 +200,7 @@ Material:
     - _DoubleSidedEnable: 0
     - _DoubleSidedNormalMode: 1
     - _DstBlend: 0
-    - _EmissionIntensity: 0.25
+    - _EmissionIntensity: 0.1
     - _EmissionIntensity1: 0.01
     - _EmissiveColorMode: 1
     - _EmissiveExposureWeight: 1
@@ -209,7 +210,7 @@ Material:
     - _EnableFogOnTransparent: 1
     - _EnableGeometricSpecularAA: 0
     - _EnergyConservingSpecularColor: 1
-    - _ExposureWeight: 1
+    - _ExposureWeight: 0
     - _ExposureWeight1: 1
     - _GlobalTriplanarFalloff: 0.5
     - _HeightAmplitude: 0.02
@@ -246,7 +247,9 @@ Material:
     - _RefractionModel: 0
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
+    - _SAAThreshold: 25
     - _SAAThreshold1: 0
+    - _SAAVariance: 0.25
     - _SAAVariance1: 1
     - _SSRefractionProjectionModel: 0
     - _Smoothness: 0.5

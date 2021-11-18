@@ -48,6 +48,7 @@ namespace AmplifyShaderEditor
 		ASE_SRP_7_5_2 =		070502,
 		ASE_SRP_7_5_3 =		070503,
 		ASE_SRP_7_6_0 =		070600,
+		ASE_SRP_7_7_1 =		070701,
 		ASE_SRP_8_2_0 =		080200,
 		ASE_SRP_8_3_1 =		080301,
 		ASE_SRP_9_0_0 =		090000,
@@ -59,7 +60,9 @@ namespace AmplifyShaderEditor
 		ASE_SRP_10_4_0 =	100400,
 		ASE_SRP_10_5_0 =	100500,
 		ASE_SRP_10_5_1 =	100501,
+		ASE_SRP_10_6_0 =	100600,
 		ASE_SRP_11_0_0 =	110000,
+		ASE_SRP_12_0_0 =	120000,
 		ASE_SRP_RECENT =	999999
 	}
 
@@ -141,8 +144,8 @@ namespace AmplifyShaderEditor
 		private static ASESRPVersions m_currentHDVersion = ASESRPVersions.ASE_SRP_RECENT;
 		private static ASESRPVersions m_currentLWVersion = ASESRPVersions.ASE_SRP_RECENT;
 
-		private static int m_urpTemplateVersion = 20;
-		private static int m_hdrpTemplateVersion = 16;
+		private static int m_urpTemplateVersion = 21;
+		private static int m_hdrpTemplateVersion = 17;
 
 		private static Dictionary<string, ASESRPVersions> m_srpVersionConverter = new Dictionary<string, ASESRPVersions>()
 		{
@@ -208,6 +211,8 @@ namespace AmplifyShaderEditor
 			{"7.5.3-preview",       ASESRPVersions.ASE_SRP_7_5_3},
 			{"7.6.0",               ASESRPVersions.ASE_SRP_7_6_0},
 			{"7.6.0-preview",       ASESRPVersions.ASE_SRP_7_6_0},
+			{"7.7.1",               ASESRPVersions.ASE_SRP_7_7_1},
+			{"7.7.1-preview",       ASESRPVersions.ASE_SRP_7_7_1},
 			{"8.2.0",				ASESRPVersions.ASE_SRP_8_2_0},
 			{"8.2.0-preview",		ASESRPVersions.ASE_SRP_8_2_0},
 			{"8.3.1",               ASESRPVersions.ASE_SRP_8_3_1},
@@ -230,6 +235,7 @@ namespace AmplifyShaderEditor
 			{"10.4.0",              ASESRPVersions.ASE_SRP_10_4_0},
 			{"10.5.0",              ASESRPVersions.ASE_SRP_10_5_0},
 			{"10.5.1",              ASESRPVersions.ASE_SRP_10_5_1},
+			{"10.6.0",              ASESRPVersions.ASE_SRP_10_6_0},
 			{"11.0.0",              ASESRPVersions.ASE_SRP_11_0_0},
 		};
 
@@ -273,6 +279,7 @@ namespace AmplifyShaderEditor
 			{ASESRPVersions.ASE_SRP_7_5_2,  "f54faaaf4faf8784183ede7f87dfeb23"},
 			{ASESRPVersions.ASE_SRP_7_5_3,  "f54faaaf4faf8784183ede7f87dfeb23"},
 			{ASESRPVersions.ASE_SRP_7_6_0,  "f54faaaf4faf8784183ede7f87dfeb23"},
+			{ASESRPVersions.ASE_SRP_7_7_1,  "f54faaaf4faf8784183ede7f87dfeb23"},
 			{ASESRPVersions.ASE_SRP_8_2_0,	"f54faaaf4faf8784183ede7f87dfeb23"},
 			{ASESRPVersions.ASE_SRP_8_3_1,  "f54faaaf4faf8784183ede7f87dfeb23"},
 			{ASESRPVersions.ASE_SRP_9_0_0,	"f54faaaf4faf8784183ede7f87dfeb23"},
@@ -284,7 +291,9 @@ namespace AmplifyShaderEditor
 			{ASESRPVersions.ASE_SRP_10_4_0, "57fcea0ed8b5eb347923c4c21fa31b57"},
 			{ASESRPVersions.ASE_SRP_10_5_0, "57fcea0ed8b5eb347923c4c21fa31b57"},
 			{ASESRPVersions.ASE_SRP_10_5_1, "57fcea0ed8b5eb347923c4c21fa31b57"},
+			{ASESRPVersions.ASE_SRP_10_6_0, "57fcea0ed8b5eb347923c4c21fa31b57"},
 			{ASESRPVersions.ASE_SRP_11_0_0, "57fcea0ed8b5eb347923c4c21fa31b57"},
+			{ASESRPVersions.ASE_SRP_12_0_0, "57fcea0ed8b5eb347923c4c21fa31b57"},
 			{ASESRPVersions.ASE_SRP_RECENT,	"57fcea0ed8b5eb347923c4c21fa31b57"}
 		};
 
@@ -326,6 +335,7 @@ namespace AmplifyShaderEditor
 			{ASESRPVersions.ASE_SRP_7_5_2,  "3aeabe705b70b154ea99893f91351100"},
 			{ASESRPVersions.ASE_SRP_7_5_3,  "3aeabe705b70b154ea99893f91351100"},
 			{ASESRPVersions.ASE_SRP_7_6_0,  "3aeabe705b70b154ea99893f91351100"},
+			{ASESRPVersions.ASE_SRP_7_7_1,  "3aeabe705b70b154ea99893f91351100"},
 			{ASESRPVersions.ASE_SRP_8_2_0,  "3aeabe705b70b154ea99893f91351100"},
 			{ASESRPVersions.ASE_SRP_8_3_1,  "3aeabe705b70b154ea99893f91351100"},
 			{ASESRPVersions.ASE_SRP_9_0_0,  "3aeabe705b70b154ea99893f91351100"},
@@ -337,7 +347,9 @@ namespace AmplifyShaderEditor
 			{ASESRPVersions.ASE_SRP_10_4_0, "9a5e61a8b3421b944863d0946e32da0a"},
 			{ASESRPVersions.ASE_SRP_10_5_0, "9a5e61a8b3421b944863d0946e32da0a"},
 			{ASESRPVersions.ASE_SRP_10_5_1, "9a5e61a8b3421b944863d0946e32da0a"},
+			{ASESRPVersions.ASE_SRP_10_6_0, "9a5e61a8b3421b944863d0946e32da0a"},
 			{ASESRPVersions.ASE_SRP_11_0_0, "9a5e61a8b3421b944863d0946e32da0a"},
+			{ASESRPVersions.ASE_SRP_12_0_0, "9a5e61a8b3421b944863d0946e32da0a"},
 			{ASESRPVersions.ASE_SRP_RECENT, "9a5e61a8b3421b944863d0946e32da0a"}
 
 		};

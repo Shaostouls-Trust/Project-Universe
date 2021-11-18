@@ -12,13 +12,13 @@ namespace ModelShark
         /// <param name="textFields">An array of Text UI fields to scan for the existence of parameterized fields within its text.</param>
         /// <param name="parameterizedTextFields">The list of parameterized text fields to fill. Passing by ref and filling is done for performance, to avoid GC Allocation.</param>
         /// <param name="delimiter">The delimiter to use for finding parameterized fields. Ex: "Hello, %FirstName%!" would have "%" as the delimeter for the FirstName field.</param>
-        public static void FillParameterizedTextFields(this Text[] textFields, ref List<ParameterizedTextField> parameterizedTextFields, string delimiter)
+        public static void FillParameterizedTextFields(this List<string> textFields, ref List<ParameterizedTextField> parameterizedTextFields, string delimiter)
         {
             List<string> fieldNames = new List<string>();
-            foreach (Text textField in textFields)
+            foreach (string textField in textFields)
             {
                 string searchPattern = String.Format("{0}\\w*{0}", delimiter);
-                MatchCollection matches = Regex.Matches(textField.text, searchPattern,
+                MatchCollection matches = Regex.Matches(textField, searchPattern,
                     RegexOptions.Multiline | RegexOptions.IgnoreCase);
 
                 // Add fields that aren't already in the list.
@@ -41,7 +41,7 @@ namespace ModelShark
                     }
                     // If not found, add it.
                     if (!fieldFound)
-                        parameterizedTextFields.Add(new ParameterizedTextField() {name = fieldName, placeholder = match.Value, value = String.Empty});
+                        parameterizedTextFields.Add(new ParameterizedTextField() {name = fieldName, placeholder = match.Value, value = string.Empty});
                 }
             }
 

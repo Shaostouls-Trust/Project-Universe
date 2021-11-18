@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -20,9 +19,20 @@ namespace ModelShark
         public bool isRemotelyActivated; // Is this tooltip activated from another game object? (ie, NOT "hover" activated)
         
         /// <summary>The tooltip gameobject instance in the scene that matches this trigger's tooltip style.</summary>
-        public Tooltip Tooltip { get; private set; }
+        public Tooltip Tooltip { get; set; }
         [Tooltip("Controls the color and fade amount of the tooltip background.")]
         public Color backgroundTint = Color.white;
+
+        [HideInInspector, Tooltip("Overrides how the tooltip is positioned. You can choose to have it positioned at a specific Vector point on the screen, have it follow another transform, or have it follow the mouse cursor.")]
+        public bool shouldOverridePosition;
+        [HideInInspector]
+        public PositionOverride overridePositionType;
+        [HideInInspector]
+        public Vector3 overridePositionVector;
+        [HideInInspector]
+        public Transform overridePositionTransform;
+
+        [HideInInspector]
         public TipPosition tipPosition;
         public int minTextWidth = 100;
         public int maxTextWidth = 200;
@@ -63,7 +73,8 @@ namespace ModelShark
                 {
                     TooltipStyle ttStyle = Instantiate(tooltipStyle);
                     ttStyle.name = tooltipStyle.name;
-                    ttStyle.transform.SetParent(TooltipManager.Instance.TooltipContainer.transform, false);
+                    if (TooltipManager.Instance.TooltipContainer != null)
+                        ttStyle.transform.SetParent(TooltipManager.Instance.TooltipContainer.transform, false);
                     Tooltip newTooltip = new Tooltip() { GameObject = ttStyle.gameObject};
                     newTooltip.Initialize();
                     newTooltip.Deactivate();
@@ -93,7 +104,11 @@ namespace ModelShark
             if (popupTimer > 0)
                 popupTimer += Time.unscaledDeltaTime;
 
-            // Turn off the popup timer and hide the tooltip.
+            // If the tooltip exists and is currently open and needs to be repositioneed every frame, do so.
+            if (Tooltip.TooltipTrigger != null && Tooltip.GameObject.activeInHierarchy && popupTimer <= popupTime && Tooltip != null && shouldOverridePosition)
+                Tooltip.SetPosition(this, TooltipManager.Instance.GuiCanvas, TooltipManager.Instance.guiCamera);
+
+            // Turn off the popup timer and hide the tooltip if we've hovered off of it long enough.
             if (popupTimer > popupTime && Tooltip != null && !Tooltip.StaysOpen) 
             {
                 // Stop the timer and prevent the tooltip from showing.
@@ -126,6 +141,9 @@ namespace ModelShark
             // Ignore and exit if this tooltip is remotely activated, if there is already a blocking tooltip on the screen, or if the tooltip is already visible.
             if (isRemotelyActivated || TooltipManager.Instance.BlockingTooltip != null) return;
             if (Tooltip.GameObject.activeInHierarchy && Tooltip.TooltipTrigger == this) return;
+
+            // Check if the mouse is hovered over a UI element. If so, exit.
+            if (EventSystem.current.IsPointerOverGameObject()) return;
 
             hoverTimer = 0.001f; // Start the timer.
             isMouseOver = true;
@@ -170,6 +188,9 @@ namespace ModelShark
             if (TooltipManager.Instance.touchSupport) return;
             // Ignore and exit if this tooltip is remotely activated, if there is already a blocking tooltip on the screen, or if the tooltip is already visible.
             if (isRemotelyActivated || TooltipManager.Instance.BlockingTooltip != null) return;
+            // Ignore if Tooltip is null, or Tooltip.GameObject is null, or Tooltip.TooltipTrigger is null.
+            if (Tooltip == null || Tooltip.GameObject == null || Tooltip.TooltipTrigger == null) return;
+
             if (Tooltip.GameObject.activeInHierarchy && Tooltip.TooltipTrigger == this) return;
 
             hoverTimer = 0.001f; // Start the timer.
@@ -280,7 +301,7 @@ namespace ModelShark
             // If the list of parameterized text fields doesn't exist, create it.
             if (parameterizedTextFields == null)
                 parameterizedTextFields = new List<ParameterizedTextField>();
-
+            
             // Check to see if we find a matching field. If so, set its text to what was passed in.
             bool fieldExists = false;
             foreach (ParameterizedTextField txt in parameterizedTextFields)
@@ -293,8 +314,7 @@ namespace ModelShark
             // Finally, if the text field doesn't exist in the parameterized field list, create it and set its text to what was passed in.
             if (fieldExists) return;
             string delimiter = TooltipManager.Instance.TextFieldDelimiter;
-            parameterizedTextFields.Add(new ParameterizedTextField() 
-                { name=parameterName, placeholder = String.Format("{0}{1}{0}", delimiter, parameterName), value = text });
+            parameterizedTextFields.Add(new ParameterizedTextField { name=parameterName, placeholder = $"{delimiter}{parameterName}{delimiter}", value = text });
         }
 
         public void SetImage(string parameterName, Sprite sprite)

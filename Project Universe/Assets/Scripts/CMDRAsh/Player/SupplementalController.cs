@@ -170,7 +170,7 @@ namespace ProjectUniverse.Player.PlayerController
                     prone = false;
                     playerRoot.transform.localScale = new Vector3(1.0f,
                     defaultHeight, 1.0f);
-                    playerRoot.GetComponent<CharacterController>().height = defaultHeight;
+                    playerRoot.GetComponent<CharacterController>().height = 1.8f;
                     playerRoot.GetComponent<CharacterController>().radius = 0.31f;
                     //playerRoot.GetComponent<CapsuleCollider>().height = defaultHeight;
                     //playerRoot.GetComponent<CapsuleCollider>().radius = 0.31f;

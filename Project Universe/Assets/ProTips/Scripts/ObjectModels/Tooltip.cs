@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace ModelShark
 {
@@ -47,12 +48,19 @@ namespace ModelShark
 
             // Get Text fields.
             Text[] texts = GameObject.GetComponentsInChildren<Text>(true);
+            TextMeshProUGUI[] textsTMP = GameObject.GetComponentsInChildren<TextMeshProUGUI>(true);
             TextFields = new List<TextField>();
             for (int i = 0; i < texts.Length; i++)
             {
                 // If the delimiter wasn't found anywhere in the Text field, don't bother adding it.
                 if (texts[i].text.Contains(Delimiter))
                     TextFields.Add(new TextField {Text = texts[i], Original = texts[i].text});
+            }
+            for (int i = 0; i < textsTMP.Length; i++)
+            {
+                // If the delimiter wasn't found anywhere in the Text field, don't bother adding it.
+                if (textsTMP[i].text.Contains(Delimiter))
+                    TextFields.Add(new TextField { TextTMP = textsTMP[i], Original = textsTMP[i].text });
             }
 
             // Get Image fields.
@@ -118,7 +126,12 @@ namespace ModelShark
 
             // Reset parameterized fields back to their original values.
             for (int i = 0; i < TextFields.Count; i++)
+            {
+                if (TextFields[i].TextTMP != null)
+                    TextFields[i].TextTMP.text = TextFields[i].Original;
+                else
                 TextFields[i].Text.text = TextFields[i].Original;
+            }
 
             for (int i = 0; i < ImageFields.Count; i++)
                 ImageFields[i].Image.sprite = ImageFields[i].Original;
@@ -153,6 +166,7 @@ namespace ModelShark
     {
         /// <summary>A reference to the Text UI component.</summary>
         public Text Text { get; set; }
+        public TextMeshProUGUI TextTMP { get; set; }
         /// <summary>The original text that was in the Text UI component, used for resetting the tooltip.</summary>
         public string Original { get; set; }
     }

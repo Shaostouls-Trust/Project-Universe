@@ -2633,6 +2633,7 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 		}
 		/*ase_pass_end*/
 	}
+	/*ase_lod*/
 	CustomEditor "Rendering.HighDefinition.HDUnlitGUI"
 	FallBack "Hidden/InternalErrorShader"
 }

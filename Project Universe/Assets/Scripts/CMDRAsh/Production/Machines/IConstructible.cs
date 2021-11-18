@@ -374,7 +374,16 @@ namespace ProjectUniverse.Base
 									//inject a 'dead' dummy component into the last index of the TArray. This is to prevent NullPointers
 									Consumable_Component dummy = new Consumable_Component(comp.GetComponentID(), 0, comp.GetComponentDefinition());
 									dummy.RemainingHealth = 0f;
-									IConstructible_ComponentsReal[c].GetItemArray().SetValue(dummy, IConstructible_ComponentsReal[c].LastIndex - 1);
+									//if lastindex is 0 then this is auto null pointer
+									if(IConstructible_ComponentsReal[c].LastIndex == 0)
+									{
+										IConstructible_ComponentsReal[c].GetItemArray().SetValue(dummy, IConstructible_ComponentsReal[c].LastIndex);
+									}
+									else
+									{
+										IConstructible_ComponentsReal[c].GetItemArray().SetValue(dummy, IConstructible_ComponentsReal[c].LastIndex - 1);
+									}
+									
 								}
 							}
 						}

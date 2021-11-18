@@ -209,7 +209,7 @@ namespace ProjectUniverse.Base
                 TArray.SetValue(TArray.GetValue(i + 1), i);
             }
             LastIndex--;
-            Debug.Log(TArray.GetValue(0)+"->"+TArray.GetValue(LastIndex-1));
+            //Debug.Log(TArray.GetValue(0)+"->"+TArray.GetValue(LastIndex-1));
         }
 
         public void RemoveTArrayIndex<stacktype>(int index, out ItemStack returnstack)

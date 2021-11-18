@@ -512,6 +512,23 @@ namespace AmplifyShaderEditor
 			return functionBody;
 		}
 
+		string GetFileAssetRelativePath()
+		{
+			Shader currentShader = m_containerGraph.ParentWindow.OutsideGraph.CurrentShader;
+			if( currentShader != null )
+			{
+				string path0 = Application.dataPath + AssetDatabase.GetAssetPath( m_fileAsset ).Substring( 6 );
+				string path1 = Application.dataPath + AssetDatabase.GetAssetPath( currentShader ).Substring( 6 );
+
+				Uri path0URI = new Uri( path0 , UriKind.Absolute );
+				Uri path1URI = new Uri( path1 , UriKind.Absolute );
+
+				return path1URI.MakeRelativeUri( path0URI ).ToString();
+			}
+
+			return string.Empty;
+		}
+
 		void DrawBaseProperties()
 		{
 			EditorGUI.BeginChangeCheck();
@@ -1128,7 +1145,7 @@ namespace AmplifyShaderEditor
 
 			if( m_fileAsset != null )
 			{
-				string path = AssetDatabase.GetAssetPath( m_fileAsset );
+				string path = GetFileAssetRelativePath();
 				dataCollector.AddToIncludes( UniqueId , path );
 
 				int dependenciesCount = m_dependencies.Count;
@@ -1695,7 +1712,7 @@ namespace AmplifyShaderEditor
 				IOUtils.AddFieldValueToString( ref nodeInfo , m_dependencies[ i ].DependencyNodeId );
 			}
 
-			m_fileGUID = ( m_fileAsset == null ) ? string.Empty :
+			m_fileGUID = ( m_fileAsset == null ) ?	string.Empty :
 													AssetDatabase.AssetPathToGUID( AssetDatabase.GetAssetPath( m_fileAsset ) );
 			IOUtils.AddFieldValueToString( ref nodeInfo , m_fileGUID );
 			IOUtils.AddFieldValueToString( ref nodeInfo , m_precisionSuffix );

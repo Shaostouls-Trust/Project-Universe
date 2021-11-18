@@ -13,7 +13,7 @@ namespace ProjectUniverse.Items.Weapons
         [SerializeField] private float Damage = 10f;
         [SerializeField] private float RoundsPerMinute = 180f;
         //[SerializeField] private float Range = 1000f; //Estimate based off of gun and bullet properties, bullets will travel until they hit something
-        [SerializeField] private float BulletSpeed = 850f;//m/s
+        [SerializeField] private float BulletSpeed = 850f;//m/s //was850
         [SerializeField] private float AccuracyBase = 0.95f;//IE (1-angle/deviation) on first fire
         [SerializeField] private float AccuracryFiring = 0.9f;//IE accuracy when firing on automatic.
         [SerializeField] private float Weight = 5f;

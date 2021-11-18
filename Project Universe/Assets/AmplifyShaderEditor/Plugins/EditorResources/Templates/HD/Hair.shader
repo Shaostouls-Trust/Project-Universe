@@ -1043,7 +1043,7 @@ Shader /*ase_name*/ "Hidden/HD/Hair" /*end*/
 				#endif
 
 				bool viewMaterial = false;
-				int bufferSize = int(_DebugViewMaterialArray[0].x);
+				int bufferSize = _DebugViewMaterialArray[0].x;
 				if (bufferSize != 0)
 				{
 					bool needLinearToSRGB = false;
@@ -1051,7 +1051,7 @@ Shader /*ase_name*/ "Hidden/HD/Hair" /*end*/
 
 					for (int index = 1; index <= bufferSize; index++)
 					{
-						int indexMaterialProperty = int(_DebugViewMaterialArray[index].x);
+						int indexMaterialProperty = _DebugViewMaterialArray[index].x;
 
 						if (indexMaterialProperty != 0)
 						{
@@ -1356,7 +1356,7 @@ Shader /*ase_name*/ "Hidden/HD/Hair" /*end*/
 				#if HAVE_DECALS
 				if( _EnableDecals )
 				{
-					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData( posInput, surfaceDescription.Alpha );
+					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs.tangentToWorld[2], surfaceDescription.Alpha);
 					ApplyDecalToSurfaceData( decalSurfaceData, surfaceData );
 				}
 				#endif
@@ -1799,7 +1799,7 @@ Shader /*ase_name*/ "Hidden/HD/Hair" /*end*/
 				#if HAVE_DECALS
 				if( _EnableDecals )
 				{
-					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData( posInput, surfaceDescription.Alpha );
+					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs.tangentToWorld[2], surfaceDescription.Alpha);
 					ApplyDecalToSurfaceData( decalSurfaceData, surfaceData );
 				}
 				#endif
@@ -2210,7 +2210,7 @@ Shader /*ase_name*/ "Hidden/HD/Hair" /*end*/
 				#if HAVE_DECALS
 				if( _EnableDecals )
 				{
-					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData( posInput, surfaceDescription.Alpha );
+					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs.tangentToWorld[2], surfaceDescription.Alpha);
 					ApplyDecalToSurfaceData( decalSurfaceData, surfaceData );
 				}
 				#endif
@@ -2687,7 +2687,7 @@ Shader /*ase_name*/ "Hidden/HD/Hair" /*end*/
 				#if HAVE_DECALS
 				if( _EnableDecals )
 				{
-					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData( posInput, surfaceDescription.Alpha );
+					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs.tangentToWorld[2], surfaceDescription.Alpha);
 					ApplyDecalToSurfaceData( decalSurfaceData, surfaceData );
 				}
 				#endif
@@ -3204,7 +3204,7 @@ Shader /*ase_name*/ "Hidden/HD/Hair" /*end*/
 				#if HAVE_DECALS
 				if( _EnableDecals )
 				{
-					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData( posInput, surfaceDescription.Alpha );
+					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs.tangentToWorld[2], surfaceDescription.Alpha);
 					ApplyDecalToSurfaceData( decalSurfaceData, surfaceData );
 				}
 				#endif
@@ -3560,7 +3560,7 @@ Shader /*ase_name*/ "Hidden/HD/Hair" /*end*/
 				#endif
 
 				bool viewMaterial = false;
-				int bufferSize = int(_DebugViewMaterialArray[0]);
+				int bufferSize =_DebugViewMaterialArray[0].x;
 				if (bufferSize != 0)
 				{
 					bool needLinearToSRGB = false;
@@ -3568,7 +3568,7 @@ Shader /*ase_name*/ "Hidden/HD/Hair" /*end*/
 
 					for (int index = 1; index <= bufferSize; index++)
 					{
-						int indexMaterialProperty = int(_DebugViewMaterialArray[index]);
+						int indexMaterialProperty = _DebugViewMaterialArray[index].x;
 
 						if (indexMaterialProperty != 0)
 						{
@@ -3576,7 +3576,7 @@ Shader /*ase_name*/ "Hidden/HD/Hair" /*end*/
 
 							GetPropertiesDataDebug(indexMaterialProperty, result, needLinearToSRGB);
 							GetVaryingsDataDebug(indexMaterialProperty, input, result, needLinearToSRGB);
-							GetBuiltinDataDebug(indexMaterialProperty, builtinData, result, needLinearToSRGB);
+							GetBuiltinDataDebug(indexMaterialProperty, builtinData, posInput, result, needLinearToSRGB);
 							GetSurfaceDataDebug(indexMaterialProperty, surfaceData, result, needLinearToSRGB);
 							GetBSDFDataDebug(indexMaterialProperty, bsdfData, result, needLinearToSRGB);
 						}
@@ -3860,7 +3860,7 @@ Shader /*ase_name*/ "Hidden/HD/Hair" /*end*/
 				#if HAVE_DECALS
 				if( _EnableDecals )
 				{
-					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData( posInput, surfaceDescription.Alpha );
+					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs.tangentToWorld[2], surfaceDescription.Alpha);
 					ApplyDecalToSurfaceData( decalSurfaceData, surfaceData );
 				}
 				#endif
@@ -4294,7 +4294,7 @@ Shader /*ase_name*/ "Hidden/HD/Hair" /*end*/
 				#if HAVE_DECALS
 				if( _EnableDecals )
 				{
-					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData( posInput, surfaceDescription.Alpha );
+					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs.tangentToWorld[2], surfaceDescription.Alpha);
 					ApplyDecalToSurfaceData( decalSurfaceData, surfaceData );
 				}
 				#endif
@@ -4740,7 +4740,7 @@ Shader /*ase_name*/ "Hidden/HD/Hair" /*end*/
 				#if HAVE_DECALS
 				if( _EnableDecals )
 				{
-					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData( posInput, surfaceDescription.Alpha );
+					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs.tangentToWorld[2], surfaceDescription.Alpha);
 					ApplyDecalToSurfaceData( decalSurfaceData, surfaceData );
 				}
 				#endif

@@ -84,7 +84,7 @@ namespace ProjectUniverse.Production.Resources
         public float CompTakeDamage(float damage)
         {
             HealthCurrent -= damage;
-            Debug.Log(this + " health at " + HealthCurrent);
+            //Debug.Log(this + " health at " + HealthCurrent);
             if (HealthCurrent <= 0 && quantity > 1)
             {
                 HealthCurrent = 0f;// Health_Adjusted;

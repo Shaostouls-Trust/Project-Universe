@@ -239,7 +239,11 @@ namespace ProjectUniverse.PowerSystem
                         powerAmount[l] = (float)Math.Round(powerAmount[l], 3);
                     }
                     //Debug.Log("defecitVbreaker:" + defecitVbreaker);
-                    requestedAmount = powerAmount[0] * breakerLegReq; //was included
+                    if (powerAmount.Length != 0) 
+                    {
+                        requestedAmount = powerAmount[0] * breakerLegReq; //was included
+                    }
+                    else { requestedAmount = 0f; }
                     if (cable.CheckConnection(4))//transfer to breaker
                     {
                         //Debug.Log("buffer amount: "+bufferCurrent);

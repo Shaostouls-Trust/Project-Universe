@@ -32,7 +32,8 @@ namespace AmplifyShaderEditor
 		private readonly string[] LightweightFragmentInstructions =
 		{
 			/*shadow coords*/"Light ase_lightAtten_mainLight = GetMainLight( {0} );",
-			"ase_lightAtten = ase_lightAtten_mainLight.distanceAttenuation * ase_lightAtten_mainLight.shadowAttenuation;"
+			//"ase_lightAtten = ase_lightAtten_mainLight.distanceAttenuation * ase_lightAtten_mainLight.shadowAttenuation;"
+			"ase_lightAtten = {0}.distanceAttenuation * {0}.shadowAttenuation;"
 		};
 
 		protected override void CommonInit( int uniqueId )
@@ -70,7 +71,7 @@ namespace AmplifyShaderEditor
 						for( int i = 0; i < LightweightPragmaMultiCompiles.Length; i++ )
 							dataCollector.AddToPragmas( UniqueId, LightweightPragmaMultiCompiles[ i ] );
 
-						string shadowCoords = dataCollector.TemplateDataCollectorInstance.GetShadowCoords( UniqueId/*, false, dataCollector.PortCategory*/ );
+						//string shadowCoords = dataCollector.TemplateDataCollectorInstance.GetShadowCoords( UniqueId/*, false, dataCollector.PortCategory*/ );
 						//return shadowCoords;
 						// Vertex Instructions
 						//TemplateVertexData shadowCoordsData = dataCollector.TemplateDataCollectorInstance.RequestNewInterpolator( WirePortDataType.FLOAT4, false );
@@ -88,8 +89,9 @@ namespace AmplifyShaderEditor
 						//string fragmentShadowCoords = fragmentInterpName + "." + shadowCoordsData.VarNameWithSwizzle;
 
 						dataCollector.AddLocalVariable( UniqueId, LightweightLightAttenDecl );
-						dataCollector.AddLocalVariable( UniqueId, string.Format( LightweightFragmentInstructions[ 0 ], shadowCoords ) );
-						dataCollector.AddLocalVariable( UniqueId, LightweightFragmentInstructions[ 1 ] );
+						string mainLight = dataCollector.TemplateDataCollectorInstance.GetURPMainLight( UniqueId );
+						//dataCollector.AddLocalVariable( UniqueId, string.Format( LightweightFragmentInstructions[ 0 ], shadowCoords ) );
+						dataCollector.AddLocalVariable( UniqueId, string.Format( LightweightFragmentInstructions[ 1 ], mainLight) );
 						return ASEAttenVarName;
 					}
 					else

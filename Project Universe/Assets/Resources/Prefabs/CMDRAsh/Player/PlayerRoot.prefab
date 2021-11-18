@@ -7452,9 +7452,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ecb005b47d8c0d4b914a5608a781685, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 10
+  Damage: 25
   RoundsPerMinute: 180
-  BulletSpeed: 850
+  BulletSpeed: 425
   AccuracyBase: 0.95
   AccuracryFiring: 0.9
   Weight: 5
@@ -11971,8 +11971,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278245375
-  m_fontColor: {r: 1, g: 0.84313726, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -12802,7 +12802,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.39215687, g: 0.39215687, b: 0.39215687, a: 0.21568628}
+  m_Color: {r: 0.39215687, g: 0.39215687, b: 0.39215687, a: 0.39215687}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -26075,6 +26075,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -5582868791511267148, guid: ea48c1e589fc09b4d938f08a5793e1ce,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5168695635008074109, guid: ea48c1e589fc09b4d938f08a5793e1ce,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -4695135169553486614, guid: ea48c1e589fc09b4d938f08a5793e1ce,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -26119,6 +26129,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: DudeGuy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2337290686100685851, guid: ea48c1e589fc09b4d938f08a5793e1ce,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3742407835892290726, guid: ea48c1e589fc09b4d938f08a5793e1ce,
         type: 3}

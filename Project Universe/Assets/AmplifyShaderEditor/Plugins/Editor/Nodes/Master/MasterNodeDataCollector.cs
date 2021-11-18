@@ -163,6 +163,17 @@ namespace AmplifyShaderEditor
 		private Dictionary<string, InputCoordsCollector> m_customShadowCoordsDict;
 
 		private TextureChannelUsage[] m_requireTextureProperty = { TextureChannelUsage.Not_Used, TextureChannelUsage.Not_Used, TextureChannelUsage.Not_Used, TextureChannelUsage.Not_Used };
+		private WirePortDataType[] m_textureChannelSize =
+		{
+			WirePortDataType.FLOAT2,
+			WirePortDataType.FLOAT2,
+			WirePortDataType.FLOAT2,
+			WirePortDataType.FLOAT2,
+			WirePortDataType.FLOAT2,
+			WirePortDataType.FLOAT2,
+			WirePortDataType.FLOAT2,
+			WirePortDataType.FLOAT2
+		};
 
 		private bool m_dirtyAppData;
 		private bool m_dirtyInputs;
@@ -348,6 +359,19 @@ namespace AmplifyShaderEditor
 			m_vertexInterpDeclDict = new Dictionary<string, string>();
 
 			m_templateDataCollector = new TemplateDataCollector();
+		}
+
+		public void SetTextureChannelSize( int channelIdx , WirePortDataType size )
+		{
+			if( size > m_textureChannelSize[ channelIdx ] )
+			{
+				m_textureChannelSize[ channelIdx ] = size;
+			}
+		}
+
+		public WirePortDataType GetMaxTextureChannelSize( int channelIdx )
+		{
+			return m_textureChannelSize[ channelIdx ];
 		}
 
 		public void SetChannelUsage( int channelId, TextureChannelUsage usage )
