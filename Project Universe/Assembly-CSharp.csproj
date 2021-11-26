@@ -652,6 +652,42 @@
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Select.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Blend.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Production\Raw\InclusionLibrary.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\MouseLook.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\_3D Scifi Kit Vol 3\Prefabs\Fx\Laser\_Scripts\TurretLookAt.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\_3D Scifi Kit Vol 3\Prefabs\Fx\Laser\_Scripts\LaserImpact.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\Turn_Move.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\_Walkyrie_Example_Scripts\Walkyrie_Example_Keys_01.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\DoorDoubleSlide.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\RoverWheelDrive.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\_Infinity_Exemple_Scripts\Infinity_Joystick_01.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\CameraLookObject.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\_3D Scifi Kit Vol 3\Prefabs\Fx\Laser\_Scripts\LaserDying.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\_Walkyrie_Example_Scripts\Walkyrie_SwitchEngine_01.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\GuidedMissile.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\_3D Scifi Kit Vol 3\Prefabs\Fx\Laser\_Scripts\LaserShoot.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\ObjectFacingCamera.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\PhysicAddTorqueAtStart.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\Pendulum.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\GameObjectDieAfter.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\Launcher.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\ParticleAttraction.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\_Interactions_Scripts\Crate_Open_Close.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\RoverSuspension.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\RoverControler_A.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\LedFlash.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\_Infinity_Exemple_Scripts\Infinity_Example_Keys_01.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\AnimateSpriteSheet.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\DoorDoubleRotate.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\RoverPilotHead.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\_3D Scifi Kit Vol 3\Prefabs\Fx\Laser\_Scripts\LauncherLookAt.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\PhysicAddForce.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\Uween\CreepyCatTest.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\RoverAudio.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\_Interactions_Scripts\Container_Open_Close.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\_Infinity_Exemple_Scripts\Infinity_SwitchEngine_01.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\_Interactions_Scripts\Container_Example_Keys_01.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\_3D Scifi Kit Vol 3\Prefabs\Fx\Laser\_Scripts\LaserLight.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\ScrollTexture.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
@@ -678,6 +714,7 @@
     <None Include="Assets\Resources\Shaders\AshShader_C01.shader" />
     <None Include="Assets\AmplifyOcclusion\Resources\Apply.shader" />
     <None Include="Assets\Resources\Data\ECS_EntityArchetypes\ECSArchetypeRegistry.xml" />
+    <None Include="Assets\Plastic External Assets\_Creepy_Cat\_3D Scifi Kit Vol 3\RELEASES - WORKLOG.txt" />
     <None Include="Assets\Resources\Shaders\AshShader_A02.shader" />
     <None Include="Assets\ProTips\Tooltip Prefabs\Fonts\Incosolata\OFL.txt" />
     <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\COPYING.LESSER.txt" />
@@ -688,11 +725,14 @@
     <None Include="Assets\Resources\Data\TypeFloor.xml" />
     <None Include="Assets\AmplifyOcclusion\Resources\BlurFunctions.cginc" />
     <None Include="Assets\Resources\Data\Production\ZoneOreProbabilities.xml" />
+    <None Include="Assets\Plastic External Assets\_Creepy_Cat\_3D Scifi Kit Vol 3\Shaders\Hologram.shader" />
     <None Include="Assets\Allegorithmic\Plugins\Substance.Game.dll" />
     <None Include="Assets\Archimatix\Scripts\AXChangeLog.txt" />
     <None Include="Assets\Packages\System.Drawing.Common.5.0.2\useSharedDesignerContext.txt" />
     <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\COPYING.txt" />
     <None Include="Assets\ProTips\Tooltip Prefabs\Fonts\Arimo\GoogleArimo.txt" />
+    <None Include="Assets\Plastic External Assets\_Creepy_Cat\_3D Scifi Kit Vol 3\Shaders\GlassBumpDistort.shader" />
+    <None Include="Assets\Plastic External Assets\_Creepy_Cat\_3D Scifi Kit Vol 3\Prefabs\Props\_Update 1.06-Station Ptolemy\_Planet_01\Materials\Planet_Base.shader" />
     <None Include="Assets\EffectExamples\Magic Effects\Shaders\Ice.shader" />
     <None Include="Assets\Resources\Models\Tiles\Dev\floors\dev_floor\dev_floor.xml" />
     <None Include="Assets\AmplifyOcclusion\Readme.txt" />
@@ -712,11 +752,13 @@
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF.shader" />
     <None Include="Assets\Resources\Data\Production\QualityZone5.xml" />
     <None Include="Assets\Resources\Shaders\DevPlantShader.shader" />
+    <None Include="Assets\Plastic External Assets\_Creepy_Cat\_3D Scifi Kit Vol 3\Shaders\GlassDirty.shader" />
     <None Include="Assets\Allegorithmic\Plugins\substance_sse2_blend.dll" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\Resources\Models\Crops\Crops_Database.xml" />
     <None Include="Assets\AmplifyOcclusion\Resources\GTAO.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
+    <None Include="Assets\Plastic External Assets\_Creepy_Cat\_3D Scifi Kit Vol 3\Shaders\GlassClean.shader" />
     <None Include="Assets\Resources\Data\Production\QualityZone7.xml" />
     <None Include="Assets\Impact Interaction System\Demo\Materials\_Shaders\ProjectorAlphaBlended.shader" />
     <None Include="Assets\AmplifyOcclusion\Resources\TemporalFilter.cginc" />
@@ -731,6 +773,7 @@
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
     <None Include="Assets\Archimatix\README.txt" />
     <None Include="Assets\Resources\Data\Production\QualityZone1.xml" />
+    <None Include="Assets\Plastic External Assets\_Creepy_Cat\_3D Scifi Kit Vol 3\IMPORTANT-README.txt" />
     <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\LICENSE.txt" />
     <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\README.txt" />
     <None Include="Assets\Scar\Stand\Standard_Two_Sided .shader" />
@@ -754,11 +797,14 @@
     <None Include="Assets\Archimatix\Scripts\AXChangeLog Archive.txt" />
     <None Include="Assets\Resources\Data\Production\QualityZone4.xml" />
     <None Include="Assets\Impact Interaction System\Documentation\Version.txt" />
+    <None Include="Assets\Plastic External Assets\_Creepy_Cat\_3D Scifi Kit Vol 3\Prefabs\Fx\Explosion\Shaders\SurfaceShader_VC.shader" />
     <None Include="Assets\Resources\Data\Production\QualityZone2.xml" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
     <None Include="Assets\Sci-Fi Styled Modular Pack\Readme.txt" />
     <None Include="Assets\Archimatix\Library\ColorsPro.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile.shader" />
+    <None Include="Assets\Plastic External Assets\_Creepy_Cat\_3D Scifi Kit Vol 3\Prefabs\Props\_Update 1.06-Station Ptolemy\_Planet_01\Materials\Planet_Clouds_Atmosphere.shader" />
+    <None Include="Assets\Plastic External Assets\_Creepy_Cat\_3D Scifi Kit Vol 3\Prefabs\Props\_Update 1.06-Station Ptolemy\_Planet_01\Licence.txt" />
     <None Include="Assets\Resources\Shaders\Water_Basic.shader" />
     <None Include="Assets\AmplifyOcclusion\Resources\ApplyPostEffect.cginc" />
     <None Include="Assets\AmplifyOcclusion\Resources\Common.cginc" />
@@ -993,13 +1039,13 @@
       <HintPath>C:\Program Files\2020.3.22f1\Editor\Data\Managed\UnityEngine\UnityEditor.UnityConnectModule.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Collections.LowLevel.ILSupport">
-      <HintPath>Library\PackageCache\com.unity.collections@1.0.0-pre.6\Unity.Collections.LowLevel.ILSupport\Unity.Collections.LowLevel.ILSupport.dll</HintPath>
+      <HintPath>Library\PackageCache\com.unity.collections@0.15.0-preview.21\Unity.Collections.LowLevel.ILSupport\Unity.Collections.LowLevel.ILSupport.dll</HintPath>
     </Reference>
     <Reference Include="Photon3Unity3D">
       <HintPath>Library\PackageCache\com.mlapi.contrib.transport.photon-realtime@e47ee18972\Runtime\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst.Cecil.Pdb">
-      <HintPath>Library\PackageCache\com.unity.burst@1.6.2\Unity.Burst.CodeGen\Unity.Burst.Cecil.Pdb.dll</HintPath>
+      <HintPath>Library\PackageCache\com.unity.burst@1.5.6\Unity.Burst.CodeGen\Unity.Burst.Cecil.Pdb.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>Library\PackageCache\com.unity.nuget.newtonsoft-json@2.0.0\Runtime\Newtonsoft.Json.dll</HintPath>
@@ -1011,16 +1057,16 @@
       <HintPath>Library\PackageCache\com.mlapi.contrib.transport.photon-realtime@e47ee18972\Runtime\Photon\PhotonLibs\WebSocket\websocket-sharp.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst.Unsafe">
-      <HintPath>Library\PackageCache\com.unity.burst@1.6.2\Unity.Burst.Unsafe.dll</HintPath>
+      <HintPath>Library\PackageCache\com.unity.burst@1.5.6\Unity.Burst.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst.Cecil.Mdb">
-      <HintPath>Library\PackageCache\com.unity.burst@1.6.2\Unity.Burst.CodeGen\Unity.Burst.Cecil.Mdb.dll</HintPath>
+      <HintPath>Library\PackageCache\com.unity.burst@1.5.6\Unity.Burst.CodeGen\Unity.Burst.Cecil.Mdb.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst.Cecil">
-      <HintPath>Library\PackageCache\com.unity.burst@1.6.2\Unity.Burst.CodeGen\Unity.Burst.Cecil.dll</HintPath>
+      <HintPath>Library\PackageCache\com.unity.burst@1.5.6\Unity.Burst.CodeGen\Unity.Burst.Cecil.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst.Cecil.Rocks">
-      <HintPath>Library\PackageCache\com.unity.burst@1.6.2\Unity.Burst.CodeGen\Unity.Burst.Cecil.Rocks.dll</HintPath>
+      <HintPath>Library\PackageCache\com.unity.burst@1.5.6\Unity.Burst.CodeGen\Unity.Burst.Cecil.Rocks.dll</HintPath>
     </Reference>
     <Reference Include="Substance.Game">
       <HintPath>Assets\Allegorithmic\Plugins\Substance.Game.dll</HintPath>
@@ -1571,6 +1617,10 @@
     <ProjectReference Include="AmplifyShaderEditor.Samples.BuiltIn.csproj">
       <Project>{F26C164E-900A-11A5-FC14-B9936BCB66A6}</Project>
       <Name>AmplifyShaderEditor.Samples.BuiltIn</Name>
+    </ProjectReference>
+    <ProjectReference Include="Uween.Runtime.csproj">
+      <Project>{3EDD4D74-26EB-4F77-D485-666973F3D45E}</Project>
+      <Name>Uween.Runtime</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

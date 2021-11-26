@@ -60,7 +60,7 @@ public class InventoryUI : MonoBehaviour
         //get inventory
         List<ItemStack> inventory = container.GetComponent<IPlayer_Inventory>().GetPlayerInventory();
         //sort inventory
-        Debug.Log("Sorting Inventory");
+        Debug.Log("Sorting Inventory");//[DISABLED] 
         MethodInfo info = inventory[0].GetType().GetMethod("GetStackCategory");
         Utils.InsertionSort<int>(ref inventory, info,true);
         Category cat;
@@ -114,7 +114,6 @@ public class InventoryUI : MonoBehaviour
                 fbb.UI = this;
             }
         }
-        //Utils.CategorySort(ref fbibs);
     }
 
     /// Bind methods to buttons
@@ -259,14 +258,16 @@ public class InventoryUI : MonoBehaviour
         {
             cb = button.colors;
             cb.normalColor = enabledColor;
-            //cb.highlightedColor = disabledColor;
+            cb.highlightedColor = enabledColor;
+            cb.selectedColor = enabledColor;
             button.colors = cb;
         }
         else
         {
             cb = button.colors;
             cb.normalColor = disabledColor;
-            //cb.highlightedColor = enabledColor;
+            cb.highlightedColor = disabledColor;
+            cb.selectedColor = disabledColor;
             button.colors = cb;
         }
     }

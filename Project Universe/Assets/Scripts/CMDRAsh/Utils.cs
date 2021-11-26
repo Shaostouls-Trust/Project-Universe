@@ -44,19 +44,5 @@ namespace ProjectUniverse.Util
 				list[position] = tempStack;
 			}
 		}
-
-		/// <summary>
-		/// Sort Itemstacks by category in inventory displays
-		/// </summary>
-		public static void CategorySort(ref List<GameObject> fbibs)
-		{
-			//FleetBoyItemButton fbib;
-			for (int outer = 1; outer < fbibs.Count; outer++)
-			{
-				int position = outer;
-				FleetBoyItemButton tempButton = fbibs[outer].GetComponent<FleetBoyItemButton>();
-				//tempButton.ItemCategory
-			}
-		}
     }
 }

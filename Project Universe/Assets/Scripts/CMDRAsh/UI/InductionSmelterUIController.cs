@@ -273,21 +273,16 @@ namespace ProjectUniverse.UI
 
         public void UpdateProductionPanel()
         {
-            if (suppliedOres.Count != 0 && suppliedOres[0] != null)
+            if (suppliedOres.Count != 0 && suppliedOres[0].GetRealLength() >= 1)
             {
                 InsertedOreName.text = suppliedOres[0].GetStackType().Split('_')[1] + " Ore";
                 InsertedOreCount.text = "" + suppliedOres[0].GetRealLength();
-                //
             }
             else
             {
                 InsertedOreName.text = "<Add Ore From Right>";
                 InsertedOreCount.text = "0";
-
-                if (suppliedOres[0].GetRealLength() == 0)
-                {
-                    suppliedOres.Clear();
-                }
+                suppliedOres.Clear();
 
                 //Debug.Log(suppliedOres.Count);
                 if (suppliedOres.Count == 0)
@@ -340,12 +335,17 @@ namespace ProjectUniverse.UI
                     //filter out anything that isn't delimed with a '_'
                     if(transfererinventory[j].GetStackType().Split('_').Length >= 2)
                     {
-                        if (transfererinventory[j].GetStackType().Split('_')[1]
-                        == OreInsertionButtons[k].transform.GetChild(1).GetChild(0).GetComponent<TMP_Text>().text.Split(' ')[0])
+                        if (transfererinventory[j].GetStackType().Split('_')[0] == "Ore")
                         {
-                            OreInsertionButtons[k].transform.GetChild(2).GetComponent<TMP_Text>().text
-                                = "" + transfererinventory[j].GetRealLength();
+                            if (transfererinventory[j].GetStackType().Split('_')[1]
+                            == OreInsertionButtons[k].transform.GetChild(1).GetChild(0).GetComponent<TMP_Text>().text.Split(' ')[0])
+                            {
+
+                                OreInsertionButtons[k].transform.GetChild(2).GetComponent<TMP_Text>().text
+                                    = "" + transfererinventory[j].GetRealLength();
+                            }
                         }
+                        
                     }
                 }
             }

@@ -32,7 +32,7 @@ namespace ProjectUniverse.Environment.Volumes
             roomVolume = (gameObject.GetComponent<BoxCollider>().size.x *
                 gameObject.GetComponent<BoxCollider>().size.y *
                 gameObject.GetComponent<BoxCollider>().size.z);
-            //roomGases.Add(new IGas("Oxygen", 70, roomVolume, 1.0f, roomVolume));
+            roomGases.Add(new IGas("Oxygen", 70, roomVolume, 1.0f, roomVolume));
         }
 
         public float Temperature
@@ -604,10 +604,10 @@ namespace ProjectUniverse.Environment.Volumes
                 fluidConc += roomFluids[i].GetConcentration();
                 //Debug.Log(roomFluids[i].GetConcentration() + "/" + roomVolume);
                 float translatedFill = volumeRatio * gameObject.GetComponent<BoxCollider>().size.y;
-                roomFluidPlanes[0].transform.position = new Vector3(
-                    roomFluidPlanes[0].transform.position.x,
+                roomFluidPlanes[0].transform.localPosition = new Vector3(
+                    roomFluidPlanes[0].transform.localPosition.x,
                     translatedFill,// + fluidLevel,
-                    roomFluidPlanes[0].transform.position.z);
+                    roomFluidPlanes[0].transform.localPosition.z);
                 //fluidLevel += translatedFill;
             }
             //Debug.Log(fluidConc + "/" + roomVolume);

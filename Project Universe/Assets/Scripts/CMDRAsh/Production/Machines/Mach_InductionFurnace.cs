@@ -173,16 +173,12 @@ namespace ProjectUniverse.Production.Machines
 
                             //false means to Next (NYI)
                         }
-                        smelter.UpdateProductionPanel();
-                        smelter.UpdateAvailableOres();
-                        smelter.OnIngotsProduced(outputMaterials);
+                        UpdateAll();
                         //Debug.Log("Materials left: "+inputMaterials[0]);
                     }
                     if (inputMaterials.Count == 0 && availableToProcess <= 0)
                     {
-                        smelter.UpdateProductionPanel();
-                        smelter.UpdateAvailableOres();
-                        smelter.OnIngotsProduced(outputMaterials);
+                        UpdateAll();
                         Debug.Log("STOPPING");
                         Stop = true;
                         //When all ore is processed, stop the update coroutine.
@@ -199,6 +195,24 @@ namespace ProjectUniverse.Production.Machines
                 yield return null;
             }
             //Debug.Log("Termino");
+        }
+
+        public void UpdateAll()
+        {
+            InductionSmelterUIController smelter = SmelterUI.GetComponent<InductionSmelterUIController>();
+            smelter.UpdateProductionPanel();
+            smelter.UpdateAvailableOres();
+            smelter.OnIngotsProduced(outputMaterials);
+            //update producedItemCount
+            if(OutputMaterials.Count > 0)
+            {
+                smelter.ProducedIngotCount.text = ""+OutputMaterials.Count;
+            }
+            else
+            {
+                smelter.ProducedIngotCount.text = "0";
+                smelter.ProducedIngotName.text = "... Ingot";
+            }
         }
 
         public void ExternalInteractFunc()
@@ -257,19 +271,16 @@ namespace ProjectUniverse.Production.Machines
                     }
                 }
             }
-            InductionSmelterUIController smelter = SmelterUI.GetComponent<InductionSmelterUIController>();
-            smelter.UpdateProductionPanel();
-            smelter.UpdateAvailableOres();
-            smelter.OnIngotsProduced(OutputMaterials);
+            UpdateAll();
         }
 
         public void TransferInventoryToPlayer()
         {
             if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
             {
-                Debug.Log("TTP");
+                //Debug.Log("TTP");
                 IPlayer_Inventory inv = networkedClient.PlayerObject.gameObject.GetComponent<IPlayer_Inventory>();
-                Debug.Log(Inventory.GetInventory().Count);
+                //Debug.Log(Inventory.GetInventory().Count);
                 for (int i = Inventory.GetInventory().Count - 1; i >= 0; i--)
                 {
                     if(Inventory.GetInventory()[i] != null)
@@ -279,10 +290,7 @@ namespace ProjectUniverse.Production.Machines
                     }
                 }
             }
-            InductionSmelterUIController smelter = SmelterUI.GetComponent<InductionSmelterUIController>();
-            smelter.UpdateProductionPanel();
-            smelter.UpdateAvailableOres();
-            smelter.OnIngotsProduced(OutputMaterials);
+            UpdateAll();
         }
 
         public void BouncedMessageReceiver(params object[] data)

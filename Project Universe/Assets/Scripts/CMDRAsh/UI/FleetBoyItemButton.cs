@@ -22,7 +22,7 @@ public class FleetBoyItemButton : MonoBehaviour, IDeselectHandler
     [SerializeField] private TMP_Text descTxt;
     [SerializeField] private TMP_Text statTxt;
     [SerializeField] private InventoryUI ui;
-    [SerializeField] private ItemStack stack;
+    private ItemStack stack;
 
     //all inventory items have actions that can be performed while item is selected
     //use (E)

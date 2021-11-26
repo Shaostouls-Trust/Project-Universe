@@ -114,6 +114,21 @@ namespace ProjectUniverse.Items
             ItemStack stack = inventory[index];
             inventory.RemoveAt(index);
             //UpdateRBMass();
+            //sanity check
+            for(int i = inventory.Count-1; i >= 0; i--)
+            {
+                if(inventory[i] != null)
+                {
+                    if (inventory[i].GetRealLength() == 0)
+                    {
+                        inventory.RemoveAt(i);
+                    }
+                }
+                else
+                {
+                    inventory.RemoveAt(i);
+                }
+            }
             return stack;
         }
 
