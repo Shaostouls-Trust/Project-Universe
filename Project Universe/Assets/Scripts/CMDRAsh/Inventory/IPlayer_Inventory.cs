@@ -32,7 +32,7 @@ namespace ProjectUniverse.Player
         private Rigidbody playerRigidbody;
         public float inventoryWeight;
         private List<ItemStack> p_inventory = new List<ItemStack>();
-        [SerializeField] private PlayerInventoryUIController inventoryUI;
+        [SerializeField] private InventoryUIController inventoryUI;
 
         void Start()
         {
@@ -117,18 +117,25 @@ namespace ProjectUniverse.Player
             }
         }
         */
-        public PlayerInventoryUIController GetPlayerInventoryUI()
+        //public PlayerInventoryUIController GetPlayerInventoryUI()
+        //{
+        //    return inventoryUI;
+        //}
+        public InventoryUIController InventoryUI
         {
-            return inventoryUI;
+            get { return inventoryUI; }
+            set { inventoryUI = value; }
         }
 
         public List<ItemStack> GetPlayerInventory()
         {
             return p_inventory;
         }
-        public bool RemoveFromPlayerInventory(ItemStack item)
+        public ItemStack RemoveFromPlayerInventory(ItemStack item)
         {
-            return p_inventory.Remove(item);
+            ItemStack rtn = item;
+            p_inventory.Remove(item);
+            return rtn;
         }
         public ItemStack RemoveFromPlayerInventory(int atIndex)
         {

@@ -11,16 +11,18 @@ using ProjectUniverse.Util;
 using static ProjectUniverse.Base.ItemStack;
 using UnityEngine.UI;
 using System.Reflection;
+using ProjectUniverse.Items.Containers;
+using ProjectUniverse.UI;
 
 public class InventoryUI : MonoBehaviour
 {
     [SerializeField] private GameObject itemparent;
     [SerializeField] private GameObject itembuttonpref;
-    [SerializeField] private GameObject container;
+    [SerializeField] private CargoContainer container;//non-player1 inventory
     [SerializeField] private List<GameObject> fbibs = new List<GameObject>();
     [SerializeField] private TMP_Text description;
     [SerializeField] private TMP_Text statistics;
-    [SerializeField] private IPlayer_Inventory inventory;
+    [SerializeField] private IPlayer_Inventory playerInventory;
     [SerializeField] private Button wepButton;
     [SerializeField] private Button gadButton;
     [SerializeField] private Button gearButton;
@@ -37,6 +39,8 @@ public class InventoryUI : MonoBehaviour
     private bool showAmmo = true;
     private bool showRss = true;
     private bool showMisc = true;
+    private bool transfermode = false;
+    private InventoryUIController invUICont;
 
     private FleetBoyItemButton selectedButton;
 
@@ -44,6 +48,12 @@ public class InventoryUI : MonoBehaviour
     {
         get { return selectedButton; }
         set { selectedButton = value; }
+    }
+
+    public bool TransferMode
+    {
+        get { return transfermode; }
+        set { transfermode = value; }
     }
 
     /// <summary>
@@ -58,11 +68,22 @@ public class InventoryUI : MonoBehaviour
         }
         fbibs = new List<GameObject>();
         //get inventory
-        List<ItemStack> inventory = container.GetComponent<IPlayer_Inventory>().GetPlayerInventory();
+        List<ItemStack> inventory;
+        if (playerInventory != null)
+        {
+            inventory = playerInventory.GetPlayerInventory();
+        }
+        else
+        {
+            inventory = container.GetInventory();
+        }
         //sort inventory
-        Debug.Log("Sorting Inventory");//[DISABLED] 
-        MethodInfo info = inventory[0].GetType().GetMethod("GetStackCategory");
-        Utils.InsertionSort<int>(ref inventory, info,true);
+        //Debug.Log("Sorting Inventory");//[DISABLED] 
+        if(inventory.Count > 0)
+        {
+            MethodInfo info = inventory[0].GetType().GetMethod("GetStackCategory");
+            Utils.InsertionSort<int>(ref inventory, info, true);
+        }
         Category cat;
         for (int t = 0; t < inventory.Count; t++)
         {
@@ -187,8 +208,16 @@ public class InventoryUI : MonoBehaviour
                     //Spawn the item in worldspace and pass parameters to it.
                     GameObject oreworldspace = Instantiate(obj, position, Quaternion.identity);
                     //drop item. 
-                    ItemStack stk = inventory.RemoveFromPlayerInventory<Consumable_Ore>(selectedButton.SelectedStack,
+                    ItemStack stk;
+                    if (playerInventory != null)
+                    {
+                        stk = playerInventory.RemoveFromPlayerInventory<Consumable_Ore>(selectedButton.SelectedStack,
                         (selectedButton.SelectedStack.LastIndex - 1));
+                    }
+                    else
+                    {
+                        stk = container.RemoveFromInventory<Consumable_Ore>(selectedButton.SelectedStack,(selectedButton.SelectedStack.LastIndex - 1));
+                    }
                     Debug.Log(stk);
                     if(oreworldspace != null && stk != null)
                     {
@@ -207,8 +236,16 @@ public class InventoryUI : MonoBehaviour
                     //Spawn the item in worldspace and pass parameters to it.
                     GameObject ingotworldspace = Instantiate(obj, position, Quaternion.identity);
                     //drop item. 
-                    ItemStack stk = inventory.RemoveFromPlayerInventory<Consumable_Ingot>(selectedButton.SelectedStack,
+                    ItemStack stk;
+                    if (playerInventory != null)
+                    {
+                        stk = playerInventory.RemoveFromPlayerInventory<Consumable_Ingot>(selectedButton.SelectedStack,
                         (selectedButton.SelectedStack.LastIndex - 1));
+                    }
+                    else
+                    {
+                        stk = container.RemoveFromInventory<Consumable_Ore>(selectedButton.SelectedStack, (selectedButton.SelectedStack.LastIndex - 1));
+                    }
                     if (ingotworldspace != null && stk != null)
                     {
                         ingotworldspace.GetComponent<Consumable_Ingot>().RegenerateIngot(stk.GetItemArray().GetValue(0) as Consumable_Ingot);
@@ -218,8 +255,36 @@ public class InventoryUI : MonoBehaviour
                 //refresh the inventory UI
                 RefreshInventoryScreen();
             }
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                if (TransferMode)
+                {
+                    //transfer to other inventory
+                    if(InventoryUIControllerExt != null)
+                    {
+                        if (playerInventory != null)
+                        {
+                            InventoryUIControllerExt.TransferToContainer(selectedButton.SelectedStack);
+                            
+                        }
+                        else
+                        {
+                            InventoryUIControllerExt.TransferToPlayer(selectedButton.SelectedStack);
+                            
+                        }
+                        selectedButton.Count -= selectedButton.SelectedStack.GetRealLength();
+                        InventoryUIControllerExt.UpdateDisplay();
+                    }
+                }
+            }
         }
         
+    }
+
+    public InventoryUIController InventoryUIControllerExt
+    {
+        get { return invUICont; }
+        set { invUICont = value; }
     }
 
     /// <summary>
@@ -228,7 +293,16 @@ public class InventoryUI : MonoBehaviour
     public void RefreshInventoryScreen()
     {
         //get inventory
-        List<ItemStack> inventory = container.GetComponent<IPlayer_Inventory>().GetPlayerInventory();
+        //List<ItemStack> inventory = container.GetComponent<IPlayer_Inventory>().GetPlayerInventory();
+        List<ItemStack> inventory;
+        if (playerInventory != null)
+        {
+            inventory = playerInventory.GetPlayerInventory();
+        }
+        else
+        {
+            inventory = container.GetInventory();
+        }
         FleetBoyItemButton fbib;
         if (inventory.Count == 0)
         {
@@ -450,6 +524,11 @@ public class InventoryUI : MonoBehaviour
                 break;
         }
         return false;
+    }
+
+    public void SetContainer(CargoContainer cont)
+    {
+        container = cont;
     }
 
     /// <summary>

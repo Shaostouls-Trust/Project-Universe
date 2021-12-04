@@ -13,60 +13,33 @@ namespace ProjectUniverse.UI
     public class CargoUIController : MonoBehaviour
     {
         [SerializeField] private CargoContainer container;
-        public int maxItemsPerCol;
-        //public Canvas cargoui;
-        //3 panels of 8 slots each
-        public GridLayoutGroup grid;
-        public GameObject itemlabelprefab;
-        public TMP_Text contName;
-
-
-        // Start is called before the first frame update
-        void Start()
-        {
-            contName.text = container.transform.gameObject.name;
-            UpdateDisplay(container.GetInventory());
-        }
-
-        public void ChangeContainerName(string name)
-        {
-            contName.text = name;
-        }
-        public string GetContainerName()
-        {
-            return contName.text;
-        }
+        [SerializeField] private GameObject itembuttonpref;
+        [SerializeField] private GameObject buttonParent;
+        private List<GameObject> buttons = new List<GameObject>();
 
         public void UpdateDisplay(List<ItemStack> cargo)
         {
-            for (int i = 0; i < grid.transform.childCount; i++)
-            {
-                GameObject.Destroy(grid.transform.GetChild(i).transform.gameObject);
-            }
-            foreach (ItemStack stack in cargo)
-            {
-                GameObject instanceLabel = (GameObject)Instantiate(itemlabelprefab);
-                instanceLabel.transform.SetParent(grid.transform);
-                instanceLabel.transform.localScale = new Vector3(1, 1, 1);
-                instanceLabel.transform.localPosition = new Vector3(0, 0, 0);
-                instanceLabel.transform.localRotation = Quaternion.Euler(0, 0, 0);
 
-                //change icon and text
-                instanceLabel.transform.GetChild(0).GetComponent<TMP_Text>().text = stack.GetStackType();
-                //instanceLabel.transform.GetChild(1).GetComponent<Image>().sprite = stack.GetSprite2D(); NYI
-                instanceLabel.transform.GetChild(2).GetComponent<TMP_Text>().text = "x" + stack.Size();
-                //Debug.Log("Creating ui item: "+stack.ToString());
-                try
+            for (int i = buttonParent.transform.childCount - 1; i >= 0; i--)
+            {
+                Destroy(buttonParent.transform.GetChild(i).gameObject);
+            }
+            for (int i = 0;i<=cargo.Count-1;i++)
+            {
+                if(i > 9)
                 {
-                    string path = "UI/Sprites/Inventory/" + "Icon_" + stack.GetStackType();
-                    Sprite nIcon = Resources.Load<Sprite>(path);
-                    instanceLabel.transform.GetChild(1).GetComponent<Image>().sprite = nIcon;
+                    break;
                 }
-                catch (Exception)
+                if(cargo[i] != null)
                 {
-                    string path = "UI/Sprites/Inventory/" + "Icon_" + stack.GetOriginalType();
-                    Sprite nIcon = Resources.Load<Sprite>(path);
-                    instanceLabel.transform.GetChild(1).GetComponent<Image>().sprite = nIcon;
+                    GameObject instanceButton = Instantiate(itembuttonpref, buttonParent.transform);
+                    FleetBoyItemButton fbb = instanceButton.GetComponent<FleetBoyItemButton>();
+                    buttons.Add(instanceButton);
+                    //Debug.Log(cargo[i]);
+                    string[] name = cargo[i].GetStackType().Split('_');
+                    fbb.ItemName = name[1] + " " + name[0];
+                    fbb.Count = cargo[i].GetRealLength();
+                    instanceButton.GetComponent<Button>().interactable = false;
                 }
             }
         }

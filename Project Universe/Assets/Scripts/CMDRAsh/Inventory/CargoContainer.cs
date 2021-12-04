@@ -5,6 +5,7 @@ using ProjectUniverse.Base;
 using ProjectUniverse.Player;
 using ProjectUniverse.Production.Resources;
 using ProjectUniverse.UI;
+using MLAPI;
 
 namespace ProjectUniverse.Items.Containers
 {
@@ -14,7 +15,7 @@ namespace ProjectUniverse.Items.Containers
         [SerializeField] private int volume;
         private List<ItemStack> inventory = new List<ItemStack>();
         [SerializeField] private CargoUIController cargoui;
-        [SerializeField] private InventoryUIController invUI;
+        //[SerializeField] private InventoryUIController invUI;
         private Rigidbody cargoRbd;
         private float OrdMass;
 
@@ -32,18 +33,8 @@ namespace ProjectUniverse.Items.Containers
                 devIngotStack.AddItem(ingot);
                 i += 1;
             }
-            //Add 10 times
-            inventory.Add(devIngotStack);
-            inventory.Add(devIngotStack);
-            //inventory.Add(devIngotStack);
-            //inventory.Add(devIngotStack);
-            //inventory.Add(devIngotStack);
-            //inventory.Add(devIngotStack);
-            //inventory.Add(devIngotStack);
-            //inventory.Add(devIngotStack);
-            //inventory.Add(devIngotStack);
-            //inventory.Add(devIngotStack);
-
+            AddToInventory(devIngotStack);
+            //AddToInventory(devIngotStack);
             cargoui.UpdateDisplay(inventory);
             UpdateRBMass();
         }
@@ -83,16 +74,24 @@ namespace ProjectUniverse.Items.Containers
 
         public void ExternalInteractFunc()
         {
-            invUI.SetCargoContainer(this);
-            invUI.SetContName(this.gameObject.name);
-            invUI.UpdateDisplay();
+            //connect to player transfer ui
+            if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
+            {
+                InventoryUIController invui = networkedClient.PlayerObject.gameObject.GetComponent<IPlayer_Inventory>().InventoryUI;
+                invui.gameObject.SetActive(true);
+                invui.LockScreenAndFreeCursor();
+                invui.SetCargoContainer(this);
+                invui.SetContName("Storage Crate");
+                invui.SetPlayerName("Player");
+                invui.ReloadDisplay();
+            }
         }
 
         public void DisplayInventory()
         {
-            invUI.SetCargoContainer(this);
-            invUI.SetContName(this.gameObject.name);
-            invUI.UpdateDisplay();
+            //invUI.SetCargoContainer(this);
+            //invUI.SetContName(this.gameObject.name);
+            //invUI.UpdateDisplay();
             //InventoriesSelector.transform.gameObject.SetActive(true);
             //InventoriesSelector.GetComponent<InventorySelectAndTransfer>().SetCargoContainer(this);
             //InventoriesSelector.GetComponent<InventorySelectAndTransfer>().SetPlayerInventory();
@@ -100,16 +99,37 @@ namespace ProjectUniverse.Items.Containers
             //InventoriesSelector.GetComponent<InventorySelectAndTransfer>().SelectContainerInventory();
         }
 
-        public InventoryUIController GetInventoryUI()
+        /// <summary>
+        /// Find and remove any empty or null indexes in Index
+        /// </summary>
+        public void SanityCheck()
         {
-            return invUI;
+            for (int i = 0; i < inventory.Count; i++)
+            { 
+                if(inventory[i] == null)
+                {
+                    inventory.RemoveAt(i);
+                }
+                else
+                {
+                    if(inventory[i].GetRealLength() <= 0)
+                    {
+                        inventory.RemoveAt(i);
+                    }
+                }
+            }
         }
+
+        //public InventoryUIController GetInventoryUI()
+        //{
+            //return invUI;
+        //}
 
         public void InputFromPlayer(GameObject player)
         {
             IPlayer_Inventory playerInventory = player.GetComponent<IPlayer_Inventory>();
             inventory.Add(playerInventory.RemoveFromPlayerInventory(0));
-            cargoui.UpdateDisplay(inventory);
+            //cargoui.UpdateDisplay(inventory);
         }
 
         public int GetMaxWeight()
@@ -134,6 +154,7 @@ namespace ProjectUniverse.Items.Containers
 
         public bool AddToInventory(ItemStack stack)
         {
+            SanityCheck();
             //if(cargoRbd.mass > maxWeight)
             //{
             for (int i = 0; i < inventory.Count; i++)
@@ -142,7 +163,10 @@ namespace ProjectUniverse.Items.Containers
                 {
                     Debug.Log("Added to cont inventory");
                     ItemStack slaanesh = inventory[i].AddItemStack(stack);
-                    inventory.Add(slaanesh);
+                    if(slaanesh != null && slaanesh.GetRealLength() > 0)
+                    {
+                        inventory.Add(slaanesh);
+                    }
                     return true;
                 }
             }
@@ -155,7 +179,6 @@ namespace ProjectUniverse.Items.Containers
 
         public bool RemoveFromInventory(ItemStack stack, out ItemStack returnstack)
         {
-            //Debug.Log("RemoveFromInv, before for loop");
             for (int i = 0; i < inventory.Count; i++)
             {
                 //only run once, otherwise all things get cleared?
@@ -163,10 +186,6 @@ namespace ProjectUniverse.Items.Containers
                 if (inventory[i] == stack)
                 {
                     returnstack = inventory[i];
-                    //inventory[i].RemoveItemData(stack.Size());
-                    //Debug.Log("returnstack:"+returnstack.ToString());
-                    //returnstack = stack;
-                    //Debug.Log("RemoveData: " + inventory[i]);
                     Debug.Log("RemoveAt: " + i);
                     inventory.RemoveAt(i);
                     return true;
@@ -192,6 +211,31 @@ namespace ProjectUniverse.Items.Containers
             Debug.LogError("Attempted removal of non-existant item! \n" + "" + stack.ToString());
             returnstack = null;
             return false;
+        }
+        public ItemStack RemoveFromInventory<stacktype>(ItemStack removeFromStack, int atIndex)
+        {
+            int stackIndex = -1;
+            for (int i = 0; i < inventory.Count; i++)
+            {
+                if (inventory[i] == removeFromStack)
+                {
+                    stackIndex = i;
+                }
+            }
+            if (stackIndex != -1)
+            {
+                Debug.Log("Removing: " + inventory[stackIndex].GetItemArray().GetValue(atIndex));
+                inventory[stackIndex].RemoveTArrayIndex<stacktype>(atIndex, out ItemStack stack);
+                if (inventory[stackIndex].GetRealLength() <= 0f)
+                {
+                    inventory.RemoveAt(stackIndex);
+                }
+                return stack;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }
