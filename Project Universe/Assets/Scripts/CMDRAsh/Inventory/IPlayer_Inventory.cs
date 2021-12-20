@@ -102,21 +102,6 @@ namespace ProjectUniverse.Player
             Debug.Log("Start Length: " + p_inventory.Count);
         }
 
-        /*
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.I))
-            {
-                inventoryUI.ToggleDisplay();
-                //Debug.Log("Length: " + p_inventory.Count);
-                foreach(ItemStack itemstack in p_inventory)
-                {
-                    Debug.Log(itemstack.ToString());
-                }
-                inventoryUI.UpdateDisplay();
-            }
-        }
-        */
         //public PlayerInventoryUIController GetPlayerInventoryUI()
         //{
         //    return inventoryUI;

@@ -1,6 +1,7 @@
 using MLAPI;
 using MLAPI.Messaging;
 using MLAPI.NetworkVariable;
+using ProjectUniverse.Player.PlayerController;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace ProjectUniverse.Items.Weapons
 {
     public class IGun_Customizable : NetworkBehaviour//MonoBehaviour
     {
+        private ProjectUniverse.PlayerControls controls;//temp
         [SerializeField] private float Damage = 10f;
         [SerializeField] private float RoundsPerMinute = 180f;
         //[SerializeField] private float Range = 1000f; //Estimate based off of gun and bullet properties, bullets will travel until they hit something
@@ -43,24 +45,44 @@ namespace ProjectUniverse.Items.Weapons
         private float nexttimetofire = 0f;
         private float bulletsRemaining = 25f;
 
+        private void OnEnable()
+        {
+            try
+            {
+                controls.Player.Fire.Enable();
+                controls.Player.Reload.Enable();
+            }
+            catch (System.NullReferenceException)
+            {
+                Debug.Log("Controls not initialized.");
+            }
+            
+        }
+
+        private void OnDisable()
+        {
+            controls.Player.Fire.Disable();
+            controls.Player.Reload.Disable();
+        }
+
         // Start is called before the first frame update
         void Start()
         {
-            CalcFireRate();
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-            if (IsLocalPlayer)
+            if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
             {
-                if (nexttimetofire > 0)
+                controls = networkedClient.PlayerObject.gameObject.GetComponent<SupplementalController>().PlayerController;
+            }
+            else
+            {
+                controls = new ProjectUniverse.PlayerControls();
+            }
+            controls.Player.Fire.Enable();
+            controls.Player.Reload.Enable();
+            CalcFireRate();
+            controls.Player.Fire.performed += ctx =>
+            {
+                if (bulletsRemaining > 0)
                 {
-                    nexttimetofire -= Time.deltaTime;
-                }
-                if (Input.GetKeyDown(KeyCode.Mouse0) && bulletsRemaining > 0)//&& nexttimetofire <= 0f
-                {
-                    //Debug.Log("");
                     //This connected client has tried to shoot (this goes to the server first, then back to this client. Can be optimized)
                     if (FireMode == 0)
                     {
@@ -92,11 +114,23 @@ namespace ProjectUniverse.Items.Weapons
                         //how will this calc burst fire?? Like really??
                         CalcFireRate();
                     }
-                    
                 }
-                if (Input.GetKeyDown(KeyCode.R))
+            };
+
+            controls.Player.Reload.performed += ctx =>
+            {
+                ReloadGun();
+            };
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            if (IsLocalPlayer)
+            {
+                if (nexttimetofire > 0)
                 {
-                    ReloadGun();
+                    nexttimetofire -= Time.deltaTime;
                 }
             }
         }

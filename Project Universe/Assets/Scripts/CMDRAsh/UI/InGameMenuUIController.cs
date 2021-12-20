@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 
 public class InGameMenuUIController : MonoBehaviour
 {
+    private ProjectUniverse.PlayerControls controls;
     [SerializeField] private Canvas menu;
     [SerializeField] private GameObject ConfirmQuitPanel;
     [SerializeField] private GameObject LoadingScreenSplash;
@@ -18,10 +19,19 @@ public class InGameMenuUIController : MonoBehaviour
     private GameObject player;
     private AsyncOperation async;
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
+        {
+            controls = networkedClient.PlayerObject.gameObject.GetComponent<SupplementalController>().PlayerController;
+        }
+        else
+        {
+            controls = new ProjectUniverse.PlayerControls();
+        }
+
+        controls.Player.Escape.Enable();
+        controls.Player.Escape.performed += ctx =>
         {
             if (player == null)
             {
@@ -30,15 +40,15 @@ public class InGameMenuUIController : MonoBehaviour
                     player = networkedClient.PlayerObject.gameObject;
                 }
             }
-            player.GetComponent<PlayerController>().LockAndFreeCursor();
+            player.GetComponent<SupplementalController>().LockAndFreeCursor();
             menu.enabled = true;
-        }
+        };
     }
 
     public void ReturnToGame()
     {
         menu.enabled = false;
-        player.GetComponent<PlayerController>().UnlockCursor();
+        player.GetComponent<SupplementalController>().UnlockCursor();
     }
 
     public void BackToMainMenuBar2()

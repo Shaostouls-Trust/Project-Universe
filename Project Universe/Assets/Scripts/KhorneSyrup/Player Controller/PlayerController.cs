@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace ProjectUniverse.Player.PlayerController
 {
@@ -18,32 +19,7 @@ namespace ProjectUniverse.Player.PlayerController
         //});
         //Begin Input list add to seperate client side script later.
         [Header("Input Manager")]
-        [SerializeField] private string mouseXInputName;
-        [SerializeField] private string mouseYInputName;
-        [SerializeField] private string horizontalInputName;
-        [SerializeField] private string verticalInputName;
-        [SerializeField] private string jumpInputName;
-        [SerializeField] private string crouchInputName;
-        [SerializeField] private string interactInputName;
-        [SerializeField] private string sprintInputName;
-        [SerializeField] private string reloadInputName;
-        [SerializeField] private string attackInputName;
-        [SerializeField] private string secAttackInputName;
-        [SerializeField] private string adsInputName;
-        [SerializeField] private string offHandInputName;
-        [SerializeField] private string flashLightInputName;
         [SerializeField] private float mouseXSensitivity, mouseYSensitivity;
-        //Inventory and other GUI controls
-        [SerializeField] private string lockCursorInputName;
-        [SerializeField] private string openInventoryInputName;
-        [SerializeField] private string openOptionsInputName;
-        [SerializeField] private string openFriendsListInputName;
-        [SerializeField] private string openDataPadInputName;
-        [SerializeField] private string openMapInputName;
-        [SerializeField] private string openRadialMenuInputName;
-        [SerializeField] private string openCharacterMenuInputName;
-        [SerializeField] private string openSkillsManagementMenuInputName;
-        [SerializeField] private string openAbilitiesMenuInputName;
         //Pointer lock and centering
         [SerializeField] int CursorCase = 0;
         [SerializeField] private bool toggleCursorLock = false;
@@ -55,7 +31,7 @@ namespace ProjectUniverse.Player.PlayerController
         [SerializeField] private Transform playerRoot;
         [SerializeField] private CharacterController charController;
         [SerializeField] private Light flashLight;
-        [SerializeField] private PlayerGuiController guiController;
+        //[SerializeField] private PlayerGuiController guiController;
         private int activeFL = 0;
         //Movement Settings
         private float movementSpeed;
@@ -65,6 +41,8 @@ namespace ProjectUniverse.Player.PlayerController
 
         [SerializeField] private float slopeDownForceMult;
         [SerializeField] private float slopeForceRayL;
+
+        [SerializeField] private bool sprinting = false;
 
         //Jump Settings
         [SerializeField] private float jumpForce = 10.0f;
@@ -88,6 +66,8 @@ namespace ProjectUniverse.Player.PlayerController
 
         private NetworkVariableBool netFlashlightState = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
 
+        private ProjectUniverse.PlayerControls controls;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -98,6 +78,7 @@ namespace ProjectUniverse.Player.PlayerController
             {
                 charController = GetComponent<CharacterController>();
                 charController.enabled = true;
+                controls = gameObject.GetComponent<SupplementalController>().PlayerController;
             }
             else
             {
@@ -106,6 +87,100 @@ namespace ProjectUniverse.Player.PlayerController
                 firstPersonCamera.enabled = false;
                 firstPersonCamera.GetComponent<AudioListener>().enabled = false;
             }
+            //controls.Player.Move.Enable(); Broken.
+            controls.Player.Alt.Enable();
+            controls.Player.Sprint.Enable();
+            controls.Player.Flashlight.Enable();
+            //controls.Player.Jump.Enable(); Broken
+            controls.Player.Look.Enable();
+
+            controls.Player.Move.performed += ctx =>
+            {
+                float verticalInput = ctx.ReadValue<Vector2>().y;//Input.GetAxis(verticalInputName);
+                Debug.Log(ctx.ReadValue<Vector2>().y+","+ ctx.ReadValue<Vector2>().x);
+                float horizontalInput = ctx.ReadValue<Vector2>().x;//Input.GetAxis(horizontalInputName);
+
+                Vector3 forwardMovement = playerRoot.transform.forward * verticalInput;
+                Vector3 strafeMovement = playerRoot.transform.right * horizontalInput;
+
+                charController.SimpleMove(Vector3.ClampMagnitude(forwardMovement + strafeMovement, 1.0f) * movementSpeed);
+
+                if ((verticalInput != 0 || horizontalInput != 0) && OnSlope())
+                {
+                    charController.Move(Vector3.down * charController.height / 2 * slopeForceRayL * Time.deltaTime);
+                }
+                //Check if we're under water.
+                if (!isSwimming)
+                {
+                    /*if (!isSwimming && currentJump < maxJump)
+                    {
+                        isJumping = true;
+                        timeInAir = 0.0f;
+                        StartCoroutine(JumpEvent());
+                        currentJump++;
+                    }*/
+                }
+                setMovementSpeed();
+            };
+
+            controls.Player.Alt.performed += ctx =>
+            {
+                Debug.Log("LeftAlt Pressed!");
+                LockCursor();
+                cameraLocked = !cameraLocked;
+            };
+
+            controls.Player.Sprint.performed += ctx =>
+            {
+                sprinting = true;
+            };
+            controls.Player.Sprint.canceled += ctx =>
+            {
+                sprinting = false;
+            };
+
+            controls.Player.Jump.performed += ctx =>
+            {
+                if (!isSwimming && currentJump < maxJump)
+                {
+                    isJumping = true;
+                    timeInAir = 0.0f;
+                    StartCoroutine(JumpEvent());
+                    currentJump++;
+                }
+            };
+
+            controls.Player.Flashlight.performed += ctx =>
+            {
+                FlashLightToggleServerRpc(!flashLight.enabled);
+            };
+
+            controls.Player.Look.performed += ctx =>
+            {
+                if (cameraLocked == false)
+                {
+                    float mouseX = ctx.ReadValue<Vector2>().x * mouseXSensitivity * Time.deltaTime;//Input.GetAxis(mouseXInputName)
+                    float mouseY = ctx.ReadValue<Vector2>().y * mouseYSensitivity * Time.deltaTime;//Input.GetAxis(mouseYInputName)
+
+                    lookClamp += mouseY;
+
+                    if (lookClamp > 90.0f)
+                    {
+                        lookClamp = 90.0f;
+                        mouseY = 90.0f;//shouldn't this be 90.0f not 0.0f?
+                        ClampLookRotationToValue(270.0f);
+                    }
+                    else if (lookClamp < -90.0f)
+                    {
+                        lookClamp = -90.0f;
+                        mouseY = -90.0f;//was 0.0f
+                        ClampLookRotationToValue(90);
+                    }
+
+                    firstPersonCamera.transform.Rotate(Vector3.left * mouseY);
+                    playerRoot.Rotate(Vector3.up * mouseX);
+                }
+            };
         }
 
         public void NetworkListeners()
@@ -177,12 +252,8 @@ namespace ProjectUniverse.Player.PlayerController
 
         private void GuiUpdate()
         {
-            if (Input.GetButtonDown(lockCursorInputName))
-            {
-                Debug.Log("LeftAlt Pressed!");
-                guiController.LockCursor();
-                cameraLocked = !cameraLocked;
-            }
+           
+            /*
             if (Input.GetButtonDown(openInventoryInputName))
             {
                 //guiController.OpenWindow(0);
@@ -195,7 +266,7 @@ namespace ProjectUniverse.Player.PlayerController
             {
                 guiController.OpenWindow(2);
             }
-            else { }
+            else { }*/
         }
 
         private void PlayerControl()
@@ -209,7 +280,7 @@ namespace ProjectUniverse.Player.PlayerController
             Ray ray = firstPersonCamera.ViewportPointToRay(Vector3.one / 3f);
             RaycastHit hit;
             Debug.DrawRay(ray.origin, ray.direction * 3f, Color.red);
-            if (Input.GetButtonDown(interactInputName) && Prop == null)
+           /* if (Input.GetButtonDown(interactInputName) && Prop == null)
             {
                 if (Physics.Raycast(ray, out hit, 2f))
                 {
@@ -245,7 +316,7 @@ namespace ProjectUniverse.Player.PlayerController
             if (Prop != null)
             {
                 Prop.transform.position = ray.GetPoint(2.0f);
-            }
+            }*/
         }
         private void DropProp(int mode)
         {
@@ -267,41 +338,41 @@ namespace ProjectUniverse.Player.PlayerController
         //Control the camera during regular movement.
         private void CameraControl()
         {
-            if (Input.GetButtonDown(lockCursorInputName))
-            {
-                Debug.Log("LeftAlt Pressed!");
-                LockCursor();
-                cameraLocked = !cameraLocked;
+            //if (Input.GetButtonDown(lockCursorInputName))
+            //{
+            //    Debug.Log("LeftAlt Pressed!");
+            //    LockCursor();
+            //    cameraLocked = !cameraLocked;
+            //}
+
+           /* if (cameraLocked == false) { 
+                float mouseX = Input.GetAxis(mouseXInputName) * mouseXSensitivity * Time.deltaTime;
+                float mouseY = Input.GetAxis(mouseYInputName) * mouseYSensitivity * Time.deltaTime;
+
+                lookClamp += mouseY;
+
+                if (lookClamp > 90.0f)
+                {
+                    lookClamp = 90.0f;
+                    mouseY = 90.0f;//shouldn't this be 90.0f not 0.0f?
+                    ClampLookRotationToValue(270.0f);
+                }
+                else if (lookClamp < -90.0f)
+                {
+                    lookClamp = -90.0f;
+                    mouseY = -90.0f;//was 0.0f
+                    ClampLookRotationToValue(90);
+                }
+
+                firstPersonCamera.transform.Rotate(Vector3.left * mouseY);
+                playerRoot.Rotate(Vector3.up * mouseX);
             }
-
-            if (cameraLocked == false) { 
-            float mouseX = Input.GetAxis(mouseXInputName) * mouseXSensitivity * Time.deltaTime;
-            float mouseY = Input.GetAxis(mouseYInputName) * mouseYSensitivity * Time.deltaTime;
-
-            lookClamp += mouseY;
-
-            if (lookClamp > 90.0f)
-            {
-                lookClamp = 90.0f;
-                mouseY = 90.0f;//shouldn't this be 90.0f not 0.0f?
-                ClampLookRotationToValue(270.0f);
-            }
-            else if (lookClamp < -90.0f)
-            {
-                lookClamp = -90.0f;
-                mouseY = -90.0f;//was 0.0f
-                ClampLookRotationToValue(90);
-            }
-
-            firstPersonCamera.transform.Rotate(Vector3.left * mouseY);
-            playerRoot.Rotate(Vector3.up * mouseX);
-        }
-        else {}
-
+            else {}*/
         }
         //Controls direction of player movement. (ObViOuSlY)
         private void PlayerMovement()
         {
+            /*
             float verticalInput = Input.GetAxis(verticalInputName);
             float horizontalInput = Input.GetAxis(horizontalInputName);
 
@@ -319,7 +390,7 @@ namespace ProjectUniverse.Player.PlayerController
             {
                 jumpInput();
             }
-            setMovementSpeed();
+            setMovementSpeed();*/
 
         }
         //slope movement stability.
@@ -345,11 +416,11 @@ namespace ProjectUniverse.Player.PlayerController
         private void setMovementSpeed()
         {
 
-            if (Input.GetButton(sprintInputName) && !isSwimming)
+            if (sprinting && !isSwimming)
             {
                 movementSpeed = Mathf.Lerp(movementSpeed, sprintSpeed, Time.deltaTime * walkSpeedRamp);
             }
-            if (Input.GetButton(sprintInputName) && isSwimming)
+            if (sprinting && isSwimming)
             {
                 movementSpeed = Mathf.Lerp(movementSpeed, swimSprintSpeed, Time.deltaTime * walkSpeedRamp);
             }
@@ -364,7 +435,7 @@ namespace ProjectUniverse.Player.PlayerController
         }
 
         //Determine if the player has pressed the jump key, and if so, activate the jump event.
-        private void jumpInput()
+       /* private void jumpInput()
         {
             if (Input.GetButtonDown(jumpInputName) && !isSwimming && currentJump < maxJump)
             {
@@ -373,7 +444,7 @@ namespace ProjectUniverse.Player.PlayerController
                 StartCoroutine(JumpEvent());
                 currentJump++;
             }
-        }
+        }*/
 
         private IEnumerator JumpEvent()
         {
@@ -398,12 +469,12 @@ namespace ProjectUniverse.Player.PlayerController
             /// On Hold F and Mousewheel, allow flashlight OuterAngle to go from 10 to 120deg
             /// Decrease range as the angle broadens
             ///
-            if (Input.GetButtonDown(flashLightInputName))// && activeFL <= 0)
-            {
-                FlashLightToggleServerRpc(!flashLight.enabled);
+            //if (Input.GetButtonDown(flashLightInputName))// && activeFL <= 0)
+            //{
+                //FlashLightToggleServerRpc(!flashLight.enabled);
                 //flashLight.enabled = true;
                 //activeFL = 1;
-            }
+           // }
             //else if (Input.GetButtonDown(flashLightInputName) && activeFL >= 1)
             //{
             //    flashLight.enabled = false;

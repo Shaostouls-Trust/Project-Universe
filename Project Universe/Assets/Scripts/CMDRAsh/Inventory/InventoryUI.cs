@@ -13,9 +13,13 @@ using UnityEngine.UI;
 using System.Reflection;
 using ProjectUniverse.Items.Containers;
 using ProjectUniverse.UI;
+using UnityEngine.InputSystem;
+using MLAPI;
+using ProjectUniverse.Player.PlayerController;
 
 public class InventoryUI : MonoBehaviour
 {
+    private ProjectUniverse.PlayerControls controls;
     [SerializeField] private GameObject itemparent;
     [SerializeField] private GameObject itembuttonpref;
     [SerializeField] private CargoContainer container;//non-player1 inventory
@@ -137,6 +141,29 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
+        {
+            controls = networkedClient.PlayerObject.gameObject.GetComponent<SupplementalController>().PlayerController;
+        }
+        else
+        {
+            controls = new ProjectUniverse.PlayerControls();
+        }
+
+        controls.Player.Inv_Drop.Enable();
+        controls.Player.Inv_Transfer.Enable();
+        controls.Player.Inv_Use.Enable();
+    }
+
+    private void OnDisable()
+    {
+        controls.Player.Inv_Drop.Disable();
+        controls.Player.Inv_Transfer.Disable();
+        controls.Player.Inv_Use.Disable();
+    }
+
     /// Bind methods to buttons
     /// 
     void Start()
@@ -148,137 +175,146 @@ public class InventoryUI : MonoBehaviour
         ammoButton.onClick.AddListener(delegate { ButtonInputHandler(4); ToggleButtonStateTo(ammoButton, showAmmo); });
         rssButton.onClick.AddListener(delegate { ButtonInputHandler(5); ToggleButtonStateTo(rssButton, showRss); });
         miscButton.onClick.AddListener(delegate { ButtonInputHandler(6); ToggleButtonStateTo(miscButton, showMisc); });
+
+        controls.Player.Inv_Drop.performed += ctx =>
+        {
+            DropSelected();
+        };
+        controls.Player.Inv_Transfer.performed += ctx =>
+        {
+            TransferSelected();
+        };
+        controls.Player.Inv_Use.performed += ctx =>
+        {
+            UseSelected();
+        };
     }
 
-    ///Handle keyboard inputs
     ///
-    void Update()
+    ///Handle keyboard inputs: Use, Drop, Transfer
+    ///
+
+    public void UseSelected()
     {
-        //if selected itemstack
-        if(selectedButton != null)
+        //use item. Equip to the right body slot, or use immediately
+        if (selectedButton.ItemCategory == Category.Gear)
         {
-            if (Input.GetKeyDown(KeyCode.E))
+
+        }
+        else if (selectedButton.ItemCategory == Category.Weapon)
+        {
+
+        }
+        else if (selectedButton.ItemCategory == Category.Gadget)
+        {
+
+        }
+        else if (selectedButton.ItemCategory == Category.Consumable)
+        {
+            //if medical or food, use immediately. Otherwise equip to hands. LMB or RMB equip to different hands.
+        }
+    }
+
+    public void DropSelected()
+    {
+        Debug.Log("Drop Selected");
+        //find item prefab
+        Vector3 position;
+        string prefix = "Prefabs\\Resources\\";
+        GameObject obj;
+        RaycastHit hit;
+        Vector3 forward = Camera.main.transform.TransformDirection(0f, 0f, 1f) * 1f;
+        //Raycast along player vision axis until you either hit something, or reach 1m. If hit, offset by 0.25m
+        if (Physics.Raycast(this.transform.position, forward, out hit, 1f))
+        {
+            position = hit.point + (forward * -0.25f);
+        }
+        else
+        {
+            position = this.transform.position + forward;
+        }
+
+        //remove the item from inventory. Dropping an item will work based on itemstack index, not mass or itemcount.
+        if (selectedButton.SelectedStack.GetOriginalType() == typeof(Consumable_Ore))
+        {
+            prefix += "Ores\\";
+            obj = Resources.Load(prefix + selectedButton.SelectedStack.GetStackType()) as GameObject;
+            if (obj == null)
             {
-                //use item. Equip to the right body slot, or use immediately
-                if (selectedButton.ItemCategory == Category.Gear)
-                {
-
-                }
-                else if (selectedButton.ItemCategory == Category.Weapon)
-                {
-
-                }
-                else if (selectedButton.ItemCategory == Category.Gadget)
-                {
-
-                }
-                else if (selectedButton.ItemCategory == Category.Consumable)
-                {
-                    //if medical or food, use immediately. Otherwise equip to hands. LMB or RMB equip to different hands.
-                }
+                obj = Resources.Load(prefix + "Ore_NoMat") as GameObject;
             }
-            else if (Input.GetKeyDown(KeyCode.J))
+            //Spawn the item in worldspace and pass parameters to it.
+            GameObject oreworldspace = Instantiate(obj, position, Quaternion.identity);
+            //drop item. 
+            ItemStack stk;
+            if (playerInventory != null)
             {
-                Debug.Log("Drop Selected");
-                //find item prefab
-                Vector3 position;
-                string prefix = "Prefabs\\Resources\\";
-                GameObject obj;
-                RaycastHit hit;
-                Vector3 forward = Camera.main.transform.TransformDirection(0f, 0f, 1f) * 1f;
-                //Raycast along player vision axis until you either hit something, or reach 1m. If hit, offset by 0.25m
-                if (Physics.Raycast(this.transform.position, forward, out hit, 1f))
+                stk = playerInventory.RemoveFromPlayerInventory<Consumable_Ore>(selectedButton.SelectedStack,
+                (selectedButton.SelectedStack.LastIndex - 1));
+            }
+            else
+            {
+                stk = container.RemoveFromInventory<Consumable_Ore>(selectedButton.SelectedStack, (selectedButton.SelectedStack.LastIndex - 1));
+            }
+            Debug.Log(stk);
+            if (oreworldspace != null && stk != null)
+            {
+                oreworldspace.GetComponent<Consumable_Ore>().RegenerateOre(stk.GetItemArray().GetValue(0) as Consumable_Ore);
+            }
+            selectedButton.Count -= stk.GetRealLength();
+        }
+        else if (selectedButton.SelectedStack.GetOriginalType() == typeof(Consumable_Ingot))
+        {
+            prefix += "Ingots\\";
+            obj = Resources.Load(prefix + selectedButton.SelectedStack.GetStackType()) as GameObject;
+            if (obj == null)
+            {
+                obj = Resources.Load(prefix + "Ingot_Medium") as GameObject;
+            }
+            //Spawn the item in worldspace and pass parameters to it.
+            GameObject ingotworldspace = Instantiate(obj, position, Quaternion.identity);
+            //drop item. 
+            ItemStack stk;
+            if (playerInventory != null)
+            {
+                stk = playerInventory.RemoveFromPlayerInventory<Consumable_Ingot>(selectedButton.SelectedStack,
+                (selectedButton.SelectedStack.LastIndex - 1));
+            }
+            else
+            {
+                stk = container.RemoveFromInventory<Consumable_Ore>(selectedButton.SelectedStack, (selectedButton.SelectedStack.LastIndex - 1));
+            }
+            if (ingotworldspace != null && stk != null)
+            {
+                ingotworldspace.GetComponent<Consumable_Ingot>().RegenerateIngot(stk.GetItemArray().GetValue(0) as Consumable_Ingot);
+            }
+            selectedButton.Count -= stk.GetRealLength();
+        }
+        //refresh the inventory UI
+        RefreshInventoryScreen();
+    }
+
+    public void TransferSelected()
+    {
+        if (TransferMode)
+        {
+            //transfer to other inventory
+            if (InventoryUIControllerExt != null)
+            {
+                if (playerInventory != null)
                 {
-                    position = hit.point + (forward * -0.25f);
+                    InventoryUIControllerExt.TransferToContainer(selectedButton.SelectedStack);
+
                 }
                 else
                 {
-                    position = this.transform.position + forward;
-                }
+                    InventoryUIControllerExt.TransferToPlayer(selectedButton.SelectedStack);
 
-                //remove the item from inventory. Dropping an item will work based on itemstack index, not mass or itemcount.
-                if (selectedButton.SelectedStack.GetOriginalType() == typeof(Consumable_Ore))
-                {
-                    prefix += "Ores\\";
-                    obj = Resources.Load(prefix + selectedButton.SelectedStack.GetStackType()) as GameObject;
-                    if (obj == null)
-                    {
-                        obj = Resources.Load(prefix + "Ore_NoMat") as GameObject;
-                    }
-                    //Spawn the item in worldspace and pass parameters to it.
-                    GameObject oreworldspace = Instantiate(obj, position, Quaternion.identity);
-                    //drop item. 
-                    ItemStack stk;
-                    if (playerInventory != null)
-                    {
-                        stk = playerInventory.RemoveFromPlayerInventory<Consumable_Ore>(selectedButton.SelectedStack,
-                        (selectedButton.SelectedStack.LastIndex - 1));
-                    }
-                    else
-                    {
-                        stk = container.RemoveFromInventory<Consumable_Ore>(selectedButton.SelectedStack,(selectedButton.SelectedStack.LastIndex - 1));
-                    }
-                    Debug.Log(stk);
-                    if(oreworldspace != null && stk != null)
-                    {
-                        oreworldspace.GetComponent<Consumable_Ore>().RegenerateOre(stk.GetItemArray().GetValue(0) as Consumable_Ore);
-                    }
-                    selectedButton.Count -= stk.GetRealLength();
                 }
-                else if(selectedButton.SelectedStack.GetOriginalType() == typeof(Consumable_Ingot))
-                {
-                    prefix += "Ingots\\";
-                    obj = Resources.Load(prefix + selectedButton.SelectedStack.GetStackType()) as GameObject;
-                    if (obj == null)
-                    {
-                        obj = Resources.Load(prefix + "Ingot_Medium") as GameObject;
-                    }
-                    //Spawn the item in worldspace and pass parameters to it.
-                    GameObject ingotworldspace = Instantiate(obj, position, Quaternion.identity);
-                    //drop item. 
-                    ItemStack stk;
-                    if (playerInventory != null)
-                    {
-                        stk = playerInventory.RemoveFromPlayerInventory<Consumable_Ingot>(selectedButton.SelectedStack,
-                        (selectedButton.SelectedStack.LastIndex - 1));
-                    }
-                    else
-                    {
-                        stk = container.RemoveFromInventory<Consumable_Ore>(selectedButton.SelectedStack, (selectedButton.SelectedStack.LastIndex - 1));
-                    }
-                    if (ingotworldspace != null && stk != null)
-                    {
-                        ingotworldspace.GetComponent<Consumable_Ingot>().RegenerateIngot(stk.GetItemArray().GetValue(0) as Consumable_Ingot);
-                    }
-                    selectedButton.Count -= stk.GetRealLength();
-                }
-                //refresh the inventory UI
-                RefreshInventoryScreen();
-            }
-            if (Input.GetKeyDown(KeyCode.T))
-            {
-                if (TransferMode)
-                {
-                    //transfer to other inventory
-                    if(InventoryUIControllerExt != null)
-                    {
-                        if (playerInventory != null)
-                        {
-                            InventoryUIControllerExt.TransferToContainer(selectedButton.SelectedStack);
-                            
-                        }
-                        else
-                        {
-                            InventoryUIControllerExt.TransferToPlayer(selectedButton.SelectedStack);
-                            
-                        }
-                        selectedButton.Count -= selectedButton.SelectedStack.GetRealLength();
-                        InventoryUIControllerExt.UpdateDisplay();
-                    }
-                }
+                selectedButton.Count -= selectedButton.SelectedStack.GetRealLength();
+                InventoryUIControllerExt.UpdateDisplay();
             }
         }
-        
     }
 
     public InventoryUIController InventoryUIControllerExt

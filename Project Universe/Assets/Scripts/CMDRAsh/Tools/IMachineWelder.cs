@@ -45,13 +45,14 @@ namespace ProjectUniverse.Items.Tools
         // Update is called once per frame
         void Update()
         {
-            Vector3 forward = Camera.main.transform.TransformDirection(0f, 0f, 1f) * 1f;
+            //Vector3 forward = Camera.main.transform.TransformDirection(0f, 0f, 1f) * 1f;
+            Vector3 forward2 = welderRaycastPoint.transform.TransformDirection(0f, 1f, 0f) * 1f;//0,0,1 is down
             //try to raycast to a machine
             if (Physics.Raycast(
                     new Vector3(welderRaycastPoint.transform.position.x,
                     welderRaycastPoint.transform.position.y,
                     welderRaycastPoint.transform.position.z),
-                    forward, out RaycastHit hit, 1.0f))//Vector.Back
+                    forward2, out RaycastHit hit, 1.0f))//Vector.Back
             {
                 object[] prams;
                 IConstructible cons;

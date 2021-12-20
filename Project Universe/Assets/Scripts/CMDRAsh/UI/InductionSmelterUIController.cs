@@ -386,13 +386,13 @@ namespace ProjectUniverse.UI
                     player = networkedClient.PlayerObject.gameObject;
                 }
             }
-            player.GetComponent<PlayerController>().LockAndFreeCursor();
+            player.GetComponent<SupplementalController>().LockAndFreeCursor();
         }
 
         public void CloseUI()
         {
             this.gameObject.SetActive(false);
-            player.GetComponent<PlayerController>().UnlockCursor();
+            player.GetComponent<SupplementalController>().UnlockCursor();
         }
 
         public void ResetProgressBar()

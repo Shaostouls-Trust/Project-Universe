@@ -197,13 +197,13 @@ namespace ProjectUniverse.UI
 
         public void LockScreenAndFreeCursor()
         {
-            player.GetComponent<PlayerController>().LockAndFreeCursor();
+            player.GetComponent<SupplementalController>().LockAndFreeCursor();
         }
 
         public void CloseUI()
         {
             this.gameObject.SetActive(false);
-            player.GetComponent<PlayerController>().UnlockCursor();
+            player.GetComponent<SupplementalController>().UnlockCursor();
         }
 
         public void StartFactory()

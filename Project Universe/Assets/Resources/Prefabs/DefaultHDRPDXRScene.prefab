@@ -58,7 +58,7 @@ MonoBehaviour:
     NetworkPrefabs:
     - Prefab: {fileID: 4878725584815825057, guid: 7fbb936e6044c8145a774eb9f7d20775,
         type: 3}
-      PlayerPrefab: 1
+      PlayerPrefab: 0
     - Prefab: {fileID: 78132463704456319, guid: a894c3058a5021146abd6c255e0085b8,
         type: 3}
       PlayerPrefab: 0
@@ -71,6 +71,9 @@ MonoBehaviour:
     - Prefab: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       PlayerPrefab: 0
+    - Prefab: {fileID: 9054391310340913646, guid: 16a693865fbae864e95d80169c5e714e,
+        type: 3}
+      PlayerPrefab: 1
     PlayerPrefabHash:
       id: 0
     CreatePlayerPrefab: 1
@@ -100,7 +103,7 @@ MonoBehaviour:
     00000000:
       type: {class: NullableBoolSerializable, ns: MLAPI.Configuration, asm: Unity.Multiplayer.MLAPI.Runtime}
       data:
-        Value: 2649565935772236750
+        Value: 15536292038320324871
 --- !u!114 &4634680966586976638
 MonoBehaviour:
   m_ObjectHideFlags: 0

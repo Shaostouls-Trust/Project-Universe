@@ -65,17 +65,12 @@ public class FleetBoy2000UIController : MonoBehaviour
         transBttn.onClick.AddListener(delegate { SetTopBarButton5Color(); ChangeActiveDisplay(5); });
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     /// <summary>
     /// Update or reload the screen of the fleetboy
     /// </summary>
     public void Refresh()
     {
+        Debug.Log("refresh UI");
         if (invOpen)
         {
             //refresh inventory.

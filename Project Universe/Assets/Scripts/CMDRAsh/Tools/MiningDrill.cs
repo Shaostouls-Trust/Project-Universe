@@ -29,12 +29,13 @@ namespace ProjectUniverse.Items.Tools
         // Update is called once per frame
         void Update()
         {
-            Vector3 forward = Camera.main.transform.TransformDirection(0f, 0f, 1f) * 1f;
+            //Vector3 forward = Camera.main.transform.TransformDirection(0f, 0f, 1f) * 1f; //no main camera
+            Vector3 forward2 = drillRaycastPoint.transform.TransformDirection(0f, 1f, 0f) * 1f;//0,0,1 is down
             if (Physics.Raycast(
                     new Vector3(drillRaycastPoint.transform.position.x,
                     drillRaycastPoint.transform.position.y,
                     drillRaycastPoint.transform.position.z),
-                    forward, out RaycastHit hit, 1.0f))
+                    forward2, out RaycastHit hit, 1.0f))
             {
                 object[] prams;
                 BlockOreSingle block;

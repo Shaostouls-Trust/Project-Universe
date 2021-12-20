@@ -25,6 +25,8 @@ namespace ProjectUniverse.Player.PlayerController
         public bool crouchToggle;
         public bool crouching;
         public bool prone;
+        public bool sprinting = false;
+        [SerializeField] private PlayerControls controls;
         [SerializeField] GameObject playerRoot;
         [SerializeField] GameObject cameraRoot;
         [SerializeField] GameObject fleetBoy;
@@ -32,6 +34,24 @@ namespace ProjectUniverse.Player.PlayerController
         [SerializeField] private float proneHeight;
         [SerializeField] private float shrinkerSize;
         [SerializeField] private float defaultHeight;
+        [SerializeField] private Light flashLight;
+        [SerializeField] private GameObject firstPersonCameraRoot;
+        [SerializeField] private GameObject thirdPersonCameraRoot;
+        [SerializeField] private GameObject bodyTTTDRoot;
+        [SerializeField] private GameObject handHeadEquipment;
+        [SerializeField] private bool cameraLocked = false;
+        [SerializeField] private bool cameraFirst = true;
+        [SerializeField] private bool shift = false;
+        [SerializeField] int CursorCase = 0;
+        [SerializeField] private bool toggleCursorLock = false;
+        [SerializeField] private float mouseXSensitivity, mouseYSensitivity;
+        [SerializeField] private Vector2 lookBounds;
+        [SerializeField] private Vector2 freelookHorizontalBounds;
+        [SerializeField] private Vector2 freelookVerticalBounds;
+        [SerializeField] private int walkSpeed;
+        [SerializeField] private int sprintSpeed;
+        [SerializeField] private int crouchSpeed;
+        [SerializeField] private int proneSpeed;
         //Player stats2
         private NetworkVariableFloat playerNetHealth = new NetworkVariableFloat(100f);
         [SerializeField] private float playerHealth = 100f;//Non-standard. Radiation, suffocation, etc.
@@ -50,6 +70,9 @@ namespace ProjectUniverse.Player.PlayerController
         [SerializeField] private float playerHydration = 100f;
         [SerializeField] private float playerHappyStomach = 100f;
         private bool fleetBoyOut = false;
+        private float lookClamp;
+
+        private NetworkVariableBool netFlashlightState = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
 
         public float HeadHealth
         {
@@ -112,104 +135,286 @@ namespace ProjectUniverse.Player.PlayerController
             set { playerHappyStomach = value; }
         }
 
+        public PlayerControls PlayerController
+        {
+            get { return controls; }
+        }
+
+        private void OnEnable()
+        {
+            controls.Player.Crouch.Enable();
+            controls.Player.Prone.Enable();
+            controls.Player.ShowInventory.Enable();
+            controls.Player.Shift.Enable();
+
+            controls.Player.Alt.Enable();
+            controls.Player.Sprint.Enable();
+            controls.Player.Flashlight.Enable();
+            //controls.Player.Look.Enable();
+        }
+        private void OnDisable()
+        {
+            controls.Player.Crouch.Disable();
+            controls.Player.Prone.Disable();
+            controls.Player.ShowInventory.Disable();
+            controls.Player.Shift.Enable();
+
+            controls.Player.Alt.Disable();
+            controls.Player.Sprint.Disable();
+            controls.Player.Flashlight.Disable();
+            //controls.Player.Look.Disable();
+        }
+
+        private void Start()
+        {
+            NetworkListeners();
+            GetComponent<CMF.AdvancedWalkerController>().movementSpeed = walkSpeed;
+            controls.Player.Crouch.performed += ctx =>
+            {
+                if (!crouchToggle)
+                {
+                    if (crouching)
+                    {
+                        crouching = false;
+                        prone = false;
+                        GetComponent<CMF.AdvancedWalkerController>().movementSpeed = walkSpeed;
+                        //playerRoot.transform.localScale = new Vector3(playerRoot.transform.localScale.x,
+                        //    defaultHeight, playerRoot.transform.localScale.z);
+                    }
+                    else
+                    {
+                        crouching = true;
+                        prone = false;
+                        GetComponent<CMF.AdvancedWalkerController>().movementSpeed = crouchSpeed;
+                        //playerRoot.transform.localScale = new Vector3(playerRoot.transform.localScale.x,
+                        //    crouchHeight, playerRoot.transform.localScale.z);
+                    }
+                }
+                else
+                {
+                    crouching = true;
+                    prone = false;
+                    GetComponent<CMF.AdvancedWalkerController>().movementSpeed = crouchSpeed;
+                    //playerRoot.transform.localScale = new Vector3(playerRoot.transform.localScale.x,
+                    //    crouchHeight, playerRoot.transform.localScale.z);
+                }
+            };
+
+            controls.Player.Crouch.canceled += ctx =>
+            {
+                if (crouchToggle)
+                {
+                    crouching = false;
+                    prone = false;
+                    GetComponent<CMF.AdvancedWalkerController>().movementSpeed = walkSpeed;
+                    //playerRoot.transform.localScale = new Vector3(playerRoot.transform.localScale.x,
+                    //    defaultHeight, playerRoot.transform.localScale.z);
+                }
+            };
+
+            controls.Player.Prone.performed += ctx =>
+            {
+                if (prone)
+                {
+                    crouching = false;
+                    prone = false;
+                    GetComponent<CMF.AdvancedWalkerController>().movementSpeed = walkSpeed;
+                    //playerRoot.transform.localScale = new Vector3(1.0f, defaultHeight, 1.0f);
+                    //playerRoot.GetComponent<CharacterController>().height = 1.8f;
+                    //playerRoot.GetComponent<CharacterController>().radius = 0.31f;
+                }
+                else
+                {
+                    crouching = false;
+                    prone = true;
+                    GetComponent<CMF.AdvancedWalkerController>().movementSpeed = proneSpeed;
+                    //playerRoot.transform.localScale = new Vector3(1.0f, proneHeight, 1.0f);
+                    //playerRoot.GetComponent<CharacterController>().height = proneHeight;
+                    //playerRoot.GetComponent<CharacterController>().radius = shrinkerSize;
+                }
+            };
+
+            controls.Player.ShowInventory.performed += ctx =>
+            {
+                ShowHideInventory();
+            };
+
+            controls.Player.Shift.performed += ctx =>
+            {
+                shift = true;
+            };
+            controls.Player.Shift.canceled += ctx =>
+            {
+                shift = false;
+            };
+
+            controls.Player.Alt.performed += ctx =>
+            {
+                if (shift)
+                {
+                    Debug.Log("Switch VeiwPoint");
+                    //switch to third person
+                    if (cameraFirst)
+                    {
+                        //switch to 3rd
+                        cameraFirst = false;
+
+                        //set transform of thirdperson to firstperson
+                        //Calculate up and forward direction;
+                        Vector3 _forwardDirection = Vector3.ProjectOnPlane(firstPersonCameraRoot.transform.forward, thirdPersonCameraRoot.transform.up).normalized;
+                        Vector3 _upDirection = thirdPersonCameraRoot.transform.up;
+                        //Set rotation;
+                        thirdPersonCameraRoot.transform.rotation = Quaternion.LookRotation(_forwardDirection, _upDirection);
+
+                        firstPersonCameraRoot.SetActive(false);
+                        thirdPersonCameraRoot.SetActive(true);
+                        //set directional camera to Third person
+                        GetComponent<CMF.AdvancedWalkerController>().cameraTransform = thirdPersonCameraRoot.transform;
+                        //enable the Turn To Transform Direction Script
+                        bodyTTTDRoot.GetComponent<CMF.TurnTowardTransformDirection>().targetTransform = thirdPersonCameraRoot.transform;
+                        handHeadEquipment.GetComponent<PoVRotationTracker>().CamTransformToTrack = thirdPersonCameraRoot.transform;
+                    }
+                    else
+                    {
+                        //switch to 1st
+                        cameraFirst = true;
+
+                        //set transform of firstperson to thirdperson
+                        //Calculate up and forward direction;
+                        Vector3 _forwardDirection = Vector3.ProjectOnPlane(thirdPersonCameraRoot.transform.forward, firstPersonCameraRoot.transform.up).normalized;
+                        Vector3 _upDirection = firstPersonCameraRoot.transform.up;
+                        //Set rotation;
+                        firstPersonCameraRoot.transform.rotation = Quaternion.LookRotation(_forwardDirection, _upDirection);
+
+                        thirdPersonCameraRoot.SetActive(false);
+                        firstPersonCameraRoot.SetActive(true);
+                        //set directional camera to First person
+                        GetComponent<CMF.AdvancedWalkerController>().cameraTransform = firstPersonCameraRoot.transform;
+                        //disable the Turn To Transform Direction Script
+                        bodyTTTDRoot.GetComponent<CMF.TurnTowardTransformDirection>().targetTransform = firstPersonCameraRoot.transform;
+                        handHeadEquipment.GetComponent<PoVRotationTracker>().CamTransformToTrack = firstPersonCameraRoot.transform;
+                    }
+                }
+                else
+                {
+                    Debug.Log("LeftAlt Pressed!");
+                    LockAndFreeCursor();
+                    cameraLocked = !cameraLocked;
+                }
+            };
+
+            controls.Player.Sprint.performed += ctx =>
+            {
+                sprinting = true;
+                if (crouching)
+                {
+                    GetComponent<CMF.AdvancedWalkerController>().movementSpeed += 1;
+                }
+                else if(prone)
+                {
+                    GetComponent<CMF.AdvancedWalkerController>().movementSpeed += 1;
+                }
+                else
+                {
+                    GetComponent<CMF.AdvancedWalkerController>().movementSpeed = sprintSpeed;
+                }
+            };
+
+            controls.Player.Sprint.canceled += ctx =>
+            {
+                sprinting = false;
+                if (crouching)
+                {
+                    GetComponent<CMF.AdvancedWalkerController>().movementSpeed = crouchSpeed;
+                }
+                else if (prone)
+                {
+                    GetComponent<CMF.AdvancedWalkerController>().movementSpeed = proneSpeed;
+                }
+                else
+                {
+                    GetComponent<CMF.AdvancedWalkerController>().movementSpeed = walkSpeed;
+                }
+            };
+
+            controls.Player.Flashlight.performed += ctx =>
+            {
+                FlashLightToggleServerRpc(!flashLight.enabled);
+            };
+
+            controls.Player.Look.performed += ctx =>
+            {
+                if (cameraLocked == false)
+                {
+                    float mouseX = ctx.ReadValue<Vector2>().x * mouseXSensitivity * Time.deltaTime;//Input.GetAxis(mouseXInputName)
+                    float mouseY = ctx.ReadValue<Vector2>().y * mouseYSensitivity * Time.deltaTime;//Input.GetAxis(mouseYInputName)
+
+                    lookClamp += mouseY;
+
+                    if (lookClamp > lookBounds.y)//80
+                    {
+                        lookClamp = lookBounds.y;
+                        mouseY = lookBounds.y;
+                        ClampLookRotationToValue(lookBounds.y);
+                    }
+                    else if (lookClamp < lookBounds.x)//-80
+                    {
+                        lookClamp = lookBounds.x;
+                        mouseY = lookBounds.x;
+                        ClampLookRotationToValue(lookBounds.x);
+                    }
+
+                    firstPersonCameraRoot.transform.Rotate(Vector3.left * mouseY);
+                    playerRoot.transform.Rotate(Vector3.up * mouseX);
+                }
+            };
+        }
+
         private void Awake()
         {
-            //if(guid == null)
-            //{
-            //    guid = Guid.NewGuid();
-            //}
+            controls = new PlayerControls();
         }
 
         // Update is called once per frame
         void Update()
         {
             playerHealth = playerNetHealth.Value;
-            //crouch (hold c)
-            if (!crouchToggle)
+            if (cameraFirst)
             {
-                if (Input.GetKeyDown(crouchKey))
-                {
-                    crouching = true;
-                    prone = false;
-                    playerRoot.transform.localScale = new Vector3(playerRoot.transform.localScale.x,
-                        crouchHeight, playerRoot.transform.localScale.z);//.GetComponent<CapsuleCollider>()
-                }
-                if (Input.GetKeyUp(crouchKey))
-                {
-                    crouching = false;
-                    prone = false;
-                    playerRoot.transform.localScale = new Vector3(playerRoot.transform.localScale.x,
-                        defaultHeight, playerRoot.transform.localScale.z);
-                }
             }
-            //crouch (press c)
             else
             {
-                if (Input.GetKeyDown(crouchKey))
-                {
-                    if (crouching)
-                    {
-                        crouching = false;
-                        prone = false;
-                        playerRoot.transform.localScale = new Vector3(1.0f, defaultHeight, 1.0f);
-                    }
-                    else
-                    {
-                        crouching = true;
-                        prone = false;
-                        playerRoot.transform.localScale = new Vector3(1.0f, crouchHeight, 1.0f);
-                    }
-                }
+                //sync 1st person cam with rotation of 3rd person cam
+                //1st person turns player to cam
+                //firstPersonCameraRoot.transform.localRotation = Quaternion.Euler(thirdPersonCameraRoot.transform.localRotation.eulerAngles);
             }
-            //prone (press z)
-            if (Input.GetKeyDown(proneKey))
+        }
+
+        public void NetworkListeners()
+        {
+            flashLight.enabled = false;
+            netFlashlightState.Value = false;
+            netFlashlightState.OnValueChanged += delegate { flashLight.enabled = netFlashlightState.Value; };
+        }
+
+        public void ShowHideInventory()
+        {
+            if (!fleetBoyOut)
             {
-                if (prone)
-                {
-                    crouching = false;
-                    prone = false;
-                    playerRoot.transform.localScale = new Vector3(1.0f,
-                    defaultHeight, 1.0f);
-                    playerRoot.GetComponent<CharacterController>().height = 1.8f;
-                    playerRoot.GetComponent<CharacterController>().radius = 0.31f;
-                    //playerRoot.GetComponent<CapsuleCollider>().height = defaultHeight;
-                    //playerRoot.GetComponent<CapsuleCollider>().radius = 0.31f;
-                }
-                else
-                {
-                    crouching = false;
-                    prone = true;
-                    playerRoot.transform.localScale = new Vector3(1.0f, proneHeight, 1.0f);
-                    playerRoot.GetComponent<CharacterController>().height = proneHeight;
-                    playerRoot.GetComponent<CharacterController>().radius = shrinkerSize;
-                    //playerRoot.GetComponent<CapsuleCollider>().height = proneHeight;
-                    //playerRoot.GetComponent<CapsuleCollider>().radius = shrinkerSize;
-                }
+                Debug.Log("Show");
+                //disable other controls like LMB, E, Enter, R, etc.
+
+                LockAndFreeCursor();//playerRoot.GetComponent<SupplementalController>().
+                fleetBoy.SetActive(true);
+                fleetBoy.GetComponent<FleetBoy2000UIController>().Refresh();
+                fleetBoyOut = true;
             }
-            if (Input.GetKeyDown(KeyCode.I))
+            else
             {
-                if (!fleetBoyOut)
-                {
-                    //disable other controls like LMB, E, Enter, R, etc.
-                    playerRoot.GetComponent<PlayerController>().LockAndFreeCursor();
-                    fleetBoy.SetActive(true);
-                    fleetBoy.GetComponent<FleetBoy2000UIController>().Refresh();
-                    fleetBoyOut = true;
-                }
-                else
-                {
-                    playerRoot.GetComponent<PlayerController>().UnlockCursor();
-                    fleetBoy.SetActive(false);
-                    fleetBoyOut = false;
-                }
-            }
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                IPlayer_Inventory inventory = playerRoot.GetComponent<IPlayer_Inventory>();
-                foreach (ItemStack stack in inventory.GetPlayerInventory())
-                {
-                    Debug.Log(stack);
-                }
+                Debug.Log("Hide");
+                UnlockCursor();//playerRoot.GetComponent<SupplementalController>().
+                fleetBoy.SetActive(false);
+                fleetBoyOut = false;
             }
         }
 
@@ -234,7 +439,7 @@ namespace ProjectUniverse.Player.PlayerController
         public void SavePlayer()
         {
             SceneDataHelper sdh = new SceneDataHelper(SceneManager.GetActiveScene().name, "Adrian Expanse Sector 1", DateTime.Now.ToString(), "CMDR Ash");
-            PlayerData data = new PlayerData(guid, sdh, playerRoot.transform,cameraRoot.transform.rotation.eulerAngles,
+            PlayerData data = new PlayerData(guid, sdh, playerRoot.transform,cameraRoot.transform.rotation.eulerAngles,//save FP and TP cam pos
                 GetComponent<IPlayer_Inventory>(), GetComponent<PlayerVolumeController>(),this);
             SerializationHandler.SavePlayer("Player_current",data);
             Debug.Log("Saved");
@@ -251,7 +456,7 @@ namespace ProjectUniverse.Player.PlayerController
                 Vector3 dataRot = data.Rotation.eulerAngles;
                 playerRoot.transform.position = data.Position;
                 playerRoot.transform.rotation = Quaternion.Euler(0, dataRot.y, 0);
-                cameraRoot.transform.rotation = Quaternion.Euler(dataRot.x, 0, dataRot.z);
+                cameraRoot.transform.rotation = Quaternion.Euler(dataRot.x, 0, dataRot.z);//save FP and TP cam pos
                 playerRoot.transform.localScale = data.Scale;
                 object[] prams = 
                     { data.PlayerInventory, data.InventoryWeight };
@@ -284,6 +489,54 @@ namespace ProjectUniverse.Player.PlayerController
             }
            
         }
+        public void LockCursor()
+        {
+            if (toggleCursorLock == false)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = true;
+                CursorCase = 1;
+            }
+            if (toggleCursorLock == true)
+            {
+                Cursor.lockState = CursorLockMode.Confined;
+                Cursor.visible = false;
+                CursorCase = 2;
+            }
+            toggleCursorLock = !toggleCursorLock;
+        }
+        public void LockAndFreeCursor()
+        {
+            LockCursor();
+            cameraLocked = !cameraLocked;
+            Cursor.visible = true;
+        }
+        public void UnlockCursor()
+        {
+            LockCursor();
+            cameraLocked = !cameraLocked;
+            Cursor.visible = false;
+        }
 
+        [ServerRpc]
+        private void FlashLightToggleServerRpc(bool state)
+        {
+            FlashLightToggleClientRpc(state);
+        }
+
+        [ClientRpc]
+        private void FlashLightToggleClientRpc(bool state)
+        {
+            netFlashlightState.Value = state;
+        }
+
+        //Kinda primitive, may adjust later.
+        //Locks player camera so they can not look up and down in a 360 deg arc.
+        private void ClampLookRotationToValue(float value)
+        {
+            Vector3 eulerRotation = transform.eulerAngles;
+            eulerRotation.x = value * Time.deltaTime;//modified 11/17/20 by CMDRAsh. Added Time.deltatime to smooth out looking when fps not constant.
+            firstPersonCameraRoot.transform.eulerAngles = eulerRotation;
+        }
     }
 }
