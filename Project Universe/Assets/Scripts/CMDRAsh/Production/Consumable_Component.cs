@@ -15,6 +15,7 @@ namespace ProjectUniverse.Production.Resources
         private int Priority_Inherited;
         private float HealthCurrent;
 
+        
         public Consumable_Component(string compID, int num, IComponentDefinition definition)
         {
             componentID = compID;
@@ -42,6 +43,12 @@ namespace ProjectUniverse.Production.Resources
             }
             //do we want to track what resources make up this component?
         }
+      
+        public string ComponentID
+        {
+            get { return componentID; }
+            set { componentID = value; }
+        }
 
         override
         public string ToString()
@@ -49,10 +56,10 @@ namespace ProjectUniverse.Production.Resources
             return "ID: " + componentID + "; Quantity: " + quantity + "; Definition: " + compDefinition.GetComponentType();
         }
 
-        public string GetComponentID()
-        {
-            return componentID;
-        }
+        //public string GetComponentID()
+        //{
+        //    return componentID;
+        //}
         //public void SetComponentID(string ONLY_FOR_DESERIALIZATION)
         //{
         //    componentID = ONLY_FOR_DESERIALIZATION;
@@ -111,7 +118,7 @@ namespace ProjectUniverse.Production.Resources
 
         public bool CompareMetaData(Consumable_Component comparee)
         {
-            if (GetComponentID() == comparee.GetComponentID())
+            if (ComponentID == comparee.ComponentID)
             {
                 return true;
             }

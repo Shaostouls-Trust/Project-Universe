@@ -17,7 +17,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 1
+  m_StaticEditorFlags: 17
   m_IsActive: 1
 --- !u!4 &5795725106151180346
 Transform:
@@ -109,6 +109,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: HandRailingA
       objectReference: {fileID: 0}
+    - target: {fileID: 1453750101683574655, guid: 0d9af7ca319b9484bac5f676799604bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 2262797882647760325, guid: 0d9af7ca319b9484bac5f676799604bd,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2262797882647760325, guid: 0d9af7ca319b9484bac5f676799604bd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -126,6 +136,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2262797882647760325, guid: 0d9af7ca319b9484bac5f676799604bd,
         type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2262797882647760325, guid: 0d9af7ca319b9484bac5f676799604bd,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
@@ -137,16 +152,6 @@ PrefabInstance:
     - target: {fileID: 2262797882647760325, guid: 0d9af7ca319b9484bac5f676799604bd,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2262797882647760325, guid: 0d9af7ca319b9484bac5f676799604bd,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 2262797882647760325, guid: 0d9af7ca319b9484bac5f676799604bd,
-        type: 3}
-      propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2262797882647760325, guid: 0d9af7ca319b9484bac5f676799604bd,

@@ -55,7 +55,7 @@ namespace ProjectUniverse.Production.Machines
                     ///
                     /// Perhaps a behavior library like 'if missing 50% of electrical comps, then do this to pram_A'
                     ///
-                    switch (comp.GetComponentID())
+                    switch (comp.ComponentID)
                     {
                         //for now, we will only have the components in the definition, none will have been added via upgrading
                         //Eventually, damage to components will need to account for something.

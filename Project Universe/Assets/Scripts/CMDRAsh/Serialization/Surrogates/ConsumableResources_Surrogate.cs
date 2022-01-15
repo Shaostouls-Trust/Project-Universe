@@ -11,7 +11,7 @@ public class ConsumableResources_Surrogate
         public void GetObjectData(object obj, SerializationInfo info, StreamingContext context)
         {
             Consumable_Component comp = (Consumable_Component)obj;
-            info.AddValue("componentID", comp.GetComponentID());
+            info.AddValue("componentID", comp.ComponentID);
             info.AddValue("quantity", comp.GetQuantity());
             info.AddValue("healthAdjusted", comp.HealthValue);
             info.AddValue("healthRemaining", comp.RemainingHealth);
@@ -82,8 +82,7 @@ public class ConsumableResources_Surrogate
 
         public object SetObjectData(object obj, SerializationInfo info, StreamingContext context, ISurrogateSelector selector)
         {
-            Consumable_Ingot ing = new Consumable_Ingot(
-                (string)info.GetValue("ingotType", typeof(string)),
+            Consumable_Ingot ing = new Consumable_Ingot((string)info.GetValue("ingotType", typeof(string)),
                 (int)info.GetValue("ingotQuality", typeof(int)),
                 (float)info.GetValue("ingotMass", typeof(float)));
             obj = ing;

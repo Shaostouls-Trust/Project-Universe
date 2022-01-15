@@ -37,6 +37,7 @@ namespace ProjectUniverse.Environment.Volumes
         [SerializeField] private float playerTemp = 98.6f;
         [SerializeField] private float oxyUseRate = 3.2f;//1.6 is for 60 seconds hold breath
         private Volume[] volumesPlayerIsIn;
+        private VolumeAtmosphereController playerVolume;
         public string CurrentVolumeOfPlayer;
         private SupplementalController playerControllerSup;
 
@@ -54,6 +55,8 @@ namespace ProjectUniverse.Environment.Volumes
         // Update is called once per frame
         void Update()
         {
+            //update player vc to reflect the changes in the volume.
+            OnVolumeUpdate();
             /*
             //camera focussing
             Camera maincamera = GetComponentInChildren<Camera>();
@@ -87,7 +90,10 @@ namespace ProjectUniverse.Environment.Volumes
                 ///1 minute of holding breath before taking damage at normal heart rate (1.6f)
                 ///If partial air, subtract that from the rate
                 ///scale down to 10 or so secs depending on heart rate
-                playerOxygen -= ((oxyUseRate - (myRoomOxygenation / 100)) * Time.deltaTime);
+                if(playerOxygen > 0f)
+                {
+                    playerOxygen -= ((oxyUseRate - (myRoomOxygenation / 100)) * Time.deltaTime);
+                }
             }
             else if (myRoomOxygenation > 0.5)
             {
@@ -212,6 +218,18 @@ namespace ProjectUniverse.Environment.Volumes
             volumesPlayerIsIn = playerVolume;
         }
 
+        public void SetPlayerVolumeController(VolumeAtmosphereController vac)
+        {
+            playerVolume = vac;
+        }
+        public void ResetPlayerVolumeController(VolumeAtmosphereController vac)
+        {
+            if(playerVolume == vac)
+            {
+                playerVolume = null;
+            }
+        }
+
         public void OnVolumeEnter(float myVolPress, float myVolTemp, float myVolOx)
         {
             myRoomPressure = myVolPress;
@@ -221,11 +239,28 @@ namespace ProjectUniverse.Environment.Volumes
 
         public void OnVolumeUpdate(float myVolPress, float myVolTemp, float myVolOx)
         {
-            //myRoomPressure = myVolPress;
             myRoomTemp = myVolTemp;
             myRoomOxygenation = myVolOx;
             myLastRoomPress = myRoomPressure;
             myRoomPressure = myVolPress;
+        }
+        public void OnVolumeUpdate()
+        {
+            if (playerVolume != null)
+            {
+                myRoomTemp = playerVolume.Temperature;
+                myRoomOxygenation = playerVolume.Oxygenation;
+                myLastRoomPress = myRoomPressure;
+                myRoomPressure = playerVolume.Pressure;
+            }
+            else
+            {
+                myRoomTemp = 0f;
+                myRoomOxygenation = 0f;
+                myLastRoomPress = myRoomPressure;
+                myRoomPressure = 0f;
+            }
+            
         }
 
         public void OnLoad(params object[] data)

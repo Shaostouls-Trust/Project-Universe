@@ -9,17 +9,14 @@ namespace ProjectUniverse.PowerSystem
 {
     public sealed class IGenerator : NetworkBehaviour
     {
-        [SerializeField]
-        private int outputMax;//duh
-        [SerializeField]
-        private int generatorLevel;
+        [SerializeField] private int outputMax;//duh
+        [SerializeField] private int generatorLevel;
         public string powerGrid;//grid that this generator is part of
         [SerializeField] private float lastOutput;//OutputCurrent resets every update, so we never see it
         private float outputCurrent;//duh
-        [SerializeField]
-        private int maxRouters; //level * 4
-        [SerializeField]
-        private IRouter[] routers;
+        [SerializeField] private int maxRouters; //level * 4
+        [SerializeField] private IRouter[] routers;
+        [SerializeField] private PowerOutputController outputController;
         private Guid guid;
         private LinkedList<ICable> iCableDLL = new LinkedList<ICable>();
         private float[] requestedRouterPower;
@@ -33,6 +30,17 @@ namespace ProjectUniverse.PowerSystem
         //MLAPI
         private NetworkVariableInt netOutputMax = new NetworkVariableInt(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
         private NetworkVariableInt netLegsOut = new NetworkVariableInt(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+
+        public int OutputMax
+        {
+            get { return outputMax; }
+            set { outputMax = value; }
+        }
+        public float LastOutput
+        {
+            get { return lastOutput; }
+            set { lastOutput = value; }
+        }
 
         // Start is called before the first frame update
         void Start()
@@ -93,6 +101,22 @@ namespace ProjectUniverse.PowerSystem
 
         public void RequestPowerFromGenerator(float requestedAmount, IRouter thisRouter)
         {
+            float targetMax;
+            if (outputController != null)
+            {
+                if(outputMax < outputController.TargetOutput)
+                {
+                    targetMax = outputMax;
+                }
+                else
+                {
+                    targetMax = outputController.TargetOutput;
+                }
+            }
+            else
+            {
+                targetMax = outputMax;
+            }
             //transfer power
             foreach (ICable cable in iCableDLL)
             {
@@ -113,7 +137,7 @@ namespace ProjectUniverse.PowerSystem
                         powerAmount[l] = requestedAmount / routerLegReq;
                     }
 
-                    if (outputCurrent + requestedAmount <= outputMax)
+                    if (outputCurrent + requestedAmount <= targetMax)//outputMax
                     {
                         //transfer as much power as is needed, up until capacity is met.
                         availibleLegsOut -= routerLegReq;
@@ -122,16 +146,22 @@ namespace ProjectUniverse.PowerSystem
                     }
                     else
                     {
-                        float[] tempfloat = new float[] { (outputMax - outputCurrent)/ 3f, (outputMax - outputCurrent) / 3f, (outputMax - outputCurrent) / 3f };
+                        //(outputMax - outputCurrent)/ 3f, (outputMax - outputCurrent) / 3f, (outputMax - outputCurrent) / 3f
+                        float[] tempfloat = new float[] { (targetMax - outputCurrent)/ 3f, (targetMax - outputCurrent) / 3f, (targetMax - outputCurrent) / 3f };
                         //Debug.Log("gen out: " + (outputMax - outputCurrent) 
                         //+ " or " + ((outputMax - outputCurrent) / 3f) + "+" + ((outputMax - outputCurrent) / 3f) 
                         //+ "+" + ((outputMax - outputCurrent) / 3f));
-                        outputCurrent = outputMax;
+                        outputCurrent = targetMax;//outputMax
                         cable.TransferIn(routerLegReq, tempfloat, 1);
                     }
                 }
             }
-            lastOutput = outputCurrent;
+            LastOutput = outputCurrent;
+            if(outputController != null)
+            {
+                outputController.UpdateMachineUI();
+            }
+            
         }
 
         public void SetRouters(IRouter[] newRouters)

@@ -29,19 +29,29 @@ namespace ProjectUniverse.Environment.Volumes
         {
             foreach (GameObject node in nodesToNullify)
             {
-                node.GetComponent<VolumeNode>().SetGlobalVolume(null);
+                node.GetComponent<VolumeNode>().GlobalLink = null;
             }
         }
         public void NullifyNodeLink(GameObject nodeToNullify)
         {
             if (exposedNodes.Contains(nodeToNullify))
             {
-                nodeToNullify.GetComponent<VolumeNode>().SetGlobalVolume(null);
+                nodeToNullify.GetComponent<VolumeNode>().GlobalLink = null;
             }
         }
 
         void OnTriggerEnter(Collider other)
         {
+            if (other.gameObject.CompareTag("_VolumeNode"))
+            {
+                //Add to list to compare. Whatever exists in VAC is removed from VGAC
+                if (!exposedNodes.Contains(other.gameObject))
+                {
+                    //Debug.Log(this.name + " detecting VolumeNode: " + other.gameObject.name);
+                    exposedNodes.Add(other.gameObject);
+                    other.GetComponent<VolumeNode>().GlobalLink = this.gameObject;
+                }
+            }
             if (other.gameObject.CompareTag("Player"))
             {
                 //other.GetComponent<PlayerVolumeController>().OnVolumeEnter(roomPressure, roomTemp, roomOxygenation);
@@ -51,6 +61,7 @@ namespace ProjectUniverse.Environment.Volumes
             }
         }
 
+        /*
         private void OnTriggerStay(Collider other)
         {
             if (other.gameObject.CompareTag("_VolumeNode"))
@@ -60,7 +71,7 @@ namespace ProjectUniverse.Environment.Volumes
                 {
                     //Debug.Log(this.name + " detecting VolumeNode: " + other.gameObject.name);
                     exposedNodes.Add(other.gameObject);
-                    other.GetComponent<VolumeNode>().SetGlobalVolume(this.gameObject);
+                    other.GetComponent<VolumeNode>().GlobalLink = this.gameObject;
                 }
             }
             if (other.gameObject.CompareTag("Player"))
@@ -69,7 +80,7 @@ namespace ProjectUniverse.Environment.Volumes
                 player.OnVolumeEnter(roomPressure, roomTemp, roomOxygenation);
                 player.SetPlayerVolume(this.GetComponents<Volume>());
             }
-        }
+        }*/
         public float GetPressure()
         {
             return roomPressure;

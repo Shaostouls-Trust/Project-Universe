@@ -277,7 +277,7 @@ MonoBehaviour:
       maxPlanarReflectionOnScreen: 32
       maxLightsPerClusterCell: 8
     hdShadowInitParams:
-      maxShadowRequests: 128
+      maxShadowRequests: 192
       directionalShadowsDepthBits: 16
       shadowFilteringQuality: 1
       punctualLightShadowAtlas:
@@ -306,7 +306,7 @@ MonoBehaviour:
       maxPunctualShadowMapResolution: 2048
       maxAreaShadowMapResolution: 2048
       supportScreenSpaceShadows: 1
-      maxScreenSpaceShadowSlots: 10
+      maxScreenSpaceShadowSlots: 32
       screenSpaceShadowBufferFormat: 8
     decalSettings:
       drawDistance: 1000

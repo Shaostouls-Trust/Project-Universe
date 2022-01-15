@@ -34,7 +34,7 @@ namespace ProjectUniverse.UI
 
         public void CloseUI()
         {
-            player_Inventory.transform.gameObject.GetComponent<SupplementalController>().UnlockCursor();
+            player_Inventory.transform.gameObject.GetComponent<SupplementalController>().FreeScreenAndLockCursor();
             this.gameObject.SetActive(false);
             //canTransfer = false;
         }
@@ -109,7 +109,7 @@ namespace ProjectUniverse.UI
         {
             if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
             {
-                networkedClient.PlayerObject.gameObject.GetComponent<SupplementalController>().LockAndFreeCursor();
+                networkedClient.PlayerObject.gameObject.GetComponent<SupplementalController>().LockScreenAndFreeCursor();
             }
         }
     }

@@ -191,7 +191,7 @@ namespace ProjectUniverse.Production.Machines
                         //Ore was removed to process it. Only add the process amount to the ingot itemstack
                         availableToProcess -= 1;
                         //Debug.Log("Process: " + availableToProcess);
-                        ItemStack compStack = new ItemStack(newComp.GetComponentID(), 999, typeof(Consumable_Component));
+                        ItemStack compStack = new ItemStack(newComp.ComponentID, 999, typeof(Consumable_Component));
                         //Add the itemstack or whatever
                         compStack.AddItem(newComp);
                         //Debug.Log("Outputting");

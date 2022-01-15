@@ -27,14 +27,19 @@ namespace ProjectUniverse.Animation.Controllers
         public float rightBoundOpen;//-1.8f
         public float rightBoundClosing;//-1.0f
 
+        [Space]
+        [SerializeField] GameObject modeLeverPart;//z to +90 for manual, z to 0 for auto
+        [SerializeField] GameObject modeLightGreen;
+        [SerializeField] GameObject modeLightRed;
+
         private bool isLOpen;//door open
         private bool isLClosed;//door closed
-        private bool isLOpening;//door in process of opening
-        private bool isLClosing;//door in process of closing
+        //private bool isLOpening;//door in process of opening
+        //private bool isLClosing;//door in process of closing
         private bool isROpen;
         private bool isRClosed;
-        private bool isROpening;
-        private bool isRClosing;
+        //private bool isROpening;
+        //private bool isRClosing;
         private bool hasEmissive;
 
         private bool locked;//whether or not the door can be opened
@@ -43,6 +48,8 @@ namespace ProjectUniverse.Animation.Controllers
 
         private bool isPowered;
         private bool isRunning;
+
+        private bool manualmode;
         //speed at which to run animation.
         //private float animSpeed;
 
@@ -151,7 +158,7 @@ namespace ProjectUniverse.Animation.Controllers
                 //when the door is at open position, but the animation is not done opening.
                 if (doorAnimIsInX)
                 {
-                    if (doorL_TF.localPosition.x > leftBoundOpen && (isLOpening || isLOpen))
+                    if (doorL_TF.localPosition.x > leftBoundOpen && (isLOpen))//isLOpening || 
                     {
                         anim[0].enabled = false;
                         anim[1].enabled = false;
@@ -167,7 +174,7 @@ namespace ProjectUniverse.Animation.Controllers
                 }
                 else
                 {
-                    if (doorL_TF.localPosition.z > leftBoundOpen && (isLOpening || isLOpen))
+                    if (doorL_TF.localPosition.z > leftBoundOpen && (isLOpen))//isLOpening || 
                     {
                         //stop the left door animation.
                         anim[0].enabled = false;
@@ -186,7 +193,7 @@ namespace ProjectUniverse.Animation.Controllers
                 //if closed but not done with closing animation
                 if (doorAnimIsInX)
                 {
-                    if (doorL_TF.localPosition.x < leftBoundClosing && (isLClosing || isLClosed))
+                    if (doorL_TF.localPosition.x < leftBoundClosing && (isLClosed))//isLClosing || 
                     {
                         anim[0].enabled = false;
                         anim[1].enabled = false;
@@ -201,7 +208,7 @@ namespace ProjectUniverse.Animation.Controllers
                 }
                 else
                 {
-                    if (doorL_TF.localPosition.z < leftBoundClosing && (isLClosing || isLClosed))
+                    if (doorL_TF.localPosition.z < leftBoundClosing && (isLClosed))// isLClosing ||
                     {
                         //stop
                         anim[0].enabled = false;
@@ -220,7 +227,7 @@ namespace ProjectUniverse.Animation.Controllers
                 if (doorAnimIsInX)
                 {
 
-                    if (doorR_TF.localPosition.x < rightBoundOpen && (isROpening || isROpen)) //open past -1.8Z
+                    if (doorR_TF.localPosition.x < rightBoundOpen && (isROpen)) //open past -1.8Z isROpening || 
                     {
                         anim[0].enabled = false;
                         anim[1].enabled = false;
@@ -234,7 +241,7 @@ namespace ProjectUniverse.Animation.Controllers
                 }
                 else
                 {
-                    if (doorR_TF.localPosition.z < rightBoundOpen && (isROpening || isROpen)) //open past -1.8Z
+                    if (doorR_TF.localPosition.z < rightBoundOpen && ( isROpen)) //open past -1.8Z isROpening ||
                     {
                         anim[0].enabled = false;
                         anim[1].enabled = false;
@@ -250,7 +257,7 @@ namespace ProjectUniverse.Animation.Controllers
                 //if closed but not done with anim
                 if (doorAnimIsInX)
                 {
-                    if (doorR_TF.localPosition.x > rightBoundClosing && (isRClosing || isRClosed)) //closed past -1.0f
+                    if (doorR_TF.localPosition.x > rightBoundClosing && (isRClosed)) //closed past -1.0f isRClosing || 
                     {
                         anim[0].enabled = false;
                         anim[1].enabled = false;
@@ -264,7 +271,7 @@ namespace ProjectUniverse.Animation.Controllers
                 }
                 else
                 {
-                    if (doorR_TF.localPosition.z > rightBoundClosing && (isRClosing || isRClosed)) //closed past -1.0f
+                    if (doorR_TF.localPosition.z > rightBoundClosing && (isRClosed)) //closed past -1.0f isRClosing || 
                     {
                         anim[0].enabled = false;
                         anim[1].enabled = false;
@@ -337,14 +344,17 @@ namespace ProjectUniverse.Animation.Controllers
 
         void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("Player"))//replace with a collision layer that only detects actors
+            if (!manualmode)
             {
-                if (isPowered && (!locked && isRunning))
+                if (other.CompareTag("Player"))//replace with a collision layer that only detects actors
                 {
-                    if (!isLOpening && !isROpening)//should these be network vars?
+                    if (isPowered && (!locked && isRunning))
                     {
-                        //Debug.Log(isPowered + "," + isRunning + "," + !locked + "," + !isLOpening + "," + !isROpening);
-                        OpenDoorServerRpc();
+                        if (!isLOpen && !isROpen)//should these be network vars? //opening
+                        {
+                            //Debug.Log(isPowered + "," + isRunning + "," + !locked + "," + !isLOpening + "," + !isROpening);
+                            OpenDoorServerRpc();
+                        }
                     }
                 }
             }
@@ -352,14 +362,17 @@ namespace ProjectUniverse.Animation.Controllers
 
         void OnTriggerStay(Collider other)
         {
-            if (other.CompareTag("Player"))
+            if (!manualmode)
             {
-                if (isPowered && (!locked && isRunning))
+                if (other.CompareTag("Player"))
                 {
-                    //both doors are open (eval to false) or opening already.
-                    if ((!isLOpen && !isROpen) || (isROpening && isLOpening))
+                    if (isPowered && (!locked && isRunning))
                     {
-                        OpenDoorServerRpc();
+                        //both doors are open (eval to false) or opening already.
+                        if ((!isLOpen && !isROpen))// || (isROpening && isLOpening))
+                        {
+                            OpenDoorServerRpc();
+                        }
                     }
                 }
             }
@@ -367,13 +380,16 @@ namespace ProjectUniverse.Animation.Controllers
 
         void OnTriggerExit(Collider other)
         {
-            if (other.CompareTag("Player"))
+            if (!manualmode)
             {
-                if (isPowered && (!locked && isRunning))
+                if (other.CompareTag("Player"))
                 {
-                    if (!isLClosing && !isRClosing)
+                    if (isPowered && (!locked && isRunning))
                     {
-                        CloseDoorServerRpc();
+                        if (!isLClosed && !isRClosed)//!isRClosing etc
+                        {
+                            CloseDoorServerRpc();
+                        }
                     }
                 }
             }
@@ -435,7 +451,7 @@ namespace ProjectUniverse.Animation.Controllers
         public bool OpenOrOpening()
         {
             bool state = false;
-            if (isLOpen || isLOpening || isROpen || isROpening)
+            if (isLOpen || isROpen)//isLOpening || || isROpening
             {
                 state = true;
             }
@@ -517,15 +533,53 @@ namespace ProjectUniverse.Animation.Controllers
             }
         }
 
-        public void ExternalInteractFunc()
+        public void ExternalInteractFunc(int param)
         {
-            if (!locked)
+            //lock the door
+            if(param == 0)
             {
-                lockDoorServerRpc();
+                if (!locked)
+                {
+                    lockDoorServerRpc();
+                }
+                else if (locked)
+                {
+                    unlockDoorServerRpc();
+                }
             }
-            else if (locked)
+            //switch modes
+            else if(param == 1) 
             {
-                unlockDoorServerRpc();
+                manualmode = !manualmode;
+                //
+                if (manualmode)
+                {
+                    modeLeverPart.transform.localRotation = Quaternion.Euler(0f,0f,90f);
+                    modeLightGreen.GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials()[3];
+                    modeLightRed.GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials()[1];
+                }
+                else
+                {
+                    modeLeverPart.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+                    modeLightGreen.GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials()[0];
+                    modeLightRed.GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials()[4];
+                }
+                
+            }
+            //open/close in manual mode
+            else if(param == 2)
+            {
+                if (isPowered && (!locked && isRunning))
+                {
+                    if (!isLOpen && !isROpen)//should these be network vars?
+                    {
+                        OpenDoorServerRpc();
+                    }
+                    else if (!isLClosed && !isRClosed)
+                    {
+                        CloseDoorServerRpc();
+                    }
+                }
             }
         }
 
@@ -637,64 +691,64 @@ namespace ProjectUniverse.Animation.Controllers
 
         public void doorLIsOpening()
         {
-            isLOpening = true;
-            isLClosing = false;
+            //isLOpening = true;
+            //isLClosing = false;
             isLOpen = false;
             isLClosed = false;
         }
 
         public void doorLIsClosing()
         {
-            isLOpening = false;
-            isLClosing = true;
+            //isLOpening = false;
+            //isLClosing = true;
             isLOpen = false;
             isLClosed = false;
         }
 
         public void doorLIsClosed()
         {
-            isLOpening = false;
-            isLClosing = false;
+            //isLOpening = false;
+            //isLClosing = false;
             isLOpen = false;
             isLClosed = true;
         }
 
         public void doorLIsOpen()
         {
-            isLOpening = false;
-            isLClosing = false;
+            //isLOpening = false;
+            //isLClosing = false;
             isLOpen = true;
             isLClosed = false;
         }
 
         public void doorRIsOpening()
         {
-            isROpening = true;
-            isRClosing = false;
+            //isROpening = true;
+            //isRClosing = false;
             isROpen = false;
             isRClosed = false;
         }
 
         public void doorRIsClosing()
         {
-            isROpening = false;
-            isRClosing = true;
+            //isROpening = false;
+            //isRClosing = true;
             isROpen = false;
             isRClosed = false;
         }
 
         public void doorRIsClosed()
         {
-            isROpening = false;
-            isRClosing = false;
+            //isROpening = false;
+            //isRClosing = false;
             isROpen = false;
             isRClosed = true;
         }
 
         public void doorRIsOpen()
         {
-            isROpening = false;
-            isRClosing = false;
+            //isROpening = false;
+            //isRClosing = false;
             isROpen = true;
             isRClosed = false;
         }

@@ -20,7 +20,7 @@ GameObject:
   m_TagString: IBreaker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 1
+  m_StaticEditorFlags: 19
   m_IsActive: 1
 --- !u!4 &6736541434594287187
 Transform:
@@ -198,7 +198,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 16
   m_IsActive: 1
 --- !u!4 &6728581533404363059
 Transform:
@@ -317,10 +317,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
       value: BreakerBox_Switch (24)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -382,10 +392,35 @@ PrefabInstance:
       propertyPath: numID
       value: 24
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 7237218947801501818, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: numID
       value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 654c4d70eb399ea4ea29bb7aeffa90b9, type: 3}
@@ -402,10 +437,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
       value: BreakerBox_Switch
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -462,6 +507,31 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 654c4d70eb399ea4ea29bb7aeffa90b9, type: 3}
 --- !u!4 &5615687963300475118 stripped
@@ -477,10 +547,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
       value: BreakerBox_Switch (14)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -542,10 +622,35 @@ PrefabInstance:
       propertyPath: numID
       value: 14
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 7237218947801501818, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: numID
       value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 654c4d70eb399ea4ea29bb7aeffa90b9, type: 3}
@@ -562,10 +667,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
       value: BreakerBox_Switch (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -627,10 +742,35 @@ PrefabInstance:
       propertyPath: numID
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 7237218947801501818, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: numID
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 654c4d70eb399ea4ea29bb7aeffa90b9, type: 3}
@@ -647,10 +787,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
       value: BreakerBox_Switch (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -712,10 +862,35 @@ PrefabInstance:
       propertyPath: numID
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 7237218947801501818, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: numID
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 654c4d70eb399ea4ea29bb7aeffa90b9, type: 3}
@@ -732,10 +907,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
       value: BreakerBox_Switch (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -797,10 +982,35 @@ PrefabInstance:
       propertyPath: numID
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 7237218947801501818, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: numID
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 654c4d70eb399ea4ea29bb7aeffa90b9, type: 3}
@@ -817,10 +1027,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
       value: BreakerBox_Switch (27)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -882,10 +1102,35 @@ PrefabInstance:
       propertyPath: numID
       value: 27
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 7237218947801501818, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: numID
       value: 27
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 654c4d70eb399ea4ea29bb7aeffa90b9, type: 3}
@@ -902,10 +1147,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
       value: BreakerBox_Switch (15)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -967,10 +1222,35 @@ PrefabInstance:
       propertyPath: numID
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 7237218947801501818, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: numID
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 654c4d70eb399ea4ea29bb7aeffa90b9, type: 3}
@@ -987,10 +1267,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
       value: BreakerBox_Switch (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -1052,10 +1342,35 @@ PrefabInstance:
       propertyPath: numID
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 7237218947801501818, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: numID
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 654c4d70eb399ea4ea29bb7aeffa90b9, type: 3}
@@ -1072,10 +1387,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
       value: BreakerBox_Switch (20)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -1137,10 +1462,35 @@ PrefabInstance:
       propertyPath: numID
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 7237218947801501818, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: numID
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 654c4d70eb399ea4ea29bb7aeffa90b9, type: 3}
@@ -1157,10 +1507,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
       value: BreakerBox_Switch (28)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -1222,10 +1582,35 @@ PrefabInstance:
       propertyPath: numID
       value: 28
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 7237218947801501818, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: numID
       value: 28
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 654c4d70eb399ea4ea29bb7aeffa90b9, type: 3}
@@ -1242,10 +1627,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
       value: BreakerBox_Switch (25)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -1307,10 +1702,35 @@ PrefabInstance:
       propertyPath: numID
       value: 25
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 7237218947801501818, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: numID
       value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 654c4d70eb399ea4ea29bb7aeffa90b9, type: 3}
@@ -1327,10 +1747,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
       value: BreakerBox_Switch (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -1392,10 +1822,35 @@ PrefabInstance:
       propertyPath: numID
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 7237218947801501818, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: numID
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 654c4d70eb399ea4ea29bb7aeffa90b9, type: 3}
@@ -1412,10 +1867,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
       value: BreakerBox_Switch (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -1477,10 +1942,35 @@ PrefabInstance:
       propertyPath: numID
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 7237218947801501818, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: numID
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 654c4d70eb399ea4ea29bb7aeffa90b9, type: 3}
@@ -1497,6 +1987,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
@@ -1506,6 +2001,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -1567,10 +2067,35 @@ PrefabInstance:
       propertyPath: numID
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 7237218947801501818, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: numID
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 654c4d70eb399ea4ea29bb7aeffa90b9, type: 3}
@@ -1587,10 +2112,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
       value: BreakerBox_Switch (29)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -1652,10 +2187,35 @@ PrefabInstance:
       propertyPath: numID
       value: 29
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 7237218947801501818, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: numID
       value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 654c4d70eb399ea4ea29bb7aeffa90b9, type: 3}
@@ -1672,10 +2232,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
       value: BreakerBox_Switch (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -1737,10 +2307,35 @@ PrefabInstance:
       propertyPath: numID
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 7237218947801501818, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: numID
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 654c4d70eb399ea4ea29bb7aeffa90b9, type: 3}
@@ -1757,10 +2352,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
       value: BreakerBox_Switch (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -1822,10 +2427,35 @@ PrefabInstance:
       propertyPath: numID
       value: 12
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 7237218947801501818, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: numID
       value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 654c4d70eb399ea4ea29bb7aeffa90b9, type: 3}
@@ -1842,10 +2472,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
       value: BreakerBox_Switch (23)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -1907,10 +2547,35 @@ PrefabInstance:
       propertyPath: numID
       value: 23
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 7237218947801501818, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: numID
       value: 23
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 654c4d70eb399ea4ea29bb7aeffa90b9, type: 3}
@@ -1927,10 +2592,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
       value: BreakerBox_Switch (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -1992,15 +2667,40 @@ PrefabInstance:
       propertyPath: numID
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 5021799550106992149, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_AnimatePhysics
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 7237218947801501818, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: numID
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 654c4d70eb399ea4ea29bb7aeffa90b9, type: 3}
@@ -2017,10 +2717,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
       value: BreakerBox_Switch (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -2082,10 +2792,35 @@ PrefabInstance:
       propertyPath: numID
       value: 13
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 7237218947801501818, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: numID
       value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 654c4d70eb399ea4ea29bb7aeffa90b9, type: 3}
@@ -2102,10 +2837,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
       value: BreakerBox_Switch (16)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -2167,10 +2912,35 @@ PrefabInstance:
       propertyPath: numID
       value: 16
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 7237218947801501818, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: numID
       value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 654c4d70eb399ea4ea29bb7aeffa90b9, type: 3}
@@ -2187,10 +2957,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
       value: BreakerBox_Switch (18)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -2252,10 +3032,35 @@ PrefabInstance:
       propertyPath: numID
       value: 18
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 7237218947801501818, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: numID
       value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 654c4d70eb399ea4ea29bb7aeffa90b9, type: 3}
@@ -2272,10 +3077,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
       value: BreakerBox_Switch (26)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -2337,10 +3152,35 @@ PrefabInstance:
       propertyPath: numID
       value: 26
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 7237218947801501818, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: numID
       value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 654c4d70eb399ea4ea29bb7aeffa90b9, type: 3}
@@ -2357,10 +3197,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
       value: BreakerBox_Switch (17)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -2422,9 +3272,34 @@ PrefabInstance:
       propertyPath: numID
       value: 17
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 7237218947801501818, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: numID
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
       value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2442,10 +3317,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
       value: BreakerBox_Switch (22)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -2507,10 +3392,35 @@ PrefabInstance:
       propertyPath: numID
       value: 22
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 7237218947801501818, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: numID
       value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 654c4d70eb399ea4ea29bb7aeffa90b9, type: 3}
@@ -2527,10 +3437,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
       value: BreakerBox_Switch (19)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -2592,10 +3512,35 @@ PrefabInstance:
       propertyPath: numID
       value: 19
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 7237218947801501818, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: numID
       value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 654c4d70eb399ea4ea29bb7aeffa90b9, type: 3}
@@ -2612,10 +3557,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
       value: BreakerBox_Switch (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -2677,10 +3632,35 @@ PrefabInstance:
       propertyPath: numID
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 7237218947801501818, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: numID
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 654c4d70eb399ea4ea29bb7aeffa90b9, type: 3}
@@ -2697,10 +3677,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
       value: BreakerBox_Switch (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -2762,10 +3752,35 @@ PrefabInstance:
       propertyPath: numID
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 7237218947801501818, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: numID
       value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 654c4d70eb399ea4ea29bb7aeffa90b9, type: 3}
@@ -2782,10 +3797,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6736541434594287187}
     m_Modifications:
+    - target: {fileID: 667391433347736219, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: m_Name
       value: BreakerBox_Switch (21)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407326536093340922, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1786808287336025664, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
@@ -2847,10 +3872,35 @@ PrefabInstance:
       propertyPath: numID
       value: 21
       objectReference: {fileID: 0}
+    - target: {fileID: 2253697393614113883, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100516078094027861, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389714271933758092, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 7237218947801501818, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
         type: 3}
       propertyPath: numID
       value: 21
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394765695762844759, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031159517736282007, guid: 654c4d70eb399ea4ea29bb7aeffa90b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 654c4d70eb399ea4ea29bb7aeffa90b9, type: 3}

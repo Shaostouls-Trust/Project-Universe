@@ -7,34 +7,52 @@ namespace ProjectUniverse.Environment.Volumes
 {
     public class VolumeNode : MonoBehaviour
     {
-        private GameObject linkedVolume;
+        [SerializeField] private GameObject linkedVolume;
         private GameObject globalVolume;
         [SerializeField] private GameObject originDoor;
+        [SerializeField] private bool linkByImpact;
 
-        public void SetVolumeLink(GameObject volume)
+        public bool LinkByImpact
         {
-            linkedVolume = volume;
+            get { return linkByImpact; }
         }
 
-        public void SetGlobalVolume(GameObject volume)
+        public GameObject VolumeLink
         {
-            globalVolume = volume;
+            get { return linkedVolume; }
+            set { linkedVolume = value; }
         }
+
+        public GameObject GlobalLink
+        {
+            get { return globalVolume; }
+            set { globalVolume = value; }
+        }
+
+        //public void SetVolumeLink(GameObject volume)
+        //{
+        //    linkedVolume = volume;
+        //}
+
+        //public void SetGlobalVolume(GameObject volume)
+        //{
+        //    globalVolume = volume;
+        //}
 
         public GameObject GetDoor()
         {
             return originDoor;
         }
 
-        public GameObject GetVolumeLink()
-        {
-            return linkedVolume;
-        }
+        //public GameObject GetVolumeLink()
+        //{
+        //    return linkedVolume;
+        //}
 
-        public GameObject GetGlobalLink()
-        {
-            return globalVolume;
-        }
+        //public GameObject GetGlobalLink()
+        //{
+        //    return globalVolume;
+        //}
 
         public bool DoorState()
         {

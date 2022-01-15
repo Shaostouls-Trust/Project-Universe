@@ -42,8 +42,8 @@ public class WeaponSwitching : NetworkBehaviour
         {
             if (IsLocalPlayer)
             {
-                float axisdelt = ctx.ReadValue<float>();
-                if (axisdelt < 0f)//
+                Vector2 axisdelt = ctx.ReadValue<Vector2>();
+                if (axisdelt.y < 0f)//
                 {
                     if (selectedWeapon >= transform.childCount - 1)
                     {
@@ -53,7 +53,7 @@ public class WeaponSwitching : NetworkBehaviour
                     netSelectedWeapon.Value++;
                     selectedWeapon = netSelectedWeapon.Value;
                 }
-                else if (axisdelt > 0f)
+                else if (axisdelt.y > 0f)
                 {
                     if (selectedWeapon <= 0)
                     {

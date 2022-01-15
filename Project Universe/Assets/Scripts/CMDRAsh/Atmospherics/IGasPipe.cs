@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using ProjectUniverse.Environment.Volumes;
+using ProjectUniverse.Util;
 
 namespace ProjectUniverse.Environment.Gas
 {
@@ -157,49 +158,6 @@ namespace ProjectUniverse.Environment.Gas
         }
 
         /// <summary>
-        /// Try to remove X amount from the provided gas. 
-        /// Return the removed gas. Out param is the gas from which amount was taken.
-        /// </summary>
-        /// <param name="amount"></param>
-        /// <param name="gasFrom"></param>
-        /// <returns></returns>
-        public IGas SubtractGas(float amountPerSecond, IGas gasFrom, out IGas remainder)
-        {
-            float amount = amountPerSecond * Time.deltaTime;
-            IGas returnGas = new IGas(gasFrom.GetIDName(), gasFrom.GetTemp(), 0.0f);
-            returnGas.SetLocalPressure(gasFrom.GetLocalPressure());
-            returnGas.SetLocalVolume(gasFrom.GetLocalVolume());
-            float originalConc = gasFrom.GetConcentration();
-            //subtract conc
-            float remainingConc = gasFrom.GetConcentration() - amount;
-            if (remainingConc > 0)
-            {
-                gasFrom.SetConcentration(remainingConc);
-                returnGas.SetConcentration(amount);
-            }
-            else
-            {
-                returnGas.SetConcentration(gasFrom.GetConcentration());
-                gasFrom.SetConcentration(0.0f);
-            }
-            ///NOTE: IMPORTANT!
-            ///this pressure loss calculation is banjaxed, and is only used to remove pressure from the main duct
-            ///The pressure transfered into the outflow here is 2.5-3.0X below the needed 1.0m3 output to fill the 519m3 test room
-            ///to 1.0atm while also having +-100% oxygenation. This is likely due to the input volume being 0.4m3, not 1.0m3.
-            ///
-            /// Due to this, pressure for the room is calculated INSIDE the room volume, based on wholesale concentration v room volume.
-            ///
-
-            float gasFromPressurePercent = gasFrom.GetConcentration() / originalConc;
-            gasFrom.SetLocalPressure(gasFrom.GetLocalPressure() * gasFromPressurePercent);
-            float returnGasPressurePercent = returnGas.GetConcentration() / originalConc;
-            returnGas.SetLocalPressure((returnGas.GetLocalPressure() * returnGasPressurePercent));
-
-            remainder = gasFrom;
-            return returnGas;
-        }
-
-        /// <summary>
         /// Check the gas pipe's internal gas list for duplicates and combine them. totalPressure is the pipe's global pressure
         /// </summary>
         /// <param name="totalPressure"></param>
@@ -219,7 +177,7 @@ namespace ProjectUniverse.Environment.Gas
                         {
                             if (newGassesList[i].GetIDName() == newGassesList[j].GetIDName())
                             {
-                                IGas EQgas = CombineGases(gasses[i], gasses[j], totalPressure);
+                                IGas EQgas = Utils.CombineGases(gasses[i], gasses[j], totalPressure);
                                 newGassesList.Remove(gasses[i]);
                                 newGassesList.Remove(gasses[j - 1]);
                                 newGassesList.Add(EQgas);
@@ -238,36 +196,6 @@ namespace ProjectUniverse.Environment.Gas
                 //gasses is empty or only has one has in it
                 return gasses;
             }
-        }
-
-        /// <summary>
-        /// Equalize the Temperature and add the concentration of the two passed gasses. Then, recalc density.
-        /// </summary>
-        /// <param name="gasA"></param>
-        /// <param name="gasB"></param>
-        /// <returns></returns>
-        public IGas CombineGases(IGas gasA, IGas gasB, float localPressure)
-        {
-            float gasTemp;
-            float gasConc;
-            //float gasPressure;
-
-            float gasAt = gasA.GetTemp();
-            float gasBt = gasB.GetTemp();
-            gasTemp = (gasAt + gasBt) / 2;
-            gasA.SetTemp(gasTemp);
-
-            gasConc = gasA.GetConcentration() + gasB.GetConcentration();
-            gasA.SetConcentration(gasConc);
-
-            ///overall pressure is computed seperately
-            //float gasAp = gasA.GetLocalPressure();
-            //float gasBp = gasB.GetLocalPressure();
-            //gasPressure = (gasAp + gasBp);
-            //gas pressure and duct pressure are the same
-            gasA.SetLocalPressure((float)Math.Round(localPressure, 4));
-            gasA.CalculateAtmosphericDensity();
-            return gasA;
         }
 
         void Update()
@@ -349,7 +277,7 @@ namespace ProjectUniverse.Environment.Gas
                                 float ratio = gasses[g].GetConcentration() / totalConc;
                                 Debug.Log("transfer ratio: " + ratio);
                                 //create the gas that will be sent into the room
-                                IGas outflowX = SubtractGas(1f, gasses[g], out remainder);
+                                IGas outflowX = Utils.SubtractGas(1f, gasses[g], out remainder);
                                 gasses[g] = remainder;
                                 //the change in pressure of the gas needs reflected to the duct.
                                 globalPressure = gasses[g].GetLocalPressure();
@@ -358,7 +286,7 @@ namespace ProjectUniverse.Environment.Gas
                         }
                         else
                         {
-                            IGas outflow = SubtractGas(1f, gasses[0], out remainder);//gasses[0] will eventually not be oxygen
+                            IGas outflow = Utils.SubtractGas(1f, gasses[0], out remainder);//gasses[0] will eventually not be oxygen
                             gasses[0] = remainder;
                             //the change in pressure of the gas needs reflected to the duct.
                             globalPressure = gasses[0].GetLocalPressure();

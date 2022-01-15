@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 384c4d03a551c44448145f4093304119, type: 3}
   m_Name: ScreenSpaceReflection
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   m_AdvancedMode: 0
   quality:
     m_OverrideState: 1
@@ -27,15 +27,15 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0
   reflectSky:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0
   depthBufferThickness:
     m_OverrideState: 1
-    m_Value: 0.045
+    m_Value: 0.05
     min: 0
     max: 1
   screenFadeDistance:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0.1
     min: 0
     max: 1
@@ -64,12 +64,12 @@ MonoBehaviour:
     max: 31
   m_MinSmoothness:
     m_OverrideState: 1
-    m_Value: 0.45
+    m_Value: 0.5
     min: 0
     max: 1
   m_SmoothnessFadeStart:
     m_OverrideState: 1
-    m_Value: 0.5
+    m_Value: 0.6
     min: 0
     max: 1
   m_RayMaxIterations:
@@ -122,7 +122,7 @@ MonoBehaviour:
     m_Value: {fileID: 0}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.5
+    m_Value: 0.4
     min: 0
     max: 1
   m_MaxSamples:
@@ -297,7 +297,7 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 1
   enabled:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
   colorMode:
     m_OverrideState: 0
@@ -923,7 +923,7 @@ MonoBehaviour:
     max: 1
   smoothness:
     m_OverrideState: 1
-    m_Value: 0.2
+    m_Value: 0.25
     min: 0.01
     max: 1
   roundness:
@@ -1005,7 +1005,7 @@ MonoBehaviour:
     m_Value: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 1.5
     min: 0
     max: 4
   directLightingStrength:
@@ -1273,7 +1273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32b6af8f7ad32324cb6941c3290e5895, type: 3}
   m_Name: MicroShadowing
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   m_AdvancedMode: 0
   enable:
     m_OverrideState: 1
@@ -1569,7 +1569,7 @@ MonoBehaviour:
   m_AdvancedMode: 0
   quality:
     m_OverrideState: 1
-    m_Value: 3
+    m_Value: 1
   enable:
     m_OverrideState: 1
     m_Value: 1
@@ -1616,7 +1616,7 @@ MonoBehaviour:
     max: 1
   m_SampleCount:
     m_OverrideState: 1
-    m_Value: 16
+    m_Value: 15
     min: 4
     max: 64
 --- !u!114 &4763816862998786515
@@ -1631,7 +1631,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42ef2681fa3dc8c4fa031f044e68c63f, type: 3}
   m_Name: GlobalIllumination
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   m_AdvancedMode: 0
   quality:
     m_OverrideState: 1
@@ -1774,7 +1774,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f086a068d4c5889438831b3ae9afc11c, type: 3}
   m_Name: Tonemapping
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   m_AdvancedMode: 0
   mode:
     m_OverrideState: 1
@@ -1869,14 +1869,14 @@ MonoBehaviour:
   m_AdvancedMode: 0
   indirectDiffuseLightingMultiplier:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.95
     min: 0
   indirectDiffuseLightingLayers:
     m_OverrideState: 0
     m_Value: 255
   reflectionLightingMultiplier:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.95
     min: 0
   reflectionLightingLayers:
     m_OverrideState: 0

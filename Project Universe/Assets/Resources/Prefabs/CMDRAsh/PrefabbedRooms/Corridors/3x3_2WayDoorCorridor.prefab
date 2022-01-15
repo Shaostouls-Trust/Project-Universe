@@ -212,7 +212,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a3b0017226b6d84f8fc6fee2d2731de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  linkedVolume: {fileID: 0}
   originDoor: {fileID: 4144652391751017148}
+  linkByImpact: 0
 --- !u!1 &6391335731562684078
 GameObject:
   m_ObjectHideFlags: 0
@@ -280,7 +282,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isGlobal: 0
   priority: 10
-  blendDistance: 1
+  blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: 150b8c9e75f468344a1d55e4f1b60cc3, type: 2}
 --- !u!114 &4359876841593103406
@@ -301,7 +303,9 @@ MonoBehaviour:
   humidity: 25
   toxicity: 0
   roomFluidPlanes: []
-  neighborEmpties: []
+  neighborEmpties:
+  - {fileID: 6537786895410210321}
+  - {fileID: 3786387591200515021}
   OxygenatedRoom_Priority: 10
   DeOxygenatedRoom_Priority: 9
 --- !u!114 &6002423821532133197
@@ -318,7 +322,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isGlobal: 0
   priority: 9
-  blendDistance: 1
+  blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: f17e8e832399e2147b0c4819936380e7, type: 2}
 --- !u!1 &6537786895410210321
@@ -395,7 +399,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a3b0017226b6d84f8fc6fee2d2731de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  linkedVolume: {fileID: 0}
   originDoor: {fileID: 7753726259819945050}
+  linkByImpact: 0
 --- !u!1 &6648525393611270403
 GameObject:
   m_ObjectHideFlags: 0

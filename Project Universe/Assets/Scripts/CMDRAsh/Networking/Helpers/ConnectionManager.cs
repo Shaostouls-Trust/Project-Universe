@@ -30,7 +30,7 @@ namespace ProjectUniverse.Networking
             NetworkManager.Singleton.StartHost(new Vector3?(DefSpawnPosMarker.transform.position));//starthost takes in the starting position
             if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
             {
-                networkedClient.PlayerObject.gameObject.GetComponent<SupplementalController>().LockCursor();
+                networkedClient.PlayerObject.gameObject.GetComponent<SupplementalController>().LockOnlyCursor();
             }
             Debug.Log("Started Host");
         }

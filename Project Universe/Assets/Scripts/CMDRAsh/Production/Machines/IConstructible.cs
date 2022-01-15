@@ -46,7 +46,7 @@ namespace ProjectUniverse.Base
 				{
 					Consumable_Component comp0 = new Consumable_Component(IConstructible_RequiredComponents[x].Item1.GetComponentType(),
 							 0, IConstructible_RequiredComponents[x].Item1);
-					ItemStack stackx = new ItemStack(comp0.GetComponentID(), 999, typeof(Consumable_Component));
+					ItemStack stackx = new ItemStack(comp0.ComponentID, 999, typeof(Consumable_Component));
 					IConstructible_ComponentsReal.Add(stackx);
 				}
 				IConstructible_BuildTimeRemaining = CalculateBuildTime();
@@ -77,7 +77,7 @@ namespace ProjectUniverse.Base
 					{
 						Consumable_Component compToAdd = new Consumable_Component(IConstructible_RequiredComponents[i].Item1.GetComponentType(),
 							 1, IConstructible_RequiredComponents[i].Item1);
-						ItemStack stack = new ItemStack(compToAdd.GetComponentID(), 999, typeof(Consumable_Component));
+						ItemStack stack = new ItemStack(compToAdd.ComponentID, 999, typeof(Consumable_Component));
 						stack.AddItem(compToAdd);
 						bool isAdded = false;
 						for (int a = 0; a < IConstructible_ComponentsReal.Count; a++)
@@ -372,7 +372,7 @@ namespace ProjectUniverse.Base
 									IConstructible_MachineFullyBuilt = false;
 									IConstructible_ComponentsReal[c].RemoveTArrayIndex(0);
 									//inject a 'dead' dummy component into the last index of the TArray. This is to prevent NullPointers
-									Consumable_Component dummy = new Consumable_Component(comp.GetComponentID(), 0, comp.GetComponentDefinition());
+								    Consumable_Component dummy = new Consumable_Component(comp.ComponentID, 0, comp.GetComponentDefinition());
 									dummy.RemainingHealth = 0f;
 									//if lastindex is 0 then this is auto null pointer
 									if(IConstructible_ComponentsReal[c].LastIndex == 0)

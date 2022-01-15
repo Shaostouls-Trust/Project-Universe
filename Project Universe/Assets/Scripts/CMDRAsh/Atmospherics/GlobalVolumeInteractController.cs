@@ -57,17 +57,21 @@ namespace ProjectUniverse.Environment.Volumes
                     {
                         foreach (GameObject node in VACs[i].GetConnectedNeighbors())
                         {
-                            node.GetComponent<Rigidbody>().detectCollisions = true;
-                            node.GetComponent<BoxCollider>().enabled = true;
+                            //only reset the unlinked volumes
+                            if (node.GetComponent<VolumeNode>().LinkByImpact)
+                            {
+                                node.GetComponent<Rigidbody>().detectCollisions = true;
+                                node.GetComponent<BoxCollider>().enabled = true;
+                            }
                         }
                         //functionally wipe the neighbormap
-                        VACs[i].SetConnectedNeighbors(new List<GameObject>());
+                        //VACs[i].SetConnectedNeighbors(new List<GameObject>());
                     }
                     VGACs[j].SetExposedNodes(new List<GameObject>());
                 }
             }
             clear = true;
-            StopCoroutine("InstaceCollector");
+            StopCoroutine("InstanceCollector");
         }
 
         void Update()

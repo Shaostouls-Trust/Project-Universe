@@ -166,12 +166,12 @@ namespace ProjectUniverse
                 },
                 {
                     ""name"": ""ScrollWheel"",
-                    ""type"": ""Value"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""21e7e5cb-8c79-4fa0-9dd5-c53aa078eb7d"",
-                    ""expectedControlType"": """",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": true
+                    ""initialStateCheck"": false
                 },
                 {
                     ""name"": ""Shift"",
@@ -396,7 +396,7 @@ namespace ProjectUniverse
                 {
                     ""name"": """",
                     ""id"": ""9dabd72b-cfa1-4d4f-8e81-4c2f19702211"",
-                    ""path"": ""<Keyboard>/c"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
@@ -495,7 +495,7 @@ namespace ProjectUniverse
                 {
                     ""name"": """",
                     ""id"": ""8e53d8c3-7040-4185-a2e4-4f21105c2d37"",
-                    ""path"": ""<Mouse>/scroll/y"",
+                    ""path"": ""<Mouse>/scroll"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse;Touch"",

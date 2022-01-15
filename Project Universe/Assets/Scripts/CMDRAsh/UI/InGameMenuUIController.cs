@@ -40,7 +40,7 @@ public class InGameMenuUIController : MonoBehaviour
                     player = networkedClient.PlayerObject.gameObject;
                 }
             }
-            player.GetComponent<SupplementalController>().LockAndFreeCursor();
+            player.GetComponent<SupplementalController>().LockScreenAndFreeCursor();
             menu.enabled = true;
         };
     }
@@ -48,7 +48,7 @@ public class InGameMenuUIController : MonoBehaviour
     public void ReturnToGame()
     {
         menu.enabled = false;
-        player.GetComponent<SupplementalController>().UnlockCursor();
+        player.GetComponent<SupplementalController>().FreeScreenAndLockCursor();
     }
 
     public void BackToMainMenuBar2()

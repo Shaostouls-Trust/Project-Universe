@@ -119,11 +119,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42ef2681fa3dc8c4fa031f044e68c63f, type: 3}
   m_Name: GlobalIllumination
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   m_AdvancedMode: 0
   quality:
     m_OverrideState: 1
-    m_Value: 3
+    m_Value: 0
   enable:
     m_OverrideState: 1
     m_Value: 1
@@ -142,7 +142,7 @@ MonoBehaviour:
     m_Value: 0
   m_FilterRadius:
     m_OverrideState: 1
-    m_Value: 4
+    m_Value: 3
     min: 2
     max: 8
   rayTracing:
@@ -1069,7 +1069,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32b6af8f7ad32324cb6941c3290e5895, type: 3}
   m_Name: MicroShadowing
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   m_AdvancedMode: 0
   enable:
     m_OverrideState: 1
@@ -1129,7 +1129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 384c4d03a551c44448145f4093304119, type: 3}
   m_Name: ScreenSpaceReflection
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   m_AdvancedMode: 0
   quality:
     m_OverrideState: 1
@@ -1144,7 +1144,7 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 0
   reflectSky:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0
   depthBufferThickness:
     m_OverrideState: 1
@@ -1345,10 +1345,10 @@ MonoBehaviour:
     m_Value: 1
   enabled:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   colorMode:
-    m_OverrideState: 0
-    m_Value: 1
+    m_OverrideState: 1
+    m_Value: 0
   color:
     m_OverrideState: 0
     m_Value: {r: 0.5, g: 0.5, b: 0.5, a: 1}
@@ -1383,7 +1383,7 @@ MonoBehaviour:
     m_Value: -1000
   maximumHeight:
     m_OverrideState: 1
-    m_Value: 1000
+    m_Value: 500
   meanFreePath:
     m_OverrideState: 1
     m_Value: 6
@@ -1393,13 +1393,13 @@ MonoBehaviour:
     m_Value: 1
   albedo:
     m_OverrideState: 1
-    m_Value: {r: 0.93773586, g: 0.98984826, b: 1, a: 1}
+    m_Value: {r: 0.8627451, g: 1, b: 1, a: 1}
     hdr: 0
     showAlpha: 1
     showEyeDropper: 1
   globalLightProbeDimmer:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.25
     min: 0
     max: 1
   depthExtent:
@@ -1460,7 +1460,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f086a068d4c5889438831b3ae9afc11c, type: 3}
   m_Name: Tonemapping
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   m_AdvancedMode: 0
   mode:
     m_OverrideState: 1
@@ -1953,7 +1953,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 598e2d32e2c7b0c418e030c3236d663a, type: 3}
   m_Name: ChromaticAberration
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   m_AdvancedMode: 0
   quality:
     m_OverrideState: 1

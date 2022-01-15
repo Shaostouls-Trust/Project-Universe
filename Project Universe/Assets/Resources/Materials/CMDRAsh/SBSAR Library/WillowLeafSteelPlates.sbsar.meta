@@ -14,23 +14,25 @@ ScriptedImporter:
   - graphLabel: WillowLeafSteelPlates
     prototypeName: WillowLeafSteelPlates
     graphDescIndex: 0
-    generateAllOutputs: 0
+    generateAllOutputs: 1
     generateMipMaps: 1
     preset: " <sbspreset pkgurl=\"pkg://WillowLeafSteelPlates\" label=\"\" >\n  <presetinput
       identifier=\"$outputsize\" uid=\"466233605\" type=\"8\" value=\"11,11\" />\n 
       <presetinput identifier=\"LeafPattern_X\" uid=\"1901763602\" type=\"4\" value=\"1\"
       />\n  <presetinput identifier=\"LeafPattern_Y\" uid=\"1901758019\" type=\"4\"
       value=\"1\" />\n  <presetinput identifier=\"LeafPatternSize\" uid=\"1901433676\"
-      type=\"0\" value=\"0\" />\n  <presetinput identifier=\"Tile_X\" uid=\"1901370734\"
-      type=\"4\" value=\"1\" />\n  <presetinput identifier=\"Tile_Y\" uid=\"1901365129\"
-      type=\"4\" value=\"1\" />\n  <presetinput identifier=\"Screw_Size\" uid=\"1901348631\"
-      type=\"0\" value=\"0.25\" />\n  <presetinput identifier=\"BaseRoughness_high\"
-      uid=\"1901476944\" type=\"0\" value=\"0.325\" />\n  <presetinput identifier=\"BaseRoughness_Low\"
-      uid=\"1901469993\" type=\"0\" value=\"0.25\" />\n  <presetinput identifier=\"Dirt_Roughness\"
-      uid=\"1901483685\" type=\"0\" value=\"0.5\" />\n  <presetinput identifier=\"Rust_Contrast\"
-      uid=\"1898342969\" type=\"0\" value=\"0.8\" />\n  <presetinput identifier=\"Scratches\"
-      uid=\"1901783870\" type=\"4\" value=\"95\" />\n  <presetinput identifier=\"Scratches_Thickness\"
-      uid=\"1901748075\" type=\"0\" value=\"0.59\" />\n </sbspreset>\n"
+      type=\"0\" value=\"0\" />\n  <presetinput identifier=\"Screw_Size\" uid=\"1901348631\"
+      type=\"0\" value=\"0.3\" />\n  <presetinput identifier=\"BaseRoughness_high\"
+      uid=\"1901476944\" type=\"0\" value=\"0.706\" />\n  <presetinput identifier=\"BaseRoughness_Low\"
+      uid=\"1901469993\" type=\"0\" value=\"0.32\" />\n  <presetinput identifier=\"Dirt_Roughness\"
+      uid=\"1901483685\" type=\"0\" value=\"0.8\" />\n  <presetinput identifier=\"Rust_Amount\"
+      uid=\"1898341741\" type=\"0\" value=\"0\" />\n  <presetinput identifier=\"Rust_Contrast\"
+      uid=\"1898342969\" type=\"0\" value=\"0.8\" />\n  <presetinput identifier=\"Dirt_Amount\"
+      uid=\"1898399222\" type=\"0\" value=\"0.7\" />\n  <presetinput identifier=\"Pattern_Edge_Damage\"
+      uid=\"1902026235\" type=\"0\" value=\"0.336\" />\n  <presetinput identifier=\"Metal_Damage\"
+      uid=\"1901676271\" type=\"0\" value=\"0.118\" />\n  <presetinput identifier=\"Scratches\"
+      uid=\"1901783870\" type=\"4\" value=\"35\" />\n  <presetinput identifier=\"Scratches_Thickness\"
+      uid=\"1901748075\" type=\"0\" value=\"0.4\" />\n </sbspreset>\n"
     shaderName: HDRP/LitTessellation
     materialProperties:
       shader: {fileID: 4800000, guid: 756bac9090102564582875f4c7e30202, type: 3}
@@ -556,5 +558,8 @@ ScriptedImporter:
     generatedTextures:
     - {fileID: 3723509107341758633, guid: b8c87860a5b43f345aff021ee0ae9c3c, type: 3}
     - {fileID: -1966131473195309839, guid: b8c87860a5b43f345aff021ee0ae9c3c, type: 3}
+    - {fileID: 4932817921076019816, guid: b8c87860a5b43f345aff021ee0ae9c3c, type: 3}
+    - {fileID: 6917271541316642666, guid: b8c87860a5b43f345aff021ee0ae9c3c, type: 3}
     - {fileID: 3814875995883376478, guid: b8c87860a5b43f345aff021ee0ae9c3c, type: 3}
+    - {fileID: -2629075401980556380, guid: b8c87860a5b43f345aff021ee0ae9c3c, type: 3}
     - {fileID: 3642608451957644877, guid: b8c87860a5b43f345aff021ee0ae9c3c, type: 3}

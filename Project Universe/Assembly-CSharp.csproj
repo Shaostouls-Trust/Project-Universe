@@ -130,8 +130,9 @@
     <Compile Include="Assets\Scripts\Koro\CraftingTablet.cs" />
     <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\_Infinity_Exemple_Scripts\Infinity_SwitchEngine_01.cs" />
     <Compile Include="Assets\Character Movement Fundamentals\Source\Scripts\Showcase\AlignRigidbodyToTarget.cs" />
-    <Compile Include="Assets\Impact Interaction System\Demo\Scripts\UncapAngularVelocity.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Player\PlayerAnimationController.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Generator\Cylinders.cs" />
+    <Compile Include="Assets\Impact Interaction System\Demo\Scripts\UncapAngularVelocity.cs" />
     <Compile Include="Assets\Archimatix\Scenes Runtime\RuntimeCube\CubeRuntimeController.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\plugins\SoftCircuits\SCTextParser.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters\GridRepeater.cs" />
@@ -171,6 +172,7 @@
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\ScaleBias.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Triggers\Physics Triggers\ImpactSlideAndRollTriggerBase.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Deformers\ShearDeformer.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Player\MouseInputSystem.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters\StepRepeater.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Interactions\Particles\ImpactParticles.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\TriangulationDebugContext.cs" />
@@ -190,6 +192,7 @@
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Generator\Checker.cs" />
     <Compile Include="Assets\Character Movement Fundamentals\Source\Scripts\Showcase\DisableShadows.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Interactions\Decals\DecalInteractionResult.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Player\PointerDetector.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Triggers\Physics Triggers\ImpactParticleCollisionTrigger.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Production\IngotDefinition.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Production\Machines\IConstructible.cs" />
@@ -275,8 +278,8 @@
     <Compile Include="Assets\Scripts\CMDRAsh\Utils.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Production\IngotLibrary.cs" />
     <Compile Include="Assets\Scripts\KhorneSyrup\Procedural\Primitives\MeshGeneration.cs" />
-    <Compile Include="Assets\BreakableAsteroids\Scripts\Fracture.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\Delaunay\Sweep\PointOnEdgeException.cs" />
+    <Compile Include="Assets\BreakableAsteroids\Scripts\Fracture.cs" />
     <Compile Include="Assets\Sci-Fi UI\Demo_Assets\scripts\GUI_Demo.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Production\MachineDefinition.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Atmospherics\DosimeterAudioController.cs" />
@@ -337,6 +340,7 @@
     <Compile Include="Assets\Scripts\KhorneSyrup\Player Controller\Interaction\Exploding_Prop.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Interactions\Audio\ImpactAudioSourceBase.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters2D\GridRepeater2D.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Player\PoVRotationTracker.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Scale.cs" />
     <Compile Include="Assets\Scripts\HaloReach252\SaveLoad\SaveLoad.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters\PlanRepeater.cs" />
@@ -430,6 +434,7 @@
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Generator\Const.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Meshers\CityExtrude.cs" />
     <Compile Include="Assets\Scripts\ObejctsInScene.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Player\PoVCamHeadTracker.cs" />
     <Compile Include="Assets\Character Movement Fundamentals\Source\Scripts\Showcase\FPSCounter.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Multiply.cs" />
     <Compile Include="Assets\Scripts\Koro\Farmingprototype1.cs" />
@@ -504,8 +509,8 @@
     <Compile Include="Assets\Scripts\Koro\GrapplingGun.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Production\Consumable_Ingot.cs" />
     <Compile Include="Assets\Scripts\Koro\Hammer.cs" />
-    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\_3D Scifi Kit Vol 3\Prefabs\Fx\Laser\_Scripts\LauncherLookAt.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Pather.cs" />
+    <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\_3D Scifi Kit Vol 3\Prefabs\Fx\Laser\_Scripts\LauncherLookAt.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters\PlanPlacer.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Utility\FixedArray3.cs" />
     <Compile Include="Assets\Scripts\KhorneSyrup\InventoryController\UIItem.cs" />
@@ -522,6 +527,7 @@
     <Compile Include="Assets\Scripts\CMDRAsh\UI\InventoryUIController.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Production\Raw\ProbabilityLibrary.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Serialization\SerializationHandler.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\PowerOutputController.cs" />
     <Compile Include="Assets\Scripts\ECS\Components\Component_PrefabEntity.cs" />
     <Compile Include="Assets\Scripts\Koro\Farmingprototype.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\Sets\PointSet.cs" />
@@ -623,6 +629,7 @@
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Deformers\DomicalDeformer.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Buttons\BreakerSwitch.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\IRouter.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Transfer\Ladder.cs" />
     <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\RoverAudio.cs" />
     <Compile Include="Assets\Character Movement Fundamentals\Source\Scripts\Controllers\SidescrollerController.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\InteractionElement.cs" />
@@ -633,6 +640,7 @@
     <Compile Include="Assets\SplineMesh\Scripts\MeshProcessing\MeshBender.cs" />
     <Compile Include="Assets\Character Movement Fundamentals\Source\Scripts\Input\Character\CharacterJoystickInput.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\UI\InGameMenuUIController.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Player\KeyboardInputSystem.cs" />
     <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\PhysicAddTorqueAtStart.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\Orientation.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Shapers\ImageShaper.cs" />
@@ -695,7 +703,6 @@
     <Compile Include="Assets\Archimatix\Scenes Runtime\SpaceshipShop\GrayShipDesigner.cs" />
     <Compile Include="Assets\Scripts\Koro\Grenade.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Select.cs" />
-    <Compile Include="Assets\Scripts\CMDRAsh\Player\PoVRotationTracker.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
@@ -722,6 +729,7 @@
     <None Include="Assets\Resources\Shaders\AshShader_A02.shader" />
     <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\COPYING.LESSER.txt" />
     <None Include="Assets\EffectExamples\Misc Effects\Prefabs\Readme_Dissolve_Respawn_.txt" />
+    <None Include="Assets\UMA\InternalDataStore\InGame\Resources\Shader\NormalShader.compute" />
     <None Include="Assets\Character Movement Fundamentals\Source\Misc\Shaders\OneSidedTextShader.shader" />
     <None Include="Assets\Character Movement Fundamentals\README.txt" />
     <None Include="Assets\Tiles.xml" />
@@ -737,14 +745,13 @@
     <None Include="Assets\Plastic External Assets\_Creepy_Cat\_3D Scifi Kit Vol 3\Shaders\GlassBumpDistort.shader" />
     <None Include="Assets\Plastic External Assets\_Creepy_Cat\_3D Scifi Kit Vol 3\Prefabs\Props\_Update 1.06-Station Ptolemy\_Planet_01\Materials\Planet_Base.shader" />
     <None Include="Assets\EffectExamples\Magic Effects\Shaders\Ice.shader" />
-    <None Include="Assets\Resources\Models\Tiles\Dev\floors\dev_floor\dev_floor.xml" />
     <None Include="Assets\AmplifyOcclusion\Readme.txt" />
     <None Include="Assets\EffectExamples\Misc Effects\Shaders\Respawn.shader" />
     <None Include="Assets\Impact Interaction System\Documentation\Readme.txt" />
-    <None Include="Assets\Resources\Models\Tiles\Dev\floors\dev_floor\Materials README.txt" />
     <None Include="Assets\AmplifyOcclusion\Resources\SRP\BlurPostProcessing.shader" />
     <None Include="Assets\Impact Interaction System\Demo\Sound Credits.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
+    <None Include="Assets\UMA\InternalDataStore\InGame\Resources\PlaceholderAssets\PlaceholderAssetsREADME.txt" />
     <None Include="Assets\Resources\Shaders\AshShader_Dissolve.shader" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
     <None Include="Assets\Archimatix\Library\ColorKeys.txt" />
@@ -756,6 +763,7 @@
     <None Include="Assets\Resources\Shaders\DevPlantShader.shader" />
     <None Include="Assets\Plastic External Assets\_Creepy_Cat\_3D Scifi Kit Vol 3\Shaders\GlassDirty.shader" />
     <None Include="Assets\Allegorithmic\Plugins\substance_sse2_blend.dll" />
+    <None Include="Assets\UMA\InternalDataStore\AssetVersion.xml" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\Resources\Models\Crops\Crops_Database.xml" />
     <None Include="Assets\AmplifyOcclusion\Resources\GTAO.cginc" />
@@ -768,6 +776,7 @@
     <None Include="Assets\AmplifyOcclusion\Resources\SRP\ApplyPostProcessing.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Surface.cginc" />
     <None Include="Assets\Resources\Characters\CharacterGenerator_FbxToBiped_Readme.txt" />
+    <None Include="Assets\UMA\Whats New in UMA.txt" />
     <None Include="Assets\Allegorithmic\Plugins\engine_build_info.txt" />
     <None Include="Assets\Tiles_Shaostoul.xml" />
     <None Include="Assets\Resources\Data\TypeDoor.xml" />
@@ -804,7 +813,6 @@
     <None Include="Assets\Plastic External Assets\_Creepy_Cat\_3D Scifi Kit Vol 3\Prefabs\Fx\Explosion\Shaders\SurfaceShader_VC.shader" />
     <None Include="Assets\Resources\Data\Production\QualityZone2.xml" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
-    <None Include="Assets\Sci-Fi Styled Modular Pack\Readme.txt" />
     <None Include="Assets\Archimatix\Library\ColorsPro.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile.shader" />
     <None Include="Assets\Plastic External Assets\_Creepy_Cat\_3D Scifi Kit Vol 3\Prefabs\Props\_Update 1.06-Station Ptolemy\_Planet_01\Materials\Planet_Clouds_Atmosphere.shader" />
@@ -1605,6 +1613,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="UMA_Examples_Editor.csproj">
+      <Project>{176187F2-51D9-F489-43CE-ABDCC7A1E2CB}</Project>
+      <Name>UMA_Examples_Editor</Name>
+    </ProjectReference>
     <ProjectReference Include="Substance.EditorHelper.csproj">
       <Project>{113A29BD-E382-3194-1986-7B07C6A5F236}</Project>
       <Name>Substance.EditorHelper</Name>
@@ -1625,9 +1637,29 @@
       <Project>{01D68D88-AF7B-EE07-10F8-90DDE4BDD29E}</Project>
       <Name>Substance.Platform</Name>
     </ProjectReference>
+    <ProjectReference Include="UMA_Content.csproj">
+      <Project>{A29E0F46-CAE6-221F-C713-FB6611894DF2}</Project>
+      <Name>UMA_Content</Name>
+    </ProjectReference>
+    <ProjectReference Include="UMA_Core.csproj">
+      <Project>{95FE3F1A-3CA3-D23D-5002-EF11B2BF0526}</Project>
+      <Name>UMA_Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="UMA_Core_Editor.csproj">
+      <Project>{43F81956-6393-D14F-2584-5389FDF8C719}</Project>
+      <Name>UMA_Core_Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="UMA_Examples.csproj">
+      <Project>{F85F320C-4B27-E11B-363A-5693227332EF}</Project>
+      <Name>UMA_Examples</Name>
+    </ProjectReference>
     <ProjectReference Include="Uween.Runtime.csproj">
       <Project>{3EDD4D74-26EB-4F77-D485-666973F3D45E}</Project>
       <Name>Uween.Runtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="Addressable_Editor.csproj">
+      <Project>{2223EB4B-2732-4FFD-1F9F-5ED51C8771A3}</Project>
+      <Name>Addressable_Editor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

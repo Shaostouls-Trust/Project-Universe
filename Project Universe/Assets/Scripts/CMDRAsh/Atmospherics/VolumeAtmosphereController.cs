@@ -6,6 +6,8 @@ using UnityEngine.Rendering;
 using ProjectUniverse.Environment.Gas;
 using ProjectUniverse.Environment.Fluid;
 using ProjectUniverse.Animation.Controllers;
+using UnityEngine.Profiling;
+using ProjectUniverse.Util;
 
 namespace ProjectUniverse.Environment.Volumes
 {
@@ -17,6 +19,9 @@ namespace ProjectUniverse.Environment.Volumes
         [SerializeField] private float roomVolume;
         [SerializeField] private float humidity;
         [SerializeField] private float toxicity;
+        /// <summary>
+        /// Order roomGases into a defined array for ease of access?
+        /// </summary>
         private List<IGas> roomGases = new List<IGas>();
         private List<IGas> gasesToEq = new List<IGas>();
         private List<IFluid> roomFluids = new List<IFluid>();
@@ -26,18 +31,20 @@ namespace ProjectUniverse.Environment.Volumes
         private List<GameObject> connectedNeighbors = new List<GameObject>();
         [SerializeField] private int OxygenatedRoom_Priority = 10;
         [SerializeField] private int DeOxygenatedRoom_Priority = 9;
+        public int limiter = 30;
 
         private void Start()
         {
             roomVolume = (gameObject.GetComponent<BoxCollider>().size.x *
                 gameObject.GetComponent<BoxCollider>().size.y *
                 gameObject.GetComponent<BoxCollider>().size.z);
-            roomGases.Add(new IGas("Oxygen", 70, roomVolume, 1.0f, roomVolume));
+            //roomGases.Add(new IGas("Oxygen", 70, roomVolume, 1.0f, roomVolume));
         }
 
         public float Temperature
         {
             get { return roomTemp; }
+            set { roomTemp = value; }
         }
         public float Oxygenation
         {
@@ -47,18 +54,26 @@ namespace ProjectUniverse.Environment.Volumes
         public float Pressure
         {
             get { return roomPressure; }
+            set { roomPressure = value; }
         }
         public float Toxicity
         {
             get { return toxicity; }
+            set { toxicity = value; }
+        }
+        public List<IGas> RoomGasses
+        {
+            get { return roomGases; }
+            set { roomGases = value; }
         }
 
         ///check doors
         ///if two doors are open
         ///check the two volumes
         ///go through equalization.
-        void Update()
+        void FixedUpdate()
         {
+            ///UnityEngine.Profiling.Profiler.BeginSample("Volume Equalization");
             //combine all same gasses in the volume
             //if (roomGases.Count > 1)
             //{
@@ -66,6 +81,7 @@ namespace ProjectUniverse.Environment.Volumes
             //}
             //check for the surround volumes
             //bool[] doorstates = DoorStates();
+            limiter--;
             for (int i = 0; i < neighborEmpties.Length; i++)//roomVolumeDoors.Length
             {
                 GameObject door = neighborEmpties[i].GetComponent<VolumeNode>().GetDoor();
@@ -73,13 +89,8 @@ namespace ProjectUniverse.Environment.Volumes
                 if (door.GetComponent<DoorAnimator>().OpenOrOpening())//roomVolumeDoors
                 {
                     Vector3 back = door.transform.TransformDirection(Vector3.back);//is Vector3.back for all cases?
-                                                                                   //raycast to check neighbor door
-                                                                                   //Debug.DrawRay(
-                                                                                   //    new Vector3(door.transform.position.x,
-                                                                                   //    door.transform.position.y + 0.025f,
-                                                                                   //    door.transform.position.z),
-                                                                                   //    back, Color.blue, 1.0f);
-                                                                                   //if a 1m raycast hits an object collider
+                    //raycast to check neighbor door
+                    //A raycast every frame?
                     if (Physics.Raycast(
                         new Vector3(door.transform.position.x,
                         door.transform.position.y + 0.025f,
@@ -92,6 +103,7 @@ namespace ProjectUniverse.Environment.Volumes
                         Component myComponent = hit.collider.GetComponentInParent<DoorAnimator>();
                         Component myComponent2 = hit.collider.GetComponent<DoorAnimator>();
                         Component myComponent3 = hit.collider.GetComponentInChildren<DoorAnimator>();
+                        //Debug.Log(hit.collider.gameObject);
                         try
                         {
                             GameObject myDoorGameobject = null;
@@ -107,8 +119,7 @@ namespace ProjectUniverse.Environment.Volumes
                             {
                                 myDoorGameobject = myComponent3.gameObject;
                             }
-                            bool isD2Open = myDoorGameobject.GetComponent<DoorAnimator>().OpenOrOpening();
-                            clear = true;
+                            clear = myDoorGameobject.GetComponent<DoorAnimator>().OpenOrOpening();
                         }
                         catch (Exception e)
                         {
@@ -117,120 +128,38 @@ namespace ProjectUniverse.Environment.Volumes
                             Debug.Log("Case 2: " + myComponent2);
                             Debug.Log("Case 3: " + myComponent3);
                         }
-
+                        //Debug.Log(clear);
                         if (clear)
                         {
                             //Begin Equalization
-                            GameObject localNeighbor = neighborEmpties[i].GetComponent<VolumeNode>().GetVolumeLink();
-                            GameObject globalNeighbor = neighborEmpties[i].GetComponent<VolumeNode>().GetGlobalLink();
+                            GameObject localNeighbor = neighborEmpties[i].GetComponent<VolumeNode>().VolumeLink;
                             if (localNeighbor != null)
                             {
-                                VolumeAtmosphereController iNeighborVolume =
-                                    neighborEmpties[i].GetComponent<VolumeNode>().GetVolumeLink().GetComponent<VolumeAtmosphereController>();
-                                LocalVolumeEqualizer(this, iNeighborVolume);
+                                if (limiter <= 0)
+                                {
+                                    limiter = 30;
+                                    VolumeAtmosphereController iNeighborVolume =
+                                   neighborEmpties[i].GetComponent<VolumeNode>().VolumeLink.GetComponent<VolumeAtmosphereController>();
+                                    Utils.LocalVolumeEqualizer(this, iNeighborVolume);
+                                }
+                               
                             }
-                            else if (globalNeighbor)
+                            else
                             {
-                                VolumeGlobalAtmosphereController iGlobalNeighbor =
-                                    neighborEmpties[i].GetComponent<VolumeNode>().GetGlobalLink().GetComponent<VolumeGlobalAtmosphereController>();
-                                GlobalVolumeEqualizer(this, iGlobalNeighbor);
+                                GameObject globalNeighbor = neighborEmpties[i].GetComponent<VolumeNode>().GlobalLink;
+                                if (globalNeighbor)
+                                {
+                                    VolumeGlobalAtmosphereController iGlobalNeighbor =
+                                        neighborEmpties[i].GetComponent<VolumeNode>().GlobalLink.GetComponent<VolumeGlobalAtmosphereController>();
+                                    Utils.GlobalVolumeEqualizer(this, iGlobalNeighbor);
+                                }
                             }
                         }
 
                     }
                 }
             }
-        }
-
-        public void LocalVolumeEqualizer(VolumeAtmosphereController VACa, VolumeAtmosphereController VACb)
-        {
-            float pressureEq;
-            float OxEq;
-            float tempEq;
-            float tempTox;
-
-            float VACaVolume = (VACa.gameObject.GetComponent<BoxCollider>().size.x *
-                  VACa.gameObject.GetComponent<BoxCollider>().size.y *
-                  VACa.gameObject.GetComponent<BoxCollider>().size.z);
-
-            float VACbVolume = (VACb.gameObject.GetComponent<BoxCollider>().size.x *
-                  VACb.gameObject.GetComponent<BoxCollider>().size.y *
-                  VACb.gameObject.GetComponent<BoxCollider>().size.z);
-            float TotalVolume = VACaVolume + VACbVolume;
-            //Debug.Log("VCAa volume: " + VACaVolume);
-            //Debug.Log("VCAb volume: " + VACbVolume);
-
-            //basic equalization of pressure and oxygen
-            if (VACa.roomPressure != VACb.roomPressure)
-            {
-                //Peq = Vpt / Vt
-                //Vpt = Vp1 + Vp2
-                float Vp1 = VACaVolume * VACa.roomPressure;
-                float Vp2 = VACbVolume * VACb.roomPressure;
-                float Vpt = Vp1 + Vp2;
-                pressureEq = (Vpt / TotalVolume);
-                double presEq = Math.Round(pressureEq, 3);
-                pressureEq = (float)presEq;
-                VACa.roomPressure = pressureEq;
-                VACb.roomPressure = pressureEq;
-            }
-            if (VACa.roomOxygenation != VACb.roomOxygenation)
-            {
-                //Debug.Log(VACa.roomOxygenation);
-                //Debug.Log(VACb.roomOxygenation);
-                float Voxy1 = VACaVolume * VACa.roomOxygenation;
-                float Voxy2 = VACbVolume * VACb.roomOxygenation;
-                float Vpt = Voxy1 + Voxy2;
-                OxEq = (Vpt / TotalVolume);
-                double oxyQ = Math.Round(OxEq, 3);
-                OxEq = (float)oxyQ;
-                VACa.roomOxygenation = OxEq;
-                VACb.roomOxygenation = OxEq;
-            }
-            if (VACa.roomTemp != VACb.roomTemp)
-            {
-                float Vtemp1 = VACaVolume * VACa.roomTemp;
-                float Vtemp2 = VACbVolume * VACb.roomTemp;
-                float Vpt = Vtemp1 + Vtemp2;
-                tempEq = (Vpt / TotalVolume);
-                double TempQ = Math.Round(tempEq, 3);
-                tempEq = (float)TempQ;
-                VACa.roomTemp = tempEq;
-                VACb.roomTemp = tempEq;
-            }
-            if (VACa.toxicity != VACb.toxicity)
-            {
-                float Vtox1 = VACaVolume * VACa.toxicity;
-                float Vtox2 = VACbVolume * VACb.toxicity;
-                float Vtt = Vtox1 + Vtox2;
-                tempTox = (Vtt / TotalVolume);
-                double TempQ = Math.Round(tempTox, 3);
-                tempTox = (float)TempQ;
-                VACa.roomTemp = tempTox;
-                VACb.roomTemp = tempTox;
-            }
-            PostProcessVolumeUpdate();
-        }
-
-        public void GlobalVolumeEqualizer(VolumeAtmosphereController VAC, VolumeGlobalAtmosphereController VGAC)
-        {
-            if (VAC.roomPressure != VGAC.GetPressure())
-            {
-                VAC.roomPressure = VGAC.GetPressure();
-            }
-            if (VAC.roomOxygenation != VGAC.roomOxygenation)
-            {
-                VAC.roomOxygenation = VGAC.roomOxygenation;
-            }
-            if (VAC.roomTemp != VGAC.roomTemp)
-            {
-                VAC.roomTemp = VGAC.roomTemp;
-            }
-            if (VAC.toxicity != VGAC.toxicity)
-            {
-                VAC.toxicity = VGAC.toxicity;
-            }
-            PostProcessVolumeUpdate();
+            ///Profiler.EndSample();
         }
 
         /// <summary>
@@ -265,20 +194,37 @@ namespace ProjectUniverse.Environment.Volumes
 
         void OnTriggerEnter(Collider other)
         {
-            //if (other.gameObject.CompareTag("_VolumeNode"))
-            //{
-            //    Debug.Log("VolumeNode detected with/in "+other.gameObject.name);
-            //}
+            if (other.gameObject.CompareTag("_VolumeNode"))
+            {
+                //Add to list to compare. Whatever exists in VAC is removed from VGAC
+                if (!connectedNeighbors.Contains(other.gameObject))
+                {
+                    //Debug.Log(this.name + " detected VolumeNode: " + other.gameObject.name);
+                    connectedNeighbors.Add(other.gameObject);
+                    other.GetComponent<VolumeNode>().VolumeLink = this.gameObject;
+                }
+            }
             if (other.gameObject.CompareTag("Player"))
             {
                 PlayerVolumeController player = other.GetComponent<PlayerVolumeController>();
                 player.OnVolumeEnter(roomPressure, roomTemp, roomOxygenation);
                 player.SetPlayerVolume(this.GetComponents<Volume>());
+                player.SetPlayerVolumeController(this);
             }
         }
 
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.gameObject.CompareTag("Player"))
+            {
+                other.GetComponent<PlayerVolumeController>().ResetPlayerVolumeController(this);
+            }
+        }
+
+        /*
         private void OnTriggerStay(Collider other)
         {
+            //Debug.Log("VAC stay");
             if (other.gameObject.CompareTag("_VolumeNode"))
             {
                 //Add to list to compare. Whatever exists in VAC is removed from VGAC
@@ -295,7 +241,7 @@ namespace ProjectUniverse.Environment.Volumes
                 player.OnVolumeEnter(roomPressure, roomTemp, roomOxygenation);
                 player.SetPlayerVolume(this.GetComponents<Volume>());
             }
-        }
+        }*/
 
         public List<IGas> CheckGasses(bool setToLocalPressure, float localPressure)
         {
@@ -433,13 +379,37 @@ namespace ProjectUniverse.Environment.Volumes
             return FluidA;
         }
 
+        public void RemoveRoomGas(IGas gasToRemove)
+        {
+            IGas gas = new IGas(gasToRemove);
+            if (roomGases.Count > 0)
+            {
+                for (int j = 0; j < roomGases.Count; j++)
+                {
+                    if (roomGases[j].GetIDName() == gas.GetIDName())
+                    {
+                        float nVal = roomGases[j].GetConcentration() - gas.GetConcentration();
+                        if (nVal > 0f)
+                        {
+                            roomGases[j].SetConcentration(nVal);
+                        }
+                        else
+                        {
+                            //may not work?
+                            roomGases.Remove(gas);
+                        }
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Add the parameter gas to the room's gas array. Update Volume Atmosphere.
         /// </summary>
         /// <param name="gasToAdd"></param>
         public void AddRoomGas(IGas gasToAdd)
         {
-            bool add = false;
+            bool add = true;
             IGas gas = new IGas(gasToAdd);
             gasToAdd.SetLocalVolume(roomVolume);
             if (roomGases.Count > 0)
@@ -448,24 +418,19 @@ namespace ProjectUniverse.Environment.Volumes
                 {
                     if (roomGases[j].GetIDName() == gas.GetIDName())
                     {
+                        roomGases[j] = CombineGases(roomGases[j], gas, Pressure, false);
                         add = false;
                     }
-                    else
-                    {
-                        add = true;
-                    }
                 }
-                //if (add)
-                //{
+                if (add)
+                {
+                    //Debug.Log("Add");
                     roomGases.Add(gas);
-                //}
-                //else
-               // {
-
-               // }
+                }
             }
             else
             {
+                //Debug.Log("Add");
                 roomGases.Add(gas);
             }
             //update Volume Atmosphere

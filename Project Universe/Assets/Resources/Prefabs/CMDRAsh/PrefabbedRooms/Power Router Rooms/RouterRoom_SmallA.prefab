@@ -198,6 +198,7 @@ GameObject:
   - component: {fileID: 541886948638052852}
   - component: {fileID: 541886948638052618}
   - component: {fileID: 541886948638052619}
+  - component: {fileID: 6473048116740141745}
   m_Layer: 0
   m_Name: RouterRoom_SmallA
   m_TagString: Untagged
@@ -252,10 +253,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isGlobal: 0
-  priority: 0
+  priority: 10
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: 150b8c9e75f468344a1d55e4f1b60cc3, type: 2}
+--- !u!114 &6473048116740141745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541886948638052853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGlobal: 0
+  priority: 9
+  blendDistance: 0
+  weight: 0
+  sharedProfile: {fileID: 11400000, guid: f17e8e832399e2147b0c4819936380e7, type: 2}
 --- !u!1 &541886950096570475
 GameObject:
   m_ObjectHideFlags: 0

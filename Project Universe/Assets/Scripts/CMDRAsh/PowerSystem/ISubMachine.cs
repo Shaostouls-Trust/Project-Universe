@@ -50,6 +50,8 @@ namespace ProjectUniverse.PowerSystem
         private NetworkVariableInt netLegsRequired = new NetworkVariableInt(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
         private NetworkVariableInt netLegsReceived = new NetworkVariableInt(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
         private NetworkVariableBool netLightEnabled = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        //anti-spaz timer
+        private float chillTime = 7f;
 
         void Start()
         {
@@ -197,6 +199,11 @@ namespace ProjectUniverse.PowerSystem
             ///////////////////////////////////////
             if (runMachine)
             {
+                chillTime--;
+                if (chillTime < 0f)
+                {
+                    chillTime = 7f;
+                }
                 if (legsReceived == legsRequired)
                 {
                     //Debug.Log("Legs received");
@@ -375,61 +382,65 @@ namespace ProjectUniverse.PowerSystem
         {
             netLightEnabled.Value = true;
             //lightComponent.enabled = true;
-            MaterialPropertyBlock MPB = MaterialLibrary.GetMaterialPropertyBlockForCommonLights();
-            switch (powerLevel)
+            if(chillTime <= 0f)
             {
-                //base is 100.0f
-                //base is 5.0f
-                case 0:
-                    lightComponent.intensity = maxLightIntensity;
-                    lightComponent.range = maxLightRange;
-                    //set material emissive to default
-                    //MaterialPropertyBlock to manage the emissive material values for all our common lights
-                    renderer.GetPropertyBlock(MPB);
-                    MPB.SetFloat("_EmissionIntensity", 50f);//50f is current emissive level for lights
-                    renderer.SetPropertyBlock(MPB);
-                    break;
-                case 1:
-                    lightComponent.intensity = maxLightIntensity * 0.5f; //50
-                    lightComponent.range = maxLightRange * 0.75f; //3.75
-                    //set material emissive to 50%
-                    renderer.GetPropertyBlock(MPB);
-                    MPB.SetFloat("_EmissionIntensity", 40f);//50f is current emissive level for lights
-                    renderer.SetPropertyBlock(MPB);
-                    break;
-                case 2:
-                    lightComponent.intensity = maxLightIntensity * UnityEngine.Random.Range(0.35f, 0.25f);//35 - 25
-                    lightComponent.range = maxLightRange * UnityEngine.Random.Range(0.5f, 0.6f);//6.0f; (2.5 to 3)
-                                                                                                //set material emissive to 35%
-                    renderer.GetPropertyBlock(MPB);
-                    MPB.SetFloat("_EmissionIntensity", 25f);//50f is current emissive level for lights
-                    renderer.SetPropertyBlock(MPB);
-                    break;
-                case 3:
-                    lightComponent.intensity = maxLightIntensity * UnityEngine.Random.Range(0.05f, 0.1f);//5 - 10
-                    lightComponent.range = maxLightRange * UnityEngine.Random.Range(0.2f, 0.30f); //4.0f; (1 to 1.5)
-                                                                                                  //set material emissive to 10%
-                    renderer.GetPropertyBlock(MPB);
-                    MPB.SetFloat("_EmissionIntensity", 10f);//50f is current emissive level for lights
-                    renderer.SetPropertyBlock(MPB);
-                    break;
-                case 4:
-                    lightComponent.intensity = 0.0f;
-                    lightComponent.range = 0.0f;
-                    //set material emissive to 0%
-                    renderer.GetPropertyBlock(MPB);
-                    MPB.SetFloat("_EmissionIntensity", 0f);//50f is current emissive level for lights
-                    renderer.SetPropertyBlock(MPB);
-                    break;
-                case 5:
-                    netLightEnabled.Value = false;
-                    //lightComponent.enabled = false;
-                    //set material emissive to 0%
-                    renderer.GetPropertyBlock(MPB);
-                    MPB.SetFloat("_EmissionIntensity", 0f);//50f is current emissive level for lights
-                    renderer.SetPropertyBlock(MPB);
-                    break;
+                MaterialPropertyBlock MPB = MaterialLibrary.GetMaterialPropertyBlockForCommonLights();
+                switch (powerLevel)
+                {
+                    //base is 100.0f
+                    //base is 5.0f
+                    case 0:
+                        lightComponent.intensity = maxLightIntensity;
+                        lightComponent.range = maxLightRange;
+                        //set material emissive to default
+                        //MaterialPropertyBlock to manage the emissive material values for all our common lights
+                        renderer.GetPropertyBlock(MPB);
+                        MPB.SetFloat("_EmissionIntensity", 50f);//50f is current emissive level for lights
+                        renderer.SetPropertyBlock(MPB);
+                        break;
+                    case 1:
+                        lightComponent.intensity = maxLightIntensity * 0.5f; //50
+                        lightComponent.range = maxLightRange * 0.75f; //3.75
+                                                                      //set material emissive to 50%
+                        renderer.GetPropertyBlock(MPB);
+                        MPB.SetFloat("_EmissionIntensity", 40f);//50f is current emissive level for lights
+                        renderer.SetPropertyBlock(MPB);
+                        break;
+                    case 2:
+                        lightComponent.intensity = maxLightIntensity * UnityEngine.Random.Range(0.35f, 0.25f);//35 - 25
+                        lightComponent.range = maxLightRange * UnityEngine.Random.Range(0.5f, 0.6f);//6.0f; (2.5 to 3)
+                                                                                                    //set material emissive to 35%
+                        renderer.GetPropertyBlock(MPB);
+                        MPB.SetFloat("_EmissionIntensity", 25f);//50f is current emissive level for lights
+                        renderer.SetPropertyBlock(MPB);
+                        break;
+                    case 3:
+                        lightComponent.intensity = maxLightIntensity * UnityEngine.Random.Range(0.05f, 0.1f);//5 - 10
+                        lightComponent.range = maxLightRange * UnityEngine.Random.Range(0.2f, 0.30f); //4.0f; (1 to 1.5)
+                                                                                                      //set material emissive to 10%
+                        renderer.GetPropertyBlock(MPB);
+                        MPB.SetFloat("_EmissionIntensity", 10f);//50f is current emissive level for lights
+                        renderer.SetPropertyBlock(MPB);
+                        break;
+                    case 4:
+                        lightComponent.intensity = 0.0f;
+                        lightComponent.range = 0.0f;
+                        //set material emissive to 0%
+                        renderer.GetPropertyBlock(MPB);
+                        MPB.SetFloat("_EmissionIntensity", 0f);//50f is current emissive level for lights
+                        renderer.SetPropertyBlock(MPB);
+                        break;
+                    case 5:
+                        netLightEnabled.Value = false;
+                        //lightComponent.enabled = false;
+                        //set material emissive to 0%
+                        renderer.GetPropertyBlock(MPB);
+                        MPB.SetFloat("_EmissionIntensity", 0f);//50f is current emissive level for lights
+                        renderer.SetPropertyBlock(MPB);
+                        break;
+                }
             }
+            
         }
 
         [ClientRpc]
@@ -437,61 +448,65 @@ namespace ProjectUniverse.PowerSystem
         {
             netLightEnabled.Value = true;
             //lightComponent.enabled = true;
-            MaterialPropertyBlock MPB = MaterialLibrary.GetMaterialPropertyBlockForCommonLights();
-            switch (powerLevel)
+            if (chillTime <= 0f)
             {
-                //base is 100.0f
-                //base is 5.0f
-                case 0:
-                    lightComponent.intensity = maxLightIntensity;
-                    lightComponent.range = maxLightRange;
-                    //set material emissive to default
-                    //MaterialPropertyBlock to manage the emissive material values for all our common lights
-                    renderer.GetPropertyBlock(MPB);
-                    MPB.SetFloat("_EmissionIntensity", 50f);//50f is current emissive level for lights
-                    renderer.SetPropertyBlock(MPB);
-                    break;
-                case 1:
-                    lightComponent.intensity = maxLightIntensity * 0.5f; //50
-                    lightComponent.range = maxLightRange * 0.75f; //3.75
-                    //set material emissive to 50%
-                    renderer.GetPropertyBlock(MPB);
-                    MPB.SetFloat("_EmissionIntensity", 40f);//50f is current emissive level for lights
-                    renderer.SetPropertyBlock(MPB);
-                    break;
-                case 2:
-                    lightComponent.intensity = maxLightIntensity * UnityEngine.Random.Range(0.35f, 0.25f);//35 - 25
-                    lightComponent.range = maxLightRange * UnityEngine.Random.Range(0.5f, 0.6f);//6.0f; (2.5 to 3)
-                                                                                                //set material emissive to 35%
-                    renderer.GetPropertyBlock(MPB);
-                    MPB.SetFloat("_EmissionIntensity", 25f);//50f is current emissive level for lights
-                    renderer.SetPropertyBlock(MPB);
-                    break;
-                case 3:
-                    lightComponent.intensity = maxLightIntensity * UnityEngine.Random.Range(0.05f, 0.1f);//5 - 10
-                    lightComponent.range = maxLightRange * UnityEngine.Random.Range(0.2f, 0.30f); //4.0f; (1 to 1.5)
-                                                                                                  //set material emissive to 10%
-                    renderer.GetPropertyBlock(MPB);
-                    MPB.SetFloat("_EmissionIntensity", 10f);//50f is current emissive level for lights
-                    renderer.SetPropertyBlock(MPB);
-                    break;
-                case 4:
-                    lightComponent.intensity = 0.0f;
-                    lightComponent.range = 0.0f;
-                    //set material emissive to 0%
-                    renderer.GetPropertyBlock(MPB);
-                    MPB.SetFloat("_EmissionIntensity", 0f);//50f is current emissive level for lights
-                    renderer.SetPropertyBlock(MPB);
-                    break;
-                case 5:
-                    netLightEnabled.Value = false;
-                    //lightComponent.enabled = false;
-                    //set material emissive to 0%
-                    renderer.GetPropertyBlock(MPB);
-                    MPB.SetFloat("_EmissionIntensity", 0f);//50f is current emissive level for lights
-                    renderer.SetPropertyBlock(MPB);
-                    break;
+                MaterialPropertyBlock MPB = MaterialLibrary.GetMaterialPropertyBlockForCommonLights();
+                switch (powerLevel)
+                {
+                    //base is 100.0f
+                    //base is 5.0f
+                    case 0:
+                        lightComponent.intensity = maxLightIntensity;
+                        lightComponent.range = maxLightRange;
+                        //set material emissive to default
+                        //MaterialPropertyBlock to manage the emissive material values for all our common lights
+                        renderer.GetPropertyBlock(MPB);
+                        MPB.SetFloat("_EmissionIntensity", 50f);//50f is current emissive level for lights
+                        renderer.SetPropertyBlock(MPB);
+                        break;
+                    case 1:
+                        lightComponent.intensity = maxLightIntensity * 0.5f; //50
+                        lightComponent.range = maxLightRange * 0.75f; //3.75
+                                                                      //set material emissive to 50%
+                        renderer.GetPropertyBlock(MPB);
+                        MPB.SetFloat("_EmissionIntensity", 40f);//50f is current emissive level for lights
+                        renderer.SetPropertyBlock(MPB);
+                        break;
+                    case 2:
+                        lightComponent.intensity = maxLightIntensity * UnityEngine.Random.Range(0.35f, 0.25f);//35 - 25
+                        lightComponent.range = maxLightRange * UnityEngine.Random.Range(0.5f, 0.6f);//6.0f; (2.5 to 3)
+                                                                                                    //set material emissive to 35%
+                        renderer.GetPropertyBlock(MPB);
+                        MPB.SetFloat("_EmissionIntensity", 25f);//50f is current emissive level for lights
+                        renderer.SetPropertyBlock(MPB);
+                        break;
+                    case 3:
+                        lightComponent.intensity = maxLightIntensity * UnityEngine.Random.Range(0.05f, 0.1f);//5 - 10
+                        lightComponent.range = maxLightRange * UnityEngine.Random.Range(0.2f, 0.30f); //4.0f; (1 to 1.5)
+                                                                                                      //set material emissive to 10%
+                        renderer.GetPropertyBlock(MPB);
+                        MPB.SetFloat("_EmissionIntensity", 10f);//50f is current emissive level for lights
+                        renderer.SetPropertyBlock(MPB);
+                        break;
+                    case 4:
+                        lightComponent.intensity = 0.0f;
+                        lightComponent.range = 0.0f;
+                        //set material emissive to 0%
+                        renderer.GetPropertyBlock(MPB);
+                        MPB.SetFloat("_EmissionIntensity", 0f);//50f is current emissive level for lights
+                        renderer.SetPropertyBlock(MPB);
+                        break;
+                    case 5:
+                        netLightEnabled.Value = false;
+                        //lightComponent.enabled = false;
+                        //set material emissive to 0%
+                        renderer.GetPropertyBlock(MPB);
+                        MPB.SetFloat("_EmissionIntensity", 0f);//50f is current emissive level for lights
+                        renderer.SetPropertyBlock(MPB);
+                        break;
+                }
             }
+                
         }
     }
 }

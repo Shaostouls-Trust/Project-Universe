@@ -242,7 +242,7 @@ namespace ProjectUniverse.Base
             else if (typeof(stacktype) == typeof(Consumable_Component))
             {
                 Consumable_Component comp = TArray.GetValue(index) as Consumable_Component;
-                returnstack = new ItemStack(comp.GetComponentID(), 99, typeof(Consumable_Component));
+                returnstack = new ItemStack(comp.ComponentID, 99, typeof(Consumable_Component));
                 returnstack.AddItem(comp);
             }
             else
@@ -377,7 +377,7 @@ namespace ProjectUniverse.Base
                         {
                             float need = amountToRemove - runningAmount;
                             tempComp.RemoveComponentAmount((int)amountToRemove);
-                            Consumable_Component newComp = new Consumable_Component(tempComp.GetComponentID(),
+                            Consumable_Component newComp = new Consumable_Component(tempComp.ComponentID,
                                 (int)amountToRemove, tempComp.GetComponentDefinition());
                             returnStack.AddItem(newComp);
                             //Debug.Log("Added: " + newComp.ToString());
@@ -392,7 +392,7 @@ namespace ProjectUniverse.Base
                                 float need = amountToRemove - runningAmount;
                                 //remove the need from the quantity and add to running
                                 tempComp.RemoveComponentAmount((int)amountToRemove);
-                                Consumable_Component newComp = new Consumable_Component(tempComp.GetComponentID(),
+                                Consumable_Component newComp = new Consumable_Component(tempComp.ComponentID,
                                     (int)amountToRemove, tempComp.GetComponentDefinition());
                                 returnStack.AddItem(newComp);
                                 //Debug.Log("Added: " + newComp.ToString());
@@ -403,7 +403,7 @@ namespace ProjectUniverse.Base
                             {
                                 runningAmount += tempComp.GetQuantity();
                                 tempComp.RemoveComponentAmount((int)amountToRemove);
-                                Consumable_Component newComp = new Consumable_Component(tempComp.GetComponentID(),
+                                Consumable_Component newComp = new Consumable_Component(tempComp.ComponentID,
                                     (int)amountToRemove, tempComp.GetComponentDefinition());
                                 returnStack.AddItem(newComp);
                                 //Debug.Log("Added: " + newComp.ToString());

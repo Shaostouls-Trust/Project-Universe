@@ -1,4 +1,5 @@
 ﻿using MLAPI;
+using ProjectUniverse.Player.PlayerController;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,7 @@ namespace ProjectUniverse.Environment.Interactable
         [SerializeField] private GameObject interactpointer;
         private bool showingInteractPointer = false;
         private GameObject player;
+        private bool triggered;
         void Start()
         {
             if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
@@ -36,6 +38,7 @@ namespace ProjectUniverse.Environment.Interactable
             Debug.DrawRay(transform.position, forward, Color.green);
             //if a 1m.5 raycast hits an object collider
             RaycastHit hit;
+            
             if (Physics.Raycast(transform.position, forward, out hit, (1.5f + extensiondistance)))
             {
                 if (hit.collider.gameObject.GetComponent<InteractionElement>())//don't need to test this every frame
@@ -47,14 +50,32 @@ namespace ProjectUniverse.Environment.Interactable
                         interactpointer.SetActive(true);
                         showingInteractPointer = true;
                     }
-                    if (Input.GetKeyUp(KeyCode.E))
+                    if (!triggered)
                     {
-                        //get Interaction Element and call backend function
-                        hit.collider.gameObject.GetComponent<InteractionElement>().Interact();
+                        //PointerDetector
+                        if (hit.collider.gameObject.TryGetComponent(out PointerDetector pd))
+                        {
+                            pd.ExternalInteractFunc();
+                            triggered = true;
+                        }
+                        //Normal interaction
+                        if (Input.GetKeyUp(KeyCode.E))
+                        {
+                            //get Interaction Element and call backend function
+                            hit.collider.gameObject.GetComponent<InteractionElement>().Interact();
+                            //triggered = true;
+                        }
                     }
                 }
                 else
                 {
+                    if (triggered)
+                    {
+                        //lock and hide cursor, we have left the detection area
+                        player.GetComponent<SupplementalController>().LockOnlyCursor();//LockCursor
+                        player.GetComponent<SupplementalController>().ShowCenterUI();
+                        triggered = false;
+                    }
                     if (showingInteractPointer)
                     {
                         defaultpointer.SetActive(true);
@@ -65,6 +86,13 @@ namespace ProjectUniverse.Environment.Interactable
             }
             else
             {
+                if (triggered)
+                {
+                    //lock and hide cursor, we have left the detection area
+                    player.GetComponent<SupplementalController>().LockOnlyCursor();
+                    player.GetComponent<SupplementalController>().ShowCenterUI();
+                    triggered = false;
+                }
                 if (showingInteractPointer)
                 {
                     defaultpointer.SetActive(true);
