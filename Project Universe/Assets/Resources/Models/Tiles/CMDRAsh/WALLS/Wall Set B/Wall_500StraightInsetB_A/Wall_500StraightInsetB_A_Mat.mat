@@ -27,7 +27,7 @@ Material:
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 1
-  m_CustomRenderQueue: 3400
+  m_CustomRenderQueue: 3000
   stringTagMap:
     MotionVector: User
     RenderType: Transparent
@@ -49,7 +49,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Albedo:
-        m_Texture: {fileID: 2800000, guid: 72b5ebc8e0ef3664b8ad8996d837bc7e, type: 3}
+        m_Texture: {fileID: 2800000, guid: 79e42d3179d369b47b8795a528482660, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Albedo1:
@@ -85,7 +85,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Depth:
-        m_Texture: {fileID: 2800000, guid: bb6b796a422054e47ae21dbddc2ab8ff, type: 3}
+        m_Texture: {fileID: 2800000, guid: 971b5f46d6b807e40b3f441b87e88471, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Depth1:
@@ -125,7 +125,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Lighting:
-        m_Texture: {fileID: 2800000, guid: bc3d012044340644980568b9869b4131, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6186449bbda0fb441b5be1d8a32c61d6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Lighting1:
@@ -145,7 +145,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalSmoothness:
-        m_Texture: {fileID: 2800000, guid: ee0833419a4fd9846b6eb45c4f29ad17, type: 3}
+        m_Texture: {fileID: 2800000, guid: 4978c40026987c647bf558cbbe471f39, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalSmoothness1:
@@ -189,7 +189,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Transparency:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: cb34e6ccf746892428044049720a9490, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Transparency1:
@@ -205,6 +205,7 @@ Material:
     - Vector1_8C898A51: -0.0025
     - Vector1_A4078F02: 0
     - Vector1_BDA4AE9A: 1
+    - _AOLDodge: 0
     - _AOLDodge1: 0
     - _AORemapMax: 1
     - _AORemapMin: 0
@@ -217,7 +218,7 @@ Material:
     - _AlphaCutoffPrepass: 0.5
     - _AlphaCutoffShadow: 0.5
     - _AlphaDstBlend: 10
-    - _AlphaSrcBlend: 0
+    - _AlphaSrcBlend: 1
     - _Anisotropy: 0
     - _BlendMode: 0
     - _CoatMask: 0
@@ -251,7 +252,7 @@ Material:
     - _DoubleSidedNormalMode: 1
     - _DstBlend: 10
     - _EI: 150
-    - _EmissionIntensity: 150
+    - _EmissionIntensity: 50
     - _EmissionIntensity1: 1
     - _EmissiveColorMode: 1
     - _EmissiveExposureWeight: 1
@@ -298,11 +299,12 @@ Material:
     - _ReceivesSSR: 1
     - _ReceivesSSRTransparent: 0
     - _RefractionModel: 0
-    - _RenderQueueType: 5
+    - _RenderQueueType: 4
     - _RequireSplitLighting: 0
     - _SAASSV: 0.5
     - _SAAThreshold: 10
     - _SAAThreshold1: 0
+    - _SAAVariance: 0.25
     - _SAAVariance1: 1
     - _SSRefractionProjectionModel: 0
     - _Smoothness: 0.5

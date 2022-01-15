@@ -26,7 +26,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Albedo:
-        m_Texture: {fileID: 2800000, guid: 6a6643e5e49e0bb4799d9a6abeb0f44b, type: 3}
+        m_Texture: {fileID: 2800000, guid: ac1e85c7aeb3d3f4f89a4cc4965da455, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Albedo1:
@@ -54,7 +54,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Depth:
-        m_Texture: {fileID: 2800000, guid: bcdbf0377d358e847845a13bed5ce2e0, type: 3}
+        m_Texture: {fileID: 2800000, guid: cd218ef18a937ae47a3c6a9b29c2ebcb, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Depth1:
@@ -86,7 +86,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Lighting:
-        m_Texture: {fileID: 2800000, guid: 9def62d87be9be14e8217804a547e3fb, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2fe34253855905348a565bc3ffa839df, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Lighting1:
@@ -102,7 +102,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalSmoothness:
-        m_Texture: {fileID: 2800000, guid: 3505521ea180fbd4c8bb402d4c7a284d, type: 3}
+        m_Texture: {fileID: 2800000, guid: b0a8115b34e8ec242a6109901ffad33f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalSmoothness1:
@@ -154,6 +154,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _AOLDodge: 0
     - _AOLDodge1: 0
     - _AORemapMax: 1
     - _AORemapMin: 0
@@ -249,6 +250,7 @@ Material:
     - _SAASSV: 0.5
     - _SAAThreshold: 50
     - _SAAThreshold1: 0
+    - _SAAVariance: 0.25
     - _SAAVariance1: 1
     - _SSRefractionProjectionModel: 0
     - _Smoothness: 0.5

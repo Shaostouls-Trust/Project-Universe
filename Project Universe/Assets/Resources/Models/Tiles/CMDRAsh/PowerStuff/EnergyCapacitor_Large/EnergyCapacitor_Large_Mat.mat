@@ -46,7 +46,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Albedo:
-        m_Texture: {fileID: 2800000, guid: a4884c24a49fb1343a4bf527a4dee954, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0d27c7e7ed507804c9ed142f39e1a079, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Albedo1:
@@ -82,7 +82,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Depth:
-        m_Texture: {fileID: 2800000, guid: f953d59ec034b0b41a5215ba179acdc9, type: 3}
+        m_Texture: {fileID: 2800000, guid: 4fd1e19f8b675f74097ef4d38ac74fee, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Depth1:
@@ -122,7 +122,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Lighting:
-        m_Texture: {fileID: 2800000, guid: 75a3106317fd6ef438d61980c201b1b1, type: 3}
+        m_Texture: {fileID: 2800000, guid: e92b051193d360d43ad5993627fe1fa8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Lighting1:
@@ -142,7 +142,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalSmoothness:
-        m_Texture: {fileID: 2800000, guid: 74c148b55a3d8284da304eb7b7216692, type: 3}
+        m_Texture: {fileID: 2800000, guid: 4c5adc10aa4c1ee46a5f127e1b137e9d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalSmoothness1:
@@ -202,6 +202,7 @@ Material:
     - Vector1_8C898A51: 0
     - Vector1_A4078F02: 0
     - Vector1_BDA4AE9A: 1
+    - _AOLDodge: 0
     - _AOLDodge1: 0
     - _AORemapMax: 1
     - _AORemapMin: 0
@@ -248,7 +249,7 @@ Material:
     - _DoubleSidedNormalMode: 1
     - _DstBlend: 0
     - _EI: 5
-    - _EmissionIntensity: 2
+    - _EmissionIntensity: 10
     - _EmissionIntensity1: 4
     - _EmissiveColorMode: 1
     - _EmissiveExposureWeight: 1
@@ -299,6 +300,7 @@ Material:
     - _SAASSV: 0.5
     - _SAAThreshold: 10
     - _SAAThreshold1: 0
+    - _SAAVariance: 0.25
     - _SAAVariance1: 1
     - _SSRefractionProjectionModel: 0
     - _Smoothness: 0.5

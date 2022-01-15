@@ -34,7 +34,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Albedo:
-        m_Texture: {fileID: 2800000, guid: f8939e62243750c4cbac764d1e27dced, type: 3}
+        m_Texture: {fileID: 2800000, guid: a0ee42c06bcfb7641a1681d9c50ad95b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Albedo1:
@@ -70,7 +70,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Depth:
-        m_Texture: {fileID: 2800000, guid: d7e30b1e8a2037f46b9275cda7156a18, type: 3}
+        m_Texture: {fileID: 2800000, guid: 817ea504d724ab243b6c224cbaee082f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Depth1:
@@ -110,7 +110,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Lighting:
-        m_Texture: {fileID: 2800000, guid: a1305c5591447c0409a97b11035e0acb, type: 3}
+        m_Texture: {fileID: 2800000, guid: ceffa1fa9f79f9e479c3c85cf826f323, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Lighting1:
@@ -130,7 +130,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalSmoothness:
-        m_Texture: {fileID: 2800000, guid: 97eeaf6050ec5ad46b80d7b3cc70341e, type: 3}
+        m_Texture: {fileID: 2800000, guid: 1efa88e33ecfdd34aa6a601f8940ca42, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalSmoothness1:
@@ -269,7 +269,7 @@ Material:
     - _IridescenceThickness: 1
     - _LinkDetailsWithBase: 1
     - _MaterialID: 1
-    - _MetalLDodge: 0
+    - _MetalLDodge: -0.1
     - _Metallic: 0
     - _MetalnessContrast: 1
     - _NormalMapSpace: 0

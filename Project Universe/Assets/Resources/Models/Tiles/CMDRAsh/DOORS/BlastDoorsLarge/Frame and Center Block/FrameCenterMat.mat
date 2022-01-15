@@ -22,11 +22,11 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: FrameCenterMat
   m_Shader: {fileID: 4800000, guid: 313c1dc82c58d6b489675cf25cf4f3cd, type: 3}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: _DISABLE_SSR_TRANSPARENT
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2000
+  m_CustomRenderQueue: 2225
   stringTagMap:
     MotionVector: User
   disabledShaderPasses:
@@ -46,7 +46,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Albedo:
-        m_Texture: {fileID: 2800000, guid: 1dfca864091fd4346a35a2b7ff5fffa7, type: 3}
+        m_Texture: {fileID: 2800000, guid: c9b8535857d590b4e8e11744b7f1e404, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AnisotropyMap:
@@ -78,7 +78,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Depth:
-        m_Texture: {fileID: 2800000, guid: 169efb8bc775c674f8c7f1ea3c4e65af, type: 3}
+        m_Texture: {fileID: 2800000, guid: 3d66876c53615614a8bfd13e938e61d6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailMap:
@@ -114,7 +114,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Lighting:
-        m_Texture: {fileID: 2800000, guid: 53cfb611a680f2541934aa911d28c3d5, type: 3}
+        m_Texture: {fileID: 2800000, guid: 402853e51676a0b4cbd1f75aab46fff3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MS:
@@ -130,7 +130,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalSmoothness:
-        m_Texture: {fileID: 2800000, guid: c58337b2b54e1224ea06f793b2e9df38, type: 3}
+        m_Texture: {fileID: 2800000, guid: d3171b6b3f5ef5a4e900dd30ecd16e74, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NMHM:
@@ -182,6 +182,7 @@ Material:
     - Vector1_8C898A51: 0.00015
     - Vector1_A4078F02: 1
     - Vector1_BDA4AE9A: 0
+    - _AOLDodge: 0
     - _AORemapMax: 1
     - _AORemapMin: 0
     - _ATDistance: 1
@@ -267,11 +268,13 @@ Material:
     - _PPDPrimitiveWidth: 1
     - _ParallaxHeightScale: 0.01
     - _ReceivesSSR: 1
+    - _ReceivesSSRTransparent: 0
     - _RefractionModel: 0
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
     - _SAASSV: 0.5
     - _SAAThreshold: 10
+    - _SAAVariance: 0.25
     - _SSRefractionProjectionModel: 0
     - _Smoothness: 0.5
     - _SmoothnessContrast: 1
