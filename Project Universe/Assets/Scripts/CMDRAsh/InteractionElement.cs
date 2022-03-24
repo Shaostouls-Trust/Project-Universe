@@ -11,6 +11,13 @@ public class InteractionElement : MonoBehaviour
     [SerializeField] private int parameter = -1;
     /// Native Functions
     ///
+
+    public int Parameter
+    {
+        get { return parameter; }
+        set { parameter = value; }
+    }
+
     public void Interact()
     {
         //send an id to prevent calling every interact func on the object?

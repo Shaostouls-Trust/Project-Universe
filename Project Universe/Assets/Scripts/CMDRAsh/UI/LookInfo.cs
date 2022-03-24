@@ -1,3 +1,5 @@
+using ProjectUniverse.Items;
+using ProjectUniverse.Player.PlayerController;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -10,6 +12,7 @@ namespace ProjectUniverse.UI
     /// </summary>
     public class LookInfo : MonoBehaviour
     {
+        public SupplementalController playerSuppCtrl;
         public TMP_Text infoTxt;
         public GameObject infoBox;
         public GameObject cam;
@@ -28,10 +31,17 @@ namespace ProjectUniverse.UI
             RaycastHit hit;
             if (Physics.Raycast(cam.transform.position, forward, out hit, 5f))
             {
-                //Debug.Log(hit.transform.gameObject);
-                infoBox.SetActive(false);
-                //send a message to 'LookInfoMsg'
-                hit.transform.gameObject.SendMessage("LookInfoMsg", this, SendMessageOptions.DontRequireReceiver);
+                if(playerSuppCtrl.RightHandEquipped != null)
+                {
+                    //if (playerSuppCtrl.RightHandEquipped.gameObject.GetComponent<IEquipable>().EquipmentCategory == Base.ItemStack.Category.Tool)
+                    //{
+                        //Debug.Log(hit.transform.gameObject);
+                        infoBox.SetActive(false);
+                        //send a message to 'LookInfoMsg'
+                        hit.transform.gameObject.SendMessage("LookInfoMsg", this, SendMessageOptions.DontRequireReceiver);
+                    //}
+                }
+                
             }
             else
             {

@@ -11,6 +11,7 @@ namespace ProjectUniverse.Player.PlayerController
     {
         [SerializeField] private Transform camTransformToTrack;
         [SerializeField] private Transform TransformToSet;
+        [SerializeField] private Vector3 rotationAdjustment;
 
         public Transform CamTransformToTrack
         {
@@ -20,7 +21,8 @@ namespace ProjectUniverse.Player.PlayerController
 
         void Update()
         {
-            TransformToSet.rotation = Quaternion.Euler(CamTransformToTrack.rotation.eulerAngles);
+            TransformToSet.rotation = Quaternion.Euler(CamTransformToTrack.rotation.eulerAngles.x + rotationAdjustment.x,
+                CamTransformToTrack.rotation.eulerAngles.y+rotationAdjustment.y, CamTransformToTrack.rotation.eulerAngles.z+rotationAdjustment.z);
         }
     }
 }

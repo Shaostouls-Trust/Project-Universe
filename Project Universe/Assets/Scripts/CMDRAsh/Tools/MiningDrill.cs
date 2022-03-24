@@ -8,14 +8,23 @@ using UnityEngine;
 
 namespace ProjectUniverse.Items.Tools
 {
-    public class MiningDrill : MonoBehaviour
+    public class MiningDrill : IEquipable
     {
         [SerializeField] private int mineAmount;
+        [SerializeField] private LineRenderer line;
+        public Vector3 rayDir;
         private GameObject player;
         public GameObject drillRaycastPoint;
         private bool isMining = false;
         private RaycastHit lastHit;
         private RaycastHit current;
+        private int count = 10;
+
+        public int MineAmount
+        {
+            get { return mineAmount; }
+            set { mineAmount = value; }
+        }
 
         // Start is called before the first frame update
         void Start()
@@ -26,24 +35,44 @@ namespace ProjectUniverse.Items.Tools
             }
         }
 
-        // Update is called once per frame
-        void Update()
+        public GameObject Player
         {
-            //Vector3 forward = Camera.main.transform.TransformDirection(0f, 0f, 1f) * 1f; //no main camera
-            Vector3 forward2 = drillRaycastPoint.transform.TransformDirection(0f, 1f, 0f) * 1f;//0,0,1 is down
-            if (Physics.Raycast(
-                    new Vector3(drillRaycastPoint.transform.position.x,
-                    drillRaycastPoint.transform.position.y,
-                    drillRaycastPoint.transform.position.z),
-                    forward2, out RaycastHit hit, 1.0f))
+            get { return player; }
+            set { player = value; }
+        }
+
+        private void Update()
+        {
+            //if (count <= 0)
+            //{
+            //    count = 10;
+            //}
+            //count--;
+            if (isMining)
             {
-                object[] prams;
-                BlockOreSingle block;
-                if (!hit.transform.CompareTag("Player"))
+                Vector3 forward2 = drillRaycastPoint.transform.TransformDirection(rayDir) * 1f;//0,1,0
+                if (Physics.Raycast(
+                        new Vector3(drillRaycastPoint.transform.position.x,
+                        drillRaycastPoint.transform.position.y,
+                        drillRaycastPoint.transform.position.z),
+                        forward2, out RaycastHit hit, 1.0f))
                 {
-                    current = hit;
-                    if (Input.GetMouseButton(0))
+                    object[] prams;
+                    BlockOreSingle block;
+                    if (!hit.transform.CompareTag("Player"))
                     {
+                        current = hit;
+                        //line render to te it point
+                        if (!line.enabled)
+                        {
+                            line.enabled = true;
+                            //line.SetPosition(1, (hit.point));
+                        }
+                        //if (count <= 0) hit.point.x
+                        //{
+                        line.SetPosition(1, new Vector3(hit.point.x,
+                            drillRaycastPoint.transform.localPosition.y, drillRaycastPoint.transform.localPosition.z));
+                        //}
                         //Debug.Log("Hitting "+hit.transform.gameObject);
                         ItemStack stack = null;
                         if (hit.transform.gameObject.TryGetComponent<BlockOreSingle>(out block))
@@ -59,29 +88,24 @@ namespace ProjectUniverse.Items.Tools
                     }
                 }
             }
-            /*
             else
             {
-                if (isMining)
+                if (line.enabled)
                 {
-                    //player stops welding
-                    if (lastHit.transform != null)
-                    {
-                        object[] prams = { 0 };
-                        BlockOreSingle block;
-                        if (lastHit.transform.gameObject.TryGetComponent<BlockOreSingle>(out block))
-                        {
-                            block.MiningCallback();
-                        }
-                        else
-                        {
-                            //Debug.Log("Component Not Found: Defaulting to Message");
-                            //lastHit.transform.gameObject.SendMessage("MiningCallback", null, SendMessageOptions.DontRequireReceiver);
-                        }
-                        isMining = false;
-                    }
+                    line.enabled = false;
                 }
-            }*/
+            }
         }
+
+        override protected void Use()
+        {
+            isMining = true;
+        }
+
+        override protected void Stop()
+        {
+            isMining = false;
+        }
+
     }
 }

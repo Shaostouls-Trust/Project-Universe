@@ -16,6 +16,10 @@ using ProjectUniverse.UI;
 using UnityEngine.InputSystem;
 using MLAPI;
 using ProjectUniverse.Player.PlayerController;
+using ProjectUniverse.Items.Weapons;
+using ProjectUniverse.Items;
+using ProjectUniverse.Items.Tools;
+using ProjectUniverse.Items.Consumable;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -28,6 +32,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private TMP_Text statistics;
     [SerializeField] private IPlayer_Inventory playerInventory;
     [SerializeField] private Button wepButton;
+    [SerializeField] private Button toolButton;
     [SerializeField] private Button gadButton;
     [SerializeField] private Button gearButton;
     [SerializeField] private Button consButton;
@@ -37,6 +42,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private Color32 enabledColor;
     [SerializeField] private Color32 disabledColor;
     private bool showWeps = true;
+    private bool showTools = true;
     private bool showGadgets = true;
     private bool showGear = true;
     private bool showCons = true;
@@ -100,7 +106,22 @@ public class InventoryUI : MonoBehaviour
                 FleetBoyItemButton fbb = instanceButton.GetComponent<FleetBoyItemButton>();
                 fbibs.Add(instanceButton);
                 string[] name = inventory[t].GetStackType().Split('_');
-                fbb.ItemName = name[1] + " " + name[0];
+                if(name[0] == "Weapon" || name[0] == "Tool")
+                {
+                    fbb.ItemName = name[1];
+                }
+                else
+                {
+                    if (name.Length == 2)
+                    {
+                        fbb.ItemName = name[0] + " " + name[1];
+                    }
+                    else 
+                    {
+                        fbb.ItemName = name[0];
+                    }
+                    
+                }
                 fbb.Count = inventory[t].GetRealLength();
                 //using the itemtype, create some temp vars
                 Type ty = inventory[t].GetOriginalType();
@@ -128,6 +149,43 @@ public class InventoryUI : MonoBehaviour
                     stats = "Durability: " + comp.RemainingHealth + "/" + comp.HealthValue + "\n"
                         + "Priority: " + comp.GetPriority();
                 }
+                else if(ty == typeof(Weapon_Gun))
+                {
+                    desc = "A gun. It shoots things. Don't point it at things you don't want dead!";
+                    Weapon_Gun gun = (Weapon_Gun)inventory[t].GetItemArray().GetValue(inventory[t].LastIndex - 1);
+                    stats = "Caliber: " + gun.Base.Caliber + "\n" + "Muzzle Velocity: " + gun.Base.MuzzleVelocity;
+                }
+                else if(ty == typeof(MiningDrill))
+                {
+                    desc = "A hand-held laser drill. Carves off materials when mining.";
+                    MiningDrill drill = (MiningDrill)inventory[t].GetItemArray().GetValue(inventory[t].LastIndex - 1);
+                    stats = "Mining Speed: "+drill.MineAmount;
+                }
+                else if(ty == typeof(Consumable_Throwable))
+                {
+                    desc = "Throw it and something happens. Try it on your friend!";
+                    Consumable_Throwable c_throw = (Consumable_Throwable)inventory[t].GetItemArray().GetValue(inventory[t].LastIndex - 1);
+                    stats = "" + c_throw.ID;
+                }
+                else if(ty == typeof(Consumable_Applyable))
+                {
+                    Consumable_Applyable c_throw = (Consumable_Applyable)inventory[t].GetItemArray().GetValue(inventory[t].LastIndex - 1);
+                    if (c_throw.ThisApplyableType == Consumable_Applyable.ApplyableType.Seed)
+                    {
+                        desc = "Seeds. Plant them in soil.";
+                        stats = "" + c_throw.ID;
+                    }
+                    else if(c_throw.ThisApplyableType == Consumable_Applyable.ApplyableType.Healthpack)
+                    {
+                        desc = "Healthpack. Used to heal wounds.";
+                        stats = "" + c_throw.ID;
+                    }
+                    else if (c_throw.ThisApplyableType == Consumable_Applyable.ApplyableType.Ammopack)
+                    {
+                        desc = "Ammopack. Resupplies some ammo.";
+                        stats = "" + c_throw.ID;
+                    }
+                }
                 //description.text = desc;
                 //statistics.text = stats;
                 fbb.ItemCategory = cat;
@@ -137,6 +195,36 @@ public class InventoryUI : MonoBehaviour
                 fbb.StatTxt = statistics;
                 fbb.SelectedStack = inventory[t];
                 fbb.UI = this;
+                //check if the item is equiped (DEFINIETLY A BETTER WAY TO DO THIS!)
+                if(cat == Category.Gear || cat == Category.Weapon || cat == Category.Gadget || cat == Category.Tool)
+                {
+                    SupplementalController sc = playerInventory.gameObject.GetComponent<SupplementalController>();
+                    if (playerInventory.gameObject.GetComponent<SupplementalController>().IsEquipped(inventory[t].GetItemArray().GetValue(0) as IEquipable))
+                    {
+                        //Highlight the fbb
+                        IEquipable eq = fbb.SelectedStack.GetItemArray().GetValue(0) as IEquipable;
+                        if (eq == sc.EquippedWeapons[0])
+                        {
+                            fbb.HighlightButton(0);
+                        }
+                        else if(eq == sc.EquippedWeapons[1])
+                        {
+                            fbb.HighlightButton(1);
+                        }
+                        if (eq == sc.EquippedTools[0])
+                        {
+                            fbb.HighlightButton(0);
+                        }
+                        else if (eq == sc.EquippedTools[1])
+                        {
+                            fbb.HighlightButton(1);
+                        }
+                    }
+                    else
+                    {
+                        fbb.UnhighlightButton();
+                    }
+                }
             }
         }
     }
@@ -155,6 +243,8 @@ public class InventoryUI : MonoBehaviour
         controls.Player.Inv_Drop.Enable();
         controls.Player.Inv_Transfer.Enable();
         controls.Player.Inv_Use.Enable();
+        controls.Player.Num1.Enable();
+        controls.Player.Num2.Enable();
     }
 
     private void OnDisable()
@@ -162,6 +252,8 @@ public class InventoryUI : MonoBehaviour
         controls.Player.Inv_Drop.Disable();
         controls.Player.Inv_Transfer.Disable();
         controls.Player.Inv_Use.Disable();
+        controls.Player.Num1.Disable();
+        controls.Player.Num2.Disable();
     }
 
     /// Bind methods to buttons
@@ -169,12 +261,13 @@ public class InventoryUI : MonoBehaviour
     void Start()
     {
         wepButton.onClick.AddListener(delegate { ButtonInputHandler(0); ToggleButtonStateTo(wepButton, showWeps); });
-        gadButton.onClick.AddListener(delegate { ButtonInputHandler(1); ToggleButtonStateTo(gadButton, showGadgets); });
-        gearButton.onClick.AddListener(delegate { ButtonInputHandler(2); ToggleButtonStateTo(gearButton, showGear); });
-        consButton.onClick.AddListener(delegate { ButtonInputHandler(3); ToggleButtonStateTo(consButton, showCons); });
-        ammoButton.onClick.AddListener(delegate { ButtonInputHandler(4); ToggleButtonStateTo(ammoButton, showAmmo); });
-        rssButton.onClick.AddListener(delegate { ButtonInputHandler(5); ToggleButtonStateTo(rssButton, showRss); });
-        miscButton.onClick.AddListener(delegate { ButtonInputHandler(6); ToggleButtonStateTo(miscButton, showMisc); });
+        toolButton.onClick.AddListener(delegate { ButtonInputHandler(1); ToggleButtonStateTo(toolButton, showTools); });
+        gadButton.onClick.AddListener(delegate { ButtonInputHandler(2); ToggleButtonStateTo(gadButton, showGadgets); });
+        gearButton.onClick.AddListener(delegate { ButtonInputHandler(3); ToggleButtonStateTo(gearButton, showGear); });
+        consButton.onClick.AddListener(delegate { ButtonInputHandler(4); ToggleButtonStateTo(consButton, showCons); });
+        ammoButton.onClick.AddListener(delegate { ButtonInputHandler(5); ToggleButtonStateTo(ammoButton, showAmmo); });
+        rssButton.onClick.AddListener(delegate { ButtonInputHandler(6); ToggleButtonStateTo(rssButton, showRss); });
+        miscButton.onClick.AddListener(delegate { ButtonInputHandler(7); ToggleButtonStateTo(miscButton, showMisc); });
 
         controls.Player.Inv_Drop.performed += ctx =>
         {
@@ -188,6 +281,14 @@ public class InventoryUI : MonoBehaviour
         {
             UseSelected();
         };
+        controls.Player.Num1.performed += ctx =>
+        {
+            EquipToQuickSelect(1);
+        };
+        controls.Player.Num2.performed += ctx =>
+        {
+            EquipToQuickSelect(2);
+        };
     }
 
     ///
@@ -196,14 +297,43 @@ public class InventoryUI : MonoBehaviour
 
     public void UseSelected()
     {
+        Debug.Log("Attempt to use");
+        SupplementalController controller = playerInventory.gameObject.GetComponent<SupplementalController>();
         //use item. Equip to the right body slot, or use immediately
         if (selectedButton.ItemCategory == Category.Gear)
         {
 
         }
+        //Use IEquipable to get the slot. Grab the gun GO and parent the gun to that slot.
         else if (selectedButton.ItemCategory == Category.Weapon)
         {
-
+            // clear the EquippedWeapons thing?
+            for(int i = 0;i < controller.EquippedWeapons.Length; i++)
+            {
+                if(controller.EquippedWeapons[i] != null)
+                {
+                    //controller.DequipItem(controller.EquippedWeapons[i].gameObject);
+                }
+            }
+            //dequip the other guns and tools
+            if (controller.RightHandEquipped != null)
+            {
+                controller.DequipItem(controller.RightHandEquipped.gameObject);
+            }
+            //Equip the selected gun
+            Weapon_Gun gun = selectedButton.SelectedStack.GetItemArray().GetValue(0) as Weapon_Gun;
+            playerInventory.gameObject.GetComponent<SupplementalController>().EquipItem(gun.gameObject, gun.EquipmentSlot);
+        }
+        else if (selectedButton.ItemCategory == Category.Tool)
+        {
+            //dequip other tools and weapons
+            if (controller.RightHandEquipped != null)
+            {
+                controller.DequipItem(controller.RightHandEquipped.gameObject);
+            }
+            //Equip the drill
+            MiningDrill drill = selectedButton.SelectedStack.GetItemArray().GetValue(0) as MiningDrill;
+            playerInventory.gameObject.GetComponent<SupplementalController>().EquipItem(drill.gameObject, drill.EquipmentSlot);
         }
         else if (selectedButton.ItemCategory == Category.Gadget)
         {
@@ -211,16 +341,132 @@ public class InventoryUI : MonoBehaviour
         }
         else if (selectedButton.ItemCategory == Category.Consumable)
         {
-            //if medical or food, use immediately. Otherwise equip to hands. LMB or RMB equip to different hands.
+            //if medical or food, use immediately? Otherwise equip to hands. LMB or RMB equip to different hands.
+            if (controller.RightHandEquipped != null)
+            {
+                controller.DequipItem(controller.RightHandEquipped.gameObject);
+            }
+            // check the type of consumable: Applyable or throwable
+            if (selectedButton.SelectedStack.GetOriginalType() == typeof(Consumable_Throwable))
+            {
+                Consumable_Throwable cons = selectedButton.SelectedStack.GetItemArray().GetValue(0) as Consumable_Throwable;
+                playerInventory.gameObject.GetComponent<SupplementalController>().EquipItem(cons.gameObject, cons.EquipmentSlot);
+            }
+            else if (selectedButton.SelectedStack.GetOriginalType() == typeof(Consumable_Applyable))
+            {
+                Consumable_Applyable cons = selectedButton.SelectedStack.GetItemArray().GetValue(0) as Consumable_Applyable;
+                playerInventory.gameObject.GetComponent<SupplementalController>().EquipItem(cons.gameObject, cons.EquipmentSlot);
+            }
+            
+        }
+    }
+
+    public void EquipToQuickSelect(int i)
+    {
+        SupplementalController controller = playerInventory.gameObject.GetComponent<SupplementalController>();
+        if (SelectedButton.ItemCategory == Category.Weapon)
+        {
+            if (i == 1)
+            {
+                //clear the selection of the first weapon slot
+                for(int a = 0; a < fbibs.Count; a++)
+                {
+                    if(fbibs[a].GetComponent<FleetBoyItemButton>().SelectedStack.GetItemArray().GetValue(0) as IEquipable == controller.EquippedWeapons[0])
+                    {
+                        fbibs[a].GetComponent<FleetBoyItemButton>().UnhighlightButton();
+                        break;
+                    }
+                }
+                //Set this item to the first weapon slot
+                controller.EquippedWeapons[0] = (SelectedButton.SelectedStack.GetItemArray().GetValue(0) as IEquipable);
+                SelectedButton.HighlightButton(0);
+            }
+            else
+            {
+                for (int a = 0; a < fbibs.Count; a++)
+                {
+                    if (fbibs[a].GetComponent<FleetBoyItemButton>().SelectedStack.GetItemArray().GetValue(0) as IEquipable == controller.EquippedWeapons[1])
+                    {
+                        fbibs[a].GetComponent<FleetBoyItemButton>().UnhighlightButton();
+                        break;
+                    }
+                }
+                //set item to second wep slot
+                controller.EquippedWeapons[1] = (SelectedButton.SelectedStack.GetItemArray().GetValue(0) as IEquipable);
+                SelectedButton.HighlightButton(1);
+            }
+        }
+        else if(SelectedButton.ItemCategory == Category.Tool)
+        {
+            if (i == 1)
+            {
+                //Set this item to the first tool slot
+                for (int a = 0; a < fbibs.Count; a++)
+                {
+                    if (fbibs[a].GetComponent<FleetBoyItemButton>().SelectedStack.GetItemArray().GetValue(0) as IEquipable == controller.EquippedTools[0])
+                    {
+                        fbibs[a].GetComponent<FleetBoyItemButton>().UnhighlightButton();
+                        break;
+                    }
+                }
+                //Set this item to the first weapon slot
+                controller.EquippedTools[0] = (SelectedButton.SelectedStack.GetItemArray().GetValue(0) as IEquipable);
+                SelectedButton.HighlightButton(0);
+            }
+            else
+            {
+                //set item to second tool slot
+                for (int a = 0; a < fbibs.Count; a++)
+                {
+                    if (fbibs[a].GetComponent<FleetBoyItemButton>().SelectedStack.GetItemArray().GetValue(0) as IEquipable == controller.EquippedTools[1])
+                    {
+                        fbibs[a].GetComponent<FleetBoyItemButton>().UnhighlightButton();
+                        break;
+                    }
+                }
+                //Set this item to the first weapon slot
+                controller.EquippedTools[1] = (SelectedButton.SelectedStack.GetItemArray().GetValue(0) as IEquipable);
+                SelectedButton.HighlightButton(1);
+            }
+        }
+        else if (SelectedButton.ItemCategory == Category.Consumable)
+        {
+            if (i == 1)
+            {
+                //Set this item to the first cons slot
+                for (int a = 0; a < fbibs.Count; a++)
+                {
+                    if (fbibs[a].GetComponent<FleetBoyItemButton>().SelectedStack.GetItemArray().GetValue(0) as IEquipable == controller.EquippedConsumables[0])
+                    {
+                        fbibs[a].GetComponent<FleetBoyItemButton>().UnhighlightButton();
+                        break;
+                    }
+                }
+                controller.EquippedConsumables[0] = (SelectedButton.SelectedStack.GetItemArray().GetValue(0) as IEquipable);
+                SelectedButton.HighlightButton(0);
+            }
+            else
+            {
+                //set item to second consum slot
+                for (int a = 0; a < fbibs.Count; a++)
+                {
+                    if (fbibs[a].GetComponent<FleetBoyItemButton>().SelectedStack.GetItemArray().GetValue(0) as IEquipable == controller.EquippedConsumables[1])
+                    {
+                        fbibs[a].GetComponent<FleetBoyItemButton>().UnhighlightButton();
+                        break;
+                    }
+                }
+                //Set this item to the first weapon slot
+                controller.EquippedConsumables[1] = (SelectedButton.SelectedStack.GetItemArray().GetValue(0) as IEquipable);
+                SelectedButton.HighlightButton(1);
+            }
         }
     }
 
     public void DropSelected()
     {
         Debug.Log("Drop Selected");
-        //find item prefab
         Vector3 position;
-        string prefix = "Prefabs\\Resources\\";
         GameObject obj;
         RaycastHit hit;
         Vector3 forward = Camera.main.transform.TransformDirection(0f, 0f, 1f) * 1f;
@@ -234,61 +480,143 @@ public class InventoryUI : MonoBehaviour
             position = this.transform.position + forward;
         }
 
-        //remove the item from inventory. Dropping an item will work based on itemstack index, not mass or itemcount.
-        if (selectedButton.SelectedStack.GetOriginalType() == typeof(Consumable_Ore))
+        Type ss = selectedButton.SelectedStack.GetOriginalType();
+        Debug.Log(ss.BaseType);
+        if (ss.BaseType == typeof(IEquipable))
         {
-            prefix += "Ores\\";
-            obj = Resources.Load(prefix + selectedButton.SelectedStack.GetStackType()) as GameObject;
-            if (obj == null)
-            {
-                obj = Resources.Load(prefix + "Ore_NoMat") as GameObject;
-            }
-            //Spawn the item in worldspace and pass parameters to it.
-            GameObject oreworldspace = Instantiate(obj, position, Quaternion.identity);
-            //drop item. 
+            //Itemstack to be dropped
             ItemStack stk;
-            if (playerInventory != null)
+            ///
+            /// Weapon_Gun
+            ///
+            if (ss == typeof(Weapon_Gun))
             {
-                stk = playerInventory.RemoveFromPlayerInventory<Consumable_Ore>(selectedButton.SelectedStack,
-                (selectedButton.SelectedStack.LastIndex - 1));
+                //move to position, activate GO and rb gravity
+                Debug.Log("Drop Gun -- set position");
+                Weapon_Gun gun = (selectedButton.SelectedStack.GetItemArray().GetValue(0) as Weapon_Gun);
+                gun.gameObject.transform.position = position;
+                //enable the gun to be picked up
+                gun.gameObject.GetComponent<InteractionElement>().Parameter = 0;
+                Rigidbody rb = gun.gameObject.GetComponent<Rigidbody>();
+                rb.detectCollisions = true;
+                rb.isKinematic = false;
+                rb.useGravity = true;
+                gun.gameObject.SetActive(true);
+                //remove from inventory
+                Debug.Log("Drop Gun -- remove from inventory");
+                if (playerInventory != null)
+                {
+                    stk = playerInventory.RemoveFromPlayerInventory<Weapon_Gun>(selectedButton.SelectedStack,
+                        (selectedButton.SelectedStack.LastIndex - 1));
+                }
+                else
+                {
+                    stk = container.RemoveFromInventory<Weapon_Gun>(selectedButton.SelectedStack, (selectedButton.SelectedStack.LastIndex - 1));
+                }
+                selectedButton.Count--;
+                Debug.Log(stk);
             }
-            else
-            {
-                stk = container.RemoveFromInventory<Consumable_Ore>(selectedButton.SelectedStack, (selectedButton.SelectedStack.LastIndex - 1));
-            }
-            Debug.Log(stk);
-            if (oreworldspace != null && stk != null)
-            {
-                oreworldspace.GetComponent<Consumable_Ore>().RegenerateOre(stk.GetItemArray().GetValue(0) as Consumable_Ore);
-            }
-            selectedButton.Count -= stk.GetRealLength();
+            
+            
         }
-        else if (selectedButton.SelectedStack.GetOriginalType() == typeof(Consumable_Ingot))
+        else
         {
-            prefix += "Ingots\\";
-            obj = Resources.Load(prefix + selectedButton.SelectedStack.GetStackType()) as GameObject;
-            if (obj == null)
+            //find item prefab
+            string prefix = "Prefabs\\Resources\\";
+            //remove the item from inventory. Dropping an item will work based on itemstack index, not mass or itemcount.
+            ///
+            /// CONSUMABLE ORE
+            ///
+            if (selectedButton.SelectedStack.GetOriginalType() == typeof(Consumable_Ore))
             {
-                obj = Resources.Load(prefix + "Ingot_Medium") as GameObject;
+                prefix += "Ores\\";
+                obj = Resources.Load(prefix + selectedButton.SelectedStack.GetStackType()) as GameObject;
+                if (obj == null)
+                {
+                    obj = Resources.Load(prefix + "Ore_NoMat") as GameObject;
+                }
+                //Spawn the item in worldspace and pass parameters to it.
+                GameObject oreworldspace = Instantiate(obj, position, Quaternion.identity);
+                //drop item. 
+                ItemStack stk;
+                if (playerInventory != null)
+                {
+                    stk = playerInventory.RemoveFromPlayerInventory<Consumable_Ore>(selectedButton.SelectedStack,
+                    (selectedButton.SelectedStack.LastIndex - 1));
+                }
+                else
+                {
+                    stk = container.RemoveFromInventory<Consumable_Ore>(selectedButton.SelectedStack, (selectedButton.SelectedStack.LastIndex - 1));
+                }
+                Debug.Log(stk);
+                if (oreworldspace != null && stk != null)
+                {
+                    oreworldspace.GetComponent<Consumable_Ore>().RegenerateOre(stk.GetItemArray().GetValue(0) as Consumable_Ore);
+                }
+                selectedButton.Count -= stk.GetRealLength();
             }
-            //Spawn the item in worldspace and pass parameters to it.
-            GameObject ingotworldspace = Instantiate(obj, position, Quaternion.identity);
-            //drop item. 
-            ItemStack stk;
-            if (playerInventory != null)
+            ///
+            /// CONSUMABLE INGOT
+            ///
+            else if (selectedButton.SelectedStack.GetOriginalType() == typeof(Consumable_Ingot))
             {
-                stk = playerInventory.RemoveFromPlayerInventory<Consumable_Ingot>(selectedButton.SelectedStack,
-                (selectedButton.SelectedStack.LastIndex - 1));
+                prefix += "Ingots\\";
+                obj = Resources.Load(prefix + selectedButton.SelectedStack.GetStackType()) as GameObject;
+                if (obj == null)
+                {
+                    obj = Resources.Load(prefix + "Ingot_Medium") as GameObject;
+                }
+                //Spawn the item in worldspace and pass parameters to it.
+                GameObject ingotworldspace = Instantiate(obj, position, Quaternion.identity);
+                //drop item. 
+                ItemStack stk;
+                if (playerInventory != null)
+                {
+                    stk = playerInventory.RemoveFromPlayerInventory<Consumable_Ingot>(selectedButton.SelectedStack,
+                    (selectedButton.SelectedStack.LastIndex - 1));
+                }
+                else
+                {
+                    stk = container.RemoveFromInventory<Consumable_Ore>(selectedButton.SelectedStack, (selectedButton.SelectedStack.LastIndex - 1));
+                }
+                if (ingotworldspace != null && stk != null)
+                {
+                    ingotworldspace.GetComponent<Consumable_Ingot>().RegenerateIngot(stk.GetItemArray().GetValue(0) as Consumable_Ingot);
+                }
+                selectedButton.Count -= stk.GetRealLength();
             }
-            else
+            ///
+            /// Consumables
+            ///
+            else if (selectedButton.SelectedStack.GetOriginalType() == typeof(Consumable_Ingot))
             {
-                stk = container.RemoveFromInventory<Consumable_Ore>(selectedButton.SelectedStack, (selectedButton.SelectedStack.LastIndex - 1));
+                prefix += "Consumables\\";
+                obj = Resources.Load(prefix + selectedButton.SelectedStack.GetStackType()) as GameObject;
+                if (obj == null)
+                {
+                    obj = Resources.Load(prefix + selectedButton.ItemName) as GameObject;
+                }
+                //Spawn the item in worldspace and pass parameters to it.
+                GameObject ingotworldspace = Instantiate(obj, position, Quaternion.identity);
+
+                //drop item. 
+                ItemStack stk;
+                if (playerInventory != null)
+                {
+                    stk = playerInventory.RemoveFromPlayerInventory<Consumable_Ingot>(selectedButton.SelectedStack,
+                    (selectedButton.SelectedStack.LastIndex - 1));
+                }
+                else
+                {
+                    stk = container.RemoveFromInventory<Consumable_Ore>(selectedButton.SelectedStack, (selectedButton.SelectedStack.LastIndex - 1));
+                }
+                if (ingotworldspace != null && stk != null)
+                {
+                    ingotworldspace.GetComponent<Consumable_Ingot>().RegenerateIngot(stk.GetItemArray().GetValue(0) as Consumable_Ingot);
+                }
+                selectedButton.Count -= stk.GetRealLength();
             }
-            if (ingotworldspace != null && stk != null)
-            {
-                ingotworldspace.GetComponent<Consumable_Ingot>().RegenerateIngot(stk.GetItemArray().GetValue(0) as Consumable_Ingot);
-            }
-            selectedButton.Count -= stk.GetRealLength();
+
         }
         //refresh the inventory UI
         RefreshInventoryScreen();
@@ -329,7 +657,6 @@ public class InventoryUI : MonoBehaviour
     public void RefreshInventoryScreen()
     {
         //get inventory
-        //List<ItemStack> inventory = container.GetComponent<IPlayer_Inventory>().GetPlayerInventory();
         List<ItemStack> inventory;
         if (playerInventory != null)
         {
@@ -395,7 +722,18 @@ public class InventoryUI : MonoBehaviour
                 SortInType(Category.Weapon);
             }
         }
-        else if(t == 1)
+        else if (t == 1)
+        {
+            if (showTools)
+            {
+                SortOutType(Category.Tool);
+            }
+            else
+            {
+                SortInType(Category.Tool);
+            }
+        }
+        else if(t == 2)
         {
             if (showGadgets)
             {
@@ -406,7 +744,7 @@ public class InventoryUI : MonoBehaviour
                 SortInType(Category.Gadget);
             }
         }
-        else if (t == 2)
+        else if (t == 3)
         {
             if (showGear)
             {
@@ -417,7 +755,7 @@ public class InventoryUI : MonoBehaviour
                 SortInType(Category.Gear);
             }
         }
-        else if (t == 3)
+        else if (t == 4)
         {
             if (showCons)
             {
@@ -428,7 +766,7 @@ public class InventoryUI : MonoBehaviour
                 SortInType(Category.Consumable);
             }
         }
-        else if (t == 4)
+        else if (t == 5)
         {
             if (showAmmo)
             {
@@ -439,7 +777,7 @@ public class InventoryUI : MonoBehaviour
                 SortInType(Category.Ammo);
             }
         }
-        else if (t == 5)
+        else if (t == 6)
         {
             if (showRss)
             {
@@ -450,7 +788,7 @@ public class InventoryUI : MonoBehaviour
                 SortInType(Category.Resource);
             }
         }
-        else if (t == 6)
+        else if (t == 7)
         {
             if (showMisc)
             {
@@ -469,6 +807,9 @@ public class InventoryUI : MonoBehaviour
         {
             case Category.Ammo:
                 showAmmo = false;
+                break;
+            case Category.Tool:
+                showTools = false;
                 break;
             case Category.Consumable:
                 showCons = false;
@@ -511,6 +852,9 @@ public class InventoryUI : MonoBehaviour
             case Category.Ammo:
                 showAmmo = true;
                 break;
+            case Category.Tool:
+                showTools = true;
+                break;
             case Category.Consumable:
                 showCons = true;
                 break;
@@ -542,6 +886,9 @@ public class InventoryUI : MonoBehaviour
                 break;
             case Category.Consumable:
                 if(showCons) return true;
+                break;
+            case Category.Tool:
+                if (showTools) return true;
                 break;
             case Category.Gadget:
                 if (showGadgets) return true;

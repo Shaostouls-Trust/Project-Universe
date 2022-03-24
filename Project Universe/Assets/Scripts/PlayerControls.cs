@@ -152,7 +152,7 @@ namespace ProjectUniverse
                     ""id"": ""615d445f-7c3c-49c5-9f66-c8bc87d59a77"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Hold"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -177,6 +177,42 @@ namespace ProjectUniverse
                     ""name"": ""Shift"",
                     ""type"": ""Button"",
                     ""id"": ""615f3010-b533-4c7c-b424-ca02a9f862f6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Num1"",
+                    ""type"": ""Button"",
+                    ""id"": ""d182b5f2-f30f-4bb4-8fd3-e82a4cb5031f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Num2"",
+                    ""type"": ""Button"",
+                    ""id"": ""98daeae4-5afa-49e7-aa97-b6c00a5ede6c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Num3"",
+                    ""type"": ""Button"",
+                    ""id"": ""c03fc0c4-25b7-461a-8a2e-ec6242e2b4ac"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Num4"",
+                    ""type"": ""Button"",
+                    ""id"": ""f4439b06-8fe3-45fe-8699-6a0952fbe1ce"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -462,7 +498,7 @@ namespace ProjectUniverse
                 {
                     ""name"": """",
                     ""id"": ""3c88fe76-fac4-4ec7-b736-c7e25ade31ab"",
-                    ""path"": ""<Keyboard>/f"",
+                    ""path"": ""<Keyboard>/t"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
@@ -511,6 +547,50 @@ namespace ProjectUniverse
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Shift"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bf3a1649-4ff3-455e-a024-f23c6aa2d4b7"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Num1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c2bb1c4e-f335-4fcd-a546-d6ca26f68077"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Num2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""827e04bb-4c8e-4fca-a4ac-85e5a4d59ebc"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Num3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9dbf5743-1c08-4d0f-ad14-bb9467e4f11a"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Num4"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1115,6 +1195,10 @@ namespace ProjectUniverse
             m_Player_Escape = m_Player.FindAction("Escape", throwIfNotFound: true);
             m_Player_ScrollWheel = m_Player.FindAction("ScrollWheel", throwIfNotFound: true);
             m_Player_Shift = m_Player.FindAction("Shift", throwIfNotFound: true);
+            m_Player_Num1 = m_Player.FindAction("Num1", throwIfNotFound: true);
+            m_Player_Num2 = m_Player.FindAction("Num2", throwIfNotFound: true);
+            m_Player_Num3 = m_Player.FindAction("Num3", throwIfNotFound: true);
+            m_Player_Num4 = m_Player.FindAction("Num4", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1203,6 +1287,10 @@ namespace ProjectUniverse
         private readonly InputAction m_Player_Escape;
         private readonly InputAction m_Player_ScrollWheel;
         private readonly InputAction m_Player_Shift;
+        private readonly InputAction m_Player_Num1;
+        private readonly InputAction m_Player_Num2;
+        private readonly InputAction m_Player_Num3;
+        private readonly InputAction m_Player_Num4;
         public struct PlayerActions
         {
             private @PlayerControls m_Wrapper;
@@ -1224,6 +1312,10 @@ namespace ProjectUniverse
             public InputAction @Escape => m_Wrapper.m_Player_Escape;
             public InputAction @ScrollWheel => m_Wrapper.m_Player_ScrollWheel;
             public InputAction @Shift => m_Wrapper.m_Player_Shift;
+            public InputAction @Num1 => m_Wrapper.m_Player_Num1;
+            public InputAction @Num2 => m_Wrapper.m_Player_Num2;
+            public InputAction @Num3 => m_Wrapper.m_Player_Num3;
+            public InputAction @Num4 => m_Wrapper.m_Player_Num4;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -1284,6 +1376,18 @@ namespace ProjectUniverse
                     @Shift.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShift;
                     @Shift.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShift;
                     @Shift.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShift;
+                    @Num1.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNum1;
+                    @Num1.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNum1;
+                    @Num1.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNum1;
+                    @Num2.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNum2;
+                    @Num2.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNum2;
+                    @Num2.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNum2;
+                    @Num3.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNum3;
+                    @Num3.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNum3;
+                    @Num3.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNum3;
+                    @Num4.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNum4;
+                    @Num4.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNum4;
+                    @Num4.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNum4;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -1339,6 +1443,18 @@ namespace ProjectUniverse
                     @Shift.started += instance.OnShift;
                     @Shift.performed += instance.OnShift;
                     @Shift.canceled += instance.OnShift;
+                    @Num1.started += instance.OnNum1;
+                    @Num1.performed += instance.OnNum1;
+                    @Num1.canceled += instance.OnNum1;
+                    @Num2.started += instance.OnNum2;
+                    @Num2.performed += instance.OnNum2;
+                    @Num2.canceled += instance.OnNum2;
+                    @Num3.started += instance.OnNum3;
+                    @Num3.performed += instance.OnNum3;
+                    @Num3.canceled += instance.OnNum3;
+                    @Num4.started += instance.OnNum4;
+                    @Num4.performed += instance.OnNum4;
+                    @Num4.canceled += instance.OnNum4;
                 }
             }
         }
@@ -1512,6 +1628,10 @@ namespace ProjectUniverse
             void OnEscape(InputAction.CallbackContext context);
             void OnScrollWheel(InputAction.CallbackContext context);
             void OnShift(InputAction.CallbackContext context);
+            void OnNum1(InputAction.CallbackContext context);
+            void OnNum2(InputAction.CallbackContext context);
+            void OnNum3(InputAction.CallbackContext context);
+            void OnNum4(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {

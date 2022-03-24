@@ -16,7 +16,7 @@ namespace ProjectUniverse.UI
         public Image doseMeter;
         public TMP_Text rateDis;
         public TMP_Text doseDis;
-        public GameObject[] BodyHealthDis;
+        //public GameObject[] BodyHealthDis;
         /// 0 - Head
         /// 1 - Chest
         /// 2,3 - LegL, LegR
@@ -39,9 +39,9 @@ namespace ProjectUniverse.UI
             rate = PVC.GetRadiationExposureRate();
             if (rate <= PVC.GetMaxRadsDetectable())
             {
-                rateDis.text = Math.Round(rate, 1) + " R";
+                rateDis.text = Math.Round(rate, 1) + " R/h";
             }
-            else if (rate <= PVC.GetMaxRadsDetectable() + 1000) { rateDis.text = PVC.GetMaxRadsDetectable() + " R"; }
+            else if (rate <= PVC.GetMaxRadsDetectable() + 1000) { rateDis.text = PVC.GetMaxRadsDetectable() + " R/h"; }
             else { rateDis.text = "ERR"; }
             //rateDis.text = Math.Round(rate,1)+" R";
             
@@ -53,7 +53,7 @@ namespace ProjectUniverse.UI
             else if (rate < 5000) { rateDis.color = DARKRED; rateBar.color = DARKRED; }
             else if (rate >= 5000) { rateDis.color = DARKRED; rateBar.color = DARKRED; }//5000
             */
-            float barmax = rateBarParent.rectTransform.rect.height;
+            float barmax = rateBarParent.rectTransform.rect.width;
             float y = 0;
             if (rate < 5000)
             {
@@ -67,7 +67,7 @@ namespace ProjectUniverse.UI
                 }
             }
             else { y = barmax; }
-            rateBar.rectTransform.transform.localScale = new Vector3(1, y, 1);
+            rateBar.rectTransform.transform.localScale = new Vector3(y, 1, 1);//(1, y, 1)
             //absorbed - meter and text
             dose = PVC.AbsorbedDose;
             doseDis.text = Math.Round(dose, 2) + " rads";
@@ -77,15 +77,16 @@ namespace ProjectUniverse.UI
             else if (dose <= 2000) { doseDis.color = YELLOW; doseBar.color = YELLOW; }
             else if (dose > 2000) { doseDis.color = RED; doseBar.color = RED; }
             */
-            float dosebar = rateBarParent.rectTransform.rect.height;
+            float dosebar = rateBarParent.rectTransform.rect.width;
             float y2 = 0;
             if (dose < 5000f)
             {
                 y2 = (dose / 5000f) * dosebar;
             }
             else { y2 = dosebar; }
-            doseBar.rectTransform.transform.localScale = new Vector3(1, y2, 1);
+            doseBar.rectTransform.transform.localScale = new Vector3(y2, 1, 1);//(1, y2, 1)
             //absorbed - player ref
+            /*
             Color32[] colors;
             if (dose <= 300)
             {
@@ -110,8 +111,8 @@ namespace ProjectUniverse.UI
             else
             {
                 colors = new[] { DARKRED, DARKRED, DARKRED, DARKRED, DARKRED, DARKRED };
-            }
-            SetBodyColor(colors);
+            }*/
+            //SetBodyColor(colors);
             //time
             stayTime = PVC.ExposureTime;
             StayTimeDis.text = TimeSpan.FromSeconds(stayTime).ToString(@"hh\:mm\:ss");
@@ -120,15 +121,15 @@ namespace ProjectUniverse.UI
             {
                 peakRate = rate;
             }
-            peakRateDis.text = Math.Round(peakRate, 2) + "";
+            peakRateDis.text = Math.Round(peakRate, 2) + " R/h";
         }
 
         private void SetBodyColor(Color32[] colors)
         {
-            for (int i = 0; i < BodyHealthDis.Length; i++)
-            {
-                BodyHealthDis[i].GetComponent<Image>().color = colors[i];
-            }
+            //for (int i = 0; i < BodyHealthDis.Length; i++)
+            //{
+            //    BodyHealthDis[i].GetComponent<Image>().color = colors[i];
+            //}
         }
     }
 }

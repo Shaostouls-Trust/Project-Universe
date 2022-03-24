@@ -7,6 +7,9 @@ using ProjectUniverse.Base;
 using ProjectUniverse.Production.Resources;
 using ProjectUniverse.Data.Libraries.Definitions;
 using ProjectUniverse.UI;
+using ProjectUniverse.Items.Weapons;
+using ProjectUniverse.Items.Tools;
+using ProjectUniverse.Items.Consumable;
 
 namespace ProjectUniverse.Player
 {
@@ -44,6 +47,50 @@ namespace ProjectUniverse.Player
             Consumable_Ore Nore = new Consumable_Ore("Ore_Nickel", 5, 5, 25);
             Consumable_Ore Core = new Consumable_Ore("Ore_Copper", 5, 5, 25);
 
+            //create a gun
+            GameObject gun = Instantiate(Resources.Load<GameObject>("Prefabs/Resources/Equipable/Weapons/DevWeapon"));
+            GameObject gun2 = Instantiate(Resources.Load<GameObject>("Prefabs/Resources/Equipable/Weapons/Scar"));
+            //create a tool
+            GameObject drill = Instantiate(Resources.Load<GameObject>("Prefabs/Resources/Equipable/Tools/Drill"));
+            //create a consumable
+            GameObject throwgren = Instantiate(Resources.Load<GameObject>("Prefabs/Resources/Equipable/Consumables/Consumable_Grenade"));
+            GameObject throwsmoke = Instantiate(Resources.Load<GameObject>("Prefabs/Resources/Equipable/Consumables/Consumable_SmokeGrenade"));
+            GameObject cornseed = Instantiate(Resources.Load<GameObject>("Prefabs/Resources/Equipable/Consumables/Applyable_SeedCorn"));
+
+            gun.SetActive(false);
+            gun2.SetActive(false);
+            drill.SetActive(false);
+            throwgren.SetActive(false);
+            cornseed.SetActive(false);
+
+            Weapon_Gun wep_gun = gun.GetComponent<Weapon_Gun>();
+            Weapon_Gun wep_gun2 = gun2.GetComponent<Weapon_Gun>();
+            MiningDrill tool_drill = drill.GetComponent<MiningDrill>();
+            Consumable_Throwable cons_gren = throwgren.GetComponent<Consumable_Throwable>();
+            Consumable_Throwable cons_smokegren = throwsmoke.GetComponent<Consumable_Throwable>();
+            Consumable_Applyable apply_cornseed = cornseed.GetComponent<Consumable_Applyable>();
+
+            ItemStack gunstack = new ItemStack("Weapon_DevWeapon", 1, typeof(Weapon_Gun));
+            ItemStack gunstack2 = new ItemStack("Weapon_Scar", 1, typeof(Weapon_Gun));
+            ItemStack drillStack = new ItemStack("Tool_Drill", 1, typeof(MiningDrill));
+            ItemStack grenStack = new ItemStack("Consumable_Grenade", 4, typeof(Consumable_Throwable));
+            ItemStack smokeStack = new ItemStack("Consumable_SmokeGrenade", 4, typeof(Consumable_Throwable));
+            ItemStack seedStack = new ItemStack("Applyable_CornSeed", 999, typeof(Consumable_Applyable));
+
+            gunstack.AddItem(wep_gun);
+            gunstack2.AddItem(wep_gun2);
+            drillStack.AddItem(tool_drill);
+            grenStack.AddItem(cons_gren);
+            smokeStack.AddItem(cons_smokegren);
+            seedStack.AddItem(apply_cornseed);
+
+            p_inventory.Add(gunstack);
+            p_inventory.Add(gunstack2);
+            p_inventory.Add(drillStack);
+            p_inventory.Add(grenStack);
+            p_inventory.Add(smokeStack);
+            p_inventory.Add(seedStack);
+            
             /*
            Consumable_Component comp1 = new Consumable_Component("Component_ControlInterface", 99);
            Consumable_Component comp2 = new Consumable_Component("Component_ElectricalComponents", 99);
@@ -199,6 +246,19 @@ namespace ProjectUniverse.Player
             wrapper.AddItem(itemScript);
             Debug.Log("Adding stack: " + wrapper.ToString());
             AddStackToPlayerInventory(wrapper);
+            return true;
+        }
+
+        public bool AddToPlayerInventory<itemtype>(IEquipable eq)
+        {
+            //gun.SetActive(false); done in ExternalInteract
+            if (typeof(itemtype) == typeof(Weapon_Gun))
+            {
+                Weapon_Gun wep_gun = eq.gameObject.GetComponent<Weapon_Gun>();
+                ItemStack gunstack = new ItemStack(wep_gun.ID, 1, typeof(Weapon_Gun));
+                gunstack.AddItem(wep_gun);
+                AddStackToPlayerInventory(gunstack);
+            }
             return true;
         }
 

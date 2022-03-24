@@ -53,12 +53,17 @@ namespace ProjectUniverse.Base
             {
 
             }
+            else if(_originalType == typeof(Weapon_Gun))
+            {
+
+            }
             return assembly;
         }
 
         public enum Category
         {
             Weapon,
+            Tool,
             Gadget,
             Gear,
             Consumable,
@@ -85,7 +90,7 @@ namespace ProjectUniverse.Base
             _originalType = sourceType;
             //Create an array with a starting length of 1
             TArray = CreateArrayOfOriginalType(1);//maxCount
-            stackCategory = CalcSortCategory();
+            StackCategory = CalcSortCategory();
         }
         /// <summary>
         /// Set the ItemStack's TArray to the passed param. <br/>
@@ -121,6 +126,22 @@ namespace ProjectUniverse.Base
             else if(_originalType == typeof(Consumable_Produce))
             {
                 return new Consumable_Produce[maxCap];
+            }
+            else if (_originalType == typeof(Weapon_Gun))
+            {
+                return new Weapon_Gun[maxCap];
+            }
+            else if (_originalType == typeof(MiningDrill))
+            {
+                return new MiningDrill[maxCap];
+            }
+            else if(_originalType == typeof(Consumable_Throwable))
+            {
+                return new Consumable_Throwable[maxCap];
+            }
+            else if (_originalType == typeof(Consumable_Applyable))
+            {
+                return new Consumable_Applyable[maxCap];
             }
             else
             {
@@ -197,7 +218,51 @@ namespace ProjectUniverse.Base
             //Debug.Log(component.ToString());
             //Debug.Log(lastIndex++);
             TArray.SetValue(produce, lastIndex++);//cast exception on component addition
+        }
 
+        public void AddItem(Consumable_Applyable applyable)
+        {
+            if (applyable.ThisApplyableType == Consumable_Applyable.ApplyableType.Seed)
+            {
+                PlantSeed seed = applyable.gameObject.GetComponent<PlantSeed>();
+                itemCount += seed.Seeds;
+            }
+
+            if (TArray.Length < lastIndex)
+            {
+                TArray = ExpandArrayBy(1);
+            }
+            TArray.SetValue(applyable, lastIndex++);
+        }
+
+        public void AddItem(Weapon_Gun gun)
+        {
+            itemCount++;
+            if (TArray.Length < lastIndex)
+            {
+                TArray = ExpandArrayBy(1);
+            }
+            TArray.SetValue(gun, lastIndex++);
+        }
+
+        public void AddItem(MiningDrill drill)
+        {
+            itemCount++;
+            if (TArray.Length < lastIndex)
+            {
+                TArray = ExpandArrayBy(1);
+            }
+            TArray.SetValue(drill, lastIndex++);
+        }
+
+        public void AddItem(Consumable_Throwable cons)
+        {
+            itemCount++;
+            if (TArray.Length < lastIndex)
+            {
+                TArray = ExpandArrayBy(1);
+            }
+            TArray.SetValue(cons, lastIndex++);
         }
 
         public void RemoveTArrayIndex(int index)
@@ -244,6 +309,12 @@ namespace ProjectUniverse.Base
                 Consumable_Component comp = TArray.GetValue(index) as Consumable_Component;
                 returnstack = new ItemStack(comp.ComponentID, 99, typeof(Consumable_Component));
                 returnstack.AddItem(comp);
+            }
+            else if (typeof(stacktype) == typeof(Weapon_Gun))
+            {
+                Weapon_Gun gun = TArray.GetValue(index) as Weapon_Gun;
+                returnstack = new ItemStack(gun.ID, 99, typeof(Weapon_Gun));
+                returnstack.AddItem(gun);
             }
             else
             {
@@ -423,14 +494,41 @@ namespace ProjectUniverse.Base
                     else if (TArray.GetValue(i) != null && _originalType == typeof(Consumable_Produce))
                     {
                         Consumable_Produce tempProd = TArray.GetValue(i) as Consumable_Produce;//May throw null pointer
-                        if (amountToRemove > 0)
+
+                        if (tempProd.GetProduceCount() >= amountToRemove)
                         {
-                            //remove this ingot from TArray
-                            returnStack.AddItem(tempProd);
-                            TArray.SetValue(null, i);//empty the TArray. May just need to create a new one.
-                            lastIndex -= 1;
-                            //Debug.Log("Added: " + tempIng.ToString());
-                            amountToRemove -= tempProd.GetProduceCount();
+                            float need = amountToRemove - runningAmount;
+                            tempProd.RemoveFromProduceCount((int)amountToRemove);
+                            Consumable_Produce newComp = new Consumable_Produce(tempProd.ProduceType, (int)amountToRemove);
+                            returnStack.AddItem(newComp);
+                            //Debug.Log("Added: " + newComp.ToString());
+                            runningAmount += need;
+                        }
+                        else
+                        {
+                            float temp = runningAmount + tempProd.GetProduceCount();
+
+                            if (temp > amountToRemove)
+                            {
+                                float need = amountToRemove - runningAmount;
+                                //remove the need from the quantity and add to running
+                                tempProd.RemoveFromProduceCount((int)amountToRemove);
+                                Consumable_Produce newComp = new Consumable_Produce(tempProd.ProduceType, (int)amountToRemove);
+                                returnStack.AddItem(newComp);
+                                //Debug.Log("Added: " + newComp.ToString());
+                                runningAmount += need;
+                            }
+                            else
+                            {
+                                //remove this ingot from TArray
+                                runningAmount += tempProd.GetProduceCount();
+                                int c = (int)tempProd.GetProduceCount();
+                                tempProd.RemoveFromProduceCount(c);
+                                Consumable_Produce newComp = new Consumable_Produce(tempProd.ProduceType, c);
+                                returnStack.AddItem(newComp);
+                                TArray.SetValue(null, i);//empty the TArray. May just need to create a new one.
+                                lastIndex -= 1;
+                            }
                         }
                         if (tempProd.GetProduceCount() == 0)
                         {
@@ -438,14 +536,32 @@ namespace ProjectUniverse.Base
                             lastIndex -= 1;
                         }
                     }
+                    ///
+                    /// Remove Guns
+                    /// 
+                    else if (TArray.GetValue(i) != null && _originalType == typeof(Weapon_Gun))
+                    {
+                        //remove one from index?
+                        Weapon_Gun tempGun = TArray.GetValue(i) as Weapon_Gun;
+                        //remove this gun from TArray
+                        returnStack.AddItem(tempGun);
+                        TArray.SetValue(null, i);//empty the TArray. May just need to create a new one.
+                        lastIndex -= 1;
+                        //Debug.Log("Added: " + tempIng.ToString());
+                    }
+                    ///
+                    /// Remove Consumable
+                    ///
+                    else if (TArray.GetValue(i) != null && _originalType == typeof(Consumable_Throwable))
+                    {
+                        //remove one from index?
+                        Consumable_Throwable tThrow = TArray.GetValue(i) as Consumable_Throwable;
+                        returnStack.AddItem(tThrow);
+                        TArray.SetValue(null, i);//empty the TArray. May just need to create a new one.
+                        lastIndex -= 1;
+                    }
                 }
             }
-            //check if this ItemStack realLength is 0
-            //if(itemCount == 0)
-            //{
-            //    Debug.Log("ZERO");
-            //    TArray.SetValue(null, 0);
-            //}
             return returnStack;
         }
 
@@ -571,6 +687,26 @@ namespace ProjectUniverse.Base
                     }
                     Debug.Log("ItemStacks not equal");
                 }
+                else if (_originalType == typeof(Weapon_Gun))
+                {
+                    Weapon_Gun compProd = comparee.TArray.GetValue(0) as Weapon_Gun;
+                    Weapon_Gun oordProd = TArray.GetValue(0) as Weapon_Gun;
+                    //
+                    if(oordProd.ID == compProd.ID)
+                    {
+                        return true;
+                    }
+                }
+                else if (_originalType == typeof(Consumable_Throwable))
+                {
+                    Consumable_Throwable ctProd = comparee.TArray.GetValue(0) as Consumable_Throwable;
+                    Consumable_Throwable otProd = TArray.GetValue(0) as Consumable_Throwable;
+
+                    if(ctProd.ThrowType == otProd.ThrowType)
+                    {
+                        return true;
+                    }
+                }
             }
             //Debug.Log("Types not equal");
             return false;
@@ -634,6 +770,10 @@ namespace ProjectUniverse.Base
                         Consumable_Produce prod = TArray.GetValue(i) as Consumable_Produce;
                         mass = prod.GetProduceCount();
                     }
+                    else
+                    {
+                        mass = 1;
+                    }
                     size += mass;
                 }
             }
@@ -685,9 +825,15 @@ namespace ProjectUniverse.Base
 		private Category CalcSortCategory()
         {
             //weps
-            if(_originalType == typeof(IGun_Customizable))
+            if(_originalType == typeof(Weapon_Gun))
             {
                 return Category.Weapon;
+            }
+
+            //tools
+            else if(_originalType == typeof(MiningDrill))
+            {
+                return Category.Tool;
             }
 
             //gadgets
@@ -703,7 +849,7 @@ namespace ProjectUniverse.Base
             }
 
             //consumables
-            else if (_originalType == typeof(Consumable_Component) || _originalType == typeof(Consumable_Produce))
+            else if (_originalType == typeof(Consumable_Throwable) || _originalType == typeof(Consumable_Produce) || _originalType == typeof(Consumable_Applyable))
             {
                 return Category.Consumable;
             }
@@ -715,7 +861,8 @@ namespace ProjectUniverse.Base
             }
 
             //rss
-            if(_originalType == typeof(Consumable_Ingot) || _originalType == typeof(Consumable_Material) || _originalType == typeof(Consumable_Ore))
+            if(_originalType == typeof(Consumable_Ingot) || _originalType == typeof(Consumable_Material) || _originalType == typeof(Consumable_Ore) 
+                || _originalType == typeof(Consumable_Component))
             {
                 return Category.Resource;
             }

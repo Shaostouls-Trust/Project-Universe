@@ -30,6 +30,11 @@ namespace ProjectUniverse.Items.Consumable
             return produceCount;
         }
 
+        public void RemoveFromProduceCount(int value)
+        {
+            produceCount -= value;
+        }
+
         public string ProduceType
         {
             get { return typeSingle; }

@@ -120,7 +120,7 @@ namespace ProjectUniverse.Environment.World
                 {
                     stack = new ItemStack(OreDef.GetOreType(), 999, typeof(Consumable_Ore));
                     //Debug.Log(OreDef.GetOreType());
-                    Consumable_Ore ore = new Consumable_Ore(OreDef.GetOreType(), Quality, Zone, 15);
+                    Consumable_Ore ore = new Consumable_Ore(OreDef.GetOreType(), Quality, Zone, 10);
                     stack.AddItem(ore);
                     //Debug.Log("Remove Ore");
                 }
@@ -137,8 +137,16 @@ namespace ProjectUniverse.Environment.World
         /// 
         void LookInfoMsg(LookInfo linf)
         {
-            string s = Math.Round(mineHealth,2) + "/" + "2.5; " + mass;
-            string[] data = { s };
+            string[] data = new string[1];
+            //string s = Math.Round(mineHealth,2) + "/" + "2.5; " + mass;
+            if (OreDef != null)
+            {
+                data[0] =  "" + OreDef.GetOreType() + "; " + mass ;
+            }
+            else
+            {
+                data[0] = "Rock; " + mass;
+            }
             //return type of soil
             linf.GetType().GetMethod("LookInfoCallback").Invoke(linf, new[] { data });
         }

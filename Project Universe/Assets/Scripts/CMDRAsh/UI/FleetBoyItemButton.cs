@@ -7,6 +7,7 @@ using ProjectUniverse.Base;
 using ProjectUniverse.Production.Resources;
 using ProjectUniverse.Player;
 using static ProjectUniverse.Base.ItemStack;
+using UnityEngine.UI;
 
 /// <summary>
 /// Change text color when the button is moused over and selected.
@@ -21,8 +22,11 @@ public class FleetBoyItemButton : MonoBehaviour, IDeselectHandler
     [SerializeField] private TMP_Text nameTxt;
     [SerializeField] private TMP_Text descTxt;
     [SerializeField] private TMP_Text statTxt;
+    [SerializeField] private TMP_Text qsTxt;
     [SerializeField] private InventoryUI ui;
     private ItemStack stack;
+    private Color32 normal = new Color32(70,70,70,255);
+    private Color32 equipped = new Color32(140,115,50,255);
 
     //all inventory items have actions that can be performed while item is selected
     //use (E)
@@ -80,12 +84,44 @@ public class FleetBoyItemButton : MonoBehaviour, IDeselectHandler
         set { stack = value; }
     }
 
+    public void HighlightButton(int i)
+    {
+        Button bt = GetComponent<Button>();
+        ColorBlock cb = bt.colors;
+        cb.normalColor = equipped;
+        bt.colors = cb;
+        if(thisCat == Category.Weapon)
+        {
+            qsTxt.text = "gun "+i;
+        }
+        else if(thisCat == Category.Tool)
+        {
+            qsTxt.text = "tool "+i;
+        }
+        else if (thisCat == Category.Consumable)
+        {
+            qsTxt.text = "con " + i;
+        }
+        else if (thisCat == Category.Gadget)
+        {
+            qsTxt.text = "gad " + i;
+        }
+    }
+    public void UnhighlightButton()
+    {
+        Button bt = GetComponent<Button>();
+        ColorBlock cb = bt.colors;
+        cb.normalColor = normal;
+        bt.colors = cb;
+        qsTxt.text = "-";
+    }
+
     public void OnSelectButton()
     {
         DescTMP.text = Description;
         StatTxt.text = Stats;
         UI.SelectedButton = this;
-        Debug.Log("UI selected button: "+this);
+        //Debug.Log("UI selected button: "+this);
     }
 
     /// <summary>
@@ -97,6 +133,6 @@ public class FleetBoyItemButton : MonoBehaviour, IDeselectHandler
         DescTMP.text = "";
         StatTxt.text = "";
         UI.SelectedButton = null;
-        Debug.Log("UI selected button: null");
+        //Debug.Log("UI selected button: null");
     }
 }

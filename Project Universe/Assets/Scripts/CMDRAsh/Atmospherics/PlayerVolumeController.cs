@@ -7,6 +7,7 @@ using UnityEngine.Rendering.HighDefinition;
 using ProjectUniverse.Player;
 using ProjectUniverse.Player.PlayerController;
 using UnityEngine.UI;
+using TMPro;
 //using UnityEngine.Rendering.PostProcessing;
 
 /// <summary>
@@ -19,7 +20,10 @@ namespace ProjectUniverse.Environment.Volumes
     //[Serializable]
     public sealed class PlayerVolumeController : MonoBehaviour
     {
-        public Text atmodata;
+        [SerializeField] private TMP_Text pressureText;
+        [SerializeField] private TMP_Text oxyText;
+        [SerializeField] private TMP_Text tempText;
+        [SerializeField] private TMP_Text toxText;
         private float myRoomPressure;
         private float myLastRoomPress;
         private float myRoomTemp;
@@ -79,12 +83,12 @@ namespace ProjectUniverse.Environment.Volumes
             if (playerOxygen <= 0)
             {
                 //take suffocation damage
-                playerControllerSup.InflictPlayerDamageServerRpc(3.2f * Time.deltaTime);
+                playerControllerSup.InflictPlayerDamageServerRpc((3.2f - ((myRoomOxygenation / 100f) *3.2f)) * Time.deltaTime);
                 //playerHealth -= (3.2f * Time.deltaTime);//suffocate to death in 30 seconds
             }
-            if (myRoomOxygenation < 0.5f)//if the air is too thin (shouldn't it be 50.0f?)
+            if (myRoomOxygenation < 50.0f)//if the air is too thin
             {
-                float oxyDefecit = 50.0f - myRoomOxygenation;
+                //float oxyDefecit = 100.0f - myRoomOxygenation;
                 //breath X from an air supply
                 //if no air supply:
                 ///1 minute of holding breath before taking damage at normal heart rate (1.6f)
@@ -92,14 +96,14 @@ namespace ProjectUniverse.Environment.Volumes
                 ///scale down to 10 or so secs depending on heart rate
                 if(playerOxygen > 0f)
                 {
-                    playerOxygen -= ((oxyUseRate - (myRoomOxygenation / 100)) * Time.deltaTime);
+                    playerOxygen -= ((oxyUseRate - ((myRoomOxygenation / 100f))*oxyUseRate) * Time.deltaTime);
                 }
             }
-            else if (myRoomOxygenation > 0.5)
+            else if (myRoomOxygenation >= 50.0)
             {
                 if (playerOxygen < 100)
                 {
-                    playerOxygen += (50 * Time.deltaTime);//2 secs to recover from empty
+                    playerOxygen += ((myRoomOxygenation / 100f) * 50 * Time.deltaTime);//2 secs to recover from empty at 100% O2
                 }
                 if (playerOxygen > 100)
                 {
@@ -141,9 +145,8 @@ namespace ProjectUniverse.Environment.Volumes
             {
                 //you dead, punk!
             }
-//#if Build
-            DisplayDebugInfo();
-//#endif
+
+            UpdateUI();
         }
         public void AddRadiationExposureTime(float time)
         {
@@ -277,18 +280,12 @@ namespace ProjectUniverse.Environment.Volumes
             oxyUseRate = pvc.OxygenUseRate;
         }
 
-        private void DisplayDebugInfo()
+        public void UpdateUI()
         {
-            if(atmodata != null)
-            {
-                atmodata.text = "Pressure: " + myRoomPressure +
-                "\n Temp: " + myRoomTemp +
-                "\n Oxygenation: " + myRoomOxygenation +
-                "\n Toxicity: " + myRoomToxicity +
-                "\n Rads: " + myRadExposureRateRaw +
-                "\n PlayerOxygen: " + playerOxygen +
-                "\n PlayerTemp: " + playerTemp;
-            }
+            pressureText.text = Math.Round(myRoomPressure,2) +" atm";
+            oxyText.text = Math.Round(myRoomOxygenation, 2)+" %";
+            tempText.text = Math.Round(myRoomTemp, 2) + " F";
+            toxText.text = Math.Round(myRoomToxicity, 2) + " %";
         }
     }
 }

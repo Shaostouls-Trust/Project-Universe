@@ -128,7 +128,7 @@
                     "id": "615d445f-7c3c-49c5-9f66-c8bc87d59a77",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Hold",
                     "initialStateCheck": false
                 },
                 {
@@ -153,6 +153,42 @@
                     "name": "Shift",
                     "type": "Button",
                     "id": "615f3010-b533-4c7c-b424-ca02a9f862f6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Num1",
+                    "type": "Button",
+                    "id": "d182b5f2-f30f-4bb4-8fd3-e82a4cb5031f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Num2",
+                    "type": "Button",
+                    "id": "98daeae4-5afa-49e7-aa97-b6c00a5ede6c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Num3",
+                    "type": "Button",
+                    "id": "c03fc0c4-25b7-461a-8a2e-ec6242e2b4ac",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Num4",
+                    "type": "Button",
+                    "id": "f4439b06-8fe3-45fe-8699-6a0952fbe1ce",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -438,7 +474,7 @@
                 {
                     "name": "",
                     "id": "3c88fe76-fac4-4ec7-b736-c7e25ade31ab",
-                    "path": "<Keyboard>/f",
+                    "path": "<Keyboard>/t",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -487,6 +523,50 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Shift",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bf3a1649-4ff3-455e-a024-f23c6aa2d4b7",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Num1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c2bb1c4e-f335-4fcd-a546-d6ca26f68077",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Num2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "827e04bb-4c8e-4fca-a4ac-85e5a4d59ebc",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Num3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9dbf5743-1c08-4d0f-ad14-bb9467e4f11a",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Num4",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
