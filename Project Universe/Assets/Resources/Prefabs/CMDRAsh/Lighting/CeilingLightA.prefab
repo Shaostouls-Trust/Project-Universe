@@ -106,14 +106,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Version: 11
-  m_ObsoleteShadowResolutionTier: 1
-  m_ObsoleteUseShadowQualitySettings: 0
-  m_ObsoleteCustomShadowResolution: 512
-  m_ObsoleteContactShadows: 0
-  m_PointlightHDType: 0
-  m_SpotLightShape: 0
-  m_AreaLightShape: 0
   m_Intensity: 200
   m_EnableSpotReflector: 0
   m_LuxAtDistance: 1
@@ -216,6 +208,14 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
+  m_PointlightHDType: 0
+  m_SpotLightShape: 0
+  m_AreaLightShape: 0
+  m_Version: 11
+  m_ObsoleteShadowResolutionTier: 1
+  m_ObsoleteUseShadowQualitySettings: 0
+  m_ObsoleteCustomShadowResolution: 512
+  m_ObsoleteContactShadows: 0
 --- !u!1 &9149824078736397695
 GameObject:
   m_ObjectHideFlags: 0
@@ -230,6 +230,7 @@ GameObject:
   - component: {fileID: 8231416098783438891}
   - component: {fileID: 4194352140149529408}
   - component: {fileID: 6027326747081343389}
+  - component: {fileID: 121563333627994018}
   m_Layer: 0
   m_Name: CeilingLightA
   m_TagString: Untagged
@@ -354,3 +355,20 @@ MonoBehaviour:
   PrefabHashGenerator: CeilingLightA
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
+--- !u!114 &121563333627994018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9149824078736397695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31e8a527d56e3604c9c99dca0170bd55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AutoBuild: 1
+  IConstructible_Machine_Type: Machine_StandardLight
+  IConstructible_BaseHealth: 25
+  IConstructible_MachineHealthNormal: 0
+  IConstructible_MachineHealthRemaining: 0

@@ -35,14 +35,17 @@ namespace ProjectUniverse.Environment.Interactable
             float extensiondistance = Mathf.Lerp(0f, 0.75f, (transform.localRotation.eulerAngles.x/90f));
             Vector3 forward = transform.TransformDirection(0f, 0f, 1f) * (1.5f+ extensiondistance);
             //to 2.1m so that items on floor can be picked up
-            Debug.DrawRay(transform.position, forward, Color.green);
+            Debug.DrawRay(transform.position, forward, Color.green);//*2f
             //if a 1m.5 raycast hits an object collider
             RaycastHit hit;
-            
+
+            Physics.queriesHitTriggers = true;
             if (Physics.Raycast(transform.position, forward, out hit, (1.5f + extensiondistance)))
             {
+                //Debug.Log(hit.collider.gameObject);
                 if (hit.collider.gameObject.GetComponent<InteractionElement>())//don't need to test this every frame
                 {
+                    //Debug.Log(hit.collider.gameObject);                    
                     //change cursor to interaction sprite
                     if (!showingInteractPointer)
                     {
@@ -52,18 +55,21 @@ namespace ProjectUniverse.Environment.Interactable
                     }
                     if (!triggered)
                     {
+
                         //PointerDetector
                         if (hit.collider.gameObject.TryGetComponent(out PointerDetector pd))
                         {
                             pd.ExternalInteractFunc();
                             triggered = true;
+                            
                         }
                         //Normal interaction
-                        if (Input.GetKeyUp(KeyCode.E))
+                        if (Input.GetKeyUp(KeyCode.F))
                         {
                             //get Interaction Element and call backend function
                             hit.collider.gameObject.GetComponent<InteractionElement>().Interact();
                             //triggered = true;
+                            
                         }
                     }
                 }

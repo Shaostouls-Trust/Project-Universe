@@ -50,6 +50,35 @@ namespace ProjectUniverse.Environment.Gas
         [SerializeField] private float insulationRating = 0.1f;
         [SerializeField] private bool burst;
 
+        public bool IsBurst
+        {
+            get { return burst; }
+            set { burst = true; }
+        }
+
+        public List<IGas> Gasses
+        {
+            get { return gasses; }
+            set { gasses = value; }
+        }
+
+        public float Temperature
+        {
+            get { return temp; }
+            set { temp = value; }
+        }
+
+        public float Volume
+        {
+            get { return volume_m3; }
+        }
+
+        public GameObject Vent
+        {
+            get { return vent; }
+            set { vent = value; }
+        }
+
         /// <summary>
         /// atmoData; ducttemp, ductpressure, List<IGas> gasses
         /// </summary>
@@ -97,64 +126,70 @@ namespace ProjectUniverse.Environment.Gas
         /// <param name="atmoData"></param>
         public void Receive(bool destructive, params object[] atmoData)
         {
-            temp = (float)atmoData[0];
-            if (destructive)
+            //Debug.Log("|-"+ ((List<IGas>)atmoData[2]).Count);
+            if (((List<IGas>)atmoData[2]).Count > 0)
             {
-                globalPressure = (float)Math.Round((float)atmoData[1], 4);
-                appliedPressure = globalPressure;
-                //Debug.Log(gameObject+" global pressure is "+ globalPressure);
-                if (atmoData[2].GetType() == typeof(List<IGas>))
+                temp = (float)atmoData[0];
+                if (destructive)
                 {
-                    gasses = (List<IGas>)atmoData[2];
+                    globalPressure = (float)Math.Round((float)atmoData[1], 4);
+                    appliedPressure = globalPressure;
+                    //Debug.Log(gameObject+" global pressure is "+ globalPressure);
+                    if (atmoData[2].GetType() == typeof(List<IGas>))
+                    {
+                        gasses = (List<IGas>)atmoData[2];
+                    }
+                    else if (atmoData[2].GetType() == typeof(IGas))
+                    {
+                        gasses.Clear();//
+                        gasses.Add((IGas)atmoData[2]);
+                    }
                 }
-                else if (atmoData[2].GetType() == typeof(IGas))
+                else
                 {
-                    gasses.Clear();//
-                    gasses.Add((IGas)atmoData[2]);
+                    globalPressure += (float)Math.Round((float)atmoData[1], 4);
+                    appliedPressure = globalPressure;
+                    if (atmoData[2].GetType() == typeof(List<IGas>))
+                    {
+                        gasses.AddRange((List<IGas>)atmoData[2]);
+                    }
+                    else if (atmoData[2].GetType() == typeof(IGas))
+                    {
+                        gasses.Add((IGas)atmoData[2]);
+                    }
                 }
-            }
-            else
-            {
-                globalPressure += (float)Math.Round((float)atmoData[1], 4);
-                appliedPressure = globalPressure;
-                if (atmoData[2].GetType() == typeof(List<IGas>))
-                {
-                    gasses.AddRange((List<IGas>)atmoData[2]);
-                }
-                else if (atmoData[2].GetType() == typeof(IGas))
-                {
-                    gasses.Add((IGas)atmoData[2]);
-                }
-            }
 
-            //calculate the change in globalpressure based temp on volume or temp for local pressure calcs
-            float totalPressure = 0.0f;
-            //Debug.Log("Pre vol adj: " + globalPressure);
-            foreach (IGas gas in gasses)
-            {
-                ///P1*V1/T1 = P2*V2/T2///
-                float p1 = gas.GetLocalPressure();
-                float v1 = gas.GetLocalVolume();
-                //convert temp to K
-                float t1 = ((gas.GetTemp() - 32f) * (5f / 9f)) + 273.15f;
-                float p2;
-                float v2 = volume_m3;
-                //convert to K
-                float t2 = ((temp - 32f) * (5f / 9f)) + 273.15f;
-                //Debug.Log("p1: " +p1 + "v1: " +v1+ "t1: " +t1 + "v2: " +v2+ "t2: "+t2);
-                p2 = (p1 * v1 * t2) / (t1 * v2);
-                //add the partial pressure of this gas to the total pressure in the duct
-                //Debug.Log(gameObject+" adj totalPressure is "+totalPressure+" + "+p2);
-                totalPressure += p2;
+                //calculate the change in globalpressure based temp on volume or temp for local pressure calcs
+                float totalPressure = 0.0f;
+                //Debug.Log("Pre vol adj: " + globalPressure);
+                foreach (IGas gas in gasses)
+                {
+                    ///P1*V1/T1 = P2*V2/T2///
+                    float p1 = gas.GetLocalPressure();
+                    float v1 = gas.GetLocalVolume();
+                    //convert temp to K
+                    float t1 = ((gas.GetTemp() - 32f) * (5f / 9f)) + 273.15f;
+                    float p2;
+                    float v2 = volume_m3;
+                    //convert to K
+                    float t2 = ((temp - 32f) * (5f / 9f)) + 273.15f;
+                    //Debug.Log("p1: " +p1 + "v1: " +v1+ "t1: " +t1 + "v2: " +v2+ "t2: "+t2);
+                    p2 = (p1 * v1 * t2) / (t1 * v2);
+                    //add the partial pressure of this gas to the total pressure in the duct
+                    //Debug.Log(gameObject+" adj totalPressure is "+totalPressure+" + "+p2);
+                    totalPressure += p2;
 
-                //update the volume params for each gas in this volume in case this volume is not the same as the volume that passed the gas in.
-                gas.SetLocalVolume(volume_m3);
-                //Debug.Log("Current Concentration(s): " + gas.GetConcentration());
+                    //update the volume params for each gas in this volume in case this volume is not the same as the volume that passed the gas in.
+                    gas.SetLocalVolume(volume_m3);
+                    //Debug.Log("Current Concentration(s): " + gas.GetConcentration());
+                }
+                //Debug.Log("Total Pressure after vol adj: " + (float)Math.Round(totalPressure,4));
+                appliedPressure = (float)Math.Round(totalPressure, 4);
+                //Debug.Log("Post vol adj: " + globalPressure);
+                gasses = CheckGasses(globalPressure);//appliedPressure
+
+                //Debug.Log(gasses[0]);
             }
-            //Debug.Log("Total Pressure after vol adj: " + (float)Math.Round(totalPressure,4));
-            appliedPressure = (float)Math.Round(totalPressure, 4);
-            //Debug.Log("Post vol adj: " + globalPressure);
-            gasses = CheckGasses(globalPressure);//appliedPressure
         }
 
         /// <summary>
@@ -167,6 +202,7 @@ namespace ProjectUniverse.Environment.Gas
             //Debug.Log(gasses.Count+" gasses in pipe.");
             if (gasses.Count > 1)
             {
+
                 List<IGas> newGassesList = gasses;//new List<IGas>();
                                                   //combine all same gasses
                 for (int i = 0; i < newGassesList.Count; i++)
@@ -198,109 +234,111 @@ namespace ProjectUniverse.Environment.Gas
             }
         }
 
+        public void TempEQWithDuct()
+        {
+            //when we intro multiple gasses this will need rewritten. Different gasses will equalize temp over time.
+            //all will share uniform pressure, volume, etc. However the differences in temp means that every gas will exert
+            //differing amounts of partial pressure on the pipe.
+            foreach (IGas gas in gasses)
+            {
+                //Debug.Log("Gas / Pipe Eq, density, and pressure calcs");
+                //calculate the new temp for duct and gas
+                float ductTemp;
+                float gasTemp;
+                if (temp < gas.GetTemp())//the gas is hotter than the duct
+                {
+                    ductTemp = ((gas.GetTemp() + temp) / 2) + (temp * insulationRating); //heat bleeds from the gas into the duct.
+                    gasTemp = ((gas.GetTemp() + temp) / 2) - (temp * insulationRating); //heat bleeds from the gas to the duct.
+                }
+                else if (temp > gas.GetTemp())//the gas is cooler than the duct
+                {
+                    ductTemp = ((gas.GetTemp() + temp) / 2) - (temp * insulationRating); //insulation to keep heat from bleeding into the pipe.
+                    gasTemp = ((gas.GetTemp() + temp) / 2) + (temp * insulationRating); //heating the pipe will not affect the bulk of gas as much.
+                }
+                else//gas and duct are equal temps
+                {
+                    ductTemp = ((gas.GetTemp() + temp) / 2);
+                    gasTemp = ((gas.GetTemp() + temp) / 2);
+                }
+                //set the new temp
+                gas.SetTemp(gasTemp);
+                temp = ductTemp;
+            }
+        }
+
+        public void VentToVolume()
+        {
+            //Play the vent airflow sound from the vent object
+            AudioSource ventAud = vent.GetComponentInChildren<AudioSource>();//GetComponent<AudioSource>();
+            if (!ventAud.isPlaying)
+            {
+                ventAud.Play();
+            }
+            //Debug.Log("Vent?");
+            VolumeAtmosphereController roomVAC = ductVolume.GetComponent<VolumeAtmosphereController>();
+            //float roomVolume = roomVAC.GetVolume();
+            IGas remainder;
+            //Vents will fill rooms with IGas Oxygen at 1000L/s. 
+            //Room oxygenation will be determined by ratio of oxygen(m3) to roomVolume(m3)
+            //Room temp will be set according to the avg gas temp
+
+            //1000Ls in total, composition will be based off of the percent concentration in the duct
+            //this is so that hazardous or explosive gasses will circulate into every ventilated room.
+            if (roomVAC.GetPressure() < 1.0f)
+            {
+                //Debug.Log("Checking room gasses");
+                gasses = CheckGasses(globalPressure);//precautionary check
+                if (gasses.Count > 1)
+                {
+                    //Debug.Log("Vent");
+                    float totalConc = 0.0f;
+                    //calc total concentration
+                    foreach (IGas gas in gasses)
+                    {
+                        totalConc += gas.GetConcentration();
+                    }
+                    for (int g = 0; g < gasses.Count; g++)
+                    {
+                        //determine what percentage of all present gasses this single gas accounts for
+                        float ratio = gasses[g].GetConcentration() / totalConc;
+                        Debug.Log("transfer ratio: " + ratio);
+                        //create the gas that will be sent into the room
+                        IGas outflowX = Utils.SubtractGas(1f, gasses[g], out remainder);
+                        gasses[g] = remainder;
+                        //the change in pressure of the gas needs reflected to the duct.
+                        globalPressure = gasses[g].GetLocalPressure();
+                        roomVAC.AddRoomGas(outflowX);
+                    }
+                }
+                else
+                {
+                    //Debug.Log("Vent");
+                    IGas outflow = Utils.SubtractGas(1f, gasses[0], out remainder);//gasses[0] will eventually not be oxygen
+                    gasses[0] = remainder;
+                    //the change in pressure of the gas needs reflected to the duct.
+                    globalPressure = gasses[0].GetLocalPressure();
+                    //Debug.Log("Outflow: " + outflow.ToString());
+                    roomVAC.AddRoomGas(outflow);
+                }
+            }
+        }
+
         void Update()
         {
-            //Debug.Log("////////////////////////////////////////////////////////////////////////////////////////");
             if (gasses.Count > 0)
             {
-                //Debug.Log("PIPE " + this.gameObject.name + " UPDATE BLOCK");
+                //TempEQWithDuct();
+                //if (neighbors.Length > 0 && vent != null)
+                //{
+                //    VentToVolume();
+                //}
 
-                //when we intro multiple gasses this will need rewritten. Different gasses will equalize temp over time.
-                //all will share uniform pressure, volume, etc. However the differences in temp means that every gas will exert
-                //differing amounts of partial pressure on the pipe.
-                foreach (IGas gas in gasses)
-                {
-                    //Debug.Log("Gas / Pipe Eq, density, and pressure calcs");
-                    //calculate the new temp for duct and gas
-                    float ductTemp;
-                    float gasTemp;
-                    if (temp < gas.GetTemp())//the gas is hotter than the duct
-                    {
-                        ductTemp = ((gas.GetTemp() + temp) / 2) + (temp * insulationRating); //heat bleeds from the gas into the duct.
-                        gasTemp = ((gas.GetTemp() + temp) / 2) - (temp * insulationRating); //heat bleeds from the gas to the duct.
-                    }
-                    else if (temp > gas.GetTemp())//the gas is cooler than the duct
-                    {
-                        ductTemp = ((gas.GetTemp() + temp) / 2) - (temp * insulationRating); //insulation to keep heat from bleeding into the pipe.
-                        gasTemp = ((gas.GetTemp() + temp) / 2) + (temp * insulationRating); //heating the pipe will not affect the bulk of gas as much.
-                    }
-                    else//gas and duct are equal temps
-                    {
-                        ductTemp = ((gas.GetTemp() + temp) / 2);
-                        gasTemp = ((gas.GetTemp() + temp) / 2);
-                    }
-                    //set the new temp
-                    gas.SetTemp(gasTemp);
-                    temp = ductTemp;
-
-
-                }
-
-                ///
-                /// Maybe make vents (that havn't been breached) one-way? IE air can only flow out into the room. Then, airvents that have
-                /// been kicked or busted out will Eq both ways w/out a throttle (1000L/s or whatev)
-                ///
-                if (vent != null)
-                {
-                    //Play the vent airflow sound from the vent object
-                    AudioSource ventAud = vent.GetComponentInChildren<AudioSource>();//GetComponent<AudioSource>();
-                    if (!ventAud.isPlaying)
-                    {
-                        ventAud.Play();
-                    }
-                    //Debug.Log("Vent?");
-                    VolumeAtmosphereController roomVAC = ductVolume.GetComponent<VolumeAtmosphereController>();
-                    float roomVolume = roomVAC.GetVolume();
-                    IGas remainder;
-                    //Vents will fill rooms with IGas Oxygen at 1000L/s. 
-                    //Room oxygenation will be determined by ratio of oxygen(m3) to roomVolume(m3)
-                    //Room temp will be set according to the avg gas temp
-
-                    //1000Ls in total, composition will be based off of the percent concentration in the duct
-                    //this is so that hazardous or explosive gasses will circulate into every ventilated room.
-
-                    if (roomVAC.GetPressure() < 1.0f)
-                    {
-                        //Debug.Log("Checking room gasses");
-                        gasses = CheckGasses(globalPressure);//precautionary check
-                        if (gasses.Count > 1)
-                        {
-                            float totalConc = 0.0f;
-                            //calc total concentration
-                            foreach (IGas gas in gasses)
-                            {
-                                totalConc += gas.GetConcentration();
-                            }
-                            for (int g = 0; g < gasses.Count; g++)
-                            {
-                                //determine what percentage of all present gasses this single gas accounts for
-                                float ratio = gasses[g].GetConcentration() / totalConc;
-                                Debug.Log("transfer ratio: " + ratio);
-                                //create the gas that will be sent into the room
-                                IGas outflowX = Utils.SubtractGas(1f, gasses[g], out remainder);
-                                gasses[g] = remainder;
-                                //the change in pressure of the gas needs reflected to the duct.
-                                globalPressure = gasses[g].GetLocalPressure();
-                                roomVAC.AddRoomGas(outflowX);
-                            }
-                        }
-                        else
-                        {
-                            IGas outflow = Utils.SubtractGas(1f, gasses[0], out remainder);//gasses[0] will eventually not be oxygen
-                            gasses[0] = remainder;
-                            //the change in pressure of the gas needs reflected to the duct.
-                            globalPressure = gasses[0].GetLocalPressure();
-                            //Debug.Log("Outflow: " + outflow.ToString());
-                            roomVAC.AddRoomGas(outflow);
-                        }
-                    }
-                }
-
-                if (!burst)
+                // Runs on linked (cross-volume) ducts.
+                if (neighbors.Length > 0 && !burst)
                 {
                     //Debug.Log("TRANSFER");
-                    float totalVolume = volume_m3;
                     float totalPressures = globalPressure;
+
                     float totalConc = 0.0f;
                     float totalTemp = temp;
 
@@ -311,8 +349,8 @@ namespace ProjectUniverse.Environment.Gas
                     }
                     foreach (IGasPipe pipe in neighbors)
                     {
-                        totalVolume += pipe.volume_m3;
-                        totalPressures += pipe.GetGlobalPressure();
+
+                        totalPressures += pipe.GlobalPressure;
                         totalTemp += pipe.temp;
                         //get total concentration
                         foreach (IGas gas in pipe.gasses)
@@ -320,12 +358,6 @@ namespace ProjectUniverse.Environment.Gas
                             totalConc += gas.GetConcentration();
                         }
                     }
-                    //Debug.Log("total pressure: " + totalPressures + " between " + (neighbors.Length + 1));
-                    //Equalize pressure for appliedPressure and globalPressure
-                    //P1V1T2/V2T1=P2 where V2 is wholesale volume, and P2 is Eq pressure
-                    //float TEqK = ((temp - 32f) * (5f / 9f)) + 273.15f;
-                    //float TNeighbors = (((totalTemp/(neighbors.Length + 1)) - 32f) * (5f / 9f)) + 273.15f;
-                    //float pEq_applied = (totalPressures * volume_m3 * TEqK)/(totalVolume * TNeighbors);
                     //Global Pressure Eq calc
                     float tEq_global = totalTemp / (neighbors.Length + 1);
                     float pEq_global = totalPressures / (neighbors.Length + 1);
@@ -345,63 +377,40 @@ namespace ProjectUniverse.Environment.Gas
                         TransferTo(neighbors[g], newAtmoComp);
                     }
                 }
-
-                ///*
-                if (appliedPressure > maxP)
-                {
-                    Debug.Log("BURST");
-                    burst = true;
-                    //pressure = 0.0f;
-                    VolumeAtmosphereController ductVol = ductVolume.GetComponent<VolumeAtmosphereController>();
-                    //dump pressure into room (UNTESTED)
-                    float roomPressure = ductVol.GetPressure();
-                    float roomVolume = ductVol.GetVolume();
-                    float volumeratio = volume_m3 / roomVolume;
-                    roomPressure += (appliedPressure * volumeratio);
-                    ductVol.SetPressure(roomPressure);
-                    globalPressure = roomPressure;
-                    //dump gasses into room
-                }
-                //*/
-
-                if (temp > tempTol[1] || temp < tempTol[0])
-                {
-                    //melt and explode
-                    throughput_m3 = 0;//temp
-                }
-                //if bulletholes
-                //yada yada
             }
         }
 
-        public float GetAppliedPressure()
+        public float AppliedPressure
         {
-            return appliedPressure;
+            get { return appliedPressure; }
         }
-        public float GetGlobalPressure()
+        public float MaxPressure
         {
-            return globalPressure;
+            get { return maxP; }
+        }
+        public float GlobalPressure
+        {
+            get { return globalPressure; }
+        }
+        public IGasPipe[] Neighbors
+        {
+            get { return neighbors; }
+            set { neighbors = value; }
         }
 
+        /// <summary>
+        /// Both neighbor arrays will begin at len 0, this fuction can be expected to be called twice, once by each side.
+        /// </summary>
+        /// <param name="neighborDuct"></param>
         public void AddNeighbor(IGasPipe neighborDuct)
         {
-            for (int i = 0; i < neighbors.Length; i++)
-            {
-                if (neighbors[i].GetInstanceID() != neighborDuct.GetInstanceID())
-                {
-                    //Debug.Log(gameObject + " is adding duct to neighbor");
-                    //Debug.Log("Current length: " + neighbors.Length);
-                    IGasPipe[] neighborTemp = new IGasPipe[neighbors.Length + 1];
-                    neighbors.CopyTo(neighborTemp, 0);
-                    neighborTemp[neighbors.Length] = neighborDuct;
-                    neighbors = neighborTemp;
-                    //Debug.Log("New Length is: " + neighbors.Length);
-                }
-                //else
-                //{
-                //Debug.Log("DUPE!!");
-                //}
-            }
+            //Debug.Log(this.name + " and " + neighborDuct.name);
+            neighbors = new IGasPipe[1];
+            neighbors[0] = neighborDuct;
+
+            neighborDuct.Neighbors = new IGasPipe[1];
+            neighborDuct.Neighbors[0] = this;
+            //Debug.Log(Neighbors.Length + " " + neighborDuct.Neighbors.Length);
         }
     }
 }

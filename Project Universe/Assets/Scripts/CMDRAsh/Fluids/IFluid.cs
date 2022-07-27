@@ -18,21 +18,21 @@ namespace ProjectUniverse.Environment.Fluid {
 
     public class IFluid //: MonoBehaviour
     {
-        [SerializeField] private string IDname;
-        [SerializeField] private int flamability;
-        [SerializeField] private int combustability;
-        [SerializeField] private string[] reactants;
-        [SerializeField] private int volitility;
-        [SerializeField] private bool nuclear;
-        [SerializeField] private int toxicity;
-        [SerializeField] private float irradiation;
+        private string IDname;
+        private int flamability;
+        private int combustability;
+        private string[] reactants;
+        private int volitility;
+        private bool nuclear;
+        private int toxicity;
+        private float irradiation;
 
-        [SerializeField] private float MolarMass = 18.02f;//water MM
-        [SerializeField] private float density;//in g/L IE water is 1g/cm3 so 1000g/L
-        [SerializeField] private float temp;
-        [SerializeField] private float concentration;//amount of the fluid in the local volume
-        [SerializeField] private float volume_m3;//amount of fluid in m^3
-        [SerializeField] private float localPressure;//pressure of the fluid in it's local volume
+        private float MolarMass = 18.02f;//water MM
+        private float density;//in g/L IE water is 1g/cm3 so 1000g/L
+        private float temp;
+        private float concentration;//amount of the fluid in the local volume
+        private float volume_m3;//amount of fluid in m^3
+        private float localPressure;//pressure of the fluid in it's local volume
 
         override
         public string ToString()

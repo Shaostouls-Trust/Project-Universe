@@ -8,6 +8,7 @@ using MLAPI.NetworkVariable.Collections;
 using MLAPI.Messaging;
 using MLAPI;
 using ProjectUniverse.Animation.Controllers;
+using ProjectUniverse.Environment.Interactable;
 
 namespace ProjectUniverse.PowerSystem
 {
@@ -44,6 +45,33 @@ namespace ProjectUniverse.PowerSystem
         private NetworkVariableInt netLegsRequired = new NetworkVariableInt(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
         private NetworkVariableInt netLegsReceived = new NetworkVariableInt(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
         //private NetworkList<GameObject> netOccupiedSwitches = new NetworkList<GameObject>(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        private bool runMachine = true;
+        private float lastReceived;
+
+        public bool RunMachine
+        {
+            get
+            {
+                return runMachine;
+            }
+            set
+            {
+                runMachine = value;
+            }
+        }
+
+        public float LastReceived
+        {
+            get
+            {
+                return lastReceived;
+            }
+        }
+
+        public float BufferCurrent
+        {
+            get { return bufferCurrent; }
+        }
 
         void Start()
         {
@@ -101,24 +129,32 @@ namespace ProjectUniverse.PowerSystem
             {
                 if (targetSubMachine[i] != null)
                 {
-                    netTotalRequiredPower.Value += (float)Math.Round(targetSubMachine[i].RequestedEnergyAmount(),2);
-                    //totalRequiredPower += targetSubMachine[i].RequestedEnergyAmount();//ref numSuppliers);
+                    if (targetSubMachine[i].RunMachine) 
+                    { 
+                        netTotalRequiredPower.Value += (float)Math.Round(targetSubMachine[i].RequestedEnergyAmount(),2);
+                    }
                 }
             }
             //Breaker Box power request to IRoutingSubstation
             if (bufferCurrent < energyBufferMax)
             {
-                //determine amount to request
-                if (bufferCurrent + totalRequiredPower >= energyBufferMax)
+                if (RunMachine)
                 {
-                    netTotalRequiredPower.Value = energyBufferMax - bufferCurrent;//enough to fill the buffer
-                    //netTotalRequiredPower.Value = (float)Math.Round(totalRequiredPower, 2);
+                    //determine amount to request
+                    if (bufferCurrent + totalRequiredPower >= energyBufferMax)
+                    {
+                        netTotalRequiredPower.Value = energyBufferMax - bufferCurrent;//enough to fill the buffer
+                    }
+
+                    float requestPerSubstation = (totalRequiredPower / mySubstations.Count);
+                    foreach (IRoutingSubstation subs in mySubstations)
+                    {
+                        subs.RequestPowerFromSubstation(requestPerSubstation, thisBreaker);
+                    }
                 }
-                
-                float requestPerSubstation = (totalRequiredPower / mySubstations.Count);
-                foreach (IRoutingSubstation subs in mySubstations)
+                else
                 {
-                    subs.RequestPowerFromSubstation(requestPerSubstation, thisBreaker);
+                    lastReceived = 0f;
                 }
             }
             else if (bufferCurrent >= energyBufferMax)
@@ -131,7 +167,7 @@ namespace ProjectUniverse.PowerSystem
             {
                 netBufferCurrent.Value = 0f;
             }
-            //power will be divided equally among linked machines. (BUGGED? If values not the same, non-uniform distribution?)
+            //power will be divided equally among linked machines.
             if (bufferCurrent < totalRequiredPower)
             {
                 float defecit = totalRequiredPower - bufferCurrent;
@@ -165,6 +201,15 @@ namespace ProjectUniverse.PowerSystem
                     //mySwitchLEDs[0].GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials(3);//green to off
                     //mySwitchLEDs[1].GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials(4);//red off
                     //mySwitchLEDs[0].GetComponent<Renderer>().material = MaterialLibrary.GetPowerSystemStateMaterials(5);//yellow off
+                }
+            }
+            //set the powerlevel of each metered submachine
+            for (int p = 0; p < targetSubMachine.Length; p++)
+            {
+                if (targetSubMachine[p] != null && occupiedSwitches[p] != null)
+                {
+                    BreakerSwitch bs = occupiedSwitches[p].transform.GetChild(2).GetComponent<BreakerSwitch>();
+                    bs.SetPowerDisplay(targetSubMachine[p].LastEnergyReceived);
                 }
             }
 
@@ -234,7 +279,7 @@ namespace ProjectUniverse.PowerSystem
         {
             if (!mySubstations.Contains(thisSubstation))
             {
-                Debug.Log("breaker added");
+                //Debug.Log("breaker added");
                 mySubstations.Add(thisSubstation);
             }
             return true;
@@ -249,13 +294,13 @@ namespace ProjectUniverse.PowerSystem
         [ClientRpc]
         public void SwitchToggleClientRpc(int numID)//, ref GameObject[] mySwitchLEDs)
         {
-            Debug.Log("Attempt to get LEDs from occupiedSwitches");
+            //Debug.Log("Attempt to get LEDs from occupiedSwitches");
             //use the numid to get the switchAnimController and therefore access the mySwitchLEDs
             SwitchAnimationController sac = occupiedSwitches[numID].transform.GetChild(4).GetComponent<SwitchAnimationController>();
             GameObject[] mySwitchLEDs = { sac.GreenLED, sac.RedLED, sac.YellowLED };
 
             //targetSubMachine[numID] causes NullRef on some indexes even though the machine should exist
-            Debug.Log(numID);
+            //Debug.Log(numID);
             if (targetSubMachine[numID] != null && targetSubMachine[numID].enabled)
             {
                 //play switch sound (It should not be set to loop).
@@ -318,7 +363,7 @@ namespace ProjectUniverse.PowerSystem
                     {
                         ICable cable = new ICable(this, targetSubMachine[i]);
                         iCableDLL.AddLast(cable);
-                        Debug.Log("Checking Submachine State " + i);
+                        //Debug.Log("Checking Submachine State " + i);
                         targetSubMachine[i].CheckMachineState(ref thisBreaker);//ServerRpc
                         //add one cell to occupiedSwitches
                         occupiedSwitches = new GameObject[i + 1];
@@ -428,6 +473,7 @@ namespace ProjectUniverse.PowerSystem
                 //bufferCurrent += amounts[i];
                 netBufferCurrent.Value += amounts[i];
             }
+            lastReceived = amounts[0] * legCount;
             //legsReceived = legCount;
             netLegsReceived.Value = legCount;
             if (netBufferCurrent.Value > energyBufferMax)

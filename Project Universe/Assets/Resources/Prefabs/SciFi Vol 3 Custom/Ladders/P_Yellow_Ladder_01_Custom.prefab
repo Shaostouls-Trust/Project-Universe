@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3902003177630203111}
   - component: {fileID: 3922704383451538184}
   - component: {fileID: 3922704383451538187}
+  - component: {fileID: 430133955}
   m_Layer: 0
   m_Name: Yellow_Ladder_01
   m_TagString: Untagged
@@ -93,7 +94,7 @@ MeshCollider:
   m_GameObject: {fileID: 3922704383451538185}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
@@ -112,6 +113,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scriptedObject: {fileID: 3922706793627933801}
   parameter: -1
+--- !u!65 &430133955
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3922704383451538185}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.1814086, y: 4.1, z: 0.2}
+  m_Center: {x: 0.0026921034, y: 2.5, z: -0.5}
 --- !u!1 &3922706793627933801
 GameObject:
   m_ObjectHideFlags: 0

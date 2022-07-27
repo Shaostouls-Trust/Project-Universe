@@ -4,6 +4,8 @@ using UnityEngine;
 using System;
 using MLAPI.NetworkVariable;
 using MLAPI;
+using ProjectUniverse.Environment.Radiation;
+using ProjectUniverse.Audio;
 
 namespace ProjectUniverse.PowerSystem
 {
@@ -16,7 +18,10 @@ namespace ProjectUniverse.PowerSystem
         private float outputCurrent;//duh
         [SerializeField] private int maxRouters; //level * 4
         [SerializeField] private IRouter[] routers;
+        [SerializeField] private bool leaking;
         [SerializeField] private PowerOutputController outputController;
+        [SerializeField] private IRadiationZone radZone;
+        [SerializeField] private AlarmSoundController leakAlarm;
         private Guid guid;
         private LinkedList<ICable> iCableDLL = new LinkedList<ICable>();
         private float[] requestedRouterPower;
@@ -40,6 +45,11 @@ namespace ProjectUniverse.PowerSystem
         {
             get { return lastOutput; }
             set { lastOutput = value; }
+        }
+        public bool Leaking
+        {
+            get { return leaking; }
+            set { leaking = value; }
         }
 
         // Start is called before the first frame update
@@ -97,6 +107,35 @@ namespace ProjectUniverse.PowerSystem
             outputCurrent = 0f;
             //get leg states - this will be for when we have levers that close off indiv legs.
             //NYI
+
+            // if leaking, release radiation
+            if (radZone != null)
+            {
+                if (leaking)
+                {
+                    float amt = lastOutput / outputMax;
+                    radZone.GeneratorLeakMultiplier = amt;
+                    if(leakAlarm != null)
+                    {
+                        if (lastOutput > 0f)
+                        {
+                            leakAlarm.active = true;
+                        }
+                        else
+                        {
+                            leakAlarm.active = false;
+                        }
+                    }
+                }
+                else
+                {
+                    if (leakAlarm != null)
+                    {
+                        leakAlarm.active = false;
+                    }
+                    radZone.GeneratorLeakMultiplier = 0f;
+                }
+            }
         }
 
         public void RequestPowerFromGenerator(float requestedAmount, IRouter thisRouter)

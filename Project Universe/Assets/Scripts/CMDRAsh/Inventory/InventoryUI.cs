@@ -26,7 +26,8 @@ public class InventoryUI : MonoBehaviour
     private ProjectUniverse.PlayerControls controls;
     [SerializeField] private GameObject itemparent;
     [SerializeField] private GameObject itembuttonpref;
-    [SerializeField] private CargoContainer container;//non-player1 inventory
+    [SerializeField] private CargoContainer container;//container inventory
+    [SerializeField] private Inventory extInventory;
     [SerializeField] private List<GameObject> fbibs = new List<GameObject>();
     [SerializeField] private TMP_Text description;
     [SerializeField] private TMP_Text statistics;
@@ -69,7 +70,7 @@ public class InventoryUI : MonoBehaviour
     /// <summary>
     /// Clear all buttons, instantiate and add per object
     /// </summary>
-    public void PopulateInventoryScreen()
+    public void PopulateInventoryScreen() 
     {
         //clear any existing buttons
         for (int i = itemparent.transform.childCount - 1; i >= 0; i--)
@@ -83,9 +84,13 @@ public class InventoryUI : MonoBehaviour
         {
             inventory = playerInventory.GetPlayerInventory();
         }
-        else
+        else if(container != null)
         {
             inventory = container.GetInventory();
+        }
+        else
+        {
+            inventory = extInventory.GetInventory();
         }
         //sort inventory
         //Debug.Log("Sorting Inventory");//[DISABLED] 
@@ -331,9 +336,18 @@ public class InventoryUI : MonoBehaviour
             {
                 controller.DequipItem(controller.RightHandEquipped.gameObject);
             }
-            //Equip the drill
-            MiningDrill drill = selectedButton.SelectedStack.GetItemArray().GetValue(0) as MiningDrill;
-            playerInventory.gameObject.GetComponent<SupplementalController>().EquipItem(drill.gameObject, drill.EquipmentSlot);
+            if (selectedButton.SelectedStack.GetOriginalType() == typeof(MiningDrill))
+            {
+                //Equip the drill
+                MiningDrill drill = selectedButton.SelectedStack.GetItemArray().GetValue(0) as MiningDrill;
+                playerInventory.gameObject.GetComponent<SupplementalController>().EquipItem(drill.gameObject, drill.EquipmentSlot);
+            }
+            else if(selectedButton.SelectedStack.GetOriginalType() == typeof(IMachineWelder))
+            {
+                //Equip the welder
+                IMachineWelder welder = selectedButton.SelectedStack.GetItemArray().GetValue(0) as IMachineWelder;
+                playerInventory.gameObject.GetComponent<SupplementalController>().EquipItem(welder.gameObject, welder.EquipmentSlot);
+            }
         }
         else if (selectedButton.ItemCategory == Category.Gadget)
         {
@@ -509,9 +523,13 @@ public class InventoryUI : MonoBehaviour
                     stk = playerInventory.RemoveFromPlayerInventory<Weapon_Gun>(selectedButton.SelectedStack,
                         (selectedButton.SelectedStack.LastIndex - 1));
                 }
-                else
+                else if(container != null)
                 {
                     stk = container.RemoveFromInventory<Weapon_Gun>(selectedButton.SelectedStack, (selectedButton.SelectedStack.LastIndex - 1));
+                }
+                else
+                {
+                    stk = extInventory.RemoveFromInventory<Weapon_Gun>(selectedButton.SelectedStack, (selectedButton.SelectedStack.LastIndex - 1));
                 }
                 selectedButton.Count--;
                 Debug.Log(stk);
@@ -544,9 +562,13 @@ public class InventoryUI : MonoBehaviour
                     stk = playerInventory.RemoveFromPlayerInventory<Consumable_Ore>(selectedButton.SelectedStack,
                     (selectedButton.SelectedStack.LastIndex - 1));
                 }
-                else
+                else if (container != null)
                 {
                     stk = container.RemoveFromInventory<Consumable_Ore>(selectedButton.SelectedStack, (selectedButton.SelectedStack.LastIndex - 1));
+                }
+                else
+                {
+                    stk = extInventory.RemoveFromInventory<Consumable_Ore>(selectedButton.SelectedStack, (selectedButton.SelectedStack.LastIndex - 1));
                 }
                 Debug.Log(stk);
                 if (oreworldspace != null && stk != null)
@@ -575,9 +597,13 @@ public class InventoryUI : MonoBehaviour
                     stk = playerInventory.RemoveFromPlayerInventory<Consumable_Ingot>(selectedButton.SelectedStack,
                     (selectedButton.SelectedStack.LastIndex - 1));
                 }
-                else
+                else if(container != null)
                 {
                     stk = container.RemoveFromInventory<Consumable_Ore>(selectedButton.SelectedStack, (selectedButton.SelectedStack.LastIndex - 1));
+                }
+                else
+                {
+                    stk = extInventory.RemoveFromInventory<Consumable_Ore>(selectedButton.SelectedStack, (selectedButton.SelectedStack.LastIndex - 1));
                 }
                 if (ingotworldspace != null && stk != null)
                 {
@@ -606,10 +632,15 @@ public class InventoryUI : MonoBehaviour
                     stk = playerInventory.RemoveFromPlayerInventory<Consumable_Ingot>(selectedButton.SelectedStack,
                     (selectedButton.SelectedStack.LastIndex - 1));
                 }
+                else if (container != null)
+                {
+                    stk = container.RemoveFromInventory<Consumable_Ingot>(selectedButton.SelectedStack, (selectedButton.SelectedStack.LastIndex - 1));
+                }
                 else
                 {
-                    stk = container.RemoveFromInventory<Consumable_Ore>(selectedButton.SelectedStack, (selectedButton.SelectedStack.LastIndex - 1));
+                    stk = extInventory.RemoveFromInventory<Consumable_Ingot>(selectedButton.SelectedStack, (selectedButton.SelectedStack.LastIndex - 1));
                 }
+                
                 if (ingotworldspace != null && stk != null)
                 {
                     ingotworldspace.GetComponent<Consumable_Ingot>().RegenerateIngot(stk.GetItemArray().GetValue(0) as Consumable_Ingot);
@@ -629,18 +660,25 @@ public class InventoryUI : MonoBehaviour
             //transfer to other inventory
             if (InventoryUIControllerExt != null)
             {
-                if (playerInventory != null)
+                if (selectedButton != null)
                 {
-                    InventoryUIControllerExt.TransferToContainer(selectedButton.SelectedStack);
+                    if (playerInventory != null)
+                    {
+                        InventoryUIControllerExt.TransferToContainer(selectedButton.SelectedStack);
 
-                }
-                else
-                {
-                    InventoryUIControllerExt.TransferToPlayer(selectedButton.SelectedStack);
+                    }
+                    else if (container != null)
+                    {
+                        InventoryUIControllerExt.TransferToPlayer(selectedButton.SelectedStack);
 
+                    }
+                    else
+                    {
+                        InventoryUIControllerExt.TransferToPlayer(selectedButton.SelectedStack);
+                    }
+                    selectedButton.Count -= selectedButton.SelectedStack.GetRealLength();
+                    InventoryUIControllerExt.UpdateDisplay();
                 }
-                selectedButton.Count -= selectedButton.SelectedStack.GetRealLength();
-                InventoryUIControllerExt.UpdateDisplay();
             }
         }
     }
@@ -662,9 +700,13 @@ public class InventoryUI : MonoBehaviour
         {
             inventory = playerInventory.GetPlayerInventory();
         }
-        else
+        else if(container != null)
         {
             inventory = container.GetInventory();
+        }
+        else 
+        { 
+            inventory = extInventory.GetInventory();
         }
         FleetBoyItemButton fbib;
         if (inventory.Count == 0)

@@ -17,6 +17,14 @@ namespace ProjectUniverse.PowerSystem {
         [SerializeField] private IRouter router;
         [SerializeField] private IRoutingSubstation sub;
         [SerializeField] private float increment;
+        [Space]
+        [SerializeField] private GameObject machineStateButtonPrefab;
+        [SerializeField] private GameObject machinePanel;
+        [SerializeField] private GameObject breakerPanel;
+        [SerializeField] private TMP_Text buffer;
+        [SerializeField] private TMP_Text bufferMax;
+        private List<GameObject> machineStateButtons = new List<GameObject>();
+        private List<GameObject> breakerStateButtons = new List<GameObject>();
         private float targetOutput = 1024f;
         private float maxOutput = 1024f;
         private float updateTime = 1f;
@@ -46,10 +54,44 @@ namespace ProjectUniverse.PowerSystem {
 
         private void Start()
         {
-            maxOutput = generator.OutputMax;
-            maxOut.text = ""+maxOutput;
-            TargetOutput = maxOutput;
-            targetOut.text = ""+TargetOutput;
+            if(generator != null)
+            {
+                maxOutput = generator.OutputMax;
+                maxOut.text = "" + maxOutput;
+                TargetOutput = maxOutput;
+                targetOut.text = "" + TargetOutput;
+            }
+        }
+        
+        public void ClearMachineButtons()
+        {
+            foreach (GameObject button in machineStateButtons)
+            {
+                Destroy(button);
+            }
+            machineStateButtons.Clear();
+        }
+        public void ClearBreakerButtons()
+        {
+            foreach (GameObject button in breakerStateButtons)
+            {
+                Destroy(button);
+            }
+            breakerStateButtons.Clear();
+        }
+
+        public void CreateButton(IMachine mach)
+        {
+            GameObject button = Instantiate(machineStateButtonPrefab, machinePanel.transform);
+            button.GetComponent<MachineStateButtonController>().SetData(mach);
+            machineStateButtons.Add(button);
+        }
+        
+        public void CreateButton(IBreakerBox box)
+        {
+            GameObject button = Instantiate(machineStateButtonPrefab, breakerPanel.transform);
+            button.GetComponent<MachineStateButtonController>().SetData(box);
+            breakerStateButtons.Add(button);
         }
 
         public void UpdateMachineUI()
@@ -75,7 +117,8 @@ namespace ProjectUniverse.PowerSystem {
                 {
                     if (sub != null)
                     {
-
+                        buffer.text = "" + Math.Round(sub.BufferCurrent,2);
+                        bufferMax.text = "" + Math.Round(sub.BufferMax, 2);
                     }
                 }
             }
@@ -103,13 +146,17 @@ namespace ProjectUniverse.PowerSystem {
             }
         }
 
+        /// <summary>
+        /// Generator throttling
+        /// </summary>
+        /// <param name="param"></param>
         public void ExternalInteractFunc(int param)
         {
             if(param == 0)
             {
                 RaiseTargetOutput();
             }
-            else
+            else if(param == 1)
             {
                 LowerTargetOutput();
             }

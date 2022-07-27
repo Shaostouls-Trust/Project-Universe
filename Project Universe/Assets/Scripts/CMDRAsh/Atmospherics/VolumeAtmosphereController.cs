@@ -31,6 +31,7 @@ namespace ProjectUniverse.Environment.Volumes
         private List<GameObject> connectedNeighbors = new List<GameObject>();
         [SerializeField] private int OxygenatedRoom_Priority = 10;
         [SerializeField] private int DeOxygenatedRoom_Priority = 9;
+        [SerializeField] public List<PipeSection> volumeGasPipeSections;
         public int limiter = 30;
 
         private void Start()
@@ -81,85 +82,259 @@ namespace ProjectUniverse.Environment.Volumes
             //}
             //check for the surround volumes
             //bool[] doorstates = DoorStates();
+            //Debug.Log("-----");
             limiter--;
+            if (limiter < 0)
+            {
+                limiter = 0;
+            }
             for (int i = 0; i < neighborEmpties.Length; i++)//roomVolumeDoors.Length
             {
                 GameObject door = neighborEmpties[i].GetComponent<VolumeNode>().GetDoor();
+                //Debug.Log(door);
                 //if the door (in this volume) is open
                 if (door.GetComponent<DoorAnimator>().OpenOrOpening())//roomVolumeDoors
                 {
                     Vector3 back = door.transform.TransformDirection(Vector3.back);//is Vector3.back for all cases?
-                    //raycast to check neighbor door
+                    //raycastAll to check neighbor door
                     //A raycast every frame?
-                    if (Physics.Raycast(
-                        new Vector3(door.transform.position.x,
-                        door.transform.position.y + 0.025f,
-                        door.transform.position.z),
-                        back, out RaycastHit hit, 1.0f))//roomVolumeDoors[i].transform.position
+                    RaycastHit[] hits;
+                    hits = Physics.RaycastAll(new Vector3(door.transform.position.x,
+                        door.transform.position.y + 0.025f, door.transform.position.z), back, 1.0f);
+                    foreach(RaycastHit hit in hits)
                     {
-                        //check if it's a door
-                        //select the parent object via the DoorAnimator
-                        bool clear = false;
-                        Component myComponent = hit.collider.GetComponentInParent<DoorAnimator>();
-                        Component myComponent2 = hit.collider.GetComponent<DoorAnimator>();
-                        Component myComponent3 = hit.collider.GetComponentInChildren<DoorAnimator>();
-                        //Debug.Log(hit.collider.gameObject);
-                        try
+                        if(hit.collider.gameObject != door)
                         {
-                            GameObject myDoorGameobject = null;
-                            if (myComponent != null)
+                            //check if it's a door
+                            //select the parent object via the DoorAnimator
+                            bool clear = false;
+                            Component myComponent = hit.collider.GetComponentInParent<DoorAnimator>();
+                            Component myComponent2 = hit.collider.GetComponent<DoorAnimator>();
+                            Component myComponent3 = hit.collider.GetComponentInChildren<DoorAnimator>();
+                            //Debug.Log(hit.collider.gameObject);
+                            try
                             {
-                                myDoorGameobject = myComponent.gameObject;
-                            }
-                            else if (myComponent2 != null)
-                            {
-                                myDoorGameobject = myComponent2.gameObject;
-                            }
-                            else if (myComponent3 != null)
-                            {
-                                myDoorGameobject = myComponent3.gameObject;
-                            }
-                            clear = myDoorGameobject.GetComponent<DoorAnimator>().OpenOrOpening();
-                        }
-                        catch (Exception e)
-                        {
-                            Debug.Log(e);
-                            Debug.Log("Case 1: " + myComponent);
-                            Debug.Log("Case 2: " + myComponent2);
-                            Debug.Log("Case 3: " + myComponent3);
-                        }
-                        //Debug.Log(clear);
-                        if (clear)
-                        {
-                            //Begin Equalization
-                            GameObject localNeighbor = neighborEmpties[i].GetComponent<VolumeNode>().VolumeLink;
-                            if (localNeighbor != null)
-                            {
-                                if (limiter <= 0)
+                                GameObject myDoorGameobject = null;
+                                if (myComponent != null)
                                 {
-                                    limiter = 30;
-                                    VolumeAtmosphereController iNeighborVolume =
-                                   neighborEmpties[i].GetComponent<VolumeNode>().VolumeLink.GetComponent<VolumeAtmosphereController>();
-                                    Utils.LocalVolumeEqualizer(this, iNeighborVolume);
+                                    myDoorGameobject = myComponent.gameObject;
                                 }
-                               
-                            }
-                            else
-                            {
-                                GameObject globalNeighbor = neighborEmpties[i].GetComponent<VolumeNode>().GlobalLink;
-                                if (globalNeighbor)
+                                else if (myComponent2 != null)
                                 {
-                                    VolumeGlobalAtmosphereController iGlobalNeighbor =
-                                        neighborEmpties[i].GetComponent<VolumeNode>().GlobalLink.GetComponent<VolumeGlobalAtmosphereController>();
-                                    Utils.GlobalVolumeEqualizer(this, iGlobalNeighbor);
+                                    myDoorGameobject = myComponent2.gameObject;
                                 }
-                            }
-                        }
+                                else if (myComponent3 != null)
+                                {
+                                    myDoorGameobject = myComponent3.gameObject;
+                                }
+                                clear = myDoorGameobject.GetComponent<DoorAnimator>().OpenOrOpening();
+                                if (clear)
+                                {
+                                    //Debug.Log("---");
+                                    //Debug.Log(door);
+                                    //Debug.Log(myDoorGameobject);
+                                }
 
+                            }
+                            catch (Exception e)
+                            {
+                                //Debug.Log(e);
+                                //Debug.Log("Case 1: " + myComponent);
+                                //Debug.Log("Case 2: " + myComponent2);
+                                //Debug.Log("Case 3: " + myComponent3);
+                            }
+                            //Debug.Log(clear);
+                            if (clear)
+                            {
+                                //Begin Equalization
+                                GameObject localNeighbor = neighborEmpties[i].GetComponent<VolumeNode>().VolumeLink;
+                                if (localNeighbor != null)
+                                {
+                                    if (limiter <= 0)
+                                    {
+                                        limiter = 30;
+                                        VolumeAtmosphereController iNeighborVolume =
+                                        neighborEmpties[i].GetComponent<VolumeNode>().VolumeLink.GetComponent<VolumeAtmosphereController>();
+                                        Utils.LocalVolumeEqualizer(this, iNeighborVolume);
+                                    }
+
+                                }
+                                else
+                                {
+                                    GameObject globalNeighbor = neighborEmpties[i].GetComponent<VolumeNode>().GlobalLink;
+                                    if (globalNeighbor)
+                                    {
+                                        VolumeGlobalAtmosphereController iGlobalNeighbor =
+                                            neighborEmpties[i].GetComponent<VolumeNode>().GlobalLink.GetComponent<VolumeGlobalAtmosphereController>();
+                                        Utils.GlobalVolumeEqualizer(this, iGlobalNeighbor);
+                                    }
+                                }
+                            }
+
+                        }
                     }
+                    //if (Physics.Raycast(
+                    //    new Vector3(door.transform.position.x,
+                    //    door.transform.position.y + 0.025f,
+                    //    door.transform.position.z),
+                    //    back, out RaycastHit hit, 1.0f))//roomVolumeDoors[i].transform.position
+                    /// old logic here { }
                 }
             }
+            ///
+            /// Volume Gas Pipe Section Updates
+            /// 
+            for(int i = 0; i < volumeGasPipeSections.Count; i++)
+            {
+                List<IGasPipe> sectionList = volumeGasPipeSections[i].GasPipesInSection;
+                List<IGasPipe> equalizeList = new List<IGasPipe>();
+                for (int j = 0; j < sectionList.Count; j++)
+                {
+                    //check the status of every pipe - if a pipe is burst, do not equalize it
+                    // or the pipes after it
+                    if (!sectionList[j].IsBurst)
+                    {
+                        equalizeList.Add(sectionList[j]);
+                    }
+                    else
+                    {
+                        equalizeList.Add(sectionList[j]);
+                        break;
+                    }
+                }
+
+                GasPipeSectionEqualization(equalizeList, true);
+
+                ///
+                /// Duct has burst. Begin venting contents into volume.
+                /// The contents of the duct after venting must be equal to the ambient atmo.
+                /// Ambient atmo will be transfered to connected volumes.
+                ///
+                List<IGasPipe> ventList = new List<IGasPipe>();
+                for (int j = 0; j < sectionList.Count; j++)
+                {
+                    bool compiled = false;
+                    IGasPipe burstPipe = sectionList[j];
+                    if (burstPipe.AppliedPressure > burstPipe.MaxPressure)
+                    {
+                        burstPipe.IsBurst = true;
+                    }
+                    if (burstPipe.IsBurst)
+                    {
+                        //Dump contents into volume
+                        foreach(IGas gas in burstPipe.Gasses)
+                        {
+                            AddRoomGas(gas);
+                        }
+                        
+                        // Equalize the duct gasses with the volume
+                        float volumeratio = burstPipe.Volume / roomVolume;
+                        burstPipe.Gasses.Clear();
+                        for (int g = 0; g < roomGases.Count; g++)
+                        {
+                            IGas gas = roomGases[g];
+                            gas.SetLocalPressure(roomPressure);
+                            gas.SetConcentration(roomGases[g].GetConcentration() * volumeratio);
+                            burstPipe.Gasses.Add(gas);
+                        }
+                        burstPipe.Temperature = roomTemp;
+
+                        //Transfer these contents to the ducts after the breach.
+                        // If the duct is in equalizeList then go in the other direction
+                        // Compile this list for only the first burst in the section
+                        if (!compiled)
+                        {
+                            compiled = true;
+                            int q = 0;
+                            for(int p = 0; p < sectionList.Count; p++)
+                            {
+                                if (sectionList[p] == burstPipe)
+                                {
+                                    q = p;
+                                }
+                            }
+                            for(; q < sectionList.Count; q++)
+                            {
+                                ventList.Add(sectionList[q]);
+                            }
+                        }
+                    }
+                }
+                if(ventList.Count > 0)
+                {
+                    GasPipeSectionEqualization(ventList, false);
+                }
+
+                //if (temp > tempTol[1] || temp < tempTol[0])
+                //{
+                //melt and explode
+                //    throughput_m3 = 0;//temp
+                //}
+
+                //if bulletholes
+                //yada yada
+            }
             ///Profiler.EndSample();
+        }
+
+
+        private void GasPipeSectionEqualization(List<IGasPipe> equalizeList, bool ventAndTempEq)
+        {
+            float totalPressures = equalizeList[0].GlobalPressure;
+            float totalConc = 0.0f;
+            float totalTemp = equalizeList[0].Temperature;
+
+            //get total volume, pressure, conc of all gasses in this and neighbors
+            foreach (IGas gass in equalizeList[0].Gasses)
+            {
+                totalConc += gass.GetConcentration();
+            }
+
+            // Skip the first duct
+            for (int j = 1; j < equalizeList.Count; j++)
+            {
+                IGasPipe pipe = equalizeList[j];
+                if (ventAndTempEq) { 
+                    pipe.TempEQWithDuct();
+                    if (pipe.Vent != null && pipe.Gasses.Count > 0)
+                    {
+                        ///
+                        /// Maybe make vents (that havn't been breached) one-way? IE air can only flow out into the room. Then, airvents that have
+                        /// been kicked or busted out will Eq both ways w/out a throttle (1000L/s or whatev)
+                        ///
+                        pipe.VentToVolume();
+                    }
+                }
+                totalPressures += pipe.GlobalPressure;
+                totalTemp += pipe.Temperature;
+                //get total concentration
+                foreach (IGas gas in pipe.Gasses)
+                {
+                    totalConc += gas.GetConcentration();
+                }
+            }
+            //Global Pressure Eq calc
+            float tEq_global = totalTemp / (equalizeList.Count);
+            float pEq_global = totalPressures / (equalizeList.Count);
+            float cEq_global = totalConc / (equalizeList.Count);
+
+            // Skip the first duct
+            for (int j = 1; j < equalizeList.Count; j++)
+            {
+                List<IGas> newGassesList = new List<IGas>();
+                for (int u = 0; u < equalizeList[0].Gasses.Count; u++)
+                {
+                    //this gas is the Eq'd gas.
+                    IGas tempGas = new IGas(equalizeList[0].Gasses[u].GetIDName(),
+                        tEq_global, cEq_global, pEq_global, equalizeList[0].Volume);
+                    tempGas.CalculateAtmosphericDensity();
+                    newGassesList.Add(tempGas);
+                }
+                object[] newAtmoComp = { tEq_global, pEq_global, newGassesList };
+                //This needs to be limitable by throughput, somehow?
+                //first duct TransferTo(other ducts, newAtmoComp)
+                equalizeList[0].TransferTo(equalizeList[j], newAtmoComp);
+            }
         }
 
         /// <summary>
@@ -167,17 +342,29 @@ namespace ProjectUniverse.Environment.Volumes
         /// </summary>
         public void PostProcessVolumeUpdate()
         {
+            if (float.IsNaN(roomPressure))
+            {
+                roomPressure = 0f;
+                RoomGasses = new List<IGas>();
+                roomTemp = 0f;
+                roomOxygenation = 0f;
+            }
             Volume[] PPEVS = GetComponents<Volume>();
             for (int i = 0; i < PPEVS.Length; i++)
             {
                 if (PPEVS[i].priority == OxygenatedRoom_Priority)
                 {
-
-                    PPEVS[i].weight = roomPressure;//asserting that roomPressure is between 0 and 1
+                    float rp = roomPressure;
+                    rp = Mathf.Clamp(rp, 0f, 1f);
+                    //Debug.Log("ox: "+rp);
+                    PPEVS[i].weight = rp;//asserting that roomPressure is between 0 and 1
                 }
                 else if (PPEVS[i].priority == DeOxygenatedRoom_Priority)
                 {
-                    PPEVS[i].weight = 1 - roomPressure;//assume that deoxy is inverse of room pressure
+                    float rp = 1 - roomPressure;
+                    rp = Mathf.Clamp(rp, 0f, 1f);
+                    //Debug.Log("de: " + rp);
+                    PPEVS[i].weight = rp;//assume that deoxy is inverse of room pressure
                 }
             }
         }
@@ -211,6 +398,13 @@ namespace ProjectUniverse.Environment.Volumes
                 player.SetPlayerVolume(this.GetComponents<Volume>());
                 player.SetPlayerVolumeController(this);
             }
+            else if (other.gameObject.CompareTag("Drone"))
+            {
+                DroneVolumeController player = other.GetComponent<DroneVolumeController>();
+                player.OnVolumeEnter(roomPressure, roomTemp, roomOxygenation);
+                player.SetPlayerVolume(this.GetComponents<Volume>());
+                player.SetPlayerVolumeController(this);
+            }
         }
 
         private void OnTriggerExit(Collider other)
@@ -219,29 +413,11 @@ namespace ProjectUniverse.Environment.Volumes
             {
                 other.GetComponent<PlayerVolumeController>().ResetPlayerVolumeController(this);
             }
+            else if (other.gameObject.CompareTag("Drone"))
+            {
+                other.GetComponent<DroneVolumeController>().ResetPlayerVolumeController(this);
+            }
         }
-
-        /*
-        private void OnTriggerStay(Collider other)
-        {
-            //Debug.Log("VAC stay");
-            if (other.gameObject.CompareTag("_VolumeNode"))
-            {
-                //Add to list to compare. Whatever exists in VAC is removed from VGAC
-                if (!connectedNeighbors.Contains(other.gameObject))
-                {
-                    //Debug.Log(this.name + " detected VolumeNode: " + other.gameObject.name);
-                    connectedNeighbors.Add(other.gameObject);
-                    other.GetComponent<VolumeNode>().SetVolumeLink(this.gameObject);
-                }
-            }
-            if (other.gameObject.CompareTag("Player"))
-            {
-                PlayerVolumeController player = other.GetComponent<PlayerVolumeController>();
-                player.OnVolumeEnter(roomPressure, roomTemp, roomOxygenation);
-                player.SetPlayerVolume(this.GetComponents<Volume>());
-            }
-        }*/
 
         public List<IGas> CheckGasses(bool setToLocalPressure, float localPressure)
         {
@@ -378,7 +554,7 @@ namespace ProjectUniverse.Environment.Volumes
             //Debug.Log("Volume Gas Combiner: "+gasPressure);
             return FluidA;
         }
-
+        
         public void RemoveRoomGas(IGas gasToRemove)
         {
             IGas gas = new IGas(gasToRemove);
@@ -401,6 +577,51 @@ namespace ProjectUniverse.Environment.Volumes
                     }
                 }
             }
+            //update Volume Atmosphere
+            float totalGas = CalculateRoomOxygenation();
+            CalculateRoomTemp();
+            CalculateRoomPressure(totalGas);
+        }
+
+        public void RemoveRoomGas(float pressureToRemove)
+        {
+            //convert pressure to concentration
+            float runConc = 0f;
+            foreach(IGas gas in roomGases)
+            {
+                runConc += gas.GetConcentration();
+            }
+            
+            float conc = ((roomPressure - pressureToRemove) * runConc) / roomPressure;
+            float remove = runConc - conc;
+            Debug.Log("remove gas conc: " + remove);
+            
+            //remove that conc from the first available gas
+            for (int j = 0; j < roomGases.Count; j++)
+            {
+                if(remove > 0f)
+                {
+                    if (remove - roomGases[j].GetConcentration() > 0f)
+                    {
+                        remove -= roomGases[j].GetConcentration();
+                        roomGases[j].SetConcentration(0f);
+                    }
+                    else
+                    {
+                        roomGases[j].SetConcentration(roomGases[j].GetConcentration() - remove);
+                        remove = 0f;
+                    }
+                }
+                else
+                {
+                    break;
+                } 
+            }
+            
+            //update Volume Atmosphere
+            float totalGas = CalculateRoomOxygenation();
+            CalculateRoomTemp();
+            CalculateRoomPressure(totalGas);
         }
 
         /// <summary>
@@ -565,7 +786,7 @@ namespace ProjectUniverse.Environment.Volumes
             //Debug.Log(roomFluids.Count);
             for (int i = 0; i < roomFluids.Count; i++)
             {
-                float volumeRatio = roomFluids[i].GetConcentration() / roomVolume;
+                float volumeRatio = (roomFluids[i].GetConcentration()/1000) / roomVolume;//1000L in 1 m^3
                 fluidConc += roomFluids[i].GetConcentration();
                 //Debug.Log(roomFluids[i].GetConcentration() + "/" + roomVolume);
                 float translatedFill = volumeRatio * gameObject.GetComponent<BoxCollider>().size.y;

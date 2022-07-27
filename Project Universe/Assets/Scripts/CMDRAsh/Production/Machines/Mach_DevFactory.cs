@@ -8,6 +8,8 @@ using ProjectUniverse.Data.Libraries.Definitions;
 using ProjectUniverse.Data.Libraries;
 using ProjectUniverse.Production.Resources;
 using ProjectUniverse.UI;
+using MLAPI;
+using ProjectUniverse.Player.PlayerController;
 
 namespace ProjectUniverse.Production.Machines
 {
@@ -18,7 +20,6 @@ namespace ProjectUniverse.Production.Machines
         private string produceComponentX;
         private List<ItemStack> inputMaterials = new List<ItemStack>();
         private List<ItemStack> outputMaterials = new List<ItemStack>();
-        private List<ItemStack> requiredMaterials = new List<ItemStack>();
         private List<ItemStack> availableMaterials = new List<ItemStack>();//from player or connected inventory
         private float timer = 0.0f;
         [SerializeField] bool Stop = false;
@@ -29,7 +30,6 @@ namespace ProjectUniverse.Production.Machines
 
         //Machine will only 'bool run' when it has input materials. This way it will only consume power when processing.
         //Also means we don't need an update method.
-        //[SerializeField] private IMachine thisIMachineScript;
 
         override
         public string ToString()
@@ -49,7 +49,7 @@ namespace ProjectUniverse.Production.Machines
         {
             //Debug.Log(inputMaterials[0] != null);//false for some reason
             ///FullyBuilt is a temp control variable!
-            if (inputMaterials.Count > 0 && IConstructible_MachineFullyBuilt && ProduceComponent != "")//
+            if (inputMaterials.Count > 0 && IConstructible_MachineFullyBuilt && ProduceComponent != "")
             {
                 if (GetComponent<IMachine>().RunMachine)
                 {
@@ -111,7 +111,7 @@ namespace ProjectUniverse.Production.Machines
                         counterIng = 0;
                         counterComp = 0;
                         IComponentLibrary.ComponentDictionary.TryGetValue(ProduceComponent, out def);
-                        newComp = new Consumable_Component(ProduceComponent, availableToProcess, def);
+                        newComp = new Consumable_Component(ProduceComponent, 1, def);
                         processtime = def.GetBuildTime();
                         float targetNumber = 0.0f;
                         //remove the required materials
@@ -174,7 +174,7 @@ namespace ProjectUniverse.Production.Machines
                             //Update the production UI
                             puic.ResetProgressBar();
                             puic.UpdateInputMaterials(inputMaterials);
-                            puic.UpdateProductionInventory();
+                            //puic.UpdateProductionInventory();
                         }
                     }
                     else
@@ -191,7 +191,8 @@ namespace ProjectUniverse.Production.Machines
                         //Ore was removed to process it. Only add the process amount to the ingot itemstack
                         availableToProcess -= 1;
                         //Debug.Log("Process: " + availableToProcess);
-                        ItemStack compStack = new ItemStack(newComp.ComponentID, 999, typeof(Consumable_Component));
+                        Debug.Log(newComp.ToString());
+                        ItemStack compStack = new ItemStack(newComp.ComponentID, 9000, typeof(Consumable_Component));
                         //Add the itemstack or whatever
                         compStack.AddItem(newComp);
                         //Debug.Log("Outputting");
@@ -278,31 +279,36 @@ namespace ProjectUniverse.Production.Machines
         }
 
         //remove the component from the factory
-        public void OutputToPlayer(GameObject player)
+        public void OutputToPlayer()
         {
-            Debug.Log("gimme "+ outputMaterials.Count);
-            IPlayer_Inventory playerInventory = player.GetComponent<IPlayer_Inventory>();
-            for (int i = 0; i < outputMaterials.Count; i++)
+            if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
             {
-                playerInventory.AddStackToPlayerInventory(outputMaterials[i]);
-            }
-            outputMaterials.Clear();
+                IPlayer_Inventory playerInventory = networkedClient.PlayerObject.gameObject.GetComponent<IPlayer_Inventory>();
+                Debug.Log("gimme " + outputMaterials.Count);
+                for (int i = 0; i < outputMaterials.Count; i++)
+                {
+                    playerInventory.AddStackToPlayerInventory(outputMaterials[i]);
+                }
+                outputMaterials.Clear();
+            } 
         }
 
         public void ExternalInteractFunc()
         {
             ProductionUI.GetComponent<ProductionUIController>().LockScreenAndFreeCursor();
             ProductionUI.SetActive(true);
-            ProductionUI.GetComponent<ProductionUIController>().UpdateInputMaterials(inputMaterials);//inputMaterials
-            ProductionUI.GetComponent<ProductionUIController>().UpdateProductionInventory();//inputMaterials
+            if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
+            {
+                InputFromPlayer(networkedClient.PlayerObject.gameObject);
+            }
+            ProductionUI.GetComponent<ProductionUIController>().UpdateInputMaterials(inputMaterials);
         }
 
         public void DisplayProductionUI()
         {
             ProductionUI.GetComponent<ProductionUIController>().LockScreenAndFreeCursor();
             ProductionUI.SetActive(true);
-            ProductionUI.GetComponent<ProductionUIController>().UpdateInputMaterials(inputMaterials);//inputMaterials
-            ProductionUI.GetComponent<ProductionUIController>().UpdateProductionInventory();//inputMaterials
+            ProductionUI.GetComponent<ProductionUIController>().UpdateInputMaterials(inputMaterials);
         }
 
         public List<ItemStack> GetInputMaterials()
@@ -335,27 +341,27 @@ namespace ProjectUniverse.Production.Machines
             {
                 case 0:
                     SetPoweredState(true);
-                    SetRunningState(true);
+                    //SetRunningState(true);
                     break;
                 case 1:
                     SetPoweredState(true);
-                    SetRunningState(true);
+                    //SetRunningState(true);
                     break;
                 case 2:
                     SetPoweredState(true);
-                    SetRunningState(true);
+                    //SetRunningState(true);
                     break;
                 case 3:
                     SetPoweredState(true);
-                    SetRunningState(true);
+                    //SetRunningState(true);
                     break;
                 case 4:
                     SetPoweredState(false);
-                    SetRunningState(false);
+                    //SetRunningState(false);
                     break;
                 case 5:
                     SetPoweredState(true);
-                    SetRunningState(false);
+                    //SetRunningState(false);
                     break;
             }
         }

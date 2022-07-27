@@ -29,7 +29,7 @@ namespace ProjectUniverse.Audio
         {
             Debug.Log(audioClip.ToString());
             tempClip = audioClip;
-            updateParameters();
+            //updateParameters();
         }
 
         public void updateParameters()
@@ -74,7 +74,7 @@ namespace ProjectUniverse.Audio
             //handle change in soundclip being played.
             if (audioClip.ToString() != tempClip.ToString())
             {
-                updateParameters();
+                //updateParameters();
             }
 
             //Turn off or on the player

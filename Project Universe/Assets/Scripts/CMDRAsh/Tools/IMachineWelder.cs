@@ -12,7 +12,7 @@ using MLAPI;
 
 namespace ProjectUniverse.Items.Tools
 {
-    public class IMachineWelder : MonoBehaviour
+    public class IMachineWelder : IEquipable
     {
         //player will provide their inventory
         //will need reset if dropped and picked up
@@ -31,6 +31,7 @@ namespace ProjectUniverse.Items.Tools
         public GameObject welderRaycastPoint;
         private bool isWelding = false;
         private RaycastHit lastHit;
+        private GameObject lastHitGO;
         private RaycastHit current;
         private Color32 LIGHTGOLD = new Color32(238, 232, 70, 255);
 
@@ -46,7 +47,7 @@ namespace ProjectUniverse.Items.Tools
         void Update()
         {
             //Vector3 forward = Camera.main.transform.TransformDirection(0f, 0f, 1f) * 1f;
-            Vector3 forward2 = welderRaycastPoint.transform.TransformDirection(0f, 1f, 0f) * 1f;//0,0,1 is down
+            Vector3 forward2 = welderRaycastPoint.transform.TransformDirection(0f, 1f, 0f) * 1f;//0,0,1 is down?
             //try to raycast to a machine
             if (Physics.Raycast(
                     new Vector3(welderRaycastPoint.transform.position.x,
@@ -58,27 +59,73 @@ namespace ProjectUniverse.Items.Tools
                 IConstructible cons;
                 if (!hit.transform.CompareTag("Player"))
                 {
+                    GameObject target = null;
+                    // Check if hit is IConstructible. If not, go up to 3 levels higher until a ICons is found
+                    // the target GO becomes that ICons
+                    if (hit.transform.TryGetComponent<IConstructible>(out IConstructible z))
+                    {
+                        target = hit.transform.gameObject;
+                    }
+                    else
+                    {
+                        if(hit.transform.parent != null)
+                        {
+                            GameObject one = hit.transform.parent.gameObject;
+                            //check one level up
+                            if (one.TryGetComponent(out IConstructible a))
+                            {
+                                target = one;
+                            }
+                            else
+                            {
+                                if(one.transform.parent != null)
+                                {
+                                    GameObject two = one.transform.parent.gameObject;
+                                    //check 2 levels up
+                                    if (two.TryGetComponent(out IConstructible b))
+                                    {
+                                        target = two;
+                                    }
+                                    else
+                                    {
+                                        if(two.transform.parent != null)
+                                        {
+                                            GameObject three = two.transform.parent.gameObject;
+                                            //check 3 levels up
+                                            if (three.TryGetComponent(out IConstructible c))
+                                            {
+                                                target = three;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                    }
+
                     current = hit;
                     if (Input.GetMouseButton(0))
                     {
                         if (isWelding)
                         {
-                            if (lastHit.transform != null)
+                            if (lastHitGO != null && target != null)//lastHit.transform
                             {
                                 //if the last raycast and this new raycast are different, assume that we've moved on to another machine
-                                if (lastHit.transform != hit.transform)
+                                if (lastHitGO.transform != target.transform)//lastHit.transform != hit.transform
                                 {
                                     //stop the welding on the lastHit
-                                    Debug.Log("Stop: new");
+                                    //Debug.Log("Stop: new");
                                     prams = new object[] { 0 };
-                                    if (lastHit.transform.gameObject.TryGetComponent<IConstructible>(out cons))
+                                    if (lastHitGO.TryGetComponent<IConstructible>(out cons))//lastHit.transform.gameObject
                                     {
                                         cons.MachineMessageReceiver(prams);
                                     }
                                     else
                                     {
                                         Debug.Log("Component Not Found: Defaulting to Message");
-                                        lastHit.transform.gameObject.SendMessage("MachineMessageReceiver", prams, SendMessageOptions.DontRequireReceiver);
+                                        lastHitGO.SendMessage("MachineMessageReceiver", prams, SendMessageOptions.DontRequireReceiver);
+                                        //lastHit.transform.gameObject
                                     }
                                     isWelding = false;
                                 }
@@ -87,55 +134,71 @@ namespace ProjectUniverse.Items.Tools
                         //start welding the new machine
                         if (!isWelding)
                         {
-                            //send to message to the hit gameobject to start a new welding coroutine.
-                            prams = new object[] { 3, this, player.GetComponent<IPlayer_Inventory>() };//object[] 
-                            if (hit.transform.gameObject.TryGetComponent<IConstructible>(out cons))
+                            if (target != null)
                             {
-                                cons.MachineMessageReceiver(prams);
-                            }
-                            else
-                            {
-                                Debug.Log("Component Not Found: Defaulting to Message");
-                                hit.transform.gameObject.SendMessage("MachineMessageReceiver", prams, SendMessageOptions.DontRequireReceiver);
+                                //send to message to the hit gameobject to start a new welding coroutine.
+                                prams = new object[] { 3, this, player.GetComponent<IPlayer_Inventory>() };//object[] 
+                                if (target.TryGetComponent<IConstructible>(out cons))//hit.transform.gameObject
+                                {
+                                    cons.MachineMessageReceiver(prams);
+                                }
+                                else
+                                {
+                                    Debug.Log("Component Not Found: Defaulting to Message");
+                                    //hit.transform.gameObject
+                                    target.SendMessage("MachineMessageReceiver", prams, SendMessageOptions.DontRequireReceiver);
+                                }
                             }
                         }
                         else//We're already welding, so just update the display
                         {
-                            prams = new object[] { 2, this, player.GetComponent<IPlayer_Inventory>() };
-                            if (hit.transform.gameObject.TryGetComponent<IConstructible>(out cons))
+                            if (target != null)
                             {
-                                cons.MachineMessageReceiver(prams);
-                            }
-                            else
-                            {
-                                Debug.Log("Component Not Found: Defaulting to Message");
-                                hit.transform.gameObject.SendMessage("MachineMessageReceiver", prams, SendMessageOptions.DontRequireReceiver);
+                                prams = new object[] { 2, this, player.GetComponent<IPlayer_Inventory>() };
+                                if (target.TryGetComponent<IConstructible>(out cons))//hit.transform.gameObject
+                                {
+                                    cons.MachineMessageReceiver(prams);
+                                }
+                                else
+                                {
+                                    Debug.Log("Component Not Found: Defaulting to Message");
+                                    //hit.transform.gameObject
+                                    target.SendMessage("MachineMessageReceiver", prams, SendMessageOptions.DontRequireReceiver);
+                                }
                             }
                         }
                         lastHit = hit;
+                        lastHitGO = target;
                     }
                     else
                     {
                         if (isWelding)
                         {
-                            //stop building
-                            prams = new object[] { 0 };
-
-                            if (lastHit.transform.gameObject.TryGetComponent<IConstructible>(out cons))
+                            if (lastHitGO != null)
                             {
-                                cons.MachineMessageReceiver(prams);
-                            }
-                            else
-                            {
-                                Debug.Log("Component Not Found: Defaulting to Message");
-                                lastHit.transform.gameObject.SendMessage("MachineMessageReceiver", prams, SendMessageOptions.DontRequireReceiver);
+                                //stop building
+                                prams = new object[] { 0 };
+                                //lastHit.transform.gameObject
+                                if (lastHitGO.transform.gameObject.TryGetComponent<IConstructible>(out cons))
+                                {
+                                    cons.MachineMessageReceiver(prams);
+                                }
+                                else
+                                {
+                                    Debug.Log("Component Not Found: Defaulting to Message");
+                                    lastHitGO.SendMessage("MachineMessageReceiver", prams, SendMessageOptions.DontRequireReceiver);
+                                    //lastHit.transform.gameObject
+                                }
                             }
                         }
                         //and peak
-                        prams = new object[] { 1, this, player.GetComponent<IPlayer_Inventory>() };
-                        if (hit.transform.gameObject.TryGetComponent<IConstructible>(out cons))
+                        if (target != null)
                         {
-                            cons.MachineMessageReceiver(prams);
+                            prams = new object[] { 1, this, player.GetComponent<IPlayer_Inventory>() };
+                            if (target.TryGetComponent<IConstructible>(out cons))//hit.transform.gameObject
+                            {
+                                cons.MachineMessageReceiver(prams);
+                            }
                         }
                         isWelding = false;
                     }
@@ -146,21 +209,29 @@ namespace ProjectUniverse.Items.Tools
                 if (isWelding)
                 {
                     //player stops welding
-                    if (lastHit.transform != null)
+                    if (lastHitGO != null)//lastHit.transform 
                     {
-                        Debug.Log("Stop: raycast");
+                        //Debug.Log("Stop: raycast");
                         object[] prams = { 0 };
                         IConstructible cons;
-                        if (lastHit.transform.gameObject.TryGetComponent<IConstructible>(out cons))
+                        if (lastHitGO.transform.gameObject.TryGetComponent<IConstructible>(out cons))//lastHit.transform
                         {
                             cons.MachineMessageReceiver(prams);
                         }
                         else
                         {
                             Debug.Log("Component Not Found: Defaulting to Message");
-                            lastHit.transform.gameObject.SendMessage("MachineMessageReceiver", prams, SendMessageOptions.DontRequireReceiver);
+                            lastHitGO.SendMessage("MachineMessageReceiver", prams, SendMessageOptions.DontRequireReceiver);
+                            //lastHit.transform.gameObject
                         }
                         isWelding = false;
+                    }
+                }
+                else // clear display
+                {
+                    if(buildComponentPanel.transform.childCount > 1)
+                    {
+                        ClearUILabels();
                     }
                 }
             }
@@ -193,6 +264,14 @@ namespace ProjectUniverse.Items.Tools
                     TrimUILabels();
                 }
                 UpdateUIDisplay((bool)prams.GetValue(2));
+            }
+        }
+
+        private void ClearUILabels()
+        {
+            for (int i = buildComponentPanel.transform.childCount; i > buildComponentPanel.transform.childCount; i--)
+            {
+                GameObject.Destroy(buildComponentPanel.transform.GetChild(0).gameObject);
             }
         }
 

@@ -89,7 +89,7 @@ namespace ProjectUniverse.Player.PlayerController
             }
             //controls.Player.Move.Enable(); Broken.
             controls.Player.Alt.Enable();
-            controls.Player.Sprint.Enable();
+            controls.Player.Shift.Enable();
             controls.Player.Flashlight.Enable();
             //controls.Player.Jump.Enable(); Broken
             controls.Player.Look.Enable();
@@ -130,11 +130,11 @@ namespace ProjectUniverse.Player.PlayerController
                 cameraLocked = !cameraLocked;
             };
 
-            controls.Player.Sprint.performed += ctx =>
+            controls.Player.Shift.performed += ctx =>
             {
                 sprinting = true;
             };
-            controls.Player.Sprint.canceled += ctx =>
+            controls.Player.Shift.canceled += ctx =>
             {
                 sprinting = false;
             };
@@ -167,13 +167,13 @@ namespace ProjectUniverse.Player.PlayerController
                     if (lookClamp > 90.0f)
                     {
                         lookClamp = 90.0f;
-                        mouseY = 90.0f;//shouldn't this be 90.0f not 0.0f?
+                        mouseY = 90.0f;
                         ClampLookRotationToValue(270.0f);
                     }
                     else if (lookClamp < -90.0f)
                     {
                         lookClamp = -90.0f;
-                        mouseY = -90.0f;//was 0.0f
+                        mouseY = -90.0f;
                         ClampLookRotationToValue(90);
                     }
 

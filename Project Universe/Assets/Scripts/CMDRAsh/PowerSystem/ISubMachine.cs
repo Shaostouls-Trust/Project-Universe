@@ -52,7 +52,8 @@ namespace ProjectUniverse.PowerSystem
         private NetworkVariableBool netLightEnabled = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
         //anti-spaz timer
         private float chillTime = 7f;
-
+        private float lastEnergyReceived = 0f;
+        
         void Start()
         {
             //RunMachine = true;
@@ -103,70 +104,68 @@ namespace ProjectUniverse.PowerSystem
                 netLightEnabled.OnValueChanged += delegate { lightComponent.enabled = netLightEnabled.Value; };
             }
         }
+        
+        public float LastEnergyReceived
+        {
+            get { return lastEnergyReceived; }
+        }
 
         /// <summary>
         /// We need to lighten this update method as much as possible!
         /// </summary>
         void Update()
         {
-            //reset requestedEnergy
-            netRequestedEnergy.Value = requiredEnergy;
-            //requestedEnergy = requiredEnergy;
-            //Recalculate drawToFill based on draw percent
-            float floatDrawToFill = (float)percentDrawToFill;
-            drawToFill = requiredEnergy + (requiredEnergy * (floatDrawToFill / 100)); //105% or 110% draw
-                                                                                      //If the energy buffer is not full
-            if (bufferCurrent < energyBuffer)
-            {
-                //Get the deficit between the energybuffer(max) and the current buffer amount
-                float deficit = energyBuffer - bufferCurrent;
-                if (deficit >= drawToFill)
-                {
-                    //send energy request
-                    netRequestedEnergy.Value = drawToFill;
-                    //requestedEnergy = drawToFill;
-                    RequestHelper();
-
-                }
-                else if (deficit < drawToFill && deficit > requiredEnergy)
-                {
-                    netRequestedEnergy.Value = deficit + netRequiredEnergy.Value;
-                    //requestedEnergy = deficit + requiredEnergy;
-                    //Debug.Log(this.gameObject.name + " Request Helper");
-                    RequestHelper();
-                }
-                else
-                {
-                    requestedEnergy = requiredEnergy;
-                    //Debug.Log(this.gameObject.name + " Request Helper");
-                    RequestHelper();
-                }
-                if(bufferCurrent < 0f)
-                {
-                    bufferCurrent = 0f;
-                }
-            }
-            else if (bufferCurrent >= energyBuffer)
-            {
-                //send request
-                //netRequestedEnergy.Value = netRequiredEnergy.Value;
-                requestedEnergy = requiredEnergy;
-                bufferCurrent = energyBuffer;
-                //requestedEnergy = 0.0f;
-                //Debug.Log(this.gameObject.name + " Request Helper");
-                RequestHelper();
-            }
-            
-            /*
-            else
-            {
-                requestedEnergy = requiredEnergy;
-                //Debug.Log(this.gameObject.name + " Request Helper");
-                RequestHelper();
-            }
-            */
             if (runMachine)
             {
+                //reset requestedEnergy
+                netRequestedEnergy.Value = requiredEnergy;
+                //requestedEnergy = requiredEnergy;
+                //Recalculate drawToFill based on draw percent
+                float floatDrawToFill = (float)percentDrawToFill;
+                drawToFill = requiredEnergy + (requiredEnergy * (floatDrawToFill / 100)); //105% or 110% draw
+                                                                                          //If the energy buffer is not full
+                if (bufferCurrent < energyBuffer)
+                {
+                    //Get the deficit between the energybuffer(max) and the current buffer amount
+                    float deficit = energyBuffer - bufferCurrent;
+                    if (deficit >= drawToFill)
+                    {
+                        //send energy request
+                        netRequestedEnergy.Value = drawToFill;
+                        //requestedEnergy = drawToFill;
+                        RequestHelper();
+
+                    }
+                    else if (deficit < drawToFill && deficit > requiredEnergy)
+                    {
+                        netRequestedEnergy.Value = deficit + netRequiredEnergy.Value;
+                        //requestedEnergy = deficit + requiredEnergy;
+                        //Debug.Log(this.gameObject.name + " Request Helper");
+                        RequestHelper();
+                    }
+                    else
+                    {
+                        requestedEnergy = requiredEnergy;
+                        //Debug.Log(this.gameObject.name + " Request Helper");
+                        RequestHelper();
+                    }
+                    if(bufferCurrent < 0f)
+                    {
+                        bufferCurrent = 0f;
+                    }
+                }
+                else if (bufferCurrent >= energyBuffer)
+                {
+                    //send request
+                    //netRequestedEnergy.Value = netRequiredEnergy.Value;
+                    requestedEnergy = requiredEnergy;
+                    bufferCurrent = energyBuffer;
+                    //requestedEnergy = 0.0f;
+                    //Debug.Log(this.gameObject.name + " Request Helper");
+                    RequestHelper();
+                }
+            
+            
                 //run machines
                 //Debug.Log("Running "+this.gameObject.name);
                 RunLogic();
@@ -174,7 +173,9 @@ namespace ProjectUniverse.PowerSystem
             else
             {
                 //turn the machine off
-                RunMachineSelector(machineType, 5);
+                netRequestedEnergy.Value = 0f;
+                lastEnergyReceived = 0f;
+                RunLogic();
             }
         }
 
@@ -185,10 +186,17 @@ namespace ProjectUniverse.PowerSystem
 
         public void RequestHelper()
         {
-            foreach (IBreakerBox box in breakers)
+            if (RunMachine)
             {
-                //Debug.Log("request from breakers: "+requestedEnergy/breakers.Count);
-                box.RequestPowerFromBreaker(requestedEnergy / breakers.Count, this);//this.GetComponent<ISubMachine>()
+                foreach (IBreakerBox box in breakers)
+                {
+                    //Debug.Log("request from breakers: "+requestedEnergy/breakers.Count);
+                    box.RequestPowerFromBreaker(requestedEnergy / breakers.Count, this);//this.GetComponent<ISubMachine>()
+                }
+            }
+            else
+            {
+                netRequestedEnergy.Value = 0f;
             }
         }
 
@@ -197,13 +205,13 @@ namespace ProjectUniverse.PowerSystem
             ///////////////////////////////////////
             //Run logic
             ///////////////////////////////////////
+            chillTime--;
+            if (chillTime < 0f)
+            {
+                chillTime = 7f;
+            }
             if (runMachine)
             {
-                chillTime--;
-                if (chillTime < 0f)
-                {
-                    chillTime = 7f;
-                }
                 if (legsReceived == legsRequired)
                 {
                     //Debug.Log("Legs received");
@@ -264,7 +272,7 @@ namespace ProjectUniverse.PowerSystem
             }
             else
             {
-                RunMachineSelector(machineType, 4);
+                RunMachineSelector(machineType, 5);
             }
 
         }
@@ -307,6 +315,7 @@ namespace ProjectUniverse.PowerSystem
                 netBufferCurrent.Value += amounts[i];
                 //bufferCurrent += amounts[i];
             }
+            lastEnergyReceived = amounts[0] * legCount;
             //Debug.Log(this + " submachine buffer at: " + bufferCurrent);
             //legsReceived = legCount;
             netLegsReceived.Value = legCount;
@@ -315,7 +324,6 @@ namespace ProjectUniverse.PowerSystem
             //round buffer current to 3 places to avoid having a psychotic meltdown
             netBufferCurrent.Value = (float)Math.Round(netBufferCurrent.Value, 3);
             //bufferCurrent = (float)Math.Round(bufferCurrent, 3);
-
             if (!iCableDLL.Contains(cable))
             {
                 //netICableDLL.Add(cable);
@@ -380,10 +388,9 @@ namespace ProjectUniverse.PowerSystem
         [ServerRpc(RequireOwnership = false)]
         public void RunMachinePointLightServerRpc(int powerLevel)
         {
-            netLightEnabled.Value = true;
-            //lightComponent.enabled = true;
             if(chillTime <= 0f)
             {
+                netLightEnabled.Value = true;
                 MaterialPropertyBlock MPB = MaterialLibrary.GetMaterialPropertyBlockForCommonLights();
                 switch (powerLevel)
                 {
@@ -424,7 +431,6 @@ namespace ProjectUniverse.PowerSystem
                         break;
                     case 4:
                         lightComponent.intensity = 0.0f;
-                        lightComponent.range = 0.0f;
                         //set material emissive to 0%
                         renderer.GetPropertyBlock(MPB);
                         MPB.SetFloat("_EmissionIntensity", 0f);//50f is current emissive level for lights
@@ -432,7 +438,7 @@ namespace ProjectUniverse.PowerSystem
                         break;
                     case 5:
                         netLightEnabled.Value = false;
-                        //lightComponent.enabled = false;
+                        //lightComponent.intensity = 0.0f;
                         //set material emissive to 0%
                         renderer.GetPropertyBlock(MPB);
                         MPB.SetFloat("_EmissionIntensity", 0f);//50f is current emissive level for lights
@@ -490,7 +496,6 @@ namespace ProjectUniverse.PowerSystem
                         break;
                     case 4:
                         lightComponent.intensity = 0.0f;
-                        lightComponent.range = 0.0f;
                         //set material emissive to 0%
                         renderer.GetPropertyBlock(MPB);
                         MPB.SetFloat("_EmissionIntensity", 0f);//50f is current emissive level for lights
@@ -498,6 +503,7 @@ namespace ProjectUniverse.PowerSystem
                         break;
                     case 5:
                         netLightEnabled.Value = false;
+                        lightComponent.intensity = 0.0f;
                         //lightComponent.enabled = false;
                         //set material emissive to 0%
                         renderer.GetPropertyBlock(MPB);

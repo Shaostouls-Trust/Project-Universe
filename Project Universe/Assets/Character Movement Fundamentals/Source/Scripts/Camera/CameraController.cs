@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using ProjectUniverse.Player.PlayerController;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,8 @@ namespace CMF
 	//Rotation around the x-axis (vertical) can be clamped/limited by setting 'upperVerticalLimit' and 'lowerVerticalLimit'.
 	public class CameraController : MonoBehaviour {
 
+		[SerializeField] private SupplementalController sc;
+        
 		//Current rotation values (in degrees);
 		float currentXAngle = 0f;
 		float currentYAngle = 0f;
@@ -42,16 +45,16 @@ namespace CMF
 		//References to transform and camera components;
 		protected Transform tr;
 		protected Camera cam;
-		protected CameraInput cameraInput;
+		//protected CameraInput cameraInput;
 
 		//Setup references.
 		void Awake () {
 			tr = transform;
 			cam = GetComponent<Camera>();
-			cameraInput = GetComponent<CameraInput>();
+			//cameraInput = GetComponent<CameraInput>();
 
-			if(cameraInput == null)
-				Debug.LogWarning("No camera input script has been attached to this gameobject", this.gameObject);
+			//if(cameraInput == null)
+			//	Debug.LogWarning("No camera input script has been attached to this gameobject", this.gameObject);
 
 			//If no camera component has been attached to this gameobject, search the transform's children;
 			if(cam == null)
@@ -82,19 +85,21 @@ namespace CMF
 		//This method can be overridden in classes derived from this base class to modify camera behaviour;
 		protected virtual void HandleCameraRotation()
 		{
-			if(cameraInput == null)
-				return;
-
+			//if(cameraInput == null)
+			//	return;
+            
 			//Get input values;
-			float _inputHorizontal = cameraInput.GetHorizontalCameraInput();
-			float _inputVertical = cameraInput.GetVerticalCameraInput();
-		
+			float _inputHorizontal = sc.LookInput.x * 0.3f; //cameraInput.GetHorizontalCameraInput(); 0.2f
+			float _inputVertical = sc.LookInput.y * 0.3f;//cameraInput.GetVerticalCameraInput(); 0.2f
+			//Debug.Log(sc.LookInput);
 			RotateCamera(_inputHorizontal, _inputVertical);
 		}
 
 		//Rotate camera; 
 		protected void RotateCamera(float _newHorizontalInput, float _newVerticalInput)
 		{
+
+		
 			if(smoothCameraRotation)
 			{
 				//Lerp input;
@@ -108,16 +113,26 @@ namespace CMF
 				oldVerticalInput = _newVerticalInput;
 			}
 
+			/*    
 			//Add input to camera angles;
 			currentXAngle += oldVerticalInput * cameraSpeed * Time.deltaTime;
 			currentYAngle += oldHorizontalInput * cameraSpeed * Time.deltaTime;
-
+			*/
+            
+			//Vector3 rotation = new Vector3(_newHorizontalInput, _newVerticalInput, 0f);
+			Vector3 rotation = new Vector3(oldHorizontalInput, oldVerticalInput, 0f);
+			rotation = Vector3.Lerp(new Vector3(0f, 0f, 0f), rotation, (1f / Time.captureFramerate) * 10f);
+			
+			currentXAngle += rotation.y;//x
+			currentYAngle += rotation.x;//y
+            
 			//Clamp vertical rotation;
 			currentXAngle = Mathf.Clamp(currentXAngle, -upperVerticalLimit, lowerVerticalLimit);
 
+			//tr.Rotate(new Vector3(currentXAngle, currentYAngle, 0f));
 			UpdateRotation();
 		}
-
+        
 		//Update camera rotation based on x and y angles;
 		protected void UpdateRotation()
 		{

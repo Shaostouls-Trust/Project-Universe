@@ -12,7 +12,7 @@ namespace ProjectUniverse.Production.Resources
     {
         [SerializeField] private int ingotQuality;
         [SerializeField] private string typeSingle;
-        private IngotDefinition IngotDef;
+        private IngotDefinition ingotDef;
         private Dictionary<OreDefinition, float> oreInclusionDict;
         private Dictionary<MaterialDefinition, float> matInclusionDict;
         [SerializeField] private float ingotMassKg;
@@ -32,7 +32,7 @@ namespace ProjectUniverse.Production.Resources
         {
             typeSingle = type;
             ingotQuality = quality;
-            IngotLibrary.IngotDictionary.TryGetValue(typeSingle, out IngotDef);
+            IngotLibrary.IngotDictionary.TryGetValue(typeSingle, out ingotDef);
             InclusionLibrary.GetZone3Ores().TryGetValue(ingotQuality, out oreInclusionDict);
             InclusionLibrary.GetZone3Mats().TryGetValue(ingotQuality, out matInclusionDict);
             ingotMassKg = mass;
@@ -69,16 +69,51 @@ namespace ProjectUniverse.Production.Resources
             return ingotQuality;
         }
 
+        public IngotDefinition IngotDef
+        {
+            get
+            {
+                return ingotDef;
+            }
+
+            set
+            {
+                ingotDef = value;
+            }
+        }
+
+        public List<(OreDefinition, float)> GetOreInclusionsAsList()
+        {
+            List<(OreDefinition, float)> oreIncList = new List<(OreDefinition, float)>();
+            foreach (var key in oreInclusionDict.Keys)
+            {
+                oreInclusionDict.TryGetValue(key, out float amt);
+                oreIncList.Add((key,amt));
+            }
+            return oreIncList;
+        }
+
+        public List<(MaterialDefinition, float)> GetMatInclusionsAsList()
+        {
+            List<(MaterialDefinition, float)> matIncList = new List<(MaterialDefinition, float)>();
+            foreach (var key in matInclusionDict.Keys)
+            {
+                matInclusionDict.TryGetValue(key, out float amt);
+                matIncList.Add((key, amt));
+            }
+            return matIncList;
+        }
+
         public bool CompareMetaData(Consumable_Ingot comparee)
         {
             if (GetIngotType() == comparee.GetIngotType())
             {
-                if (GetIngotQuality() == comparee.GetIngotQuality())
+                if (Equals(GetIngotQuality(), comparee.GetIngotQuality()))
                 {
                     return true;
                 }
             }
-            Debug.Log("METADATA ERROR");
+            Debug.Log("METADATA ERROR: "+ GetIngotType() +" != "+ comparee.GetIngotType());
             return false;
         }
 

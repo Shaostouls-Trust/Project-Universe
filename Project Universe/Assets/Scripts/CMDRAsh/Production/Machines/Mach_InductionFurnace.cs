@@ -11,19 +11,26 @@ using ProjectUniverse.UI;
 using MLAPI;
 using MLAPI.Messaging;
 using ProjectUniverse.Items;
+using ProjectUniverse.Util;
 
 namespace ProjectUniverse.Production.Machines
 {
-    public class Mach_InductionFurnace : IConstructible//MonoBehaviour
+    /// <summary>
+    /// Smelt ores into ingots with reduced inclusions and variable qualities
+    /// </summary>
+    public class Mach_InductionFurnace : IConstructible
     {
         [SerializeField] private List<ItemStack> inputMaterials;
         [SerializeField] private List<ItemStack> outputMaterials;
         [SerializeField] private GameObject SmelterUI;
         [SerializeField] private GameObject transferDuct;
         [SerializeField] private Inventory inventory;
+        [SerializeField] private bool ArcFurnace;
 
+        //Impurities can be separated into dust or ingots
         private List<ItemStack> byproducts;
         //Refinery level determines quality (and speed for now). Higher tier will take longer (more steps).
+        //0 - tier 0, 1 - tier 1, etc
         [SerializeField] private int refineryLevel;
         [SerializeField] private float processAmount;
         private float timer = 0.0f;
@@ -113,6 +120,234 @@ namespace ProjectUniverse.Production.Machines
         }
 
         ///
+        /// Add up the mass of the ore and precalculate how many ingots it will create based on quality and refinery level
+        ///
+        public int CalculateIngotOutput(List<ItemStack> materials, out Consumable_Ingot ingotOutput)
+            //out IngotDefinition ingotDef, out List<(OreDefinition, float)> oreInclusions,
+            //out List<(MaterialDefinition, float)> matInclusions)
+        {
+            float massOre = 0f;
+            float redux = 0f;
+            float quality = 0f;
+            List<(OreDefinition, float)> oreInclusions = new List<(OreDefinition, float)>();
+            List<(MaterialDefinition, float)> matInclusions = new List<(MaterialDefinition, float)>();
+            IngotDefinition ingotDef;
+
+            if (materials.Count > 0)
+            {
+                // get ore definition
+                if (OreLibrary.OreDictionary.TryGetValue(materials[0].GetStackType(), out OreDefinition oreDef))
+                {
+                    //get the ingot definition from the ingot library
+                    IngotLibrary.IngotDictionary.TryGetValue(oreDef.GetProductionID(), out ingotDef);
+                }
+                else
+                {
+                    ingotDef = null;
+                }
+                for (int a = 0; a < materials.Count; a++)
+                {
+                    if (materials[a].GetRealLength() >= 0)
+                    {
+                        for (int i = 0; i < materials[a].GetItemArray().Length; i++)
+                        {
+                            //Debug.Log((materials[a].GetItemArray().GetValue(i) as Consumable_Ore));
+                            ///
+                            /// REDUX if ores only
+                            ///
+                            Consumable_Ore ore = (materials[a].GetItemArray().GetValue(i) as Consumable_Ore);
+                            //if (!ArcFurnace)
+                            //{
+                            //    refineryLevel = 0;
+                            //}
+                            redux = Utils.RefinementMassLoss(refineryLevel, ore.GetOreQuality());
+                            //Debug.Log(redux);
+                            massOre += ore.GetOreMass() - (ore.GetOreMass() * redux) - (ore.GetOreMass() * Utils.OreToIngotBaseLoss(ore.GetOreQuality()));
+                            quality += ore.GetOreQuality();
+
+                            // total up all inclusions
+                            // for every ore inclusion in the ore
+                            //Debug.Log(ore.GetOreInclusions().Count);
+                            foreach (var k in ore.GetOreInclusions().Keys)
+                            {
+                                bool oreAdded = false;
+                                ore.GetOreInclusions().TryGetValue(k, out float amt);
+                                //Debug.Log(k.GetOreType() + ":" + amt);
+                                // if it's already in the final inclusion thing
+                                for (int oii = 0; oii < oreInclusions.Count; oii++)
+                                {
+                                    if (oreInclusions[oii].Item1 == k)
+                                    {
+                                        oreInclusions[oii] = (oreInclusions[oii].Item1, oreInclusions[oii].Item2 + amt);
+                                        oreAdded = true;
+                                    }
+                                }
+                                if (!oreAdded)
+                                {
+                                    //Debug.Log("Adding inclusion");
+                                    oreInclusions.Add((k, amt));
+                                }
+                            }
+
+                            // for every material inclusion
+                            foreach (var k in ore.GetMaterialInclusions().Keys)
+                            {
+                                bool matAdded = false;
+                                ore.GetMaterialInclusions().TryGetValue(k, out float amt);
+                                //Debug.Log(k.GetMaterialType() + ":" + amt);
+                                // if it's already in the final inclusion thing
+                                for (int mii = 0; mii < matInclusions.Count; mii++)
+                                {
+                                    
+                                    if (matInclusions[mii].Item1 == k)
+                                    {
+                                        matInclusions[mii] = (matInclusions[mii].Item1, matInclusions[mii].Item2 + amt);
+                                        matAdded = true;
+                                    }
+                                }
+                                if (!matAdded)
+                                {
+                                    //Debug.Log("Adding inclusion");
+                                    matInclusions.Add((k, amt));
+                                }
+                            }
+                        }
+                    }
+                }
+
+                float incFactor = (1 - redux) / massOre;
+                // inclusion redux (per mass by redux)
+                for (int a = 0; a < oreInclusions.Count; a++)
+                {
+                    oreInclusions[a] = (oreInclusions[a].Item1, oreInclusions[a].Item2 * incFactor);
+                }
+                for (int b = 0; b < matInclusions.Count; b++)
+                {
+                    matInclusions[b] = (matInclusions[b].Item1, matInclusions[b].Item2 * incFactor);
+                }
+
+                // turn the final ore mass into a number ingots
+                float rawIngots = massOre / 10f;
+                float dustIngots = rawIngots % 1;
+                float numIngots = rawIngots - dustIngots;
+
+                // the quality of the ingots is the average quality of all ingots rounded up
+                quality = Mathf.RoundToInt(quality / materials[0].GetItemArray().Length);
+
+                Dictionary<OreDefinition, float> oreInclusionsDict = new Dictionary<OreDefinition, float>();
+                Dictionary<MaterialDefinition, float> matInclusionsDict = new Dictionary<MaterialDefinition, float>();
+
+                //create dictionaries for the inclusions
+                foreach (var ore in oreInclusions)
+                {
+                    oreInclusionsDict.Add(ore.Item1, ore.Item2);
+                }
+                foreach (var mat in matInclusions)
+                {
+                    matInclusionsDict.Add(mat.Item1, mat.Item2);
+                }
+
+                // create the template ingot
+                ingotOutput = new Consumable_Ingot(ingotDef.GetIngotType(), (int)quality, ingotDef, oreInclusionsDict, matInclusionsDict, 10f);
+
+                return (int)numIngots;
+            }
+
+            ingotOutput = null;
+            return 0;
+        }
+
+        ///
+        /// Process a stack of input ore into a batch of x ingots of y average quality and z average inclusions.
+        ///
+        public IEnumerator ProxyUpdate2()
+        {
+            //float totalStock = inputMaterials[0].GetRealLength();
+            int ingotsAvailableToProcess;
+            Consumable_Ingot newIngot;
+            InductionSmelterUIController smelter = SmelterUI.GetComponent<InductionSmelterUIController>();
+            float smeltTimeSingle = 1f;
+            Stop = false;
+
+            // Use the available ores to determine the final product
+            ingotsAvailableToProcess = CalculateIngotOutput(inputMaterials, out newIngot);
+
+            if (OreLibrary.OreDictionary.TryGetValue(inputMaterials[0].GetStackType(), out OreDefinition oreDef))
+            {
+                //get the smelt time
+                smeltTimeSingle = oreDef.GetProcessingTimePerUnit();
+            }
+            
+            while (ingotsAvailableToProcess > 0 && inputMaterials[0].GetRealLength() >= 0 && !Stop)//the last ingot turns this into input == 0 
+            {
+                if (isRunning && isPowered)
+                {
+                    if (inputMaterials.Count > 0f)
+                    {
+                        if (timer <= 0.0f)
+                        {
+                            totaltime = smeltTimeSingle * (float)ingotsAvailableToProcess;
+                            timer = totaltime;
+                        }
+                        else
+                        {
+                            //smelting timer. When it reaches zero, the ore has been turned into an ingot.
+                            timer -= Time.deltaTime;
+                            smelter.UpdateProgressBar(timer / totaltime);
+                            //Debug.Log(timer);
+                        }
+                    }
+                    if (timer <= 0.0f)
+                    {
+                        // All ore has been processed and the batch of ingots is ready
+                        ItemStack ingotStack = new ItemStack(newIngot.GetIngotType(), 9000, typeof(Consumable_Ingot));
+                        for(int n = 0; n < ingotsAvailableToProcess; n++)
+                        {
+                            //Debug.Log("Adding "+newIngot);
+                            ingotStack.AddItem(newIngot);
+                        }
+                        //Debug.Log("Outputting");
+                        //Debug.Log(ingotStack);
+                        outputMaterials.Add(ingotStack);
+                        ingotsAvailableToProcess = 0;
+
+                        //TEMP ONLY!! purge input materials (they've all been converted) THIS WILL WASTE LEFT-OVERS!! TEMP ONLY!!
+                        inputMaterials.Clear();
+
+                        //Attempt to push the ingots to Next or dump in output stack for player
+                        if (smelter.OutputMode)
+                        {
+                            TransferToInternalInventory();
+                            //true means to internal inventory
+
+                            //false means to Next (NYI)
+                        }
+                        UpdateAll();
+                        //Debug.Log("Materials left: "+inputMaterials[0]);
+                    }
+                    if (inputMaterials.Count == 0 && ingotsAvailableToProcess <= 0)
+                    {
+                        UpdateAll();
+                        Debug.Log("Done STOPPING");
+                        Stop = true;
+                        //When all ore is processed, stop the update coroutine.
+                        StopCoroutine(ProxyUpdate2());
+                    }
+                }
+                else
+                {
+                    smelter.UpdateProductionPanel();
+                    smelter.OnIngotsProduced(outputMaterials);
+                    Stop = true;
+                    Debug.Log("Pwr STOPPING");
+                }
+
+                yield return null;
+            }
+        }
+
+
+        ///
         /// Process a certain amount of ore in one update
         ///
         private IEnumerator ProxyUpdate()
@@ -155,7 +390,7 @@ namespace ProjectUniverse.Production.Machines
                     {
                         remaining--;
                         //Ore was removed to process it. Only add the process amount to the ingot itemstack
-                        ItemStack ingotStack = new ItemStack(ingotDef.GetIngotType(), 999, typeof(Consumable_Ingot));
+                        ItemStack ingotStack = new ItemStack(ingotDef.GetIngotType(), 9000, typeof(Consumable_Ingot));
                         //Add the itemstack or whatever
                         ingotStack.AddItem(newIngot);
                         Debug.Log("Adding "+newIngot+" to ingotStack");
@@ -179,7 +414,7 @@ namespace ProjectUniverse.Production.Machines
                     if (inputMaterials.Count == 0 && availableToProcess <= 0)
                     {
                         UpdateAll();
-                        Debug.Log("STOPPING");
+                        //Debug.Log("STOPPING");
                         Stop = true;
                         //When all ore is processed, stop the update coroutine.
                         StopCoroutine(ProxyUpdate());
@@ -190,7 +425,7 @@ namespace ProjectUniverse.Production.Machines
                     smelter.UpdateProductionPanel();
                     smelter.OnIngotsProduced(outputMaterials);
                     Stop = true;
-                    Debug.Log("STOPPING");
+                    //Debug.Log("STOPPING");
                 }
                 yield return null;
             }
@@ -249,7 +484,7 @@ namespace ProjectUniverse.Production.Machines
                 {
                     //Debug.Log(inputMaterials.Count);
                     Debug.Log("Coroutine");
-                    StartCoroutine("ProxyUpdate");
+                    StartCoroutine(ProxyUpdate2());//ProxyUpdate
                 }
 
             }
@@ -285,7 +520,7 @@ namespace ProjectUniverse.Production.Machines
                 {
                     if(Inventory.GetInventory()[i] != null)
                     {
-                        Debug.Log(Inventory.GetInventory()[i]);//stacks are empty
+                        Debug.Log(Inventory.GetInventory()[i]);
                         inv.AddStackToPlayerInventory(Inventory.Remove(i));
                     }
                 }
@@ -310,6 +545,7 @@ namespace ProjectUniverse.Production.Machines
 
         public void RunMachine(int powerLevel)
         {
+            
             switch (powerLevel)
             {
                 case 0:

@@ -12,6 +12,7 @@ namespace ProjectUniverse.Data.Libraries
         private IComponentLibrary.ComponentDefinitionLibrary CDL;
         private MachineLibrary.MachineDefinitionLibrary MDL;
         private ProbabilityLibrary.ProbabilityDictionary PBD;
+        private GasLibrary.GasDefinitionLibrary GDL;
 
         void Awake()
         {
@@ -34,36 +35,8 @@ namespace ProjectUniverse.Data.Libraries
             PBD = new ProbabilityLibrary.ProbabilityDictionary();
             PBD.InitializeProbabilityDictionary();
 
-        }
-
-        public OreLibrary.OreMaterialLibrary GetOreDictionary()
-        {
-            return OreLib;
-        }
-
-        public InclusionLibrary.InclusionDictionary GetInclusionDictionary()
-        {
-            return IDL;
-        }
-
-        public IngotLibrary.IngotDefinitionLibrary GetIngotDictionary()
-        {
-            return IngotLib;
-        }
-
-        public IComponentLibrary.ComponentDefinitionLibrary GetComponentDictionary()
-        {
-            return CDL;
-        }
-
-        public MachineLibrary.MachineDefinitionLibrary GetMachineDictionary()
-        {
-            return MDL;
-        }
-
-        public ProbabilityLibrary.ProbabilityDictionary GetProbabilityDictionary()
-        {
-            return PBD;
+            GDL = new GasLibrary.GasDefinitionLibrary();
+            GDL.InitializeGasDictionary();
         }
     }
 }

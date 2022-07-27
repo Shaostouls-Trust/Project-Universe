@@ -1,6 +1,7 @@
 using MLAPI;
 using ProjectUniverse.Base;
 using ProjectUniverse.Environment.World;
+using ProjectUniverse.Items.Containers;
 using ProjectUniverse.Player;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,6 +13,10 @@ namespace ProjectUniverse.Items.Tools
     {
         [SerializeField] private int mineAmount;
         [SerializeField] private LineRenderer line;
+        [SerializeField] private bool mounted;
+        [SerializeField] private Inventory mountedInventory;
+        [SerializeField] private CargoContainer container;
+        [SerializeField] private float distance = 1f;
         public Vector3 rayDir;
         private GameObject player;
         public GameObject drillRaycastPoint;
@@ -48,6 +53,20 @@ namespace ProjectUniverse.Items.Tools
             //    count = 10;
             //}
             //count--;
+            if (mountedInventory != null)
+            {
+                if (mountedInventory.IsFull())
+                {
+                    isMining = false;
+                }
+            }
+            else if (container != null)
+            {
+                if (container.IsFull)
+                {
+                    isMining = false;
+                }
+            }
             if (isMining)
             {
                 Vector3 forward2 = drillRaycastPoint.transform.TransformDirection(rayDir) * 1f;//0,1,0
@@ -55,7 +74,7 @@ namespace ProjectUniverse.Items.Tools
                         new Vector3(drillRaycastPoint.transform.position.x,
                         drillRaycastPoint.transform.position.y,
                         drillRaycastPoint.transform.position.z),
-                        forward2, out RaycastHit hit, 1.0f))
+                        forward2, out RaycastHit hit, distance))
                 {
                     object[] prams;
                     BlockOreSingle block;
@@ -82,7 +101,23 @@ namespace ProjectUniverse.Items.Tools
                             {
                                 //Debug.Log("Adding ore");
                                 //add the ore to the player inventory
-                                player.GetComponent<IPlayer_Inventory>().AddStackToPlayerInventory(stack);
+                                if (!mounted)
+                                {
+                                    player.GetComponent<IPlayer_Inventory>().AddStackToPlayerInventory(stack);
+                                }
+                                else
+                                {
+                                    if(mountedInventory != null)
+                                    {
+                                        mountedInventory.Add(stack);
+                                    }
+                                    else
+                                    {
+                                        container.AddToInventory(stack);
+                                    }
+                                    //Debug.Log("Stack: "+stack);
+                                    
+                                }
                             }
                         }
                     }

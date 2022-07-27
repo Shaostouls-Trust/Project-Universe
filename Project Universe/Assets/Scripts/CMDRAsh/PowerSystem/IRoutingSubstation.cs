@@ -34,6 +34,7 @@ namespace ProjectUniverse.PowerSystem
         private float _bufferCurrentRedux;
         private float _bufferMaxRedux;
         private float _requestRedux;
+        [SerializeField] private PowerOutputController poc;
 
         // Start is called before the first frame update
         void Start()
@@ -50,10 +51,29 @@ namespace ProjectUniverse.PowerSystem
             ProxyStart(1);
         }
 
+        public float BufferCurrent
+        {
+            get
+            {
+                return bufferCurrent;
+            }
+        }
+        public float BufferMax
+        {
+            get
+            {
+                return energyBufferMax;
+            }
+        }
+
         public void ProxyStart(int mode)
         {
             if (mode == 1)
             {
+                if (poc != null)
+                {
+                    poc.ClearBreakerButtons();
+                }
                 for (int i = 0; i < targetBreakers.Length; i++)
                 {
                     if (targetBreakers[i] != null)
@@ -62,13 +82,21 @@ namespace ProjectUniverse.PowerSystem
                         iCableDLL.AddLast(cable);
                         legsOut += targetBreakers[i].GetLegRequirement();
                         availibleLegsOut = legsOut;
-                        Debug.Log("Checking Breaker State " + targetBreakers[i].gameObject.name);
+                        //Debug.Log("Checking Breaker State " + targetBreakers[i].gameObject.name);
                         targetBreakers[i].CheckMachineState(ref thisSubstation);
+                        if (poc != null)
+                        {
+                            poc.CreateButton(targetBreakers[i]);
+                        }
                     }
                 }
             }
             else if (mode == 2)
             {
+                if (poc != null)
+                {
+                    poc.ClearMachineButtons();
+                }
                 for (int i = 0; i < targetMachine.Length; i++)
                 {
                     if (targetMachine[i] != null)
@@ -76,8 +104,12 @@ namespace ProjectUniverse.PowerSystem
                         ICable cable = new ICable(this, targetMachine[i]);
                         iCableDLL.AddLast(cable);
                         legsOut += targetMachine[i].GetLegRequirement();
-                        Debug.Log("Checking Machine State " + targetMachine[i].gameObject.name);
+                        //Debug.Log("Checking Machine State " + targetMachine[i].gameObject.name);
                         targetMachine[i].CheckMachineState(ref thisSubstation);
+                        if (poc != null)
+                        {
+                            poc.CreateButton(targetMachine[i]);
+                        }
                     }
                 }
             }
@@ -364,6 +396,7 @@ namespace ProjectUniverse.PowerSystem
             }
             legsReceived = legCount;
             bufferCurrent = (float)Math.Round(bufferCurrent, 3);
+            poc.UpdateMachineUI();
         }
 
         public float GetTotalRequiredPower()

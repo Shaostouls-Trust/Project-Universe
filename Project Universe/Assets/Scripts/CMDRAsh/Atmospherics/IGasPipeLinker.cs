@@ -26,5 +26,22 @@ namespace ProjectUniverse.Environment.Gas
                 gameObject.GetComponent<BoxCollider>().enabled = false;
             }
         }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.CompareTag("_GasPipeLink"))
+            {
+                //link the ducts
+                parentDuct.AddNeighbor(other.gameObject.GetComponent<IGasPipeLinker>().parentDuct);
+                //disable collisions and rigidbodies
+                //other.gameObject.GetComponent<Rigidbody>().detectCollisions = false;
+                //other.gameObject.GetComponent<BoxCollider>().enabled = false;
+                //gameObject.GetComponent<Rigidbody>().detectCollisions = false;
+                //gameObject.GetComponent<BoxCollider>().enabled = false;
+
+                //Disabling RB/Col not sufficient. Disable GO
+                gameObject.SetActive(false);
+            }
+        }
     }
 }

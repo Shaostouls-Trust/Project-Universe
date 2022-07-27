@@ -184,10 +184,6 @@ namespace ProjectUniverse.Production.Resources
         {
             return OreDef;
         }
-        public float GetOreQuantity()
-        {
-            return OreMassKg;
-        }
         public void RemoveOreAmount(float amount)
         {
             OreMassKg -= amount;

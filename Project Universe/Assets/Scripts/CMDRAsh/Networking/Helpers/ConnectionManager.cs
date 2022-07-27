@@ -52,7 +52,7 @@ namespace ProjectUniverse.Networking
 
         public async void Join()
         {
-            Debug.Log("Start Client");
+            //Debug.Log("Start Client");
             //Can't grab UNetTransport if using Photon.
             //uNetTransportForClient = NetworkManager.Singleton.GetComponent<UNetTransport>();
             //uNetTransportForClient.ConnectAddress = IPaddress;
@@ -61,9 +61,9 @@ namespace ProjectUniverse.Networking
             NetworkManager.Singleton.OnClientDisconnectCallback += ClientDisconnectCallback();
             NetworkManager.Singleton.NetworkConfig.ConnectionData = System.Text.Encoding.ASCII.GetBytes("79213");
             NetworkManager.Singleton.StartClient();
-            Debug.Log("Awaiting connection");
+            //Debug.Log("Awaiting connection");
             await ClientConnected();
-            Debug.Log("Client connected or dropped");
+            //Debug.Log("Client connected or dropped");
             LobbyCam.gameObject.SetActive(false);
             ConnectionUIGO.SetActive(false);
             //Debug.Log("Connected Client "+NetworkManager.Singleton.IsConnectedClient);

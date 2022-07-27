@@ -172,7 +172,7 @@ namespace ProjectUniverse.Environment.World
                 if (prob <= probabilities[i])
                 {
                     //select this type
-                    Debug.Log(i);
+                    //Debug.Log(i);
                     return i;
                 }
                 cumulative += (int)probabilities[i];

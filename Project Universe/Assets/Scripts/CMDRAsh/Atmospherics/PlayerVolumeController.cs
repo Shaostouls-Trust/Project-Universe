@@ -8,6 +8,8 @@ using ProjectUniverse.Player;
 using ProjectUniverse.Player.PlayerController;
 using UnityEngine.UI;
 using TMPro;
+using ProjectUniverse.Util;
+using ProjectUniverse.Environment.Gas;
 //using UnityEngine.Rendering.PostProcessing;
 
 /// <summary>
@@ -32,7 +34,7 @@ namespace ProjectUniverse.Environment.Volumes
         //radiation
         private float myRadExposureRateRaw = 0;
         [SerializeField] private float myRadExposureTime = 0;
-        private float myRadAbsorbtionRate = 1;
+        private float myRadAbsorbtionRate = 0.9f;
         [SerializeField] private float myRadAbsorbed = 0;
         private float myMaxRoentgenDetectable = 0;
         //Player stats:
@@ -44,6 +46,14 @@ namespace ProjectUniverse.Environment.Volumes
         private VolumeAtmosphereController playerVolume;
         public string CurrentVolumeOfPlayer;
         private SupplementalController playerControllerSup;
+        [Space]
+        private float co2PerBreath = 0.000025f;//25ml per breath at normal respiration (5% conversion)
+        [SerializeField] private int breathsPerMinute = 15;//average breathing rate (1 every 4sec)
+        private IGas breathInGas;
+        private IGas breathOutGas;
+        private float toNextBreath;
+        [SerializeField] private AudioSource playerSFX;
+        public AudioClip[] breathClips;
 
         // Start is called before the first frame update
         void Start()
@@ -54,6 +64,9 @@ namespace ProjectUniverse.Environment.Volumes
             myRoomTemp = 68f;
             myRoomOxygenation = 100f;
             myRoomToxicity = 0f;
+            breathInGas = new IGas("Oxygen", 70f, co2PerBreath,1.0f,0.006f);//6L in lungs
+            breathOutGas = new IGas("CarbonDioxide", 98.6f, co2PerBreath,1.0f,0.006f);
+            toNextBreath = 60f / breathsPerMinute;
         }
 
         // Update is called once per frame
@@ -62,7 +75,7 @@ namespace ProjectUniverse.Environment.Volumes
             //update player vc to reflect the changes in the volume.
             OnVolumeUpdate();
             /*
-            //camera focussing
+            //camera focusing
             Camera maincamera = GetComponentInChildren<Camera>();
             //Debug.DrawRay(maincamera.transform.position, maincamera.transform.TransformVector(Vector3.forward),Color.cyan);
             if (Physics.Raycast(
@@ -80,50 +93,10 @@ namespace ProjectUniverse.Environment.Volumes
                 }
             }
             */
-            if (playerOxygen <= 0)
-            {
-                //take suffocation damage
-                playerControllerSup.InflictPlayerDamageServerRpc((3.2f - ((myRoomOxygenation / 100f) *3.2f)) * Time.deltaTime);
-                //playerHealth -= (3.2f * Time.deltaTime);//suffocate to death in 30 seconds
-            }
-            if (myRoomOxygenation < 50.0f)//if the air is too thin
-            {
-                //float oxyDefecit = 100.0f - myRoomOxygenation;
-                //breath X from an air supply
-                //if no air supply:
-                ///1 minute of holding breath before taking damage at normal heart rate (1.6f)
-                ///If partial air, subtract that from the rate
-                ///scale down to 10 or so secs depending on heart rate
-                if(playerOxygen > 0f)
-                {
-                    playerOxygen -= ((oxyUseRate - ((myRoomOxygenation / 100f))*oxyUseRate) * Time.deltaTime);
-                }
-            }
-            else if (myRoomOxygenation >= 50.0)
-            {
-                if (playerOxygen < 100)
-                {
-                    playerOxygen += ((myRoomOxygenation / 100f) * 50 * Time.deltaTime);//2 secs to recover from empty at 100% O2
-                }
-                if (playerOxygen > 100)
-                {
-                    playerOxygen = 100;
-                }
-            }
 
-            //inflict toxicity damage
-            playerControllerSup.InflictPlayerDamageServerRpc(Mathf.Lerp(0.0f, 3.0f, myRoomToxicity));
-
-            if (myRoomPressure < 0.12f)//~121 millibar. 121 is lowest survivable w/ pure oxygen.
-            {
-                //if in pressure gear:
-                //if not in pressure gear:
-                //playerHealth -= (6.6f * Time.deltaTime);//0 atm kills in 15 secs
-            }
-            if (myLastRoomPress - myRoomPressure > 0.5f)
-            {
-                //if the air pressure changed too quickly, take damage or 'black out'
-            }
+            // Replace the below logic by breathing in what air from the volume you can.
+            // may or may not be oxygen.
+            BreatheAirFromVolume();
 
             if (myRoomTemp != playerTemp)
             ///need a scalar to apply to playerTemp. Also will need some way to simulate sweating bring the body temp to a stable
@@ -148,6 +121,106 @@ namespace ProjectUniverse.Environment.Volumes
 
             UpdateUI();
         }
+
+        public void BreatheAirFromVolume()
+        {
+            toNextBreath -= Time.deltaTime;
+            //oxygen is consumed from the volume
+            //barring that, from the player's lungs
+            if (playerVolume != null)
+            {
+                if (myRoomOxygenation < 50.0f)//if the air is too thin
+                {
+                    // if no air supply
+                    ///1 minute of holding breath before taking damage at normal heart rate (1.6f)
+                    ///scale down to 10 or so secs depending on heart rate
+                    if (myRoomOxygenation > 10.0f)
+                    {
+                        //Breathe in what little there is.
+                        if (toNextBreath <= 0f)
+                        {
+                            int clipIndex = UnityEngine.Random.Range(0, breathClips.Length);
+                            playerSFX.PlayOneShot(breathClips[clipIndex]);
+                            breathInGas.SetTemp(myRoomTemp);
+                            breathInGas.SetLocalPressure(myRoomPressure);
+                            playerVolume.RemoveRoomGas(breathInGas);
+                            playerVolume.AddRoomGas(breathOutGas);
+                        }
+                        playerOxygen -= ((oxyUseRate - ((myRoomOxygenation / 100f)) * oxyUseRate) * Time.deltaTime);
+                    }
+                    else//hold breath
+                    {
+                        if (playerOxygen > 0f)
+                        {
+                            playerOxygen -= (oxyUseRate * Time.deltaTime);
+                        }
+                    }  
+                }
+                else if (myRoomOxygenation >= 50.0)
+                {
+                    if (toNextBreath <= 0f)
+                    {
+                        int clipIndex = UnityEngine.Random.Range(0, breathClips.Length);
+                        playerSFX.PlayOneShot(breathClips[clipIndex]);
+                        //Air conversion is every breath. Logic is constant
+                        breathInGas.SetTemp(myRoomTemp);
+                        breathInGas.SetLocalPressure(myRoomPressure);
+                        playerVolume.RemoveRoomGas(breathInGas);
+                        playerVolume.AddRoomGas(breathOutGas);
+                    }
+                    if (playerOxygen < 100)
+                    {
+                        playerOxygen += ((myRoomOxygenation / 100f) * 25f * Time.deltaTime);//4 secs to recover from empty at 100% O2
+                    }
+                    if (playerOxygen > 100)
+                    {
+                        playerOxygen = 100;
+                    }
+                }
+                
+                if (playerOxygen <= 0)
+                {
+                    //suffocate to death in 30 seconds
+                    playerControllerSup.InflictPlayerDamageServerRpc((3.2f - ((myRoomOxygenation / 100f) * 3.2f)) * Time.deltaTime);
+                }
+
+                //Pressure damage
+                if (myRoomPressure < 0.12f)//~121 millibar. 121 is lowest survivable w/ pure oxygen.
+                {
+                    //if in pressure gear:
+                    //if not in pressure gear:
+                    playerControllerSup.InflictPlayerDamageServerRpc(6.6f * Time.deltaTime);//0 atm kills in 15 secs
+                }
+                if (myLastRoomPress - myRoomPressure > 0.5f)
+                {
+                    //if the air pressure changed too quickly, take damage (or 'black out'?)
+                    playerControllerSup.InflictPlayerDamageServerRpc(10f  * (myLastRoomPress - myRoomPressure));
+                }
+
+                //TOX
+                //inflict toxicity damage
+                if(myRoomToxicity > 0.1f)
+                {
+                    playerControllerSup.InflictPlayerDamageServerRpc(Mathf.Lerp(0.4f, 4.0f, (myRoomToxicity-0.2f))*Time.deltaTime);
+                }
+            }
+            else
+            {
+                //we are in space (without survival gear)
+                playerOxygen -= (oxyUseRate * Time.deltaTime);
+                playerControllerSup.InflictPlayerDamageServerRpc(6.6f * Time.deltaTime);//0 atm kills in 15 secs
+            }
+            if(playerOxygen < 0f)
+            {
+                playerOxygen = 0f;
+            }
+
+            if (toNextBreath <= 0f)
+            {
+                toNextBreath = 60f / breathsPerMinute;
+            }
+        }
+
         public void AddRadiationExposureTime(float time)
         {
             myRadExposureTime += time;
@@ -164,13 +237,15 @@ namespace ProjectUniverse.Environment.Volumes
         {
             myRadExposureRateRaw = roentgen;
         }
+       
         public void CalculateAbsorbedDose()
         {
-            myRadAbsorbed += (((myRadExposureRateRaw) * myRadAbsorbtionRate) * (Time.deltaTime / 3600f)); //myRadExposureTime 
+            myRadAbsorbed += myRadAbsorbtionRate * (Time.deltaTime / 3600f);
+            //myRadAbsorbed += (((myRadExposureRateRaw) * myRadAbsorbtionRate) * (Time.deltaTime / 3600f));
         }
         public float AbsorbedDose {
-            get { 
-                CalculateAbsorbedDose();
+            get 
+            { 
                 return myRadAbsorbed;
             }
             set
@@ -179,9 +254,10 @@ namespace ProjectUniverse.Environment.Volumes
             }
         }
 
-        public float GetAbsorbtionRate()
+        public float AbsorbtionRate
         {
-            return myRadAbsorbtionRate;
+            get { return myRadAbsorbtionRate; }
+            set { myRadAbsorbtionRate = value; }
         }
         public float GetRadiationExposureRate()
         {

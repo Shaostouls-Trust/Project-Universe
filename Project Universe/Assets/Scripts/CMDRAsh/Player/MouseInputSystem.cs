@@ -50,15 +50,30 @@ namespace ProjectUniverse.Player.PlayerController {
             controls.Player.Look.Enable();
             controls.Player.Look.performed += ctx =>
             {
-                if (controller.CameraLocked == false)
+                if (!controller.ShipMode)
                 {
-                    horizontalInput = ctx.ReadValue<Vector2>().x * mouseInputMultiplier * Time.deltaTime * (1f / Time.unscaledDeltaTime);
-                    verticalInput = ctx.ReadValue<Vector2>().y * mouseInputMultiplier * Time.deltaTime * (1f / Time.unscaledDeltaTime);
+                    if (controller.CameraLocked == false)
+                    {
+                        horizontalInput = ctx.ReadValue<Vector2>().x * mouseInputMultiplier * Time.deltaTime * (1f / Time.unscaledDeltaTime);
+                        verticalInput = ctx.ReadValue<Vector2>().y * mouseInputMultiplier * Time.deltaTime * (1f / Time.unscaledDeltaTime);
+                    }
+                    else
+                    {
+                        horizontalInput = 0f;
+                        verticalInput = 0f;
+                    }
                 }
+                // rotate ship
                 else
                 {
                     horizontalInput = 0f;
                     verticalInput = 0f;
+                    // pass rotation info to ship controller
+                    controller.RemoteLookAxis_Horizonal = ctx.ReadValue<Vector2>().x * 
+                        mouseInputMultiplier * Time.deltaTime * (1f / Time.unscaledDeltaTime);
+                    controller.RemoteLookAxis_Vertical = ctx.ReadValue<Vector2>().y * 
+                        mouseInputMultiplier * Time.deltaTime * (1f / Time.unscaledDeltaTime);
+
                 }
             };
             controls.Player.Look.canceled += ctx =>

@@ -19,7 +19,24 @@ namespace ProjectUniverse.Environment.Volumes
 
         public GameObject VolumeLink
         {
-            get { return linkedVolume; }
+            get
+            {
+                if(linkedVolume != null)
+                {
+                    if (linkedVolume.activeInHierarchy)
+                    {
+                        return linkedVolume;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
             set { linkedVolume = value; }
         }
 

@@ -72,11 +72,11 @@ namespace ProjectUniverse.Environment.Volumes
 
                 float tox = (float)Math.Round(vac.Toxicity, 2);
                 toxTxt.text = "" + tox;
-                if (tox > 0.0f && tox <= 0.25f)
+                if (tox > 0.0f && tox <= 0.10f)
                 {
                     toxTxt.color = YELLOW;
                 }
-                else if (tox > 0.25f)
+                else if (tox > 0.10f)
                 {
                     toxTxt.color = RED;
                 }

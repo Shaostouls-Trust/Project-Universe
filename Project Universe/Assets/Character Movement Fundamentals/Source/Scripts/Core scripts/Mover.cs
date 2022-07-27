@@ -262,6 +262,9 @@ namespace CMF
 		//Check if mover is grounded;
 		//Store all relevant collision information for later;
 		//Calculate necessary adjustment velocity to keep the correct distance to the ground;
+		/// <summary>
+		/// HERE?
+		/// </summary>
 		void Check()
 		{
 			//Reset ground adjustment velocity;
@@ -311,7 +314,7 @@ namespace CMF
 		//Set mover velocity;
 		public void SetVelocity(Vector3 _velocity)
 		{
-			rig.velocity = _velocity + currentGroundAdjustmentVelocity;	
+			rig.velocity = _velocity + currentGroundAdjustmentVelocity;
 		}	
 
 		//Returns 'true' if mover is touching ground and the angle between hte 'up' vector and ground normal is not too steep (e.g., angle < slope_limit);

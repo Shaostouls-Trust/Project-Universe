@@ -6,6 +6,7 @@ using ProjectUniverse.Player;
 using ProjectUniverse.Production.Resources;
 using ProjectUniverse.UI;
 using MLAPI;
+using ProjectUniverse.Player.PlayerController;
 
 namespace ProjectUniverse.Items.Containers
 {
@@ -16,16 +17,23 @@ namespace ProjectUniverse.Items.Containers
         private List<ItemStack> inventory = new List<ItemStack>();
         [SerializeField] private CargoUIController cargoui;
         //[SerializeField] private InventoryUIController invUI;
-        private Rigidbody cargoRbd;
+        [SerializeField] private Rigidbody cargoRbd;
+        private float runningvolume = 0f;
         private float OrdMass;
+        private bool isFull;
 
+        public bool IsFull
+        {
+            get { return isFull; }
+        }
+        
         // Start is called before the first frame update
         void Start()
         {
-            cargoRbd = GetComponent<Rigidbody>();
+            //cargoRbd = GetComponent<Rigidbody>();
             OrdMass = cargoRbd.mass;
 
-            Consumable_Ingot ingot = new Consumable_Ingot("Ingot_Gold", 3, 10);
+            /*Consumable_Ingot ingot = new Consumable_Ingot("Ingot_Gold", 3, 10);
             ItemStack devIngotStack = new ItemStack("Ingot_Gold", 999, typeof(Consumable_Ingot));
             int i = 0;
             while (i < 3)
@@ -36,27 +44,41 @@ namespace ProjectUniverse.Items.Containers
             AddToInventory(devIngotStack);
             //AddToInventory(devIngotStack);
             cargoui.UpdateDisplay(inventory);
-            UpdateRBMass();
+            UpdateRBMass();*/
         }
 
         public void UpdateRBMass()
         {
+            float tempD = 0f;
+            float tempV = 0f;
             //inventory mass is added to the rigidbody
             foreach (ItemStack item in inventory)
             {
                 //Currently, there exist no items where count is not kg.
                 //Ingots added in start are 5Kg added 3x to one stack.
                 //components and other things will eventually need mass calc'ed.
-
+                
                 float density = 1.0f;
+                float volume = 0f;
                 //get item def
                 if (item.GetOriginalType() == typeof(Consumable_Ingot))
                 {
                     Consumable_Ingot ingot = (Consumable_Ingot)item.GetItemArray().GetValue(0);
                     density = ingot.GetIngotMass();
+                    volume = ingot.IngotDef.GetDensity();
                     //IngotDefinition idef;
                     //IngotLibrary.IngotDictionary.TryGetValue(item.GetStackType(), out idef);
                     //density = idef.GetDensity();
+                }
+                else if(item.GetOriginalType() == typeof(Consumable_Ore))
+                {
+                    volume = 1f/1600f;//m^3/kg
+                    density = 1f;
+                }
+                else
+                {
+                    density = 1f;
+                    volume = 1 / 100f;
                 }
                 /*
                 else if (item.GetOriginalType() == typeof(Consumable_Component))
@@ -68,7 +90,19 @@ namespace ProjectUniverse.Items.Containers
                     density = 1.0f;
                 }
                 */
-                cargoRbd.mass += item.Size() * density;
+                tempD += item.Size() * density;
+                tempV += item.Size() * volume;
+                
+            }
+            cargoRbd.mass = tempD;
+            runningvolume = tempV;
+            if (cargoRbd.mass > maxWeight || runningvolume > volume)
+            {
+                isFull = true;
+            }
+            else
+            {
+                isFull = false;
             }
         }
 
@@ -78,6 +112,7 @@ namespace ProjectUniverse.Items.Containers
             if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
             {
                 InventoryUIController invui = networkedClient.PlayerObject.gameObject.GetComponent<IPlayer_Inventory>().InventoryUI;
+                networkedClient.PlayerObject.gameObject.GetComponent<SupplementalController>().FleetBoyOut = true;
                 invui.gameObject.SetActive(true);
                 invui.LockScreenAndFreeCursor();
                 invui.SetCargoContainer(this);
@@ -155,26 +190,31 @@ namespace ProjectUniverse.Items.Containers
         public bool AddToInventory(ItemStack stack)
         {
             SanityCheck();
-            //if(cargoRbd.mass > maxWeight)
-            //{
-            for (int i = 0; i < inventory.Count; i++)
+            if(cargoRbd.mass < maxWeight && runningvolume < volume)
             {
-                if (inventory[i].CompareMetaData(stack))
+                for (int i = 0; i < inventory.Count; i++)
                 {
-                    Debug.Log("Added to cont inventory");
-                    ItemStack slaanesh = inventory[i].AddItemStack(stack);
-                    if(slaanesh != null && slaanesh.GetRealLength() > 0)
+                    if (inventory[i].CompareMetaData(stack))
                     {
-                        inventory.Add(slaanesh);
+                        //Debug.Log("Added to cont inventory");
+                        ItemStack slaanesh = inventory[i].AddItemStack(stack);
+                        if(slaanesh != null && slaanesh.GetRealLength() > 0)
+                        {
+                            inventory.Add(slaanesh);
+                        }
+                        return true;
                     }
-                    return true;
                 }
+                //if the return is not hit, then there are no other compatible itemstacks
+                inventory.Add(stack);
+                UpdateRBMass();
+                return true;
             }
-            //if the return is not hit, then there are no other compatible itemstacks
-            inventory.Add(stack);
-            return true;
-            // }
-            //  else { return false; }
+            else 
+            {
+                isFull = true;
+                return false;
+            }
         }
 
         public bool RemoveFromInventory(ItemStack stack, out ItemStack returnstack)
@@ -188,6 +228,7 @@ namespace ProjectUniverse.Items.Containers
                     returnstack = inventory[i];
                     Debug.Log("RemoveAt: " + i);
                     inventory.RemoveAt(i);
+                    UpdateRBMass();
                     return true;
                 }
                 /*
@@ -230,6 +271,7 @@ namespace ProjectUniverse.Items.Containers
                 {
                     inventory.RemoveAt(stackIndex);
                 }
+                UpdateRBMass();
                 return stack;
             }
             else

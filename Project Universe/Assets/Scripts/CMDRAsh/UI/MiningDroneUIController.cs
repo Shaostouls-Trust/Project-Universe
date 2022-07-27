@@ -69,7 +69,7 @@ public class MiningDroneUIController : MonoBehaviour, IPointerExitHandler, IPoin
                         amount = 100;
                     }
                     Consumable_Ore ore = new Consumable_Ore(OreTypes[o], OreQualities[o], OreZones[o], amount);
-                    ItemStack orestack = new ItemStack(OreTypes[o],999,typeof(Consumable_Ore));
+                    ItemStack orestack = new ItemStack(OreTypes[o],9000,typeof(Consumable_Ore));
                     orestack.AddItem(ore);
                     TargetAsteroid.SetOreMass(o,OreMasses[o] - 100);
                     oreList[o] = orestack;

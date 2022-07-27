@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using ProjectUniverse.Production.Machines;
+using ProjectUniverse.Environment.Gas;
 
 namespace ProjectUniverse.PowerSystem
 {
@@ -36,6 +38,17 @@ namespace ProjectUniverse.PowerSystem
         [SerializeField]
         private int legsRequired;
         private int legsReceived;
+        private float lastReceived;
+
+        public float LastReceived 
+        {
+            get { return lastReceived; }
+        }
+
+        public float BufferCurrent
+        {
+            get { return bufferCurrent; }
+        }
 
         void Start()
         {
@@ -97,7 +110,8 @@ namespace ProjectUniverse.PowerSystem
             }
             else
             {
-                if(bufferCurrent > 0f)
+                lastReceived = 0f;
+                if (bufferCurrent > 0f)
                 {
                     RunMachineSelector(machineType, 5);
                 }
@@ -111,10 +125,13 @@ namespace ProjectUniverse.PowerSystem
 
         public void RequestHelper()
         {
-            foreach (IRoutingSubstation subs in substations)
+            if (RunMachine)
             {
-                //Debug.Log(this.gameObject.name + " has Requested " + requestedEnergy / substations.Count);
-                subs.RequestPowerFromSubstation(requestedEnergy / substations.Count, this.GetComponent<IMachine>());
+                foreach (IRoutingSubstation subs in substations)
+                {
+                    //Debug.Log(this.gameObject.name + " has Requested " + requestedEnergy / substations.Count);
+                    subs.RequestPowerFromSubstation(requestedEnergy / substations.Count, this.GetComponent<IMachine>());
+                }
             }
         }
 
@@ -213,6 +230,7 @@ namespace ProjectUniverse.PowerSystem
                 //Debug.Log(this.gameObject.name + " machine has Received "+amounts[i]+" X3");
             }
             legsReceived = legCount;
+            lastReceived = amounts[0] * legCount;
             //Debug.Log(this.gameObject.name+" machine has "+legsReceived+" legs");
             //bufferCurrent += amount;
             //round buffer current to 3 places to avoid having a psychotic meltdown
@@ -264,15 +282,19 @@ namespace ProjectUniverse.PowerSystem
                 case "kiosk":
                     this.RunMachineKiosk(powerLevel);
                     break;
+                    
                     /*
                 case "InductionFurnace":
-                    this.gameObject.GetComponent<Mach_InductionFurnace>().RunMachine(powerLevel);
+                    this.gameObject.GetComponent<Mach_InductionFurnace>().RunMachine(powerLevel); 
                     break;
                 case "OxygenGen":
                     this.gameObject.GetComponent<IOxygenGenerator>().RunMachine(powerLevel);
                     break;
                 case "DevFactory":
                     this.gameObject.GetComponent<Mach_DevFactory>().RunMachine(powerLevel);
+                    break;
+                case "ArcFurnace":
+                    this.gameObject.GetComponent<Mach_InductionFurnace>().RunMachine(powerLevel);
                     break;
                     */
             }

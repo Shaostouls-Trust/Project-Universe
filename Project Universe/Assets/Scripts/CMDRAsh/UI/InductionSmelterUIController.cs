@@ -1,5 +1,6 @@
 using MLAPI;
 using ProjectUniverse.Base;
+using ProjectUniverse.Data.Libraries;
 using ProjectUniverse.Data.Libraries.Definitions;
 using ProjectUniverse.Player;
 using ProjectUniverse.Player.PlayerController;
@@ -49,6 +50,11 @@ namespace ProjectUniverse.UI
         private bool startLock;
         public Button startButton;
         public Button stopButton;
+
+        public TMP_Text IngotQuality;
+        public TMP_Text IngotProdAmount;
+        public TMP_Text IngotIncCSPSM;
+        public TMP_Text IngotIncCMNAV;
 
         void Start()
         {
@@ -163,6 +169,11 @@ namespace ProjectUniverse.UI
                 if (transfererinventory[j].GetStackType() == searchfor)
                 {
                     ItemStack stack = transfererinventory[j].RemoveItemData(1f);
+                    if (transfererinventory[j].GetRealLength() == 0)
+                    {
+                        transfererinventory.Remove(transfererinventory[j]);
+                        //Debug.Log("Removing Null");
+                    }
                     if (stack != null)
                     {
                         if (suppliedOres.Count > 0)
@@ -271,8 +282,113 @@ namespace ProjectUniverse.UI
             }
         }
 
+        public void UpdateIngotData()
+        {
+            // expected prod
+            Mach_InductionFurnace mif = Factory.GetComponent<Mach_InductionFurnace>();
+            int quan = mif.CalculateIngotOutput(suppliedOres, out Consumable_Ingot ingot);
+
+            int quality = -1;
+            try
+            {
+                quality = ingot.GetIngotQuality();
+            }
+            catch (NullReferenceException){}
+
+            if (quality != -1)
+            {
+                IngotProdAmount.text = "" + quan;
+                IngotQuality.text = "" + quality;
+                List<(OreDefinition, float)> lodf = ingot.GetOreInclusionsAsList();
+                List<(MaterialDefinition, float)> lmdf = ingot.GetMatInclusionsAsList();
+                string carbon = "0.00";
+                OreLibrary.MaterialDictionary.TryGetValue("Material_Carbon", out MaterialDefinition car);
+                string sulfur = "0.00";
+                OreLibrary.MaterialDictionary.TryGetValue("Material_Sulfur", out MaterialDefinition sul);
+                string phos = "0.00";
+                OreLibrary.MaterialDictionary.TryGetValue("Material_Phosphorus", out MaterialDefinition pho);
+                string silicon = "0.00";
+                OreLibrary.MaterialDictionary.TryGetValue("Material_Silicon", out MaterialDefinition sil);
+                string manganese = "0.00";
+                OreLibrary.OreDictionary.TryGetValue("Ore_Manganese", out OreDefinition man);
+                string chrome = "0.00";
+                OreLibrary.OreDictionary.TryGetValue("Ore_Chromium", out OreDefinition chr);
+                string moly = "0.00";
+                OreLibrary.OreDictionary.TryGetValue("Ore_Molybdenum", out OreDefinition mol);
+                string alum = "0.00";
+                OreLibrary.OreDictionary.TryGetValue("Ore_Aluminum", out OreDefinition alu);
+                string vanad = "0.00";
+                OreLibrary.OreDictionary.TryGetValue("Ore_Vanadium", out OreDefinition van);
+                string nickel = "0.00";
+                OreLibrary.OreDictionary.TryGetValue("Ore_Nickel", out OreDefinition nic);
+
+                for (int o = 0; o < lodf.Count; o++)
+                {
+                    OreDefinition check = lodf[o].Item1;
+                    string amt = "" + Math.Round(lodf[o].Item2,2);
+                    if (check == man)
+                    {
+                        manganese = amt;
+                    }
+                    else if (check == chr)
+                    {
+                        chrome = amt;
+                    }
+                    else if (check == mol)
+                    {
+                        moly = amt;
+                    }
+                    else if (check == alu)
+                    {
+                        alum = amt;
+                    }
+                    else if (check == van)
+                    {
+                        vanad = amt;
+                    }
+                    else if (check == nic)
+                    {
+                        nickel = amt;
+                    }
+                }
+
+                for (int o = 0; o < lmdf.Count; o++)
+                {
+                    MaterialDefinition check = lmdf[o].Item1;
+                    string amt = "" + Math.Round(lmdf[o].Item2,2);
+                    if (check == car)
+                    {
+                        carbon = amt;
+                    }
+                    else if (check == sul)
+                    {
+                        sulfur = amt;
+                    }
+                    else if (check == pho)
+                    {
+                        phos = amt;
+                    }
+                    else if (check == sil)
+                    {
+                        silicon = amt;
+                    }
+                }
+
+                IngotIncCSPSM.text = carbon + "%\n" + sulfur + "%\n" + phos + "%\n" + silicon + "%\n" + manganese;
+                IngotIncCMNAV.text = chrome + "%\n" + moly + "%\n" + nickel + "%\n" + alum + "%\n" + vanad;
+
+            }
+            else
+            {
+                IngotIncCSPSM.text = "0.00%" + "\n" + "0.00%" + "\n" + "0.00%" + "\n" + "0.00%" + "\n" + "0.00%";
+                IngotIncCMNAV.text = "0.00%" + "\n" + "0.00%" + "\n" + "0.00%" + "\n" + "0.00%" + "\n" + "0.00%";
+            }
+        }
+
+
         public void UpdateProductionPanel()
         {
+            Mach_InductionFurnace mif = Factory.GetComponent<Mach_InductionFurnace>();
             if (suppliedOres.Count != 0 && suppliedOres[0].GetRealLength() >= 1)
             {
                 InsertedOreName.text = suppliedOres[0].GetStackType().Split('_')[1] + " Ore";
@@ -295,7 +411,6 @@ namespace ProjectUniverse.UI
                     }
                 }
             }
-            Mach_InductionFurnace mif = Factory.GetComponent<Mach_InductionFurnace>();
             if(mif.TransferDuct == null)
             {
                 TransferDisconnectIcon.SetActive(true);
@@ -331,7 +446,6 @@ namespace ProjectUniverse.UI
             {
                 for (int j = 0; j < transfererinventory.Count; j++)
                 {
-                    //Debug.Log(transfererinventory[j].GetStackType().Split('_')[1] + " V " + OreInsertionButtons[k].transform.GetChild(1).GetChild(0).GetComponent<TMP_Text>().text.Split(' ')[0]);
                     //filter out anything that isn't delimed with a '_'
                     if(transfererinventory[j].GetStackType().Split('_').Length >= 2)
                     {
@@ -349,13 +463,14 @@ namespace ProjectUniverse.UI
                     }
                 }
             }
+            UpdateIngotData();
         }
 
         public void OnIngotsProduced(List<ItemStack> ingots)
         {
             try 
             { 
-                ProducedIngotName.text = (ingots[0].GetItemArray().GetValue(0) as Consumable_Ingot).GetIngotType().Split('_')[1] + " Ingot";
+                ProducedIngotName.text = (ingots[0].GetItemArray().GetValue(0) as Consumable_Ingot).GetIngotType().Split('_')[1] + " Ingots";
                 ProducedIngotCount.text = "" + ingots.Count;
             }
             catch (Exception e)
@@ -369,13 +484,6 @@ namespace ProjectUniverse.UI
             transfererinventory = inventory;
             UpdateAvailableOres();
         }
-
-        // Update is called once per frame
-        //void FixedUpdate()
-        //{
-            //transfererinventory = player.GetComponent<IPlayer_Inventory>().GetPlayerInventory();
-            //UpdateAvailableOres();
-        //}
 
         public void LockScreenAndFreeCursor()
         {

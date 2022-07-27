@@ -15,7 +15,7 @@ namespace ProjectUniverse.Transfer
     {
         [SerializeField] private float ladderheight;
         private float heightstore = 0f;
-        private KeyboardInputSystem kis;
+        private SupplementalController kis;
         private float startY;
         GameObject player;
         private bool reverseCalcDir = false;
@@ -33,33 +33,44 @@ namespace ProjectUniverse.Transfer
         //Put the player on the ladder if they are NOT at the top. IE if they're going down.
         private void OnTriggerEnter(Collider other)
         {
-            if (!kis.OnLadder)
+            if (other.gameObject.CompareTag("Player"))
             {
                 if (kis == null)
                 {
                     if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
                     {
-                        kis = networkedClient.PlayerObject.gameObject.GetComponent<KeyboardInputSystem>();
-                        startY = networkedClient.PlayerObject.transform.position.y;
+                        kis = networkedClient.PlayerObject.gameObject.GetComponent<SupplementalController>();
                         player = networkedClient.PlayerObject.gameObject;
                     }
                 }
-                else
+                if (!kis.OnLadder)
                 {
-                    startY = player.transform.position.y;
-                    //add height according to the offset between the player and the ladder
-                    if (heightstore <= 0f)
+                    /*if (kis == null)
                     {
-                        //heightstore = Mathf.Abs((gameObject.transform.position.y - player.transform.position.y));
-                        //ladderheight += heightstore;
-                        //Debug.Log(ladderheight);
+                        if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
+                        {
+                            //kis = networkedClient.PlayerObject.gameObject.GetComponent<SupplementalController>();
+                            startY = networkedClient.PlayerObject.transform.position.y;
+                            //player = networkedClient.PlayerObject.gameObject;
+                        }
                     }
+                    else
+                    {*/
+                        startY = player.transform.position.y;
+                        //add height according to the offset between the player and the ladder
+                        if (heightstore <= 0f)
+                        {
+                            //heightstore = Mathf.Abs((gameObject.transform.position.y - player.transform.position.y));
+                            //ladderheight += heightstore;
+                            //Debug.Log(ladderheight);
+                        }
+                    //}
+                    reverseCalcDir = true;
+
+                    Debug.Log("Get on ladder");
+                    kis.OnLadder = true;
+                    StartCoroutine(OnLadderTrackPosition());
                 }
-                reverseCalcDir = true;
-            
-                Debug.Log("Get on ladder");
-                kis.OnLadder = true;
-                StartCoroutine(OnLadderTrackPosition());
             }
         }
 
@@ -68,7 +79,7 @@ namespace ProjectUniverse.Transfer
         {
             if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
             {
-                kis = networkedClient.PlayerObject.gameObject.GetComponent<KeyboardInputSystem>();
+                kis = networkedClient.PlayerObject.gameObject.GetComponent<SupplementalController>();
                 player = networkedClient.PlayerObject.gameObject;
                 //add height according to the offset between the player and the ladder
                 //heightstore = Mathf.Abs((gameObject.transform.position.y - player.transform.position.y));
@@ -95,7 +106,7 @@ namespace ProjectUniverse.Transfer
                 if (!reverseCalcDir)
                 {
                     //Debug.Log(player.transform.position.y + startY);
-                    if (player.transform.position.y + startY > LadderHeight)
+                    if (Mathf.Abs(player.transform.position.y + startY) > LadderHeight)
                     {
                         kis.EndOfLadder(LadderForward());
                         //heightstore = 0f;
@@ -103,8 +114,8 @@ namespace ProjectUniverse.Transfer
                 }
                 else
                 {
-                    Debug.Log(startY - player.transform.position.y);
-                    if (startY - player.transform.position.y >= (LadderHeight - 1.5f))
+                    //Debug.Log(startY - player.transform.position.y);
+                    if (Mathf.Abs(startY - player.transform.position.y) >= (LadderHeight - 1.0f))
                     {
                         kis.EndOfLadder(LadderForward());
                         //heightstore = 0f;
@@ -124,7 +135,7 @@ namespace ProjectUniverse.Transfer
             {
                 if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
                 {
-                    kis = networkedClient.PlayerObject.gameObject.GetComponent<KeyboardInputSystem>();
+                    kis = networkedClient.PlayerObject.gameObject.GetComponent<SupplementalController>();
                     startY = networkedClient.PlayerObject.transform.position.y;
                     player = networkedClient.PlayerObject.gameObject;
                     //add height according to the offset between the player and the ladder

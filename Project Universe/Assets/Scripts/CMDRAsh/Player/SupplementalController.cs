@@ -19,6 +19,7 @@ using static ProjectUniverse.Items.IEquipable;
 using ProjectUniverse.UI;
 using ProjectUniverse.Items.Tools;
 using ProjectUniverse.Items.Consumable;
+using ProjectUniverse.Ship;
 using static ProjectUniverse.Items.Consumable.Consumable_Throwable;
 using static Consumable_Applyable;
 
@@ -47,15 +48,19 @@ namespace ProjectUniverse.Player.PlayerController
         [SerializeField] private GameObject handHeadEquipment;
         [SerializeField] private GameObject headTrackObject;
         [SerializeField] private GameObject[] uiElementsToHide;
+        [SerializeField] private GameObject[] uiMasterList;
         [SerializeField] private bool cameraLocked = false;
         [SerializeField] private bool cameraFirst = true;
         [SerializeField] private bool shift = false;
         [SerializeField] int CursorCase = 0;
         [SerializeField] private bool toggleCursorLock = false;
+        private float movementSpeed;
         [SerializeField] private int walkSpeed;
         [SerializeField] private int sprintSpeed;
         [SerializeField] private int crouchSpeed;
         [SerializeField] private int proneSpeed;
+        [SerializeField] private Vector2 moveAxis;
+        private Vector3 localVelocity;
         //Player stats2
         private float playerHealthMax = 100f;
         private NetworkVariableFloat playerNetHealth = new NetworkVariableFloat(100f);
@@ -96,6 +101,17 @@ namespace ProjectUniverse.Player.PlayerController
         [SerializeField] private GameObject rightFootBone;
         [SerializeField] private GameObject leftFootBone;
         [Space]
+        [Range(0f, 90f)]
+        [SerializeField] private float upperVerticalLimit = 70f;//head rotation
+        [Range(0f, -90f)]
+        [SerializeField] private float lowerVerticalLimit = -70f;//head rotation
+        //[SerializeField] private float cameraSpeed = 50f;
+        private float lookClamp;
+        //[SerializeField] private bool smoothCameraRotation = false;
+        [SerializeField] private bool invertHorizontalInput = false;
+        [SerializeField] private bool invertVerticalInput = false;
+        [SerializeField] private float mouseInputMultiplier = 25f;
+
         private IEquipable[] equippedWeapons = new IEquipable[3];
         private IEquipable[] equippedTools = new IEquipable[2];
         private IEquipable[] equippedGadgets = new IEquipable[5];
@@ -103,16 +119,61 @@ namespace ProjectUniverse.Player.PlayerController
         private List<IEquipable> equippedGear = new List<IEquipable>();
         private IEquipable rightHand;
         private bool fleetBoyOut = false;
-        private float lookClamp;
         private int selectedWeapon = 0;
         private bool canDrawWep = true;
         private bool toolmode = false;//whether the player has guns or tools out
         private int selectedCons = 0;
         [SerializeField] private GunAmmoUI ammoUI;
 
+        private bool shipMode = false;
+        //input axes for objects that override player look controls
+        private float remoteLookAxis_Horiz = 0f;
+        private float remoteLookAxis_Vert = 0f;
+        private float remoteMoveAxis_Horiz = 0f;
+        private float remoteMoveAxis_Vert = 0f;
+        private float remoteJump = 0f;
+        private float remoteShift = 0f;
+        private float remoteRoll = 0f;
+        private bool remoteFire = false;
+        private ShipControlConsole controlConsole;
+        private Rigidbody rigidbody;
+        // position correction and rotation
+        private bool grounded;
+        private Transform floorTransform;
+        private Vector3? floorNormal = null;
+        private Vector3 gravityDirection;
+        private Vector3 floorOldVelocity;
+        private Vector3? floorOldWorldPosition = null;
+        private Vector3? floorHitPosition = null;
+        private Vector3? floorOldHitPosition;
+        private Vector3 playerLocalOldPosition;
+        private Rigidbody floorMasterRB;
+        private Transform floorMasterTransform;
+        private Vector3 shipLastRotationAxis;
+        private Vector3 shipLastRotationAngles;
+        /// NEED WAY TO TRACK MULTIPLE TRANFORM DIRECTIONS
+        private Transform gravityTransform;
+
+        //ladder movement
+        private bool onLadder = false;
+        private bool onLadderMoving = false;
+        private bool onLadderEnd = false;
+        private bool coroutineRunning = false;
+        private bool reverseLadderDir;
+        private Vector3 ladderforward;
+
+        //Hi-Step up
+        private bool hiStepReady = false;
+        private float hiStepAmount = 0f;
+
+        private bool jump;
+        private Vector2 lookInput;
+        private bool remoteLight;
+        private bool remoteInventory;
+
         private NetworkVariableBool netFlashlightState = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
         private NetworkVariableInt netSelectedWeapon = new NetworkVariableInt(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone }, 0);
-
+        public CMF.AdvancedWalkerController awc;
         public float HeadHealth
         {
             get { return headHealth; }
@@ -209,10 +270,235 @@ namespace ProjectUniverse.Player.PlayerController
         {
             get { return walkSpeed; }
         }
+
+        public float SprintSpeed
+        {
+            get { return sprintSpeed; }
+        }
+
+        public float MovementSpeed
+        {
+            get { return movementSpeed; }
+        }
+        
+        public Vector3 LocalVelocity
+        {
+            get { return localVelocity; }
+            set { localVelocity = value; }
+        }
         public bool FleetBoyOut
         {
             get { return fleetBoyOut; }
             set { fleetBoyOut = value; }
+        }
+        public bool ShipMode
+        {
+            get { return shipMode; }
+            set { shipMode = value; }
+        }
+        public float RemoteLookAxis_Horizonal
+        {
+            get { return remoteLookAxis_Horiz; }
+            set { 
+                if (ShipMode)
+                {
+                    remoteLookAxis_Horiz = value;
+                } 
+            }
+        }
+        public float RemoteLookAxis_Vertical
+        {
+            get { return remoteLookAxis_Vert; }
+            set {
+                if (ShipMode)
+                {
+                    remoteLookAxis_Vert = value;
+                }
+            }
+        }
+        public float RemoteMoveAxis_Horizonal
+        {
+            get { return remoteMoveAxis_Horiz; }
+            set
+            {
+                if (ShipMode)
+                {
+                    remoteMoveAxis_Horiz = value;
+                }
+            }
+        }
+        public float RemoteMoveAxis_Vertical
+        {
+            get { return remoteMoveAxis_Vert; }
+            set
+            {
+                if (ShipMode)
+                {
+                    remoteMoveAxis_Vert = value;
+                }
+            }
+        }
+        public float RemoteJump
+        {
+            get { return remoteJump; }
+            set
+            {
+                if (ShipMode)
+                {
+                    remoteJump = value;
+                }
+            }
+        }
+        public float RemoteShift
+        {
+            get { return remoteShift; }
+            set
+            {
+                if (ShipMode)
+                {
+                    remoteShift = value;
+                }
+            }
+        }
+        public bool RemoteFire
+        {
+            get { return remoteFire; }
+            set
+            {
+                if (ShipMode)
+                {
+                    remoteFire = value;
+                }
+            }
+        }
+        public float RemoteRoll
+        {
+            get { return remoteRoll; }
+            set
+            {
+                if (ShipMode)
+                {
+                    remoteRoll = value;
+                }
+            }
+        }
+
+        public bool RemoteLight
+        {
+            get { return remoteLight; }
+            set { remoteLight = value; }
+        }
+
+        public bool RemoteInventory
+        {
+            get { return remoteInventory; }
+            set { remoteInventory = value; }
+        }
+
+        public Rigidbody PlayerRigidbody
+        {
+            get { return rigidbody; }
+        }
+
+        public ShipControlConsole ControlConsole
+        {
+            get { return controlConsole; }
+            set { controlConsole = value; }
+        }
+
+        public Vector3 GravityDirection
+        {
+            get { return gravityDirection; }
+            set { gravityDirection = value; }
+        }
+
+        public Vector3? FloorOldWorldPosition
+        {
+            get { return floorOldWorldPosition; }
+            set { floorOldWorldPosition = value; }
+        }
+
+        public Vector3 FloorOldVelocity
+        {
+            get { return floorOldVelocity; }
+            set { floorOldVelocity = value; }
+        }
+
+        public Rigidbody FloorMasterRB
+        {
+            get { return floorMasterRB; }
+            set { floorMasterRB = value; }
+        }
+
+        public Transform FloorMasterTransform
+        {
+            get { return floorMasterTransform; }
+            set { floorMasterTransform = value; }
+        }
+
+        public Vector3 ShipLastRotationAxis
+        {
+            get { return shipLastRotationAxis; }
+            set { shipLastRotationAxis = value; }
+        }
+
+        public Vector3 ShipLastRotationAngles
+        {
+            get { return shipLastRotationAngles; }
+            set { shipLastRotationAngles = value; }
+        }
+        public Transform GravityTransform
+        {
+            get { return gravityTransform; }
+            set { gravityTransform = value; }
+        }
+        
+        public bool OnLadder
+        {
+            get { return onLadder; }
+            set { onLadder = value; }
+        }
+
+        public bool HiStepReady
+        {
+            get { return hiStepReady; }
+            set { hiStepReady = value; }
+        }
+        public float HiStepAmount
+        {
+            get { return hiStepAmount; }
+            set { hiStepAmount = value; }
+        }
+
+        public bool Jump
+        {
+            get { return jump; }
+            set { jump = value; }
+        }
+        
+        public Vector3 MoveAxis
+        {
+            get { return moveAxis; }
+            set { moveAxis = value; }
+        }
+
+        public Vector2 LookInput
+        {
+            get { return lookInput; }
+            set { lookInput = value; }
+        }
+
+        public GameObject ActiveCamera
+        {
+            get { 
+                if(cameraFirst){
+                    return firstPersonCameraRoot;//.GetComponentInChildren<Camera>(false);
+                }
+                else
+                {
+                    return thirdPersonCameraRoot;//.GetComponentInChildren<Camera>(false);
+                }
+            }
         }
         private void OnEnable()
         {
@@ -222,7 +508,6 @@ namespace ProjectUniverse.Player.PlayerController
             controls.Player.Shift.Enable();
 
             controls.Player.Alt.Enable();
-            controls.Player.Sprint.Enable();
             controls.Player.Flashlight.Enable();
 
             controls.Player.Fire.Enable();
@@ -232,6 +517,13 @@ namespace ProjectUniverse.Player.PlayerController
             controls.Player.Num3.Enable();
             controls.Player.Num4.Enable();
             controls.Player.ScrollWheel.Enable();
+
+            controls.Player.Look.Enable();
+            controls.Player.Move.Enable();
+            controls.Player.Jump.Enable();
+
+            controls.Player.LeanLeft.Enable();
+            controls.Player.LeanRight.Enable();
         }
         private void OnDisable()
         {
@@ -241,7 +533,6 @@ namespace ProjectUniverse.Player.PlayerController
             //controls.Player.Shift.Disable();
 
             controls.Player.Alt.Disable();
-            controls.Player.Sprint.Disable();
             controls.Player.Flashlight.Disable();
 
             controls.Player.Fire.Disable();
@@ -251,296 +542,32 @@ namespace ProjectUniverse.Player.PlayerController
             controls.Player.Num3.Disable();
             controls.Player.Num4.Disable();
             controls.Player.ScrollWheel.Disable();
+
+            controls.Player.Look.Disable();
+            controls.Player.Move.Disable();
+            controls.Player.Jump.Disable();
+
+            controls.Player.LeanLeft.Disable();
+            controls.Player.LeanRight.Disable();
         }
 
         private void Start()
         {
             NetworkListeners();
-            GetComponent<CMF.AdvancedWalkerController>().movementSpeed = walkSpeed;
-
+            //GetComponent<CMF.AdvancedWalkerController>().movementSpeed = walkSpeed;
+            movementSpeed = WalkSpeed;
             //Message whatever is in the player's right hand to fire, or perform it's FIRE action
             controls.Player.Fire.performed += ctx =>
             {
-                if (!FleetBoyOut)
+                if (!ShipMode)
                 {
-                    if (rightHand != null)//rightHandBone?
+                    if (!FleetBoyOut)
                     {
-                        //get the active gun
-                        //rightHand.SendMessage("Use", SendMessageOptions.DontRequireReceiver);
-                    }
-                    if (tempRHBone != null)
-                    {
-                        for (int a = 0; a < tempRHBone.transform.childCount; a++)
+                        if (rightHand != null)//rightHandBone?
                         {
-                            if (tempRHBone.transform.GetChild(a).gameObject.activeInHierarchy)
-                            {
-                                tempRHBone.transform.GetChild(a).gameObject.SendMessage("Use", SendMessageOptions.DontRequireReceiver);
-                            }
+                            //get the active gun
+                            //rightHand.SendMessage("Use", SendMessageOptions.DontRequireReceiver);
                         }
-
-                    }
-                }
-            };
-            controls.Player.Fire.canceled += ctx =>
-            {
-                if (!FleetBoyOut)
-                {
-                    if (rightHand != null)//rightHandBone?
-                    {
-                    }
-                    if (tempRHBone != null)
-                    {
-                        for (int a = 0; a < tempRHBone.transform.childCount; a++)
-                        {
-                            if (tempRHBone.transform.GetChild(a).gameObject.activeInHierarchy)
-                            {
-                                tempRHBone.transform.GetChild(a).gameObject.SendMessage("Stop", SendMessageOptions.DontRequireReceiver);
-                            }
-                        }
-
-                    }
-                }
-            };
-            controls.Player.Reload.performed += ctx =>
-            {
-                if (!FleetBoyOut)
-                {
-                    if (rightHand != null)//rightHandBone?
-                    {
-                    }
-                    if (tempRHBone != null)
-                    {
-                        for (int a = 0; a < tempRHBone.transform.childCount; a++)
-                        {
-                            if (tempRHBone.transform.GetChild(a).gameObject.activeInHierarchy)
-                            {
-                                tempRHBone.transform.GetChild(a).gameObject.SendMessage("Reload", SendMessageOptions.DontRequireReceiver);
-                            }
-                        }
-
-                    }
-                }
-            };
-            controls.Player.Num1.performed += ctx =>
-            {
-                if (!FleetBoyOut)
-                {
-                    Debug.Log("qs throwables");
-                    EquipFromQuickSelect(1);
-                }
-            };
-            controls.Player.Num2.performed += ctx =>
-            {
-                if (!FleetBoyOut)
-                {
-                    Debug.Log("qs gadgets");
-                    EquipFromQuickSelect(2);
-                }
-            };
-            controls.Player.Num3.performed += ctx =>
-            {
-                //Change firemode of equipped gun
-                if (!FleetBoyOut)
-                {
-                    if (rightHand != null)//rightHandBone?
-                    {
-                    }
-                    if (tempRHBone != null)
-                    {
-                        for (int a = 0; a < tempRHBone.transform.childCount; a++)
-                        {
-                            if (tempRHBone.transform.GetChild(a).gameObject.activeInHierarchy)
-                            {
-                                Debug.Log("Mode Switch");
-                                tempRHBone.transform.GetChild(a).gameObject.SendMessage("ToogleMode", SendMessageOptions.DontRequireReceiver);
-                            }
-                        }
-
-                    }
-                }
-            };
-            controls.Player.Num4.performed += ctx =>
-            {
-                Debug.Log("qs tools");
-                EquipFromQuickSelect(3);
-            };
-
-            controls.Player.ScrollWheel.performed += ctx =>
-            {
-                if (canDrawWep)
-                {
-                    canDrawWep = false;
-                    if (IsLocalPlayer)
-                    {
-                        //Vector2 axisdelt = ctx.ReadValue<Vector2>();
-                        //if (axisdelt.y < 0f)//down
-                        //{
-                        if (selectedWeapon == 0)
-                        {
-                            netSelectedWeapon.Value = 1;
-                            selectedWeapon = netSelectedWeapon.Value;
-                        }
-                        //}
-                        //else if (axisdelt.y > 0f)
-                        //{
-                        else if (selectedWeapon == 1)
-                        {
-                            netSelectedWeapon.Value = 0;
-                            selectedWeapon = netSelectedWeapon.Value;
-                        }
-                        //}
-                        SelectWeaponServerRpc();
-                        
-                    }
-                }
-                
-            };
-
-            controls.Player.Crouch.performed += ctx =>
-            {
-                //Debug.Log("____");
-                if (crouchToggle)
-                {
-                    if (crouching)
-                    {
-                        //Debug.Log("STAND");
-                        //crouching = false;
-                        //prone = false;
-                        //GetComponent<CMF.AdvancedWalkerController>().movementSpeed = walkSpeed;
-                        GetComponent<PlayerAnimationController>().OnExitCrouch();
-
-                    }
-                    else
-                    {
-                        //Debug.Log("CROUCH");
-                        //crouching = true;
-                        //prone = false;
-                        //GetComponent<CMF.AdvancedWalkerController>().movementSpeed = crouchSpeed;
-                        GetComponent<PlayerAnimationController>().OnPlayerCrouch();
-
-                    }
-                }
-                else
-                {
-                    Debug.Log("CROUCH HOLD");
-                    //crouching = true;
-                    //prone = false;
-                    //GetComponent<CMF.AdvancedWalkerController>().movementSpeed = crouchSpeed;
-                    GetComponent<PlayerAnimationController>().OnPlayerCrouch();
-
-                }
-            };
-
-            controls.Player.Crouch.canceled += ctx =>
-            {
-                if (!crouchToggle)
-                {
-                    Debug.Log("CROUCH RELEASE");
-                    //crouching = false;
-                    //prone = false;
-                    //GetComponent<CMF.AdvancedWalkerController>().movementSpeed = walkSpeed;
-                    GetComponent<PlayerAnimationController>().OnExitCrouch();
-
-                }
-            };
-
-            controls.Player.Prone.performed += ctx =>
-            {
-                if (prone)
-                {
-                    //crouching = false;
-                    //prone = false;
-                    //GetComponent<CMF.AdvancedWalkerController>().movementSpeed = walkSpeed;
-                    GetComponent<PlayerAnimationController>().OnExitProne();
-
-                }
-                else
-                {
-                    //crouching = false;
-                    //prone = true;
-                    //GetComponent<CMF.AdvancedWalkerController>().movementSpeed = proneSpeed;
-                    GetComponent<PlayerAnimationController>().OnPlayerProne();
-
-                }
-            };
-
-            controls.Player.ShowInventory.performed += ctx =>
-            {
-                ShowHideInventory();
-            };
-
-            controls.Player.Shift.performed += ctx =>
-            {
-                shift = true;
-            };
-            controls.Player.Shift.canceled += ctx =>
-            {
-                shift = false;
-            };
-
-            controls.Player.Alt.performed += ctx =>
-            {
-                if (shift)
-                {
-                    Debug.Log("Switch VeiwPoint");
-                    //switch to third person
-                    if (cameraFirst)
-                    {
-                        //switch to 3rd
-                        cameraFirst = false;
-
-                        //set transform of thirdperson to firstperson
-                        //Calculate up and forward direction;
-                        Vector3 _forwardDirection = Vector3.ProjectOnPlane(firstPersonCameraRoot.transform.forward, thirdPersonCameraRoot.transform.up).normalized;
-                        Vector3 _upDirection = thirdPersonCameraRoot.transform.up;
-                        //Set rotation;
-                        thirdPersonCameraRoot.transform.rotation = Quaternion.LookRotation(_forwardDirection, _upDirection);
-
-                        firstPersonCameraRoot.SetActive(false);
-                        thirdPersonCameraRoot.SetActive(true);
-                        //set directional camera to Third person
-                        GetComponent<CMF.AdvancedWalkerController>().cameraTransform = thirdPersonCameraRoot.transform;
-                        //enable the Turn To Transform Direction Script
-                        bodyTTTDRoot.GetComponent<CMF.TurnTowardTransformDirection>().targetTransform = thirdPersonCameraRoot.transform;
-                        handHeadEquipment.GetComponent<PoVRotationTracker>().CamTransformToTrack = thirdPersonCameraRoot.transform;
-                        headTrackObject.GetComponent<PoVRotationTracker>().CamTransformToTrack = thirdPersonCameraRoot.transform;
-                    }
-                    else
-                    {
-                        //switch to 1st
-                        cameraFirst = true;
-
-                        //set transform of firstperson to thirdperson
-                        //Calculate up and forward direction;
-                        Vector3 _forwardDirection = Vector3.ProjectOnPlane(thirdPersonCameraRoot.transform.forward, firstPersonCameraRoot.transform.up).normalized;
-                        Vector3 _upDirection = firstPersonCameraRoot.transform.up;
-                        //Set rotation;
-                        firstPersonCameraRoot.transform.rotation = Quaternion.LookRotation(_forwardDirection, _upDirection);
-
-                        thirdPersonCameraRoot.SetActive(false);
-                        firstPersonCameraRoot.SetActive(true);
-                        //set directional camera to First person
-                        GetComponent<CMF.AdvancedWalkerController>().cameraTransform = firstPersonCameraRoot.transform;
-                        //disable the Turn To Transform Direction Script
-                        bodyTTTDRoot.GetComponent<CMF.TurnTowardTransformDirection>().targetTransform = firstPersonCameraRoot.transform;
-                        handHeadEquipment.GetComponent<PoVRotationTracker>().CamTransformToTrack = firstPersonCameraRoot.transform;
-                        headTrackObject.GetComponent<PoVRotationTracker>().CamTransformToTrack = firstPersonCameraRoot.transform;
-                    }
-                }
-                else
-                {
-                    //Throw consumable
-                    GameObject oldEq = null;
-                    if (RightHandEquipped != null)
-                    {
-                        oldEq = RightHandEquipped.gameObject;
-                        DequipItem(oldEq);
-                    }
-                    
-                    if(EquippedConsumables[selectedCons] != null)
-                    {
-                        
-                        EquipItem(EquippedConsumables[selectedCons].gameObject, Slot.RightHand);
                         if (tempRHBone != null)
                         {
                             for (int a = 0; a < tempRHBone.transform.childCount; a++)
@@ -550,57 +577,611 @@ namespace ProjectUniverse.Player.PlayerController
                                     tempRHBone.transform.GetChild(a).gameObject.SendMessage("Use", SendMessageOptions.DontRequireReceiver);
                                 }
                             }
+
                         }
-                        DequipItem(EquippedConsumables[selectedCons].gameObject);
                     }
-
-                    if (oldEq != null)
+                }
+                else // Ship LMB
+                {
+                    RemoteFire = true;
+                }
+            };
+            controls.Player.Fire.canceled += ctx =>
+            {
+                if (!ShipMode)
+                {
+                    if (!FleetBoyOut)
                     {
-                        EquipItem(oldEq, Slot.RightHand);
+                        if (rightHand != null)//rightHandBone?
+                        {
+                        }
+                        if (tempRHBone != null)
+                        {
+                            for (int a = 0; a < tempRHBone.transform.childCount; a++)
+                            {
+                                if (tempRHBone.transform.GetChild(a).gameObject.activeInHierarchy)
+                                {
+                                    tempRHBone.transform.GetChild(a).gameObject.SendMessage("Stop", SendMessageOptions.DontRequireReceiver);
+                                }
+                            }
+
+                        }
+                    }
+                }
+                else
+                {
+                    RemoteFire = false;
+                }
+            };
+            controls.Player.Reload.performed += ctx =>
+            {
+                if (!ShipMode)
+                {
+                    if (!FleetBoyOut)
+                    {
+                        if (rightHand != null)//rightHandBone?
+                        {
+                        }
+                        if (tempRHBone != null)
+                        {
+                            for (int a = 0; a < tempRHBone.transform.childCount; a++)
+                            {
+                                if (tempRHBone.transform.GetChild(a).gameObject.activeInHierarchy)
+                                {
+                                    tempRHBone.transform.GetChild(a).gameObject.SendMessage("Reload", SendMessageOptions.DontRequireReceiver);
+                                }
+                            }
+
+                        }
+                    }
+                }
+            };
+            controls.Player.Num1.performed += ctx =>
+            {
+                if (!ShipMode)
+                {
+                    if (!FleetBoyOut)
+                    {
+                        Debug.Log("qs throwables");
+                        EquipFromQuickSelect(1);
+                    }
+                }
+            };
+            controls.Player.Num2.performed += ctx =>
+            {
+                if (!ShipMode)
+                {
+                    if (!FleetBoyOut)
+                    {
+                        Debug.Log("qs gadgets");
+                        EquipFromQuickSelect(2);
+                    }
+                }
+            };
+            controls.Player.Num3.performed += ctx =>
+            {
+                if (!ShipMode)
+                {
+                    //Change firemode of equipped gun
+                    if (!FleetBoyOut)
+                    {
+                        if (rightHand != null)//rightHandBone?
+                        {
+                        }
+                        if (tempRHBone != null)
+                        {
+                            for (int a = 0; a < tempRHBone.transform.childCount; a++)
+                            {
+                                if (tempRHBone.transform.GetChild(a).gameObject.activeInHierarchy)
+                                {
+                                    Debug.Log("Mode Switch");
+                                    tempRHBone.transform.GetChild(a).gameObject.SendMessage("ToogleMode", SendMessageOptions.DontRequireReceiver);
+                                }
+                            }
+
+                        }
+                    }
+                }
+            };
+            controls.Player.Num4.performed += ctx =>
+            {
+                if (!ShipMode)
+                {
+                    if (!FleetBoyOut)
+                    {
+                        Debug.Log("qs tools");
+                        EquipFromQuickSelect(3);
                     }
                 }
             };
 
-            controls.Player.Sprint.performed += ctx =>
+            controls.Player.ScrollWheel.performed += ctx =>
             {
-                sprinting = true;
-                if (crouching)
+                if (!ShipMode)
                 {
-                    GetComponent<CMF.AdvancedWalkerController>().movementSpeed += 1;
+                    if (canDrawWep && !FleetBoyOut)
+                    {
+                        canDrawWep = false;
+                        if (IsLocalPlayer)
+                        {
+                            //Vector2 axisdelt = ctx.ReadValue<Vector2>();
+                            //if (axisdelt.y < 0f)//down
+                            //{
+                            if (selectedWeapon == 0)
+                            {
+                                netSelectedWeapon.Value = 1;
+                                selectedWeapon = netSelectedWeapon.Value;
+                            }
+                            //}
+                            //else if (axisdelt.y > 0f)
+                            //{
+                            else if (selectedWeapon == 1)
+                            {
+                                netSelectedWeapon.Value = 0;
+                                selectedWeapon = netSelectedWeapon.Value;
+                            }
+                            //}
+                            SelectWeaponServerRpc();
+
+                        }
+                    }
                 }
-                else if (prone)
+                else // change target
                 {
-                    GetComponent<CMF.AdvancedWalkerController>().movementSpeed += 1;
-                }
-                else
-                {
-                    GetComponent<CMF.AdvancedWalkerController>().movementSpeed = sprintSpeed;
+
                 }
             };
 
-            controls.Player.Sprint.canceled += ctx =>
+            controls.Player.Crouch.performed += ctx =>
             {
-                sprinting = false;
-                if (crouching)
+                if (!ShipMode)
                 {
-                    GetComponent<CMF.AdvancedWalkerController>().movementSpeed = crouchSpeed;
+                    if (!FleetBoyOut)
+                    {
+                        CapsuleCollider cap = GetComponent<CapsuleCollider>();
+                        //Debug.Log("____");
+                        if (crouchToggle)
+                        {
+                            if (crouching)
+                            {
+                                //Debug.Log("STAND");
+                                //crouching = false;
+                                //prone = false;
+                                movementSpeed = WalkSpeed;
+                                GetComponent<PlayerAnimationController>().OnExitCrouch();
+                                cap.height = StandHeight;
+                                cap.center = new Vector3(0f, 0.89f, 0f);
+                                cap.radius = 0.3f;
+
+                            }
+                            else
+                            {
+                                //Debug.Log("CROUCH");
+                                //crouching = true;
+                                //prone = false;
+                                movementSpeed = CrouchSpeed;
+                                GetComponent<PlayerAnimationController>().OnPlayerCrouch();
+                                cap.height = CrouchHeight;
+                                cap.center = new Vector3(0f, 0.5f, 0f);
+                                cap.radius = 0.3f;
+                            }
+                        }
+                        else
+                        {
+                            Debug.Log("CROUCH HOLD");
+                            //crouching = true;
+                            //prone = false;
+                            movementSpeed = CrouchSpeed;
+                            GetComponent<PlayerAnimationController>().OnPlayerCrouch();
+                            cap.height = CrouchHeight;
+                            cap.center = new Vector3(0f, 0.5f, 0f);
+                            cap.radius = 0.3f;
+                        }
+                    }
                 }
-                else if (prone)
+            };
+
+            controls.Player.Crouch.canceled += ctx =>
+            {
+                if (!ShipMode)
                 {
-                    GetComponent<CMF.AdvancedWalkerController>().movementSpeed = proneSpeed;
+                    CapsuleCollider cap = GetComponent<CapsuleCollider>();
+                    if (!crouchToggle)
+                    {
+                        Debug.Log("CROUCH RELEASE");
+                        //crouching = false;
+                        //prone = false;
+                        movementSpeed = WalkSpeed;
+                        GetComponent<PlayerAnimationController>().OnExitCrouch();
+                        cap.height = StandHeight;
+                        cap.center = new Vector3(0f, 0.89f, 0f);
+                        cap.radius = 0.3f;
+                    }
+                }
+            };
+
+            controls.Player.Prone.performed += ctx =>
+            {
+                if (!ShipMode)
+                {
+                    CapsuleCollider cap = GetComponent<CapsuleCollider>();
+                    if (!FleetBoyOut)
+                    {
+                        if (prone)
+                        {
+                            //crouching = false;
+                            //prone = false;
+                            movementSpeed = WalkSpeed;
+                            GetComponent<PlayerAnimationController>().OnExitProne();
+                            cap.height = StandHeight;
+                            cap.center = new Vector3(0f, 0.89f, 0f);
+                            cap.radius = 0.3f;
+                        }
+                        else
+                        {
+                            //crouching = false;
+                            //prone = true;
+                            movementSpeed = ProneSpeed;
+                            GetComponent<PlayerAnimationController>().OnPlayerProne();
+                            cap.height = ProneHeight;
+                            cap.center = new Vector3(0f, 0.25f, 0f);
+                            cap.radius = 0.225f;
+                        }
+                    }
+                }
+            };
+
+            controls.Player.ShowInventory.performed += ctx =>
+            {
+                if (!ShipMode)
+                {
+                    ShowHideInventory();
                 }
                 else
                 {
-                    GetComponent<CMF.AdvancedWalkerController>().movementSpeed = walkSpeed;
+                    if (RemoteInventory)
+                    {
+                        RemoteInventory = false;
+                    }
+                    else
+                    {
+                        RemoteInventory = true;
+                    }
+                }
+            };
+
+            controls.Player.Shift.performed += ctx =>
+            {
+                if (!ShipMode)
+                {
+                    shift = true;
+                    if (crouching)
+                    {
+                        movementSpeed += 1f;
+                    }
+                    else if (prone)
+                    {
+                        movementSpeed += 1f;
+                    }
+                    else
+                    {
+                        sprinting = true;
+                        movementSpeed = sprintSpeed;
+                    }
+                }
+                else
+                {
+                    RemoteShift = -1f;
+                }
+            };
+            controls.Player.Shift.canceled += ctx =>
+            {
+                if (!ShipMode)
+                {
+                    shift = false;
+                    if (crouching)
+                    {
+                        movementSpeed = CrouchSpeed;
+                    }
+                    else if (prone)
+                    {
+                        movementSpeed = ProneSpeed;
+                    }
+                    else
+                    {
+                        sprinting = false;
+                        movementSpeed = WalkSpeed;
+                    }
+                }
+                else
+                {
+                    RemoteShift = 0f;
+                }
+            };
+
+            controls.Player.Alt.performed += ctx =>
+            {
+                if (!ShipMode)
+                {
+                    if (shift)
+                    {
+                        Debug.Log("Switch VeiwPoint");
+                        //switch to third person
+                        if (cameraFirst)
+                        {
+                            //switch to 3rd
+                            cameraFirst = false;
+
+                            //set transform of thirdperson to firstperson
+                            //Calculate up and forward direction;
+                            Vector3 _forwardDirection = Vector3.ProjectOnPlane(firstPersonCameraRoot.transform.forward, thirdPersonCameraRoot.transform.up).normalized;
+                            Vector3 _upDirection = thirdPersonCameraRoot.transform.up;
+                            //Set rotation;
+                            thirdPersonCameraRoot.transform.rotation = Quaternion.LookRotation(_forwardDirection, _upDirection);
+
+                            firstPersonCameraRoot.SetActive(false);
+                            thirdPersonCameraRoot.SetActive(true);
+                            //set directional camera to Third person
+                            //GetComponent<CMF.AdvancedWalkerController>().cameraTransform = thirdPersonCameraRoot.transform;
+                            //enable the Turn To Transform Direction Script
+                            bodyTTTDRoot.GetComponent<CMF.TurnTowardTransformDirection>().targetTransform = thirdPersonCameraRoot.transform;
+                            handHeadEquipment.GetComponent<PoVRotationTracker>().CamTransformToTrack = thirdPersonCameraRoot.transform;
+                            headTrackObject.GetComponent<PoVRotationTracker>().CamTransformToTrack = thirdPersonCameraRoot.transform;
+                        }
+                        // switch to 1st
+                        else
+                        {
+                            cameraFirst = true;
+
+                            //set transform of firstperson to thirdperson
+                            //Calculate up and forward direction;
+                            Vector3 _forwardDirection = Vector3.ProjectOnPlane(thirdPersonCameraRoot.transform.forward, firstPersonCameraRoot.transform.up).normalized;
+                            Vector3 _upDirection = firstPersonCameraRoot.transform.up;
+                            //Set rotation;
+                            firstPersonCameraRoot.transform.rotation = Quaternion.LookRotation(_forwardDirection, _upDirection);
+
+                            thirdPersonCameraRoot.SetActive(false);
+                            firstPersonCameraRoot.SetActive(true);
+                            //set directional camera to First person
+                            //GetComponent<CMF.AdvancedWalkerController>().cameraTransform = firstPersonCameraRoot.transform;
+                            //disable the Turn To Transform Direction Script
+                            bodyTTTDRoot.GetComponent<CMF.TurnTowardTransformDirection>().targetTransform = firstPersonCameraRoot.transform;
+                            handHeadEquipment.GetComponent<PoVRotationTracker>().CamTransformToTrack = firstPersonCameraRoot.transform;
+                            headTrackObject.GetComponent<PoVRotationTracker>().CamTransformToTrack = firstPersonCameraRoot.transform;
+                        }
+                    }
+                    else
+                    {
+                        //Throw consumable
+                        GameObject oldEq = null;
+                        if (RightHandEquipped != null)
+                        {
+                            oldEq = RightHandEquipped.gameObject;
+                            DequipItem(oldEq);
+                        }
+
+                        if (EquippedConsumables[selectedCons] != null)
+                        {
+
+                            EquipItem(EquippedConsumables[selectedCons].gameObject, Slot.RightHand);
+                            if (tempRHBone != null)
+                            {
+                                for (int a = 0; a < tempRHBone.transform.childCount; a++)
+                                {
+                                    if (tempRHBone.transform.GetChild(a).gameObject.activeInHierarchy)
+                                    {
+                                        tempRHBone.transform.GetChild(a).gameObject.SendMessage("Use", SendMessageOptions.DontRequireReceiver);
+                                    }
+                                }
+                            }
+                            DequipItem(EquippedConsumables[selectedCons].gameObject);
+                        }
+
+                        if (oldEq != null)
+                        {
+                            EquipItem(oldEq, Slot.RightHand);
+                        } 
+                    }
+                }
+                else // freelook during control of ship
+                {
+
                 }
             };
 
             controls.Player.Flashlight.performed += ctx =>
             {
-                FlashLightToggleServerRpc(!flashLight.enabled);
+                if (!ShipMode && !FleetBoyOut)
+                {
+                    FlashLightToggleServerRpc(!flashLight.enabled);
+                }
+                else
+                {
+                    if (RemoteLight)
+                    {
+                        RemoteLight = false;
+                    }
+                    else
+                    {
+                        RemoteLight = true;
+                    }
+                }
             };
 
+            // Character Controller
+            controls.Player.Move.performed += ctx =>
+            {
+                Vector2 input = ctx.ReadValue<Vector2>();
+                if (!ShipMode)
+                {
+                    if (onLadder)
+                    {
+                        MoveAxis = Vector2.zero;
+                        onLadderMoving = true;
+                        if (input.y > 0f)//<
+                        {
+                            reverseLadderDir = true;
+                        }
+                        else
+                        {
+                            reverseLadderDir = false;
+                        }
+                        if (!coroutineRunning)
+                        {
+                            coroutineRunning = true;
+                            StartCoroutine(OnLadderMovement());
+                        }
+                    }
+                    else
+                    {
+                        MoveAxis = input;
+                    }
+                }
+                else
+                {
+                    RemoteMoveAxis_Horizonal = input.x;
+                    RemoteMoveAxis_Vertical = input.y;
+                }
+               
+            };
+            controls.Player.Move.canceled += ctx =>
+            {
+                if (!ShipMode)
+                {
+                    MoveAxis = Vector2.zero;
+                }
+                else
+                {
+                    RemoteMoveAxis_Horizonal = 0f;
+                    RemoteMoveAxis_Vertical = 0f;
+                }
+            };
 
+            controls.Player.Look.performed += ctx =>
+            {
+                Vector2 inputlook = mouseInputMultiplier * Time.deltaTime * ctx.ReadValue<Vector2>();
+                inputlook.y *= -1f;
+
+                // * (1f / Time.unscaledDeltaTime);
+                if (invertHorizontalInput)
+                {
+                    inputlook.x *= -1f;
+                }
+                if (invertVerticalInput)
+                {
+                    inputlook.y *= -1f;
+                }
+                //Debug.Log("L: " + inputlook.x + " " + inputlook.y);
+                if (!shipMode) { 
+                    if (!cameraLocked)
+                    {
+                        //Debug.Log(inputlook.x + " : " + inputlook.y);
+                        //RotateCamera(inputlook.y, inputlook.x);
+                        lookInput = inputlook;
+                    }
+                    else
+                    {
+                        lookInput = Vector2.zero;
+                    }
+                }
+                else
+                {
+                    //Debug.Log("Look: " + inputlook.x + " " + inputlook.y);
+                    lookInput = Vector2.zero;
+                    RemoteLookAxis_Horizonal = inputlook.x;
+                    RemoteLookAxis_Vertical = inputlook.y;
+                }
+            };
+            controls.Player.Look.canceled += ctx =>
+            {
+                lookInput = Vector2.zero;
+                RemoteLookAxis_Horizonal = 0f;
+                RemoteLookAxis_Vertical = 0f;
+            };
+
+            controls.Player.Jump.performed += ctx =>
+            {
+                if (!ShipMode)
+                {
+                    //Debug.Log(grounded);
+                    //if grounded
+                    if (grounded || awc.IsGrounded()) 
+                    {
+                        //if step-up trigger
+                        //player 'steps up' onto surface (elevate player to level of surface)
+                        if (HiStepReady)
+                        {
+                            rigidbody.MovePosition(new Vector3(0f, HiStepAmount, 0f) + transform.position);
+                        }
+                        else
+                        {
+                            Jump = true;
+                            //Debug.Log("jump");
+                            Vector3 force = new Vector3(0f, 500000f, 0f);
+                            force = transform.TransformVector(force);
+                            rigidbody.AddForce(force);
+                        }
+                        //if ledgegrab trigger
+                        //player hauls up into surface (elevate player to level of surface)
+                    }
+                }
+                else
+                {
+                    RemoteJump = 1f;
+                }
+            };
+            controls.Player.Jump.canceled += ctx =>
+            {
+                Jump = false;
+                RemoteJump = 0f;
+            };
+
+            controls.Player.LeanLeft.performed += ctx =>
+            {
+                //ksed
+                if (!shipMode)
+                {
+                    //lean
+                }
+                else
+                {
+                    RemoteRoll = 1f;
+                }
+            };
+            controls.Player.LeanLeft.canceled += ctx =>{
+                if (!shipMode)
+                {
+                    //lean
+                }
+                else
+                {
+                    RemoteRoll = 0f;
+                }
+            };
+
+            controls.Player.LeanRight.performed += ctx =>
+            {
+                //uikj
+                if (!shipMode)
+                {
+                   
+                }
+                else
+                {
+                    RemoteRoll = -1f;
+                }
+            };
+            controls.Player.LeanRight.canceled += ctx =>
+            {
+                if (!shipMode)
+                {
+
+                }
+                else
+                {
+                    RemoteRoll = 0f;
+                }
+            };
         }
 
         public bool CameraLocked
@@ -608,16 +1189,158 @@ namespace ProjectUniverse.Player.PlayerController
             get { return cameraLocked; }
         }
 
+        public void SetCameraAngleHead(bool firstPerson, Vector3 newAngle)
+        {
+            //set head rotation to newAngle
+            if (firstPerson)
+            {
+                Debug.Log("Set angle");
+                //set camera not head
+                headTrackObject.transform.localRotation = Quaternion.Euler(newAngle);
+            }
+        }
+
         private void Awake()
         {
             controls = new PlayerControls();
+            rigidbody = GetComponent<Rigidbody>();
         }
 
         // Update is called once per frame
         void Update()
         {
             playerHealth = playerNetHealth.Value;
+
         }
+
+        public void EndOfLadder(Vector3 forward)
+        {
+            onLadderEnd = true;
+            ladderforward = forward;
+        }
+        public void EndOfLadder()
+        {
+            OnLadder = false;
+            onLadderMoving = false;
+            onLadderEnd = false;
+            coroutineRunning = false;
+        }
+
+        public IEnumerator OnLadderMovement()
+        {
+            Debug.Log("Start");
+            float timer = 30;
+            //turn off player gravity (store what the world gravity was. Ensure that changes in gravity don't reset this)
+            while (OnLadder)
+            {
+                if (onLadderEnd)
+                {
+                    //move up
+                    rigidbody.MovePosition(transform.position + transform.TransformDirection(new Vector3(0f, 3f, 0f)) * Time.deltaTime);
+                    //transform.localPosition += transform.TransformDirection(new Vector3(0f, 3f, 0f)) * Time.deltaTime;//ladderforward * 3f
+                    //awc.SetMomentum(new Vector3(0f, 0.6f, 0f) + (ladderforward * 3f));//don't let the player move down
+                    timer--;
+                    if (timer <= 0f)
+                    {
+                        //move forward 1m
+                        rigidbody.MovePosition(transform.position + transform.TransformDirection(ladderforward));
+                        Debug.Log("End");
+                        OnLadder = false;
+                        onLadderMoving = false;
+                        onLadderEnd = false;
+                        coroutineRunning = false;
+                    }
+                }
+                else if (onLadderMoving)
+                {
+                    float angle = gameObject.GetComponent<SupplementalController>().GetCameraAngle() - 180f;
+                    if (!reverseLadderDir)
+                    {
+                        if (angle >= 0f)
+                        {
+                            //localPosition
+                            rigidbody.MovePosition(transform.position + transform.TransformDirection(new Vector3(0f, 3f, 0f)) * Time.deltaTime);
+                            //transform.localPosition += transform.TransformDirection(new Vector3(0f, 3f, 0f)) * Time.deltaTime;
+                            //awc.SetMomentum(new Vector3(0f, 3f, 0f));
+                        }
+                        else
+                        {
+                            //awc.SetMomentum(new Vector3(0f, -3f, 0f));
+                            rigidbody.MovePosition(transform.position + transform.TransformDirection(new Vector3(0f, -3f, 0f)) * Time.deltaTime);
+                            //transform.localPosition += transform.TransformDirection(new Vector3(0f, -3f, 0f)) * Time.deltaTime;
+                        }
+                    }
+                    else
+                    {
+                        if (angle >= 0f)
+                        {
+                            //awc.SetMomentum(new Vector3(0f, -3f, 0f));
+                            rigidbody.MovePosition(transform.position + transform.TransformDirection(new Vector3(0f, -3f, 0f)) * Time.deltaTime);                            
+                            //transform.localPosition += transform.TransformDirection(new Vector3(0f, -3f, 0f)) * Time.deltaTime;
+                        }
+                        else
+                        {
+                            //awc.SetMomentum(new Vector3(0f, 3f, 0f));
+                            //transform.localPosition += transform.TransformDirection(new Vector3(0f, 3f, 0f)) * Time.deltaTime;
+                            rigidbody.MovePosition(transform.position + transform.TransformDirection(new Vector3(0f, 3f, 0f)) * Time.deltaTime);
+                        }
+                    }
+
+                }
+                else
+                {
+                    //awc.SetMomentum(new Vector3(0f, 0.6f, 0f));//the player constantly moves down at abt this speed on ladder
+                }
+                yield return null;
+            }
+        }
+
+        /*
+        private void FixedUpdate()
+        {
+            grounded = GroundCheck();
+            if (!grounded)
+            {
+                Debug.Log("Ground Fault");
+            }
+            MovePlayer(MoveAxis.x, MoveAxis.y);
+            //rotate the players according to ship movement
+            RotatePlayerAround(ShipLastRotationAngles);
+            Gravity();
+
+            if (floorTransform != null)
+            {
+                FloorOldWorldPosition = floorTransform.position;
+            }
+            else
+            {
+                Debug.Log("FOWP EXTRAP");
+                FloorOldWorldPosition += floorOldVelocity;
+            }
+            //else floorOldWorldPosition does not change
+            
+            //only update relative velocity if player is touching the ground.
+            if(floorMasterRB != null && grounded)
+            {
+                FloorOldVelocity = floorMasterRB.velocity;
+            }
+            else
+            {
+                //approximate velocity of the floor in the last frame
+                if (floorOldWorldPosition != null && floorTransform != null)
+                {
+                    FloorOldVelocity = ((Vector3)FloorOldWorldPosition - floorTransform.position) / Time.deltaTime;
+                }
+                else
+                {
+                    Debug.Log("FOV Fault");
+                }
+            }
+            floorOldHitPosition = floorHitPosition;
+            
+            playerLocalOldPosition = transform.localPosition;
+            
+        }*/
 
         public IEquipable[] EquippedWeapons
         {
@@ -649,6 +1372,394 @@ namespace ProjectUniverse.Player.PlayerController
         {
             get { return rightHand; }
             set { rightHand = value; }
+        }
+
+        public Rigidbody RB
+        {
+            get { return rigidbody; }
+        }
+
+        public void RotateCamera(float x, float y)
+        {
+            Vector3 rotation = new Vector3(x, y, 0f);
+
+            /// use scaled time to try and get control over the camera during lag spikes. (Smooth cam rotation)
+            rotation = Vector3.Lerp(new Vector3(0f, 0f, 0f), rotation, (1f / Time.captureFramerate) * 10f);
+
+            float moux = rotation.x;
+            lookClamp += rotation.x;
+
+            if (lookClamp > upperVerticalLimit)
+            {
+                lookClamp = upperVerticalLimit;
+                moux = upperVerticalLimit;
+                ClampLookRotationToValue(upperVerticalLimit + 180f);
+            }
+            else if (lookClamp < lowerVerticalLimit)
+            {
+                lookClamp = lowerVerticalLimit;
+                moux = lowerVerticalLimit;
+                ClampLookRotationToValue(lowerVerticalLimit + 180f);
+            }
+
+            transform.Rotate(Vector3.up * rotation.y);
+            if (cameraFirst)
+            {
+                //firstPersonCameraRoot.transform.Rotate(moux * Vector3.right);//up/down
+                headTrackObject.transform.Rotate(moux * Vector3.up);
+            }
+            else
+            {
+                thirdPersonCameraRoot.transform.Rotate(moux * Vector3.right);
+            }
+        }
+
+        private void ClampLookRotationToValue(float value)
+        {
+            Vector3 eulerRotation = transform.eulerAngles;
+            eulerRotation.x = value * Time.deltaTime;
+            firstPersonCameraRoot.transform.eulerAngles = eulerRotation;
+        }
+
+        /// <summary>
+        /// Apply gravity to the player in it's direction of acceleration.
+        /// </summary>
+        public void Gravity()
+        {
+            Vector3 g = GravityDirection;
+            //transform world direction to local
+            if (GravityTransform != null)
+            {
+                g = gravityTransform.TransformDirection(g * Time.deltaTime * 50f);//60
+            }
+            else
+            {
+                g *= Time.deltaTime * 60f;
+            }
+            if (!grounded && !OnLadder)
+            {
+                //add gravity to velocity
+                rigidbody.velocity += g;
+            }
+
+            //If gravity is along y
+            if (GravityDirection.y != 0f)
+            {
+                //delta angle in x and z (world space?)
+                //float angleZ = ((float)Math.Acos(x) * Mathf.Rad2Deg) - 90f;
+                //float angleX = (float)Math.Asin(z) * Mathf.Rad2Deg;//*-1f?
+                
+                //Quadrant correction
+                //if(GravityTransform.rotation.eulerAngles.z >= 90f && GravityTransform.rotation.eulerAngles.z < 180f)
+                //{
+                    //angleZ += 90f;
+                //}
+                //else if(GravityTransform.rotation.eulerAngles.z >= 180f && GravityTransform.rotation.eulerAngles.z < 270f)
+                //{
+                    //angleZ += 180f;
+                //}else if (GravityTransform.rotation.eulerAngles.z >= 270f && GravityTransform.rotation.eulerAngles.z < 360f)
+                //{
+                    //angleZ += 270f;
+                //}
+                //wobble check
+                //if (GravityTransform != null)
+                //{
+                    //if ((GravityTransform.rotation.eulerAngles.z - transform.rotation.eulerAngles.z) != 0f)//angleZ
+                    //{
+                        //float num = GravityTransform.rotation.eulerAngles.z - transform.rotation.eulerAngles.z;// angleZ;
+                        //Debug.Log(num);
+                        //transform.Rotate(new Vector3(0f, 0f, (float)Math.Round(num, 4)), Space.World);
+                    //}
+                //}
+
+                ///screw this and just set the local rotations to 0f. 
+                ///This causes all sorts of issues though and does not work completely. Also, the player struggles to move.
+                ///
+                if(transform.localRotation.eulerAngles.z != 0f)
+                {
+                    transform.Rotate(new Vector3(0f, 0f, -transform.localRotation.eulerAngles.z), Space.Self);
+                }
+                if(transform.localRotation.eulerAngles.x != 0f)
+                {
+                    transform.Rotate(new Vector3(-transform.localRotation.eulerAngles.x, 0f, 0f), Space.Self);
+                }
+                //Debug.Log(angleX + " " + angleZ);
+                //transform.Rotate(new Vector3(angleX, 0f, angleZ), Space.World);
+
+                //if (GravityTransform != null)
+                //{
+                //if (GravityTransform.rotation.eulerAngles.x >= 180 || GravityTransform.rotation.eulerAngles.z >= 90f)
+                //{
+                //angle Z 
+                //}
+                //    float zDiff = transform.rotation.eulerAngles.z-GravityTransform.rotation.eulerAngles.z;
+                //    Debug.Log(-zDiff);
+
+                //    transform.Rotate(new Vector3(0f,0f,-zDiff),Space.World);
+                //}
+            }
+
+        }
+
+        public void Grounded(bool state)
+        {
+            grounded = state;
+        }
+
+        /// <summary>
+        /// Spherecast from the bottom of the player. Collision means player in grounded.
+        /// </summary>
+        public bool GroundCheck()
+        {
+            Vector3 pos = transform.position + new Vector3(0f, 0.10f, 0f);
+            //Debug.DrawRay(pos, (-transform.up * .15f), Color.green,10f);
+            
+            // cast a shorting ray out the bottom
+            //Physics.queriesHitTriggers = false;
+            RaycastHit rayhit;
+            /// raycast all?
+            if (Physics.Raycast(pos, -transform.up, out rayhit, .125f))
+            {
+                if (TestRaycast(rayhit))
+                {
+                    return true;
+                }
+                else
+                {
+                    for (int r = 0; r <= 360; r += 10)
+                    {
+                        for (int az = -60; az <= 60; az += 10)
+                        {
+                            //Debug.Log(r + ";" + az);
+                            if (az != 0f)
+                            {
+                                //adjust direction by the angles
+                                Vector3 rot1Vec = Quaternion.AngleAxis(az + 90, transform.forward) * pos;//azimuth angles
+                                //Debug.DrawRay(pos, (rot1Vec * .15f), Color.cyan, 0.1f);
+                                Vector3 rot2Vec = Quaternion.AngleAxis(r, -transform.up) * rot1Vec;
+                                //Debug.DrawRay(pos, (rot2Vec * .15f), Color.red, .1f);
+                                if (Physics.Raycast(pos, rot2Vec, out rayhit, .125f))
+                                {
+                                    return TestRaycast(rayhit);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                ///
+                /// Cast a ray every twenty degrees from 0 to 60 azimuth, and every 20 in a 360 circle.
+                ///
+                for(int r = 0; r <= 360; r += 20)
+                {
+                    for(int az = -60; az <= 60; az += 20)
+                    {
+                        if(az != 0f)
+                        {
+                            //adjust direction by the angles
+                            Vector3 rot1Vec = Quaternion.AngleAxis(az+90, transform.forward) * pos;//azimuth angles
+                            //Debug.DrawRay(pos, (rot1Vec * .15f), Color.cyan, 0.1f);
+                            Vector3 rot2Vec = Quaternion.AngleAxis(r, -transform.up) * rot1Vec;
+                            //Debug.DrawRay(pos, (rot2Vec * .15f), Color.red, .1f);
+                            if (Physics.Raycast(pos, rot2Vec, out rayhit, .125f))
+                            {
+                                return TestRaycast(rayhit);
+                            }
+                        }
+                    }
+                }
+            }
+            floorTransform = null;
+            floorNormal = null;
+            floorHitPosition = null;
+            return false;
+        }
+
+        private bool TestRaycast(RaycastHit rayhit)
+        {
+            if (!rayhit.transform.CompareTag("Player"))
+            {
+                // Get the surface normal
+                floorTransform = rayhit.transform;
+                floorNormal = rayhit.normal;
+                floorHitPosition = rayhit.point;
+                return true;
+            }
+            else
+            {
+                //Debug.Log("");
+                floorTransform = null;
+                floorNormal = null;
+                floorHitPosition = null;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Set velocity of the player
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void MovePlayer(float x, float y)
+        {
+            //only move if grounded (or wearing certain equipment)
+
+
+            // deltaTime and fixedDeltaTime are the same in a fixed update step
+            Vector3 velocity = 50f * movementSpeed * Time.deltaTime * new Vector3(x, 0f, y);
+
+            // This used to work...
+            //velocity.y = rigidbody.velocity.y;
+
+            // transform player movement directions to world axes. Does not account for angle of floor.
+            velocity = transform.TransformDirection(velocity);
+
+            //Debug.Log("1: "+velocity);
+            //
+            
+            // project velocity onto the movement surface
+            if (floorNormal != null)
+            {
+                //on slopes, movement is not along plane
+                velocity = Vector3.ProjectOnPlane(velocity, (Vector3)floorNormal);
+            }
+            // when not touching the ground, directions are not aligned with gravity.
+            // they need to be.
+            else if(gravityTransform != null)
+            {
+                //movement along gravity normal (up)
+                velocity = Vector3.ProjectOnPlane(velocity, gravityTransform.TransformDirection(gravityDirection));
+                Debug.Log("FN Fault");
+            }
+            else
+            {
+                Debug.Log("GT Fault");
+            }
+
+            //Debug.Log("2: "+velocity);
+                
+            // set local velocity (for local movement direction logic)
+            LocalVelocity = velocity;
+
+            Vector3 floorVel;// = Vector3.zero;
+            if (floorTransform != null)
+            {
+                // get velocity of floorTransform (with and without rigidbody?)
+                // use the rigidbody found when trigger entered
+                // else: Use the last ground coordinates to interpolate a velocity
+                if (FloorMasterRB != null)
+                {
+                    //Debug.Log(FloorMasterRB.velocity);
+                    floorVel = FloorMasterRB.velocity;
+                }
+                else
+                {
+                    if (FloorOldWorldPosition != null)
+                    {
+                        floorVel = ((Vector3)FloorOldWorldPosition - floorTransform.position) / Time.deltaTime;
+                        //Debug.Log("FOWP");
+                    }
+                    else
+                    {
+                        floorVel = Vector3.zero;
+                        Debug.Log("ZERO");
+                        Debug.Log("----------------------------");
+                    }
+                }
+                // get latest x,y coords of ground detection, find the difference between real and projected distances
+
+                // if floorOldWorldPosition is not null, check false velocity
+                if (FloorOldWorldPosition != null)
+                {
+                    if (floorVel.magnitude == 0 && ((Vector3)FloorOldWorldPosition - floorTransform.position).magnitude > 0f)
+                    {
+                        //Debug.Log(((Vector3)FloorOldWorldPosition).x + " " +
+                        //    ((Vector3)FloorOldWorldPosition).y + " " + ((Vector3)FloorOldWorldPosition).z);
+                        //Debug.Log(floorTransform.position.x + " " + floorTransform.position.y + " " + floorTransform.position.z);
+                        floorVel = ((Vector3)FloorOldWorldPosition - floorTransform.position) / Time.deltaTime;
+                    }
+                }
+                if(floorHitPosition != null && floorOldHitPosition != null)
+                {
+                    if (FloorOldVelocity.magnitude != 0f && floorVel.magnitude != 0f)
+                    {
+                        //get distance travelled by the player in last frame
+                        Vector3 distance = (Vector3)floorOldHitPosition - (Vector3)floorHitPosition;
+                        // remove the distance the player travelled due to local velocity
+                        distance += velocity * Time.deltaTime;//+= b/c vel, dist are opposite.
+                        // remove the distance the floor was supposed to travel
+                        distance += (floorVel * Time.deltaTime);//+=
+                        // adjust player velocity by the distance offset
+                        velocity += (distance);
+                        // move player to theoretical location -> (oldposition + oldvelocity) // - realposition
+                        //Vector3 interpolatedPosition =
+                        //    ((Vector3)floorOldHitPosition + (FloorOldVelocity * Time.deltaTime));//-((Vector3)floorHitPosition);
+                        //Debug.Log("Old ideal velocity: " + (FloorOldVelocity * Time.deltaTime));
+                        //Debug.Log("Old position X:" + ((Vector3)floorOldHitPosition).x + " Z:" + ((Vector3)floorOldHitPosition).z);
+                        //Debug.Log("Real Location X: " + ((Vector3)floorHitPosition).x + " Z:" + ((Vector3)floorHitPosition).z);
+                        //Debug.Log("theoretical location: " + interpolatedPosition);
+                        //set the velocity?
+                        //rigidbody.MovePosition(interpolatedPosition);
+
+                    }
+                }
+            }
+            else
+            {
+                // floor velocity persists
+                floorVel = FloorOldVelocity;
+                Debug.Log("FT-V Fault");
+            }
+
+            // velocity is having player try to clip/walk into things. Can we use .move somehow?
+            //Debug.Log(floorVel);
+            rigidbody.velocity = velocity + floorVel;
+            //Debug.Log(rigidbody.velocity);
+        }
+
+        /// <summary>
+        /// The passed the deltas will be separated into x,y,z comps and applied on local axes
+        /// </summary>
+        /// <param name="rate"></param>
+        public void RotatePlayerAround(Vector3 angleDeltas)
+        {
+            if (FloorMasterTransform != null)
+            {
+                //Debug.Log("RotateAround " + angleDeltas);
+                if (angleDeltas.x != 0f)//pitch
+                {
+                    transform.RotateAround(FloorMasterRB.transform.position, transform.right, angleDeltas.x * -1f);
+                }
+                if (angleDeltas.y != 0f)//yaw
+                {
+                    transform.RotateAround(FloorMasterRB.transform.position, transform.up, angleDeltas.y * -1f);
+                }
+                if (angleDeltas.z != 0f)//roll
+                {
+                    //handle with gravity?
+                    //transform.RotateAround(FloorMasterRB.transform.position, transform.forward, angleDeltas.z*1f);
+                }
+
+                if (angleDeltas.magnitude > 0f) { 
+                    Vector3 playerFloorDelta = playerLocalOldPosition - transform.localPosition;
+                    // get the player's velocity
+                    Vector3 playerVelocity = rigidbody.velocity;
+                    //Debug.Log(playerLocalOldPosition.x +" "+ playerLocalOldPosition.y + " " + playerLocalOldPosition.z);//FloorMasterTransform.TransformPoint(playerLocalOldPosition)
+                    //Debug.Log(transform.localPosition.x + " " + transform.localPosition.y + " " + transform.localPosition.z);
+                    // if playerfloorDelta is greater than playerVelocity, move the player to the extrapolated velocity position
+                    if (playerFloorDelta.magnitude > playerVelocity.magnitude)
+                    {
+                         //Debug.Log("move to: " + 
+                         //    playerLocalOldPosition.x + " " + playerLocalOldPosition.y + " " + playerLocalOldPosition.z 
+                         //    + " + "+ playerVelocity);
+                        // move the player to the extrapolated position
+                        //transform.localPosition = playerLocalOldPosition + playerVelocity;
+                        rigidbody.MovePosition(FloorMasterTransform.TransformPoint(playerLocalOldPosition + playerVelocity));
+                    }
+                }
+            }
         }
 
         public bool IsEquipped(IEquipable equipment)
@@ -803,7 +1914,7 @@ namespace ProjectUniverse.Player.PlayerController
                 controls.Player.Crouch.Disable();
                 controls.Player.Prone.Disable();
                 controls.Player.Alt.Disable();
-                controls.Player.Sprint.Disable();
+                controls.Player.Shift.Disable();
                 controls.Player.Flashlight.Disable();
 
                 LockScreenAndFreeCursor();//playerRoot.GetComponent<SupplementalController>().
@@ -817,7 +1928,7 @@ namespace ProjectUniverse.Player.PlayerController
                 controls.Player.Crouch.Enable();
                 controls.Player.Prone.Enable();
                 controls.Player.Alt.Enable();
-                controls.Player.Sprint.Enable();
+                controls.Player.Shift.Enable();
                 controls.Player.Flashlight.Enable();
                 FreeScreenAndLockCursor();//playerRoot.GetComponent<SupplementalController>().
                 fleetBoy.SetActive(false);
@@ -985,8 +2096,7 @@ namespace ProjectUniverse.Player.PlayerController
                 guid = data.GetGUID();
                 //Debug.Log(data.Position);
                 Vector3 dataRot = data.Rotation.eulerAngles;
-                playerRoot.transform.position = data.Position;
-                playerRoot.transform.rotation = Quaternion.Euler(0, dataRot.y, 0);
+                playerRoot.transform.SetPositionAndRotation(data.Position, Quaternion.Euler(0, dataRot.y, 0));
                 firstPersonCameraRoot.transform.rotation = Quaternion.Euler(dataRot.x, 0, dataRot.z);//save FP and TP cam pos
                 playerRoot.transform.localScale = data.Scale;
                 object[] prams = 
@@ -1091,6 +2201,20 @@ namespace ProjectUniverse.Player.PlayerController
                 obj.SetActive(true);
             }
         }
+        public void HidePlayerUI()
+        {
+            foreach(GameObject obj in uiMasterList)
+            {
+                obj.SetActive(false);
+            }
+        }
+        public void ShowPlayerUI()
+        {
+            foreach (GameObject obj in uiMasterList)
+            {
+                obj.SetActive(true);
+            }
+        }
 
         [ServerRpc]
         private void FlashLightToggleServerRpc(bool state)
@@ -1136,15 +2260,6 @@ namespace ProjectUniverse.Player.PlayerController
                 }
             }
             canDrawWep = true;
-        }
-
-        //Kinda primitive, may adjust later.
-        //Locks player camera so they can not look up and down in a 360 deg arc.
-        private void ClampLookRotationToValue(float value)
-        {
-            Vector3 eulerRotation = transform.eulerAngles;
-            eulerRotation.x = value * Time.deltaTime;//modified 11/17/20 by CMDRAsh. Added Time.deltatime to smooth out looking when fps not constant.
-            firstPersonCameraRoot.transform.eulerAngles = eulerRotation;
         }
     }
 }

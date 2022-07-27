@@ -9,6 +9,7 @@ using ProjectUniverse.Production.Resources;
 using ProjectUniverse.Items.Weapons;
 using ProjectUniverse.Util;
 using System.Reflection;
+using ProjectUniverse.Environment.Volumes;
 
 namespace ProjectUniverse.Base
 {
@@ -31,6 +32,11 @@ namespace ProjectUniverse.Base
 		[SerializeField] private int IConstructible_MachineHealthNormal;
 		[SerializeField] private float IConstructible_MachineHealthRemaining;
 
+		public bool MachineFullyBuilt
+        {
+            get { return IConstructible_MachineFullyBuilt; }
+        }
+
 		protected void Start()
 		{
 			//Debug.Log("IConstructible running on "+name);
@@ -39,26 +45,45 @@ namespace ProjectUniverse.Base
 				IConstructible_RequiredComponents = IConstructible_MachineDefinition.GetComponentRecipe().ToArray();
 				IConstructible_UpgradeComponents = IConstructible_MachineDefinition.GetComponentUpgradeCost().ToArray();
 				IConstructible_Levels = IConstructible_MachineDefinition.GetLevels().ToArray();
-				IConstructible_CurrentLevel = 0;//IE Levels[0]
-				IConstructible_ComponentsReal = new List<ItemStack>(IConstructible_RequiredComponents.Length);
-				//Fill the empty list with empty Itemstacks of the type provided by RequiredComponents
-				for(int x = 0;x < IConstructible_RequiredComponents.Length; x++)
-				{
-					Consumable_Component comp0 = new Consumable_Component(IConstructible_RequiredComponents[x].Item1.GetComponentType(),
-							 0, IConstructible_RequiredComponents[x].Item1);
-					ItemStack stackx = new ItemStack(comp0.ComponentID, 999, typeof(Consumable_Component));
-					IConstructible_ComponentsReal.Add(stackx);
-				}
-				IConstructible_BuildTimeRemaining = CalculateBuildTime();
-				//autobuild
-				if (AutoBuild)
-				{
-					AutoBuildConstructible();
+				IConstructible_UpgradeComponents = null;
+
+			}
+			else if (IConstructible_Machine_Type == "Section")
+            {
+				IConstructible_MachineDefinition = null;
+				VolumeConstructionSection sectionData = GetComponent<VolumeConstructionSection>();
+				List<(IComponentDefinition, int)> basecost = Utils.ComputeVolumeSectionCost(sectionData.ThisSectionType, 0);
+				IConstructible_RequiredComponents = basecost.ToArray();
+				IConstructible_UpgradeComponents = null;
+                if (sectionData.MachineSection)
+                {
+					IConstructible_Levels = new int[] { 0, 2 };
+                }
+                else
+                {
+					IConstructible_Levels = new int[] { 0, 1, 2 };
 				}
 			}
 			else
 			{
 				Debug.LogError("DICTIONARY ERROR");
+			}
+
+			IConstructible_CurrentLevel = 0;//IE Levels[0]
+			IConstructible_ComponentsReal = new List<ItemStack>(IConstructible_RequiredComponents.Length);
+			//Fill the empty list with empty Itemstacks of the type provided by RequiredComponents
+			for (int x = 0; x < IConstructible_RequiredComponents.Length; x++)
+			{
+				Consumable_Component comp0 = new Consumable_Component(IConstructible_RequiredComponents[x].Item1.GetComponentType(),
+						 0, IConstructible_RequiredComponents[x].Item1);
+				ItemStack stackx = new ItemStack(comp0.ComponentID, 9000, typeof(Consumable_Component));
+				IConstructible_ComponentsReal.Add(stackx);
+			}
+			IConstructible_BuildTimeRemaining = CalculateBuildTime();
+			//autobuild
+			if (AutoBuild)
+			{
+				AutoBuildConstructible();
 			}
 		}
 
@@ -77,7 +102,7 @@ namespace ProjectUniverse.Base
 					{
 						Consumable_Component compToAdd = new Consumable_Component(IConstructible_RequiredComponents[i].Item1.GetComponentType(),
 							 1, IConstructible_RequiredComponents[i].Item1);
-						ItemStack stack = new ItemStack(compToAdd.ComponentID, 999, typeof(Consumable_Component));
+						ItemStack stack = new ItemStack(compToAdd.ComponentID, 9000, typeof(Consumable_Component));
 						stack.AddItem(compToAdd);
 						bool isAdded = false;
 						for (int a = 0; a < IConstructible_ComponentsReal.Count; a++)
@@ -107,36 +132,49 @@ namespace ProjectUniverse.Base
 			CalculateMachineHealthReal();
 			CalculateHealthRemaining();
 			SortComponentsByPriority();
+			if (TryGetComponent(out VolumeConstructionSection sectionData))
+			{
+				sectionData.UpdateStageLogic(IConstructible_MachineFullyBuilt);
+			}
 		}
 
 		public void MachineMessageReceiver(params object[] data)
 		{
-			switch (data.GetValue(0))
+			try
 			{
-				case 0:
-					//stop building
-					Debug.Log("Stopping building");
-					Building = false;
-					StopCoroutine("BuildConstructible");
-					break;
-				case 1:
-					//peak at machine component requirements and return them
-					object[] prams1 = { IConstructible_RequiredComponents, IConstructible_ComponentsReal.ToArray(), true };
-					data.GetValue(1).GetType().GetMethod("IConstructibleCallback").Invoke(data.GetValue(1),
-						new[] { prams1 });
-					break;
-				case 2:
-					//Continue welding
-					object[] prams2 = { IConstructible_ComponentsReal.ToArray() };
-					data.GetValue(1).GetType().GetMethod("IConstructibleCallback").Invoke(data.GetValue(1), new[] { prams2 });
-					break;
-				case 3:
-					//begin building this machine
-					PreBuildCheck((IPlayer_Inventory)data.GetValue(2));
-					object[] prams3 = { IConstructible_RequiredComponents, IConstructible_ComponentsReal.ToArray() };
-					data.GetValue(1).GetType().GetMethod("IConstructibleCallback").Invoke(data.GetValue(1),
-						new[] { prams3 });
-					break;
+				switch (data.GetValue(0))
+				{
+					case 0:
+						//stop building
+						//Debug.Log("Stopping building");
+						Building = false;
+						StopCoroutine("BuildConstructible");
+						break;
+					case 1:
+						//peak at machine component requirements and return them
+						object[] prams1 = { IConstructible_RequiredComponents, IConstructible_ComponentsReal.ToArray(), true };
+						data.GetValue(1).GetType().GetMethod("IConstructibleCallback").Invoke(data.GetValue(1),
+							new[] { prams1 });
+						break;
+					case 2:
+						//Continue welding
+						object[] prams2 = { IConstructible_ComponentsReal.ToArray() };
+						data.GetValue(1).GetType().GetMethod("IConstructibleCallback").Invoke(data.GetValue(1), new[] { prams2 });
+						break;
+					case 3:
+						//begin building this machine
+						PreBuildCheck((IPlayer_Inventory)data.GetValue(2));
+						object[] prams3 = { IConstructible_RequiredComponents, IConstructible_ComponentsReal.ToArray() };
+						data.GetValue(1).GetType().GetMethod("IConstructibleCallback").Invoke(data.GetValue(1),
+							new[] { prams3 });
+						break;
+				}
+            }
+            catch
+            {
+				//stop building
+				Building = false;
+				StopCoroutine("BuildConstructible");
 			}
 		}
 		public void PreBuildCheck(IPlayer_Inventory p_Inventory)
@@ -159,20 +197,24 @@ namespace ProjectUniverse.Base
 		{
 			float compsPerSec = IConstructible_BuildTimeRemaining / CalculateBuildTime();
 			float compsPerSecTimer = compsPerSec;
-			Debug.Log("comps/s: " + compsPerSec);
-
+			//Debug.Log("comps/s: " + compsPerSec);
+			//Debug.Log(!IConstructible_MachineFullyBuilt);
+			//Debug.Log(Building);
 			while (!IConstructible_MachineFullyBuilt && Building)
 			{
 				if (compsPerSecTimer <= 0)
 				{
 					for (int i = 0; i < IConstructible_RequiredComponents.Length; i++)
 					{
+						//Debug.Log(IConstructible_RequiredComponents[i].Item1.GetComponentType()+": "+ IConstructible_RequiredComponents[i].Item2);
 						//if the numbers aren't equal, then we're missing components
-						if (IConstructible_ComponentsReal[i].GetRealLength() != IConstructible_RequiredComponents[i].Item2)
+						if (IConstructible_ComponentsReal[i].GetRealLength() <= IConstructible_RequiredComponents[i].Item2)
 						{
+							//Debug.Log(IConstructible_ComponentsReal[i].GetRealLength());
 							//find RequiredComponents[i] in IConstructible_PlayerInventory
 							int index = 0;
 							IConstructible_PlayerInventory.SearchInventoryForComponent(IConstructible_RequiredComponents[i].Item1, out index);
+							//Debug.Log("index: "+index);
 							if (index >= 0)
 							{
 								ItemStack stack = IConstructible_PlayerInventory.RemoveFromPlayerInventory(index, 1f);
@@ -217,6 +259,111 @@ namespace ProjectUniverse.Base
 			//CalculateMachineHealthNormal();
 			CalculateHealthRemaining();
 			SortComponentsByPriority();
+			// Update Section bools
+			if(TryGetComponent(out VolumeConstructionSection sectionData))
+            {
+				sectionData.UpdateStageLogic(IConstructible_MachineFullyBuilt);
+            }
+			// stop welding
+			
+		}
+
+		public void UpdateSectionCost(int endStage)
+        {
+			VolumeConstructionSection sectionData = GetComponent<VolumeConstructionSection>();
+			//Debug.Log(": "+IConstructible_RequiredComponents.Length);
+			//Debug.Log(": "+IConstructible_ComponentsReal.Count);
+			//Debug.Log("USC");
+			if (sectionData.MachineSection && endStage == 2)
+            {
+				// Pass construction to the actual machine
+            }
+            else
+            {
+				//IConstructible_CurrentLevel = IConstructible_Levels[1];
+				List<(IComponentDefinition, int)> basecost = Utils.ComputeVolumeSectionCost(sectionData.ThisSectionType, endStage);
+				//Debug.Log(basecost.Count);
+
+				//Update Reqs with Reqs plus stage cost
+				for(int i = 0; i < IConstructible_RequiredComponents.Length; i++)
+                {
+					//Debug.Log(i + " " + IConstructible_RequiredComponents[i].Item1);
+					for(int j = basecost.Count-1; j >= 0; j--)
+                    {
+						//Debug.Log(j + " " + basecost[j].Item1);
+						if (IConstructible_RequiredComponents[i].Item1 == basecost[j].Item1)
+                        {
+							IConstructible_RequiredComponents[i].Item2 += basecost[j].Item2;
+							basecost.RemoveAt(j);
+						}
+                    }
+                }
+				//extend RequiredComponents to include basecost
+				if(basecost.Count > 0)
+                {
+					//Debug.Log("AddRange");
+					(IComponentDefinition, int)[] temp = new (IComponentDefinition, int)
+						[IConstructible_RequiredComponents.Length + basecost.Count];
+					int idx = IConstructible_RequiredComponents.Length;
+					IConstructible_RequiredComponents.CopyTo(temp,0);
+					basecost.CopyTo(temp, (idx));
+					
+					IConstructible_RequiredComponents = temp;
+					//for(int i = 0; i < IConstructible_RequiredComponents.Length; i++)
+					//{
+						//Debug.Log(i+" "+IConstructible_RequiredComponents[i].Item1 + " " +
+						//	IConstructible_RequiredComponents[i].Item2);
+					//}
+				}
+				//Add empty components
+				for (int i = 0; i < IConstructible_RequiredComponents.Length; i++)
+				{
+                    if (i >= IConstructible_ComponentsReal.Count)
+                    {
+						Consumable_Component comp0 = new Consumable_Component(
+							IConstructible_RequiredComponents[i].Item1.GetComponentType(), 0,
+							IConstructible_RequiredComponents[i].Item1);
+						ItemStack stackx = new ItemStack(comp0.ComponentID, 9000, typeof(Consumable_Component));
+						IConstructible_ComponentsReal.Add(stackx);
+					}
+				}
+				//Debug.Log(IConstructible_RequiredComponents.Length);
+				//Debug.Log(IConstructible_ComponentsReal.Count);
+				IConstructible_UpgradeComponents = null;
+				IConstructible_MachineFullyBuilt = false;
+				IConstructible_BuildTimeRemaining = CalculateBuildTime();
+				//autobuild
+				if (AutoBuild)
+				{
+					AutoBuildConstructible();
+				}
+			}
+
+			//Check machine state and such to get complete machine completion cost
+			/*
+            if (sectionData.MachineSection)
+            {
+				string defStr = sectionData.CompletedGameObject.GetComponent<IConstructible>().IConstructible_Machine_Type;
+				if (MachineLibrary.MachineDictionary.TryGetValue(defStr, out MachineDefinition defMach))
+				{
+					List<(IComponentDefinition, int)> tempReqs = defMach.GetComponentRecipe();
+					//Fill the empty list with empty Itemstacks of the type provided by the temp ReqComps
+					for (int x = 0; x < tempReqs.Count; x++)
+					{
+						Consumable_Component comp0 = new Consumable_Component(tempReqs[x].Item1.GetComponentType(),
+								 0, tempReqs[x].Item1);
+						ItemStack stackx = new ItemStack(comp0.ComponentID, 999, typeof(Consumable_Component));
+						IConstructible_ComponentsReal.Add(stackx);
+					}
+					tempReqs.AddRange(IConstructible_RequiredComponents);
+					IConstructible_RequiredComponents = tempReqs.ToArray();
+					IConstructible_BuildTimeRemaining = CalculateBuildTime();
+				}
+            }*/
+			//else
+			//{
+
+			//}
 		}
 
 		/// <summary>

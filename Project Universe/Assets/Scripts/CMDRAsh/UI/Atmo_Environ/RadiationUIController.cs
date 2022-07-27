@@ -25,8 +25,10 @@ namespace ProjectUniverse.UI
         private float stayTime;
         private float rate;
         private float dose;
+        private float maxradsdet;
         //private float doscimeterMax;
         [SerializeField] private PlayerVolumeController PVC;
+        [SerializeField] private DroneVolumeController DVC;
         private Color32 GREEN = new Color32(0, 200, 57, 255);
         private Color32 YELLOW = new Color32(255, 200, 75, 255);
         private Color32 RED = new Color32(237, 0, 0, 255);
@@ -36,12 +38,22 @@ namespace ProjectUniverse.UI
         void Update()
         {
             //Rate
-            rate = PVC.GetRadiationExposureRate();
-            if (rate <= PVC.GetMaxRadsDetectable())
+            if(PVC != null)
             {
-                rateDis.text = Math.Round(rate, 1) + " R/h";
+                rate = PVC.GetRadiationExposureRate();
+                maxradsdet = PVC.GetMaxRadsDetectable();
             }
-            else if (rate <= PVC.GetMaxRadsDetectable() + 1000) { rateDis.text = PVC.GetMaxRadsDetectable() + " R/h"; }
+            else
+            {
+                rate = DVC.GetRadiationExposureRate();
+                maxradsdet = DVC.GetMaxRadsDetectable();
+            }
+            
+            if (rate <= maxradsdet)
+            {
+                rateDis.text = Math.Round(rate, 2) + " R/h";
+            }
+            else if (rate <= maxradsdet + 1000) { rateDis.text = maxradsdet + " R/h"; }
             else { rateDis.text = "ERR"; }
             //rateDis.text = Math.Round(rate,1)+" R";
             
@@ -57,19 +69,32 @@ namespace ProjectUniverse.UI
             float y = 0;
             if (rate < 5000)
             {
-                if (rate >= PVC.GetMaxRadsDetectable())
+                if (rate >= maxradsdet)
                 {
                     y = barmax;
                 }
                 else 
                 { 
-                    y = (rate / PVC.GetMaxRadsDetectable()) * barmax; 
+                    y = (rate / maxradsdet) * barmax; 
                 }
             }
             else { y = barmax; }
             rateBar.rectTransform.transform.localScale = new Vector3(y, 1, 1);//(1, y, 1)
             //absorbed - meter and text
-            dose = PVC.AbsorbedDose;
+
+            if(PVC != null)
+            {
+                dose = PVC.AbsorbedDose;
+                //time
+                stayTime = PVC.ExposureTime;
+            }
+            else
+            {
+                dose = DVC.AbsorbedDose;
+                //time
+                stayTime = DVC.ExposureTime;
+            }
+            
             doseDis.text = Math.Round(dose, 2) + " rads";
             Image doseBar = doseMeter.transform.GetChild(0).GetComponent<Image>();
             /*
@@ -85,36 +110,8 @@ namespace ProjectUniverse.UI
             }
             else { y2 = dosebar; }
             doseBar.rectTransform.transform.localScale = new Vector3(y2, 1, 1);//(1, y2, 1)
-            //absorbed - player ref
-            /*
-            Color32[] colors;
-            if (dose <= 300)
-            {
-                colors = new[] { GREEN, GREEN, GREEN, GREEN, GREEN, GREEN };
-            }
-            else if (dose <= 600)
-            {
-                colors = new[] { GREEN, GREEN, YELLOW, YELLOW, YELLOW, YELLOW };
-            }
-            else if (dose <= 1000)
-            {
-                colors = new[] { YELLOW, YELLOW, YELLOW, YELLOW, YELLOW, YELLOW };
-            }
-            else if (dose <= 2000)
-            {
-                colors = new[] { YELLOW, YELLOW, RED, RED, RED, RED };
-            }
-            else if (dose > 2000 && dose < 5000)
-            {
-                colors = new[] { RED, RED, RED, RED, RED, RED };
-            }
-            else
-            {
-                colors = new[] { DARKRED, DARKRED, DARKRED, DARKRED, DARKRED, DARKRED };
-            }*/
-            //SetBodyColor(colors);
+            
             //time
-            stayTime = PVC.ExposureTime;
             StayTimeDis.text = TimeSpan.FromSeconds(stayTime).ToString(@"hh\:mm\:ss");
             //highest dose rate
             if (rate > peakRate)
@@ -122,14 +119,6 @@ namespace ProjectUniverse.UI
                 peakRate = rate;
             }
             peakRateDis.text = Math.Round(peakRate, 2) + " R/h";
-        }
-
-        private void SetBodyColor(Color32[] colors)
-        {
-            //for (int i = 0; i < BodyHealthDis.Length; i++)
-            //{
-            //    BodyHealthDis[i].GetComponent<Image>().color = colors[i];
-            //}
         }
     }
 }

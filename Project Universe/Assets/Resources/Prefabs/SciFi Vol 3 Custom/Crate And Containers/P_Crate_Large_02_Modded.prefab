@@ -316,9 +316,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4f958738409414bb03d44223491b5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxWeight: 500
-  volume: 8
+  maxWeight: 1000
+  volume: 80
   cargoui: {fileID: 8135855810894246746}
+  cargoRbd: {fileID: 8082499542850589322}
 --- !u!1 &8136972320980561116
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using ProjectUniverse.Data.Libraries;
+using ProjectUniverse.Data.Libraries.Definitions;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,21 +18,21 @@ namespace ProjectUniverse.Environment.Gas {
     public class IGas //: MonoBehaviour
     {
         //Library properties
-        [SerializeField] private string IDname;
-        [SerializeField] private int flamability;
-        [SerializeField] private int combustability;
-        [SerializeField] private string[] reactants;
-        //[SerializeField] private int volitility;
-        [SerializeField] private bool nuclear;
-        [SerializeField] private int toxicity;
-        [SerializeField] private float MolarMass = 31.9988f;//15.9994 is for one O. oxygen is diatomic, so 
-                                                            //Mixed Property
-        [SerializeField] private float density;//in g/L IE oxygen is 1.43 g/L
-                                               //Instanced property
-        [SerializeField] private float temp;
-        [SerializeField] private float concentration;//amount of the gas in the local volume
-        [SerializeField] private float volume_m3;//amount of gas in m^3
-        [SerializeField] private float localPressure;//pressure of the gas in it's local volume
+        private string IDname;
+        private int flamability;//does it catch on fire (how well)
+        private int combustability;//does it explode (how well)
+        private string[] reactants;
+        private bool nuclear;
+        private float toxicity;//ppm/1,000,000 or (0-100% composition) in some volume.
+        private float MolarMass = 31.9988f;//15.9994 is for one O. oxygen is diatomic, so 
+        //Mixed Property
+        private float density;//in g/L IE oxygen is 1.427 g/L at 1 atm, 273.15K
+        //Instanced property
+        private float temp;
+        private float concentration;//amount of the gas in the local volume
+        private float volume_m3;//amount of gas in m^3
+        private float localPressure;//pressure of the gas in it's local volume
+        private GasDefinition definition = null;
 
         override
         public string ToString()
@@ -46,6 +48,14 @@ namespace ProjectUniverse.Environment.Gas {
             //localPressure = localpressure;
             concentration = myconcentration;
             //fill other values from gasID lib
+            if (GasLibrary.GasDictionary.TryGetValue(IDname, out definition))
+            {
+                flamability = definition.Flamability;
+                combustability = definition.Combustability;
+                nuclear = definition.IsNuclear;
+                toxicity = definition.Toxicity;
+                MolarMass = definition.MolarMass;
+            }
         }
 
         public IGas(IGas otherGas)
@@ -55,6 +65,15 @@ namespace ProjectUniverse.Environment.Gas {
             localPressure = otherGas.GetLocalPressure();
             concentration = otherGas.GetConcentration();
             volume_m3 = otherGas.GetLocalVolume();
+            //gaslib data
+            if (GasLibrary.GasDictionary.TryGetValue(IDname, out definition))
+            {
+                flamability = definition.Flamability;
+                combustability = definition.Combustability;
+                nuclear = definition.IsNuclear;
+                toxicity = definition.Toxicity;
+                MolarMass = definition.MolarMass;
+            }
         }
 
         public IGas(string gasID, float mytemp, float myconcentration, float localpressure, float localvolume)
@@ -64,7 +83,15 @@ namespace ProjectUniverse.Environment.Gas {
             localPressure = localpressure;
             concentration = myconcentration;
             volume_m3 = localvolume;
-            //fill other values from gasID lib
+            //gaslib data
+            if (GasLibrary.GasDictionary.TryGetValue(IDname, out definition))
+            {
+                flamability = definition.Flamability;
+                combustability = definition.Combustability;
+                nuclear = definition.IsNuclear;
+                toxicity = definition.Toxicity;
+                MolarMass = definition.MolarMass;
+            }
         }
 
         public string GetIDName()
@@ -83,15 +110,11 @@ namespace ProjectUniverse.Environment.Gas {
         {
             return reactants;
         }
-        //public int GetVolitility()
-        //{
-        //    return volitility;
-        //}
         public bool GetNuclear()
         {
             return nuclear;
         }
-        public int GetToxicity()
+        public float GetToxicity()
         {
             return toxicity;
         }
@@ -152,7 +175,7 @@ namespace ProjectUniverse.Environment.Gas {
             //convert temp(F) to K
             //(32°F − 32) × 5/9 + 273.15
             float tempK = ((temp - 32f) * (5f / 9f)) + 273.15f;
-            //P[atm]M[g/mol] / R[atm*L/mol*K]T[K] = d[g/L]
+            //P[atm]M[g/mol] / R[atm*L/mol*K]T[K] = d[kg/L]
             density = (localPressure * MolarMass) / (0.0821f * tempK);
             return density;
         }

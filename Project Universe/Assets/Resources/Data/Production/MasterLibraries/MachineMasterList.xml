@@ -369,25 +369,31 @@
 		</Upgrades>
 	</Machine>
 	<Machine>
-		<MachData Machine_Type="Machine_BlastFurnace"/>
+		<MachData Machine_Type="Machine_AlloyForge"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
 		<Recipe>
-			<Part Component="Component_SteelComponents" Quantity = "20"/>
-			<Part Component="Component_SuperHeatingElement" Quantity = "4"/>
-			<Part Component="Component_ControlInterface" Quantity = "1"/>
-			<Part Component="Component_Ceramic" Quantity = "10"/>
-			<Part Component="Component_HiCapSteelTank" Quantity = "4"/>
+			<Part Component="Component_NickelComponents" Quantity = "2"/>
+			<Part Component="Component_TitaniumSteelElectrode" Quantity = "2"/>
+			<Part Component="Component_ChromeSteelTank" Quantity = "1"/>
+			<Part Component="Component_ControlInterface" Quantity = "2"/>
+			<Part Component="Component_AluminumComponents" Quantity = "5"/>
+			<Part Component="Component_CoolingComponents" Quantity = "1"/>
+			<Part Component="Component_SteelComponents" Quantity = "1"/>
+			<Part Component="Component_Motor" Quantity = "1"/>
+			<Part Component="Component_Ceramic" Quantity = "2"/>
 		</Recipe>
 		<BaseLevel Level="1" />
 		<Upgrades> 
 			<Cost>
-				<Part Component="Component_SteelComponents" Quantity = "20"/>
-				<Part Component="Component_SuperHeatingElement" Quantity = "2"/>
-				<Part Component="Component_Ceramic" Quantity = "5"/>
-				<Part Component="Component_HiCapSteelTank" Quantity = "2"/>
+				<Part Component="Component_NickelComponents" Quantity = "1"/>
+				<Part Component="Component_ChromeSteelTank" Quantity = "1"/>
+				<Part Component="Component_AluminumComponents" Quantity = "5"/>
+				<Part Component="Component_SteelComponents" Quantity = "1"/>
+				<Part Component="Component_Ceramic" Quantity = "2"/>
 			</Cost>
 			<Level Level="2" /> 
 			<Level Level="3" />
+			<Level Level="4" />
 		</Upgrades>
 	</Machine>
 	<Machine>
@@ -466,7 +472,7 @@
 		</Upgrades>
 	</Machine>
 	<Machine>
-		<MachData Machine_Type="Machine_InductionSmelter"/>
+		<MachData Machine_Type="Machine_InductionFurnace"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
 		<Recipe>
 			<Part Component="Component_InductionCell" Quantity = "2"/>
@@ -546,34 +552,6 @@
 		</Upgrades>
 	</Machine>
 	<Machine>
-		<MachData Machine_Type="Machine_MetallurgicInfuser"/>
-		<ResourcePath Path="Prefabs\CMDRAsh\" />
-		<Recipe>
-			<Part Component="Component_NickelComponents" Quantity = "2"/>
-			<Part Component="Component_TitaniumSteelElectrode" Quantity = "2"/>
-			<Part Component="Component_ChromeSteelTank" Quantity = "1"/>
-			<Part Component="Component_ControlInterface" Quantity = "2"/>
-			<Part Component="Component_AluminumComponents" Quantity = "5"/>
-			<Part Component="Component_CoolingComponents" Quantity = "1"/>
-			<Part Component="Component_SteelComponents" Quantity = "1"/>
-			<Part Component="Component_Motor" Quantity = "1"/>
-			<Part Component="Component_Ceramic" Quantity = "2"/>
-		</Recipe>
-		<BaseLevel Level="1" />
-		<Upgrades> 
-			<Cost>
-				<Part Component="Component_NickelComponents" Quantity = "1"/>
-				<Part Component="Component_ChromeSteelTank" Quantity = "1"/>
-				<Part Component="Component_AluminumComponents" Quantity = "5"/>
-				<Part Component="Component_SteelComponents" Quantity = "1"/>
-				<Part Component="Component_Ceramic" Quantity = "2"/>
-			</Cost>
-			<Level Level="2" /> 
-			<Level Level="3" />
-			<Level Level="4" />
-		</Upgrades>
-	</Machine>
-	<Machine>
 		<MachData Machine_Type="Machine_MachineLathe"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
 		<Recipe>
@@ -601,7 +579,7 @@
 		</Upgrades>
 	</Machine>
 	<Machine>
-		<MachData Machine_Type="Machine_Bottling/Canning Plant"/>
+		<MachData Machine_Type="Machine_BottlingPlant"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
 		<Recipe>
 			<Part Component="Component_Motor" Quantity = "1"/>
@@ -898,7 +876,7 @@
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
 		<Recipe>
 			<Part Component="Component_CopperPlating" Quantity = "8"/>	
-			<Part Component="Component_BronzePlating" Quantity = "8"/>	
+			<Part Component="Component_SteelPlating" Quantity = "8"/>	
 			<Part Component="Component_SuperHeatingElement" Quantity = "1"/>
 			<Part Component="Component_HiCapSteelTank" Quantity = "4"/>
 			<Part Component="Component_HeavyPressureValves" Quantity = "2"/>
@@ -911,7 +889,7 @@
 		<Upgrades> 
 			<Cost>
 				<Part Component="Component_CopperPlating" Quantity = "2"/>	
-				<Part Component="Component_BronzePlating" Quantity = "2"/>	
+				<Part Component="Component_SteelPlating" Quantity = "2"/>	
 				<Part Component="Component_SuperHeatingElement" Quantity = "0.5"/>
 				<Part Component="Component_HiCapSteelTank" Quantity = "0.5"/>
 				<Part Component="Component_HeavyPressureValves" Quantity = "1"/>
@@ -1575,6 +1553,48 @@
 				<Part Component="Component_ElectronicsComponents" Quantity = "2"/>
 				<Part Component="Component_SmallGunMountingBracket" Quantity = "1"/>
 				<Part Component="Component_SteelComponents" Quantity = "2"/>
+			</Cost>
+			<Level Level="2" /> 
+		</Upgrades>
+	</Machine>
+	<Machine>
+		<MachData Machine_Type="Machine_AirtightDoor"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Recipe>
+			<!-- <Part Component="Component_ControlInterface" Quantity = "1"/>
+			<Part Component="Component_CompressionCylinder" Quantity = "2"/>
+			<Part Component="Component_ElectricalComponents" Quantity = "1"/>
+			<Part Component="Component_ElectronicsComponents" Quantity = "1"/> -->
+			<Part Component="Component_AluminumComponents" Quantity = "2"/>
+			<Part Component="Component_IronComponents" Quantity = "2"/>
+			<Part Component="Component_SteelComponents" Quantity = "2"/>
+			<Part Component="Component_NickelComponents" Quantity = "1"/>
+		</Recipe>
+		<BaseLevel Level="1" />
+		<Upgrades> 
+			<Cost>
+				<Part Component="Component_ElectricalComponents" Quantity = "1"/>
+				<Part Component="Component_ElectronicsComponents" Quantity = "1"/>
+				<Part Component="Component_FiberglassInsulation" Quantity = "0.5"/>
+				<Part Component="Component_NickelComponents" Quantity = "1"/>
+				<Part Component="Component_Plastic" Quantity = "1"/>
+			</Cost>
+			<Level Level="2" /> 
+			<Level Level="3" />
+			<Level Level="4" />
+		</Upgrades>
+	</Machine>
+	<Machine>
+		<MachData Machine_Type="Machine_StandardLight"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Recipe>
+			<Part Component="Component_TinComponents" Quantity = "1"/>
+			<Part Component="Component_CopperComponents" Quantity = "1"/>
+		</Recipe>
+		<BaseLevel Level="1" />
+		<Upgrades> 
+			<Cost>
+				<Part Component="Component_ElectricalComponents" Quantity = "1"/>
 			</Cost>
 			<Level Level="2" /> 
 		</Upgrades>

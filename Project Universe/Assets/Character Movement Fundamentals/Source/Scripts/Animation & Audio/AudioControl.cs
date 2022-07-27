@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using ProjectUniverse.Player.PlayerController;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,9 +11,10 @@ namespace CMF
 		//References to components;
 		Controller controller;
 		Animator animator;
-		Mover mover;
+		//Mover mover;
 		Transform tr;
 		public AudioSource audioSource;
+		public SupplementalController sc;
 
 		//Whether footsteps will be based on the currently playing animation or calculated based on walked distance (see further below);
 		public bool useAnimationBasedFootsteps = true;
@@ -43,14 +45,14 @@ namespace CMF
 		//Setup;
 		void Start () {
 			//Get component references;
-			controller = GetComponent<Controller>();
+			//controller = GetComponent<Controller>();
 			animator = GetComponentInChildren<Animator>();
-			mover = GetComponent<Mover>();
+			//mover = GetComponent<Mover>();
 			tr = transform;
 
 			//Connecting events to controller events;
-			controller.OnLand += OnLand;
-			controller.OnJump += OnJump;
+			//controller.OnLand += OnLand;
+			//controller.OnJump += OnJump;
 
 			if(!animator)
 				useAnimationBasedFootsteps = false;
@@ -60,12 +62,18 @@ namespace CMF
 		void Update () {
 
 			//Get controller velocity;
-			Vector3 _velocity = controller.GetVelocity();
+			//Vector3 _velocity = controller.GetVelocity();
+			Vector3 _velocity = sc.PlayerRigidbody.velocity;
 
 			//Calculate horizontal velocity;
 			Vector3 _horizontalVelocity = VectorMath.RemoveDotVector(_velocity, tr.up);
 
 			FootStepUpdate(_horizontalVelocity.magnitude);
+
+            if (sc.Jump)
+            {
+                audioSource.PlayOneShot(jumpClip, audioClipVolume);
+            }
 		}
 
 		void FootStepUpdate(float _movementSpeed)
@@ -81,7 +89,7 @@ namespace CMF
 				if((currentFootStepValue <= 0f && _newFootStepValue > 0f) || (currentFootStepValue >= 0f && _newFootStepValue < 0f))
 				{
 					//Only play footstep sound if mover is grounded and movement speed is above the threshold;
-					if(mover.IsGrounded() && _movementSpeed > _speedThreshold)
+					//if(mover.IsGrounded() && _movementSpeed > _speedThreshold)
 						PlayFootstepSound(_movementSpeed);
 				}
 				currentFootStepValue = _newFootStepValue;
@@ -94,7 +102,7 @@ namespace CMF
 				if(currentFootstepDistance > footstepDistance)
 				{
 					//Only play footstep sound if mover is grounded and movement speed is above the threshold;
-					if(mover.IsGrounded() && _movementSpeed > _speedThreshold)
+					//if(mover.IsGrounded() && _movementSpeed > _speedThreshold)
 						PlayFootstepSound(_movementSpeed);
 					currentFootstepDistance = 0f;
 				}
@@ -107,7 +115,7 @@ namespace CMF
 			audioSource.PlayOneShot(footStepClips[_footStepClipIndex], audioClipVolume + audioClipVolume * Random.Range(-relativeRandomizedVolumeRange, relativeRandomizedVolumeRange));
 		}
 
-		void OnLand(Vector3 _v)
+		private void OnLand(Vector3 _v)
 		{
 			//Only trigger sound if downward velocity exceeds threshold;
 			if(VectorMath.GetDotProduct(_v, tr.up) > -landVelocityThreshold)
@@ -117,11 +125,11 @@ namespace CMF
 			audioSource.PlayOneShot(landClip, audioClipVolume);
 		}
 
-		void OnJump(Vector3 _v)
-		{
+		//private void OnJump(Vector3 _v)
+		//{
 			//Play jump audio clip;
-			audioSource.PlayOneShot(jumpClip, audioClipVolume);//missing method exception for no reason sometimes
-		}
+		//	audioSource.PlayOneShot(jumpClip, audioClipVolume);//missing method exception for no reason sometimes
+		//}
 	}
 }
 

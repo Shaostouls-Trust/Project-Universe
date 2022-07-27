@@ -6,6 +6,7 @@ using ProjectUniverse.Data.Libraries;
 using MLAPI.NetworkVariable;
 using MLAPI;
 using MLAPI.Messaging;
+using ProjectUniverse.Production.Machines;
 
 namespace ProjectUniverse.Animation.Controllers
 {
@@ -19,6 +20,8 @@ namespace ProjectUniverse.Animation.Controllers
         private GameObject emissiveMesh;
         [SerializeField]
         private GameObject[] controlPanelScreens;
+        private Mach_AirtightDoor M_door;
+        [SerializeField] private AudioSource audsrc;
         //IMPORTANT
         //elem 0 is door L
         //elem 1 is door R
@@ -72,13 +75,18 @@ namespace ProjectUniverse.Animation.Controllers
         private NetworkVariableBool netThisRunMachine = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
         //private NetworkVariableFloat netAnimSpeed = new NetworkVariableFloat(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
 
+        public bool Open
+        {
+            get { return (isLOpen || isROpen); }
+        }
+        
         void Start()
         {
             NetworkListeners();
+            M_door = GetComponent<Mach_AirtightDoor>();
             panelRenderer = new Renderer[controlPanelScreens.Length];
             //doorMachine = GetComponent<ISubMachine>();
             //thisRunMachine = doorMachine.RunMachine;
-            netThisRunMachine.Value = GetComponent<ISubMachine>().GetRunMachine();
             //Debug.Log(thisRunMachine);
             doorL_TF = anim[0].gameObject.transform;
             doorR_TF = anim[1].gameObject.transform;
@@ -91,12 +99,14 @@ namespace ProjectUniverse.Animation.Controllers
                 emissRenderer = emissiveMesh.GetComponent<Renderer>();
                 hasEmissive = true;
             }
-            isRunning = true;
             //grab all screen renderers
             for (int i = 0; i < controlPanelScreens.Length; i++)
             {
                 panelRenderer[i] = controlPanelScreens[i].GetComponent<Renderer>();
             }
+
+            isRunning = true;
+            netThisRunMachine.Value = GetComponent<ISubMachine>().GetRunMachine();
         }
 
         private void NetworkListeners()
@@ -298,6 +308,40 @@ namespace ProjectUniverse.Animation.Controllers
 
         }
 
+        public bool Locked
+        {
+            get
+            {
+                return locked;
+            }
+            set
+            {
+                locked = value;
+            }
+        }
+
+        public void OpenDoor()
+        {
+            if (isPowered && (!locked && isRunning))
+            {
+                if (!isLOpen && !isROpen)//should these be network vars? //opening
+                {
+                    OpenDoorServerRpc();
+                }
+            }
+        }
+        
+        public void CloseDoor()
+        {
+            if (isPowered && (!locked && isRunning))
+            {
+                if (isLOpen && isROpen)
+                {
+                    CloseDoorServerRpc();
+                }
+            }
+        }
+
         /// <summary>
         /// open this door
         /// </summary>
@@ -322,6 +366,7 @@ namespace ProjectUniverse.Animation.Controllers
             doorLIsOpen();
             doorRIsOpen();
             //green
+            audsrc.Play();
         }
 
         [ServerRpc(RequireOwnership = false)]
@@ -340,6 +385,7 @@ namespace ProjectUniverse.Animation.Controllers
             doorLIsClosed();
             doorRIsClosed();
             //green
+            audsrc.Play();
         }
 
         void OnTriggerEnter(Collider other)
@@ -501,6 +547,7 @@ namespace ProjectUniverse.Animation.Controllers
                     anim[1].Play("DoorRightClose");
                     doorRIsClosed();
                 }
+                audsrc.Play();
             }
         }
 
@@ -530,6 +577,7 @@ namespace ProjectUniverse.Animation.Controllers
                 {
                     panelRenderer[i].material = MaterialLibrary.GetDoorDisplayMaterials(0);
                 }
+                audsrc.Play();                
             }
         }
 

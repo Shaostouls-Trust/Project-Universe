@@ -55,13 +55,13 @@ namespace ProjectUniverse.Environment.Gas
                 float oxyGenRateThisUpdate = 0.0f;
                 for (int i = 0; i < connectedPipes.Length; i++)
                 {
-                    if (connectedPipes[i].GetGlobalPressure() < 1.0)
+                    if (connectedPipes[i].GlobalPressure < 1.0)
                     {
                         oxyGenRateThisUpdate = (oxyGenRate_m3s * Time.deltaTime);
                     }
                     else
                     {
-                        float lerpF = Mathf.Lerp(0f, 1.05f, connectedPipes[i].GetGlobalPressure());//rateAdjuster);
+                        float lerpF = Mathf.Lerp(0f, 1.05f, connectedPipes[i].GlobalPressure);//rateAdjuster);
                                                                                                    //Debug.Log("0-1.025 range lerp by global pressure: "+lerpF);
                                                                                                    //Lerp the rate by the pressure
                         oxyGenRateThisUpdate = Mathf.Lerp((oxyGenRate_m3s * Time.deltaTime), 0.0f, lerpF);
@@ -70,11 +70,13 @@ namespace ProjectUniverse.Environment.Gas
                     ///
                     /// Is creating this gas at these conditions part of the problem? 3.0m3 and 1.0atm in 0.4m3?
                     ///
+                    List<IGas> gasList = new List<IGas>();
                     IGas gasTest = new IGas("Oxygen", 70.0f, (float)Math.Round(oxyGenRateThisUpdate, 3), (float)Math.Round((1.0f * Time.deltaTime), 3), .4f);
                     gasTest.CalculateAtmosphericDensity();
+                    gasList.Add(gasTest);
                     //Debug.Log(gasTest.ToString());
-                    object[] atmoDatas = { gasTest.GetTemp(), gasTest.GetLocalPressure(), gasTest };
-                    if (connectedPipes[i].GetGlobalPressure() < 1.05)
+                    object[] atmoDatas = { gasTest.GetTemp(), gasTest.GetLocalPressure(), gasList };
+                    if (connectedPipes[i].GlobalPressure < 1.1)
                     {
                         //Debug.Log("Generating: " + gasTest.ToString());
                         connectedPipes[i].Receive(false, atmoDatas);

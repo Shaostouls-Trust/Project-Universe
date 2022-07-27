@@ -35,6 +35,7 @@ namespace ProjectUniverse.UI
         public void CloseUI()
         {
             player_Inventory.transform.gameObject.GetComponent<SupplementalController>().FreeScreenAndLockCursor();
+            player_Inventory.transform.gameObject.GetComponent<SupplementalController>().FleetBoyOut = false;
             this.gameObject.SetActive(false);
             //canTransfer = false;
         }

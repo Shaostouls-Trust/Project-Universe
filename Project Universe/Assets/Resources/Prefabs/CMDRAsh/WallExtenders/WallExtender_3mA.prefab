@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5531842417814467878}
   - component: {fileID: 7719726214345392620}
   - component: {fileID: 8998314885174959470}
+  - component: {fileID: 207578424309889181}
   m_Layer: 0
   m_Name: WallExtender_3mA
   m_TagString: Untagged
@@ -96,3 +97,16 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -143400038155774878, guid: 92f53a91693b8a741b5409ab329a96b3, type: 3}
+--- !u!65 &207578424309889181
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8079746247675322425}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.01, y: 2.65, z: 1}
+  m_Center: {x: -0.445, y: 1.475, z: 0}

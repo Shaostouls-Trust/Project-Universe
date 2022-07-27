@@ -135,6 +135,10 @@ namespace ProjectUniverse.Base
             {
                 return new MiningDrill[maxCap];
             }
+            else if(_originalType == typeof(IMachineWelder))
+            {
+                return new IMachineWelder[maxCap];
+            }
             else if(_originalType == typeof(Consumable_Throwable))
             {
                 return new Consumable_Throwable[maxCap];
@@ -160,7 +164,7 @@ namespace ProjectUniverse.Base
         public void AddItem(Consumable_Ore ore)
         {
             //Debug.Log("Adding ore...");
-            itemCount += ore.GetOreQuantity();
+            itemCount += ore.GetOreMass();
             //check the length of TArray. Increase size if need be.
             if(TArray.Length <= lastIndex)
             {
@@ -171,7 +175,7 @@ namespace ProjectUniverse.Base
         public void AddItem(Consumable_Ingot ingot)
         {
             //Debug.Log("Adding ingot...");
-            itemCount += ingot.GetIngotMass();
+            itemCount++;//+= ingot.GetIngotMass();
             //check the length of TArray. Increase size if need be.
             if (TArray.Length <= lastIndex)
             {
@@ -255,6 +259,16 @@ namespace ProjectUniverse.Base
             TArray.SetValue(drill, lastIndex++);
         }
 
+        public void AddItem(IMachineWelder welder)
+        {
+            itemCount++;
+            if (TArray.Length < lastIndex)
+            {
+                TArray = ExpandArrayBy(1);
+            }
+            TArray.SetValue(welder, lastIndex++);
+        }
+
         public void AddItem(Consumable_Throwable cons)
         {
             itemCount++;
@@ -282,32 +296,32 @@ namespace ProjectUniverse.Base
             if(typeof(stacktype) == typeof(Consumable_Ore))
             {
                 Consumable_Ore ore = TArray.GetValue(index) as Consumable_Ore;
-                returnstack = new ItemStack(ore.GetOreType(), 999, typeof(Consumable_Ore));
+                returnstack = new ItemStack(ore.GetOreType(), 9000, typeof(Consumable_Ore));
                 returnstack.AddItem(ore);
                 Debug.Log("return stack: " + returnstack);
             }
             else if (typeof(stacktype) == typeof(Consumable_Ingot))
             {
                 Consumable_Ingot ingot = TArray.GetValue(index) as Consumable_Ingot;
-                returnstack = new ItemStack(ingot.GetIngotType(), 99, typeof(Consumable_Ingot));
+                returnstack = new ItemStack(ingot.GetIngotType(), 9000, typeof(Consumable_Ingot));
                 returnstack.AddItem(ingot);
             }
             else if (typeof(stacktype) == typeof(Consumable_Material))
             {
                 Consumable_Material mat = TArray.GetValue(index) as Consumable_Material;
-                returnstack = new ItemStack(mat.GetMaterialID(), 99, typeof(Consumable_Material));
+                returnstack = new ItemStack(mat.GetMaterialID(), 9000, typeof(Consumable_Material));
                 returnstack.AddItem(mat);
             }
             else if (typeof(stacktype) == typeof(Consumable_Produce))
             {
                 Consumable_Produce prod = TArray.GetValue(index) as Consumable_Produce;
-                returnstack = new ItemStack(prod.ProduceType, 99, typeof(Consumable_Produce));
+                returnstack = new ItemStack(prod.ProduceType, 9000, typeof(Consumable_Produce));
                 returnstack.AddItem(prod);
             }
             else if (typeof(stacktype) == typeof(Consumable_Component))
             {
                 Consumable_Component comp = TArray.GetValue(index) as Consumable_Component;
-                returnstack = new ItemStack(comp.ComponentID, 99, typeof(Consumable_Component));
+                returnstack = new ItemStack(comp.ComponentID, 9000, typeof(Consumable_Component));
                 returnstack.AddItem(comp);
             }
             else if (typeof(stacktype) == typeof(Weapon_Gun))
@@ -358,7 +372,7 @@ namespace ProjectUniverse.Base
                 return null;
             }
             float runningAmount = 0.0f;
-            returnStack = new ItemStack(itemType, 999, _originalType);//create a standard sized container
+            returnStack = new ItemStack(itemType, 9000, _originalType);//create a standard sized container
             for (int i = TArray.Length - 1; i >= 0; i--)
             {
                 if (runningAmount != amountToRemove)
@@ -370,7 +384,7 @@ namespace ProjectUniverse.Base
                     {
                         Consumable_Ore tempOre = TArray.GetValue(i) as Consumable_Ore;//May throw null pointer
                                                                                       //if the last ore index material has the amount we need to remove
-                        if (tempOre.GetOreQuantity() >= amountToRemove)
+                        if (tempOre.GetOreMass() >= amountToRemove)
                         {
                             float need = amountToRemove - runningAmount;
                             tempOre.RemoveOreAmount(need);//amountToRemove
@@ -382,7 +396,7 @@ namespace ProjectUniverse.Base
                         }
                         else
                         {
-                            float temp = runningAmount + tempOre.GetOreQuantity();
+                            float temp = runningAmount + tempOre.GetOreMass();
                             //if the next index has some of the amount we need, and would not be emptied.
                             if (temp > amountToRemove)
                             {
@@ -398,7 +412,7 @@ namespace ProjectUniverse.Base
                             //if the next index has some of the amount we need, and would be empty completely.
                             else
                             {
-                                float need = tempOre.GetOreQuantity();
+                                float need = tempOre.GetOreMass();
                                 runningAmount += need;
                                 tempOre.RemoveOreAmount(need);//amoutToRemove
                                 Consumable_Ore newOre = new Consumable_Ore(tempOre.GetOreType(),
@@ -409,8 +423,9 @@ namespace ProjectUniverse.Base
                                 lastIndex -= 1;
                             }
                         }
-                        if (tempOre.GetOreQuantity() == 0)
+                        if (tempOre.GetOreMass() == 0)
                         {
+                            //Debug.Log("Remains: Null");
                             TArray.SetValue(null, i);
                             lastIndex -= 1;
                         }
@@ -576,7 +591,7 @@ namespace ProjectUniverse.Base
             //if(CompareMetaData(itemstack))
             //{
             //Add the two itemstack Lengths (amounts)
-            int tempCap = maxCount;
+            int tempCap = maxCount + itemstack.maxCount;
             itemCount += itemstack.Size();
             //now combine their data
             //We'll need to expand the array for when it goes overcap
@@ -747,8 +762,8 @@ namespace ProjectUniverse.Base
                     float mass = 0f;
                     if (_originalType == typeof(Consumable_Ingot))
                     {
-                        Consumable_Ingot ingot = TArray.GetValue(i) as Consumable_Ingot;
-                        mass = ingot.GetIngotMass();
+                        //Consumable_Ingot ingot = TArray.GetValue(i) as Consumable_Ingot;
+                        mass = 1f; //ingot.GetIngotMass();
                     }
                     else if (_originalType == typeof(Consumable_Ore))
                     {
@@ -835,15 +850,15 @@ namespace ProjectUniverse.Base
             {
                 return Category.Tool;
             }
-
-            //gadgets
-            else if(_originalType == typeof(IMachineWelder) || _originalType == typeof(MiningDrill))
+            else if(_originalType == typeof(IMachineWelder))
             {
-                return Category.Gadget;
+                return Category.Tool;
             }
 
+            //gadgets
+
             //gear
-            else if(_originalType == typeof(IEquipable))
+            else if (_originalType == typeof(IEquipable))
             {
                 return Category.Gear;
             }

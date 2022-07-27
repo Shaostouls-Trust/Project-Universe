@@ -19,7 +19,6 @@ namespace ProjectUniverse.Items
 
         void Start()
         {
-            //cargoRbd = GetComponent<Rigidbody>();
             OrdMass = cargoRbd.mass;
             //cargoui.UpdateDisplay(inventory);
             UpdateRBMass();
@@ -109,6 +108,32 @@ namespace ProjectUniverse.Items
             return inventory;
         }
 
+        public ItemStack RemoveFromInventory<stacktype>(ItemStack removeFromStack, int atIndex)
+        {
+            int stackIndex = -1;
+            for (int i = 0; i < inventory.Count; i++)
+            {
+                if (inventory[i] == removeFromStack)
+                {
+                    stackIndex = i;
+                }
+            }
+            if (stackIndex != -1)
+            {
+                Debug.Log("Removing: " + inventory[stackIndex].GetItemArray().GetValue(atIndex));
+                inventory[stackIndex].RemoveTArrayIndex<stacktype>(atIndex, out ItemStack stack);
+                if (inventory[stackIndex].GetRealLength() <= 0f)
+                {
+                    inventory.RemoveAt(stackIndex);
+                }
+                return stack;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public ItemStack Remove(int index)
         {
             ItemStack stack = inventory[index];
@@ -136,7 +161,10 @@ namespace ProjectUniverse.Items
         {
             //if (cargoRbd.mass > maxWeight)
             //{
-                for (int i = 0; i < inventory.Count; i++)
+            for (int i = 0; i < inventory.Count; i++)
+            {
+                Debug.Log("Checking: " + inventory[i]);
+                if (inventory[i] != null)
                 {
                     if (inventory[i].CompareMetaData(stack))
                     {
@@ -147,11 +175,12 @@ namespace ProjectUniverse.Items
                         return true;
                     }
                 }
+            }
             Debug.Log("Added to cont inventory");
             //if the return is not hit, then there are no other compatible itemstacks
             inventory.Add(stack);
-                //UpdateRBMass();
-                return true;
+            //UpdateRBMass();
+            return true;
             //}
             //else { return false; }
         }

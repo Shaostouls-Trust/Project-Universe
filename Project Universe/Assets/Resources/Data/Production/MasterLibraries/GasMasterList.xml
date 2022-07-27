@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GasDefinitions>
+	<Gas>
+		<Gas_Type STR_ID="Oxygen" />
+		<Flamability Value="4"/>
+		<Combustability Value="4"/>
+		<MolarMass Value="31.9988" />
+		<IsNuclear BoolValue="false" />
+		<Toxicity Value="0.0" />
+	</Gas>
+	<Gas>
+		<Gas_Type STR_ID="Hydrogen" />
+		<Flamability Value="4"/>
+		<Combustability Value="4"/>
+		<MolarMass Value="2.016" />
+		<IsNuclear BoolValue="false" />
+		<Toxicity Value="0.0" />
+	</Gas>
+	<Gas>
+		<Gas_Type STR_ID="CarbonDioxide" />
+		<Flamability Value="0"/>
+		<Combustability Value="0"/>
+		<MolarMass Value="44.0098" />
+		<IsNuclear BoolValue="false" />
+		<Toxicity Value="10.0" />
+	</Gas>
+	<Gas>
+		<Gas_Type STR_ID="WaterVapor" />
+		<Flamability Value="0"/>
+		<Combustability Value="0"/>
+		<MolarMass Value="31.9988" />
+		<IsNuclear BoolValue="false" />
+		<Toxicity Value="0.0" />
+	</Gas>
+	<Gas>
+		<Gas_Type STR_ID="Helium4" />
+		<Flamability Value="0"/>
+		<Combustability Value="0"/>
+		<MolarMass Value="4.003" />
+		<IsNuclear BoolValue="false" />
+		<Toxicity Value="0.0" />
+	</Gas>
+	<Gas>
+		<Gas_Type STR_ID="Chlorine" />
+		<Flamability Value="0"/>
+		<Combustability Value="0"/>
+		<MolarMass Value="70.906" />
+		<IsNuclear BoolValue="false" />
+		<Toxicity Value="0.1" />
+	</Gas>
+	<Gas>
+		<Gas_Type STR_ID="Helium3" />
+		<Flamability Value="0"/>
+		<Combustability Value="0"/>
+		<MolarMass Value="3.016" />
+		<IsNuclear BoolValue="false" />
+		<Toxicity Value="0.0" />
+	</Gas>
+	<Gas>
+		<Gas_Type STR_ID="Nitrogen" />
+		<Flamability Value="0"/>
+		<Combustability Value="0"/>
+		<MolarMass Value="24.014" />
+		<IsNuclear BoolValue="false" />
+		<Toxicity Value="0.0" />
+	</Gas>
+	<Gas>
+		<Gas_Type STR_ID="Flourine" />
+		<Flamability Value="0"/>
+		<Combustability Value="0"/>
+		<MolarMass Value="37.997" />
+		<IsNuclear BoolValue="false" />
+		<Toxicity Value="0.1" />
+	</Gas>
+	<Gas>
+		<Gas_Type STR_ID="Ethylene" />
+		<Flamability Value="10"/>
+		<Combustability Value="10"/>
+		<MolarMass Value="28.07" />
+		<IsNuclear BoolValue="false" />
+		<Toxicity Value="0.0" />
+	</Gas>
+	<Gas>
+		<Gas_Type STR_ID="Nitrous" />
+		<Flamability Value="5"/>
+		<Combustability Value="10"/>
+		<MolarMass Value="44.01"/>
+		<IsNuclear BoolValue="false" />
+		<Toxicity Value="0.0" />
+	</Gas>
+	<Gas>
+		<Gas_Type STR_ID="Ammonia" />
+		<Flamability Value="0"/>
+		<Combustability Value="6"/>
+		<MolarMass Value="17.03"/>
+		<IsNuclear BoolValue="false" />
+		<Toxicity Value="1.0" />
+	</Gas>
+	<Gas>
+		<Gas_Type STR_ID="HydrogenChloride" />
+		<Flamability Value="0"/>
+		<Combustability Value="0"/>
+		<MolarMass Value="36.461"/>
+		<IsNuclear BoolValue="false" />
+		<Toxicity Value="0.1" />
+	</Gas>
+	<Gas>
+		<Gas_Type STR_ID="SulfurDioxide" />
+		<Flamability Value="0"/>
+		<Combustability Value="0"/>
+		<MolarMass Value="64.07"/>
+		<IsNuclear BoolValue="false" />
+		<Toxicity Value="0.1" />
+	</Gas>
+	<Gas>
+		<Gas_Type STR_ID="SulfurTrioxide" />
+		<Flamability Value="0"/>
+		<Combustability Value="0"/>
+		<MolarMass Value="80.07"/>
+		<IsNuclear BoolValue="false" />
+		<Toxicity Value="0.1" />
+	</Gas>
+	<Gas>
+		<Gas_Type STR_ID="SulfuricAcid" />
+		<Flamability Value="0"/>
+		<Combustability Value="0"/>
+		<MolarMass Value="98.08"/>
+		<IsNuclear BoolValue="false" />
+		<Toxicity Value="0.1" />
+	</Gas>
+	<Gas>
+		<Gas_Type STR_ID="Deuterium" />
+		<Flamability Value="4"/>
+		<Combustability Value="4"/>
+		<MolarMass Value="4.028"/>
+		<IsNuclear BoolValue="false" />
+		<Toxicity Value="0.0" />
+	</Gas>
+	<Gas>
+		<Gas_Type STR_ID="Tritium" />
+		<Flamability Value="4"/>
+		<Combustability Value="4"/>
+		<MolarMass Value="6.032"/>
+		<IsNuclear BoolValue="true" />
+		<Toxicity Value="0.0" />
+	</Gas>
+</GasDefinitions>

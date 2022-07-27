@@ -1,0 +1,22 @@
+<Machine>
+		<MachData Machine_Type="Machine_BlastFurnace"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Recipe>
+			<Part Component="Component_SteelComponents" Quantity = "20"/>
+			<Part Component="Component_SuperHeatingElement" Quantity = "4"/>
+			<Part Component="Component_ControlInterface" Quantity = "1"/>
+			<Part Component="Component_Ceramic" Quantity = "10"/>
+			<Part Component="Component_HiCapSteelTank" Quantity = "4"/>
+		</Recipe>
+		<BaseLevel Level="1" />
+		<Upgrades> 
+			<Cost>
+				<Part Component="Component_SteelComponents" Quantity = "20"/>
+				<Part Component="Component_SuperHeatingElement" Quantity = "2"/>
+				<Part Component="Component_Ceramic" Quantity = "5"/>
+				<Part Component="Component_HiCapSteelTank" Quantity = "2"/>
+			</Cost>
+			<Level Level="2" /> 
+			<Level Level="3" />
+		</Upgrades>
+	</Machine>

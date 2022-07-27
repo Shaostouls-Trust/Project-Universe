@@ -54,7 +54,7 @@ namespace ProjectUniverse.Animation.Controllers
             //pass in the emissive meshes
 
             GameObject[] objs = { greenObj, redObj, yellowObj };
-            Debug.Log("Server Switch Toggle");
+            //Debug.Log("Server Switch Toggle");
             GetComponentInParent<IBreakerBox>().SwitchToggleServerRpc(numID);//, ref objs);
         }
     }

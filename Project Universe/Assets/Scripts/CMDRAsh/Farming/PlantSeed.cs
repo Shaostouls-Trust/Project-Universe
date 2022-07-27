@@ -40,7 +40,7 @@ namespace ProjectUniverse.Items.Consumable
         public void RemoveSeedFromPlayerInventory()
         {
             Consumable_Produce produceSeeds = new Consumable_Produce(plantType.ToString() + "_Seeds", 1);
-            ItemStack seedStack = new ItemStack(plantType.ToString() + "_Seeds", 999, typeof(Consumable_Produce));
+            ItemStack seedStack = new ItemStack(plantType.ToString() + "_Seeds", 9000, typeof(Consumable_Produce));
             seedStack.AddItem(produceSeeds);
             //playerInventory.RemoveFromPlayerInventory(seedStack);
             Debug.Log("Remove seed");

@@ -7,5 +7,5 @@ using Unity.Collections;
 
 public struct Component_Name : IComponentData
 {
-    public FixedString64 name; //GUID?
+    public FixedString64Bytes name; //GUID?
 }

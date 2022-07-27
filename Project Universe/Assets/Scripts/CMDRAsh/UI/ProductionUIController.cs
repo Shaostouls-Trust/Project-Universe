@@ -9,6 +9,7 @@ using ProjectUniverse.Production.Machines;
 using ProjectUniverse.Data.Libraries.Definitions;
 using ProjectUniverse.Data.Libraries;
 using MLAPI;
+using System.Text.RegularExpressions;
 
 namespace ProjectUniverse.UI
 {
@@ -17,14 +18,15 @@ namespace ProjectUniverse.UI
         private GameObject player;
         [SerializeField] private GameObject Factory;
         public TMP_Text recipeList;
-        public TMP_Dropdown dropDownMenu;
         public TMP_InputField productionCount;
-        public TMP_Text prodInventory;
         public Button startButton;
         public Button stopButton;
         public GameObject productionBar;
+        public GameObject buttonPrefab;
+        public GameObject buttonParent;
         private List<ItemStack> inputmats;
-        private int productionAmount;
+        private List<IComponentDefinition> compDefs = new List<IComponentDefinition>();
+        private int productionAmount = 1;
         private IComponentDefinition component;
         private bool canProduce;
         private bool startLock;
@@ -32,7 +34,6 @@ namespace ProjectUniverse.UI
         // Start is called before the first frame update
         void Start()
         {
-            Debug.Log("START");
             if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
             {
                 player = networkedClient.PlayerObject.gameObject;
@@ -42,35 +43,57 @@ namespace ProjectUniverse.UI
             canProduce = true;
             startLock = false;
             //clear options
-            dropDownMenu.options.Clear();
+            for (int i = buttonParent.transform.childCount - 1; i >= 0; i--)
+            {
+                Destroy(buttonParent.transform.GetChild(i).gameObject);
+            }
+
+            int c = 0;
             //for every component in the ComponentsLibrary, add an option
             foreach (IComponentDefinition compDef in IComponentLibrary.ComponentDictionary.Values)
             {
-                TMP_Dropdown.OptionData tmpOpDat = new TMP_Dropdown.OptionData(compDef.GetComponentType().Split('_')[1]);//split off "Component_"
-                dropDownMenu.options.Add(tmpOpDat);
+                compDefs.Add(compDef);
+                string nameJoined = compDef.GetComponentType().Split('_')[1];//split off "Component_"
+                //put a space between all caps
+                var reg = new Regex(@"
+                (?<=[A-Z])(?=[A-Z][a-z]) |
+                (?<=[^A-Z])(?=[A-Z]) |
+                (?<=[A-Za-z])(?=[^A-Za-z])", RegexOptions.IgnorePatternWhitespace);
+                string nameSpaced = reg.Replace(nameJoined, " ");
+                //instanciate a button
+                GameObject bttn = Instantiate(buttonPrefab, buttonParent.transform);
+                bttn.transform.GetChild(0).GetComponent<TMP_Text>().text = nameSpaced;
+                //OnClick pass int to button. Use int to get component def
+                int a = c;
+                c++;
+                bttn.GetComponent<Button>().onClick.AddListener(delegate { OnComponentSelect(a); });
             }
             //display the recipe of the first selected item
             productionCount.text = "1";
-            /// DropDownListener must be called first.
-            DropDownListener();//dropDownMenu
-            UpdateProductionCount();
-            UpdateProductionInventory();
-            //now register an event caller for the dropdown
-            dropDownMenu.onValueChanged.AddListener(delegate { DropDownListener(); });//dropDownMenu
             productionCount.onValueChanged.AddListener(delegate { UpdateProductionCount(); });
             startButton.onClick.AddListener(delegate { StartFactory(); });
             stopButton.onClick.AddListener(delegate { CloseUI(); });
+        }
+
+        public void OnComponentSelect(int idx)
+        {
+            //Debug.Log(idx);
+            string str = compDefs[idx].GetComponentType();
+            Factory.GetComponent<Mach_DevFactory>().ProduceComponent = str;
+            component = compDefs[idx];
+            //Debug.Log("Selected: " + str);
+            UpdateUI();
         }
 
         public void DropDownListener()//TMP_Dropdown dropMenu
         {
             //get the component's requirements
 
-            int index = dropDownMenu.value;
-            string str = "Component_"+dropDownMenu.options[index].text;
+            int index = 0;//dropDownMenu.value;
+            string str = "Component_";// +dropDownMenu.options[index].text;
             Factory.GetComponent<Mach_DevFactory>().ProduceComponent = str;
             IComponentLibrary.ComponentDictionary.TryGetValue(str, out component);
-            Debug.Log(str);
+            Debug.Log("Selected: "+str);
             UpdateUI();
         }
 
@@ -82,11 +105,12 @@ namespace ProjectUniverse.UI
             canProduce = true;
 
             ResetProgressBar();
-            UpdateProductionInventory();
+            //UpdateProductionInventory();
             //DropDownListener();
 
             List<(string, int)> compsIn = new List<(string, int)>();
 
+            //fill the compsIn temp tuple list with the contents of the player production inventory
             for (int a = 0; a < inputmats.Count; a++)
             {
                 //if (inputmats[a].GetOriginalType() == typeof(IComponentDefinition))
@@ -100,16 +124,13 @@ namespace ProjectUniverse.UI
             string compile = "";
             for (int i = 0; i < compRecipe.Count; i++)
             {
-                //Debug.Log(compRecipe[i].Item1.GetComponentType());
                 for (int r = 0; r < compsIn.Count; r++)
                 {
-                    //Debug.Log(compRecipe[i].Item1.GetComponentType() + " == " + compsIn[r].Item1);
                     if (compRecipe[i].Item1.GetComponentType() == compsIn[r].Item1)
                     {
                         count += compsIn[r].Item2;
                     }
                 }
-                //Debug.Log("CompRecipe count: "+count);
                 compile += compRecipe[i].Item1.GetComponentType() + ": " + count + "/" + (compRecipe[i].Item2 * productionAmount) + "\n";
                 //if we lack the required materials
                 if (count < compRecipe[i].Item2 * productionAmount)
@@ -121,16 +142,13 @@ namespace ProjectUniverse.UI
             count = 0;
             for (int j = 0; j < ingotRecipe.Count; j++)
             {
-                //Debug.Log(ingotRecipe[j].Item1.GetIngotType());
                 for (int r = 0; r < compsIn.Count; r++)
                 {
-                    //Debug.Log(ingotRecipe[j].Item1.GetIngotType() + " == " + compsIn[r].Item1);
                     if (ingotRecipe[j].Item1.GetIngotType() == compsIn[r].Item1)
                     {
                         count += compsIn[r].Item2;
                     }
                 }
-                // Debug.Log("IngotRecipe count: " + count);
                 compile += ingotRecipe[j].Item1.GetIngotType() + ": " + count + "/" + (ingotRecipe[j].Item2 * productionAmount) + "\n";
                 if (count < ingotRecipe[j].Item2 * productionAmount)
                 {
@@ -140,16 +158,13 @@ namespace ProjectUniverse.UI
             count = 0;
             for (int k = 0; k < matRecipe.Count; k++)
             {
-                //Debug.Log(matRecipe[k].Item1.GetMaterialType());
                 for (int r = 0; r < compsIn.Count; r++)
                 {
-                    //Debug.Log(compRecipe[i].Item1.GetComponentType() + " == " + compsIn[r].Item1);
                     if (matRecipe[k].Item1.GetMaterialType() == compsIn[r].Item1)
                     {
                         count += compsIn[r].Item2;
                     }
                 }
-                //Debug.Log("MatRecipe count: " + count);
                 compile += matRecipe[k].Item1.GetMaterialType() + ": " + count + "/" + (matRecipe[k].Item2 * productionAmount) + "\n";
                 if (count < matRecipe[k].Item2 * productionAmount)
                 {
@@ -158,20 +173,6 @@ namespace ProjectUniverse.UI
             }
             //set the compile string
             recipeList.text = compile;
-            //unlock production button
-            startLock = !startLock;
-            startButton.interactable = true;
-        }
-
-        public void UpdateProductionInventory()//List<ItemStack> inputMats
-        {
-            string compile = "";
-            for (int k = 0; k < inputmats.Count; k++)
-            {
-                compile += "" + inputmats[k].GetStackType() + ": " + inputmats[k].Size() + "\n";
-            }
-            //Debug.Log("inventory compile: "+compile);
-            prodInventory.text = compile;
         }
 
         public void UpdateInputMaterials(List<ItemStack> input)
@@ -197,6 +198,13 @@ namespace ProjectUniverse.UI
 
         public void LockScreenAndFreeCursor()
         {
+            if (player == null)
+            {
+                if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
+                {
+                    player = networkedClient.PlayerObject.gameObject;
+                }
+            }
             player.GetComponent<SupplementalController>().LockScreenAndFreeCursor();
         }
 

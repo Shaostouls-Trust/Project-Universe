@@ -1,23 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ComponentDefinitions>
 	<Component>
-		<CompData Component_Type="Component_" Quantity = "1"/>
-		<Factory/>DevFactory<Factory/>
-		<Health Value="100"/>
-		<Priority Value="1"/>
-		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
-		<Recipe>
-			<Part Ingot = "Ingot_Gold" Quantity = "1"/>
-		</Recipe>
-	</Component>
-	<Component>
 		<CompData Component_Type="Component_3DProjectorBase" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
 		<Health Value="275"/>
 		<Priority Value="5"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -27,7 +17,7 @@
 		<Priority Value="4"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -37,7 +27,7 @@
 		<Priority Value="4"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -47,7 +37,7 @@
 		<Priority Value="5"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -57,7 +47,7 @@
 		<Priority Value="1"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_AluminumComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -77,7 +67,7 @@
 		<Priority Value="4"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -87,7 +77,7 @@
 		<Priority Value="1"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_BrassComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -97,7 +87,7 @@
 		<Priority Value="1"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_BrassComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -111,23 +101,13 @@
 		</Recipe>
 	</Component>
 	<Component>
-		<CompData Component_Type="Component_BronzePlating" Quantity = "1"/>
-		<Factory/>DevFactory<Factory/>
-		<Health Value="115"/>
-		<Priority Value="1"/>
-		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
-		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
-		</Recipe>
-	</Component>
-	<Component>
 		<CompData Component_Type="Component_BulletproofGlass" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
 		<Health Value="100"/>
 		<Priority Value="1"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -137,7 +117,7 @@
 		<Priority Value="5"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -147,7 +127,7 @@
 		<Priority Value="4"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -157,7 +137,7 @@
 		<Priority Value="3"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Ingot="Ingot_Copper" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -167,7 +147,7 @@
 		<Priority Value="1"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -177,7 +157,7 @@
 		<Priority Value="2"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -207,7 +187,7 @@
 		<Priority Value="1"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_CopperComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -237,7 +217,7 @@
 		<Priority Value="1"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -257,7 +237,7 @@
 		<Priority Value="5"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -267,7 +247,7 @@
 		<Priority Value="1"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -277,7 +257,7 @@
 		<Priority Value="2"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -287,7 +267,7 @@
 		<Priority Value="2"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Ingot="Ingot_ChromeSteel" Quantity = "4"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -297,7 +277,7 @@
 		<Priority Value="2"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -307,7 +287,7 @@
 		<Priority Value="6"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -317,7 +297,7 @@
 		<Priority Value="3"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -327,7 +307,7 @@
 		<Priority Value="5"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -337,7 +317,7 @@
 		<Priority Value="3"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -347,7 +327,7 @@
 		<Priority Value="6"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -357,7 +337,7 @@
 		<Priority Value="3"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -367,7 +347,7 @@
 		<Priority Value="4"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -377,7 +357,7 @@
 		<Priority Value="4"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -387,7 +367,7 @@
 		<Priority Value="3"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -397,7 +377,7 @@
 		<Priority Value="2"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -407,7 +387,7 @@
 		<Priority Value="1"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -417,7 +397,7 @@
 		<Priority Value="2"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -437,7 +417,7 @@
 		<Priority Value="1"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -457,7 +437,7 @@
 		<Priority Value="4"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -467,7 +447,7 @@
 		<Priority Value="5"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -477,7 +457,7 @@
 		<Priority Value="3"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -487,7 +467,7 @@
 		<Priority Value="2"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -497,7 +477,7 @@
 		<Priority Value="4"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -507,7 +487,7 @@
 		<Priority Value="3"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -517,7 +497,8 @@
 		<Priority Value="2"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Ingot="Ingot_Nickel" Quantity = "5"/>
+			<Part Ingot="Ingot_Titanium" Quantity = "5"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -527,7 +508,7 @@
 		<Priority Value="6"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -537,7 +518,7 @@
 		<Priority Value="2"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Ingot="Ingot_Steel" Quantity = "10"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -547,7 +528,7 @@
 		<Priority Value="3"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -557,7 +538,7 @@
 		<Priority Value="4"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -587,7 +568,7 @@
 		<Priority Value="2"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -597,7 +578,7 @@
 		<Priority Value="1"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -617,7 +598,7 @@
 		<Priority Value="3"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -627,7 +608,7 @@
 		<Priority Value="4"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -637,7 +618,7 @@
 		<Priority Value="1"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -647,7 +628,7 @@
 		<Priority Value="1"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -667,7 +648,7 @@
 		<Priority Value="1"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -677,7 +658,7 @@
 		<Priority Value="2"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -687,7 +668,7 @@
 		<Priority Value="6"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -697,7 +678,7 @@
 		<Priority Value="2"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -707,7 +688,7 @@
 		<Priority Value="3"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -717,7 +698,7 @@
 		<Priority Value="3"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -727,7 +708,7 @@
 		<Priority Value="4"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -737,7 +718,7 @@
 		<Priority Value="5"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -757,7 +738,8 @@
 		<Priority Value="2"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Ingot="Ingot_Nickel" Quantity = "3"/>
+			<Part Ingot="Ingot_Titanium" Quantity = "4"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -767,7 +749,7 @@
 		<Priority Value="6"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -777,7 +759,7 @@
 		<Priority Value="6"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -787,7 +769,7 @@
 		<Priority Value="3"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -807,7 +789,7 @@
 		<Priority Value="3"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -817,7 +799,7 @@
 		<Priority Value="1"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -847,7 +829,7 @@
 		<Priority Value="5"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -867,7 +849,7 @@
 		<Priority Value="3"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -877,7 +859,7 @@
 		<Priority Value="4"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -887,7 +869,7 @@
 		<Priority Value="4"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -897,7 +879,7 @@
 		<Priority Value="4"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -907,7 +889,7 @@
 		<Priority Value="3"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -927,7 +909,7 @@
 		<Priority Value="4"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -947,7 +929,7 @@
 		<Priority Value="4"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -957,7 +939,7 @@
 		<Priority Value="2"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -967,7 +949,7 @@
 		<Priority Value="4"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -977,7 +959,7 @@
 		<Priority Value="4"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -987,7 +969,7 @@
 		<Priority Value="4"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -997,7 +979,7 @@
 		<Priority Value="3"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -1007,7 +989,7 @@
 		<Priority Value="2"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -1037,7 +1019,8 @@
 		<Priority Value="1"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Ingot="Ingot_Lead" Quantity = "1"/>
+			<Part Ingot="Ingot_Tin" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -1047,7 +1030,7 @@
 		<Priority Value="1"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Ingot="Ingot_Steel" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -1057,7 +1040,7 @@
 		<Priority Value="3"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -1067,7 +1050,7 @@
 		<Priority Value="2"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Ingot="Ingot_Steel" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -1108,7 +1091,7 @@
 		<Priority Value="2"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Ingot="Ingot_Titanium" Quantity = "4"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -1128,7 +1111,7 @@
 		<Priority Value="5"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -1138,7 +1121,7 @@
 		<Priority Value="3"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -1148,17 +1131,17 @@
 		<Priority Value="2"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
-		<CompData Component_Type="Component_TinyAluminRod" Quantity = "1"/>
+		<CompData Component_Type="Component_TinyAluminumRod" Quantity = "1"/>
 		<Factory/>DevFactory<Factory/>
 		<Health Value="15"/>
 		<Priority Value="2"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -1168,7 +1151,7 @@
 		<Priority Value="2"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -1178,7 +1161,7 @@
 		<Priority Value="2"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -1188,7 +1171,7 @@
 		<Priority Value="4"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "2"/>
+			<Part Component="Component_IronComponents" Quantity = "2"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -1198,7 +1181,7 @@
 		<Priority Value="5"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -1208,7 +1191,7 @@
 		<Priority Value="3"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -1279,6 +1262,26 @@
 			<Part Ingot="Ingot_Zinc" Quantity = "1"/>
 		</Recipe>
 	</Component>
+	<Component>
+		<CompData Component_Type="Component_Explosive" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<Health Value="50"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
+		<Recipe>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
+		</Recipe>
+	</Component>
+	<Component>
+		<CompData Component_Type="Component_HighExplosive" Quantity = "1"/>
+		<Factory/>DevFactory<Factory/>
+		<Health Value="100"/>
+		<Priority Value="2"/>
+		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
+		<Recipe>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
+		</Recipe>
+	</Component>
 	
 	<!--CRITICAL COMPONENTS -->
 	<Component>
@@ -1288,7 +1291,7 @@
 		<Priority Value="5"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -1298,7 +1301,7 @@
 		<Priority Value="5"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -1308,7 +1311,7 @@
 		<Priority Value="5"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -1318,7 +1321,7 @@
 		<Priority Value="5"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -1328,7 +1331,7 @@
 		<Priority Value="5"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -1338,7 +1341,7 @@
 		<Priority Value="5"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 	<Component>
@@ -1348,7 +1351,7 @@
 		<Priority Value="5"/>
 		<ResourcePath Path="Prefabs\CMDRAsh\Props\Components\ComponentWorldDummy" />
 		<Recipe>
-			<Part Component="Component_" Quantity = "1"/>
+			<Part Component="Component_IronComponents" Quantity = "1"/>
 		</Recipe>
 	</Component>
 </ComponentDefinitions>

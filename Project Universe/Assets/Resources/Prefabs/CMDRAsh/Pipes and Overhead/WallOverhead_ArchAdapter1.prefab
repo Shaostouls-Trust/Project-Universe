@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 461247203348092272}
   - component: {fileID: 2414592040024433082}
   - component: {fileID: 1128053011026066204}
+  - component: {fileID: 5379461696398785622}
   m_Layer: 0
   m_Name: WallOverhead_ArchAdapter1
   m_TagString: Untagged
@@ -94,7 +95,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7937c6540c271584688a51ff10620548, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gasses: []
   neighbors: []
   temp: 0
   tempTol:
@@ -112,3 +112,17 @@ MonoBehaviour:
   ductVolume: {fileID: 0}
   insulationRating: 0.1
   burst: 0
+--- !u!64 &5379461696398785622
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4216115660189319279}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -3918845510609679134, guid: c7afc9554b4cd1645b9fc7046f41e1ff, type: 3}

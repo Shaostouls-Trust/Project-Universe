@@ -17,7 +17,6 @@ namespace ProjectUniverse.Environment.World
         private int zone;
         private float mass;
         //mine in 10Kg parts
-        //5 sec for 10Kg
         private float mineHealth = 2.5f;
 
         public OreDefinition OreDef
@@ -51,9 +50,10 @@ namespace ProjectUniverse.Environment.World
         {
             //mass is the volume of the rock times the normal density of the rock
             //We won't always have a box collider!
-            Vector3 size = GetComponent<BoxCollider>().size;//we need the scale not the size
+            Vector3 size = transform.lossyScale;//GetComponent<BoxCollider>().size;//we need the scale not the size
             float vol = size.x * size.y * size.z;
             mass = vol * nDensity;
+            GetComponent<Rigidbody>().mass = mass;
             //set material to ore, otherwise set it to the default zone material
             if (OreDef != null)
             {
@@ -118,7 +118,7 @@ namespace ProjectUniverse.Environment.World
                 mass -= 10;//10Kg per load
                 if (OreDef != null)//only if it's ore. What will we do if it's stone?
                 {
-                    stack = new ItemStack(OreDef.GetOreType(), 999, typeof(Consumable_Ore));
+                    stack = new ItemStack(OreDef.GetOreType(), 9000, typeof(Consumable_Ore));
                     //Debug.Log(OreDef.GetOreType());
                     Consumable_Ore ore = new Consumable_Ore(OreDef.GetOreType(), Quality, Zone, 10);
                     stack.AddItem(ore);

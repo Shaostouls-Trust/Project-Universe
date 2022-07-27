@@ -17,7 +17,7 @@ namespace ProjectUniverse.Player.PlayerController
 
         public void UpdateHeight(float newHeightRaw)
         {
-            transform.localPosition = new Vector3(0f, newHeightRaw - 0.15f, 0f);
+            transform.localPosition = new Vector3(0f, newHeightRaw - 0.14f, 0f);
         }
     }
 }

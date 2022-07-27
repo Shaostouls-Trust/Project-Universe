@@ -35,6 +35,7 @@ namespace ProjectUniverse.Data.Libraries
 				int priority;
 				string RssPath;
 				int processed = 0;
+				int regened = 0;
 				string recMat;
 				int recQ;
 				MaterialDefinition matDef;
@@ -104,7 +105,10 @@ namespace ProjectUniverse.Data.Libraries
 										{
 											//a required component def does not exist yet,
 											//so we need to return to this compdef later
-											returnTo.Add(recMat);
+											if (!returnTo.Contains(recMat))
+											{
+												returnTo.Add(recMat);
+											}
 										}
 									}
 									newCompDef.CalculateBuildTime();
@@ -113,12 +117,12 @@ namespace ProjectUniverse.Data.Libraries
 							processed++;
 						}
 					}
-					//loop through returnTo as many times as it takes to compile the recipes
+					//loop through returnTo to compile the recipes
 					//Runs a max of two times
-					//need a safeguard to not and dupes to recipe.
+					//need a safeguard to not dupe a recipe.
 					int runs = 0;
-
-					while (returnTo.Count > 0 && runs < 2)
+					
+					while (returnTo.Count > 0 && runs < 1)
 					{
 						Debug.Log("ReturnTo count: " + returnTo.Count + "; runs: " + runs);
 						runs++;
@@ -127,15 +131,15 @@ namespace ProjectUniverse.Data.Libraries
 							foreach (XElement comp in compDefs.Elements("Component"))
 							{
 								string type = comp.Element("CompData").Attribute("Component_Type").Value;
-								if (returnTo.Contains(type))
+								foreach (XElement recipe in comp.Descendants("Recipe"))
 								{
-									foreach (XElement recipe in comp.Descendants("Recipe"))
+									foreach (XElement part in recipe.Elements("Part"))
 									{
-										foreach (XElement part in recipe.Elements("Part"))
+										if (part.Attribute("Component") != null)
 										{
-											if (part.Attribute("Component") != null)
-											{
-												recMat = part.Attribute("Component").Value;
+											//Debug.Log(type);
+											recMat = part.Attribute("Component").Value;
+											if (returnTo.Contains(recMat)) { 
 												recQ = int.Parse(part.Attribute("Quantity").Value);
 												if (ICL_ComponentDictionary.TryGetValue(recMat, out comDef))
 												{
@@ -143,10 +147,11 @@ namespace ProjectUniverse.Data.Libraries
 													List<(IComponentDefinition, int)> complist = comDef.GetComponentRecipeList();
 													if (!complist.Contains((comDef, recQ)))
 													{
-														Debug.Log("Missing Component Found");
+														regened++;
+														//Debug.Log("Missing " + recMat + "... Added");
 														ICL_ComponentDictionary.TryGetValue(type, out IComponentDefinition thisCompDef);
 														thisCompDef.AddToRecipe(comDef, recQ);
-														returnTo.Remove(type);
+														//returnTo.Remove(type);
 														thisCompDef.CalculateBuildTime();
 													}
 												}
@@ -162,6 +167,7 @@ namespace ProjectUniverse.Data.Libraries
 						}
 					}
 				}
+				Debug.Log("Regenerated " + regened + " Recipes");
 				Debug.Log("Processed Components:" + processed);
 				Debug.Log("Component Library Construction Finished");
 				ComponentDictionary = ICL_ComponentDictionary;

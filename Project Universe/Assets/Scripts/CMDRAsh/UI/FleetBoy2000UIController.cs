@@ -70,7 +70,7 @@ public class FleetBoy2000UIController : MonoBehaviour
     /// </summary>
     public void Refresh()
     {
-        Debug.Log("refresh UI");
+        //Debug.Log("refresh UI");
         if (invOpen)
         {
             //refresh inventory.
