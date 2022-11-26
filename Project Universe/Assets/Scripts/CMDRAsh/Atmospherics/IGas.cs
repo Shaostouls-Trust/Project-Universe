@@ -25,6 +25,7 @@ namespace ProjectUniverse.Environment.Gas {
         private bool nuclear;
         private float toxicity;//ppm/1,000,000 or (0-100% composition) in some volume.
         private float MolarMass = 31.9988f;//15.9994 is for one O. oxygen is diatomic, so 
+        private float specificHeat;
         //Mixed Property
         private float density;//in g/L IE oxygen is 1.427 g/L at 1 atm, 273.15K
         //Instanced property
@@ -55,6 +56,7 @@ namespace ProjectUniverse.Environment.Gas {
                 nuclear = definition.IsNuclear;
                 toxicity = definition.Toxicity;
                 MolarMass = definition.MolarMass;
+                specificHeat = definition.SpecificHeat;
             }
         }
 
@@ -73,6 +75,7 @@ namespace ProjectUniverse.Environment.Gas {
                 nuclear = definition.IsNuclear;
                 toxicity = definition.Toxicity;
                 MolarMass = definition.MolarMass;
+                specificHeat = definition.SpecificHeat;
             }
         }
 
@@ -91,6 +94,7 @@ namespace ProjectUniverse.Environment.Gas {
                 nuclear = definition.IsNuclear;
                 toxicity = definition.Toxicity;
                 MolarMass = definition.MolarMass;
+                specificHeat = definition.SpecificHeat;
             }
         }
 
@@ -119,11 +123,21 @@ namespace ProjectUniverse.Environment.Gas {
             return toxicity;
         }
 
+        public float SpecificHeat
+        {
+            get { return specificHeat; }
+        }
+
         //Temp will affect density
         public float GetTemp()
         {
             return temp;
         }
+
+        //public float TempKelvin
+        //{
+        //    get { return (5f/9f) * (temp - 32f) + 273.15f; }
+        //}
 
         //Density value will be at STP.
         public float GetDensity()
@@ -137,10 +151,22 @@ namespace ProjectUniverse.Environment.Gas {
             return concentration;
         }
 
+        public void AddConcentration(float amount)
+        {
+            concentration += amount;
+        }
+        
         public void SetTemp(float newTemp)
         {
+            //Debug.Log(newTemp);
             temp = newTemp;
         }
+
+        //public void SetTempKelvin(float kelvin)
+        //{
+        //    temp = ((temp - 273.15f) * (9f / 5f)) + 32f;
+        //}
+        
         public void SetDensity(float newDensity)
         {
             density = newDensity;

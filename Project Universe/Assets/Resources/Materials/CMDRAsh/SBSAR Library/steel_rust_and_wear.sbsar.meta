@@ -22,9 +22,9 @@ ScriptedImporter:
     shaderName: HDRP/LitTessellation
     materialProperties:
       shader: {fileID: 4800000, guid: 756bac9090102564582875f4c7e30202, type: 3}
-      shaderKeywords: _DISPLACEMENT_LOCK_TILING_SCALE _GLOSSINESSMAP _HEIGHTMAP _MASKMAP
-        _METALLICGLOSSMAP _NA_DIFFUSE _NORMALMAP _NORMALMAP_TANGENT_SPACE _ROUGHNESSMAP
-        _SPECULARCOLORMAP _TESSELLATION_DISPLACEMENT _VERTEX_DISPLACEMENT_LOCK_OBJECT_SCALE
+      shaderKeywords: _DISABLE_SSR_TRANSPARENT _DISPLACEMENT_LOCK_TILING_SCALE _GLOSSINESSMAP
+        _HEIGHTMAP _MASKMAP _METALLICGLOSSMAP _NA_DIFFUSE _NORMALMAP _NORMALMAP_TANGENT_SPACE
+        _ROUGHNESSMAP _SPECULARCOLORMAP _TESSELLATION_DISPLACEMENT _VERTEX_DISPLACEMENT_LOCK_OBJECT_SCALE
       lightmapFlags: 4
       enableInstancingVariants: 1
       doubleSidedGI: 0
@@ -37,7 +37,7 @@ ScriptedImporter:
       - name: _BaseColorMap
         texture: {fileID: -7025870977258298751, guid: deae859fa0bc92342ab80159441dd68f,
           type: 3}
-        scale: {x: 1, y: 1}
+        scale: {x: 1, y: 10}
         offset: {x: 0, y: 0}
       - name: _BentNormalMap
         texture: {instanceID: 0}
@@ -227,7 +227,7 @@ ScriptedImporter:
       - name: _HeightTessCenter
         float: 0.5
       - name: _InvTilingScale
-        float: 1
+        float: 0.18181819
       - name: _Ior
         float: 1
       - name: _IridescenceMask

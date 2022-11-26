@@ -14,7 +14,7 @@ namespace ProjectUniverse.Environment.Volumes
     public sealed class VolumeAtmosphereController : MonoBehaviour
     {
         private float roomPressure;
-        [SerializeField] private float roomTemp;
+        [SerializeField] private float roomTemp;//rooms cool to -200f over time, without heating
         [SerializeField] private float roomOxygenation;
         [SerializeField] private float roomVolume;
         [SerializeField] private float humidity;
@@ -32,14 +32,24 @@ namespace ProjectUniverse.Environment.Volumes
         [SerializeField] private int OxygenatedRoom_Priority = 10;
         [SerializeField] private int DeOxygenatedRoom_Priority = 9;
         [SerializeField] public List<PipeSection> volumeGasPipeSections;
+        [SerializeField] private bool autoFill;
         public int limiter = 30;
+        private float qHeatLossPerSec = -40000f;
 
         private void Start()
         {
             roomVolume = (gameObject.GetComponent<BoxCollider>().size.x *
                 gameObject.GetComponent<BoxCollider>().size.y *
                 gameObject.GetComponent<BoxCollider>().size.z);
-            //roomGases.Add(new IGas("Oxygen", 70, roomVolume, 1.0f, roomVolume));
+            
+            if (autoFill)
+            {
+                AddRoomGas(new IGas("Oxygen", 60f, roomVolume, 1.0f, roomVolume));
+            }
+            
+            qHeatLossPerSec = ((gameObject.GetComponent<BoxCollider>().size.x * 2f) +
+                (gameObject.GetComponent<BoxCollider>().size.y * 2f) +
+                (gameObject.GetComponent<BoxCollider>().size.z * 2f)) * -40000f;//-1240000J per 51300L 19-3-9 rm
         }
 
         public float Temperature
@@ -74,6 +84,13 @@ namespace ProjectUniverse.Environment.Volumes
         ///go through equalization.
         void FixedUpdate()
         {
+            ///
+            /// Room temp will slowly drop to -200f over time without the addition of heat through radiators.
+            /// Radiators will heat the room according to how open the radiator valve is.
+            /// Larger rooms heat and cool more slowly b/c room gasses will must heat and cool as well.
+            /// 
+            RoomHeatAmbiLoss();
+
             ///UnityEngine.Profiling.Profiler.BeginSample("Volume Equalization");
             //combine all same gasses in the volume
             //if (roomGases.Count > 1)
@@ -215,7 +232,7 @@ namespace ProjectUniverse.Environment.Volumes
                 {
                     bool compiled = false;
                     IGasPipe burstPipe = sectionList[j];
-                    if (burstPipe.AppliedPressure > burstPipe.MaxPressure)
+                    if (burstPipe.GlobalPressure > burstPipe.MaxPressure)
                     {
                         burstPipe.IsBurst = true;
                     }
@@ -277,12 +294,80 @@ namespace ProjectUniverse.Environment.Volumes
             ///Profiler.EndSample();
         }
 
+        public void RoomHeatAmbiLoss()
+        {
+            float massGas = 0f;
+            float averageCp = 0f;
+            if (roomGases.Count > 0)
+            {
+                for (int q = 0; q < RoomGasses.Count; q++)
+                {
+                    IGas gas = RoomGasses[q];
+                    massGas += gas.GetConcentration() * 1000f * gas.GetDensity();
+                    averageCp += gas.SpecificHeat;
+                }
+                averageCp /= RoomGasses.Count;
+                float dt = (qHeatLossPerSec / (massGas * averageCp))/RoomGasses.Count;
+                ///
+                /// This is all in F but we are subtracting K.
+                /// As a temporary measure, multiple k dt by 5/9
+                dt *= (5f / 9f);
+                //Debug.Log(dt * Time.deltaTime);
+                for (int q = 0; q < RoomGasses.Count; q++)
+                {
+                    float temper = RoomGasses[q].GetTemp();
+                    temper += (dt * Time.deltaTime);
+                    //Debug.Log(temper);
+                    RoomGasses[q].SetTemp(temper);
+                }
+            }
+            else
+            {
+                //without gas to hold heat, temp will drop more quickly.
+                float massRoom = (roomVolume) * 6836f;//6.836Kg in 1m3
+                float dt = qHeatLossPerSec / (massRoom * 532f);//Cp of .8iron .2aluminum (440 and 900)
+                dt *= (5f / 9f);
+                roomTemp += dt;
+            }
+            CalculateRoomTemp();
+        }
 
+        public void AddRoomHeat(float heat)
+        {
+            float massGas = 0f;
+            float averageCp = 0f;
+            if (roomGases.Count > 0)
+            {
+                for (int q = 0; q < RoomGasses.Count; q++)
+                {
+                    IGas gas = RoomGasses[q];
+                    massGas += gas.GetConcentration() * 1000f * gas.GetDensity();
+                    averageCp += gas.SpecificHeat;
+                }
+                averageCp /= RoomGasses.Count;
+                float dt = (heat / (massGas * averageCp)) / RoomGasses.Count;
+                ///
+                /// This is all in F but we are subtracting K.
+                /// As a temporary measure, multiple k dt by 5/9
+                dt *= (5f / 9f);
+                //Debug.Log(dt * Time.deltaTime);
+                for (int q = 0; q < RoomGasses.Count; q++)
+                {
+                    float temper = RoomGasses[q].GetTemp();
+                    temper += (dt * Time.deltaTime);
+                    //Debug.Log(temper);
+                    RoomGasses[q].SetTemp(temper);
+                }
+            }
+            CalculateRoomTemp();
+        }
+        
         private void GasPipeSectionEqualization(List<IGasPipe> equalizeList, bool ventAndTempEq)
         {
             float totalPressures = equalizeList[0].GlobalPressure;
             float totalConc = 0.0f;
             float totalTemp = equalizeList[0].Temperature;
+            float totalVelocity = equalizeList[0].FlowVelocity;
 
             //get total volume, pressure, conc of all gasses in this and neighbors
             foreach (IGas gass in equalizeList[0].Gasses)
@@ -305,6 +390,7 @@ namespace ProjectUniverse.Environment.Volumes
                         pipe.VentToVolume();
                     }
                 }
+                totalVelocity += pipe.FlowVelocity;
                 totalPressures += pipe.GlobalPressure;
                 totalTemp += pipe.Temperature;
                 //get total concentration
@@ -317,6 +403,7 @@ namespace ProjectUniverse.Environment.Volumes
             float tEq_global = totalTemp / (equalizeList.Count);
             float pEq_global = totalPressures / (equalizeList.Count);
             float cEq_global = totalConc / (equalizeList.Count);
+            float vEq_global = totalVelocity / (equalizeList.Count);
 
             // Skip the first duct
             for (int j = 1; j < equalizeList.Count; j++)
@@ -333,7 +420,7 @@ namespace ProjectUniverse.Environment.Volumes
                 object[] newAtmoComp = { tEq_global, pEq_global, newGassesList };
                 //This needs to be limitable by throughput, somehow?
                 //first duct TransferTo(other ducts, newAtmoComp)
-                equalizeList[0].TransferTo(equalizeList[j], newAtmoComp);
+                equalizeList[0].TransferTo(equalizeList[j], vEq_global, pEq_global, newGassesList, tEq_global);
             }
         }
 
@@ -702,6 +789,36 @@ namespace ProjectUniverse.Environment.Volumes
             UpdateRoomFluidLevel();
         }
 
+        public void AddRoomFluid(List<IFluid> fluidToAdd)
+        {
+            bool add = false;
+            for(int f = 0; f < fluidToAdd.Count; f++)
+            {
+                IFluid fluid = new IFluid(fluidToAdd[f]);
+                fluidToAdd[f].SetLocalVolume(roomVolume);
+                //If the roomFluids list is empty or does not contain the passed fluid
+                if (roomFluids.Count > 0)
+                {
+                    //Combine the passed fluid with fluids already in volume
+                    for (int j = 0; j < roomFluids.Count; j++)
+                    {
+                        if (roomFluids[j].GetIDName() == fluid.GetIDName())
+                        {
+                            IFluid EQFluid = CombineFluids(roomFluids[j], fluid, roomPressure, true);
+                            //Debug.Log("EQFluid " + EQFluid);
+                            roomFluids.Remove(roomFluids[j]);
+                            roomFluids.Add(EQFluid);
+                        }
+                    }
+                }
+                else
+                {
+                    roomFluids.Add(fluid);
+                }
+            }
+            UpdateRoomFluidLevel();
+        }
+
         /// <summary>
         /// recalc room oxygenation. It is the ratio of oxygen (in m3) to room volume (m3).
         /// Gasses that are not oxygen do not count towards oxygenation.
@@ -733,13 +850,16 @@ namespace ProjectUniverse.Environment.Volumes
         /// </summary>
         public void CalculateRoomTemp()
         {
-            float temperature = 0.0f;
-            for (int j = 0; j < roomGases.Count; j++)
+            if (roomGases.Count > 0f)
             {
-                temperature += roomGases[j].GetTemp();
+                float temperature = 0.0f;
+                for (int j = 0; j < roomGases.Count; j++)
+                {
+                    temperature += roomGases[j].GetTemp();
+                }
+                //Equalized temp of the gases in the room
+                roomTemp = temperature / (roomGases.Count);
             }
-            //Equalized temp of the gases in the room
-            roomTemp = temperature / (roomGases.Count);
         }
 
         /// <summary>
@@ -786,7 +906,7 @@ namespace ProjectUniverse.Environment.Volumes
             //Debug.Log(roomFluids.Count);
             for (int i = 0; i < roomFluids.Count; i++)
             {
-                float volumeRatio = (roomFluids[i].GetConcentration()/1000) / roomVolume;//1000L in 1 m^3
+                float volumeRatio = (roomFluids[i].GetConcentration()) / roomVolume;//1000L in 1 m^3 conc/1000
                 fluidConc += roomFluids[i].GetConcentration();
                 //Debug.Log(roomFluids[i].GetConcentration() + "/" + roomVolume);
                 float translatedFill = volumeRatio * gameObject.GetComponent<BoxCollider>().size.y;

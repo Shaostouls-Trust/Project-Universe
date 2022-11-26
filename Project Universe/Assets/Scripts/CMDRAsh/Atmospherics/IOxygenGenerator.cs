@@ -71,7 +71,7 @@ namespace ProjectUniverse.Environment.Gas
                     /// Is creating this gas at these conditions part of the problem? 3.0m3 and 1.0atm in 0.4m3?
                     ///
                     List<IGas> gasList = new List<IGas>();
-                    IGas gasTest = new IGas("Oxygen", 70.0f, (float)Math.Round(oxyGenRateThisUpdate, 3), (float)Math.Round((1.0f * Time.deltaTime), 3), .4f);
+                    IGas gasTest = new IGas("Oxygen", 60.0f, (float)Math.Round(oxyGenRateThisUpdate, 3), 1.1f, 0.4f);
                     gasTest.CalculateAtmosphericDensity();
                     gasList.Add(gasTest);
                     //Debug.Log(gasTest.ToString());
@@ -79,7 +79,7 @@ namespace ProjectUniverse.Environment.Gas
                     if (connectedPipes[i].GlobalPressure < 1.1)
                     {
                         //Debug.Log("Generating: " + gasTest.ToString());
-                        connectedPipes[i].Receive(false, atmoDatas);
+                        connectedPipes[i].Receive(false, 25f, 1.1f, gasList, gasTest.GetTemp());
                     }
                 }
             }

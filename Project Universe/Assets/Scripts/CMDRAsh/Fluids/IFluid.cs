@@ -117,6 +117,10 @@ namespace ProjectUniverse.Environment.Fluid {
         {
             return volume_m3;
         }
+        public float GetFilledVolume()
+        {
+            return 1000f * concentration;//1000L in 1 m^3 water
+        }
         public float GetMolarMass()
         {
             return MolarMass;
@@ -141,6 +145,10 @@ namespace ProjectUniverse.Environment.Fluid {
         public void SetConcentration(float newConcentration)
         {
             concentration = newConcentration;
+        }
+        public void AddConcentration(float additional)
+        {
+            concentration += additional;
         }
     }
 }

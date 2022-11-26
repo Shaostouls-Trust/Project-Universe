@@ -89,6 +89,7 @@
     <Compile Include="Assets\Scripts\CMDRAsh\Production\Raw\OreDefinition.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Geometry_3D\CurveControlPoint3D.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Production\Machines\Mach_PowerRouter.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Atmospherics\GasTank.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Triggers\ImpactRaycastTrigger.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Production\MachineLibrary.cs" />
     <Compile Include="Assets\Impact Interaction System\Demo\Scripts\DemoParticleController.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="Assets\Scripts\HaloReach252\GameManager.cs" />
     <Compile Include="Assets\SplineMesh\Scripts\Example\ExampleSower.cs" />
     <Compile Include="Assets\SplineMesh\Scripts\MeshProcessing\SourceMesh.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\Nuclear\RadiatorPipe.cs" />
     <Compile Include="Assets\Character Movement Fundamentals\Source\Scripts\Controllers\Controller.cs" />
     <Compile Include="Assets\Scripts\ActiveStateToggler.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Atmospherics\VolumeNode.cs" />
@@ -299,6 +301,7 @@
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Meshers\Extrude.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\Util\PointGenerator.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\AnimationControllers\SwitchAnimationController.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Atmospherics\AirScrubber.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Ship\VectorInformationDistributor.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Production\Raw\OreLibrary.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\plugins\ExpressionParser.cs" />
@@ -346,6 +349,7 @@
     <Compile Include="Assets\Shared\Scripts\AdjustTimeScale.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\UVProjector.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Inventory\InventoryUI.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\Nuclear\RadiatorMain.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\UI\HealthAndOxygenUI.cs" />
     <Compile Include="Assets\Scripts\KhorneSyrup\Player Controller\PlayerController.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\Delaunay\Sweep\DTSweepDebugContext.cs" />
@@ -383,6 +387,7 @@
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters\PlanRepeater.cs" />
     <Compile Include="Assets\Scripts\PlayerControls.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Invert.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\Nuclear\SteamGenerator.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Serialization\GlobalSettings.cs" />
     <Compile Include="Assets\Character Movement Fundamentals\Source\Scripts\Controllers\ClickToMoveController.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\AXGameObject.cs" />
@@ -440,6 +445,7 @@
     <Compile Include="Assets\Scripts\CMDRAsh\Weapons\IBullet.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Networking\PlayerManager.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Data\InteractionData.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\UI\SteamGeneratorUIController.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\Delaunay\Sweep\AdvancingFrontNode.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters\LinearRepeater.cs" />
     <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\_Walkyrie_Example_Scripts\Walkyrie_SwitchEngine_01.cs" />
@@ -480,6 +486,7 @@
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Multiply.cs" />
     <Compile Include="Assets\Scripts\Koro\Farmingprototype1.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\TextureScaler.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\Nuclear\NuclearFuelRod.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters2D\Instance2D.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Geometry_3D\AXPolygon.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Fluids\IFluid.cs" />
@@ -506,6 +513,7 @@
     <Compile Include="Assets\Scripts\CMDRAsh\Serialization\Surrogates\Matrix4x4Surrogate.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Transfer\CargoConveyor.cs" />
     <Compile Include="Assets\Character Movement Fundamentals\Source\Scripts\Animation &amp; Audio\AudioControl.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Atmospherics\GasLibrary.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Data\AlignmentAxis.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\AXCamera.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Inventory\RemoteControlSelectorUI.cs" />
@@ -588,6 +596,7 @@
     <Compile Include="Assets\Impact Interaction System\Demo\Scripts\DemoSlideAndRollSeesaw.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Geometry_2D\AXSegment.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Timer.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Atmospherics\GasDefinition.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Organizer\Channeler.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Archimatix.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Triggers\ImpactTriggerBase.cs" />
@@ -609,6 +618,7 @@
     <Compile Include="Assets\Impact Interaction System\Scripts\Objects\ImpactObjectRigidbodyChild.cs" />
     <Compile Include="Assets\JMO Assets\WarFX\Demo\Assets\CFX_Demo_RotateCamera.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Meshers\PlanSweep.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\Nuclear\NuclearCore.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Utility\DestroyMessenger.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\AXMeshCache.cs" />
     <Compile Include="Assets\Scripts\Koro\GridSlot.cs" />
@@ -671,6 +681,7 @@
     <Compile Include="Assets\Scripts\Koro\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Koro\DragAnDrop.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Interactions\Decals\ImpactDecalInteraction.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\Nuclear\SteamCondenser.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Interactions\Audio\ImpactAudioSource.cs" />
     <Compile Include="Assets\Scripts\KhorneSyrup\Player Controller\Interaction\Door.cs" />
     <Compile Include="Assets\Scripts\ObjectsInScene.cs" />
@@ -733,6 +744,7 @@
     <Compile Include="Assets\Scripts\KhorneSyrup\Props Loader\Props.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Farming\FarmPlotController.cs" />
     <Compile Include="Assets\Scripts\Koro\PlantingGridManager.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\Nuclear\SteamTurbine.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Interactions\Particles\ImpactParticleInteraction.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\PixelMapGen\YWSIWYG_PixelMap.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Deformers\NoiseDeformer.cs" />
@@ -768,9 +780,6 @@
     <Compile Include="Assets\Archimatix\Scenes Runtime\SpaceshipShop\GrayShipDesigner.cs" />
     <Compile Include="Assets\Scripts\Koro\Grenade.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Select.cs" />
-    <Compile Include="Assets\Scripts\CMDRAsh\Atmospherics\GasDefinition.cs" />
-    <Compile Include="Assets\Scripts\CMDRAsh\Atmospherics\GasLibrary.cs" />
-    <Compile Include="Assets\Scripts\CMDRAsh\Atmospherics\AirScrubber.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\ParticleShadersVol1\Shaders\EMParticleVariables.cginc" />
@@ -808,6 +817,7 @@
     <None Include="Assets\JMO Assets\WarFX\Shaders\WFX_S Add Scroll.shader" />
     <None Include="Assets\UMA\InternalDataStore\InGame\Resources\Shader\NormalShader.compute" />
     <None Include="Assets\Character Movement Fundamentals\Source\Misc\Shaders\OneSidedTextShader.shader" />
+    <None Include="Assets\kb3d_missiontominerva_hdrp\README.txt" />
     <None Include="Assets\Character Movement Fundamentals\README.txt" />
     <None Include="Assets\Tiles.xml" />
     <None Include="Assets\JMO Assets\Cartoon FX Easy Editor\CartoonFX Easy Editor Readme.txt" />

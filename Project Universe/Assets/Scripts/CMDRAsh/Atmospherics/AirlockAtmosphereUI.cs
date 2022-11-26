@@ -145,18 +145,21 @@ public class AirlockAtmosphereUI : MonoBehaviour
         if (a == 0)
         {
             // lock both doors
-            if (door1.Open)
+            if (!adjustingPressure)
             {
-                door1.Locked = false;
-                door1.CloseDoor();
+                if (door1.Open)
+                {
+                    door1.Locked = false;
+                    door1.CloseDoor();
+                }
+                door1.Locked = true;
+                if (door2.Open)
+                {
+                    door2.Locked = false;
+                    door2.CloseDoor();
+                }
+                door2.Locked = true;
             }
-            door1.Locked = true;
-            if (door2.Open)
-            {
-                door2.Locked = false;
-                door2.CloseDoor();
-            }
-            door2.Locked = true;
             //cycle pressure - extVac and extDoor should have already been set?
             if (extVac == null)
             {

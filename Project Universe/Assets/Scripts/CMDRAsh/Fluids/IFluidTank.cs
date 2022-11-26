@@ -2,49 +2,173 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using ProjectUniverse.Environment.Volumes;
+using ProjectUniverse.Util;
 
 namespace ProjectUniverse.Environment.Fluid
 {
     public class IFluidTank : MonoBehaviour
     {
-        public int capacity_L;
-        public float fluidLevel_L;
-        public float flowRate_Ls;
-        public bool valveState;
+        [SerializeField] private int capacity_L;
+        [SerializeField] private float fluidLevel_L;
+        public float flowRate_m3hr;
+        private float flowVelocity_ms = 120f;
+        [SerializeField] private float maxFlowVelocity_ms = 120f;
+        [Tooltip("Pressure level of the outflow pump.")]
+        [SerializeField] private float outputPressure = 200f;
+        [SerializeField] private bool valveState;
         [SerializeField] private VolumeAtmosphereController roomVolume;
-        private IFluid fluid;
+        [SerializeField] private IFluidPipe inflowPipe;
+        [SerializeField] private IFluidPipe outflowPipe;
+        //private IFluid fluid;
         private List<IFluid> fluids = new List<IFluid>();
+        public bool autofill = false;
+        [Tooltip("Allows tank to change output velocity to not cause overpressure in pipes.\n" +
+            "Disable automatic control to set output rate via velocity.")]
+        [SerializeField] private bool automaticControl;
 
         // Start is called before the first frame update
         void Start()
         {
-            fluid = new IFluid("water", 70, fluidLevel_L);
-            fluid.SetDensity(1000);
-            fluid.SetTemp(60);
-            fluid.SetLocalPressure(1f);
-            fluid.SetLocalVolume(600);
+            if (autofill)
+            {
+                IFluid fluid;
+                fluid = new IFluid("water", 70, ((capacity_L) / 1000f));
+                fluid.SetDensity(1000);
+                fluid.SetTemp(60);
+                fluid.SetLocalPressure(1f);
+                fluid.SetLocalVolume(capacity_L / 1000f);
+                fluids.Add(fluid);
+                for (int i = 0; i < fluids.Count; i++)
+                {
+                    fluidLevel_L += fluids[i].GetConcentration() * 1000f;
+                }
+            }
+            
         }
 
         // Update is called once per frame
         void Update()
         {
-            //EXTREMELY TEMP!!
+            if(fluidLevel_L < capacity_L)
+            {
+                //pull in fluid from inflow pipe
+                if (inflowPipe != null)
+                {
+                    //L to M^3. Rate is assumed to be 1 second
+                    float rate = (capacity_L - fluidLevel_L)/1000f;
+                    List<IFluid> fluds = new List<IFluid>();
+                    //Debug.Log("Extract");
+                    fluds = inflowPipe.ExtractFluid(rate);
+                    for (int inf = 0; inf < fluds.Count; inf++)
+                    {
+                        fluidLevel_L += fluds[inf].GetConcentration() * 1000f;
+                    }
+                    for(int i = fluds.Count-1; i >= 0; i--)
+                    {
+                        for (int j = 0; j < fluids.Count; j++)
+                        {
+                            if (fluds[i].GetIDName() == fluids[j].GetIDName())
+                            {
+                                float newConc = fluids[j].GetConcentration() + fluds[i].GetConcentration();
+                                fluids[j].SetConcentration(newConc);
+                                fluds.RemoveAt(i);
+                            }
+                        }
+                    }
+                    fluids.AddRange(fluds);
+                }
+            }
+           
             if (valveState)
             {
-                if (fluidLevel_L > 0)
+                if (fluidLevel_L > 0f)
                 {
-                    IFluid outFluid = fluid;
-                    float redux = flowRate_Ls * Time.deltaTime;
-                    if (fluidLevel_L - redux < 0)
+                    if (outflowPipe != null) 
                     {
-                        redux = fluidLevel_L;
+                        float maxCapacity = outflowPipe.GetConcentration();
+                        if (maxCapacity < outflowPipe.Volume) { 
+                            float avgTemp = 0f;
+                            //float localPressure = 0f;
+                            float totalConc = 0f;
+                            for (int a = 0; a < fluids.Count; a++)
+                            {
+                                avgTemp += fluids[a].GetTemp();
+                                //localPressure += fluids[a].GetLocalPressure();
+                                totalConc += fluids[a].GetConcentration();
+                            }
+                            avgTemp /= fluids.Count;
+                            //localPressure /= fluids.Count;
+
+                            List<IFluid> outFluid = new List<IFluid>();
+                            ///
+                            /// Replaced with flow rate calculation
+                            /// Calc is in m^3/hr
+                            /// Convert to L/[instant]
+                            /// 
+                            float limVel = flowVelocity_ms;
+                            if (automaticControl)
+                            {
+                                if(limVel >= outflowPipe.MaxVelocity)
+                                {
+                                    limVel = outflowPipe.MaxVelocity;
+                                }
+                            }
+                            flowRate_m3hr = Utils.CalculateFluidFlowThroughPipe(outflowPipe.InnerDiameter, limVel);
+                            float redux = ((flowRate_m3hr) / 3600f) * 1000f;
+                            redux *= Time.deltaTime;
+                            
+                            if (fluidLevel_L - redux < 0)
+                            {
+                                redux = fluidLevel_L;
+                            }
+                            if (outflowPipe.GetConcentration() + (redux/1000f) > outflowPipe.Volume)
+                            {
+                                redux = (outflowPipe.Volume - outflowPipe.GetConcentration())*1000f;
+                            }
+                            float ratio;
+                            for (int b = 0; b < fluids.Count; b++)
+                            {
+                                ratio = fluids[b].GetConcentration() / totalConc;
+                                IFluid outflud = new IFluid(fluids[b]);
+                                float concLeft = outflud.GetConcentration() - ((redux / 1000f) * ratio);//l to m^3
+                                outflud.SetConcentration((redux / 1000f) * ratio);
+                                outFluid.Add(outflud);
+                                fluidLevel_L -= redux * ratio;
+                                fluids[b].SetConcentration(concLeft);
+                            }
+                            ///
+                            /// Flow is lossy (7/1155000L) due to imprecision errors.
+                            ///
+                            outflowPipe.Receive(false, limVel, outputPressure, outFluid, avgTemp);
+                        }
                     }
-                    outFluid.SetConcentration(redux);
-                    //Debug.Log("Redux: " + redux);
-                    //Debug.Log("outfluid: " + outFluid.GetConcentration());
-                    roomVolume.AddRoomFluid(outFluid);
-                    fluidLevel_L -= redux;
-                    fluid.SetConcentration(fluidLevel_L);
+                    else if (roomVolume != null)
+                    {
+                        float limVel = flowVelocity_ms;
+                        //stop uncapped flows from flooding volumes
+                        if (automaticControl)
+                        {
+                            limVel = 0f;
+                        }
+                        else
+                        {
+                            limVel = maxFlowVelocity_ms;
+                        }
+                        flowRate_m3hr = Utils.CalculateFluidFlowThroughPipe(0.408f, limVel);
+                        float redux = ((flowRate_m3hr) / 3600f) * 1000f;
+                        redux *= Time.deltaTime;
+                        List<IFluid> outFluid = new List<IFluid>();
+                        for (int b = 0; b < fluids.Count; b++)
+                        {
+                            IFluid outflud = new IFluid(fluids[b]);
+                            float concLeft = outflud.GetConcentration() - ((redux / 1000f));//l to m^3
+                            outflud.SetConcentration((redux / 1000f));
+                            outFluid.Add(outflud);
+                            fluidLevel_L -= redux;
+                            fluids[b].SetConcentration(concLeft);
+                        }
+                        roomVolume.AddRoomFluid(outFluid);
+                    }
                 }
             }
         }

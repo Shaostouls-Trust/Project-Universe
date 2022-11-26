@@ -260,10 +260,10 @@ MonoBehaviour:
     m_Value: 0
   limitMin:
     m_OverrideState: 1
-    m_Value: -1
+    m_Value: 1
   limitMax:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 8
   curveMap:
     m_OverrideState: 0
     m_Value:
@@ -358,7 +358,7 @@ MonoBehaviour:
     m_Value: {fileID: 0}
   histogramPercentages:
     m_OverrideState: 1
-    m_Value: {x: 15, y: 85}
+    m_Value: {x: 10, y: 90}
     min: 0
     max: 100
   histogramUseCurveRemapping:
@@ -1477,12 +1477,12 @@ MonoBehaviour:
     min: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 0.3
+    m_Value: 0.25
     min: 0
     max: 1
   scatter:
     m_OverrideState: 1
-    m_Value: 0.3
+    m_Value: 0.25
     min: 0
     max: 1
   tint:

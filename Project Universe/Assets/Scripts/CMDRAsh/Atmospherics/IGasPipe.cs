@@ -36,19 +36,23 @@ namespace ProjectUniverse.Environment.Gas
         [SerializeField] private IGasPipe[] neighbors;
         [SerializeField] private float temp;
         [SerializeField] private float[] tempTol = new float[2];
-        //[SerializeField] private float pressure;
+        [SerializeField] private float maxPressure_bar = 216f;
         [SerializeField] private float globalPressure;
-        [SerializeField] private float appliedPressure;
-        [SerializeField] private float maxP;
+        //[SerializeField] private float appliedPressure;
         [SerializeField] private float volume_m3;//standard duct is .4m3
         [SerializeField] private float health;
         [SerializeField] private float leakRate;
         [SerializeField] private GameObject[] bulletHoles;
-        [SerializeField] private float throughput_m3;
         [SerializeField] private GameObject vent;
         [SerializeField] private Volume ductVolume;
         [SerializeField] private float insulationRating = 0.1f;
         [SerializeField] private bool burst;
+        [Tooltip("if true, pipes will work outside of room volumes")]
+        [SerializeField] private bool ignoreNeighborConstraint = false;
+        [SerializeField] private float throughput_m3hr;
+        [SerializeField] private float equivalentDiameterInner_m = 0.408f;
+        [SerializeField] private float maxVelocity_ms = 120.5f;
+        private float flowVelocity_ms = 0f;
 
         public bool IsBurst
         {
@@ -79,43 +83,44 @@ namespace ProjectUniverse.Environment.Gas
             set { vent = value; }
         }
 
-        /// <summary>
-        /// atmoData; ducttemp, ductpressure, List<IGas> gasses
-        /// </summary>
-        public void TransferTo(LinkedListNode<IGasPipe> next, params object[] atmoData)
+        public float Throughput
         {
-            //set temps and pressures
-            temp = (float)Math.Round((float)atmoData[0], 4);
-            ///pressure = (float)Math.Round((float)atmoData[1],4);///
-            globalPressure = (float)Math.Round((float)atmoData[1], 4);
-            appliedPressure = (float)Math.Round((float)atmoData[1], 4);
-            gasses = (List<IGas>)atmoData[2];
-            /*
-            for(int g = 0; g < gasses.Count; g++)
-            {
-                List<IGas> outflowGasses = (List<IGas>)atmoData[2];
-                IGas remainder;
-                float defecit = SubtractGas(gasses[g],outflowGasses[g], out remainder);
-                gasses[g] = remainder;
-                if (defecit > 0)
-                {
-                    float conc = outflowGasses[g].GetConcentration() + defecit;
-                    outflowGasses[g].SetConcentration(conc);
-                }
-            }
-            */
-            next.Value.Receive(true, atmoData);
+            get { return throughput_m3hr; }
+        }
+        public float InnerDiameter
+        {
+            get { return equivalentDiameterInner_m; }
         }
 
-        public void TransferTo(IGasPipe next, params object[] atmoData)
+        public float MaxVelocity
+        {
+            get { return maxVelocity_ms; }
+        }
+
+        public float FlowVelocity
+        {
+            get { return flowVelocity_ms; }
+            set { flowVelocity_ms = value; }
+        }
+
+        public void TransferTo(IGasPipe next, float inputVelocity, float inputPressure, List<IGas> inputGas, float avgTemp)
         {
             //set temps and pressures
-            temp = (float)atmoData[0];
-            globalPressure = (float)Math.Round((float)atmoData[1], 4);
-            gasses = (List<IGas>)atmoData[2];
-            //calculate this duct's applied pressure?
-            appliedPressure = (float)Math.Round((float)atmoData[1], 4);
-            next.Receive(true, atmoData);
+            temp = avgTemp;
+            globalPressure = inputPressure;
+            gasses = inputGas;
+            flowVelocity_ms = inputVelocity;
+            next.Receive(true, inputVelocity, inputPressure, inputGas, avgTemp);
+        }
+        
+        public float GetConcentration()
+        {
+            float conc = 0;
+            for (int g = 0; g < gasses.Count; g++)
+            {
+                conc += gasses[g].GetConcentration();
+            }
+            return conc;
         }
 
         /// <summary>
@@ -124,43 +129,51 @@ namespace ProjectUniverse.Environment.Gas
         /// Destructive replaces the original gas list with the parameter list
         /// </summary>
         /// <param name="atmoData"></param>
-        public void Receive(bool destructive, params object[] atmoData)
+        /*public void Receive(bool destructive, params object[] atmoData)
         {
-            //Debug.Log("|-"+ ((List<IGas>)atmoData[2]).Count);
-            if (((List<IGas>)atmoData[2]).Count > 0)
+            bool flag = false;
+            if (atmoData[2].GetType() == typeof(List<IGas>) && ((List<IGas>)atmoData[2]).Count > 0)
+            {
+                flag = true;
+                if (destructive)
+                {
+                    gasses = (List<IGas>)atmoData[2];
+                }
+                else
+                {
+                    gasses.AddRange((List<IGas>)atmoData[2]);
+                }
+            }
+            else if (atmoData[2].GetType() == typeof(IGas) && ((IGas)atmoData[2]).GetConcentration() > 0)
+            {
+                flag = true;
+                if (destructive)
+                {
+                    gasses.Clear();
+                    gasses.Add((IGas)atmoData[2]);
+                }
+                else
+                {
+                    gasses.Add((IGas)atmoData[2]);
+                }
+            }
+            //if (((List<IGas>)atmoData[2]).Count > 0)
+            //{
+            if (flag)
             {
                 temp = (float)atmoData[0];
                 if (destructive)
                 {
                     globalPressure = (float)Math.Round((float)atmoData[1], 4);
-                    appliedPressure = globalPressure;
-                    //Debug.Log(gameObject+" global pressure is "+ globalPressure);
-                    if (atmoData[2].GetType() == typeof(List<IGas>))
-                    {
-                        gasses = (List<IGas>)atmoData[2];
-                    }
-                    else if (atmoData[2].GetType() == typeof(IGas))
-                    {
-                        gasses.Clear();//
-                        gasses.Add((IGas)atmoData[2]);
-                    }
+                    
                 }
                 else
                 {
                     globalPressure += (float)Math.Round((float)atmoData[1], 4);
-                    appliedPressure = globalPressure;
-                    if (atmoData[2].GetType() == typeof(List<IGas>))
-                    {
-                        gasses.AddRange((List<IGas>)atmoData[2]);
-                    }
-                    else if (atmoData[2].GetType() == typeof(IGas))
-                    {
-                        gasses.Add((IGas)atmoData[2]);
-                    }
                 }
 
                 //calculate the change in globalpressure based temp on volume or temp for local pressure calcs
-                float totalPressure = 0.0f;
+                //float totalPressure = 0.0f;
                 //Debug.Log("Pre vol adj: " + globalPressure);
                 foreach (IGas gas in gasses)
                 {
@@ -184,12 +197,164 @@ namespace ProjectUniverse.Environment.Gas
                     //Debug.Log("Current Concentration(s): " + gas.GetConcentration());
                 }
                 //Debug.Log("Total Pressure after vol adj: " + (float)Math.Round(totalPressure,4));
-                appliedPressure = (float)Math.Round(totalPressure, 4);
+                //appliedPressure = (float)Math.Round(totalPressure, 4);
                 //Debug.Log("Post vol adj: " + globalPressure);
                 gasses = CheckGasses(globalPressure);//appliedPressure
 
                 //Debug.Log(gasses[0]);
             }
+            //}
+        }*/
+
+        public void Receive(bool destructive, float inputVelocity, float inputPressure, List<IGas> inputGas, float avgTemp)
+        {
+            bool flag = false;
+            if (inputGas.Count > 0)
+            {
+                flag = true;
+                if (destructive)
+                {
+                    Gasses = inputGas;
+                }
+                else
+                {
+                    Gasses.AddRange(inputGas);
+                }
+            }
+
+            if (flag)
+            {
+                temp = avgTemp;
+                globalPressure = inputPressure;
+                flowVelocity_ms = inputVelocity;
+                Gasses = CheckGasses(globalPressure);
+            }
+            //calc throughput
+            throughput_m3hr = Utils.CalculateGasFlowThroughPipe(InnerDiameter, FlowVelocity, GlobalPressure);
+        }
+
+        public void Receive(bool destructive, float inputVelocity, float inputPressure, IGas inputGas, float avgTemp)
+        {
+            bool flag = false;
+            if (inputGas.GetConcentration() > 0)
+            {
+                flag = true;
+                if (destructive)
+                {
+                    Gasses.Clear();
+                    Gasses.Add(inputGas);
+                }
+                else
+                {
+                    Gasses.Add(inputGas);
+                }
+            }
+            if (flag)
+            {
+                temp = avgTemp;
+                globalPressure = inputPressure;
+                flowVelocity_ms = inputVelocity;
+                Gasses = CheckGasses(globalPressure);
+            }
+            throughput_m3hr = Utils.CalculateGasFlowThroughPipe(InnerDiameter, FlowVelocity, GlobalPressure);
+        }
+
+        /// <summary>
+        /// Remove qHeat from the gas temps
+        /// </summary>
+        /// <param name="dt"></param>
+        public void RemoveHeat(float qHeat)
+        {
+            float conc = 0f;
+            foreach (IGas gas in gasses)
+            {
+                conc += (gas.GetConcentration() * 1000f) / 1.093f;
+            }
+            float dt = (qHeat / (conc * 2010f));
+            foreach (IGas gas in gasses)
+            {
+                float t = gas.GetTemp();
+                gas.SetTemp(t - (dt*(5f/9f)));
+            }
+            Temperature -= (dt * (5f / 9f));
+        }
+        
+        public float GetGasTempF(bool getAsKelvin)
+        {
+            float temp = 0f;
+            if (Gasses.Count > 0) 
+            {
+                foreach (IGas gas in gasses)
+                {
+                    temp += gas.GetTemp();
+                }
+                temp /= gasses.Count;
+            }
+            if (getAsKelvin)
+            {
+                return ((temp - 32f) / 1.8f) + 273.15f;
+            }
+            else
+            {
+                return temp;
+            }
+            
+        }
+
+        public float GetKgSteam()
+        {
+            float conc = 0f;
+            foreach (IGas gas in gasses)
+            {
+                conc += gas.GetConcentration();
+            }
+            return (conc * 1000f) / 1.093f;
+        }
+
+        /// <summary>
+        /// Empty this pipe into the machine/target gas list
+        /// </summary>
+        /// <returns></returns>
+        public List<IGas> ExtractGasses(float rate_m3s)
+        {
+            if (rate_m3s == -1f || rate_m3s > (throughput_m3hr / 3600f))
+            {
+                rate_m3s = throughput_m3hr / 3600f;
+            }
+            rate_m3s *= Time.deltaTime;
+
+            float percent;
+            float total = 0f;
+            //get total of all gas in this pipe
+            for (int i = 0; i < Gasses.Count; i++)
+            {
+                total += gasses[i].GetConcentration();
+            }
+            percent = rate_m3s / total;
+            if (percent > 1f)
+            {
+                percent = 1f;
+            }
+
+            float oldTotal = total;
+            List<IGas> extractedGasses = new List<IGas>();
+            for (int g = 0; g < gasses.Count; g++)
+            {
+                float amt = gasses[g].GetConcentration();
+                IGas newFluid = new IGas(gasses[g]);
+                newFluid.SetConcentration(amt * percent);
+                gasses[g].SetConcentration(amt * (1 - percent));
+                total -= amt * percent;
+                extractedGasses.Add(newFluid);
+                //reset gas and pressures if empty
+                if (gasses[g].GetConcentration() == 0)
+                {
+                    gasses.RemoveAt(g);
+                    //new pressure is a ratio of how much gas was removed
+                    globalPressure *= total / oldTotal;
+                }
+            }
+            return extractedGasses;
         }
 
         /// <summary>
@@ -220,10 +385,6 @@ namespace ProjectUniverse.Environment.Gas
                             }
                         }
                     }
-                }
-                foreach (IGas gas in newGassesList)
-                {
-                    //Debug.Log("EQM result: "+gas.ToString());
                 }
                 return newGassesList;
             }
@@ -334,11 +495,11 @@ namespace ProjectUniverse.Environment.Gas
                 //}
 
                 // Runs on linked (cross-volume) ducts.
-                if (neighbors.Length > 0 && !burst)
+                if ((neighbors.Length > 0 || ignoreNeighborConstraint) && !burst)
                 {
                     //Debug.Log("TRANSFER");
                     float totalPressures = globalPressure;
-
+                    float totalVelocity = flowVelocity_ms;
                     float totalConc = 0.0f;
                     float totalTemp = temp;
 
@@ -352,6 +513,7 @@ namespace ProjectUniverse.Environment.Gas
 
                         totalPressures += pipe.GlobalPressure;
                         totalTemp += pipe.temp;
+                        totalVelocity += pipe.FlowVelocity;
                         //get total concentration
                         foreach (IGas gas in pipe.gasses)
                         {
@@ -362,6 +524,7 @@ namespace ProjectUniverse.Environment.Gas
                     float tEq_global = totalTemp / (neighbors.Length + 1);
                     float pEq_global = totalPressures / (neighbors.Length + 1);
                     float cEq_global = totalConc / (neighbors.Length + 1);
+                    float vEq_global = totalVelocity / (neighbors.Length + 1);
                     for (int g = 0; g < neighbors.Length; g++)
                     {
                         List<IGas> newGassesList = new List<IGas>();
@@ -374,19 +537,19 @@ namespace ProjectUniverse.Environment.Gas
                         }
                         object[] newAtmoComp = { tEq_global, pEq_global, newGassesList };
                         //This needs to be limitable by throughput, somehow
-                        TransferTo(neighbors[g], newAtmoComp);
+                        TransferTo(neighbors[g],vEq_global,pEq_global,newGassesList,tEq_global);
                     }
                 }
             }
         }
 
-        public float AppliedPressure
-        {
-            get { return appliedPressure; }
-        }
+        //public float AppliedPressure
+        //{
+        //    get { return appliedPressure; }
+        //}
         public float MaxPressure
         {
-            get { return maxP; }
+            get { return maxPressure_bar; }
         }
         public float GlobalPressure
         {

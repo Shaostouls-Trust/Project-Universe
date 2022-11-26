@@ -1,0 +1,1344 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5196954289540780524
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5196954289540780512}
+  - component: {fileID: 5196954289540780527}
+  - component: {fileID: 5196954289540780526}
+  - component: {fileID: 5196954289540780525}
+  m_Layer: 0
+  m_Name: Cube (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5196954289540780512
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5196954289540780524}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8258294989351109484}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &5196954289540780527
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5196954289540780524}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &5196954289540780526
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5196954289540780524}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 257
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 106e3737b8b75b842a87aab4cd91addc, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &5196954289540780525
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5196954289540780524}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &8258121142084326325
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8258294989351109484}
+  m_Layer: 0
+  m_Name: Fuel Rod Group
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8258294989351109484
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8258121142084326325}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -23, y: 1.45, z: 8}
+  m_LocalScale: {x: 1, y: 0.1, z: 1}
+  m_Children:
+  - {fileID: 5196954289540780512}
+  - {fileID: 5196954288600500341}
+  - {fileID: 1277898676693133028}
+  - {fileID: 7786112676854901649}
+  - {fileID: 3549603120322453496}
+  - {fileID: 7447572007503270872}
+  - {fileID: 6001709845781998665}
+  - {fileID: 583199174333440463}
+  - {fileID: 9180087858746413324}
+  - {fileID: 1825492654208231440}
+  - {fileID: 4129149433853319253}
+  - {fileID: 155413501061139701}
+  - {fileID: 8461413312168406674}
+  - {fileID: 3422598042543273406}
+  - {fileID: 8724121296118544735}
+  - {fileID: 4481059428016178233}
+  - {fileID: 6259320845848625129}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &346190860573030453
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8258294989351109484}
+    m_Modifications:
+    - target: {fileID: 8187843547638929062, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_Name
+      value: Fission Fuel Rod (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.375
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 45.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e07fd5fccbf5d11458dea688b95b7818, type: 3}
+--- !u!4 &8461413312168406674 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+    type: 3}
+  m_PrefabInstance: {fileID: 346190860573030453}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &626948453207830520
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8258294989351109484}
+    m_Modifications:
+    - target: {fileID: 8187843547638929062, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_Name
+      value: Fission Fuel Rod (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.375
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 45.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.375
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e07fd5fccbf5d11458dea688b95b7818, type: 3}
+--- !u!4 &8724121296118544735 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+    type: 3}
+  m_PrefabInstance: {fileID: 626948453207830520}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1064865018443122603
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8258294989351109484}
+    m_Modifications:
+    - target: {fileID: 8187843547638929062, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_Name
+      value: Fission Fuel Rod (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.375
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 45.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e07fd5fccbf5d11458dea688b95b7818, type: 3}
+--- !u!4 &9180087858746413324 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+    type: 3}
+  m_PrefabInstance: {fileID: 1064865018443122603}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1655643627690263935
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8258294989351109484}
+    m_Modifications:
+    - target: {fileID: 8187843547638929062, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_Name
+      value: Fission Fuel Rod (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 45.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e07fd5fccbf5d11458dea688b95b7818, type: 3}
+--- !u!4 &7447572007503270872 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+    type: 3}
+  m_PrefabInstance: {fileID: 1655643627690263935}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2138299879559281974
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8258294989351109484}
+    m_Modifications:
+    - target: {fileID: 8187843547638929062, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_Name
+      value: Fission Fuel Rod (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 45.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.375
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e07fd5fccbf5d11458dea688b95b7818, type: 3}
+--- !u!4 &7786112676854901649 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+    type: 3}
+  m_PrefabInstance: {fileID: 2138299879559281974}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2516187405811383022
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8258294989351109484}
+    m_Modifications:
+    - target: {fileID: 8187843547638929062, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_Name
+      value: Fission Fuel Rod (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.375
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 45.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e07fd5fccbf5d11458dea688b95b7818, type: 3}
+--- !u!4 &6001709845781998665 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+    type: 3}
+  m_PrefabInstance: {fileID: 2516187405811383022}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2845293608318216526
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8258294989351109484}
+    m_Modifications:
+    - target: {fileID: 8187843547638929062, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_Name
+      value: Fission Fuel Rod (15)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.375
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 45.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.375
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e07fd5fccbf5d11458dea688b95b7818, type: 3}
+--- !u!4 &6259320845848625129 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+    type: 3}
+  m_PrefabInstance: {fileID: 2845293608318216526}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4160862299491917522
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8258294989351109484}
+    m_Modifications:
+    - target: {fileID: 8187843547638929062, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_Name
+      value: Fission Fuel Rod
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 45.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.375
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e07fd5fccbf5d11458dea688b95b7818, type: 3}
+--- !u!4 &5196954288600500341 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+    type: 3}
+  m_PrefabInstance: {fileID: 4160862299491917522}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4675767104112036191
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8258294989351109484}
+    m_Modifications:
+    - target: {fileID: 8187843547638929062, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_Name
+      value: Fission Fuel Rod (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.375
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 45.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.375
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e07fd5fccbf5d11458dea688b95b7818, type: 3}
+--- !u!4 &3549603120322453496 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+    type: 3}
+  m_PrefabInstance: {fileID: 4675767104112036191}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5254785813495615218
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8258294989351109484}
+    m_Modifications:
+    - target: {fileID: 8187843547638929062, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_Name
+      value: Fission Fuel Rod (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.375
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 45.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e07fd5fccbf5d11458dea688b95b7818, type: 3}
+--- !u!4 &4129149433853319253 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+    type: 3}
+  m_PrefabInstance: {fileID: 5254785813495615218}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5732796030457467550
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8258294989351109484}
+    m_Modifications:
+    - target: {fileID: 8187843547638929062, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_Name
+      value: Fission Fuel Rod (14)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 45.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.375
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e07fd5fccbf5d11458dea688b95b7818, type: 3}
+--- !u!4 &4481059428016178233 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+    type: 3}
+  m_PrefabInstance: {fileID: 5732796030457467550}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6836062476191343385
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8258294989351109484}
+    m_Modifications:
+    - target: {fileID: 8187843547638929062, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_Name
+      value: Fission Fuel Rod (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 45.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.375
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e07fd5fccbf5d11458dea688b95b7818, type: 3}
+--- !u!4 &3422598042543273406 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+    type: 3}
+  m_PrefabInstance: {fileID: 6836062476191343385}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6925711869097439299
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8258294989351109484}
+    m_Modifications:
+    - target: {fileID: 8187843547638929062, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_Name
+      value: Fission Fuel Rod (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.375
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 45.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.375
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e07fd5fccbf5d11458dea688b95b7818, type: 3}
+--- !u!4 &1277898676693133028 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+    type: 3}
+  m_PrefabInstance: {fileID: 6925711869097439299}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7562779311880847031
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8258294989351109484}
+    m_Modifications:
+    - target: {fileID: 8187843547638929062, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_Name
+      value: Fission Fuel Rod (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 45.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e07fd5fccbf5d11458dea688b95b7818, type: 3}
+--- !u!4 &1825492654208231440 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+    type: 3}
+  m_PrefabInstance: {fileID: 7562779311880847031}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8325242089024690770
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8258294989351109484}
+    m_Modifications:
+    - target: {fileID: 8187843547638929062, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_Name
+      value: Fission Fuel Rod (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 45.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e07fd5fccbf5d11458dea688b95b7818, type: 3}
+--- !u!4 &155413501061139701 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+    type: 3}
+  m_PrefabInstance: {fileID: 8325242089024690770}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8770444561828558696
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8258294989351109484}
+    m_Modifications:
+    - target: {fileID: 8187843547638929062, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_Name
+      value: Fission Fuel Rod (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 45.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e07fd5fccbf5d11458dea688b95b7818, type: 3}
+--- !u!4 &583199174333440463 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8187843547638929063, guid: e07fd5fccbf5d11458dea688b95b7818,
+    type: 3}
+  m_PrefabInstance: {fileID: 8770444561828558696}
+  m_PrefabAsset: {fileID: 0}

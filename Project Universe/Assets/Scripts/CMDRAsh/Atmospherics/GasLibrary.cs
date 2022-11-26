@@ -30,6 +30,7 @@ namespace ProjectUniverse.Data.Libraries
                 float molarMass;
                 bool isNuclear;
 				float toxicity;
+				float specificHeat;
 
                 //will ensure this only runs once (at Awake()).
                 if (!isInitialized)
@@ -48,8 +49,9 @@ namespace ProjectUniverse.Data.Libraries
 							molarMass = float.Parse(ingot.Element("MolarMass").Attribute("Value").Value);
 							isNuclear = bool.Parse(ingot.Element("IsNuclear").Attribute("BoolValue").Value);
                             toxicity = float.Parse(ingot.Element("Toxicity").Attribute("Value").Value);
+                            specificHeat = float.Parse(ingot.Element("SpecificHeat").Attribute("Value").Value);
                             GasDefinition newingotDef = new GasDefinition(gasType,flamability,
-								combustability,molarMass,isNuclear,toxicity);
+								combustability,molarMass,isNuclear,toxicity,specificHeat);
                             GL_GasDictionary.Add(gasType, newingotDef);
                         }
 					}

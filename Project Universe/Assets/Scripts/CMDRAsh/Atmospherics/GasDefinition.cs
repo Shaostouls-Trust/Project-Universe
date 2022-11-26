@@ -12,8 +12,9 @@ namespace ProjectUniverse.Data.Libraries.Definitions
         private float molarMass;
         private bool isNuclear;
         private float toxicity;
+        private float specificHeat;
 
-        public GasDefinition(string id, int flam, int comb, float molar, bool nuclear, float tox)
+        public GasDefinition(string id, int flam, int comb, float molar, bool nuclear, float tox, float cp)
         {
             gasID = id;
             flamability = flam;
@@ -21,6 +22,7 @@ namespace ProjectUniverse.Data.Libraries.Definitions
             molarMass = molar;
             isNuclear = nuclear;
             toxicity = tox;
+            specificHeat = cp;
         }
         
         public string GasID
@@ -52,6 +54,10 @@ namespace ProjectUniverse.Data.Libraries.Definitions
         {
             get { return toxicity; }
         }
-        
+
+        public float SpecificHeat
+        {
+            get { return specificHeat; }
+        }
     }
 }
