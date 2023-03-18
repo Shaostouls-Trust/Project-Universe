@@ -9,11 +9,11 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: ScifiPanelDecal_7
   m_Shader: {fileID: 4800000, guid: c77dbb694aceba74dabd0a16484178d7, type: 3}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: _MATERIAL_AFFECTS_ALBEDO _MATERIAL_AFFECTS_MASKMAP _MATERIAL_AFFECTS_NORMAL
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2001
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
@@ -39,9 +39,35 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _AffectAO: 1
+    - _AffectAlbedo: 1
+    - _AffectEmission: 1
+    - _AffectMetal: 1
+    - _AffectNormal: 1
+    - _AffectSmoothness: 1
     - _AlphaCutoff: 0.5
+    - _DecalColorMask0: 15
+    - _DecalColorMask1: 15
+    - _DecalColorMask2: 15
+    - _DecalColorMask3: 12
+    - _DecalMeshBiasType: 0
     - _DecalMeshDepthBias: 0.15
+    - _DecalMeshViewBias: 0
+    - _DecalStencilRef: 16
+    - _DecalStencilWriteMask: 16
     - _DrawOrder: 1.34
     - _Float0: 0
     - _Float1: 4
@@ -52,3 +78,4 @@ Material:
     - _EmissionTintIntensity: {r: 120.336685, g: 20.44959, b: 0.56762725, a: 1}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
     - _Tiling: {r: 1, g: 0.33, b: 0, a: 0}
+  m_BuildTextureStacks: []

@@ -1,60 +1,67 @@
-// Made with Amplify Shader Editor
+// Made with Amplify Shader Editor v1.9.1.3
 // Available at the Unity Asset Store - http://u3d.as/y3X 
 Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 {
 	Properties
 	{
 		[HideInInspector] _AlphaCutoff("Alpha Cutoff ", Range(0, 1)) = 0.5
-		[HideInInspector] _EmissionColor("Emission Color", Color) = (1,1,1,1)
 		[ASEBegin]_Size("Size", Range( 0 , 1)) = 1
 		_Rampfalloff("Ramp falloff", Range( 0.01 , 5)) = 5
 		[ASEEnd]_Ramp("Ramp", 2D) = "white" {}
 
-		[HideInInspector]_RenderQueueType("Render Queue Type", Float) = 5
-		[HideInInspector][ToggleUI]_AddPrecomputedVelocity("Add Precomputed Velocity", Float) = 1
-		//[HideInInspector]_ShadowMatteFilter("Shadow Matte Filter", Float) = 2
-		[HideInInspector]_StencilRef("Stencil Ref", Int) = 0
-		[HideInInspector]_StencilWriteMask("StencilWrite Mask", Int) = 6
-		[HideInInspector]_StencilRefDepth("StencilRefDepth", Int) = 0
-		[HideInInspector]_StencilWriteMaskDepth("_StencilWriteMaskDepth", Int) = 8
-		[HideInInspector]_StencilRefMV("_StencilRefMV", Int) = 32
-		[HideInInspector]_StencilWriteMaskMV("_StencilWriteMaskMV", Int) = 40
-		[HideInInspector]_StencilRefDistortionVec("_StencilRefDistortionVec", Int) = 4
-		[HideInInspector]_StencilWriteMaskDistortionVec("_StencilWriteMaskDistortionVec", Int) = 4
-		[HideInInspector]_StencilWriteMaskGBuffer("_StencilWriteMaskGBuffer", Int) = 14
-		[HideInInspector]_StencilRefGBuffer("_StencilRefGBuffer", Int) = 2
-		[HideInInspector]_ZTestGBuffer("_ZTestGBuffer", Int) = 4
-		[HideInInspector][ToggleUI]_RequireSplitLighting("_RequireSplitLighting", Float) = 0
-		[HideInInspector][ToggleUI]_ReceivesSSR("_ReceivesSSR", Float) = 0
-		[HideInInspector]_SurfaceType("_SurfaceType", Float) = 1
-		[HideInInspector]_BlendMode("_BlendMode", Float) = 0
-		[HideInInspector]_SrcBlend("_SrcBlend", Float) = 1
-		[HideInInspector]_DstBlend("_DstBlend", Float) = 0
-		[HideInInspector]_AlphaSrcBlend("Vec_AlphaSrcBlendtor1", Float) = 1
-		[HideInInspector]_AlphaDstBlend("_AlphaDstBlend", Float) = 0
-		[HideInInspector][ToggleUI]_ZWrite("_ZWrite", Float) = 1
-		[HideInInspector][ToggleUI]_TransparentZWrite("_TransparentZWrite", Float) = 1
-		[HideInInspector]_CullMode("Cull Mode", Float) = 2
-		[HideInInspector]_TransparentSortPriority("_TransparentSortPriority", Int) = 0
-		[HideInInspector][ToggleUI]_EnableFogOnTransparent("_EnableFogOnTransparent", Float) = 1
-		[HideInInspector]_CullModeForward("_CullModeForward", Float) = 2
-		[HideInInspector][Enum(Front, 1, Back, 2)]_TransparentCullMode("_TransparentCullMode", Float) = 1
-		[HideInInspector]_ZTestDepthEqualForOpaque("_ZTestDepthEqualForOpaque", Int) = 4
-		[HideInInspector][Enum(UnityEngine.Rendering.CompareFunction)]_ZTestTransparent("_ZTestTransparent", Float) = 8
-		[HideInInspector][ToggleUI]_TransparentBackfaceEnable("_TransparentBackfaceEnable", Float) = 0
-		[HideInInspector][ToggleUI]_AlphaCutoffEnable("_AlphaCutoffEnable", Float) = 0
-		[HideInInspector][ToggleUI]_UseShadowThreshold("_UseShadowThreshold", Float) = 0
-		[HideInInspector][ToggleUI]_DoubleSidedEnable("_DoubleSidedEnable", Float) = 0
-		[HideInInspector][Enum(Flip, 0, Mirror, 1, None, 2)]_DoubleSidedNormalMode("_DoubleSidedNormalMode", Float) = 2
-		[HideInInspector]_DoubleSidedConstants("_DoubleSidedConstants", Vector) = (1, 1, -1, 0)
-		[HideInInspector]_DistortionEnable("_DistortionEnable",Float) = 0
-		[HideInInspector]_DistortionOnly("_DistortionOnly",Float) = 0
+		[HideInInspector] _RenderQueueType("Render Queue Type", Float) = 1
+		[HideInInspector][ToggleUI] _AddPrecomputedVelocity("Add Precomputed Velocity", Float) = 1
+		//[HideInInspector] _ShadowMatteFilter("Shadow Matte Filter", Float) = 2.006836
+		[HideInInspector] _StencilRef("Stencil Ref", Int) = 0 // StencilUsage.Clear
+		[HideInInspector] _StencilWriteMask("Stencil Write Mask", Int) = 3 // StencilUsage.RequiresDeferredLighting | StencilUsage.SubsurfaceScattering
+		[HideInInspector] _StencilRefDepth("Stencil Ref Depth", Int) = 0 // Nothing
+		[HideInInspector] _StencilWriteMaskDepth("Stencil Write Mask Depth", Int) = 8 // StencilUsage.TraceReflectionRay
+		[HideInInspector] _StencilRefMV("Stencil Ref MV", Int) = 32 // StencilUsage.ObjectMotionVector
+		[HideInInspector] _StencilWriteMaskMV("Stencil Write Mask MV", Int) = 32 // StencilUsage.ObjectMotionVector
+		[HideInInspector] _StencilRefDistortionVec("Stencil Ref Distortion Vec", Int) = 2 // StencilUsage.DistortionVectors
+		[HideInInspector] _StencilWriteMaskDistortionVec("Stencil Write Mask Distortion Vec", Int) = 2 // StencilUsage.DistortionVectors
+		[HideInInspector] _StencilWriteMaskGBuffer("Stencil Write Mask GBuffer", Int) = 3 // StencilUsage.RequiresDeferredLighting | StencilUsage.SubsurfaceScattering
+		[HideInInspector] _StencilRefGBuffer("Stencil Ref GBuffer", Int) = 2 // StencilUsage.RequiresDeferredLighting
+		[HideInInspector] _ZTestGBuffer("ZTest GBuffer", Int) = 4
+		[HideInInspector][ToggleUI] _RequireSplitLighting("Require Split Lighting", Float) = 0
+		[HideInInspector][ToggleUI] _ReceivesSSR("Receives SSR", Float) = 1
+		[HideInInspector] _SurfaceType("Surface Type", Float) = 1
+		[HideInInspector] _BlendMode("Blend Mode", Float) = 0
+		[HideInInspector] _SrcBlend("Src Blend", Float) = 1
+		[HideInInspector] _DstBlend("Dst Blend", Float) = 0
+		[HideInInspector] _AlphaSrcBlend("Alpha Src Blend", Float) = 1
+		[HideInInspector] _AlphaDstBlend("Alpha Dst Blend", Float) = 0
+		[HideInInspector][ToggleUI] _ZWrite("ZWrite", Float) = 1
+		[HideInInspector][ToggleUI] _TransparentZWrite("Transparent ZWrite", Float) = 0
+		[HideInInspector] _CullMode("Cull Mode", Float) = 2
+		[HideInInspector] _TransparentSortPriority("Transparent Sort Priority", Float) = 0
+		[HideInInspector][ToggleUI] _EnableFogOnTransparent("Enable Fog", Float) = 1
+		[HideInInspector] _CullModeForward("Cull Mode Forward", Float) = 2 // This mode is dedicated to Forward to correctly handle backface then front face rendering thin transparent
+		[HideInInspector][Enum(UnityEditor.Rendering.HighDefinition.TransparentCullMode)] _TransparentCullMode("Transparent Cull Mode", Int) = 1// Back culling by default
+		[HideInInspector] _ZTestDepthEqualForOpaque("ZTest Depth Equal For Opaque", Int) = 4 // Less equal
+		[HideInInspector][Enum(UnityEngine.Rendering.CompareFunction)] _ZTestTransparent("ZTest Transparent", Int) = 8// Less equal
+		[HideInInspector][ToggleUI] _TransparentBackfaceEnable("Transparent Backface Enable", Float) = 0
+		[HideInInspector][ToggleUI] _AlphaCutoffEnable("Alpha Cutoff Enable", Float) = 0
+		[HideInInspector][ToggleUI] _UseShadowThreshold("Use Shadow Threshold", Float) = 0
+		[HideInInspector][ToggleUI] _DoubleSidedEnable("Double Sided Enable", Float) = 0
+		[HideInInspector][Enum(Flip, 0, Mirror, 1, None, 2)] _DoubleSidedNormalMode("Double Sided Normal Mode", Float) = 2
+		[HideInInspector] _DoubleSidedConstants("DoubleSidedConstants", Vector) = (1,1,-1,0)
+		[HideInInspector] _DistortionEnable("_DistortionEnable",Float) = 0
+		[HideInInspector] _DistortionOnly("_DistortionOnly",Float) = 0
+
 		//_TessPhongStrength( "Tess Phong Strength", Range( 0, 1 ) ) = 0.5
 		//_TessValue( "Tess Max Tessellation", Range( 1, 32 ) ) = 16
 		//_TessMin( "Tess Min Distance", Float ) = 10
 		//_TessMax( "Tess Max Distance", Float ) = 25
 		//_TessEdgeLength ( "Tess Edge length", Range( 2, 50 ) ) = 16
 		//_TessMaxDisp( "Tess Max Displacement", Float ) = 25
+
+		[HideInInspector][ToggleUI] _TransparentWritingMotionVec("Transparent Writing MotionVec", Float) = 0
+		[HideInInspector][Enum(UnityEditor.Rendering.HighDefinition.OpaqueCullMode)] _OpaqueCullMode("Opaque Cull Mode", Int) = 2 // Back culling by default
+		[HideInInspector][ToggleUI] _SupportDecals("Support Decals", Float) = 1
+		[HideInInspector][ToggleUI] _ReceivesSSRTransparent("Receives SSR Transparent", Float) = 0
+		[HideInInspector] _EmissionColor("Color", Color) = (1, 1, 1)
+		[HideInInspector] _UnlitColorMap_MipInfo("_UnlitColorMap_MipInfo", Vector) = (0, 0, 0, 0)
 	}
 
 	SubShader
@@ -67,8 +74,10 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 
 		HLSLINCLUDE
 		#pragma target 4.5
-		#pragma only_renderers d3d11 ps4 xboxone vulkan metal switch
-		#pragma instancing_options renderinglayer
+		#pragma exclude_renderers glcore gles gles3 ps4 
+
+		#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
+		#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Filtering.hlsl"
 
 		#ifndef ASE_TESS_FUNCS
 		#define ASE_TESS_FUNCS
@@ -76,7 +85,7 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 		{
 			return tessValue;
 		}
-		
+
 		float CalcDistanceTessFactor (float4 vertex, float minDist, float maxDist, float tess, float4x4 o2w, float3 cameraPos )
 		{
 			float3 wpos = mul(o2w,vertex).xyz;
@@ -196,25 +205,27 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 			}
 
 			HLSLPROGRAM
-			#pragma multi_compile_instancing
-			#define ASE_SRP_VERSION 999999
 
-			#define SHADERPASS SHADERPASS_FORWARD_UNLIT
-			#pragma multi_compile _ DEBUG_DISPLAY
+			#pragma shader_feature_local _ENABLE_FOG_ON_TRANSPARENT
+			#pragma multi_compile_instancing
+			#pragma instancing_options renderinglayer
+			#define ASE_SRP_VERSION 101000
+
 
 			#pragma shader_feature _SURFACE_TYPE_TRANSPARENT
-			#pragma shader_feature_local _ _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
 			#pragma shader_feature_local _ALPHATEST_ON
-			#pragma shader_feature_local _ENABLE_FOG_ON_TRANSPARENT
+
+			#pragma multi_compile _ DEBUG_DISPLAY
 
 			#pragma vertex Vert
 			#pragma fragment Frag
 
+			#define SHADERPASS SHADERPASS_FORWARD_UNLIT
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
 
 			#if defined(_ENABLE_SHADOW_MATTE) && SHADERPASS == SHADERPASS_FORWARD_UNLIT
 				#define LIGHTLOOP_DISABLE_TILE_AND_CLUSTER
@@ -228,8 +239,6 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 				#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Lighting/PunctualLightCommon.hlsl"
 				#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Lighting/LightLoop/HDShadowLoop.hlsl"
 			#endif
-
-
 
 			
 
@@ -296,7 +305,7 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 			float _DoubleSidedEnable;
 			float _DoubleSidedNormalMode;
 			float4 _DoubleSidedConstants;
-			#ifdef TESSELLATION_ON
+			#ifdef ASE_TESSELLATION
 				float _TessPhongStrength;
 				float _TessValue;
 				float _TessMin;
@@ -305,6 +314,7 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 				float _TessMaxDisp;
 			#endif
 			CBUFFER_END
+
 			sampler2D _Ramp;
 			float4x4 unity_CameraProjection;
 			float4x4 unity_CameraInvProjection;
@@ -330,7 +340,7 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 			float3 InvertDepthDirHD73_g8( float3 In )
 			{
 				float3 result = In;
-				#if !defined(ASE_SRP_VERSION) || ASE_SRP_VERSION <= 70301 || ASE_SRP_VERSION == 70503 || ASE_SRP_VERSION >= 80301 
+				#if !defined(ASE_SRP_VERSION) || ASE_SRP_VERSION <= 70301 || ASE_SRP_VERSION == 70503 || ASE_SRP_VERSION == 70600 || ASE_SRP_VERSION == 70700 || ASE_SRP_VERSION == 70701 || ASE_SRP_VERSION >= 80301
 				result *= float3(1,1,-1);
 				#endif
 				return result;
@@ -365,18 +375,17 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 					float shadow;
 					float3 shadow3;
 					posInput = GetPositionInput(fragInputs.positionSS.xy, _ScreenSize.zw, fragInputs.positionSS.z, UNITY_MATRIX_I_VP, UNITY_MATRIX_V);
-					float3 normalWS = normalize(fragInputs.tangentToWorld[1]);
-					uint renderingLayers = _EnableLightLayers ? asuint(unity_RenderingLayer.x) : DEFAULT_LIGHT_LAYERS;
-					ShadowLoopMin(shadowContext, posInput, normalWS, asuint(_ShadowMatteFilter), renderingLayers, shadow3);
-					shadow = dot(shadow3, float3(1.0f/3.0f, 1.0f/3.0f, 1.0f/3.0f));
-
-					float4 shadowColor = (1 - shadow)*surfaceDescription.ShadowTint.rgba;
+					float3 upWS = normalize(fragInputs.tangentToWorld[1]);
+					uint renderingLayers = GetMeshRenderingLightLayer();
+					ShadowLoopMin(shadowContext, posInput, upWS, asuint(_ShadowMatteFilter), renderingLayers, shadow3);
+					shadow = dot(shadow3, float3(1.0 / 3.0, 1.0 / 3.0, 1.0 / 3.0));
+					float4 shadowColor = (1.0 - shadow) * surfaceDescription.ShadowTint.rgba;
 					float  localAlpha  = saturate(shadowColor.a + surfaceDescription.Alpha);
 
 					#ifdef _SURFACE_TYPE_TRANSPARENT
-						surfaceData.color = lerp(shadowColor.rgb*surfaceData.color, lerp(lerp(shadowColor.rgb, surfaceData.color, 1 - surfaceDescription.ShadowTint.a), surfaceData.color, shadow), surfaceDescription.Alpha);
+						surfaceData.color = lerp(shadowColor.rgb * surfaceData.color, lerp(lerp(shadowColor.rgb, surfaceData.color, 1.0 - surfaceDescription.ShadowTint.a), surfaceData.color, shadow), surfaceDescription.Alpha);
 					#else
-						surfaceData.color = lerp(lerp(shadowColor.rgb, surfaceData.color, 1 - surfaceDescription.ShadowTint.a), surfaceData.color, shadow);
+						surfaceData.color = lerp(lerp(shadowColor.rgb, surfaceData.color, 1.0 - surfaceDescription.ShadowTint.a), surfaceData.color, shadow);
 					#endif
 					localAlpha = ApplyBlendMode(surfaceData.color, localAlpha).a;
 					surfaceDescription.Alpha = localAlpha;
@@ -418,7 +427,7 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 				return o;
 			}
 
-			#if defined(TESSELLATION_ON)
+			#if defined(ASE_TESSELLATION)
 			struct VertexControl
 			{
 				float3 positionOS : INTERNALTESSPOS;
@@ -541,7 +550,8 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 				float3 localInvertDepthDirHD73_g8 = InvertDepthDirHD73_g8( In73_g8 );
 				float4 appendResult49_g8 = (float4(localInvertDepthDirHD73_g8 , 1.0));
 				float3 ase_objectScale = float3( length( GetObjectToWorldMatrix()[ 0 ].xyz ), length( GetObjectToWorldMatrix()[ 1 ].xyz ), length( GetObjectToWorldMatrix()[ 2 ].xyz ) );
-				float temp_output_184_0 = ( 1.0 - saturate( pow( ( length( abs( (( transform114 - mul( unity_CameraToWorld, appendResult49_g8 ) )).xyz ) ) / ( max( max( ase_objectScale.x , ase_objectScale.y ) , ase_objectScale.z ) * 0.5 * _Size ) ) , _Rampfalloff ) ) );
+				float saferPower163 = abs( ( length( abs( (( transform114 - mul( unity_CameraToWorld, appendResult49_g8 ) )).xyz ) ) / ( max( max( ase_objectScale.x , ase_objectScale.y ) , ase_objectScale.z ) * 0.5 * _Size ) ) );
+				float temp_output_184_0 = ( 1.0 - saturate( pow( saferPower163 , _Rampfalloff ) ) );
 				float2 temp_cast_1 = (temp_output_184_0).xx;
 				
 				surfaceDescription.Color = tex2Dlod( _Ramp, float4( temp_cast_1, 0, 0.0) ).rgb;
@@ -606,24 +616,25 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 			Cull Off
 
 			HLSLPROGRAM
-			#pragma multi_compile_instancing
-			#define ASE_SRP_VERSION 999999
 
-			#define SHADERPASS SHADERPASS_LIGHT_TRANSPORT
+			#pragma shader_feature_local _ENABLE_FOG_ON_TRANSPARENT
+			#pragma multi_compile_instancing
+			#pragma instancing_options renderinglayer
+			#define ASE_SRP_VERSION 101000
+
 
 			#pragma shader_feature _SURFACE_TYPE_TRANSPARENT
-			#pragma shader_feature_local _ _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
 			#pragma shader_feature_local _ALPHATEST_ON
-			#pragma shader_feature_local _ENABLE_FOG_ON_TRANSPARENT
 
 			#pragma vertex Vert
 			#pragma fragment Frag
 
+			#define SHADERPASS SHADERPASS_LIGHT_TRANSPORT
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
 
 			CBUFFER_START( UnityPerMaterial )
 			float _Size;
@@ -671,7 +682,7 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 			float _DoubleSidedEnable;
 			float _DoubleSidedNormalMode;
 			float4 _DoubleSidedConstants;
-			#ifdef TESSELLATION_ON
+			#ifdef ASE_TESSELLATION
 				float _TessPhongStrength;
 				float _TessValue;
 				float _TessMin;
@@ -688,6 +699,7 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 
 			float unity_OneOverOutputBoost;
 			float unity_MaxOutputValue;
+
 			sampler2D _Ramp;
 			float4x4 unity_CameraProjection;
 			float4x4 unity_CameraInvProjection;
@@ -733,7 +745,7 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 			float3 InvertDepthDirHD73_g8( float3 In )
 			{
 				float3 result = In;
-				#if !defined(ASE_SRP_VERSION) || ASE_SRP_VERSION <= 70301 || ASE_SRP_VERSION == 70503 || ASE_SRP_VERSION >= 80301 
+				#if !defined(ASE_SRP_VERSION) || ASE_SRP_VERSION <= 70301 || ASE_SRP_VERSION == 70503 || ASE_SRP_VERSION == 70600 || ASE_SRP_VERSION == 70700 || ASE_SRP_VERSION == 70701 || ASE_SRP_VERSION >= 80301
 				result *= float3(1,1,-1);
 				#endif
 				return result;
@@ -804,7 +816,7 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 				return o;
 			}
 
-			#if defined(TESSELLATION_ON)
+			#if defined(ASE_TESSELLATION)
 			struct VertexControl
 			{
 				float3 positionOS : INTERNALTESSPOS;
@@ -929,7 +941,8 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 				float3 localInvertDepthDirHD73_g8 = InvertDepthDirHD73_g8( In73_g8 );
 				float4 appendResult49_g8 = (float4(localInvertDepthDirHD73_g8 , 1.0));
 				float3 ase_objectScale = float3( length( GetObjectToWorldMatrix()[ 0 ].xyz ), length( GetObjectToWorldMatrix()[ 1 ].xyz ), length( GetObjectToWorldMatrix()[ 2 ].xyz ) );
-				float temp_output_184_0 = ( 1.0 - saturate( pow( ( length( abs( (( transform114 - mul( unity_CameraToWorld, appendResult49_g8 ) )).xyz ) ) / ( max( max( ase_objectScale.x , ase_objectScale.y ) , ase_objectScale.z ) * 0.5 * _Size ) ) , _Rampfalloff ) ) );
+				float saferPower163 = abs( ( length( abs( (( transform114 - mul( unity_CameraToWorld, appendResult49_g8 ) )).xyz ) ) / ( max( max( ase_objectScale.x , ase_objectScale.y ) , ase_objectScale.z ) * 0.5 * _Size ) ) );
+				float temp_output_184_0 = ( 1.0 - saturate( pow( saferPower163 , _Rampfalloff ) ) );
 				float2 temp_cast_1 = (temp_output_184_0).xx;
 				
 				surfaceDescription.Color = tex2Dlod( _Ramp, float4( temp_cast_1, 0, 0.0) ).rgb;
@@ -974,26 +987,28 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 			ColorMask 0
 
 			HLSLPROGRAM
-			#pragma multi_compile_instancing
-			#define ASE_SRP_VERSION 999999
 
-			#define SHADERPASS SHADERPASS_DEPTH_ONLY
-			#define SCENESELECTIONPASS
-			#pragma editor_sync_compilation
+			#pragma shader_feature_local _ENABLE_FOG_ON_TRANSPARENT
+			#pragma multi_compile_instancing
+			#pragma instancing_options renderinglayer
+			#define ASE_SRP_VERSION 101000
+
 
 			#pragma shader_feature _SURFACE_TYPE_TRANSPARENT
-			#pragma shader_feature_local _ _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
 			#pragma shader_feature_local _ALPHATEST_ON
-			#pragma shader_feature_local _ENABLE_FOG_ON_TRANSPARENT
+
+			#pragma editor_sync_compilation
 
 			#pragma vertex Vert
 			#pragma fragment Frag
 
+			#define SHADERPASS SHADERPASS_DEPTH_ONLY
+			#define SCENESELECTIONPASS 1
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
 
 			int _ObjectId;
 			int _PassValue;
@@ -1044,7 +1059,7 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 			float _DoubleSidedEnable;
 			float _DoubleSidedNormalMode;
 			float4 _DoubleSidedConstants;
-			#ifdef TESSELLATION_ON
+			#ifdef ASE_TESSELLATION
 				float _TessPhongStrength;
 				float _TessValue;
 				float _TessMin;
@@ -1053,6 +1068,7 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 				float _TessMaxDisp;
 			#endif
 			CBUFFER_END
+
 			float4x4 unity_CameraProjection;
 			float4x4 unity_CameraInvProjection;
 			float4x4 unity_WorldToCamera;
@@ -1096,7 +1112,7 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 			float3 InvertDepthDirHD73_g8( float3 In )
 			{
 				float3 result = In;
-				#if !defined(ASE_SRP_VERSION) || ASE_SRP_VERSION <= 70301 || ASE_SRP_VERSION == 70503 || ASE_SRP_VERSION >= 80301 
+				#if !defined(ASE_SRP_VERSION) || ASE_SRP_VERSION <= 70301 || ASE_SRP_VERSION == 70503 || ASE_SRP_VERSION == 70600 || ASE_SRP_VERSION == 70700 || ASE_SRP_VERSION == 70701 || ASE_SRP_VERSION >= 80301
 				result *= float3(1,1,-1);
 				#endif
 				return result;
@@ -1155,7 +1171,7 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 				return o;
 			}
 
-			#if defined(TESSELLATION_ON)
+			#if defined(ASE_TESSELLATION)
 			struct VertexControl
 			{
 				float3 positionOS : INTERNALTESSPOS;
@@ -1283,7 +1299,8 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 				float3 localInvertDepthDirHD73_g8 = InvertDepthDirHD73_g8( In73_g8 );
 				float4 appendResult49_g8 = (float4(localInvertDepthDirHD73_g8 , 1.0));
 				float3 ase_objectScale = float3( length( GetObjectToWorldMatrix()[ 0 ].xyz ), length( GetObjectToWorldMatrix()[ 1 ].xyz ), length( GetObjectToWorldMatrix()[ 2 ].xyz ) );
-				float temp_output_184_0 = ( 1.0 - saturate( pow( ( length( abs( (( transform114 - mul( unity_CameraToWorld, appendResult49_g8 ) )).xyz ) ) / ( max( max( ase_objectScale.x , ase_objectScale.y ) , ase_objectScale.z ) * 0.5 * _Size ) ) , _Rampfalloff ) ) );
+				float saferPower163 = abs( ( length( abs( (( transform114 - mul( unity_CameraToWorld, appendResult49_g8 ) )).xyz ) ) / ( max( max( ase_objectScale.x , ase_objectScale.y ) , ase_objectScale.z ) * 0.5 * _Size ) ) );
+				float temp_output_184_0 = ( 1.0 - saturate( pow( saferPower163 , _Rampfalloff ) ) );
 				
 				surfaceDescription.Alpha = temp_output_184_0;
 				surfaceDescription.AlphaClipThreshold =  _AlphaCutoff;
@@ -1323,25 +1340,27 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 			ColorMask 0 0
 
 			HLSLPROGRAM
-			#pragma multi_compile_instancing
-			#define ASE_SRP_VERSION 999999
 
-			#define SHADERPASS SHADERPASS_DEPTH_ONLY
-			#pragma multi_compile _ WRITE_MSAA_DEPTH
+			#pragma shader_feature_local _ENABLE_FOG_ON_TRANSPARENT
+			#pragma multi_compile_instancing
+			#pragma instancing_options renderinglayer
+			#define ASE_SRP_VERSION 101000
+
 
 			#pragma shader_feature _SURFACE_TYPE_TRANSPARENT
-			#pragma shader_feature_local _ _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
 			#pragma shader_feature_local _ALPHATEST_ON
-			#pragma shader_feature_local _ENABLE_FOG_ON_TRANSPARENT
+
+			#pragma multi_compile _ WRITE_MSAA_DEPTH
 
 			#pragma vertex Vert
 			#pragma fragment Frag
 
+			#define SHADERPASS SHADERPASS_DEPTH_ONLY
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
 
 			CBUFFER_START( UnityPerMaterial )
 			float _Size;
@@ -1389,7 +1408,7 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 			float _DoubleSidedEnable;
 			float _DoubleSidedNormalMode;
 			float4 _DoubleSidedConstants;
-			#ifdef TESSELLATION_ON
+			#ifdef ASE_TESSELLATION
 				float _TessPhongStrength;
 				float _TessValue;
 				float _TessMin;
@@ -1398,6 +1417,7 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 				float _TessMaxDisp;
 			#endif
 			CBUFFER_END
+
 			float4x4 unity_CameraProjection;
 			float4x4 unity_CameraInvProjection;
 			float4x4 unity_WorldToCamera;
@@ -1440,7 +1460,7 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 			float3 InvertDepthDirHD73_g8( float3 In )
 			{
 				float3 result = In;
-				#if !defined(ASE_SRP_VERSION) || ASE_SRP_VERSION <= 70301 || ASE_SRP_VERSION == 70503 || ASE_SRP_VERSION >= 80301 
+				#if !defined(ASE_SRP_VERSION) || ASE_SRP_VERSION <= 70301 || ASE_SRP_VERSION == 70503 || ASE_SRP_VERSION == 70600 || ASE_SRP_VERSION == 70700 || ASE_SRP_VERSION == 70701 || ASE_SRP_VERSION >= 80301
 				result *= float3(1,1,-1);
 				#endif
 				return result;
@@ -1499,7 +1519,7 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 				return o;
 			}
 
-			#if defined(TESSELLATION_ON)
+			#if defined(ASE_TESSELLATION)
 			struct VertexControl
 			{
 				float3 positionOS : INTERNALTESSPOS;
@@ -1636,7 +1656,8 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 				float3 localInvertDepthDirHD73_g8 = InvertDepthDirHD73_g8( In73_g8 );
 				float4 appendResult49_g8 = (float4(localInvertDepthDirHD73_g8 , 1.0));
 				float3 ase_objectScale = float3( length( GetObjectToWorldMatrix()[ 0 ].xyz ), length( GetObjectToWorldMatrix()[ 1 ].xyz ), length( GetObjectToWorldMatrix()[ 2 ].xyz ) );
-				float temp_output_184_0 = ( 1.0 - saturate( pow( ( length( abs( (( transform114 - mul( unity_CameraToWorld, appendResult49_g8 ) )).xyz ) ) / ( max( max( ase_objectScale.x , ase_objectScale.y ) , ase_objectScale.z ) * 0.5 * _Size ) ) , _Rampfalloff ) ) );
+				float saferPower163 = abs( ( length( abs( (( transform114 - mul( unity_CameraToWorld, appendResult49_g8 ) )).xyz ) ) / ( max( max( ase_objectScale.x , ase_objectScale.y ) , ase_objectScale.z ) * 0.5 * _Size ) ) );
+				float temp_output_184_0 = ( 1.0 - saturate( pow( saferPower163 , _Rampfalloff ) ) );
 				
 				surfaceDescription.Alpha = temp_output_184_0;
 				surfaceDescription.AlphaClipThreshold =  _AlphaCutoff;
@@ -1688,25 +1709,27 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 
 
 			HLSLPROGRAM
-			#pragma multi_compile_instancing
-			#define ASE_SRP_VERSION 999999
 
-			#define SHADERPASS SHADERPASS_MOTION_VECTORS
-			#pragma multi_compile _ WRITE_MSAA_DEPTH
+			#pragma shader_feature_local _ENABLE_FOG_ON_TRANSPARENT
+			#pragma multi_compile_instancing
+			#pragma instancing_options renderinglayer
+			#define ASE_SRP_VERSION 101000
+
 
 			#pragma shader_feature _SURFACE_TYPE_TRANSPARENT
-			#pragma shader_feature_local _ _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
 			#pragma shader_feature_local _ALPHATEST_ON
-			#pragma shader_feature_local _ENABLE_FOG_ON_TRANSPARENT
+
+			#pragma multi_compile _ WRITE_MSAA_DEPTH
 
 			#pragma vertex Vert
 			#pragma fragment Frag
 
+			#define SHADERPASS SHADERPASS_MOTION_VECTORS
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
 
 			CBUFFER_START( UnityPerMaterial )
 			float _Size;
@@ -1754,7 +1777,7 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 			float _DoubleSidedEnable;
 			float _DoubleSidedNormalMode;
 			float4 _DoubleSidedConstants;
-			#ifdef TESSELLATION_ON
+			#ifdef ASE_TESSELLATION
 				float _TessPhongStrength;
 				float _TessValue;
 				float _TessMin;
@@ -1763,6 +1786,7 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 				float _TessMaxDisp;
 			#endif
 			CBUFFER_END
+
 			float4x4 unity_CameraProjection;
 			float4x4 unity_CameraInvProjection;
 			float4x4 unity_WorldToCamera;
@@ -1812,7 +1836,7 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 			float3 InvertDepthDirHD73_g8( float3 In )
 			{
 				float3 result = In;
-				#if !defined(ASE_SRP_VERSION) || ASE_SRP_VERSION <= 70301 || ASE_SRP_VERSION == 70503 || ASE_SRP_VERSION >= 80301 
+				#if !defined(ASE_SRP_VERSION) || ASE_SRP_VERSION <= 70301 || ASE_SRP_VERSION == 70503 || ASE_SRP_VERSION == 70600 || ASE_SRP_VERSION == 70700 || ASE_SRP_VERSION == 70701 || ASE_SRP_VERSION >= 80301
 				result *= float3(1,1,-1);
 				#endif
 				return result;
@@ -1937,7 +1961,7 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 				return o;
 			}
 
-			#if defined(TESSELLATION_ON)
+			#if defined(ASE_TESSELLATION)
 			struct VertexControl
 			{
 				float3 positionOS : INTERNALTESSPOS;
@@ -2086,7 +2110,8 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 				float3 localInvertDepthDirHD73_g8 = InvertDepthDirHD73_g8( In73_g8 );
 				float4 appendResult49_g8 = (float4(localInvertDepthDirHD73_g8 , 1.0));
 				float3 ase_objectScale = float3( length( GetObjectToWorldMatrix()[ 0 ].xyz ), length( GetObjectToWorldMatrix()[ 1 ].xyz ), length( GetObjectToWorldMatrix()[ 2 ].xyz ) );
-				float temp_output_184_0 = ( 1.0 - saturate( pow( ( length( abs( (( transform114 - mul( unity_CameraToWorld, appendResult49_g8 ) )).xyz ) ) / ( max( max( ase_objectScale.x , ase_objectScale.y ) , ase_objectScale.z ) * 0.5 * _Size ) ) , _Rampfalloff ) ) );
+				float saferPower163 = abs( ( length( abs( (( transform114 - mul( unity_CameraToWorld, appendResult49_g8 ) )).xyz ) ) / ( max( max( ase_objectScale.x , ase_objectScale.y ) , ase_objectScale.z ) * 0.5 * _Size ) ) );
+				float temp_output_184_0 = ( 1.0 - saturate( pow( saferPower163 , _Rampfalloff ) ) );
 				
 				surfaceDescription.Alpha = temp_output_184_0;
 				surfaceDescription.AlphaClipThreshold = _AlphaCutoff;
@@ -2131,13 +2156,13 @@ Shader "ASESampleShaders/Omni Decal/SRP HD Omni Decal"
 
 	
 	}
+	
 	CustomEditor "Rendering.HighDefinition.LitShaderGraphGUI"
 	Fallback "Hidden/InternalErrorShader"
 	
 }
 /*ASEBEGIN
-Version=18900
-289.6;73.6;917.4;424;-1300.865;-188.8262;2.138459;False;True
+Version=19103
 Node;AmplifyShaderEditor.CommentaryNode;219;1378.052,401.4491;Inherit;False;328.9616;247.4789;Object pivot position in world space;1;114;;1,1,1,1;0;0
 Node;AmplifyShaderEditor.CommentaryNode;220;1674.094,745.6295;Inherit;False;527.0399;229;Make the effect scale with the sphere;3;152;154;155;;1,1,1,1;0;0
 Node;AmplifyShaderEditor.ObjectToWorldTransfNode;114;1428.052,451.4491;Inherit;False;1;0;FLOAT4;0,0,0,1;False;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
@@ -2153,18 +2178,18 @@ Node;AmplifyShaderEditor.LengthOpNode;159;2400,496;Inherit;False;1;0;FLOAT3;0,0,
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;156;2254.979,824.6212;Inherit;False;3;3;0;FLOAT;0;False;1;FLOAT;0.5;False;2;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;164;2495.099,669.4001;Float;False;Property;_Rampfalloff;Ramp falloff;1;0;Create;True;0;0;0;False;0;False;5;5;0.01;5;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleDivideOpNode;148;2560,496;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.PowerNode;163;2736,496;Inherit;False;False;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SaturateNode;187;2944,496;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SamplerNode;185;3348.951,288;Inherit;True;Property;_Ramp;Ramp;2;0;Create;True;0;0;0;False;0;False;-1;None;bb47b838a0905154496dfe9920ae73b0;True;0;False;white;Auto;False;Object;-1;MipLevel;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.RangedFloatNode;233;3163.349,370.7596;Float;False;Constant;_Float0;Float 0;4;0;Create;True;0;0;0;False;0;False;0;0;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.OneMinusNode;184;3120,496;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;249;3685.973,468.2288;Float;False;True;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;17;ASESampleShaders/Omni Decal/SRP HD Omni Decal;7f5cb9c3ea6481f469fdd856555439ef;True;Forward Unlit;0;0;Forward Unlit;9;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Transparent=Queue=0;True;5;0;False;True;1;0;True;-20;0;True;-21;1;0;True;-22;0;True;-23;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;-26;False;False;False;False;False;False;False;False;False;True;True;0;True;-5;255;False;-1;255;True;-6;7;False;-1;3;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;True;0;True;-24;True;0;True;-32;False;True;1;LightMode=ForwardOnly;False;0;Hidden/InternalErrorShader;0;0;Standard;29;Surface Type;1;  Rendering Pass ;0;  Rendering Pass;1;  Blending Mode;0;  Receive Fog;1;  Distortion;0;    Distortion Mode;0;    Distortion Only;1;  Depth Write;1;  Cull Mode;1;  Depth Test;8;Double-Sided;0;Alpha Clipping;0;Motion Vectors;1;  Add Precomputed Velocity;0;Shadow Matte;0;Cast Shadows;0;DOTS Instancing;0;GPU Instancing;1;Tessellation;0;  Phong;0;  Strength;0.5,False,-1;  Type;0;  Tess;16,False,-1;  Min;10,False,-1;  Max;25,False,-1;  Edge Length;16,False,-1;  Max Displacement;25,False,-1;Vertex Position,InvertActionOnDeselection;1;0;7;True;False;True;True;True;True;False;False;;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;250;3685.973,468.2288;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;7f5cb9c3ea6481f469fdd856555439ef;True;ShadowCaster;0;1;ShadowCaster;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;-26;False;True;False;False;False;False;0;False;-1;False;False;False;False;False;False;False;False;False;True;1;False;-1;False;False;True;1;LightMode=ShadowCaster;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;251;3685.973,468.2288;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;7f5cb9c3ea6481f469fdd856555439ef;True;META;0;2;META;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;-1;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=Meta;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;252;3685.973,468.2288;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;7f5cb9c3ea6481f469fdd856555439ef;True;SceneSelectionPass;0;3;SceneSelectionPass;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;-26;False;True;False;False;False;False;0;False;-1;False;False;False;False;False;False;False;False;False;True;1;False;-1;False;False;True;1;LightMode=SceneSelectionPass;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;253;3685.973,468.2288;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;7f5cb9c3ea6481f469fdd856555439ef;True;DepthForwardOnly;0;4;DepthForwardOnly;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;-26;False;True;False;False;False;False;0;False;-1;False;False;False;False;False;False;False;True;True;0;True;-7;255;False;-1;255;True;-8;7;False;-1;3;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;True;1;False;-1;False;False;True;1;LightMode=DepthForwardOnly;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;254;3685.973,468.2288;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;7f5cb9c3ea6481f469fdd856555439ef;True;Motion Vectors;0;5;Motion Vectors;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;-26;False;False;False;False;False;False;False;False;False;True;True;0;True;-9;255;False;-1;255;True;-10;7;False;-1;3;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;True;1;False;-1;False;False;True;1;LightMode=MotionVectors;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;255;3685.973,468.2288;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;7f5cb9c3ea6481f469fdd856555439ef;True;DistortionVectors;0;6;DistortionVectors;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;0;False;True;4;1;False;-1;1;False;-1;4;1;False;-1;1;False;-1;True;1;False;-1;1;False;-1;False;False;False;False;False;False;False;False;False;False;False;True;0;True;-26;False;False;False;False;False;False;False;False;False;True;True;0;True;-11;255;False;-1;255;True;-12;7;False;-1;3;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;True;2;False;-1;True;3;False;-1;False;True;1;LightMode=DistortionVectors;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;249;3685.973,468.2288;Float;False;True;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;15;ASESampleShaders/Omni Decal/SRP HD Omni Decal;7f5cb9c3ea6481f469fdd856555439ef;True;Forward Unlit;0;0;Forward Unlit;9;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Transparent=Queue=0;True;5;True;8;d3d11;metal;vulkan;xboxone;xboxseries;playstation;ps5;switch;0;False;True;1;0;True;_SrcBlend;0;True;_DstBlend;1;0;True;_AlphaSrcBlend;0;True;_AlphaDstBlend;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;False;False;False;False;False;False;False;False;True;True;0;True;_StencilRef;255;False;;255;True;_StencilWriteMask;7;False;;3;False;;1;False;;1;False;;7;False;;1;False;;1;False;;1;False;;False;True;0;True;_ZWrite;True;0;True;_ZTestTransparent;False;True;1;LightMode=ForwardOnly;False;False;0;Hidden/InternalErrorShader;0;0;Standard;29;Surface Type;1;0;  Rendering Pass ;0;0;  Rendering Pass;1;0;  Blending Mode;0;0;  Receive Fog;1;0;  Distortion;0;0;    Distortion Mode;0;0;    Distortion Only;1;0;  Depth Write;1;0;  Cull Mode;1;0;  Depth Test;8;0;Double-Sided;0;0;Alpha Clipping;0;0;Motion Vectors;1;0;  Add Precomputed Velocity;0;0;Shadow Matte;0;0;Cast Shadows;0;0;DOTS Instancing;0;0;GPU Instancing;1;0;Tessellation;0;0;  Phong;0;0;  Strength;0.5,False,;0;  Type;0;0;  Tess;16,False,;0;  Min;10,False,;0;  Max;25,False,;0;  Edge Length;16,False,;0;  Max Displacement;25,False,;0;Vertex Position,InvertActionOnDeselection;1;0;0;7;True;False;True;True;True;True;False;False;;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;250;3685.973,468.2288;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;7f5cb9c3ea6481f469fdd856555439ef;True;ShadowCaster;0;1;ShadowCaster;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;8;d3d11;metal;vulkan;xboxone;xboxseries;playstation;ps5;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;True;False;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;False;False;True;1;LightMode=ShadowCaster;False;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;251;3685.973,468.2288;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;7f5cb9c3ea6481f469fdd856555439ef;True;META;0;2;META;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;8;d3d11;metal;vulkan;xboxone;xboxseries;playstation;ps5;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=Meta;False;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;252;3685.973,468.2288;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;7f5cb9c3ea6481f469fdd856555439ef;True;SceneSelectionPass;0;3;SceneSelectionPass;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;8;d3d11;metal;vulkan;xboxone;xboxseries;playstation;ps5;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;True;False;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;False;False;True;1;LightMode=SceneSelectionPass;False;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;253;3685.973,468.2288;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;7f5cb9c3ea6481f469fdd856555439ef;True;DepthForwardOnly;0;4;DepthForwardOnly;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;8;d3d11;metal;vulkan;xboxone;xboxseries;playstation;ps5;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;True;False;False;False;False;0;False;;False;False;False;False;False;False;False;True;True;0;True;_StencilRefDepth;255;False;;255;True;_StencilWriteMaskDepth;7;False;;3;False;;1;False;;1;False;;7;False;;1;False;;1;False;;1;False;;False;True;1;False;;False;False;True;1;LightMode=DepthForwardOnly;False;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;254;3685.973,468.2288;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;7f5cb9c3ea6481f469fdd856555439ef;True;Motion Vectors;0;5;Motion Vectors;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;8;d3d11;metal;vulkan;xboxone;xboxseries;playstation;ps5;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;False;False;False;False;False;False;False;False;True;True;0;True;_StencilRefMV;255;False;;255;True;_StencilWriteMaskMV;7;False;;3;False;;1;False;;1;False;;7;False;;1;False;;1;False;;1;False;;False;True;1;False;;False;False;True;1;LightMode=MotionVectors;False;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;255;3685.973,468.2288;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;7f5cb9c3ea6481f469fdd856555439ef;True;DistortionVectors;0;6;DistortionVectors;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;8;d3d11;metal;vulkan;xboxone;xboxseries;playstation;ps5;switch;0;False;True;4;1;False;;1;False;;4;1;False;;1;False;;True;1;False;;1;False;;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;False;False;False;False;False;False;False;False;True;True;0;True;_StencilRefDistortionVec;255;False;;255;True;_StencilWriteMaskDistortionVec;7;False;;3;False;;1;False;;1;False;;7;False;;1;False;;1;False;;1;False;;False;True;2;False;;True;3;False;;False;True;1;LightMode=DistortionVectors;False;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.PowerNode;163;2736,496;Inherit;False;True;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 WireConnection;113;0;114;0
 WireConnection;113;1;232;0
 WireConnection;154;0;152;1
@@ -2178,13 +2203,13 @@ WireConnection;156;0;155;0
 WireConnection;156;2;216;0
 WireConnection;148;0;159;0
 WireConnection;148;1;156;0
-WireConnection;163;0;148;0
-WireConnection;163;1;164;0
 WireConnection;187;0;163;0
 WireConnection;185;1;184;0
 WireConnection;185;2;233;0
 WireConnection;184;0;187;0
 WireConnection;249;0;185;0
 WireConnection;249;2;184;0
+WireConnection;163;0;148;0
+WireConnection;163;1;164;0
 ASEEND*/
-//CHKSM=81FDAF7060C9C8C583A95FC223D6707FA494F3D4
+//CHKSM=FDDDFF9CA48418CBC860AAD87DF46C9FE613EF37

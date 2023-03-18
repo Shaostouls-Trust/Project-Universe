@@ -32,8 +32,8 @@ namespace ProjectUniverse.PowerSystem
         private LinkedList<ICable> iCableDLL = new LinkedList<ICable>();
         private MeshRenderer renderer;
         private Light lightComponent;
-        public float maxLightIntensity;
-        public float maxLightRange;
+        private float maxLightIntensity;
+        private float maxLightRange;
         //power legs update
         [SerializeField]
         private int legsRequired;
@@ -65,6 +65,11 @@ namespace ProjectUniverse.PowerSystem
                 renderer = GetComponentInChildren<MeshRenderer>();
             }
             lightComponent = this.gameObject.GetComponentInChildren<Light>();
+            if(lightComponent != null)
+            {
+                maxLightIntensity = lightComponent.intensity;
+                maxLightRange = lightComponent.range;
+            }
             //if(isHost){
             //}?
             NetworkListeners();

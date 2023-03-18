@@ -5,12 +5,24 @@ using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
+[ExecuteInEditMode]
 public class FloorMeshCombiner : MonoBehaviour
 {
+    public bool runAdv;
+    public bool runBasic;
     // Start is called before the first frame update
-    void Start()
+    void Update()
     {
-        
+        if (runAdv)
+        {
+            runAdv = false;
+            CombineMeshesAdv();
+        }
+        if (runBasic)
+        {
+            runBasic = false;
+            CombineMeshes();
+        }
     }
 
     private void CheckForChildrenRenderers(GameObject parent, ref List<MeshRenderer> meshRenderers)
@@ -135,6 +147,7 @@ public class FloorMeshCombiner : MonoBehaviour
             finalCombiners.Add(ci);
         }
         Mesh finalMesh = new Mesh();
+        Debug.Log(finalCombiners.Count);
         finalMesh.CombineMeshes(finalCombiners.ToArray(), false);
         GetComponent<MeshFilter>().sharedMesh = finalMesh;
         Debug.Log("Final mesh has " + submeshes.Count + " submeshes/mats.");
@@ -160,7 +173,7 @@ public class FloorMeshCombiner : MonoBehaviour
         CombineInstance[] combiner = new CombineInstance[filters.Length];
         for(int i = 0; i < filters.Length; i++)
         {
-            if (filters[i].transform == transform) continue;
+            //if (filters[i].transform == transform) continue;
             combiner[i].subMeshIndex = 0;
             combiner[i].mesh = filters[i].sharedMesh;
             combiner[i].transform = filters[i].transform.localToWorldMatrix;

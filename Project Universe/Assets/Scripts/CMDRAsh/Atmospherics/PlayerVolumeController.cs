@@ -34,7 +34,7 @@ namespace ProjectUniverse.Environment.Volumes
         //radiation
         private float myRadExposureRateRaw = 0;
         [SerializeField] private float myRadExposureTime = 0;
-        private float myRadAbsorbtionRate = 0.9f;
+        private float myRadAbsorbtionRate = 0.92f;
         [SerializeField] private float myRadAbsorbed = 0;
         private float myMaxRoentgenDetectable = 0;
         //Player stats:

@@ -57,10 +57,13 @@ namespace AmplifyShaderEditor
 		[SerializeField]
 		private CullMode m_cullMode = CullMode.Front;
 
+		[SerializeField]
+		private ColorMaskHelper m_colorMaskHelper = new ColorMaskHelper();
+
 		protected override void CommonInit( int uniqueId )
 		{
 			base.CommonInit( uniqueId );
-
+			m_colorMaskHelper.HideInlineButton();
 			AddOutputPort( WirePortDataType.FLOAT3, "Out" );
 
 			AddInputPort( WirePortDataType.FLOAT3, false, "Color", -1, MasterNodePortCategory.Fragment, 0 );
@@ -183,6 +186,7 @@ namespace AmplifyShaderEditor
 				m_cullMode = (CullMode)EditorGUILayoutEnumPopup( CullModePortNameStr, m_cullMode ); 
 				m_zWriteMode = EditorGUILayoutPopup( ZBufferOpHelper.ZWriteModeStr, m_zWriteMode, ZBufferOpHelper.ZWriteModeValues );
 				m_zTestMode = EditorGUILayoutPopup( ZBufferOpHelper.ZTestModeStr, m_zTestMode, ZBufferOpHelper.ZTestModeLabels );
+				m_colorMaskHelper.Draw( this );
 				m_noFog = EditorGUILayoutToggle( "No Fog", m_noFog );
 
 			} );
@@ -230,6 +234,10 @@ namespace AmplifyShaderEditor
 			MasterNodeDataCollector outlineDataCollector = new MasterNodeDataCollector();
 			outlineDataCollector.IsOutlineDataCollector = true;
 			outlineDataCollector.DirtyNormal = true;
+
+			if( dataCollector.SurfaceCustomShadowCaster && dataCollector.CustomOutline )
+				outlineDataCollector.CopyTextureChannelSizeFrom( ref dataCollector );
+
 			InputPort colorPort = GetInputPortByUniqueId( 0 );
 			InputPort alphaPort = GetInputPortByUniqueId( 2 );
 			InputPort vertexPort = GetInputPortByUniqueId( 1 );
@@ -352,6 +360,7 @@ namespace AmplifyShaderEditor
 			UIUtils.CurrentWindow.OutsideGraph.CurrentStandardSurface.OutlineHelper.ZWriteMode = m_zWriteMode;
 			UIUtils.CurrentWindow.OutsideGraph.CurrentStandardSurface.OutlineHelper.OffsetMode = m_currentSelectedMode;
 			UIUtils.CurrentWindow.OutsideGraph.CurrentStandardSurface.OutlineHelper.CustomNoFog = m_noFog;
+			UIUtils.CurrentWindow.OutsideGraph.CurrentStandardSurface.OutlineHelper.ColorMask = m_colorMaskHelper.ColorMask;
 			dataCollector.CustomOutlineSelectedAlpha = (int)m_currentAlphaMode;
 
 			for( int i = 0; i < outlineDataCollector.PropertiesList.Count; i++ )
@@ -383,6 +392,10 @@ namespace AmplifyShaderEditor
 				m_cullMode = (CullMode)Enum.Parse( typeof( CullMode ), GetCurrentParam( ref nodeParams ) );
 			}
 
+			if( UIUtils.CurrentShaderVersion() > 18926 )
+			{
+				m_colorMaskHelper.ReadFromString( ref m_currentReadParamIdx , ref nodeParams );
+			}
 			SetAdditonalTitleText( string.Format( Constants.SubTitleTypeFormatStr, AvailableOutlineModes[ m_currentSelectedMode ] ) );
 			UpdatePorts();
 			CheckAlphaPortVisibility();
@@ -397,6 +410,7 @@ namespace AmplifyShaderEditor
 			IOUtils.AddFieldValueToString( ref nodeInfo, m_zWriteMode );
 			IOUtils.AddFieldValueToString( ref nodeInfo, m_zTestMode );
 			IOUtils.AddFieldValueToString( ref nodeInfo, m_cullMode );
+			m_colorMaskHelper.WriteToString( ref nodeInfo );
 		}
 	}
 }

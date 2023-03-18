@@ -68,6 +68,7 @@ namespace ProjectUniverse.PowerSystem
 
         public void ProxyStart(int mode)
         {
+            legsOut = 0;
             if (mode == 1)
             {
                 if (poc != null)

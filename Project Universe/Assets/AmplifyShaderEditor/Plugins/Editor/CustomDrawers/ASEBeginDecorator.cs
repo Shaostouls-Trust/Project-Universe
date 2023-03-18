@@ -17,11 +17,7 @@ public class ASEBeginDecorator : MaterialPropertyDrawer
 		if( GUI.Button( button, "Open in Shader Editor" ) )
 		{
 			Material mat = editor.target as Material;
-#if UNITY_2018_3_OR_NEWER
 			ASEPackageManagerHelper.SetupLateMaterial( mat );
-#else
-			AmplifyShaderEditorWindow.LoadMaterialToASE( mat );
-#endif
 		}
 	}
 

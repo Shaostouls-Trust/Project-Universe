@@ -56,7 +56,7 @@ namespace AmplifyShaderEditor
 			string finalVar = m_lightColorValue;
 			if( dataCollector.IsTemplate && dataCollector.IsSRP )
 			{
-				if( dataCollector.TemplateDataCollectorInstance.CurrentSRPType == TemplateSRPType.HD )
+				if( dataCollector.TemplateDataCollectorInstance.CurrentSRPType == TemplateSRPType.HDRP )
 				{
 					dataCollector.TemplateDataCollectorInstance.AddHDLightInfo();
 					finalVar = string.Format( TemplateHelperFunctions.HDLightInfoFormat, "0", "color" ); ;

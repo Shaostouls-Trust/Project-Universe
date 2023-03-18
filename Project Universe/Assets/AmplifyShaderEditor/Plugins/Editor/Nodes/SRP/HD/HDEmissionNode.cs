@@ -146,7 +146,7 @@ namespace AmplifyShaderEditor
 			base.OnNodeLogicUpdate( drawInfo );
 #if UNITY_2019_1_OR_NEWER
 			m_showErrorMessage = ( ContainerGraph.CurrentCanvasMode == NodeAvailability.SurfaceShader ) ||
-									( ContainerGraph.CurrentCanvasMode == NodeAvailability.TemplateShader && ContainerGraph.CurrentSRPType != TemplateSRPType.HD );
+									( ContainerGraph.CurrentCanvasMode == NodeAvailability.TemplateShader && ContainerGraph.CurrentSRPType != TemplateSRPType.HDRP );
 #endif
 		}
 		

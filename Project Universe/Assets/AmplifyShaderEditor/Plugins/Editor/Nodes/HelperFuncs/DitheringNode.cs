@@ -247,11 +247,7 @@ namespace AmplifyShaderEditor
 						noiseTex = m_texPort.GeneratePortInstructions( ref dataCollector );
 						//GeneratePattern( ref dataCollector );
 						dataCollector.AddToUniforms( UniqueId, "float4 " + noiseTex + "_TexelSize;", dataCollector.IsSRP );
-#if UNITY_2018_1_OR_NEWER
 						if( outsideGraph.SamplingMacros )
-#else
-						if( outsideGraph.SamplingMacros && !outsideGraph.IsStandardSurface )
-#endif
 						{
 							string sampler = string.Empty;
 							if( m_ssPort.IsConnected )

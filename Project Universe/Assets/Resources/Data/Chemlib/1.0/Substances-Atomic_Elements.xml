@@ -1,0 +1,3190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<substances>
+
+  <substance>
+    <name>Hydrogen</name>
+    <atomic_symbol>H</atomic_symbol>
+    <NFPA>
+      <flammability>4</flammability>
+      <health>0</health>
+      <instability>3</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>1</atomic_number>
+      <atomic_mass>1.008</atomic_mass><!-- g/mol -->
+      <atomic_radius>53</atomic_radius><!-- pm -->
+      <melting_point>14.01</melting_point><!-- K -->
+      <boiling_point>20.28</boiling_point><!-- K -->
+      <density>0.08988</density><!-- g/L -->
+      <electron_affinity>72.8</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>1s1</electron_configuration>
+      <electronegativity>2.20</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>1312.0</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-1, 1</oxidation_states>
+      <standard_state>Gas</standard_state>
+      <year_discovered>1776</year_discovered>
+      <chemical_group>Nonmetal</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Helium</name>
+    <atomic_symbol>He</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>0</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>2</atomic_number>
+      <atomic_mass>4.0026</atomic_mass><!-- g/mol -->
+      <atomic_radius>31</atomic_radius><!-- pm -->
+      <melting_point>0.95</melting_point><!-- K -->
+      <boiling_point>4.22</boiling_point><!-- K -->
+      <density>0.1786</density><!-- g/L -->
+      <electron_affinity>0</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>1s2</electron_configuration>
+      <electronegativity>0</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>2372.3</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>0</oxidation_states>
+      <standard_state>Gas</standard_state>
+      <year_discovered>1868</year_discovered>
+      <chemical_group>Noble gas</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Lithium</name>
+    <atomic_symbol>Li</atomic_symbol>
+    <NFPA>
+      <flammability>3</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>3</atomic_number>
+      <atomic_mass>6.94</atomic_mass><!-- g/mol -->
+      <atomic_radius>152</atomic_radius><!-- pm -->
+      <melting_point>453.69</melting_point><!-- K -->
+      <boiling_point>1615</boiling_point><!-- K -->
+      <density>0.534</density><!-- g/cm^3 -->
+      <electron_affinity>59.6</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[He] 2s1</electron_configuration>
+      <electronegativity>0.98</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>520.2</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>1</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1817</year_discovered>
+      <chemical_group>Alkali metal</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Beryllium</name>
+    <atomic_symbol>Be</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>4</atomic_number>
+      <atomic_mass>9.0122</atomic_mass><!-- g/mol -->
+      <atomic_radius>111</atomic_radius><!-- pm -->
+      <melting_point>1560</melting_point><!-- K -->
+      <boiling_point>2742</boiling_point><!-- K -->
+      <density>1.85</density><!-- g/cm^3 -->
+      <electron_affinity>0</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[He] 2s2</electron_configuration>
+      <electronegativity>1.57</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>899.5</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1798</year_discovered>
+      <chemical_group>Alkaline earth metal</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Boron</name>
+    <atomic_symbol>B</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>5</atomic_number>
+      <atomic_mass>10.81</atomic_mass><!-- g/mol -->
+      <atomic_radius>87</atomic_radius><!-- pm -->
+      <melting_point>2349</melting_point><!-- K -->
+      <boiling_point>4200</boiling_point><!-- K -->
+      <density>2.34</density><!-- g/cm^3 -->
+      <electron_affinity>26.7</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[He] 2s2 2p1</electron_configuration>
+      <electronegativity>2.04</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>800.6</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-1, 1, 2, 3</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1808</year_discovered>
+      <chemical_group>Metalloid</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Carbon</name>
+    <atomic_symbol>C</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>6</atomic_number>
+      <atomic_mass>12.011</atomic_mass><!-- g/mol -->
+      <atomic_radius>67</atomic_radius><!-- pm -->
+      <melting_point>3915</melting_point><!-- K -->
+      <boiling_point>3915</boiling_point><!-- K -->
+      <density>2.267</density><!-- g/cm^3 -->
+      <electron_affinity>121.8</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[He] 2s2 2p2</electron_configuration>
+      <electronegativity>2.55</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>1086.5</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-4, -3, -2, -1, 1, 2, 3, 4</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>Ancient</year_discovered>
+      <chemical_group>Nonmetal</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Nitrogen</name>
+    <atomic_symbol>N</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>7</atomic_number>
+      <atomic_mass>14.007</atomic_mass><!-- g/mol -->
+      <atomic_radius>56</atomic_radius><!-- pm -->
+      <melting_point>63.15</melting_point><!-- K -->
+      <boiling_point>77.36</boiling_point><!-- K -->
+      <density>0.0012506</density><!-- g/cm^3 -->
+      <electron_affinity>-6.8</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[He] 2s2 2p3</electron_configuration>
+      <electronegativity>3.04</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>1402.3</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-3, -2, -1, 1, 2, 3, 4, 5</oxidation_states>
+      <standard_state>Gas</standard_state>
+      <year_discovered>1772</year_discovered>
+      <chemical_group>Nonmetal</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Oxygen</name>
+    <atomic_symbol>O</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>3</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>8</atomic_number>
+      <atomic_mass>15.999</atomic_mass><!-- g/mol -->
+      <atomic_radius>48</atomic_radius><!-- pm -->
+      <melting_point>54.36</melting_point><!-- K -->
+      <boiling_point>90.20</boiling_point><!-- K -->
+      <density>0.001429</density><!-- g/cm^3 -->
+      <electron_affinity>140.7</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[He] 2s2 2p4</electron_configuration>
+      <electronegativity>3.44</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>1313.9</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-2, -1, 1, 2</oxidation_states>
+      <standard_state>Gas</standard_state>
+      <year_discovered>1774</year_discovered>
+      <chemical_group>Nonmetal</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Fluorine</name>
+    <atomic_symbol>F</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>4</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>9</atomic_number>
+      <atomic_mass>18.998</atomic_mass><!-- g/mol -->
+      <atomic_radius>42</atomic_radius><!-- pm -->
+      <melting_point>53.53</melting_point><!-- K -->
+      <boiling_point>85.03</boiling_point><!-- K -->
+      <density>0.001696</density><!-- g/cm^3 -->
+      <electron_affinity>328.0</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[He] 2s2 2p5</electron_configuration>
+      <electronegativity>3.98</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>1681.0</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-1</oxidation_states>
+      <standard_state>Gas</standard_state>
+      <year_discovered>1670</year_discovered>
+      <chemical_group>Halogen</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Neon</name>
+    <atomic_symbol>Ne</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>0</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>10</atomic_number>
+      <atomic_mass>20.180</atomic_mass><!-- g/mol -->
+      <atomic_radius>38</atomic_radius><!-- pm -->
+      <melting_point>24.56</melting_point><!-- K -->
+      <boiling_point>27.07</boiling_point><!-- K -->
+      <density>0.0008999</density><!-- g/cm^3 -->
+      <electron_affinity>0</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[He] 2s2 2p6</electron_configuration>
+      <electronegativity></electronegativity><!-- Pauling Scale -->
+      <ionization_energy>2080.7</ionization_energy><!-- kJ/mol -->
+      <oxidation_states></oxidation_states>
+      <standard_state>Gas</standard_state>
+      <year_discovered>1898</year_discovered>
+      <chemical_group>Noble gas</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Sodium</name>
+    <atomic_symbol>Na</atomic_symbol>
+    <NFPA>
+      <flammability>3</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>11</atomic_number>
+      <atomic_mass>22.990</atomic_mass><!-- g/mol -->
+      <atomic_radius>190</atomic_radius><!-- pm -->
+      <melting_point>370.87</melting_point><!-- K -->
+      <boiling_point>1156.09</boiling_point><!-- K -->
+      <density>0.968</density><!-- g/cm^3 -->
+      <electron_affinity>52.8</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Ne] 3s1</electron_configuration>
+      <electronegativity>0.93</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>495.8</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-1, 1</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1807</year_discovered>
+      <chemical_group>Alkali metal</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Magnesium</name>
+    <atomic_symbol>Mg</atomic_symbol>
+    <NFPA>
+      <flammability>1</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>12</atomic_number>
+      <atomic_mass>24.305</atomic_mass><!-- g/mol -->
+      <atomic_radius>145</atomic_radius><!-- pm -->
+      <melting_point>923</melting_point><!-- K -->
+      <boiling_point>1363</boiling_point><!-- K -->
+      <density>1.738</density><!-- g/cm^3 -->
+      <electron_affinity>0</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Ne] 3s2</electron_configuration>
+      <electronegativity>1.31</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>737.7</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>1, 2</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1808</year_discovered>
+      <chemical_group>Alkaline earth metal</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Aluminum</name>
+    <atomic_symbol>Al</atomic_symbol>
+    <NFPA>
+      <flammability>1</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>13</atomic_number>
+      <atomic_mass>26.982</atomic_mass><!-- g/mol -->
+      <atomic_radius>118</atomic_radius><!-- pm -->
+      <melting_point>933.47</melting_point><!-- K -->
+      <boiling_point>2792</boiling_point><!-- K -->
+      <density>2.70</density><!-- g/cm^3 -->
+      <electron_affinity>41.8</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Ne] 3s2 3p1</electron_configuration>
+      <electronegativity>1.61</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>577.5</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>1, 2, 3</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>Unknown, before 5000 BC</year_discovered>
+      <chemical_group>Post-transition metal</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Silicon</name>
+    <atomic_symbol>Si</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>14</atomic_number>
+      <atomic_mass>28.086</atomic_mass><!-- g/mol -->
+      <atomic_radius>111</atomic_radius><!-- pm -->
+      <melting_point>1687</melting_point><!-- K -->
+      <boiling_point>3538</boiling_point><!-- K -->
+      <density>2.3296</density><!-- g/cm^3 -->
+      <electron_affinity>133.6</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Ne] 3s2 3p2</electron_configuration>
+      <electronegativity>1.90</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>786.5</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-4, -3, -2, -1, 0, 1, 2, 3, 4</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1824</year_discovered>
+      <chemical_group>Metalloid</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Phosphorus</name>
+    <atomic_symbol>P</atomic_symbol>
+    <NFPA>
+      <flammability>3</flammability>
+      <health>3</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>15</atomic_number>
+      <atomic_mass>30.974</atomic_mass><!-- g/mol -->
+      <atomic_radius>98</atomic_radius><!-- pm -->
+      <melting_point>317.3</melting_point><!-- K -->
+      <boiling_point>553.6</boiling_point><!-- K -->
+      <density>1.823</density><!-- g/cm^3 -->
+      <electron_affinity>72.0</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Ne] 3s2 3p3</electron_configuration>
+      <electronegativity>2.19</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>1011.8</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-3, -2, -1, 1, 2, 3, 4, 5</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1669</year_discovered>
+      <chemical_group>Non-metal</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Sulfur</name>
+    <atomic_symbol>S</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>16</atomic_number>
+      <atomic_mass>32.06</atomic_mass><!-- g/mol -->
+      <atomic_radius>88</atomic_radius><!-- pm -->
+      <melting_point>388.36</melting_point><!-- K -->
+      <boiling_point>717.87</boiling_point><!-- K -->
+      <density>2.07</density><!-- g/cm^3 -->
+      <electron_affinity>200.4</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Ne] 3s2 3p4</electron_configuration>
+      <electronegativity>2.58</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>999.6</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-2, -1, 1, 2, 3, 4, 5, 6</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>Before 2000 BCE</year_discovered>
+      <chemical_group>Non-metal</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Chlorine</name>
+    <atomic_symbol>Cl</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>3</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>17</atomic_number>
+      <atomic_mass>35.45</atomic_mass><!-- g/mol -->
+      <atomic_radius>79</atomic_radius><!-- pm -->
+      <melting_point>171.6</melting_point><!-- K -->
+      <boiling_point>239.11</boiling_point><!-- K -->
+      <density>0.003214</density><!-- g/cm^3 -->
+      <electron_affinity>348.6</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Ne] 3s2 3p5</electron_configuration>
+      <electronegativity>3.16</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>1251.2</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-1, 1, 2, 3, 4, 5, 6, 7</oxidation_states>
+      <standard_state>Gas</standard_state>
+      <year_discovered>1774</year_discovered>
+      <chemical_group>Halogens</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Argon</name>
+    <atomic_symbol>Ar</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>0</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>18</atomic_number>
+      <atomic_mass>39.95</atomic_mass><!-- g/mol -->
+      <atomic_radius>71</atomic_radius><!-- pm -->
+      <melting_point>83.81</melting_point><!-- K -->
+      <boiling_point>87.3</boiling_point><!-- K -->
+      <density>0.001784</density><!-- g/cm^3 -->
+      <electron_affinity>0</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Ne] 3s2 3p6</electron_configuration>
+      <electronegativity>0</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>1520.6</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>0</oxidation_states>
+      <standard_state>Gas</standard_state>
+      <year_discovered>1894</year_discovered>
+      <chemical_group>Noble gases</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Potassium</name>
+    <atomic_symbol>K</atomic_symbol>
+    <NFPA>
+      <flammability>3</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>19</atomic_number>
+      <atomic_mass>39.10</atomic_mass><!-- g/mol -->
+      <atomic_radius>243</atomic_radius><!-- pm -->
+      <melting_point>336.53</melting_point><!-- K -->
+      <boiling_point>1032</boiling_point><!-- K -->
+      <density>0.862</density><!-- g/cm^3 -->
+      <electron_affinity>48.4</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Ar] 4s1</electron_configuration>
+      <electronegativity>0.82</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>418.8</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>1</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1807</year_discovered>
+      <chemical_group>Alkali metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Calcium</name>
+    <atomic_symbol>Ca</atomic_symbol>
+    <NFPA>
+      <flammability>1</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>20</atomic_number>
+      <atomic_mass>40.08</atomic_mass><!-- g/mol -->
+      <atomic_radius>194</atomic_radius><!-- pm -->
+      <melting_point>1115</melting_point><!-- K -->
+      <boiling_point>1757</boiling_point><!-- K -->
+      <density>1.55</density><!-- g/cm^3 -->
+      <electron_affinity>2.37</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Ar] 4s2</electron_configuration>
+      <electronegativity>1</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>589.8</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>1, 2</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>Ancient Times</year_discovered>
+      <chemical_group>Alkaline earth metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Scandium</name>
+    <atomic_symbol>Sc</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>21</atomic_number>
+      <atomic_mass>44.96</atomic_mass><!-- g/mol -->
+      <atomic_radius>184</atomic_radius><!-- pm -->
+      <melting_point>1814</melting_point><!-- K -->
+      <boiling_point>3109</boiling_point><!-- K -->
+      <density>2.98</density><!-- g/cm^3 -->
+      <electron_affinity>18.1</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Ar] 3d1 4s2</electron_configuration>
+      <electronegativity>1.36</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>633.1</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>1, 2, 3</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1876</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Titanium</name>
+    <atomic_symbol>Ti</atomic_symbol>
+    <NFPA>
+      <flammability>2</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>22</atomic_number>
+      <atomic_mass>47.87</atomic_mass><!-- g/mol -->
+      <atomic_radius>176</atomic_radius><!-- pm -->
+      <melting_point>1941</melting_point><!-- K -->
+      <boiling_point>3560</boiling_point><!-- K -->
+      <density>4.51</density><!-- g/cm^3 -->
+      <electron_affinity>7.6</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Ar] 3d2 4s2</electron_configuration>
+      <electronegativity>1.54</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>658.8</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>1, 2, 3, 4</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1791</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Vanadium</name>
+    <atomic_symbol>V</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>23</atomic_number>
+      <atomic_mass>50.94</atomic_mass><!-- g/mol -->
+      <atomic_radius>171</atomic_radius><!-- pm -->
+      <melting_point>2183</melting_point><!-- K -->
+      <boiling_point>3680</boiling_point><!-- K -->
+      <density>6.11</density><!-- g/cm^3 -->
+      <electron_affinity>50.6</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Ar] 3d3 4s2</electron_configuration>
+      <electronegativity>1.63</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>650.9</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-1, 1, 2, 3, 4, 5</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1803</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Chromium</name>
+    <atomic_symbol>Cr</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>24</atomic_number>
+      <atomic_mass>52.00</atomic_mass><!-- g/mol -->
+      <atomic_radius>166</atomic_radius><!-- pm -->
+      <melting_point>2180</melting_point><!-- K -->
+      <boiling_point>2944</boiling_point><!-- K -->
+      <density>7.19</density><!-- g/cm^3 -->
+      <electron_affinity>64.3</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Ar] 3d5 4s1</electron_configuration>
+      <electronegativity>1.66</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>652.9</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-2, -1, 1, 2, 3, 4, 5, 6</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1797</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Manganese</name>
+    <atomic_symbol>Mn</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>25</atomic_number>
+      <atomic_mass>54.94</atomic_mass><!-- g/mol -->
+      <atomic_radius>161</atomic_radius><!-- pm -->
+      <melting_point>1519</melting_point><!-- K -->
+      <boiling_point>2334</boiling_point><!-- K -->
+      <density>7.21</density><!-- g/cm^3 -->
+      <electron_affinity>0</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Ar] 3d5 4s2</electron_configuration>
+      <electronegativity>1.55</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>717.3</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-3, -2, -1, 1, 2, 3, 4, 5, 6, 7</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1774</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Iron</name>
+    <atomic_symbol>Fe</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>26</atomic_number>
+      <atomic_mass>55.85</atomic_mass><!-- g/mol -->
+      <atomic_radius>156</atomic_radius><!-- pm -->
+      <melting_point>1811</melting_point><!-- K -->
+      <boiling_point>3134</boiling_point><!-- K -->
+      <density>7.87</density><!-- g/cm^3 -->
+      <electron_affinity>15.7</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Ar] 3d6 4s2</electron_configuration>
+      <electronegativity>1.83</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>762.5</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-4, -2, -1, 1, 2, 3, 4, 5, 6</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>Before ancient times</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Cobalt</name>
+    <atomic_symbol>Co</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>27</atomic_number>
+      <atomic_mass>58.93</atomic_mass><!-- g/mol -->
+      <atomic_radius>152</atomic_radius><!-- pm -->
+      <melting_point>1768</melting_point><!-- K -->
+      <boiling_point>3200</boiling_point><!-- K -->
+      <density>8.9</density><!-- g/cm^3 -->
+      <electron_affinity>63.7</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Ar] 3d7 4s2</electron_configuration>
+      <electronegativity>1.88</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>760.4</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-1, 1, 2, 3, 4, 5</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1735</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Nickel</name>
+    <atomic_symbol>Ni</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>28</atomic_number>
+      <atomic_mass>58.69</atomic_mass><!-- g/mol -->
+      <atomic_radius>149</atomic_radius><!-- pm -->
+      <melting_point>1728</melting_point><!-- K -->
+      <boiling_point>3186</boiling_point><!-- K -->
+      <density>8.9</density><!-- g/cm^3 -->
+      <electron_affinity>112</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Ar] 3d8 4s2</electron_configuration>
+      <electronegativity>1.91</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>737.1</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-1, 1, 2, 3, 4</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1751</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Copper</name>
+    <atomic_symbol>Cu</atomic_symbol>
+    <NFPA>
+      <flammability>1</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>29</atomic_number>
+      <atomic_mass>63.55</atomic_mass><!-- g/mol -->
+      <atomic_radius>145</atomic_radius><!-- pm -->
+      <melting_point>1357.77</melting_point><!-- K -->
+      <boiling_point>2835</boiling_point><!-- K -->
+      <density>8.96</density><!-- g/cm^3 -->
+      <electron_affinity>119.235</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Ar] 3d10 4s1</electron_configuration>
+      <electronegativity>1.9</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>745.5</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-2, -1, 1, 2, 3, 4</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>Prehistoric</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Zinc</name>
+    <atomic_symbol>Zn</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>30</atomic_number>
+      <atomic_mass>65.38</atomic_mass><!-- g/mol -->
+      <atomic_radius>142</atomic_radius><!-- pm -->
+      <melting_point>692.68</melting_point><!-- K -->
+      <boiling_point>1180</boiling_point><!-- K -->
+      <density>7.14</density><!-- g/cm^3 -->
+      <electron_affinity>0</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Ar] 3d10 4s2</electron_configuration>
+      <electronegativity>1.65</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>906.4</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-2, -1, 1, 2</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>Prehistoric</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Gallium</name>
+    <atomic_symbol>Ga</atomic_symbol>
+    <NFPA>
+      <flammability>1</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>31</atomic_number>
+      <atomic_mass>69.723</atomic_mass><!-- g/mol -->
+      <atomic_radius>136</atomic_radius><!-- pm -->
+      <melting_point>302.9146</melting_point><!-- K -->
+      <boiling_point>2477</boiling_point><!-- K -->
+      <density>5.91</density><!-- g/cm^3 -->
+      <electron_affinity>41</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Ar] 3d10 4s2 4p1</electron_configuration>
+      <electronegativity>1.81</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>578.8</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-5, -4, -3, -2, -1, 1, 2, 3</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1875</year_discovered>
+      <chemical_group>Post-transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Germanium</name>
+    <atomic_symbol>Ge</atomic_symbol>
+    <NFPA>
+      <flammability>1</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>32</atomic_number>
+      <atomic_mass>72.630</atomic_mass><!-- g/mol -->
+      <atomic_radius>125</atomic_radius><!-- pm -->
+      <melting_point>1211.4</melting_point><!-- K -->
+      <boiling_point>3106</boiling_point><!-- K -->
+      <density>5.323</density><!-- g/cm^3 -->
+      <electron_affinity>119</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Ar] 3d10 4s2 4p2</electron_configuration>
+      <electronegativity>2.01</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>762</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-4, -3, -2, -1, 1, 2, 3, 4</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1886</year_discovered>
+      <chemical_group>Metalloids</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Arsenic</name>
+    <atomic_symbol>As</atomic_symbol>
+    <NFPA>
+      <flammability>2</flammability>
+      <health>3</health>
+      <instability>2</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>33</atomic_number>
+      <atomic_mass>74.921595</atomic_mass><!-- g/mol -->
+      <atomic_radius>119</atomic_radius><!-- pm -->
+      <melting_point>1090</melting_point><!-- K -->
+      <boiling_point>887</boiling_point><!-- K -->
+      <density>5.727</density><!-- g/cm^3 -->
+      <electron_affinity>78</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Ar] 3d10 4s2 4p3</electron_configuration>
+      <electronegativity>2.18</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>947.0</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-3, -2, -1, 1, 2, 3, 4, 5</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>Ancient</year_discovered>
+      <chemical_group>Metalloids</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Selenium</name>
+    <atomic_symbol>Se</atomic_symbol>
+    <NFPA>
+      <flammability>1</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>34</atomic_number>
+      <atomic_mass>78.96</atomic_mass><!-- g/mol -->
+      <atomic_radius>103</atomic_radius><!-- pm -->
+      <melting_point>494</melting_point><!-- K -->
+      <boiling_point>958</boiling_point><!-- K -->
+      <density>4.81</density><!-- g/cm^3 -->
+      <electron_affinity>194</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Ar] 3d10 4s2 4p4</electron_configuration>
+      <electronegativity>2.55</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>941.0</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-2, -1, 1, 2, 3, 4, 5, 6</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1817</year_discovered>
+      <chemical_group>Nonmetals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Bromine</name>
+    <atomic_symbol>Br</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>3</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>35</atomic_number>
+      <atomic_mass>79.904</atomic_mass><!-- g/mol -->
+      <atomic_radius>120</atomic_radius><!-- pm -->
+      <melting_point>265.8</melting_point><!-- K -->
+      <boiling_point>332.0</boiling_point><!-- K -->
+      <density>3.1028</density><!-- g/cm^3 -->
+      <electron_affinity>325.5</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Ar] 3d10 4s2 4p5</electron_configuration>
+      <electronegativity>2.96</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>1139.9</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-1, 1, 3, 4, 5, 7</oxidation_states>
+      <standard_state>Liquid</standard_state>
+      <year_discovered>1826</year_discovered>
+      <chemical_group>Halogens</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Krypton</name>
+    <atomic_symbol>Kr</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>36</atomic_number>
+      <atomic_mass>83.798</atomic_mass><!-- g/mol -->
+      <atomic_radius>88</atomic_radius><!-- pm -->
+      <melting_point>115.79</melting_point><!-- K -->
+      <boiling_point>119.93</boiling_point><!-- K -->
+      <density>0.003733</density><!-- g/cm^3 -->
+      <electron_affinity>0</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Ar] 3d10 4s2 4p6</electron_configuration>
+      <electronegativity>3.00</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>1350.8</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2</oxidation_states>
+      <standard_state>Gas</standard_state>
+      <year_discovered>1898</year_discovered>
+      <chemical_group>Noble gases</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Rubidium</name>
+    <atomic_symbol>Rb</atomic_symbol>
+    <NFPA>
+      <flammability>3</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>37</atomic_number>
+      <atomic_mass>85.4678</atomic_mass><!-- g/mol -->
+      <atomic_radius>248</atomic_radius><!-- pm -->
+      <melting_point>312.45</melting_point><!-- K -->
+      <boiling_point>961</boiling_point><!-- K -->
+      <density>1.532</density><!-- g/cm^3 -->
+      <electron_affinity>46.9</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Kr] 5s1</electron_configuration>
+      <electronegativity>0.82</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>403</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>1</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1861</year_discovered>
+      <chemical_group>Alkali metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Strontium</name>
+    <atomic_symbol>Sr</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>38</atomic_number>
+      <atomic_mass>87.62</atomic_mass><!-- g/mol -->
+      <atomic_radius>215</atomic_radius><!-- pm -->
+      <melting_point>1050</melting_point><!-- K -->
+      <boiling_point>1655</boiling_point><!-- K -->
+      <density>2.63</density><!-- g/cm^3 -->
+      <electron_affinity>5.03</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Kr] 5s2</electron_configuration>
+      <electronegativity>0.95</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>549.5</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1790</year_discovered>
+      <chemical_group>Alkaline earth metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Yttrium</name>
+    <atomic_symbol>Y</atomic_symbol>
+    <NFPA>
+      <flammability>1</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>39</atomic_number>
+      <atomic_mass>88.90584</atomic_mass><!-- g/mol -->
+      <atomic_radius>180</atomic_radius><!-- pm -->
+      <melting_point>1799</melting_point><!-- K -->
+      <boiling_point>3203</boiling_point><!-- K -->
+      <density>4.47</density><!-- g/cm^3 -->
+      <electron_affinity>29.6</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Kr] 4d1 5s2</electron_configuration>
+      <electronegativity>1.22</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>600</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>1, 2, 3</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1794</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Zirconium</name>
+    <atomic_symbol>Zr</atomic_symbol>
+    <NFPA>
+      <flammability>1</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>40</atomic_number>
+      <atomic_mass>91.224</atomic_mass><!-- g/mol -->
+      <atomic_radius>160</atomic_radius><!-- pm -->
+      <melting_point>2128</melting_point><!-- K -->
+      <boiling_point>4682</boiling_point><!-- K -->
+      <density>6.506</density><!-- g/cm^3 -->
+      <electron_affinity>41.1</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Kr] 4d2 5s2</electron_configuration>
+      <electronegativity>1.33</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>640.1</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>1, 2, 3, 4</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1789</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Niobium</name>
+    <atomic_symbol>Nb</atomic_symbol>
+    <NFPA>
+      <flammability>1</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>41</atomic_number>
+      <atomic_mass>92.90637</atomic_mass><!-- g/mol -->
+      <atomic_radius>146</atomic_radius><!-- pm -->
+      <melting_point>2750</melting_point><!-- K -->
+      <boiling_point>5017</boiling_point><!-- K -->
+      <density>8.57</density><!-- g/cm^3 -->
+      <electron_affinity>88.6</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Kr] 4d4 5s1</electron_configuration>
+      <electronegativity>1.6</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>652.1</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-1, 2, 3, 4, 5</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1801</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Molybdenum</name>
+    <atomic_symbol>Mo</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>42</atomic_number>
+      <atomic_mass>95.95</atomic_mass><!-- g/mol -->
+      <atomic_radius>139</atomic_radius><!-- pm -->
+      <melting_point>2896</melting_point><!-- K -->
+      <boiling_point>4912</boiling_point><!-- K -->
+      <density>10.22</density><!-- g/cm^3 -->
+      <electron_affinity>72.1</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Kr] 4d5 5s1</electron_configuration>
+      <electronegativity>2.16</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>684.3</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-4, -2, -1, 1, 2, 3, 4, 5, 6</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1778</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Technetium</name>
+    <atomic_symbol>Tc</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>3</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>43</atomic_number>
+      <atomic_mass>98</atomic_mass><!-- g/mol -->
+      <atomic_radius>136</atomic_radius><!-- pm -->
+      <melting_point>2430</melting_point><!-- K -->
+      <boiling_point>4538</boiling_point><!-- K -->
+      <density>11.5</density><!-- g/cm^3 -->
+      <electron_affinity>53</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Kr] 4d5 5s2</electron_configuration>
+      <electronegativity>1.9</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>702.0</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-3, -1, 1, 2, 3, 4, 5, 6, 7</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1937</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Ruthenium</name>
+    <atomic_symbol>Ru</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>44</atomic_number>
+      <atomic_mass>101.07</atomic_mass><!-- g/mol -->
+      <atomic_radius>134</atomic_radius><!-- pm -->
+      <melting_point>2607</melting_point><!-- K -->
+      <boiling_point>4423</boiling_point><!-- K -->
+      <density>12.45</density><!-- g/cm^3 -->
+      <electron_affinity>100.96</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Kr] 4d7 5s1</electron_configuration>
+      <electronegativity>2.2</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>710.2</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-2, -1, 1, 2, 3, 4, 5, 6, 7, 8</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1827</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Rhodium</name>
+    <atomic_symbol>Rh</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>45</atomic_number>
+      <atomic_mass>102.90550</atomic_mass><!-- g/mol -->
+      <atomic_radius>134</atomic_radius><!-- pm -->
+      <melting_point>2237</melting_point><!-- K -->
+      <boiling_point>3968</boiling_point><!-- K -->
+      <density>12.41</density><!-- g/cm^3 -->
+      <electron_affinity>110.27</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Kr] 4d8 5s1</electron_configuration>
+      <electronegativity>2.28</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>719.7</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-1, 1, 2, 3, 4, 5, 6</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1803</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Palladium</name>
+    <atomic_symbol>Pd</atomic_symbol>
+    <NFPA>
+      <flammability>1</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>46</atomic_number>
+      <atomic_mass>106.42</atomic_mass><!-- g/mol -->
+      <atomic_radius>128</atomic_radius><!-- pm -->
+      <melting_point>1828.05</melting_point><!-- K -->
+      <boiling_point>3236</boiling_point><!-- K -->
+      <density>12.02</density><!-- g/cm^3 -->
+      <electron_affinity>54.24</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Kr] 4d10</electron_configuration>
+      <electronegativity>2.2</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>804.4</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 4</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1803</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Silver</name>
+    <atomic_symbol>Ag</atomic_symbol>
+    <NFPA>
+      <flammability>1</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>47</atomic_number>
+      <atomic_mass>107.8682</atomic_mass><!-- g/mol -->
+      <atomic_radius>144</atomic_radius><!-- pm -->
+      <melting_point>1234.93</melting_point><!-- K -->
+      <boiling_point>2435</boiling_point><!-- K -->
+      <density>10.49</density><!-- g/cm^3 -->
+      <electron_affinity>125.6</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Kr] 4d10 5s1</electron_configuration>
+      <electronegativity>1.93</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>731.0</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>1, 2, 3</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>Ancient</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Cadmium</name>
+    <atomic_symbol>Cd</atomic_symbol>
+    <NFPA>
+      <flammability>1</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>48</atomic_number>
+      <atomic_mass>112.414</atomic_mass><!-- g/mol -->
+      <atomic_radius>151</atomic_radius><!-- pm -->
+      <melting_point>594.22</melting_point><!-- K -->
+      <boiling_point>1040</boiling_point><!-- K -->
+      <density>8.69</density><!-- g/cm^3 -->
+      <electron_affinity>0</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Kr] 4d10 5s2</electron_configuration>
+      <electronegativity>1.69</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>867.8</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>1, 2</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1817</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Indium</name>
+    <atomic_symbol>In</atomic_symbol>
+    <NFPA>
+      <flammability>1</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>49</atomic_number>
+      <atomic_mass>114.818</atomic_mass><!-- g/mol -->
+      <atomic_radius>167</atomic_radius><!-- pm -->
+      <melting_point>429.75</melting_point><!-- K -->
+      <boiling_point>2345</boiling_point><!-- K -->
+      <density>7.31</density><!-- g/cm^3 -->
+      <electron_affinity>28.9</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Kr] 4d10 5s2 5p1</electron_configuration>
+      <electronegativity>1.78</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>558.3</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-3, -2, -1, 1, 2, 3</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1863</year_discovered>
+      <chemical_group>Post-transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Tin</name>
+    <atomic_symbol>Sn</atomic_symbol>
+    <NFPA>
+      <flammability>1</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>50</atomic_number>
+      <atomic_mass>118.710</atomic_mass><!-- g/mol -->
+      <atomic_radius>141</atomic_radius><!-- pm -->
+      <melting_point>505.08</melting_point><!-- K -->
+      <boiling_point>2875</boiling_point><!-- K -->
+      <density>7.31</density><!-- g/cm^3 -->
+      <electron_affinity>107.3</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Kr] 4d10 5s2 5p2</electron_configuration>
+      <electronegativity>1.96</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>709.4</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-4, -3, -2, -1, 1, 2, 3, 4</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>Ancient</year_discovered>
+      <chemical_group>Post-transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Antimony</name>
+    <atomic_symbol>Sb</atomic_symbol>
+    <NFPA>
+      <flammability>2</flammability>
+      <health>3</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>51</atomic_number>
+      <atomic_mass>121.760</atomic_mass><!-- g/mol -->
+      <atomic_radius>159</atomic_radius><!-- pm -->
+      <melting_point>903.78</melting_point><!-- K -->
+      <boiling_point>1860</boiling_point><!-- K -->
+      <density>6.68</density><!-- g/cm^3 -->
+      <electron_affinity>101.059</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Kr] 4d10 5s2 5p3</electron_configuration>
+      <electronegativity>2.05</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>834.0</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-3, -2, -1, 1, 2, 3, 4, 5</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>Ancient</year_discovered>
+      <chemical_group>Metalloids</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Tellurium</name>
+    <atomic_symbol>Te</atomic_symbol>
+    <NFPA>
+      <flammability>1</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>52</atomic_number>
+      <atomic_mass>127.60</atomic_mass><!-- g/mol -->
+      <atomic_radius>160</atomic_radius><!-- pm -->
+      <melting_point>722.66</melting_point><!-- K -->
+      <boiling_point>1261</boiling_point><!-- K -->
+      <density>6.24</density><!-- g/cm^3 -->
+      <electron_affinity>190.161</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Kr] 4d10 5s2 5p4</electron_configuration>
+      <electronegativity>2.1</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>869.3</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-2, 2, 4, 5, 6</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1782</year_discovered>
+      <chemical_group>Metalloids</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Iodine</name>
+    <atomic_symbol>I</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>53</atomic_number>
+      <atomic_mass>126.90447</atomic_mass><!-- g/mol -->
+      <atomic_radius>133</atomic_radius><!-- pm -->
+      <melting_point>386.85</melting_point><!-- K -->
+      <boiling_point>457.4</boiling_point><!-- K -->
+      <density>4.93</density><!-- g/cm^3 -->
+      <electron_affinity>295.1531</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Kr] 4d10 5s2 5p5</electron_configuration>
+      <electronegativity>2.66</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>1008.4</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-1, 1, 3, 5, 7</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1811</year_discovered>
+      <chemical_group>Halogens</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Xenon</name>
+    <atomic_symbol>Xe</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>54</atomic_number>
+      <atomic_mass>131.293</atomic_mass><!-- g/mol -->
+      <atomic_radius>130</atomic_radius><!-- pm -->
+      <melting_point>161.4</melting_point><!-- K -->
+      <boiling_point>165.03</boiling_point><!-- K -->
+      <density>0.005887</density><!-- g/cm^3 -->
+      <electron_affinity>0</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Kr] 4d10 5s2 5p6</electron_configuration>
+      <electronegativity>2.6</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>1170.4</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 4, 6, 8</oxidation_states>
+      <standard_state>Gas</standard_state>
+      <year_discovered>1898</year_discovered>
+      <chemical_group>Noble gases</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Cesium</name>
+    <atomic_symbol>Cs</atomic_symbol>
+    <NFPA>
+      <flammability>3</flammability>
+      <health>3</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>55</atomic_number>
+      <atomic_mass>132.90545196</atomic_mass><!-- g/mol -->
+      <atomic_radius>225</atomic_radius><!-- pm -->
+      <melting_point>301.59</melting_point><!-- K -->
+      <boiling_point>944</boiling_point><!-- K -->
+      <density>1.93</density><!-- g/cm^3 -->
+      <electron_affinity>45.505</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 6s1</electron_configuration>
+      <electronegativity>0.79</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>375.7</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>1</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1860</year_discovered>
+      <chemical_group>Alkali metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Barium</name>
+    <atomic_symbol>Ba</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>56</atomic_number>
+      <atomic_mass>137.327</atomic_mass><!-- g/mol -->
+      <atomic_radius>198</atomic_radius><!-- pm -->
+      <melting_point>1000.15</melting_point><!-- K -->
+      <boiling_point>2170</boiling_point><!-- K -->
+      <density>3.51</density><!-- g/cm^3 -->
+      <electron_affinity>13.95</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 6s2</electron_configuration>
+      <electronegativity>0.89</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>502.9</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1808</year_discovered>
+      <chemical_group>Alkaline earth metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Lanthanum</name>
+    <atomic_symbol>La</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>57</atomic_number>
+      <atomic_mass>138.90547</atomic_mass><!-- g/mol -->
+      <atomic_radius>169</atomic_radius><!-- pm -->
+      <melting_point>1193.15</melting_point><!-- K -->
+      <boiling_point>3737</boiling_point><!-- K -->
+      <density>6.146</density><!-- g/cm^3 -->
+      <electron_affinity>48.0</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 5d1 6s2</electron_configuration>
+      <electronegativity>1.10</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>538.1</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 3</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1839</year_discovered>
+      <chemical_group>Lanthanides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Cerium</name>
+    <atomic_symbol>Ce</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>58</atomic_number>
+      <atomic_mass>140.116</atomic_mass><!-- g/mol -->
+      <atomic_radius>185</atomic_radius><!-- pm -->
+      <melting_point>1071.15</melting_point><!-- K -->
+      <boiling_point>3697</boiling_point><!-- K -->
+      <density>6.770</density><!-- g/cm^3 -->
+      <electron_affinity>50.0</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 4f1 5d1 6s2</electron_configuration>
+      <electronegativity>1.12</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>534.4</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 3, 4</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1803</year_discovered>
+      <chemical_group>Lanthanides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Praseodymium</name>
+    <atomic_symbol>Pr</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>59</atomic_number>
+      <atomic_mass>140.90766</atomic_mass><!-- g/mol -->
+      <atomic_radius>247</atomic_radius><!-- pm -->
+      <melting_point>1204.15</melting_point><!-- K -->
+      <boiling_point>3563</boiling_point><!-- K -->
+      <density>6.77</density><!-- g/cm^3 -->
+      <electron_affinity>93.91</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 4f3 6s2</electron_configuration>
+      <electronegativity>1.13</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>527.0</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 3, 4</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1885</year_discovered>
+      <chemical_group>Lanthanides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Neodymium</name>
+    <atomic_symbol>Nd</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>60</atomic_number>
+      <atomic_mass>144.242</atomic_mass><!-- g/mol -->
+      <atomic_radius>206</atomic_radius><!-- pm -->
+      <melting_point>1289.15</melting_point><!-- K -->
+      <boiling_point>3373</boiling_point><!-- K -->
+      <density>7.007</density><!-- g/cm^3 -->
+      <electron_affinity>184.87</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 4f4 6s2</electron_configuration>
+      <electronegativity>1.14</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>533.1</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 3, 4</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1885</year_discovered>
+      <chemical_group>Lanthanides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Promethium</name>
+    <atomic_symbol>Pm</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>1</instability>
+      <special>Radioactive</special>
+    </NFPA>
+    <properties>
+      <atomic_number>61</atomic_number>
+      <atomic_mass>145</atomic_mass><!-- g/mol -->
+      <atomic_radius>205</atomic_radius><!-- pm -->
+      <melting_point>1204.15</melting_point><!-- K -->
+      <boiling_point>3273</boiling_point><!-- K -->
+      <density>7.26</density><!-- g/cm^3 -->
+      <electron_affinity>—</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 4f5 6s2</electron_configuration>
+      <electronegativity>1.13</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>540.0</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>3</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1945</year_discovered>
+      <chemical_group>Lanthanides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Samarium</name>
+    <atomic_symbol>Sm</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>62</atomic_number>
+      <atomic_mass>150.36</atomic_mass><!-- g/mol -->
+      <atomic_radius>238</atomic_radius><!-- pm -->
+      <melting_point>1345.15</melting_point><!-- K -->
+      <boiling_point>2076</boiling_point><!-- K -->
+      <density>7.52</density><!-- g/cm^3 -->
+      <electron_affinity>15.63</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 4f6 6s2</electron_configuration>
+      <electronegativity>1.17</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>544.5</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 3</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1879</year_discovered>
+      <chemical_group>Lanthanides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Europium</name>
+    <atomic_symbol>Eu</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>63</atomic_number>
+      <atomic_mass>151.964</atomic_mass><!-- g/mol -->
+      <atomic_radius>231</atomic_radius><!-- pm -->
+      <melting_point>1099.15</melting_point><!-- K -->
+      <boiling_point>1802</boiling_point><!-- K -->
+      <density>5.24</density><!-- g/cm^3 -->
+      <electron_affinity>11.2</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 4f7 6s2</electron_configuration>
+      <electronegativity>1.2</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>547.1</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 3</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1901</year_discovered>
+      <chemical_group>Lanthanides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Gadolinium</name>
+    <atomic_symbol>Gd</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>64</atomic_number>
+      <atomic_mass>157.25</atomic_mass><!-- g/mol -->
+      <atomic_radius>233</atomic_radius><!-- pm -->
+      <melting_point>1585.15</melting_point><!-- K -->
+      <boiling_point>3546</boiling_point><!-- K -->
+      <density>7.895</density><!-- g/cm^3 -->
+      <electron_affinity>13.22</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 4f7 5d1 6s2</electron_configuration>
+      <electronegativity>1.20</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>593.4</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>1, 2, 3</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1880</year_discovered>
+      <chemical_group>Lanthanides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Terbium</name>
+    <atomic_symbol>Tb</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>65</atomic_number>
+      <atomic_mass>158.92535</atomic_mass><!-- g/mol -->
+      <atomic_radius>225</atomic_radius><!-- pm -->
+      <melting_point>1629.15</melting_point><!-- K -->
+      <boiling_point>3503</boiling_point><!-- K -->
+      <density>8.229</density><!-- g/cm^3 -->
+      <electron_affinity>50.0</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 4f9 6s2</electron_configuration>
+      <electronegativity>1.10</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>565.8</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>3, 4</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1843</year_discovered>
+      <chemical_group>Lanthanides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Dysprosium</name>
+    <atomic_symbol>Dy</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>66</atomic_number>
+      <atomic_mass>162.500</atomic_mass><!-- g/mol -->
+      <atomic_radius>228</atomic_radius><!-- pm -->
+      <melting_point>1680.15</melting_point><!-- K -->
+      <boiling_point>2840</boiling_point><!-- K -->
+      <density>8.55</density><!-- g/cm^3 -->
+      <electron_affinity>33.96</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 4f10 6s2</electron_configuration>
+      <electronegativity>1.22</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>573.0</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 3</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1886</year_discovered>
+      <chemical_group>Lanthanides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Holmium</name>
+    <atomic_symbol>Ho</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>67</atomic_number>
+      <atomic_mass>164.93033</atomic_mass><!-- g/mol -->
+      <atomic_radius>226</atomic_radius><!-- pm -->
+      <melting_point>1743.15</melting_point><!-- K -->
+      <boiling_point>2993</boiling_point><!-- K -->
+      <density>8.795</density><!-- g/cm^3 -->
+      <electron_affinity>32.61</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 4f11 6s2</electron_configuration>
+      <electronegativity>1.23</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>581.0</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 3</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1878</year_discovered>
+      <chemical_group>Lanthanides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Erbium</name>
+    <atomic_symbol>Er</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>68</atomic_number>
+      <atomic_mass>167.259</atomic_mass><!-- g/mol -->
+      <atomic_radius>226</atomic_radius><!-- pm -->
+      <melting_point>1795.15</melting_point><!-- K -->
+      <boiling_point>3503</boiling_point><!-- K -->
+      <density>9.066</density><!-- g/cm^3 -->
+      <electron_affinity>30.10</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 4f12 6s2</electron_configuration>
+      <electronegativity>1.24</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>589.3</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 3</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1842</year_discovered>
+      <chemical_group>Lanthanides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Thulium</name>
+    <atomic_symbol>Tm</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>69</atomic_number>
+      <atomic_mass>168.93422</atomic_mass><!-- g/mol -->
+      <atomic_radius>222</atomic_radius><!-- pm -->
+      <melting_point>1818.15</melting_point><!-- K -->
+      <boiling_point>2223</boiling_point><!-- K -->
+      <density>9.321</density><!-- g/cm^3 -->
+      <electron_affinity>99.0</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 4f13 6s2</electron_configuration>
+      <electronegativity>1.25</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>596.7</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 3</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1879</year_discovered>
+      <chemical_group>Lanthanides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Ytterbium</name>
+    <atomic_symbol>Yb</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>70</atomic_number>
+      <atomic_mass>173.054</atomic_mass><!-- g/mol -->
+      <atomic_radius>222</atomic_radius><!-- pm -->
+      <melting_point>1097.15</melting_point><!-- K -->
+      <boiling_point>1469</boiling_point><!-- K -->
+      <density>6.965</density><!-- g/cm^3 -->
+      <electron_affinity>29.3</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 4f14 6s2</electron_configuration>
+      <electronegativity>1.1</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>603.4</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 3</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1878</year_discovered>
+      <chemical_group>Lanthanides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Lutetium</name>
+    <atomic_symbol>Lu</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>71</atomic_number>
+      <atomic_mass>174.9668</atomic_mass><!-- g/mol -->
+      <atomic_radius>217</atomic_radius><!-- pm -->
+      <melting_point>1933.15</melting_point><!-- K -->
+      <boiling_point>3675</boiling_point><!-- K -->
+      <density>9.841</density><!-- g/cm^3 -->
+      <electron_affinity>33.4</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 4f14 5d1 6s2</electron_configuration>
+      <electronegativity>1.27</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>523.5</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>3</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1907</year_discovered>
+      <chemical_group>Lanthanides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Hafnium</name>
+    <atomic_symbol>Hf</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>72</atomic_number>
+      <atomic_mass>178.49</atomic_mass><!-- g/mol -->
+      <atomic_radius>208</atomic_radius><!-- pm -->
+      <melting_point>2500.15</melting_point><!-- K -->
+      <boiling_point>4876</boiling_point><!-- K -->
+      <density>13.31</density><!-- g/cm^3 -->
+      <electron_affinity>18.6</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 4f14 5d2 6s2</electron_configuration>
+      <electronegativity>1.3</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>658.5</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 3, 4</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1923</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Tantalum</name>
+    <atomic_symbol>Ta</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>73</atomic_number>
+      <atomic_mass>180.94788</atomic_mass><!-- g/mol -->
+      <atomic_radius>200</atomic_radius><!-- pm -->
+      <melting_point>3293.15</melting_point><!-- K -->
+      <boiling_point>5731</boiling_point><!-- K -->
+      <density>16.69</density><!-- g/cm^3 -->
+      <electron_affinity>31.0</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 4f14 5d3 6s2</electron_configuration>
+      <electronegativity>1.5</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>761.0</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 3, 4, 5</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1802</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Tungsten</name>
+    <atomic_symbol>W</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>74</atomic_number>
+      <atomic_mass>183.84</atomic_mass><!-- g/mol -->
+      <atomic_radius>193</atomic_radius><!-- pm -->
+      <melting_point>3695.15</melting_point><!-- K -->
+      <boiling_point>5828</boiling_point><!-- K -->
+      <density>19.25</density><!-- g/cm^3 -->
+      <electron_affinity>78.6</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 4f14 5d4 6s2</electron_configuration>
+      <electronegativity>2.36</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>770.0</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 3, 4, 5, 6</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1783</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Rhenium</name>
+    <atomic_symbol>Re</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>75</atomic_number>
+      <atomic_mass>186.207</atomic_mass><!-- g/mol -->
+      <atomic_radius>188</atomic_radius><!-- pm -->
+      <melting_point>3459.15</melting_point><!-- K -->
+      <boiling_point>5869</boiling_point><!-- K -->
+      <density>21.02</density><!-- g/cm^3 -->
+      <electron_affinity>14.5</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 4f14 5d5 6s2</electron_configuration>
+      <electronegativity>1.9</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>760.0</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-3, -1, 1, 2, 3, 4, 5, 6, 7</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1925</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Osmium</name>
+    <atomic_symbol>Os</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>3</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>76</atomic_number>
+      <atomic_mass>190.23</atomic_mass><!-- g/mol -->
+      <atomic_radius>185</atomic_radius><!-- pm -->
+      <melting_point>3300.15</melting_point><!-- K -->
+      <boiling_point>5285</boiling_point><!-- K -->
+      <density>22.59</density><!-- g/cm^3 -->
+      <electron_affinity>103.99</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 4f14 5d6 6s2</electron_configuration>
+      <electronegativity>2.2</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>840.0</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-2, -1, 1, 2, 3, 4, 5, 6, 7, 8</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1803</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Iridium</name>
+    <atomic_symbol>Ir</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>3</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>77</atomic_number>
+      <atomic_mass>192.217</atomic_mass><!-- g/mol -->
+      <atomic_radius>180</atomic_radius><!-- pm -->
+      <melting_point>2716.15</melting_point><!-- K -->
+      <boiling_point>4701</boiling_point><!-- K -->
+      <density>22.56</density><!-- g/cm^3 -->
+      <electron_affinity>150.94</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 4f14 5d7 6s2</electron_configuration>
+      <electronegativity>2.20</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>880.0</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-3, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1803</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Platinum</name>
+    <atomic_symbol>Pt</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>78</atomic_number>
+      <atomic_mass>195.084</atomic_mass><!-- g/mol -->
+      <atomic_radius>177</atomic_radius><!-- pm -->
+      <melting_point>2041.4</melting_point><!-- K -->
+      <boiling_point>4098</boiling_point><!-- K -->
+      <density>21.45</density><!-- g/cm^3 -->
+      <electron_affinity>205.041</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 4f14 5d9 6s1</electron_configuration>
+      <electronegativity>2.28</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>870.0</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 4, 5, 6</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1735</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Gold</name>
+    <atomic_symbol>Au</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>79</atomic_number>
+      <atomic_mass>196.96657</atomic_mass><!-- g/mol -->
+      <atomic_radius>174</atomic_radius><!-- pm -->
+      <melting_point>1337.33</melting_point><!-- K -->
+      <boiling_point>3129</boiling_point><!-- K -->
+      <density>19.32</density><!-- g/cm^3 -->
+      <electron_affinity>222.8</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 4f14 5d10 6s1</electron_configuration>
+      <electronegativity>2.54</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>890.1</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>1, 3, 5</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>Prehistoric</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Mercury</name>
+    <atomic_symbol>Hg</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>3</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>80</atomic_number>
+      <atomic_mass>200.592</atomic_mass><!-- g/mol -->
+      <atomic_radius>171</atomic_radius><!-- pm -->
+      <melting_point>234.32</melting_point><!-- K -->
+      <boiling_point>629.88</boiling_point><!-- K -->
+      <density>13.5336</density><!-- g/cm^3 -->
+      <electron_affinity>0</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 4f14 5d10 6s2</electron_configuration>
+      <electronegativity>2.00</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>1007.1</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-2, 1, 2</oxidation_states>
+      <standard_state>Liquid</standard_state>
+      <year_discovered>Prehistoric</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Thallium</name>
+    <atomic_symbol>Tl</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>3</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>81</atomic_number>
+      <atomic_mass>204.38</atomic_mass><!-- g/mol -->
+      <atomic_radius>156</atomic_radius><!-- pm -->
+      <melting_point>577</melting_point><!-- K -->
+      <boiling_point>1746</boiling_point><!-- K -->
+      <density>11.85</density><!-- g/cm^3 -->
+      <electron_affinity>36.4</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 4f14 5d10 6s2 6p1</electron_configuration>
+      <electronegativity>2.04</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>589.4</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-5, -2, 1, 2, 3</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1861</year_discovered>
+      <chemical_group>Other metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Lead</name>
+    <atomic_symbol>Pb</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>3</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>82</atomic_number>
+      <atomic_mass>207.2</atomic_mass><!-- g/mol -->
+      <atomic_radius>154</atomic_radius><!-- pm -->
+      <melting_point>600.61</melting_point><!-- K -->
+      <boiling_point>2022</boiling_point><!-- K -->
+      <density>11.34</density><!-- g/cm^3 -->
+      <electron_affinity>34.420</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 4f14 5d10 6s2 6p2</electron_configuration>
+      <electronegativity>2.33</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>715.6</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-4, -2, 2, 4</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>Prehistoric</year_discovered>
+      <chemical_group>Other metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Bismuth</name>
+    <atomic_symbol>Bi</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>83</atomic_number>
+      <atomic_mass>208.98040</atomic_mass><!-- g/mol -->
+      <atomic_radius>143</atomic_radius><!-- pm -->
+      <melting_point>544.7</melting_point><!-- K -->
+      <boiling_point>1837</boiling_point><!-- K -->
+      <density>9.807</density><!-- g/cm^3 -->
+      <electron_affinity>91.2</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 4f14 5d10 6s2 6p3</electron_configuration>
+      <electronegativity>2.02</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>703.0</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-3, -2, -1, 1, 2, 3, 4, 5</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>Prehistoric</year_discovered>
+      <chemical_group>Other metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Polonium</name>
+    <atomic_symbol>Po</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>3</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>84</atomic_number>
+      <atomic_mass>209</atomic_mass><!-- g/mol -->
+      <atomic_radius>135</atomic_radius><!-- pm -->
+      <melting_point>527</melting_point><!-- K -->
+      <boiling_point>1235</boiling_point><!-- K -->
+      <density>9.196</density><!-- g/cm^3 -->
+      <electron_affinity>136</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 4f14 5d10 6s2 6p4</electron_configuration>
+      <electronegativity>2.0</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>812.1</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-2, 2, 4, 6</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1898</year_discovered>
+      <chemical_group>Metalloids</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Astatine</name>
+    <atomic_symbol>At</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>3</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>85</atomic_number>
+      <atomic_mass>210</atomic_mass><!-- g/mol -->
+      <atomic_radius>127</atomic_radius><!-- pm -->
+      <melting_point>575</melting_point><!-- K -->
+      <boiling_point>610</boiling_point><!-- K -->
+      <density>6.35</density><!-- g/cm^3 -->
+      <electron_affinity>233</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 4f14 5d10 6s2 6p5</electron_configuration>
+      <electronegativity>2.2</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>920</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>-1, 1, 3, 5, 7</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1940</year_discovered>
+      <chemical_group>Halogens</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Radon</name>
+    <atomic_symbol>Rn</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>4</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>86</atomic_number>
+      <atomic_mass>222</atomic_mass><!-- g/mol -->
+      <atomic_radius>120</atomic_radius><!-- pm -->
+      <melting_point>202</melting_point><!-- K -->
+      <boiling_point>211.5</boiling_point><!-- K -->
+      <density>0.00973</density><!-- g/cm^3 -->
+      <electron_affinity>0</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Xe] 4f14 5d10 6s2 6p6</electron_configuration>
+      <electronegativity>2.2</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>1037</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 6</oxidation_states>
+      <standard_state>Gas</standard_state>
+      <year_discovered>1899</year_discovered>
+      <chemical_group>Noble gases</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Francium</name>
+    <atomic_symbol>Fr</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>3</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>87</atomic_number>
+      <atomic_mass>223</atomic_mass><!-- g/mol -->
+      <atomic_radius>348</atomic_radius><!-- pm -->
+      <melting_point>300</melting_point><!-- K -->
+      <boiling_point>950</boiling_point><!-- K -->
+      <density>1.87</density><!-- g/cm^3 -->
+      <electron_affinity>46.89</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 7s1</electron_configuration>
+      <electronegativity>0.7</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>380</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>1</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1939</year_discovered>
+      <chemical_group>Alkali metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Radium</name>
+    <atomic_symbol>Ra</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>3</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>88</atomic_number>
+      <atomic_mass>226</atomic_mass><!-- g/mol -->
+      <atomic_radius>215</atomic_radius><!-- pm -->
+      <melting_point>973</melting_point><!-- K -->
+      <boiling_point>2010</boiling_point><!-- K -->
+      <density>5.5</density><!-- g/cm^3 -->
+      <electron_affinity>0</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 7s2</electron_configuration>
+      <electronegativity>0.9</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>509.3</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1898</year_discovered>
+      <chemical_group>Alkaline earth metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Actinium</name>
+    <atomic_symbol>Ac</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>89</atomic_number>
+      <atomic_mass>227</atomic_mass><!-- g/mol -->
+      <atomic_radius>195</atomic_radius><!-- pm -->
+      <melting_point>1323</melting_point><!-- K -->
+      <boiling_point>3471</boiling_point><!-- K -->
+      <density>10.07</density><!-- g/cm^3 -->
+      <electron_affinity>33.77</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 6d1 7s2</electron_configuration>
+      <electronegativity>1.1</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>499</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 3</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1899</year_discovered>
+      <chemical_group>Actinides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Thorium</name>
+    <atomic_symbol>Th</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>90</atomic_number>
+      <atomic_mass>232.0377</atomic_mass><!-- g/mol -->
+      <atomic_radius>180</atomic_radius><!-- pm -->
+      <melting_point>2023</melting_point><!-- K -->
+      <boiling_point>5093</boiling_point><!-- K -->
+      <density>11.724</density><!-- g/cm^3 -->
+      <electron_affinity>112.72</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 6d2 7s2</electron_configuration>
+      <electronegativity>1.3</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>587</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>1, 2, 3, 4</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1828</year_discovered>
+      <chemical_group>Actinides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Protactinium</name>
+    <atomic_symbol>Pa</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>91</atomic_number>
+      <atomic_mass>231.03588</atomic_mass><!-- g/mol -->
+      <atomic_radius>180</atomic_radius><!-- pm -->
+      <melting_point>1841</melting_point><!-- K -->
+      <boiling_point>4300</boiling_point><!-- K -->
+      <density>15.37</density><!-- g/cm^3 -->
+      <electron_affinity>53.03</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 5f2 6d1 7s2</electron_configuration>
+      <electronegativity>1.5</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>568</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 3, 4, 5</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1913</year_discovered>
+      <chemical_group>Actinides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Uranium</name>
+    <atomic_symbol>U</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>92</atomic_number>
+      <atomic_mass>238.02891</atomic_mass><!-- g/mol -->
+      <atomic_radius>175</atomic_radius><!-- pm -->
+      <melting_point>1405.3</melting_point><!-- K -->
+      <boiling_point>4404</boiling_point><!-- K -->
+      <density>19.05</density><!-- g/cm^3 -->
+      <electron_affinity>50.94</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 5f3 6d1 7s2</electron_configuration>
+      <electronegativity>1.38</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>597</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>3, 4, 5, 6</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1789</year_discovered>
+      <chemical_group>Actinides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Neptunium</name>
+    <atomic_symbol>Np</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>93</atomic_number>
+      <atomic_mass>237</atomic_mass><!-- g/mol -->
+      <atomic_radius>175</atomic_radius><!-- pm -->
+      <melting_point>913</melting_point><!-- K -->
+      <boiling_point>4175</boiling_point><!-- K -->
+      <density>20.45</density><!-- g/cm^3 -->
+      <electron_affinity>45.85</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 5f4 6d1 7s2</electron_configuration>
+      <electronegativity>1.36</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>604.5</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>3, 4, 5, 6, 7</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1940</year_discovered>
+      <chemical_group>Actinides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Plutonium</name>
+    <atomic_symbol>Pu</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>3</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>94</atomic_number>
+      <atomic_mass>244</atomic_mass><!-- g/mol -->
+      <atomic_radius>175</atomic_radius><!-- pm -->
+      <melting_point>912.5</melting_point><!-- K -->
+      <boiling_point>3505</boiling_point><!-- K -->
+      <density>19.816</density><!-- g/cm^3 -->
+      <electron_affinity>35.08</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 5f6 7s2</electron_configuration>
+      <electronegativity>1.28</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>585.1</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 3, 4, 5, 6, 7, 8</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1940</year_discovered>
+      <chemical_group>Actinides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Americium</name>
+    <atomic_symbol>Am</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>3</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>95</atomic_number>
+      <atomic_mass>243</atomic_mass><!-- g/mol -->
+      <atomic_radius>175</atomic_radius><!-- pm -->
+      <melting_point>1449</melting_point><!-- K -->
+      <boiling_point>2880</boiling_point><!-- K -->
+      <density>13.69</density><!-- g/cm^3 -->
+      <electron_affinity>9.93</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 5f7 7s2</electron_configuration>
+      <electronegativity>1.3</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>578</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 3, 4, 5, 6</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1944</year_discovered>
+      <chemical_group>Actinides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Curium</name>
+    <atomic_symbol>Cm</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>3</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>96</atomic_number>
+      <atomic_mass>247</atomic_mass><!-- g/mol -->
+      <atomic_radius>174</atomic_radius><!-- pm -->
+      <melting_point>1618</melting_point><!-- K -->
+      <boiling_point>3383</boiling_point><!-- K -->
+      <density>13.51</density><!-- g/cm^3 -->
+      <electron_affinity>27.17</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 5f7 6d1 7s2</electron_configuration>
+      <electronegativity>1.3</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>581</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 3, 4, 5, 6</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1944</year_discovered>
+      <chemical_group>Actinides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Berkelium</name>
+    <atomic_symbol>Bk</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>3</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>97</atomic_number>
+      <atomic_mass>247</atomic_mass><!-- g/mol -->
+      <atomic_radius>170</atomic_radius><!-- pm -->
+      <melting_point>1259</melting_point><!-- K -->
+      <boiling_point>2900</boiling_point><!-- K -->
+      <density>14.79</density><!-- g/cm^3 -->
+      <electron_affinity>0</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 5f9 7s2</electron_configuration>
+      <electronegativity>1.3</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>601</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 3, 4, 5, 6</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1949</year_discovered>
+      <chemical_group>Actinides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Californium</name>
+    <atomic_symbol>Cf</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>3</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>98</atomic_number>
+      <atomic_mass>251</atomic_mass><!-- g/mol -->
+      <atomic_radius>186</atomic_radius><!-- pm -->
+      <melting_point>1173</melting_point><!-- K -->
+      <boiling_point>1743</boiling_point><!-- K -->
+      <density>15.1</density><!-- g/cm^3 -->
+      <electron_affinity>0</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 5f10 7s2</electron_configuration>
+      <electronegativity>1.3</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>608</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 3, 4, 5, 6</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1950</year_discovered>
+      <chemical_group>Actinides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Einsteinium</name>
+    <atomic_symbol>Es</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>3</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>99</atomic_number>
+      <atomic_mass>252</atomic_mass><!-- g/mol -->
+      <atomic_radius>186</atomic_radius><!-- pm -->
+      <melting_point>1133</melting_point><!-- K -->
+      <boiling_point>1269</boiling_point><!-- K -->
+      <density>8.84</density><!-- g/cm^3 -->
+      <electron_affinity>0</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 5f11 7s2</electron_configuration>
+      <electronegativity>1.3</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>619</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 3</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1952</year_discovered>
+      <chemical_group>Actinides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Fermium</name>
+    <atomic_symbol>Fm</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>3</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>100</atomic_number>
+      <atomic_mass>257</atomic_mass><!-- g/mol -->
+      <atomic_radius>180</atomic_radius><!-- pm -->
+      <melting_point>1800</melting_point><!-- K -->
+      <boiling_point>Unknown</boiling_point>
+      <density>Unknown</density><!-- g/cm^3 -->
+      <electron_affinity>Unknown</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 5f12 7s2</electron_configuration>
+      <electronegativity>1.3</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>627</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 3</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1952</year_discovered>
+      <chemical_group>Actinides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Mendelevium</name>
+    <atomic_symbol>Md</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>3</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>101</atomic_number>
+      <atomic_mass>258</atomic_mass><!-- g/mol -->
+      <atomic_radius>Unknown</atomic_radius><!-- pm -->
+      <melting_point>Unknown</melting_point><!-- K -->
+      <boiling_point>Unknown</boiling_point><!-- K -->
+      <density>Unknown</density><!-- g/cm^3 -->
+      <electron_affinity>Unknown</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 5f13 7s2</electron_configuration>
+      <electronegativity>Unknown</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>635</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 3</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1955</year_discovered>
+      <chemical_group>Actinides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Nobelium</name>
+    <atomic_symbol>No</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>3</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>102</atomic_number>
+      <atomic_mass>259</atomic_mass><!-- g/mol -->
+      <atomic_radius>Unknown</atomic_radius><!-- pm -->
+      <melting_point>Unknown</melting_point><!-- K -->
+      <boiling_point>Unknown</boiling_point><!-- K -->
+      <density>Unknown</density><!-- g/cm^3 -->
+      <electron_affinity>Unknown</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 5f14 7s2</electron_configuration>
+      <electronegativity>Unknown</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>642</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 3</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1957</year_discovered>
+      <chemical_group>Actinides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Lawrencium</name>
+    <atomic_symbol>Lr</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>3</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>103</atomic_number>
+      <atomic_mass>266</atomic_mass><!-- g/mol -->
+      <atomic_radius>Unknown</atomic_radius><!-- pm -->
+      <melting_point>Unknown</melting_point><!-- K -->
+      <boiling_point>Unknown</boiling_point><!-- K -->
+      <density>Unknown</density><!-- g/cm^3 -->
+      <electron_affinity>Unknown</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 5f14 6d1 7s2</electron_configuration>
+      <electronegativity>Unknown</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>470</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>3</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1961</year_discovered>
+      <chemical_group>Actinides</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Rutherfordium</name>
+    <atomic_symbol>Rf</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>104</atomic_number>
+      <atomic_mass>267</atomic_mass><!-- g/mol -->
+      <atomic_radius>Unknown</atomic_radius><!-- pm -->
+      <melting_point>Unknown</melting_point><!-- K -->
+      <boiling_point>Unknown</boiling_point><!-- K -->
+      <density>Unknown</density><!-- g/cm^3 -->
+      <electron_affinity>Unknown</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 5f14 6d2 7s2</electron_configuration>
+      <electronegativity>Unknown</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>580</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>4</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1964</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Dubnium</name>
+    <atomic_symbol>Db</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>105</atomic_number>
+      <atomic_mass>270</atomic_mass><!-- g/mol -->
+      <atomic_radius>Unknown</atomic_radius><!-- pm -->
+      <melting_point>Unknown</melting_point><!-- K -->
+      <boiling_point>Unknown</boiling_point><!-- K -->
+      <density>Unknown</density><!-- g/cm^3 -->
+      <electron_affinity>Unknown</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 5f14 6d3 7s2</electron_configuration>
+      <electronegativity>Unknown</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>670</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>5, 4, 3</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1970</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Seaborgium</name>
+    <atomic_symbol>Sg</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>106</atomic_number>
+      <atomic_mass>271</atomic_mass><!-- g/mol -->
+      <atomic_radius>Unknown</atomic_radius><!-- pm -->
+      <melting_point>Unknown</melting_point><!-- K -->
+      <boiling_point>Unknown</boiling_point><!-- K -->
+      <density>Unknown</density><!-- g/cm^3 -->
+      <electron_affinity>Unknown</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 5f14 6d4 7s2</electron_configuration>
+      <electronegativity>Unknown</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>870</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>6, 5, 4, 3</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1974</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Bohrium</name>
+    <atomic_symbol>Bh</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>107</atomic_number>
+      <atomic_mass>270</atomic_mass><!-- g/mol -->
+      <atomic_radius>Unknown</atomic_radius><!-- pm -->
+      <melting_point>Unknown</melting_point><!-- K -->
+      <boiling_point>Unknown</boiling_point><!-- K -->
+      <density>Unknown</density><!-- g/cm^3 -->
+      <electron_affinity>Unknown</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 5f14 6d5 7s2</electron_configuration>
+      <electronegativity>Unknown</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>820</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>7, 5, 4, 3</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1981</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Hassium</name>
+    <atomic_symbol>Hs</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>108</atomic_number>
+      <atomic_mass>277</atomic_mass><!-- g/mol -->
+      <atomic_radius>Unknown</atomic_radius><!-- pm -->
+      <melting_point>Unknown</melting_point><!-- K -->
+      <boiling_point>Unknown</boiling_point><!-- K -->
+      <density>Unknown</density><!-- g/cm^3 -->
+      <electron_affinity>Unknown</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 5f14 6d6 7s2</electron_configuration>
+      <electronegativity>Unknown</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>870</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>8, 6, 5, 4, 3</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1984</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Meitnerium</name>
+    <atomic_symbol>Mt</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>109</atomic_number>
+      <atomic_mass>278</atomic_mass><!-- g/mol -->
+      <atomic_radius>Unknown</atomic_radius><!-- pm -->
+      <melting_point>Unknown</melting_point><!-- K -->
+      <boiling_point>Unknown</boiling_point><!-- K -->
+      <density>Unknown</density><!-- g/cm^3 -->
+      <electron_affinity>Unknown</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 5f14 6d7 7s2</electron_configuration>
+      <electronegativity>Unknown</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>800</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>9, 8, 6, 4, 3, 1</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1982</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Darmstadtium</name>
+    <atomic_symbol>Ds</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>110</atomic_number>
+      <atomic_mass>281</atomic_mass><!-- g/mol -->
+      <atomic_radius>Unknown</atomic_radius><!-- pm -->
+      <melting_point>Unknown</melting_point><!-- K -->
+      <boiling_point>Unknown</boiling_point><!-- K -->
+      <density>Unknown</density><!-- g/cm^3 -->
+      <electron_affinity>Unknown</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 5f14 6d9 7s1</electron_configuration>
+      <electronegativity>Unknown</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>1000</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>8, 6, 4, 2, 0</oxidation_states>
+      <standard_state>Solid</standard_state>
+      <year_discovered>1994</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Roentgenium</name>
+    <atomic_symbol>Rg</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>111</atomic_number>
+      <atomic_mass>282</atomic_mass><!-- g/mol -->
+      <atomic_radius>Unknown</atomic_radius><!-- pm -->
+      <melting_point>Unknown</melting_point><!-- K -->
+      <boiling_point>Unknown</boiling_point><!-- K -->
+      <density>Unknown</density><!-- g/cm^3 -->
+      <electron_affinity>Unknown</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 5f14 6d10 7s1</electron_configuration>
+      <electronegativity>Unknown</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>Unknown</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>Unknown</oxidation_states>
+      <standard_state>Unknown</standard_state>
+      <year_discovered>1994</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Copernicium</name>
+    <atomic_symbol>Cn</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>112</atomic_number>
+      <atomic_mass>285</atomic_mass><!-- g/mol -->
+      <atomic_radius>Unknown</atomic_radius><!-- pm -->
+      <melting_point>Unknown</melting_point><!-- K -->
+      <boiling_point>Unknown</boiling_point><!-- K -->
+      <density>Unknown</density><!-- g/cm^3 -->
+      <electron_affinity>Unknown</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 5f14 6d10 7s2</electron_configuration>
+      <electronegativity>Unknown</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>Unknown</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 4</oxidation_states>
+      <standard_state>Unknown</standard_state>
+      <year_discovered>1996</year_discovered>
+      <chemical_group>Transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Nihonium</name>
+    <atomic_symbol>Nh</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>113</atomic_number>
+      <atomic_mass>284</atomic_mass><!-- g/mol -->
+      <atomic_radius>Unknown</atomic_radius><!-- pm -->
+      <melting_point>Unknown</melting_point><!-- K -->
+      <boiling_point>Unknown</boiling_point><!-- K -->
+      <density>Unknown</density><!-- g/cm^3 -->
+      <electron_affinity>Unknown</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 5f14 6d10 7s2 7p1</electron_configuration>
+      <electronegativity>Unknown</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>Unknown</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>1, 3</oxidation_states>
+      <standard_state>Unknown</standard_state>
+      <year_discovered>2004</year_discovered>
+      <chemical_group>Post-transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Flerovium</name>
+    <atomic_symbol>Fl</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>114</atomic_number>
+      <atomic_mass>289</atomic_mass><!-- g/mol -->
+      <atomic_radius>Unknown</atomic_radius><!-- pm -->
+      <melting_point>Unknown</melting_point><!-- K -->
+      <boiling_point>Unknown</boiling_point><!-- K -->
+      <density>Unknown</density><!-- g/cm^3 -->
+      <electron_affinity>Unknown</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 5f14 6d10 7s2 7p2</electron_configuration>
+      <electronegativity>Unknown</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>Unknown</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 4, 6</oxidation_states>
+      <standard_state>Unknown</standard_state>
+      <year_discovered>1998</year_discovered>
+      <chemical_group>Post-transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Moscovium</name>
+    <atomic_symbol>Mc</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>115</atomic_number>
+      <atomic_mass>288</atomic_mass><!-- g/mol -->
+      <atomic_radius>Unknown</atomic_radius><!-- pm -->
+      <melting_point>Unknown</melting_point><!-- K -->
+      <boiling_point>Unknown</boiling_point><!-- K -->
+      <density>Unknown</density><!-- g/cm^3 -->
+      <electron_affinity>Unknown</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 5f14 6d10 7s2 7p3</electron_configuration>
+      <electronegativity>Unknown</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>Unknown</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>1, 3, 5</oxidation_states>
+      <standard_state>Unknown</standard_state>
+      <year_discovered>2003</year_discovered>
+      <chemical_group>Post-transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Livermorium</name>
+    <atomic_symbol>Lv</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>116</atomic_number>
+      <atomic_mass>293</atomic_mass><!-- g/mol -->
+      <atomic_radius>Unknown</atomic_radius><!-- pm -->
+      <melting_point>Unknown</melting_point><!-- K -->
+      <boiling_point>Unknown</boiling_point><!-- K -->
+      <density>Unknown</density><!-- g/cm^3 -->
+      <electron_affinity>Unknown</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 5f14 6d10 7s2 7p4</electron_configuration>
+      <electronegativity>Unknown</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>Unknown</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>2, 4, 6</oxidation_states>
+      <standard_state>Unknown</standard_state>
+      <year_discovered>2000</year_discovered>
+      <chemical_group>Post-transition metals</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Tennessine</name>
+    <atomic_symbol>Ts</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>117</atomic_number>
+      <atomic_mass>294</atomic_mass><!-- g/mol -->
+      <atomic_radius>Unknown</atomic_radius><!-- pm -->
+      <melting_point>Unknown</melting_point><!-- K -->
+      <boiling_point>Unknown</boiling_point><!-- K -->
+      <density>Unknown</density><!-- g/cm^3 -->
+      <electron_affinity>Unknown</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 5f14 6d10 7s2 7p5</electron_configuration>
+      <electronegativity>Unknown</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>Unknown</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>1, 3, 5</oxidation_states>
+      <standard_state>Unknown</standard_state>
+      <year_discovered>2010</year_discovered>
+      <chemical_group>Halogen</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Oganesson</name>
+    <atomic_symbol>Og</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>118</atomic_number>
+      <atomic_mass>294</atomic_mass><!-- g/mol -->
+      <atomic_radius>Unknown</atomic_radius><!-- pm -->
+      <melting_point>Unknown</melting_point><!-- K -->
+      <boiling_point>Unknown</boiling_point><!-- K -->
+      <density>Unknown</density><!-- g/cm^3 -->
+      <electron_affinity>Unknown</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>[Rn] 5f14 6d10 7s2 7p6</electron_configuration>
+      <electronegativity>Unknown</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>Unknown</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>0, 2, 4</oxidation_states>
+      <standard_state>Unknown</standard_state>
+      <year_discovered>2002</year_discovered>
+      <chemical_group>Noble gases</chemical_group>
+    </properties>
+  </substance>
+
+</substances>

@@ -8,16 +8,16 @@ namespace AmplifyShaderEditor
 	public class ASESaveBundleAsset : ScriptableObject
 	{
 		[SerializeField]
-		private string m_packageContentsOrigin;
+		private string m_packageContentsOrigin = string.Empty;
 
 		[SerializeField]
 		private List<string> m_allExtras = new List<string>();
 
+		[SerializeField]
+		private string m_packageTargetPath = string.Empty;
 
 		[SerializeField]
-		private string m_packageTargetPath;
-		[SerializeField]
-		private string m_packageTargetName;
+		private string m_packageTargetName = string.Empty;
 
 		[SerializeField]
 		private List<Shader> m_allShaders = new List<Shader>();

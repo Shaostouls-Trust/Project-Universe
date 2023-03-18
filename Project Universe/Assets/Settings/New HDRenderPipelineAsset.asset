@@ -155,7 +155,8 @@ MonoBehaviour:
     type: 2}
   m_LensAttenuation: 0
   m_UseRenderGraph: 1
-  m_DefaultLookDevProfile: {fileID: 0}
+  m_DefaultLookDevProfile: {fileID: 11400000, guid: 254c4fe87beb7be4fa72e1681edbed02,
+    type: 2}
   m_RenderingPathDefaultCameraFrameSettings:
     bitDatas:
       data1: 72198262773251917
@@ -210,7 +211,7 @@ MonoBehaviour:
       m_SchemaId:
         m_Id: With3Levels
     supportVolumetrics: 1
-    supportLightLayers: 0
+    supportLightLayers: 1
     lightLayerName0: Light Layer default
     lightLayerName1: Light Layer 1
     lightLayerName2: Light Layer 2
@@ -362,9 +363,9 @@ MonoBehaviour:
         m_Id: With3Levels
     lodBias:
       m_Values:
-      - 0
       - 1
-      - 2
+      - 1
+      - 1
       m_SchemaId:
         m_Id: With3Levels
     lightingQualitySettings:

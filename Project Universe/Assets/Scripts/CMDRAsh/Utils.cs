@@ -326,8 +326,11 @@ namespace ProjectUniverse.Util
 		/// <returns></returns>
 		public static float RadiationExposureRate(float activity_TBq, float distance)
         {
+			//Debug.Log(activity_TBq+" at "+(distance/100f));
+			//U-235 exposure constant: 36756.76 R*cm^2/TBq*hr (1.36 R*cm^2/mCi*hr)
 			// Exposure Rate = fluence factor (5.263x10^-7) * A (Bq) * TABULATED_SUM_MeV / distance(cm)^2
-			return (0.0000005263f * ((activity_TBq * Mathf.Pow(10, 12f))) * .1576555265f) / (distance * distance);
+			//return (0.0000005263f * ((activity_TBq * Mathf.Pow(10, 12f))) * .1576555265f) / (distance * distance);
+			return ((activity_TBq * 36756.76f) / (distance * distance));
         }
 
 		/// <summary>
@@ -338,7 +341,8 @@ namespace ProjectUniverse.Util
 		/// <returns></returns>
 		public static float MaxRadiationExposureRange(float activity_TBq, float exposureRate)
         {
-			float rng = ((float)Math.Sqrt(0.0000005263f * ((activity_TBq * Mathf.Pow(10, 12f))) * .1576555265f) /(exposureRate)) / 100f;
+			//float rng = ((float)Math.Sqrt(0.0000005263f * ((activity_TBq * Mathf.Pow(10, 12f))) * .1576555265f) /(exposureRate)) / 100f;
+			float rng = ((float)Math.Sqrt((activity_TBq * 36756.76) / (exposureRate))) / 100f;
 			Debug.Log("range: "+rng);
 			return rng;
 
@@ -596,6 +600,7 @@ namespace ProjectUniverse.Util
 
 		public static float CalculateGasFlowThroughPipe(float diamInner_m, float flowVelocity_ms, float flowPressure_bar)
         {
+			//This may not be able to find the pressure if it's not 1 whole number
 			float sv = PressureToSpecificVolume(flowPressure_bar);
 			return (3600f * (float)Math.PI) * (float)Math.Pow(diamInner_m / 2f, 2) * (flowVelocity_ms/sv);
         }

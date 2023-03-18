@@ -94,11 +94,7 @@ namespace AmplifyShaderEditor
 		{
 			using( www = UnityWebRequest.Get( url ) )
 			{
-#if UNITY_2017_2_OR_NEWER
 				yield return www.SendWebRequest();
-#else
-				yield return www.Send();
-#endif
 
 				while( www.isDone == false )
 					yield return null;

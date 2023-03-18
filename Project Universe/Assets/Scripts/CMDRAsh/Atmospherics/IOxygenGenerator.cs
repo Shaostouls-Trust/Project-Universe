@@ -46,7 +46,8 @@ namespace ProjectUniverse.Environment.Gas
 
             if (isPowered && isRunning)
             {
-
+                ///Basic oxygenation controls. 
+                ///Need reworked a little to allow for pump rate to replace air loss to co2, etc
                 if (genRoom.Oxygenation < 1.0f)
                 {
                     genRoom.Oxygenation += (oxyGenRate_m3s * Time.deltaTime);

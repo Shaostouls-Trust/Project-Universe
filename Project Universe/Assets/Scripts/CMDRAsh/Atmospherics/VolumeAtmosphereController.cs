@@ -8,9 +8,11 @@ using ProjectUniverse.Environment.Fluid;
 using ProjectUniverse.Animation.Controllers;
 using UnityEngine.Profiling;
 using ProjectUniverse.Util;
+using ProjectUniverse.Ship;
 
 namespace ProjectUniverse.Environment.Volumes
 {
+    [RequireComponent(typeof(VolumeComponent))]
     public sealed class VolumeAtmosphereController : MonoBehaviour
     {
         private float roomPressure;
@@ -27,6 +29,8 @@ namespace ProjectUniverse.Environment.Volumes
         private List<IFluid> roomFluids = new List<IFluid>();
         [SerializeField] private List<GameObject> roomFluidPlanes = new List<GameObject>();
         [SerializeField] private GameObject[] neighborEmpties;
+        //All volumes that define the shape of the room.
+        [SerializeField] private List<BoxCollider> roomVolumeSections;
         //[SerializeField] private GameObject[] roomVolumeDoors;
         private List<GameObject> connectedNeighbors = new List<GameObject>();
         [SerializeField] private int OxygenatedRoom_Priority = 10;
@@ -34,22 +38,143 @@ namespace ProjectUniverse.Environment.Volumes
         [SerializeField] public List<PipeSection> volumeGasPipeSections;
         [SerializeField] private bool autoFill;
         public int limiter = 30;
-        private float qHeatLossPerSec = -40000f;
+        private float qHeatLossPerSec = 0f;//-40000
+        public bool doRenderStateLogic = true;
+        //[SerializeField] private bool renderstate = false;
+        private RenderStateManager rsm;
+        private bool rendersOn = true;
+        private MeshRenderer[] volumeRenders;
+        private GameObject[] lightGOs;
+        private List<GameObject> GOculls;
+        [SerializeField] private GameObject[] lightGroups;
+        [Tooltip("Volumes/objects that should render while in this volume. Useful for windows or large doors.")]
+        [SerializeField] private GameObject[] additionalRenderVolumes;
 
         private void Start()
         {
-            roomVolume = (gameObject.GetComponent<BoxCollider>().size.x *
-                gameObject.GetComponent<BoxCollider>().size.y *
-                gameObject.GetComponent<BoxCollider>().size.z);
-            
+            //roomVolume = (gameObject.GetComponent<BoxCollider>().size.x *
+            //    gameObject.GetComponent<BoxCollider>().size.y *
+            //    gameObject.GetComponent<BoxCollider>().size.z);
+            for (int i = 0; i < roomVolumeSections.Count; i++)
+            {
+                roomVolume += (roomVolumeSections[i].size.x * roomVolumeSections[i].size.y * roomVolumeSections[i].size.z);
+            }
+
             if (autoFill)
             {
                 AddRoomGas(new IGas("Oxygen", 60f, roomVolume, 1.0f, roomVolume));
             }
-            
-            qHeatLossPerSec = ((gameObject.GetComponent<BoxCollider>().size.x * 2f) +
-                (gameObject.GetComponent<BoxCollider>().size.y * 2f) +
-                (gameObject.GetComponent<BoxCollider>().size.z * 2f)) * -40000f;//-1240000J per 51300L 19-3-9 rm
+
+            ///
+            /// This does not ensure that we are only losing heat from the outer sides of the volume,
+            /// but from all sides of each section of the volume, which is not a valid assumption.
+            ///
+            //qHeatLossPerSec = ((gameObject.GetComponent<BoxCollider>().size.x * 2f) +
+            //    (gameObject.GetComponent<BoxCollider>().size.y * 2f) +
+            //    (gameObject.GetComponent<BoxCollider>().size.z * 2f)) * -40000f;//-1240000J per 51300L 19-3-9 rm
+            for (int j = 0; j < roomVolumeSections.Count; j++)
+            {
+                //rooomVolume += (etc)
+                qHeatLossPerSec += ((roomVolumeSections[j].size.x * 2f) + (roomVolumeSections[j].size.y * 2f) +
+                (roomVolumeSections[j].size.z * 2f)) * -40000f;
+            }
+
+            if (doRenderStateLogic)
+            {
+                //Debug.Log("- - - - -");
+                rsm = GetComponentInParent<RenderStateManager>();
+                ///Get all top-level renderers and light objects in this volume
+                ///
+                List<GameObject> lightList = new List<GameObject>();
+                for (int i = 0; i < lightGroups.Length; i++)
+                {
+                    Light[] lights = lightGroups[i].GetComponentsInChildren<Light>(false);
+                    for (int l = 0; l < lights.Length; l++)
+                    {
+                        //Debug.Log(lights[l]);
+                        lightList.Add(lights[l].gameObject);
+                    }
+                }
+
+                List<MeshRenderer> renderlist = new List<MeshRenderer>();
+                List<Transform> carryOver = new List<Transform>();
+                lightGOs = lightList.ToArray();
+                //get all 1st level children
+                GOculls = new List<GameObject>();
+                foreach (Transform child in transform)
+                {
+                    //Debug.Log(child);
+                    if (child.gameObject.activeInHierarchy)
+                    {
+                        if (child.TryGetComponent(out MeshRenderer render))
+                        {
+                            renderlist.Add(render);
+                        }
+                        if(child.gameObject.tag == "IBreaker")
+                        {
+                            foreach (Transform obj in child.transform)
+                            {
+                                if(obj.tag == "_root")
+                                {
+                                    //Debug.Log(obj.gameObject);
+                                    GOculls.Add(obj.gameObject);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            carryOver.Add(child);
+                        }
+                    }
+                }
+
+                //Get all child renderers of the carryover stack
+                foreach (Transform carry in carryOver)
+                {
+                    if (carry.gameObject.tag != "GUI")
+                    {
+                        MeshRenderer[] renderchilds = carry.GetComponentsInChildren<MeshRenderer>(false);
+                        //Debug.Log(renderchilds.Length);
+                        for (int r = 0; r < renderchilds.Length; r++)
+                        {
+                            if (renderchilds[r].gameObject.tag != "GUI")
+                            {
+                                renderlist.Add(renderchilds[r]);
+                            }
+                            //else if (carry.gameObject.tag != "_root")
+                            //{
+                            //    Debug.Log("Root rc");
+                            //}
+                            //else
+                            //{
+                            //   GOculls.Add(renderchilds[r].gameObject);
+                            //}
+                        }
+                    }
+                }
+                volumeRenders = renderlist.ToArray();
+                //Debug.Log(volumeRenders.Length);
+                LODGroup[] lodObjs = transform.GetComponentsInChildren<LODGroup>();
+                Canvas[] canvasObj = transform.GetComponentsInChildren<Canvas>();
+                //if(lodObjs.Length > 0)
+                //{
+                    
+                for(int j = 0; j < lodObjs.Length; j++)
+                {
+                    //if not breaker, router, subst, gen, or anything else
+                    //that has/might have a script or lod in the future
+                    if (lodObjs[j].tag == "Untagged")
+                    {
+                        GOculls.Add(lodObjs[j].gameObject);
+                    }
+                }
+                for(int c = 0; c < canvasObj.Length; c++)
+                {
+                    GOculls.Add(canvasObj[c].gameObject);
+                }
+                //}
+                //HideRenderVolume();
+            }
         }
 
         public float Temperature
@@ -77,7 +202,15 @@ namespace ProjectUniverse.Environment.Volumes
             get { return roomGases; }
             set { roomGases = value; }
         }
-
+        public bool RenderEnabled
+        {
+            get { return rendersOn; }
+            set { rendersOn = value; }
+        }
+        public GameObject[] GetNeighborEmpties
+        {
+            get { return neighborEmpties; }
+        }
         ///check doors
         ///if two doors are open
         ///check the two volumes
@@ -144,7 +277,14 @@ namespace ProjectUniverse.Environment.Volumes
                                 {
                                     myDoorGameobject = myComponent3.gameObject;
                                 }
-                                clear = myDoorGameobject.GetComponent<DoorAnimator>().OpenOrOpening();
+                                if(myDoorGameobject != null)
+                                {
+                                    clear = myDoorGameobject.GetComponent<DoorAnimator>().OpenOrOpening();
+                                }
+                                else
+                                {
+                                    clear = true;//no door on other side, it is what it is when this door opens.
+                                }
                                 if (clear)
                                 {
                                     //Debug.Log("---");
@@ -190,12 +330,6 @@ namespace ProjectUniverse.Environment.Volumes
 
                         }
                     }
-                    //if (Physics.Raycast(
-                    //    new Vector3(door.transform.position.x,
-                    //    door.transform.position.y + 0.025f,
-                    //    door.transform.position.z),
-                    //    back, out RaycastHit hit, 1.0f))//roomVolumeDoors[i].transform.position
-                    /// old logic here { }
                 }
             }
             ///
@@ -484,6 +618,17 @@ namespace ProjectUniverse.Environment.Volumes
                 player.OnVolumeEnter(roomPressure, roomTemp, roomOxygenation);
                 player.SetPlayerVolume(this.GetComponents<Volume>());
                 player.SetPlayerVolumeController(this);
+                //toggle renderstates
+                if(rsm != null)
+                {
+                    rsm.CurrentRoom = this.gameObject;
+                }
+                if (!rendersOn)
+                {
+                    Debug.Log("Render " + gameObject);
+                    ShowRenderVolume();
+                }
+                //renderstate = true;
             }
             else if (other.gameObject.CompareTag("Drone"))
             {
@@ -491,6 +636,17 @@ namespace ProjectUniverse.Environment.Volumes
                 player.OnVolumeEnter(roomPressure, roomTemp, roomOxygenation);
                 player.SetPlayerVolume(this.GetComponents<Volume>());
                 player.SetPlayerVolumeController(this);
+                //toggle renderstates (only render the immediate volume, but two volume's worth
+                //of ducts?)
+                //renderstate = true;
+                if (rsm != null)
+                {
+                    rsm.CurrentRoom = this.gameObject;
+                }
+                if (!rendersOn)
+                {
+                    ShowRenderVolume();
+                }
             }
         }
 
@@ -900,23 +1056,17 @@ namespace ProjectUniverse.Environment.Volumes
 
         public void UpdateRoomFluidLevel()
         {
-            //EXTREMELY temporary
-            //float fluidLevel = 0.0f;
             float fluidConc = 0.0f;
-            //Debug.Log(roomFluids.Count);
+            //Debug.Log(roomFluids.Count);  
             for (int i = 0; i < roomFluids.Count; i++)
             {
-                float volumeRatio = (roomFluids[i].GetConcentration()) / roomVolume;//1000L in 1 m^3 conc/1000
                 fluidConc += roomFluids[i].GetConcentration();
-                //Debug.Log(roomFluids[i].GetConcentration() + "/" + roomVolume);
-                float translatedFill = volumeRatio * gameObject.GetComponent<BoxCollider>().size.y;
-                roomFluidPlanes[0].transform.localPosition = new Vector3(
-                    roomFluidPlanes[0].transform.localPosition.x,
-                    translatedFill,// + fluidLevel,
-                    roomFluidPlanes[0].transform.localPosition.z);
-                //fluidLevel += translatedFill;
             }
-            //Debug.Log(fluidConc + "/" + roomVolume);
+            float volumeRatio = fluidConc / roomVolume;
+            float translatedFill = (float)Math.Round((volumeRatio * gameObject.GetComponent<BoxCollider>().size.y),3);
+            roomFluidPlanes[0].transform.localPosition = new Vector3(
+                    roomFluidPlanes[0].transform.localPosition.x, translatedFill,
+                    roomFluidPlanes[0].transform.localPosition.z);
         }
 
         public float GetPressure()
@@ -931,5 +1081,64 @@ namespace ProjectUniverse.Environment.Volumes
         {
             return roomVolume;
         }
+
+        //Hide renderers and lights
+        public void HideRenderVolume()
+        {
+            Debug.Log("Hide " + gameObject);
+            rendersOn = false;
+            if (volumeRenders != null && lightGOs != null)
+            {
+                for (int r = 0; r < volumeRenders.Length; r++)
+                {
+                    volumeRenders[r].enabled = false;
+                }
+                for (int l = 0; l < lightGOs.Length; l++)
+                {
+                    lightGOs[l].SetActive(false);
+                }
+            }
+            if(GOculls != null)
+            {
+                for (int r = 0; r < GOculls.Count; r++)
+                {
+                    GOculls[r].SetActive(false);
+                }
+            }
+        }
+
+        //show render groups, then next frame reactivate lights
+        public void ShowRenderVolume()
+        {
+            //Debug.Log("Render " + gameObject);
+            rendersOn = true;
+            StartCoroutine(ShowRenders());
+        }
+
+        private IEnumerator ShowRenders()
+        {
+            for (int r = 0; r < volumeRenders.Length; r++)
+            {
+                volumeRenders[r].enabled = true;
+            }
+            if (GOculls != null)
+            {
+                for (int r = 0; r < GOculls.Count; r++)
+                {
+                    GOculls[r].SetActive(true);
+                }
+            }
+            yield return null;
+            for (int l = 0; l < lightGOs.Length; l++)
+            {
+                lightGOs[l].SetActive(true);
+            }
+        }
+
+        //public bool RenderState
+        //{
+        //    get { return renderstate; }
+        //    set { renderstate = value; }
+        //}
     }
 }

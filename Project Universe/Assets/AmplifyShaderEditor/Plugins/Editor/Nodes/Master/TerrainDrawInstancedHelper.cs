@@ -12,7 +12,6 @@ namespace AmplifyShaderEditor
 	[Serializable]
 	public class TerrainDrawInstancedHelper
 	{
-#if UNITY_2018_1_OR_NEWER
 		private readonly string[] InstancedPragmas =
 		{
 			"multi_compile_instancing",
@@ -167,20 +166,17 @@ namespace AmplifyShaderEditor
 			"Hidden/Nature/Terrain/Utilities/SELECTION"
 		};
 		private readonly string DrawInstancedLabel = "Instanced Terrain";
-#endif
+
 		[SerializeField]
 		private bool m_enable = false;
 
 		public void Draw( UndoParentNode owner )
 		{
-#if UNITY_2018_1_OR_NEWER
 			m_enable = owner.EditorGUILayoutToggle( DrawInstancedLabel, m_enable );
-#endif
 		}
 
 		public void UpdateDataCollectorForTemplates( ref MasterNodeDataCollector dataCollector, ref List<string> vertexInstructions )
 		{
-#if UNITY_2018_1_OR_NEWER
 			if( m_enable )
 			{
 				for( int i = 0; i < AdditionalUsePasses.Length; i++ )
@@ -300,12 +296,10 @@ namespace AmplifyShaderEditor
 
 				}
 			}
-#endif
 		}
 
 		public void UpdateDataCollectorForStandard( ref MasterNodeDataCollector dataCollector )
 		{
-#if UNITY_2018_1_OR_NEWER
 			if( m_enable )
 			{
 				for( int i = 0; i < AdditionalUsePasses.Length; i++ )
@@ -357,7 +351,6 @@ namespace AmplifyShaderEditor
 				
 				dataCollector.AddVertexInstruction( string.Format( ApplyMeshModificationInstructionStandard, "v" ) );
 			}
-#endif
 		}
 
 		public void ReadFromString( ref uint index, ref string[] nodeParams )

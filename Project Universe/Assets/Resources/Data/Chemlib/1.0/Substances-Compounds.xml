@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<substances>
+
+  <substance>
+    <name>Water</name>
+    <chemical_formula>H2O</chemical_formula>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <molecular_weight>18.01528</molecular_weight><!-- g/mol -->
+      <density>1.00</density><!-- g/cm^3 -->
+      <melting_point>0.00</melting_point><!-- °C -->
+      <boiling_point>100.00</boiling_point><!-- °C -->
+      <solubility_in_water>Inf</solubility_in_water><!-- g/L -->
+      <critical_temperature>374.12</critical_temperature><!-- °C -->
+      <heat_of_combustion>-285.8</heat_of_combustion><!-- kJ/mol -->
+      <auto_ignition_temperature>?</auto_ignition_temperature><!-- °C -->
+      <flash_point>?</flash_point><!-- °C -->
+      <explosive_limits>?</explosive_limits>
+      <viscosity>0.00089</viscosity><!-- Pa s -->
+      <refractive_index>1.3330</refractive_index>
+      <dipole_moment>1.85</dipole_moment><!-- D -->
+      <pKa1>14</pKa1>
+      <pKa2>?</pKa2>
+      <bond_length>95.84 pm</bond_length>
+      <bond_angle>104.5°</bond_angle>
+      <chemical_group>Hydrogen compounds</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Carbon Dioxide</name>
+    <atomic_symbol>CO2</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <molecular_weight>44.01</molecular_weight><!-- g/mol -->
+      <density>0.00198</density><!-- g/cm^3 -->
+      <melting_point>-56.6</melting_point><!-- °C -->
+      <boiling_point>-78.5</boiling_point><!-- °C -->
+      <solubility_in_water>1.45</solubility_in_water><!-- g/100mL -->
+      <critical_temperature>31.1</critical_temperature><!-- °C -->
+      <heat_of_combustion>-393.5</heat_of_combustion><!-- kJ/mol -->
+      <auto_ignition_temperature>609</auto_ignition_temperature><!-- °C -->
+      <flash_point>-78.5</flash_point><!-- °C -->
+      <explosive_limits>None</explosive_limits>
+      <viscosity>0.0157</viscosity><!-- cP -->
+      <refractive_index>1.00045</refractive_index>
+      <dipole_moment>0</dipole_moment><!-- D -->
+      <bond_length>116.3 pm</bond_length>
+      <bond_angle>180°</bond_angle>
+      <chemical_group>Oxides of carbon</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Nitrous Oxide</name>
+    <atomic_symbol>N2O</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>3</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <molecular_weight>44.013</molecular_weight><!-- g/mol -->
+      <density>1.977</density><!-- g/L -->
+      <melting_point>-90.8</melting_point><!-- °C -->
+      <boiling_point>-88.5</boiling_point><!-- °C -->
+      <solubility_in_water>18.4</solubility_in_water><!-- g/100mL -->
+      <critical_temperature>36.5</critical_temperature><!-- °C -->
+      <heat_of_combustion>-630.3</heat_of_combustion><!-- kJ/mol -->
+      <auto_ignition_temperature>651</auto_ignition_temperature><!-- °C -->
+      <flash_point>-88.5</flash_point><!-- °C -->
+      <explosive_limits>None</explosive_limits>
+      <viscosity>0.0120</viscosity><!-- cP -->
+      <refractive_index>1.00198</refractive_index>
+      <dipole_moment>0</dipole_moment><!-- D -->
+      <bond_length>111.1 pm</bond_length>
+      <bond_angle>180°</bond_angle>
+      <chemical_group>Oxides of nitrogen</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Ammonia</name>
+    <atomic_symbol>NH3</atomic_symbol>
+    <NFPA>
+      <flammability>4</flammability>
+      <health>3</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <molecular_weight>17.031</molecular_weight><!-- g/mol -->
+      <density>0.771</density><!-- g/L -->
+      <melting_point>-77.7</melting_point><!-- °C -->
+      <boiling_point>-33.3</boiling_point><!-- °C -->
+      <solubility_in_water>47</solubility_in_water><!-- g/100mL -->
+      <critical_temperature>132.4</critical_temperature><!-- °C -->
+      <heat_of_combustion>-382.8</heat_of_combustion><!-- kJ/mol -->
+      <auto_ignition_temperature>651</auto_ignition_temperature><!-- °C -->
+      <flash_point>-78</flash_point><!-- °C -->
+      <explosive_limits>16-25%</explosive_limits>
+      <viscosity>0.0099</viscosity><!-- cP -->
+      <refractive_index>1.00040</refractive_index>
+      <dipole_moment>1.46</dipole_moment><!-- D -->
+      <bond_length>101.3 pm</bond_length>
+      <bond_angle>107.8°</bond_angle>
+      <chemical_group>Nitrogen compounds</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Hydrogen Chloride</name>
+    <atomic_symbol>HCl</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>3</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <molecular_weight>36.461</molecular_weight><!-- g/mol -->
+      <density>1.639</density><!-- g/L -->
+      <melting_point>-114.22</melting_point><!-- °C -->
+      <boiling_point>-85.05</boiling_point><!-- °C -->
+      <solubility_in_water>460</solubility_in_water><!-- g/L -->
+      <critical_temperature>51.2</critical_temperature><!-- °C -->
+      <heat_of_combustion>-92.30</heat_of_combustion><!-- kJ/mol -->
+      <auto_ignition_temperature>513</auto_ignition_temperature><!-- °C -->
+      <flash_point>-85</flash_point><!-- °C -->
+      <explosive_limits>5.5-17.5%</explosive_limits>
+      <viscosity>0.000395</viscosity><!-- cP -->
+      <refractive_index>1.00040</refractive_index>
+      <dipole_moment>1.03</dipole_moment><!-- D -->
+      <bond_length>127.5 pm</bond_length>
+      <bond_angle>180°</bond_angle>
+      <chemical_group>Halogen compounds</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Sulfur Dioxide</name>
+    <atomic_symbol>SO2</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>3</health>
+      <instability>2</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <molecular_weight>64.066</molecular_weight><!-- g/mol -->
+      <density>2.926</density><!-- g/L -->
+      <melting_point>-72.7</melting_point><!-- °C -->
+      <boiling_point>-10</boiling_point><!-- °C -->
+      <solubility_in_water>70</solubility_in_water><!-- g/100mL -->
+      <critical_temperature>157.2</critical_temperature><!-- °C -->
+      <heat_of_combustion>-297.10</heat_of_combustion><!-- kJ/mol -->
+      <auto_ignition_temperature>495</auto_ignition_temperature><!-- °C -->
+      <flash_point>-40</flash_point><!-- °C -->
+      <explosive_limits>2-45%</explosive_limits>
+      <viscosity>0.000252</viscosity><!-- cP -->
+      <refractive_index>1.00058</refractive_index>
+      <dipole_moment>1.62</dipole_moment><!-- D -->
+      <bond_length>143.8 pm</bond_length>
+      <bond_angle>119°</bond_angle>
+      <chemical_group>Sulfur compounds</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Sulfur Trioxide</name>
+    <atomic_symbol>SO3</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>3</health>
+      <instability>2</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <molecular_weight>80.06</molecular_weight><!-- g/mol -->
+      <density>1.920</density><!-- g/cm^3 -->
+      <melting_point>-73</melting_point><!-- °C -->
+      <boiling_point>46</boiling_point><!-- °C -->
+      <solubility_in_water>65</solubility_in_water><!-- g/100mL -->
+      <critical_temperature>223</critical_temperature><!-- °C -->
+      <heat_of_combustion>-395.72</heat_of_combustion><!-- kJ/mol -->
+      <auto_ignition_temperature>280</auto_ignition_temperature><!-- °C -->
+      <flash_point>-45</flash_point><!-- °C -->
+      <explosive_limits>?</explosive_limits>
+      <viscosity>0.000579</viscosity><!-- cP -->
+      <refractive_index>1.444</refractive_index>
+      <dipole_moment>0</dipole_moment><!-- D -->
+      <bond_length>143.1 pm</bond_length>
+      <bond_angle>120°</bond_angle>
+      <chemical_group>Sulfur compounds</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Sulfuric Acid</name>
+    <chemical_formula>H2SO4</chemical_formula>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>3</health>
+      <instability>2</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <molecular_weight>98.079</molecular_weight><!-- g/mol -->
+      <density>1.84</density><!-- g/cm^3 -->
+      <melting_point>10.31</melting_point><!-- °C -->
+      <boiling_point>337</boiling_point><!-- °C -->
+      <solubility_in_water>1000</solubility_in_water><!-- g/L -->
+      <critical_temperature>?</critical_temperature><!-- °C -->
+      <heat_of_combustion>-2813.8</heat_of_combustion><!-- kJ/mol -->
+      <auto_ignition_temperature>?</auto_ignition_temperature><!-- °C -->
+      <flash_point>?</flash_point><!-- °C -->
+      <explosive_limits>?</explosive_limits>
+      <viscosity>2.8</viscosity><!-- cP -->
+      <refractive_index>1.390</refractive_index>
+      <dipole_moment>3.08</dipole_moment><!-- D -->
+      <pKa1>-3</pKa1>
+      <pKa2>-1.99</pKa2>
+      <bond_length>96.2 pm</bond_length>
+      <bond_angle>120°</bond_angle>
+      <chemical_group>Sulfur compounds</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Acetylene</name>
+    <atomic_symbol>C2H2</atomic_symbol>
+    <NFPA>
+      <flammability>4</flammability>
+      <health>2</health>
+      <instability>3</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <molecular_weight>26.04</molecular_weight><!-- g/mol -->
+      <density>0.0010962</density><!-- g/cm^3 -->
+      <melting_point>-81.8</melting_point><!-- °C -->
+      <boiling_point>-84</boiling_point><!-- °C -->
+      <solubility_in_water>0.05</solubility_in_water><!-- g/100mL -->
+      <critical_temperature>36.0</critical_temperature><!-- °C -->
+      <heat_of_combustion>-1300.0</heat_of_combustion><!-- kJ/mol -->
+      <auto_ignition_temperature>305</auto_ignition_temperature><!-- °C -->
+      <flash_point>-18</flash_point><!-- °C -->
+      <explosive_limits>2.5-100%</explosive_limits>
+      <viscosity>0.2078</viscosity><!-- cP -->
+      <refractive_index>1.0002465</refractive_index>
+      <dipole_moment>0.1223</dipole_moment><!-- D -->
+      <bond_length>120.1 pm</bond_length>
+      <bond_angle>180°</bond_angle>
+      <chemical_group>Alkynes</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Ethylene</name>
+    <atomic_symbol>C2H4</atomic_symbol>
+    <NFPA>
+      <flammability>4</flammability>
+      <health>1</health>
+      <instability>2</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <molecular_weight>28.05</molecular_weight><!-- g/mol -->
+      <density>0.001178</density><!-- g/cm^3 -->
+      <melting_point>-169.2</melting_point><!-- °C -->
+      <boiling_point>-103.7</boiling_point><!-- °C -->
+      <solubility_in_water>1.92</solubility_in_water><!-- g/100mL -->
+      <critical_temperature>9.4</critical_temperature><!-- °C -->
+      <heat_of_combustion>-1411.2</heat_of_combustion><!-- kJ/mol -->
+      <auto_ignition_temperature>425</auto_ignition_temperature><!-- °C -->
+      <flash_point>-136</flash_point><!-- °C -->
+      <explosive_limits>2.7-36%</explosive_limits>
+      <viscosity>0.2451</viscosity><!-- cP -->
+      <refractive_index>1.3996</refractive_index>
+      <dipole_moment>0</dipole_moment><!-- D -->
+      <bond_length>133.9 pm</bond_length>
+      <bond_angle>121.7°</bond_angle>
+      <chemical_group>Alkenes</chemical_group>
+    </properties>
+  </substance>
+
+</substances>

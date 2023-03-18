@@ -29,7 +29,7 @@ namespace ProjectUniverse.PowerSystem.Nuclear
         private List<IGas> steam;
         private IFluid waterStored;
         private IFluid waterOut;
-        private float condensationRatio = 0.25f;//low pressure steam to water
+        //private float condensationRatio = 0.25f;//low pressure steam to water
 
         public float SteamTemp
         {
@@ -75,7 +75,7 @@ namespace ProjectUniverse.PowerSystem.Nuclear
         // Update is called once per frame
         void Update()
         {
-            if (radiatorEnd != null)
+            if (radiatorEnd != null && (waterStored.GetConcentration() < 10f))//just != null
             {
                 steam = radiatorEnd.ExtractGasses(-1f);
             }
@@ -101,15 +101,17 @@ namespace ProjectUniverse.PowerSystem.Nuclear
             }
             if(steamAmount > 0f)
             {
-                waterStored.AddConcentration((steamAmount/1000f) * condensationRatio);
+                waterStored.AddConcentration((steamAmount/1000f));// * condensationRatio
                 //+= steamRate * condensationRatio;
                 //L but exp rate was in Kg. 1 - 1 conversion
                 steamAmount -= steamRate;
             }
-            if(waterStored.GetConcentration() > 10f)
-            {
-                waterStored.SetConcentration(10f);
-            }
+            //Is this losing us water. Is there a limit on the outflow rate?
+            //If too much water, water stop being pulled in, and the overcap treated as overflow volume.
+            //if (waterStored.GetConcentration() > 10f)
+            //{
+            //    waterStored.SetConcentration(10f);
+            //}
             waterAmount = waterStored.GetConcentration();
             if (reservoirPipe != null)
             {

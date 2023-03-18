@@ -528,7 +528,7 @@ namespace AmplifyShaderEditor
 			return moduleBody;
 		}
 
-		public void ReadFromString( ref uint index, ref string[] nodeParams )
+		public void ReadFromString( TemplateModulesData modulesData, ref uint index, ref string[] nodeParams )
 		{
 			try
 			{
@@ -644,7 +644,7 @@ namespace AmplifyShaderEditor
 
 			try
 			{
-				m_shaderModelHelper.ReadFromString( ref index, ref nodeParams );
+				m_shaderModelHelper.ReadFromString( modulesData, ref index, ref nodeParams );
 			}
 			catch( Exception e )
 			{

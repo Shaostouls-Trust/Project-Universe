@@ -331,11 +331,7 @@ namespace AmplifyShaderEditor
 			//////
 
 			string textureArgs = string.Empty;
-#if UNITY_2018_1_OR_NEWER
 			if( outsideGraph.SamplingMacros || m_texPort.DataType == WirePortDataType.SAMPLER2DARRAY )
-#else
-			if( ( outsideGraph.SamplingMacros && !outsideGraph.IsStandardSurface ) || m_texPort.DataType == WirePortDataType.SAMPLER2DARRAY )
-#endif
 			{
 				string sampler = string.Empty;
 				if( m_ssPort.IsConnected )
@@ -352,12 +348,7 @@ namespace AmplifyShaderEditor
 				}
 				else
 				{
-#if !UNITY_2018_1_OR_NEWER
-					if( outsideGraph.IsStandardSurface )
-						textureArgs = "UNITY_PASS_TEX2DARRAY(" + texture + ")";
-					else
-#endif
-						textureArgs = texture + ", " + sampler;
+					textureArgs = texture + ", " + sampler;
 				}
 			}
 			else
@@ -397,12 +388,7 @@ namespace AmplifyShaderEditor
 				if( outsideGraph.IsSRP )
 					IOUtils.AddFunctionHeader( ref m_functionBody, "inline float2 POM( TEXTURE2D_ARRAY(heightMap), SAMPLER(samplerheightMap), float2 uvs, float2 dx, float2 dy, float3 normalWorld, float3 viewWorld, float3 viewDirTan, int minSamples, int maxSamples, float parallax, float refPlane, float2 tilling, float2 curv, int index )" );
 				else
-#if !UNITY_2018_1_OR_NEWER
-					if( outsideGraph.IsStandardSurface )
-						IOUtils.AddFunctionHeader( ref m_functionBody, "inline float2 POM( UNITY_ARGS_TEX2DARRAY(heightMap), float2 uvs, float2 dx, float2 dy, float3 normalWorld, float3 viewWorld, float3 viewDirTan, int minSamples, int maxSamples, float parallax, float refPlane, float2 tilling, float2 curv, int index )" );
-					else
-#endif
-						IOUtils.AddFunctionHeader( ref m_functionBody, "inline float2 POM( UNITY_DECLARE_TEX2DARRAY_NOSAMPLER(heightMap), SamplerState samplerheightMap, float2 uvs, float2 dx, float2 dy, float3 normalWorld, float3 viewWorld, float3 viewDirTan, int minSamples, int maxSamples, float parallax, float refPlane, float2 tilling, float2 curv, int index )" );
+					IOUtils.AddFunctionHeader( ref m_functionBody, "inline float2 POM( UNITY_DECLARE_TEX2DARRAY_NOSAMPLER(heightMap), SamplerState samplerheightMap, float2 uvs, float2 dx, float2 dy, float3 normalWorld, float3 viewWorld, float3 viewDirTan, int minSamples, int maxSamples, float parallax, float refPlane, float2 tilling, float2 curv, int index )" );
 				break;
 			}
 			

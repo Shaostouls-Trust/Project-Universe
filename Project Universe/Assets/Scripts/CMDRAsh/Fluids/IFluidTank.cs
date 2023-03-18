@@ -15,7 +15,8 @@ namespace ProjectUniverse.Environment.Fluid
         [SerializeField] private float maxFlowVelocity_ms = 120f;
         [Tooltip("Pressure level of the outflow pump.")]
         [SerializeField] private float outputPressure = 200f;
-        [SerializeField] private bool valveState;
+        [SerializeField] private bool valveState = false;
+        [SerializeField] private bool valveOperable = false;
         [SerializeField] private VolumeAtmosphereController roomVolume;
         [SerializeField] private IFluidPipe inflowPipe;
         [SerializeField] private IFluidPipe outflowPipe;
@@ -25,6 +26,33 @@ namespace ProjectUniverse.Environment.Fluid
         [Tooltip("Allows tank to change output velocity to not cause overpressure in pipes.\n" +
             "Disable automatic control to set output rate via velocity.")]
         [SerializeField] private bool automaticControl;
+        private float lastInlet = 0f;
+        private float lastOutlet = 0f;
+
+        public float FluidLevel
+        {
+            get { return fluidLevel_L; }
+        }
+        public float FluidCapacity
+        {
+            get { return capacity_L; }
+        }
+        public float InletRate
+        {
+            get { return lastInlet; }
+        }
+        public float Outletrate
+        {
+            get { return lastOutlet; }
+        }
+        public bool AutomaticMode
+        {
+            get { return automaticControl; }
+        }
+        public bool ValveOperable
+        {
+            get { return valveOperable; }
+        }
 
         // Start is called before the first frame update
         void Start()
@@ -49,7 +77,9 @@ namespace ProjectUniverse.Environment.Fluid
         // Update is called once per frame
         void Update()
         {
-            if(fluidLevel_L < capacity_L)
+            lastInlet = 0f;
+            lastOutlet = 0f;
+            if (fluidLevel_L < capacity_L)
             {
                 //pull in fluid from inflow pipe
                 if (inflowPipe != null)
@@ -62,6 +92,7 @@ namespace ProjectUniverse.Environment.Fluid
                     for (int inf = 0; inf < fluds.Count; inf++)
                     {
                         fluidLevel_L += fluds[inf].GetConcentration() * 1000f;
+                        lastInlet += fluds[inf].GetConcentration() * 1000f;
                     }
                     for(int i = fluds.Count-1; i >= 0; i--)
                     {
@@ -81,6 +112,7 @@ namespace ProjectUniverse.Environment.Fluid
            
             if (valveState)
             {
+                //MAKE SURE FLUID DOESN'T DROP BELOW 0L
                 if (fluidLevel_L > 0f)
                 {
                     if (outflowPipe != null) 
@@ -134,6 +166,7 @@ namespace ProjectUniverse.Environment.Fluid
                                 outflud.SetConcentration((redux / 1000f) * ratio);
                                 outFluid.Add(outflud);
                                 fluidLevel_L -= redux * ratio;
+                                lastOutlet += redux * ratio;
                                 fluids[b].SetConcentration(concLeft);
                             }
                             ///
@@ -165,6 +198,7 @@ namespace ProjectUniverse.Environment.Fluid
                             outflud.SetConcentration((redux / 1000f));
                             outFluid.Add(outflud);
                             fluidLevel_L -= redux;
+                            lastOutlet += redux;
                             fluids[b].SetConcentration(concLeft);
                         }
                         roomVolume.AddRoomFluid(outFluid);

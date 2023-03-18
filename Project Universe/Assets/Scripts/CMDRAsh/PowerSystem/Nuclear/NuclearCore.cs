@@ -1,4 +1,5 @@
 using ProjectUniverse.Environment.Fluid;
+using ProjectUniverse.Environment.Radiation;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -29,20 +30,20 @@ namespace ProjectUniverse.PowerSystem.Nuclear
         private GameObject[,] neighborUISections;
         [SerializeField] private SteamGenerator[] steamGens;
         public GameObject activityUIPrefab;
-        [SerializeField] private GameObject activityUI;
+        //[SerializeField] private GameObject activityUI;
         [SerializeField] private GameObject tempUI;
         [SerializeField] private Color32 BLUE;
         [SerializeField] private Color32 GREEN;
         [SerializeField] private Color32 RED;
         [SerializeField] private Color32 YELLOW;
-        [SerializeField] private TMP_Text activityText;
-        [SerializeField] private TMP_Text tempText;
-        [SerializeField] private TMP_Text avgEFrTxt;
-        [SerializeField] private TMP_Text totalEFrTxt;
-        [SerializeField] private TMP_Text btuText;
-        [SerializeField] private TMP_Text coolantText;
-        [SerializeField] private TMP_Text mwhText;
-        public TMP_Text controlRodGlobalText;
+        //[SerializeField] private TMP_Text activityText;
+        //[SerializeField] private TMP_Text tempText;
+        //[SerializeField] private TMP_Text avgEFrTxt;
+        //[SerializeField] private TMP_Text totalEFrTxt;
+        //[SerializeField] private TMP_Text btuText;
+        //[SerializeField] private TMP_Text coolantText;
+        //[SerializeField] private TMP_Text mwhText;
+        //public TMP_Text controlRodGlobalText;
         private float timeScaled = 0f;
         [Range(0,1)]
         public float controlRodGlobal = 1f;
@@ -56,8 +57,12 @@ namespace ProjectUniverse.PowerSystem.Nuclear
         private IFluid coolantHotStored;
         private float hotCoolantLevel = 0f;
         public float monitorHotCoolant;
-
+        [SerializeField] private float vesselPres = 200f;
+        [SerializeField] private float vesselTemp = 300f;
         private float uiTimer = 0.5f;
+        [SerializeField] private float leakAmount = 0f;//0 - 1 for amount of rads to release into Da Worldo
+        private float detectedRads;
+        [SerializeField] private IRadiationZone radiationArea;
 
         public float[,] NeighborActivityData
         {
@@ -83,6 +88,27 @@ namespace ProjectUniverse.PowerSystem.Nuclear
             }
         }
 
+        public NuclearFuelRod[,] NFRMatrix
+        {
+            get { return nfrMatrix; }
+        }
+        public int RodsReal
+        {
+            get { return rodsReal; }
+        }
+        public float VesselPres
+        {
+            get { return vesselPres; }
+        }
+        public float VesselTemp
+        {
+            get { return vesselTemp; }
+        }
+        public float DetectedRads
+        {
+            get { return detectedRads; }
+        }
+
         // Start is called before the first frame update
         void Start()
         {
@@ -95,7 +121,7 @@ namespace ProjectUniverse.PowerSystem.Nuclear
             neighborUISections = new GameObject[mdnfrRows.Length, mdnfrRows[0].fuelRodsCol.Length];
 
             float x = 0.015f;
-            float y = 0.015f;
+            float y = -0.18f;//.015f
             GameObject icon = Instantiate(activityUIPrefab);
             Debug.Log(mdnfrRows.Length);
             Debug.Log(mdnfrRows[0].fuelRodsCol.Length);
@@ -112,18 +138,18 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                         rodsReal++;
                             
                         //create a cell in the UI display
-                        GameObject newIcon = Instantiate(activityUIPrefab, activityUI.transform);
+                    //    GameObject newIcon = Instantiate(activityUIPrefab, activityUI.transform);
                         //newIcon.transform.SetParent(activityUI.transform);
-                        newIcon.transform.localPosition = new Vector3(x, y, 0);
-                        neighborUISections[i,j] = newIcon;
-                        float activity = Mathf.Round(NeighborActivityData[i, j]);
+                    //    newIcon.transform.localPosition = new Vector3(x, y, 0);
+                    //    neighborUISections[i,j] = newIcon;
+                    //    float activity = Mathf.Round(NeighborActivityData[i, j]);
                         // neighbor activity round to whole
-                        newIcon.transform.GetChild(0).GetComponent<TMP_Text>().text = activity.ToString();
+                    //    newIcon.transform.GetChild(0).GetComponent<TMP_Text>().text = activity.ToString();
                         // -0 is blue
                         // 0 to 400 is green
                         // 400 to 900 is yellow
                         // 900+ is red.
-                        if (activity <= 0f)
+                    /*    if (activity <= 0f)
                         {
                             newIcon.GetComponent<Image>().color = BLUE;
                         }
@@ -138,7 +164,7 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                         else
                         {
                             newIcon.GetComponent<Image>().color = RED;
-                        }
+                        }*/
 
                         GameObject newIcon2 = Instantiate(activityUIPrefab, tempUI.transform);
                         //newIcon2.transform.SetParent(tempUI.transform);
@@ -200,79 +226,65 @@ namespace ProjectUniverse.PowerSystem.Nuclear
             }
             averageTemperatureFuelRods /= rodsReal;
 
-            //coolant efficiency
-            float realDiff = 0f;
-
-            //recalc coolant data
-            // get total possible coolant rate from generators
-            // include manual rate
-            float totalPossibleCoolant = 0f;//Kg/hr
-            float totalManual = 0f;
-            for (int i = 0; i < steamGens.Length; i++)
+            //for cases where the core is disconnected from everything
+            //This assumes that without steam gens, the coolant pipes can be ignored as well
+            //This assumes that without steam gens, the core is not "running", IE losing heat or activity
+            if (steamGens.Length > 0f)
             {
-                if (!steamGens[i].AutomaticControl)
-                {
-                    totalPossibleCoolant += steamGens[i].ThresholdPumpRate;
-                    totalManual += steamGens[i].ThresholdPumpRate;
-                }
-                else
-                {
-                    totalPossibleCoolant += steamGens[i].MaxPumpRate;
-                }
-                realDiff += steamGens[i].CoolantCoolTemp;
-            }
+                //coolant efficiency
+                float realDiff = 0f;
 
-            //set total possible coolant to the amount of coolant extracted
-            for(int l = 0; l < coolantInPipes.Count; l++)
-            {
-                // extract coolant from the coolantpipe
-                //tPC is Kg/hr. Need m3/s. 
-                //totalPossibleCoolant \/
-                List<IFluid> coolantInFluid = coolantInPipes[l].ExtractFluid((totalRequiredCoolant / 1000f)/3600f);//rate is m3/s
-                for (int k = 0; k < coolantInFluid.Count; k++)
+                //recalc coolant data
+                // get total possible coolant rate from generators
+                // include manual rate
+                float totalPossibleCoolant = 0f;//Kg/hr
+                float totalManual = 0f;
+                for (int i = 0; i < steamGens.Length; i++)
                 {
-                    //coolantHotStored.AddConcentration(coolantInFluid[k].GetConcentration());
-                    hotCoolantLevel += coolantInFluid[k].GetConcentration();//m^3[inst]
-                    //Debug.Log("Core In (m3): " + coolantInFluid[k].GetConcentration());
-                }
-            }
-            monitorHotCoolant = hotCoolantLevel;
-            //Debug.Log("Core Hot Coolant (m3): "+ coolantHotStored.GetConcentration());
-            //adjust the totalPossibleCoolant and totalManual rates by the relative percent of cooland extracted
-            //m3[inst] to m3/s to m3/hr to Kg/hr
-            float inputkghr = (hotCoolantLevel/Time.fixedDeltaTime)*3600f*1000f;
-            float Inputratio = (inputkghr) / totalPossibleCoolant;//hotCoolantLevel * 1000f
-            //Debug.Log("hotCoolantm3[to Kg/Hr]: "+ inputkghr + "/ req[Kg/Hr]: " + totalRequiredCoolant);//totalPossibleCoolant
-            totalPossibleCoolant *= Inputratio;
-            totalManual *= Inputratio;
-
-
-            realDiff /= steamGens.Length;
-            float efficiencyCoolant = (averageTemperatureFuelRods - realDiff) / (averageTemperatureFuelRods - 300f);
-
-            // if we don't have enough coolant (or barely enough)
-            if (totalRequiredCoolant >= totalPossibleCoolant)
-            {
-                float ratio = totalPossibleCoolant / totalRequiredCoolant;
-                for (int i = 0; i < nfrMatrix.GetLength(0); i++)
-                {
-                    for (int j = 0; j < nfrMatrix.GetLength(1); j++)
+                    if (!steamGens[i].AutomaticControl)
                     {
-                        if (nfrMatrix[i, j] != null)
-                        {
-                            float newCoolant = nfrMatrix[i, j].CoolantMDot * ratio;
-                            currentCoolant += newCoolant;
-                            nfrMatrix[i, j].RecalcDataStage2(newCoolant, efficiencyCoolant);
-                        }
+                        totalPossibleCoolant += steamGens[i].ThresholdPumpRate;
+                        totalManual += steamGens[i].ThresholdPumpRate;
+                    }
+                    else
+                    {
+                        totalPossibleCoolant += steamGens[i].MaxPumpRate;
+                    }
+                    realDiff += steamGens[i].CoolantCoolTemp;
+                }
+
+                //set total possible coolant to the amount of coolant extracted
+                for (int l = 0; l < coolantInPipes.Count; l++)
+                {
+                    // extract coolant from the coolantpipe
+                    //tPC is Kg/hr. Need m3/s. 
+                    //totalPossibleCoolant \/
+                    List<IFluid> coolantInFluid = coolantInPipes[l].ExtractFluid((totalRequiredCoolant / 1000f) / 3600f);//rate is m3/s
+                    for (int k = 0; k < coolantInFluid.Count; k++)
+                    {
+                        //coolantHotStored.AddConcentration(coolantInFluid[k].GetConcentration());
+                        hotCoolantLevel += coolantInFluid[k].GetConcentration();//m^3[inst]
+                                                                                //Debug.Log("Core In (m3): " + coolantInFluid[k].GetConcentration());
                     }
                 }
-            }
-            else // we have more than enough
-            {
-                // caveat is manual coolant flow rate
-                if(totalManual >= totalRequiredCoolant)
+                monitorHotCoolant = hotCoolantLevel;
+                //Debug.Log("Core Hot Coolant (m3): "+ coolantHotStored.GetConcentration());
+                //adjust the totalPossibleCoolant and totalManual rates by the relative percent of cooland extracted
+                //m3[inst] to m3/s to m3/hr to Kg/hr
+                float inputkghr = (hotCoolantLevel / Time.fixedDeltaTime) * 3600f * 1000f;
+                float Inputratio = (inputkghr) / totalPossibleCoolant;//hotCoolantLevel * 1000f
+                                                                      //Debug.Log("hotCoolantm3[to Kg/Hr]: "+ inputkghr + "/ req[Kg/Hr]: " + totalRequiredCoolant);//totalPossibleCoolant
+                totalPossibleCoolant *= Inputratio;
+                totalManual *= Inputratio;
+
+
+                realDiff /= steamGens.Length;
+                float efficiencyCoolant = (averageTemperatureFuelRods - realDiff) / (averageTemperatureFuelRods - 300f);
+
+                // if we don't have enough coolant (or barely enough)
+                if (totalRequiredCoolant >= totalPossibleCoolant)
                 {
-                    float ratio = totalManual / totalRequiredCoolant;
+                    float ratio = totalPossibleCoolant / totalRequiredCoolant;
                     for (int i = 0; i < nfrMatrix.GetLength(0); i++)
                     {
                         for (int j = 0; j < nfrMatrix.GetLength(1); j++)
@@ -286,75 +298,100 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                         }
                     }
                 }
-                else // we have enough coolant but not enough manual - no consequence
+                else // we have more than enough
                 {
-                    for (int i = 0; i < nfrMatrix.GetLength(0); i++)
+                    // caveat is manual coolant flow rate
+                    if (totalManual >= totalRequiredCoolant)
                     {
-                        for (int j = 0; j < nfrMatrix.GetLength(1); j++)
+                        float ratio = totalManual / totalRequiredCoolant;
+                        for (int i = 0; i < nfrMatrix.GetLength(0); i++)
                         {
-                            if (nfrMatrix[i, j] != null)
+                            for (int j = 0; j < nfrMatrix.GetLength(1); j++)
                             {
-                                float newCoolant = nfrMatrix[i, j].CoolantMDot;
-                                currentCoolant += newCoolant;
-                                nfrMatrix[i, j].RecalcDataStage2(newCoolant, efficiencyCoolant);
+                                if (nfrMatrix[i, j] != null)
+                                {
+                                    float newCoolant = nfrMatrix[i, j].CoolantMDot * ratio;
+                                    currentCoolant += newCoolant;
+                                    nfrMatrix[i, j].RecalcDataStage2(newCoolant, efficiencyCoolant);
+                                }
+                            }
+                        }
+                    }
+                    else // we have enough coolant but not enough manual - no consequence
+                    {
+                        for (int i = 0; i < nfrMatrix.GetLength(0); i++)
+                        {
+                            for (int j = 0; j < nfrMatrix.GetLength(1); j++)
+                            {
+                                if (nfrMatrix[i, j] != null)
+                                {
+                                    float newCoolant = nfrMatrix[i, j].CoolantMDot;
+                                    currentCoolant += newCoolant;
+                                    nfrMatrix[i, j].RecalcDataStage2(newCoolant, efficiencyCoolant);
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            //set generator coolant required rate and temp
-            int num = steamGens.Length;
-            float reqRate = totalRequiredCoolant;
-            for (int i = 0; i < steamGens.Length; i++)
-            {
-                if (!steamGens[i].AutomaticControl)
+                //set generator coolant required rate and temp
+                int num = steamGens.Length;
+                float reqRate = totalRequiredCoolant;
+                for (int i = 0; i < steamGens.Length; i++)
                 {
-                    steamGens[i].CurrentPumpRate = steamGens[i].ThresholdPumpRate;
-                    steamGens[i].RequiredPumpRate = steamGens[i].ThresholdPumpRate;
-                    reqRate -= steamGens[i].ThresholdPumpRate;//currentCoolant
-                    //Debug.Log("requiredCoolant: " + steamGens[i].RequiredPumpRate);
-                    num--;
-                }
-                steamGens[i].CoolantHotTemp = averageTemperatureFuelRods;
-            }
-            if(reqRate <= 0f)
-            {
-                reqRate = 0f;
-            }
-            for (int i = 0; i < steamGens.Length; i++)
-            {
-                if (steamGens[i].AutomaticControl)
-                {
-                    steamGens[i].RequiredPumpRate = reqRate / num;
-                    //Debug.Log("requiredCoolant: " + steamGens[i].RequiredPumpRate);
-                    steamGens[i].CurrentPumpRate = currentCoolant / num;
-                }
-            }
-
-
-            //pass coolant into coolantOutPipes
-            //Debug.Log("hot coolant: " + hotCoolantLevel);
-            if (hotCoolantLevel > 0f)
-            {
-                for (int q = 0; q < coolantOutPipes.Count; q++)
-                {
-                    //assuming coolant in same in all pipes
-                    IFluid coolantHot = new IFluid(coolantHotStored);
-                    coolantHot.SetTemp(averageTemperatureFuelRods);
-                    //split concentration by number of pipes
-                    float conc = ((totalPossibleCoolant / 3600f) / 1000f * Time.fixedDeltaTime) / coolantOutPipes.Count;
-                    coolantHot.SetConcentration(conc);
-                    //Debug.Log("Core Out (m3): " + coolantHot.GetConcentration() + " of " + hotCoolantLevel);
-                    hotCoolantLevel -= conc;
-                    if(hotCoolantLevel < 0f)
+                    if (!steamGens[i].AutomaticControl)
                     {
-                        hotCoolantLevel = 0f;
+                        steamGens[i].CurrentPumpRate = steamGens[i].ThresholdPumpRate;
+                        steamGens[i].RequiredPumpRate = steamGens[i].ThresholdPumpRate;
+                        reqRate -= steamGens[i].ThresholdPumpRate;//currentCoolant
+                                                                  //Debug.Log("requiredCoolant: " + steamGens[i].RequiredPumpRate);
+                        num--;
                     }
-                    coolantOutPipes[q].Receive(false, outputVelocity, outputPressure, coolantHot, coolantHot.GetTemp());
+                    steamGens[i].CoolantHotTemp = averageTemperatureFuelRods;
+                }
+                if (reqRate <= 0f)
+                {
+                    reqRate = 0f;
+                }
+                for (int i = 0; i < steamGens.Length; i++)
+                {
+                    if (steamGens[i].AutomaticControl)
+                    {
+                        steamGens[i].RequiredPumpRate = reqRate / num;
+                        //Debug.Log("requiredCoolant: " + steamGens[i].RequiredPumpRate);
+                        steamGens[i].CurrentPumpRate = currentCoolant / num;
+                    }
+                }
+
+
+                //pass coolant into coolantOutPipes
+                //Debug.Log("hot coolant: " + hotCoolantLevel);
+                if (hotCoolantLevel > 0f)
+                {
+                    for (int q = 0; q < coolantOutPipes.Count; q++)
+                    {
+                        //assuming coolant in same in all pipes
+                        IFluid coolantHot = new IFluid(coolantHotStored);
+                        coolantHot.SetTemp(averageTemperatureFuelRods);
+                        //split concentration by number of pipes
+                        float conc = ((totalPossibleCoolant / 3600f) / 1000f * Time.fixedDeltaTime) / coolantOutPipes.Count;
+                        coolantHot.SetConcentration(conc);
+                        //Debug.Log("Core Out (m3): " + coolantHot.GetConcentration() + " of " + hotCoolantLevel);
+                        hotCoolantLevel -= conc;
+                        if (hotCoolantLevel < 0f)
+                        {
+                            hotCoolantLevel = 0f;
+                        }
+                        coolantOutPipes[q].Receive(false, outputVelocity, outputPressure, coolantHot, coolantHot.GetTemp());
+                    }
                 }
             }
-            
+            ///leakAmount is controlled by dmg to vessel
+            /// 0 means the vessel is intact
+            /// < 1 & > .25 means the vessel is damaged
+            /// < .25 to 0 means the vessel has been destroyed.
+            radiationArea.GeneratorLeakMultiplier = leakAmount;
+            detectedRads = radiationArea.RadiationAtOneMeter();
         }
 
         private void OnGUI()
@@ -362,10 +399,10 @@ namespace ProjectUniverse.PowerSystem.Nuclear
             if (uiTimer <= 0f)
             {
                 //recalc core data
-                float totalActivity = 0f;//average all rod
+                //float totalActivity = 0f;//average all rod
                 //float totalTemp = 0f;//average all rod
-                float totalHeatEFr = 0f;
-                float coolantFlowReq = 0f;
+                //float totalHeatEFr = 0f;
+                //float coolantFlowReq = 0f;
                 totalMWt = 0f;
                 totalBTU = 0f;
 
@@ -376,21 +413,22 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                     {
                         if (nfrMatrix[i, j] != null)
                         {
-                            totalActivity += nfrMatrix[i, j].PositiveActivity;
+                            //totalActivity += nfrMatrix[i, j].PositiveActivity;
                             //totalTemp += nfrMatrix[i, j].RodCoreTemp;
-                            totalHeatEFr += nfrMatrix[i, j].HeatEFRRod;
+                            //totalHeatEFr += nfrMatrix[i, j].HeatEFRRod;
                             totalMWt += nfrMatrix[i, j].MegaWattsThermal;
-                            coolantFlowReq += nfrMatrix[i, j].CoolantMDot;
+                            //coolantFlowReq += nfrMatrix[i, j].CoolantMDot;
                             totalBTU += nfrMatrix[i, j].BTUPerHour;
 
+                            //if(neighborUISections[i, j] != null) { 
                             //if (uiTimer <= 0f)
                             //{
                                 //update UI with rod data
                                 //float activity = Mathf.Round(NeighborActivityData[i, j]);
-                                float activity = Mathf.Round(nfrMatrix[i, j].PositiveActivity);
+                                //float activity = Mathf.Round(nfrMatrix[i, j].PositiveActivity);
 
                                 // neighbor activity round to whole
-                                neighborUISections[i, j].transform.GetChild(0).GetComponent<TMP_Text>().text =
+                                /*neighborUISections[i, j].transform.GetChild(0).GetComponent<TMP_Text>().text =
                                     activity.ToString();// + "/" + activity2.ToString();
                                 if (activity <= 0f)
                                 {
@@ -407,7 +445,7 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                                 else
                                 {
                                     neighborUISections[i, j].GetComponent<Image>().color = RED;
-                                }
+                                }*/
                                 float temp = Mathf.Round(nfrMatrix[i, j].RodCoreTemp);
                                 rodUISections[i, j].transform.GetChild(0).GetComponent<TMP_Text>().text = temp.ToString();
                                 if (temp < 373.15f)
@@ -427,27 +465,31 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                                     rodUISections[i, j].GetComponent<Image>().color = RED;
                                 }
                             //}
+                            //}
                         }
                     }
                 }
-                averageActivity = totalActivity / rodsReal;
+                //averageActivity = totalActivity / rodsReal;
                 //averageTemp = totalTemp / rodsReal;
-                averageHeatEFr = totalHeatEFr / rodsReal;
-                totalEFr = totalHeatEFr;
+                //averageHeatEFr = totalHeatEFr / rodsReal;
+                //totalEFr = totalHeatEFr;
 
                 //if (uiTimer <= 0f)
                 //{
                     uiTimer = 0.5f;
                     //set text
-                    activityText.text = averageActivity.ToString();
-                    tempText.text = averageTemperatureFuelRods.ToString();
-                    avgEFrTxt.text = averageHeatEFr.ToString();
-                    totalEFrTxt.text = totalEFr.ToString();
-                    mwhText.text = totalMWt.ToString();
-                    coolantText.text = coolantFlowReq.ToString();
-                    btuText.text = totalBTU.ToString();
-                    //ctrl
-                    controlRodGlobalText.text = ((int)(controlRodGlobal * 100f)).ToString();
+                    //activityText.text = averageActivity.ToString();
+                    //tempText.text = averageTemperatureFuelRods.ToString();
+                   // avgEFrTxt.text = averageHeatEFr.ToString();
+                    //totalEFrTxt.text = totalEFr.ToString();
+                    //mwhText.text = totalMWt.ToString();
+                    //coolantText.text = coolantFlowReq.ToString();
+                    //btuText.text = totalBTU.ToString();
+                //ctrl
+                //if (controlRodGlobalText != null)
+                //{
+                //    controlRodGlobalText.text = ((int)(controlRodGlobal * 100f)).ToString();
+                    //}
                 //}
             }
         }

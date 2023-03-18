@@ -61,10 +61,15 @@ namespace ProjectUniverse.Environment.Volumes
             return originDoor;
         }
 
-        //public GameObject GetVolumeLink()
-        //{
-        //    return linkedVolume;
-        //}
+        public void SetDoor(GameObject door)
+        {
+            originDoor = door;
+        }
+
+        public void SetVolumeLink(GameObject room)
+        {
+            linkedVolume = room;
+        }
 
         //public GameObject GetGlobalLink()
         //{

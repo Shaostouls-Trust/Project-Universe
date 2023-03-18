@@ -9,11 +9,11 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: SRP HD Vector Displacement Mapping
   m_Shader: {fileID: 4800000, guid: b79b20e80ed2ebe4dbb244789aec259f, type: 3}
-  m_ShaderKeywords: _ADD_PRECOMPUTED_VELOCITY _TOGGLESCREEN_ON
+  m_ShaderKeywords: _ADD_PRECOMPUTED_VELOCITY _DISABLE_SSR_TRANSPARENT _TOGGLESCREEN_ON
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2225
   stringTagMap:
     MotionVector: User
   disabledShaderPasses:
@@ -159,6 +159,7 @@ Material:
     - _NoiseTiling: 1.2
     - _NoiseTiling1: 4
     - _ReceivesSSR: 1
+    - _ReceivesSSRTransparent: 0
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
     - _ScreenColorTintBlend: 0.5647059
@@ -179,6 +180,7 @@ Material:
     - _StencilWriteMaskMV: 40
     - _Strength: -78.8
     - _Strength1: 34.84
+    - _SupportDecals: 1
     - _SurfaceType: 0
     - _TVON: 1
     - _TessValue: 7
@@ -215,3 +217,4 @@ Material:
     - _TopSkullTint: {r: 0.5188676, g: 0.4674706, b: 0.4674706, a: 0}
     - _Vector0: {r: 1, g: 1, b: 0, a: 0}
     - _Vector1: {r: 0, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []

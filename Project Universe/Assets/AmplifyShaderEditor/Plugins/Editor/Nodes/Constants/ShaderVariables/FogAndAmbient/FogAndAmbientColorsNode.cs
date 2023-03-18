@@ -93,7 +93,7 @@ namespace AmplifyShaderEditor
 		public override string GenerateShaderForOutput( int outputId, ref MasterNodeDataCollector dataCollector, bool ignoreLocalvar )
 		{
 			base.GenerateShaderForOutput( outputId, ref dataCollector, ignoreLocalvar );
-			if( dataCollector.IsTemplate && dataCollector.CurrentSRPType == TemplateSRPType.HD )
+			if( dataCollector.IsTemplate && dataCollector.CurrentSRPType == TemplateSRPType.HDRP )
 			{
 				switch( m_selectedType )
 				{

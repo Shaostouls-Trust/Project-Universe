@@ -33,6 +33,9 @@ namespace AmplifyShaderEditor
 		[SerializeField]
 		private bool m_invertActionOnDeselection = false;
 
+		[SerializeField]
+		private Int64 m_lastClickedTimestamp = 0;
+
 		public TemplateOptionUIItem( TemplateOptionsItem options )
 		{
 			m_options = options;
@@ -56,6 +59,7 @@ namespace AmplifyShaderEditor
 			m_checkOnExecute = origin.CheckOnExecute;
 			m_invertActionOnDeselection = origin.InvertActionOnDeselection;
 		}
+		
 
 		public void Draw( UndoParentNode owner )
 		{
@@ -136,6 +140,7 @@ namespace AmplifyShaderEditor
 				}
 				if( EditorGUI.EndChangeCheck() )
 				{
+					m_lastClickedTimestamp = DateTime.UtcNow.Ticks;
 					if( OnActionPerformedEvt != null )
 					{
 						if( m_invertActionOnDeselection )
@@ -213,7 +218,7 @@ namespace AmplifyShaderEditor
 			}
 		}
 
-		public void Refresh()
+		public void Update( bool isRefreshing = true )
 		{
 			if( OnActionPerformedEvt != null )
 			{
@@ -223,12 +228,12 @@ namespace AmplifyShaderEditor
 					{
 						if( i != m_currentOption && i != m_options.DisableIdx )
 						{
-							OnActionPerformedEvt( false, true, true, this, m_options.ActionsPerOption[ i ] );
+							OnActionPerformedEvt( false, isRefreshing, true, this, m_options.ActionsPerOption[ i ] );
 						}
 					}
 				}
 
-				OnActionPerformedEvt( false, true, false, this, m_options.ActionsPerOption[ m_currentOption ] );
+				OnActionPerformedEvt( false, isRefreshing, false, this, m_options.ActionsPerOption[ m_currentOption ] );
 			}
 		}
 
@@ -319,5 +324,6 @@ namespace AmplifyShaderEditor
 			}
 		}
 		public bool InvertActionOnDeselection { get { return m_invertActionOnDeselection; } }
+		public Int64 LastClickedTimestamp { get { return m_lastClickedTimestamp; } set { m_lastClickedTimestamp = value; } }
 	}
 }

@@ -19,6 +19,7 @@ Material:
     MotionVector: User
     RenderType: Transparent
   disabledShaderPasses:
+  - DistortionVectors
   - TransparentBackface
   m_SavedProperties:
     serializedVersion: 3
@@ -36,13 +37,15 @@ Material:
     - _BlendMode: 0
     - _CullMode: 1
     - _CullModeForward: 1
+    - _DistortionEnable: 0
+    - _DistortionOnly: 0
     - _DoubleSidedEnable: 0
     - _DoubleSidedNormalMode: 2
     - _DstBlend: 10
     - _EnableFogOnTransparent: 1
     - _Rampfalloff: 5
     - _ReceivesSSR: 0
-    - _RenderQueueType: 5
+    - _RenderQueueType: 4
     - _RequireSplitLighting: 0
     - _Size: 1
     - _SrcBlend: 1
@@ -69,3 +72,4 @@ Material:
     m_Colors:
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []

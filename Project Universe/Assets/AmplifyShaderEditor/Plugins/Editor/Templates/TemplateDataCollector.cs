@@ -64,17 +64,13 @@ namespace AmplifyShaderEditor
 
 	public class TemplateDataCollector
 	{
-#if UNITY_2018_2_OR_NEWER
 		private const int MaxUV = 8;
 		private int[] m_UVUsage = { 0, 0, 0, 0, 0, 0, 0, 0 };
-#else
-		private const int MaxUV = 4;
-		private int[] m_UVUsage = { 0, 0, 0, 0 };
-#endif
+
 		private int m_multipassSubshaderIdx = 0;
 		private int m_multipassPassIdx = 0;
 		private TemplateMultiPass m_currentTemplate;
-		private TemplateSRPType m_currentSRPType = TemplateSRPType.BuiltIn;
+		private TemplateSRPType m_currentSRPType = TemplateSRPType.BiRP;
 
 		private Dictionary<string, TemplateCustomData> m_customInterpolatedData;
 		private Dictionary<string, TemplateVertexData> m_registeredVertexData;
@@ -142,13 +138,6 @@ namespace AmplifyShaderEditor
 
 		public void AddHDLightInfo()
 		{
-#if !UNITY_2018_3_OR_NEWER
-			AddLateDirective( AdditionalLineType.Custom, "#if (SHADERPASS != SHADERPASS_FORWARD) //On forward this info is already included" );
-			AddLateDirective( AdditionalLineType.Include, "HDRP/Lighting/LightDefinition.cs.hlsl" );
-			AddLateDirective( AdditionalLineType.Include, "HDRP/Lighting/LightLoop/Shadow.hlsl" );
-			AddLateDirective( AdditionalLineType.Include, "HDRP/Lighting/LightLoop/LightLoopDef.hlsl" );
-			AddLateDirective( AdditionalLineType.Custom, "#endif // End of light info includes" );
-#endif
 		}
 
 		public void AddLateDirective( AdditionalLineType type, string value )
@@ -387,8 +376,7 @@ namespace AmplifyShaderEditor
 
 		public string GetVFace( int uniqueId )
 		{
-			#if UNITY_2018_3_OR_NEWER
-			if( IsSRP && ASEPackageManagerHelper.CurrentHDVersion >= ASESRPVersions.ASE_SRP_6_9_0 )
+			if( IsSRP )
 			{
 				string result = string.Empty;
 				if( GetCustomInterpolatedData( TemplateInfoOnSematics.VFACE, WirePortDataType.FLOAT, PrecisionType.Float, ref result, true, MasterNodePortCategory.Fragment ) )
@@ -400,30 +388,27 @@ namespace AmplifyShaderEditor
 				} 
 				else
 				{
-					if( m_fragmentInputParams != null && m_fragmentInputParams.ContainsKey( TemplateSemantics.VFACE ) )
-						return m_fragmentInputParams[ TemplateSemantics.VFACE ].Name;
+					if( m_fragmentInputParams != null && m_fragmentInputParams.ContainsKey( TemplateSemantics.SV_IsFrontFacing ) )
+						return m_fragmentInputParams[ TemplateSemantics.SV_IsFrontFacing ].Name;
 
-					string custom = "FRONT_FACE_TYPE "+ TemplateHelperFunctions.SemanticsDefaultName[ TemplateSemantics.VFACE ] + " : FRONT_FACE_SEMANTIC";
-					RegisterFragInputParams( WirePortDataType.FLOAT, PrecisionType.Half, TemplateHelperFunctions.SemanticsDefaultName[ TemplateSemantics.VFACE ], TemplateSemantics.VFACE, custom );
-					return m_fragmentInputParams[ TemplateSemantics.VFACE ].Name;
+					string custom = "bool "+ TemplateHelperFunctions.SemanticsDefaultName[ TemplateSemantics.SV_IsFrontFacing ] + " : SV_IsFrontFace";
+					RegisterFragInputParams( WirePortDataType.FLOAT, PrecisionType.Half, TemplateHelperFunctions.SemanticsDefaultName[ TemplateSemantics.SV_IsFrontFacing ], TemplateSemantics.SV_IsFrontFacing, custom );
+					return m_fragmentInputParams[ TemplateSemantics.SV_IsFrontFacing ].Name;
 				}
 			} 
 			else
-			#endif
 			{
-				m_currentDataCollector.AddFaceMacros();
-
 				//if( m_fragmentInputParams != null && m_fragmentInputParams.ContainsKey( TemplateSemantics.VFACE ) )
 				//	return m_fragmentInputParams[ TemplateSemantics.VFACE ].Name;
 
 				//RegisterFragInputParams( WirePortDataType.FLOAT, PrecisionType.Half, TemplateHelperFunctions.SemanticsDefaultName[ TemplateSemantics.VFACE ], TemplateSemantics.VFACE );
 				//return m_fragmentInputParams[ TemplateSemantics.VFACE ].Name;
-				if( m_fragmentInputParams != null && m_fragmentInputParams.ContainsKey( TemplateSemantics.VFACE ) )
-					return m_fragmentInputParams[ TemplateSemantics.VFACE ].Name;
+				if( m_fragmentInputParams != null && m_fragmentInputParams.ContainsKey( TemplateSemantics.SV_IsFrontFacing ) )
+					return m_fragmentInputParams[ TemplateSemantics.SV_IsFrontFacing ].Name;
 
-				string custom = "FRONT_FACE_TYPE " + TemplateHelperFunctions.SemanticsDefaultName[ TemplateSemantics.VFACE ] + " : FRONT_FACE_SEMANTIC";
-				RegisterFragInputParams( WirePortDataType.FLOAT , PrecisionType.Half , TemplateHelperFunctions.SemanticsDefaultName[ TemplateSemantics.VFACE ] , TemplateSemantics.VFACE , custom );
-				return m_fragmentInputParams[ TemplateSemantics.VFACE ].Name;
+				string custom = "bool " + TemplateHelperFunctions.SemanticsDefaultName[ TemplateSemantics.SV_IsFrontFacing ] + " : SV_IsFrontFace";
+				RegisterFragInputParams( WirePortDataType.FLOAT , PrecisionType.Half , TemplateHelperFunctions.SemanticsDefaultName[ TemplateSemantics.SV_IsFrontFacing ] , TemplateSemantics.SV_IsFrontFacing , custom );
+				return m_fragmentInputParams[ TemplateSemantics.SV_IsFrontFacing ].Name;
 
 			}
 		}
@@ -1266,7 +1251,7 @@ namespace AmplifyShaderEditor
 			string tangentValue = GetVertexTangent( WirePortDataType.FLOAT4, precisionType, false, MasterNodePortCategory.Vertex );
 			string normalValue = GetVertexNormal( precisionType, false, MasterNodePortCategory.Vertex );
 
-			string bitangentValue = string.Format( "cross( {0}, {1}.xyz ) * {1}.w * unity_WorldTransformParams.w", normalValue, tangentValue );
+			string bitangentValue = string.Format( "cross( {0}, {1}.xyz ) * {1}.w * ( unity_WorldTransformParams.w >= 0.0 ? 1.0 : -1.0 )", normalValue, tangentValue );
 			RegisterCustomInterpolatedData( varName, WirePortDataType.FLOAT3, precisionType, bitangentValue, useMasterNodeCategory, customCategory );
 			return varName;
 		}
@@ -1307,7 +1292,7 @@ namespace AmplifyShaderEditor
 				return varName;
 
 			string tangentValue = GetVertexTangent( WirePortDataType.FLOAT4, precisionType, false, MasterNodePortCategory.Vertex );
-			string tangentSignValue = string.Format( "{0}.w * unity_WorldTransformParams.w", tangentValue );
+			string tangentSignValue = string.Format( "{0}.w * ( unity_WorldTransformParams.w >= 0.0 ? 1.0 : -1.0 )", tangentValue );
 			RegisterCustomInterpolatedData( varName, WirePortDataType.FLOAT, precisionType, tangentSignValue, useMasterNodeCategory, customCategory );
 			return varName;
 		}
@@ -1396,12 +1381,8 @@ namespace AmplifyShaderEditor
 
 			m_currentDataCollector.AddToIncludes( uniqueId, Constants.UnityAutoLightLib );
 			m_currentDataCollector.AddToDefines( uniqueId, "ASE_SHADOWS 1" );
-#if UNITY_5_6_OR_NEWER
 			RequestMacroInterpolator( "UNITY_SHADOW_COORDS" );
-#else
-			RequestMacroInterpolator( "SHADOW_COORDS" );
-			m_currentDataCollector.AddToPragmas( uniqueId, "multi_compile_fwdbase" );
-#endif
+
 			//string vOutName = CurrentTemplateData.VertexFunctionData.OutVarName;
 			string fInName = CurrentTemplateData.FragmentFunctionData.InVarName;
 			string worldPos = GetWorldPos();
@@ -1414,7 +1395,7 @@ namespace AmplifyShaderEditor
 		{
 			string value = string.Empty;
 
-			if( m_currentSRPType != TemplateSRPType.BuiltIn )
+			if( m_currentSRPType != TemplateSRPType.BiRP )
 			{
 				value = "float3( length( GetWorldToObjectMatrix()[ 0 ].xyz ), length( GetWorldToObjectMatrix()[ 1 ].xyz ), length( GetWorldToObjectMatrix()[ 2 ].xyz ) )";
 			}
@@ -1431,7 +1412,7 @@ namespace AmplifyShaderEditor
 		{
 			string value = string.Empty;
 
-			if( m_currentSRPType != TemplateSRPType.BuiltIn )
+			if( m_currentSRPType != TemplateSRPType.BiRP )
 			{
 				value = "float3( length( GetObjectToWorldMatrix()[ 0 ].xyz ), length( GetObjectToWorldMatrix()[ 1 ].xyz ), length( GetObjectToWorldMatrix()[ 2 ].xyz ) )";
 			}
@@ -1453,7 +1434,7 @@ namespace AmplifyShaderEditor
 			{
 				return result;
 			}
-			else if( m_currentSRPType == TemplateSRPType.HD )
+			else if( m_currentSRPType == TemplateSRPType.HDRP )
 			{
 				if( GetCustomInterpolatedData( TemplateInfoOnSematics.RELATIVE_WORLD_POS, WirePortDataType.FLOAT3, precision, ref result, useMasterNodeCategory, customCategory ) )
 				{
@@ -1481,21 +1462,17 @@ namespace AmplifyShaderEditor
 			//Check if world pos already defined in the vertex body
 			if( !GetCustomInterpolatedData( TemplateInfoOnSematics.WORLD_POSITION, WirePortDataType.FLOAT3, precision, ref worldPosConversion, false, MasterNodePortCategory.Vertex ) )
 			{
-				if( m_currentSRPType == TemplateSRPType.HD )
+				if( m_currentSRPType == TemplateSRPType.HDRP )
 				{
-#if UNITY_2018_3_OR_NEWER
-				worldPosConversion = string.Format( "GetAbsolutePositionWS( TransformObjectToWorld( ({0}).xyz ) )", vertexPos );
-#else
-					worldPosConversion = string.Format( "GetAbsolutePositionWS( mul( GetObjectToWorldMatrix(), {0}).xyz )", vertexPos );
-#endif
+					worldPosConversion = string.Format( "GetAbsolutePositionWS( TransformObjectToWorld( ({0}).xyz ) )", vertexPos );
 				}
-				else if( m_currentSRPType == TemplateSRPType.Lightweight )
+				else if( m_currentSRPType == TemplateSRPType.URP )
 				{
-					worldPosConversion = string.Format( "mul(GetObjectToWorldMatrix(), {0}).xyz", vertexPos );
+					worldPosConversion = string.Format( "TransformObjectToWorld( ({0}).xyz )", vertexPos );
 				}
 				else
 				{
-					worldPosConversion = string.Format( "mul(unity_ObjectToWorld, {0}).xyz", vertexPos );
+					worldPosConversion = string.Format( "mul(unity_ObjectToWorld, float4( ({0}).xyz, 1 )).xyz", vertexPos );
 				}
 			}
 			RegisterCustomInterpolatedData( varName, WirePortDataType.FLOAT3, precision, worldPosConversion, useMasterNodeCategory, customCategory );
@@ -1518,13 +1495,13 @@ namespace AmplifyShaderEditor
 			switch( m_currentSRPType )
 			{
 				default:
-				case TemplateSRPType.BuiltIn:
+				case TemplateSRPType.BiRP:
 				formatStr = "UnityObjectToClipPos({0})";
 				break;
-				case TemplateSRPType.HD:
+				case TemplateSRPType.HDRP:
 				formatStr = "TransformWorldToHClip( TransformObjectToWorld({0}))";
 				break;
-				case TemplateSRPType.Lightweight:
+				case TemplateSRPType.URP:
 				formatStr = "TransformObjectToHClip(({0}).xyz)";
 				break;
 			}
@@ -1552,13 +1529,13 @@ namespace AmplifyShaderEditor
 			switch( m_currentSRPType )
 			{
 				default:
-				case TemplateSRPType.BuiltIn:
+				case TemplateSRPType.BiRP:
 				formatStr = "UnityObjectToClipPos({0})";
 				break;
-				case TemplateSRPType.HD:
+				case TemplateSRPType.HDRP:
 				formatStr = "TransformWorldToHClip( TransformObjectToWorld({0}))";
 				break;
-				case TemplateSRPType.Lightweight:
+				case TemplateSRPType.URP:
 				formatStr = "TransformObjectToHClip(({0}).xyz)";
 				break;
 			}
@@ -1579,7 +1556,7 @@ namespace AmplifyShaderEditor
 
 			string clipSpacePos = GetClipPosForValue( customVertexPos, outputId, false, MasterNodePortCategory.Vertex );
 			string screenPosConversion = string.Empty;
-			if( m_currentSRPType == TemplateSRPType.HD )
+			if( m_currentSRPType == TemplateSRPType.HDRP )
 			{
 				screenPosConversion = string.Format( "ComputeScreenPos( {0} , _ProjectionParams.x )", clipSpacePos );
 			}
@@ -1608,7 +1585,7 @@ namespace AmplifyShaderEditor
 
 			string clipSpacePos = GetClipPos( false, MasterNodePortCategory.Vertex );
 			string screenPosConversion = string.Empty;
-			if( m_currentSRPType == TemplateSRPType.HD )
+			if( m_currentSRPType == TemplateSRPType.HDRP )
 			{
 				screenPosConversion = string.Format( "ComputeScreenPos( {0} , _ProjectionParams.x )", clipSpacePos );
 			}
@@ -1838,14 +1815,14 @@ namespace AmplifyShaderEditor
 			switch( m_currentSRPType )
 			{
 				default:
-				case TemplateSRPType.BuiltIn:
+				case TemplateSRPType.BiRP:
 				objectSpaceLightDir = string.Format( "ObjSpaceLightDir({0})", vertexPos );
 				break;
-				case TemplateSRPType.HD:
+				case TemplateSRPType.HDRP:
 				string worldSpaceLightDir = GetWorldSpaceLightDir( precisionType, useMasterNodeCategory, customCategory );
 				objectSpaceLightDir = string.Format( "mul( GetWorldToObjectMatrix(), {0} ).xyz", worldSpaceLightDir );
 				break;
-				case TemplateSRPType.Lightweight:
+				case TemplateSRPType.URP:
 				objectSpaceLightDir = "mul( GetWorldToObjectMatrix(), _MainLightPosition ).xyz";
 				break;
 			}
@@ -1866,7 +1843,7 @@ namespace AmplifyShaderEditor
 			{
 
 				string lightVar;
-				if( m_currentSRPType == TemplateSRPType.HD )
+				if( m_currentSRPType == TemplateSRPType.HDRP )
 				{
 					AddHDLightInfo();
 					lightVar = "-" + string.Format( TemplateHelperFunctions.HDLightInfoFormat, "0", "forward" );
@@ -2184,9 +2161,9 @@ namespace AmplifyShaderEditor
 		public int MultipassSubshaderIdx { get { return m_multipassSubshaderIdx; } }
 		public int MultipassPassIdx { get { return m_multipassPassIdx; } }
 		public TemplateSRPType CurrentSRPType { get { return m_currentSRPType; } set { m_currentSRPType = value; } }
-		public bool IsHDRP { get { return m_currentSRPType == TemplateSRPType.HD; } }
-		public bool IsLWRP { get { return m_currentSRPType == TemplateSRPType.Lightweight; } }
-		public bool IsSRP { get { return ( m_currentSRPType == TemplateSRPType.Lightweight || m_currentSRPType == TemplateSRPType.HD ); } }
+		public bool IsHDRP { get { return m_currentSRPType == TemplateSRPType.HDRP; } }
+		public bool IsLWRP { get { return m_currentSRPType == TemplateSRPType.URP; } }
+		public bool IsSRP { get { return ( m_currentSRPType == TemplateSRPType.URP || m_currentSRPType == TemplateSRPType.HDRP ); } }
 		public TemplateInterpData InterpData { get { return m_interpolatorData; } }
 		public List<PropertyDataCollector> LateDirectivesList { get { return m_lateDirectivesList; } }
 		public List<PropertyDataCollector> SrpBatcherPropertiesList { get { return m_srpBatcherPropertiesList; } }

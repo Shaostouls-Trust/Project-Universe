@@ -14,9 +14,8 @@ namespace AmplifyShaderEditor
 	[NodeAttributes( "HeightMap Texture Blend", "Textures", "Advanced Texture Blending by using heightMap and splatMask, usefull for texture layering ", null, KeyCode.None, true, false, null, null, "Rea" )]
 	public sealed class HeightMapBlendNode : ParentNode
 	{
-
 		private const string PreventNaNLabel = "Prevent NaN";
-		private const string PreventNaNInfo = "Prevent NaN results by applying by clamping negative base numbers over the internal pow instruction to 0.";
+		private const string PreventNaNInfo = "Prevent NaN clamps negative base numbers over the internal pow instruction to 0 since these originate NaN.";
 		[SerializeField]
 		private bool m_preventNaN = false;
 		protected override void CommonInit( int uniqueId )

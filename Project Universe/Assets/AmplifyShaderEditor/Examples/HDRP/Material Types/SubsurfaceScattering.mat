@@ -9,12 +9,12 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: SubsurfaceScattering
   m_Shader: {fileID: 4800000, guid: 355b034fae663fa4cb701b1614a2851f, type: 3}
-  m_ShaderKeywords: _ADD_PRECOMPUTED_VELOCITY _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
+  m_ShaderKeywords: _ADD_PRECOMPUTED_VELOCITY _DISABLE_SSR_TRANSPARENT _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
     _MATERIAL_FEATURE_TRANSMISSION _NORMALMAP_TANGENT_SPACE
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2225
   stringTagMap:
     MotionVector: User
   disabledShaderPasses:
@@ -31,6 +31,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseColorMap:
+        m_Texture: {fileID: 2800000, guid: e70a4cc9a27a530468623a76c6c025fe, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BaseMap:
         m_Texture: {fileID: 2800000, guid: e70a4cc9a27a530468623a76c6c025fe, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -63,15 +67,18 @@ Material:
     - _BlendMode: 0
     - _CullMode: 2
     - _CullModeForward: 2
-    - _DiffusionProfile: 1
+    - _DiffusionProfile: 2.0644455
     - _DoubleSidedEnable: 0
     - _DoubleSidedNormalMode: 2
     - _DstBlend: 0
+    - _EnableBlendModePreserveSpecularLighting: 1
     - _EnableFogOnTransparent: 1
     - _Float0: 0
     - _Int0: 1
+    - _OpaqueCullMode: 2
     - _Profile: 2.0644455
     - _ReceivesSSR: 1
+    - _ReceivesSSRTransparent: 0
     - _RenderQueueType: 1
     - _RequireSplitLighting: 1
     - _Smoothness: 0.77441204
@@ -86,10 +93,12 @@ Material:
     - _StencilWriteMaskDistortionVec: 4
     - _StencilWriteMaskGBuffer: 14
     - _StencilWriteMaskMV: 40
+    - _SupportDecals: 1
     - _SurfaceType: 0
     - _TransparentBackfaceEnable: 0
     - _TransparentCullMode: 2
     - _TransparentSortPriority: 0
+    - _TransparentWritingMotionVec: 0
     - _TransparentZWrite: 1
     - _UseShadowThreshold: 0
     - _ZTestDepthEqualForOpaque: 3
@@ -98,6 +107,25 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0, g: 0, b: 0, a: 0}
+    - _DiffusionProfile_Asset: {r: -0.10853875, g: 9.125911e-17, b: -5.2030944e-14,
+        a: 0.000000027117968}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Profile_Asset: {r: -0.10853875, g: 9.125911e-17, b: -5.2030944e-14, a: 0.000000027117968}
     - _Profile_asset: {r: -0.10853875, g: 9.125911e-17, b: -5.2030944e-14, a: 0.000000027117968}
+  m_BuildTextureStacks: []
+--- !u!114 &3423579753449822679
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa486462e6be1764e89c788ba30e61f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_DiffusionProfileReferences:
+  - {fileID: 11400000, guid: 9049debddf6dd22498536aa90bf1e832, type: 2}
+  m_MaterialReferences: []

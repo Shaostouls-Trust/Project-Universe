@@ -220,8 +220,11 @@
     <Compile Include="Assets\Impact Interaction System\Scripts\Interactions\Decals\DecalInteractionResult.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Player\PointerDetector.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Triggers\Physics Triggers\ImpactParticleCollisionTrigger.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\UI\RadiatorUIController.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\UI\SteamTurbineUIController.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Production\IngotDefinition.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Production\Machines\IConstructible.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Ship\RenderStateManager.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Audio\AudioManager.cs" />
     <Compile Include="Assets\SplineMesh\Scripts\Utils\MeshUtility.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\AXCurvePointParameterBinding.cs" />
@@ -376,6 +379,7 @@
     <Compile Include="Assets\Scripts\Koro\target.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\Delaunay\Sweep\DTSweepConstraint.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Production\Raw\BlockOreAsteroid.cs" />
+    <Compile Include="Assets\Scripts\Koro\ElevatorManager.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Primitives\Primitives.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\ButtonInteractor.cs" />
     <Compile Include="Assets\Scripts\KhorneSyrup\Player Controller\Interaction\Exploding_Prop.cs" />
@@ -506,6 +510,7 @@
     <Compile Include="Assets\Impact Interaction System\Scripts\Data\Interfaces\IInteractionData.cs" />
     <Compile Include="Assets\Scripts\PanelManager.cs" />
     <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\RoverPilotHead.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Transfer\ElevatorPlatform.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Power.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Geometry_3D\AXPolygonGenerator.cs" />
     <Compile Include="Assets\Scripts\SimplePlayerController.cs" />
@@ -569,6 +574,7 @@
     <Compile Include="Assets\Scripts\KhorneSyrup\InventoryController\UIItem.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Ship\GravityArea.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Curve.cs" />
+    <Compile Include="Assets\Scripts\Koro\ElevatorBTN.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Production\Raw\MyAsteroidOrbiter.cs" />
     <Compile Include="Assets\Scripts\TileSystem\TilingController.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\AXPrototype.cs" />
@@ -623,6 +629,7 @@
     <Compile Include="Assets\Archimatix\Scripts\Core\AXMeshCache.cs" />
     <Compile Include="Assets\Scripts\Koro\GridSlot.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\EmptyCSharpFile.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Ship\EditorPipeByLine.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Atmospherics\IRadiationZone.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\ShapeGenerators.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\UI\MiningDroneUIController.cs" />
@@ -640,12 +647,14 @@
     <Compile Include="Assets\SplineMesh\Scripts\Example\RopeBuilder.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Atmospherics\PipeSection.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\Util\PolygonGenerator.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\UI\FissionCoreUIController.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\Delaunay\Sweep\DTSweep.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Ship\PlayerChildingTrigger.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\PixelMapGen\PixelMap_IDLibrary.cs" />
     <Compile Include="Assets\JMO Assets\WarFX\Scripts\WFX_LightFlicker.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Serialization\Surrogates\Quaternion_Surrogate.cs" />
     <Compile Include="Assets\Scripts\WindowInteractionManager.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\UI\FluidTankUIController.cs" />
     <Compile Include="Assets\ParticleShadersVol1\SampleSceneAssets\Scripts\EMUI_Animations.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Geometry_2D\Curve2D.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Meshers\BuildingExtruder.cs" />
@@ -733,6 +742,7 @@
     <Compile Include="Assets\JMO Assets\WarFX\Demo\Assets\CFX_Demo_Translate.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Generator\Perlin.cs" />
     <Compile Include="Assets\SplineMesh\Scripts\Example\ExampleTentacle.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Ship\VolumeHandlerHelper.cs" />
     <Compile Include="Assets\Scripts\Koro\LAVA.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Runtime\AXRuntimeControllerBase.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Inventory\IPlayer_Inventory.cs" />
@@ -753,6 +763,7 @@
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Deformers\FlattenerDeformer.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Triggers\Physics Triggers\3D\ImpactCollisionTriggerWithCooldown3D.cs" />
     <Compile Include="Assets\EffectExamples\Misc Effects\Scripts\SpawnEffect.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Ship\CombineMeshes.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\NPC\DroneVolumeController.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Shapers\ShapeChanneler.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Tools\MiningDrill.cs" />
@@ -795,6 +806,7 @@
     <None Include="Assets\Allegorithmic\Plugins\Substance.Engine.dll" />
     <None Include="Assets\ParticleShadersVol1\SampleSceneAssets\Materials\LightBulb.shader" />
     <None Include="Assets\Resources\Data\Production\MasterLibraries\GasMasterList.xml" />
+    <None Include="Assets\Resources\Data\Chemlib\1.0\Substances-Alloys.xml" />
     <None Include="Assets\Scenes\Koro\LightningBolt\Readme.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
     <None Include="Assets\Resources\Data\Production\MasterLibraries\ComponentMasterList.xml" />
@@ -815,6 +827,7 @@
     <None Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\COPYING.LESSER.txt" />
     <None Include="Assets\EffectExamples\Misc Effects\Prefabs\Readme_Dissolve_Respawn_.txt" />
     <None Include="Assets\JMO Assets\WarFX\Shaders\WFX_S Add Scroll.shader" />
+    <None Include="Assets\Resources\Data\Chemlib\1.0\Substances-Atomic_Elements.xml" />
     <None Include="Assets\UMA\InternalDataStore\InGame\Resources\Shader\NormalShader.compute" />
     <None Include="Assets\Character Movement Fundamentals\Source\Misc\Shaders\OneSidedTextShader.shader" />
     <None Include="Assets\kb3d_missiontominerva_hdrp\README.txt" />
@@ -825,6 +838,7 @@
     <None Include="Assets\Resources\Data\TypeFloor.xml" />
     <None Include="Assets\AmplifyOcclusion\Resources\BlurFunctions.cginc" />
     <None Include="Assets\ParticleShadersVol1\Shaders\EM_Particles_Lit_Fallback.shader" />
+    <None Include="Assets\Resources\Data\Chemlib\1.0\Substances-Isotopes.xml" />
     <None Include="Assets\JMO Assets\WarFX\_Effects (Mobile)\MuzzleFlashes\!MuzzleFlash Differences.txt" />
     <None Include="Assets\Resources\Data\Production\ZoneOreProbabilities.xml" />
     <None Include="Assets\Plastic External Assets\_Creepy_Cat\_3D Scifi Kit Vol 3\Shaders\Hologram.shader" />
@@ -864,6 +878,7 @@
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
     <None Include="Assets\ParticleShadersVol1\Shaders\EM_Particles_Unlit.shader" />
     <None Include="Assets\Plastic External Assets\_Creepy_Cat\_3D Scifi Kit Vol 3\Shaders\GlassClean.shader" />
+    <None Include="Assets\Resources\Data\Chemlib\1.0\Substances-Compounds.xml" />
     <None Include="Assets\Resources\Data\Production\QualityZone7.xml" />
     <None Include="Assets\Impact Interaction System\Demo\Materials\_Shaders\ProjectorAlphaBlended.shader" />
     <None Include="Assets\AmplifyOcclusion\Resources\TemporalFilter.cginc" />
@@ -901,6 +916,7 @@
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Masking.shader" />
     <None Include="Assets\BreakableAsteroids\Readme.txt" />
     <None Include="Assets\EffectExamples\Misc Effects\Shaders\FireFly.shader" />
+    <None Include="Assets\Resources\Data\Chemlib\1.0\Codes.txt" />
     <None Include="Assets\JMO Assets\WarFX\Shaders\WFX_S Particle AddSoft A8.shader" />
     <None Include="Assets\JMO Assets\WarFX\!WarFX Readme.txt" />
     <None Include="Assets\Resources\Data\Production\MasterLibraries\MachineMasterList.xml" />

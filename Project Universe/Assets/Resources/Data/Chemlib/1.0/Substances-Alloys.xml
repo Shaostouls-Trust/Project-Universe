@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<substances>
+
+  <substance>
+    <name>Steel</name>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <density>7.85</density><!-- g/cm^3 -->
+      <melting_point>1370</melting_point><!-- °C -->
+      <boiling_point>?</boiling_point><!-- °C -->
+      <thermal_conductivity>50.2</thermal_conductivity><!-- W/(m·K) -->
+      <coefficient_of_linear_thermal_expansion>11.7</coefficient_of_linear_thermal_expansion><!-- ×10−6 K−1 -->
+      <yield_strength>250-500</yield_strength><!-- MPa -->
+      <tensile_strength>400-700</tensile_strength><!-- MPa -->
+      <modulus_of_elasticity>190-210</modulus_of_elasticity><!-- GPa -->
+      <hardness>120-300</hardness><!-- HB -->
+      <chemical_group>Iron alloys</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Brass</name>
+    <NFPA>
+      <flammability>1</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <density>8.4-8.73</density><!-- g/cm^3 -->
+      <melting_point>900-940</melting_point><!-- °C -->
+      <boiling_point>?</boiling_point><!-- °C -->
+      <thermal_conductivity>109-120</thermal_conductivity><!-- W/(m·K) -->
+      <coefficient_of_linear_thermal_expansion>18.7-20.0</coefficient_of_linear_thermal_expansion><!-- ×10−6 K−1 -->
+      <yield_strength>150-550</yield_strength><!-- MPa -->
+      <tensile_strength>350-620</tensile_strength><!-- MPa -->
+      <modulus_of_elasticity>97-123</modulus_of_elasticity><!-- GPa -->
+      <hardness>65-250</hardness><!-- HB -->
+      <chemical_group>Copper alloys</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Bronze</name>
+    <NFPA>
+      <flammability>1</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <density>7.5-9.0</density><!-- g/cm^3 -->
+      <melting_point>800-1030</melting_point><!-- °C -->
+      <boiling_point>?</boiling_point><!-- °C -->
+      <thermal_conductivity>20-100</thermal_conductivity><!-- W/(m·K) -->
+      <coefficient_of_linear_thermal_expansion>9.5-19.0</coefficient_of_linear_thermal_expansion><!-- ×10−6 K−1 -->
+      <yield_strength>90-330</yield_strength><!-- MPa -->
+      <tensile_strength>220-620</tensile_strength><!-- MPa -->
+      <modulus_of_elasticity>110-120</modulus_of_elasticity><!-- GPa -->
+      <hardness>60-300</hardness><!-- HB -->
+      <chemical_group>Copper alloys</chemical_group>
+    </properties>
+  </substance>
+
+</substances>

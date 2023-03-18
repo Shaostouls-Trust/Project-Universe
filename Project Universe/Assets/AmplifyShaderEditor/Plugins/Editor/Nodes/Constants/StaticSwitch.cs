@@ -11,6 +11,17 @@ namespace AmplifyShaderEditor
 	[NodeAttributes( "Static Switch", "Logical Operators", "Creates a shader keyword toggle", Available = true )]
 	public sealed class StaticSwitch : PropertyNode
 	{
+		public enum ShaderStage
+		{
+			All,
+			Vertex,
+			Fragment,
+			Hull,
+			Domain,
+			Geometry,
+			Raytracing
+		};
+
 		private float InstanceIconWidth = 19;
 		private float InstanceIconHeight = 19;
 		private readonly Color ReferenceHeaderColor = new Color( 0f, 0.5f, 0.585f, 1.0f );
@@ -37,13 +48,15 @@ namespace AmplifyShaderEditor
 		private bool m_lockKeyword = true;
 
 		private const string IsLocalStr = "Is Local";
-#if UNITY_2019_1_OR_NEWER
+		private const string StageStr = "Stage";
+
 		[SerializeField]
 		private bool m_isLocal = true;
-#else
+
 		[SerializeField]
-		private bool m_isLocal = false;
-#endif
+		private ShaderStage m_shaderStage = ShaderStage.All;
+
+
 		private GUIContent m_checkContent;
 		private GUIContent m_popContent;
 
@@ -249,12 +262,18 @@ namespace AmplifyShaderEditor
 		public override string GetPropertyValue()
 		{
 			if( m_createToggle )
-				if( m_keywordModeType == KeywordModeType.KeywordEnum && m_keywordEnumAmount > 0 )
-					return PropertyAttributes + "[" + m_keywordModeType.ToString() + "(" + GetKeywordEnumPropertyList() + ")] " + m_propertyName + "(\"" + m_propertyInspectorName + "\", Float) = " + m_defaultValue;
+			{
+				string value = UIUtils.PropertyFloatToString( m_defaultValue );
+				if ( m_keywordModeType == KeywordModeType.KeywordEnum && m_keywordEnumAmount > 0 )
+				{
+					return PropertyAttributes + "[" + m_keywordModeType.ToString() + "(" + GetKeywordEnumPropertyList() + ")] " + m_propertyName + "(\"" + m_propertyInspectorName + "\", Float) = " + value;
+				}
 				else
-					return PropertyAttributes + "[" + m_keywordModeType.ToString() + "(" + GetPropertyValStr() + ")] " + m_propertyName + "(\"" + m_propertyInspectorName + "\", Float) = " + m_defaultValue;
-			else
-				return string.Empty;
+				{
+					return PropertyAttributes + "[" + m_keywordModeType.ToString() + "(" + GetPropertyValStr() + ")] " + m_propertyName + "(\"" + m_propertyInspectorName + "\", Float) = " + value;
+				}
+			}
+			return string.Empty;
 		}
 
 		public string KeywordEnum( int index )
@@ -537,9 +556,9 @@ namespace AmplifyShaderEditor
 				}
 			}
 
-#if UNITY_2019_1_OR_NEWER
 			m_isLocal = EditorGUILayoutToggle( IsLocalStr, m_isLocal );
-#endif
+
+			m_shaderStage = (ShaderStage)EditorGUILayoutEnumPopup( StageStr , m_shaderStage );
 
 			//if( CurrentVarMode == StaticSwitchVariableMode.Create )
 			{
@@ -840,10 +859,22 @@ namespace AmplifyShaderEditor
 		string GetStaticSwitchType()
 		{
 			string staticSwitchType = ( m_multiCompile == 1 ) ? "multi_compile" : "shader_feature";
-#if UNITY_2019_1_OR_NEWER
+
 			if( m_isLocal )
 				staticSwitchType += "_local";
-#endif
+
+			switch( m_shaderStage )
+			{
+				default:
+				case ShaderStage.All:break;
+				case ShaderStage.Vertex: staticSwitchType += "_vertex"; break;
+				case ShaderStage.Fragment:	staticSwitchType += "_fragment"; break;
+				case ShaderStage.Hull: staticSwitchType += "_hull"; break;
+				case ShaderStage.Domain: staticSwitchType += "_domain"; break;
+				case ShaderStage.Geometry: staticSwitchType += "_geometry"; break;
+				case ShaderStage.Raytracing: staticSwitchType += "_raytracing"; break;
+			}
+
 			return staticSwitchType;
 		}
 
@@ -1096,6 +1127,10 @@ namespace AmplifyShaderEditor
 			if( UIUtils.CurrentShaderVersion() > 18401 )
 				m_lockKeyword = Convert.ToBoolean( GetCurrentParam( ref nodeParams ) );
 
+			if( UIUtils.CurrentShaderVersion() > 18928 )
+				m_shaderStage = (ShaderStage)Enum.Parse( typeof(ShaderStage), GetCurrentParam( ref nodeParams ) );
+
+
 			SetMaterialToggleRetrocompatibility();
 
 			if( !m_isNodeBeingCopied && CurrentVarMode != StaticSwitchVariableMode.Reference )
@@ -1173,6 +1208,7 @@ namespace AmplifyShaderEditor
 			}
 			IOUtils.AddFieldValueToString( ref nodeInfo, m_isLocal );
 			IOUtils.AddFieldValueToString( ref nodeInfo, m_lockKeyword );
+			IOUtils.AddFieldValueToString( ref nodeInfo , m_shaderStage );
 		}
 
 		public override void RefreshExternalReferences()

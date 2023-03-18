@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using UnityEditorInternal;
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -254,11 +255,17 @@ namespace AmplifyShaderEditor
 
 		ASESaveBundleAssetEditor m_editor;
 
-		[MenuItem( "Window/Amplify Shader Editor/Shader Bundle Save" , false , 1001 )]
+		private const string Title = "Batch Save and Pack";
+
+		[NonSerialized]
+		private GUIStyle m_titleStyle;
+
+		[MenuItem( "Window/Amplify Shader Editor/"+ Title , false , 1001 )]
 		static void ShowWindow()
 		{
 			ASESaveBundleTool window = EditorWindow.GetWindow<ASESaveBundleTool>();
-			window.titleContent.text = "Shader Bundle Save";
+			window.titleContent.text = "Batch Save...";
+			window.titleContent.tooltip = Title;
 			window.minSize = new Vector2( 302 , 350 );
 			window.Show();
 		}
@@ -327,6 +334,16 @@ namespace AmplifyShaderEditor
 				m_updatingShaders = EditorPrefs.HasKey( AmplifyShaderEditorWindow.ASEFileList );
 			}
 
+
+			if( m_titleStyle == null )
+			{
+				m_titleStyle = new GUIStyle( "BoldLabel" );
+				m_titleStyle.fontSize = 13;
+				m_titleStyle.alignment = TextAnchor.MiddleCenter;
+			}
+
+
+			EditorGUILayout.LabelField( Title , m_titleStyle );
 			EditorGUI.BeginDisabledGroup( m_updatingShaders );
 			{
 				ASESaveBundleAsset currentAsset = null;
@@ -385,7 +402,7 @@ namespace AmplifyShaderEditor
 
 						EditorGUI.BeginDisabledGroup( string.IsNullOrEmpty( currentAsset.PackageTargetName ) || string.IsNullOrEmpty( currentAsset.PackageTargetPath ) );
 						{
-							if( GUILayout.Button( "Export" ) )
+							if( GUILayout.Button( "Export Unity Package" ) )
 							{
 								ExportCurrent( currentAsset );
 							}

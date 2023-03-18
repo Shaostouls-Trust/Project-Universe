@@ -18,52 +18,55 @@ public class AirScrubber : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        scrubRateLeft = scrubRate_m3perSec;
-        //for every gas in vacToScrub
-        for (int i = 0; i < vacToScrub.RoomGasses.Count; i++)
+        if (vacToScrub != null)
         {
-            if (scrubRate_m3perSec > 0f)
+            scrubRateLeft = scrubRate_m3perSec;
+            //for every gas in vacToScrub
+            for (int i = 0; i < vacToScrub.RoomGasses.Count; i++)
             {
-                IGas gas = vacToScrub.RoomGasses[i];
-                if (scrubToxic)
+                if (scrubRate_m3perSec > 0f)
                 {
-                    if (gas.GetToxicity() > 0f)
+                    IGas gas = vacToScrub.RoomGasses[i];
+                    if (scrubToxic)
                     {
-                        ScrubGas(gas);
+                        if (gas.GetToxicity() > 0f)
+                        {
+                            ScrubGas(gas);
+                        }
+                    }
+                    if (scrubCombustable)
+                    {
+                        if (gas.GetCombustability() > 4f)
+                        {
+                            ScrubGas(gas);
+                        }
+                    }
+                    if (scrubRadioactive)
+                    {
+                        if (gas.GetNuclear())
+                        {
+                            ScrubGas(gas);
+                        }
+                    }
+                    if (scrubFlammable)
+                    {
+                        if (gas.GetFlamabitity() > 4f)
+                        {
+                            ScrubGas(gas);
+                        }
+                    }
+                    if (scrubNonOxygen)
+                    {
+                        if (gas.GetIDName() != "Oxygen")
+                        {
+                            ScrubGas(gas);
+                        }
                     }
                 }
-                if (scrubCombustable)
+                else
                 {
-                    if (gas.GetCombustability() > 4f)
-                    {
-                        ScrubGas(gas);
-                    }
+                    break;
                 }
-                if (scrubRadioactive)
-                {
-                    if (gas.GetNuclear())
-                    {
-                        ScrubGas(gas);
-                    }
-                }
-                if (scrubFlammable)
-                {
-                    if (gas.GetFlamabitity() > 4f)
-                    {
-                        ScrubGas(gas);
-                    }
-                }
-                if (scrubNonOxygen)
-                {
-                    if (gas.GetIDName() != "Oxygen")
-                    {
-                        ScrubGas(gas);
-                    }
-                }
-            }
-            else
-            {
-                break;
             }
         }
     }
@@ -84,7 +87,10 @@ public class AirScrubber : MonoBehaviour
         }
         else
         {
-            vacToScrub.RemoveRoomGas(gas);
+            if (vacToScrub != null)
+            {
+                vacToScrub.RemoveRoomGas(gas);
+            }
         }
     }
 }

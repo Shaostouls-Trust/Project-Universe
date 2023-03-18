@@ -26,7 +26,7 @@ namespace ProjectUniverse.Environment.Volumes
             {
                 timer = 1f;
                 float pressure = (float)Math.Round(vac.Pressure, 2);
-                presTxt.text = "" + pressure;
+                presTxt.text = "" + pressure+" atm";
                 if (pressure <= 0.5f && pressure > 0.25f)
                 {
                     presTxt.color = YELLOW;
@@ -41,7 +41,7 @@ namespace ProjectUniverse.Environment.Volumes
                 }
 
                 float temp = (float)Math.Round(vac.Temperature, 2);
-                tempTxt.text = "" + temp;
+                tempTxt.text = "" + temp+ " F";
                 if (temp <= 32f && temp > 0f)
                 {
                     tempTxt.color = YELLOW;
@@ -56,7 +56,7 @@ namespace ProjectUniverse.Environment.Volumes
                 }
 
                 float oxy = (float)Math.Round(vac.Oxygenation, 2);
-                oxyTxt.text = "" + oxy;
+                oxyTxt.text = "" + (oxy)+"%";
                 if (oxy <= 60.0f && oxy > 30.0f)
                 {
                     oxyTxt.color = YELLOW;

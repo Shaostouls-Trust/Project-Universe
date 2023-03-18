@@ -170,7 +170,7 @@ namespace AmplifyShaderEditor
 				for( int i = 0; i < BillboardRotIndependent.Length; i++ )
 				{
 					string value = string.Empty;
-					if( dataCollector.IsTemplate && dataCollector.TemplateDataCollectorInstance.CurrentSRPType != TemplateSRPType.BuiltIn )
+					if( dataCollector.IsTemplate && dataCollector.TemplateDataCollectorInstance.CurrentSRPType != TemplateSRPType.BiRP )
 					{
 						value = ( i != 5 ) ? string.Format( BillboardHDRotIndependent[ i ], vertexPosValue ) : BillboardHDRotIndependent[ i ];
 						if( i == 4 )
@@ -196,7 +196,7 @@ namespace AmplifyShaderEditor
 				for( int i = 0; i < BillboardRotDependent.Length; i++ )
 				{
 					string value = string.Empty;
-					if( dataCollector.IsTemplate && dataCollector.TemplateDataCollectorInstance.CurrentSRPType == TemplateSRPType.HD )
+					if( dataCollector.IsTemplate && dataCollector.TemplateDataCollectorInstance.CurrentSRPType == TemplateSRPType.HDRP )
 					{
 						value = ( i > 1 ) ? string.Format( BillboardHDRotDependent[ i ], vertexPosValue, vertexPosConverted, ( vertexIsFloat3 ? ".xyz" : string.Empty ) ) : BillboardHDRotDependent[ i ];
 					}

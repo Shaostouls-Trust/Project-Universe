@@ -17,6 +17,7 @@ namespace AmplifyShaderEditor
 		private const string UAxisStr = "U axis";
 		private const string VAxisStr = "V axis";
 		private const string FilterModeStr = "Filter Mode";
+		private const string AnisotropicFilteringStr = "Aniso. Filtering";
 		private const string MessageMacrosOFF = "Sampling Macros option is turned OFF, this node will not generate any sampler state";
 		private const string MessageTextureObject = "Only Texture Objects that are actually being sampled within the shader generate valid sampler states.\n\nPlease make sure the referenced Texture Object is being sampled otherwise the shader will fail to compile.";
 		private const string MessageUnitSuppport = "Unity support for sampler states in versions below Unity 2018.1 is limited.\n\nNotably, only vertex/frag shaders support it and not surfaces shaders and sampler states can only be reused and not created if the version is below 2017.1";
@@ -32,6 +33,19 @@ namespace AmplifyShaderEditor
 
 		[SerializeField]
 		protected FilterMode m_filterMode = FilterMode.Bilinear;
+
+
+		public enum AnisoModes
+		{
+			None,
+			X2,
+			X4,
+			X8,
+			X16
+		}
+
+		[SerializeField]
+		protected AnisoModes m_anisoMode = AnisoModes.None;
 
 		[SerializeField]
 		private int m_referenceSamplerId = -1;
@@ -51,11 +65,9 @@ namespace AmplifyShaderEditor
 		private readonly string[] m_wrapModeStr = {
 			"Repeat",
 			"Clamp", 
-#if UNITY_2018_3_OR_NEWER
 			"Mirror",
 			"Mirror Once",
 			"Per-axis" 
-#endif
 		};
 
 		protected override void CommonInit( int uniqueId )
@@ -162,7 +174,6 @@ namespace AmplifyShaderEditor
 					m_wrapModeU = TextureWrapMode.Clamp;
 					m_wrapModeV = TextureWrapMode.Clamp;
 					break;
-#if UNITY_2018_3_OR_NEWER
 					case 2:
 					m_wrapModeU = TextureWrapMode.Mirror;
 					m_wrapModeV = TextureWrapMode.Mirror;
@@ -171,7 +182,6 @@ namespace AmplifyShaderEditor
 					m_wrapModeU = TextureWrapMode.MirrorOnce;
 					m_wrapModeV = TextureWrapMode.MirrorOnce;
 					break;
-#endif
 				}
 			}
 
@@ -184,6 +194,10 @@ namespace AmplifyShaderEditor
 			}
 
 			m_filterMode = (FilterMode)EditorGUILayoutEnumPopup( FilterModeStr, m_filterMode );
+
+#if UNITY_2021_2_OR_NEWER
+			m_anisoMode = (AnisoModes)EditorGUILayoutEnumPopup( AnisotropicFilteringStr , m_anisoMode );
+#endif
 			EditorGUI.EndDisabledGroup();
 
 			if( !UIUtils.CurrentWindow.OutsideGraph.SamplingMacros )
@@ -191,10 +205,6 @@ namespace AmplifyShaderEditor
 
 			if( m_texPort.IsConnected || m_referenceNodeId >= 0 )
 				EditorGUILayout.HelpBox( MessageTextureObject, MessageType.Info );
-
-#if !UNITY_2018_1_OR_NEWER
-			EditorGUILayout.HelpBox( MessageUnitSuppport, MessageType.Warning );
-#endif
 		}
 
 		public override void OnNodeLogicUpdate( DrawInfo drawInfo )
@@ -250,14 +260,14 @@ namespace AmplifyShaderEditor
 			switch( m_filterMode )
 			{
 				case FilterMode.Point:
-				result += "_point";
+				result += "_Point";
 				break;
 				default:
 				case FilterMode.Bilinear:
-				result += "_linear";
+				result += "_Linear";
 				break;
 				case FilterMode.Trilinear:
-				result += "_trilinear";
+				result += "_Trilinear";
 				break;
 			}
 
@@ -266,60 +276,66 @@ namespace AmplifyShaderEditor
 			{
 				case 0:
 				default:
-				result += "_repeat";
+				result += "_Repeat";
 				break;
 				case 1:
-				result += "_clamp";
+				result += "_Clamp";
 				break;
-#if UNITY_2018_3_OR_NEWER
 				case 2:
-				result += "_mirror";
+				result += "_Mirror";
 				break;
 				case 3:
-				result += "_mirrorOnce";
+				result += "_MirrorOnce";
 				break;
-#endif
 				case 4:
 				{
 					switch( m_wrapModeU )
 					{
 						default:
 						case TextureWrapMode.Repeat:
-						result += "_repeatU";
+						result += "_RepeatU";
 						break;
 						case TextureWrapMode.Clamp:
-						result += "_clampU";
+						result += "_ClampU";
 						break;
-#if UNITY_2018_3_OR_NEWER
 						case TextureWrapMode.Mirror:
-						result += "_mirrorU";
+						result += "_MirrorU";
 						break;
 						case TextureWrapMode.MirrorOnce:
-						result += "_mirrorOnceU";
+						result += "_MirrorOnceU";
 						break;
-#endif
 					}
 					switch( m_wrapModeV )
 					{
 						default:
 						case TextureWrapMode.Repeat:
-						result += "_repeatV";
+						result += "_RepeatV";
 						break;
 						case TextureWrapMode.Clamp:
-						result += "_clampV";
+						result += "_ClampV";
 						break;
-#if UNITY_2018_3_OR_NEWER
 						case TextureWrapMode.Mirror:
-						result += "_mirrorV";
+						result += "_MirrorV";
 						break;
 						case TextureWrapMode.MirrorOnce:
-						result += "_mirrorOnceV";
+						result += "_MirrorOnceV";
 						break;
-#endif
 					}
 				}
 				break;
 			}
+#if UNITY_2021_2_OR_NEWER
+			switch( m_anisoMode )
+			{
+				default:
+				case AnisoModes.None:break;
+				case AnisoModes.X2:	result += "_Aniso2";break;
+				case AnisoModes.X4: result += "_Aniso4"; break;
+				case AnisoModes.X8: result += "_Aniso8"; break;
+				case AnisoModes.X16: result += "_Aniso16"; break;
+			}
+#endif
+
 			return result;
 		}
 
@@ -366,6 +382,10 @@ namespace AmplifyShaderEditor
 			m_wrapModeV = (TextureWrapMode)Convert.ToInt32( GetCurrentParam( ref nodeParams ) );
 			m_filterMode = (FilterMode)Convert.ToInt32( GetCurrentParam( ref nodeParams ) );
 			m_referenceNodeId = Convert.ToInt32( GetCurrentParam( ref nodeParams ) );
+			if( UIUtils.CurrentShaderVersion() > 18926 )
+			{
+				m_anisoMode = (AnisoModes)Enum.Parse( typeof( AnisoModes ) , GetCurrentParam( ref nodeParams ) );
+			}
 		}
 
 		public override void WriteToString( ref string nodeInfo, ref string connectionsInfo )
@@ -376,6 +396,7 @@ namespace AmplifyShaderEditor
 			IOUtils.AddFieldValueToString( ref nodeInfo, (int)m_wrapModeV );
 			IOUtils.AddFieldValueToString( ref nodeInfo, (int)m_filterMode );
 			IOUtils.AddFieldValueToString( ref nodeInfo, m_referenceNodeId );
+			IOUtils.AddFieldValueToString( ref nodeInfo , m_anisoMode );
 		}
 	}
 }

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<substances>
+
+  <substance>
+    <name>Deuterium</name>
+    <atomic_symbol>D</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>1</atomic_number>
+      <atomic_mass>2.01410178</atomic_mass><!-- g/mol -->
+      <atomic_radius>25</atomic_radius><!-- pm -->
+      <melting_point>18.73</melting_point><!-- K -->
+      <boiling_point>20.39</boiling_point><!-- K -->
+      <density>0.000414</density><!-- g/cm^3 -->
+      <electron_affinity>73.6</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>1s1</electron_configuration>
+      <electronegativity>2.2</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>1312.0</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>1</oxidation_states>
+      <standard_state>Gas</standard_state>
+      <year_discovered>1932</year_discovered>
+      <chemical_group>Non-metal</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Tritium</name>
+    <atomic_symbol>T</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>2</health>
+      <instability>1</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>1</atomic_number>
+      <atomic_mass>3.0160492</atomic_mass><!-- g/mol -->
+      <atomic_radius>Unknown</atomic_radius><!-- pm -->
+      <melting_point>20.45</melting_point><!-- K -->
+      <boiling_point>85.00</boiling_point><!-- K -->
+      <density>0.000882</density><!-- g/cm^3 -->
+      <electron_affinity>Unknown</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>1s1</electron_configuration>
+      <electronegativity>2.2</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>1463.4</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>1</oxidation_states>
+      <standard_state>Gas</standard_state>
+      <year_discovered>1934</year_discovered>
+      <chemical_group>Non-metal</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Helium-3</name>
+    <atomic_symbol>He-3</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>2</atomic_number>
+      <atomic_mass>3.0160293201</atomic_mass><!-- g/mol -->
+      <atomic_radius>31</atomic_radius><!-- pm -->
+      <melting_point>Unknown</melting_point><!-- K -->
+      <boiling_point>Unknown</boiling_point><!-- K -->
+      <density>0.0001785</density><!-- g/cm^3 -->
+      <electron_affinity>Unknown</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>1s2</electron_configuration>
+      <electronegativity>Unknown</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>2372.3</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>0</oxidation_states>
+      <standard_state>Gas</standard_state>
+      <year_discovered>1939</year_discovered>
+      <chemical_group>Noble gases</chemical_group>
+    </properties>
+  </substance>
+
+  <substance>
+    <name>Helium-4</name>
+    <atomic_symbol>He-4</atomic_symbol>
+    <NFPA>
+      <flammability>0</flammability>
+      <health>1</health>
+      <instability>0</instability>
+      <special></special>
+    </NFPA>
+    <properties>
+      <atomic_number>2</atomic_number>
+      <atomic_mass>4.002602</atomic_mass><!-- g/mol -->
+      <atomic_radius>31</atomic_radius><!-- pm -->
+      <melting_point>0.95</melting_point><!-- K -->
+      <boiling_point>4.22</boiling_point><!-- K -->
+      <density>0.1785</density><!-- g/cm^3 -->
+      <electron_affinity>Unknown</electron_affinity><!-- kJ/mol -->
+      <electron_configuration>1s2</electron_configuration>
+      <electronegativity>Unknown</electronegativity><!-- Pauling Scale -->
+      <ionization_energy>2372.3</ionization_energy><!-- kJ/mol -->
+      <oxidation_states>0</oxidation_states>
+      <standard_state>Gas</standard_state>
+      <year_discovered>Unknown</year_discovered>
+      <chemical_group>Noble gases</chemical_group>
+    </properties>
+  </substance>
+
+</substances>

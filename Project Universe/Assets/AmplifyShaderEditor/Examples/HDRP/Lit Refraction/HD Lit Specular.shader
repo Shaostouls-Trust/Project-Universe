@@ -1,59 +1,64 @@
-// Made with Amplify Shader Editor
+// Made with Amplify Shader Editor v1.9.1.3
 // Available at the Unity Asset Store - http://u3d.as/y3X 
 Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 {
 	Properties
 	{
 		[HideInInspector] _AlphaCutoff("Alpha Cutoff ", Range(0, 1)) = 0.5
-		[HideInInspector] _EmissionColor("Emission Color", Color) = (1,1,1,1)
 		[ASEBegin]_Smoothness("Smoothness", Float) = 0
 		_Specular("Specular", Color) = (0,0,0,0)
 		[ASEEnd]_Albedo("Albedo", Color) = (0,0,0,0)
 
 		[HideInInspector] _RenderQueueType("Render Queue Type", Float) = 1
-		[HideInInspector] [ToggleUI] _AddPrecomputedVelocity("Add Precomputed Velocity", Float) = 1
-		[HideInInspector] [ToggleUI]_SupportDecals("Boolean", Float) = 1
-		[HideInInspector] _StencilRef("Stencil Ref", Int) = 0
-		[HideInInspector] _StencilWriteMask("Stencil Write Mask", Int) = 6
-		[HideInInspector] _StencilRefDepth("Stencil Ref Depth", Int) = 8
-		[HideInInspector] _StencilWriteMaskDepth("Stencil Write Mask Depth", Int) = 8
-		[HideInInspector] _StencilRefMV("Stencil Ref MV", Int) = 40
-		[HideInInspector] _StencilWriteMaskMV("Stencil Write Mask MV", Int) = 40
-		[HideInInspector] _StencilRefDistortionVec("Stencil Ref Distortion Vec", Int) = 4
-		[HideInInspector] _StencilWriteMaskDistortionVec("Stencil Write Mask Distortion Vec", Int) = 4
-		[HideInInspector] _StencilWriteMaskGBuffer("Stencil Write Mask GBuffer", Int) = 14
-		[HideInInspector] _StencilRefGBuffer("Stencil Ref GBuffer", Int) = 10
+		[HideInInspector][ToggleUI] _AddPrecomputedVelocity("Add Precomputed Velocity", Float) = 1
+		[HideInInspector][ToggleUI] _SupportDecals("Support Decals", Float) = 1.0
+		[HideInInspector] _StencilRef("Stencil Ref", Int) = 0 // StencilUsage.Clear
+		[HideInInspector] _StencilWriteMask("Stencil Write Mask", Int) = 3 // StencilUsage.RequiresDeferredLighting | StencilUsage.SubsurfaceScattering
+		[HideInInspector] _StencilRefDepth("Stencil Ref Depth", Int) = 0 // Nothing
+		[HideInInspector] _StencilWriteMaskDepth("Stencil Write Mask Depth", Int) = 8 // StencilUsage.TraceReflectionRay
+		[HideInInspector] _StencilRefMV("Stencil Ref MV", Int) = 32 // StencilUsage.ObjectMotionVector
+		[HideInInspector] _StencilWriteMaskMV("Stencil Write Mask MV", Int) = 32 // StencilUsage.ObjectMotionVector
+		[HideInInspector] _StencilRefDistortionVec("Stencil Ref Distortion Vec", Int) = 4 				// DEPRECATED
+		[HideInInspector] _StencilWriteMaskDistortionVec("Stencil Write Mask Distortion Vec", Int) = 4	// DEPRECATED
+		[HideInInspector] _StencilWriteMaskGBuffer("Stencil Write Mask GBuffer", Int) = 3 // StencilUsage.RequiresDeferredLighting | StencilUsage.SubsurfaceScattering
+		[HideInInspector] _StencilRefGBuffer("Stencil Ref GBuffer", Int) = 2 // StencilUsage.RequiresDeferredLighting
 		[HideInInspector] _ZTestGBuffer("ZTest GBuffer", Int) = 4
-		[HideInInspector] [ToggleUI] _RequireSplitLighting("Require Split Lighting", Float) = 0
-		[HideInInspector] [ToggleUI] _ReceivesSSR("Receives SSR", Float) = 1
-		[HideInInspector] [ToggleUI] _ReceivesSSRTransparent("Boolean", Float) = 0
+		[HideInInspector][ToggleUI] _RequireSplitLighting("Require Split Lighting", Float) = 0
+		[HideInInspector][ToggleUI] _ReceivesSSR("Receives SSR", Float) = 1
+		[HideInInspector][ToggleUI] _ReceivesSSRTransparent("Receives SSR Transparent", Float) = 0
 		[HideInInspector] _SurfaceType("Surface Type", Float) = 0
 		[HideInInspector] _BlendMode("Blend Mode", Float) = 0
 		[HideInInspector] _SrcBlend("Src Blend", Float) = 1
 		[HideInInspector] _DstBlend("Dst Blend", Float) = 0
 		[HideInInspector] _AlphaSrcBlend("Alpha Src Blend", Float) = 1
 		[HideInInspector] _AlphaDstBlend("Alpha Dst Blend", Float) = 0
-		[HideInInspector] [ToggleUI] _ZWrite("ZWrite", Float) = 1
-		[HideInInspector] [ToggleUI] _TransparentZWrite("Transparent ZWrite", Float) = 1
+		[HideInInspector][ToggleUI] _ZWrite("ZWrite", Float) = 1
+		[HideInInspector][ToggleUI] _TransparentZWrite("Transparent ZWrite", Float) = 0
 		[HideInInspector] _CullMode("Cull Mode", Float) = 2
-		[HideInInspector] _TransparentSortPriority("Transparent Sort Priority", Int) = 0
-		[HideInInspector] [ToggleUI] _EnableFogOnTransparent("Enable Fog On Transparent", Float) = 1
-		[HideInInspector] _CullModeForward("Cull Mode Forward", Float) = 2
-		[HideInInspector] [Enum(Front, 1, Back, 2)] _TransparentCullMode("Transparent Cull Mode", Float) = 2
-		[HideInInspector] _ZTestDepthEqualForOpaque("ZTest Depth Equal For Opaque", Int) = 4
-		[HideInInspector] [Enum(UnityEngine.Rendering.CompareFunction)] _ZTestTransparent("ZTest Transparent", Float) = 4
-		[HideInInspector] [ToggleUI] _TransparentBackfaceEnable("Transparent Backface Enable", Float) = 0
-		[HideInInspector] [ToggleUI] _AlphaCutoffEnable("Alpha Cutoff Enable", Float) = 0
-		[HideInInspector] [ToggleUI] _UseShadowThreshold("Use Shadow Threshold", Float) = 0
-		[HideInInspector] [ToggleUI] _DoubleSidedEnable("Double Sided Enable", Float) = 0
-		[HideInInspector] [Enum(Flip, 0, Mirror, 1, None, 2)] _DoubleSidedNormalMode("Double Sided Normal Mode", Float) = 2
+		[HideInInspector] _TransparentSortPriority("Transparent Sort Priority", Float) = 0
+		[HideInInspector][ToggleUI] _EnableFogOnTransparent("Enable Fog", Float) = 1
+		[HideInInspector] _CullModeForward("Cull Mode Forward", Float) = 2 // This mode is dedicated to Forward to correctly handle backface then front face rendering thin transparent
+		[HideInInspector][Enum(UnityEditor.Rendering.HighDefinition.TransparentCullMode)] _TransparentCullMode("Transparent Cull Mode", Int) = 2 // Back culling by default
+		[HideInInspector] _ZTestDepthEqualForOpaque("ZTest Depth Equal For Opaque", Int) = 4 // Less equal
+		[HideInInspector][Enum(UnityEngine.Rendering.CompareFunction)] _ZTestTransparent("ZTest Transparent", Int) = 4 // Less equal
+		[HideInInspector][ToggleUI] _TransparentBackfaceEnable("Transparent Backface Enable", Float) = 0
+		[HideInInspector][ToggleUI] _AlphaCutoffEnable("Alpha Cutoff Enable", Float) = 0
+		[HideInInspector][ToggleUI] _UseShadowThreshold("Use Shadow Threshold", Float) = 0
+		[HideInInspector][ToggleUI] _DoubleSidedEnable("Double Sided Enable", Float) = 0
+		[HideInInspector][Enum(Flip, 0, Mirror, 1, None, 2)] _DoubleSidedNormalMode("Double Sided Normal Mode", Float) = 2
 		[HideInInspector] _DoubleSidedConstants("DoubleSidedConstants", Vector) = (1,1,-1,0)
+
 		//_TessPhongStrength( "Tess Phong Strength", Range( 0, 1 ) ) = 0.5
 		//_TessValue( "Tess Max Tessellation", Range( 1, 32 ) ) = 16
 		//_TessMin( "Tess Min Distance", Float ) = 10
 		//_TessMax( "Tess Max Distance", Float ) = 25
 		//_TessEdgeLength ( "Tess Edge length", Range( 2, 50 ) ) = 16
 		//_TessMaxDisp( "Tess Max Displacement", Float ) = 25
+
+		[HideInInspector][ToggleUI] _TransparentWritingMotionVec("Transparent Writing MotionVec", Float) = 0
+		[HideInInspector][Enum(UnityEditor.Rendering.HighDefinition.OpaqueCullMode)] _OpaqueCullMode("Opaque Cull Mode", Int) = 2 // Back culling by default
+		[HideInInspector][ToggleUI] _EnableBlendModePreserveSpecularLighting("Enable Blend Mode Preserve Specular Lighting", Float) = 1
+		[HideInInspector] _EmissionColor("Color", Color) = (1, 1, 1)
 	}
 
 	SubShader
@@ -66,13 +71,14 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 
 		HLSLINCLUDE
 		#pragma target 4.5
-		#pragma only_renderers d3d11 metal vulkan xboxone xboxseries playstation switch 
-		#pragma multi_compile_instancing
-		#pragma instancing_options renderinglayer
+		#pragma exclude_renderers glcore gles gles3 ps4 
+
+		#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
+		#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Filtering.hlsl"
 
 		struct GlobalSurfaceDescription // GBuffer Forward META TransparentBackface
 		{
-			float3 Albedo;
+			float3 BaseColor;
 			float3 Normal;
 			float3 BentNormal;
 			float3 Specular;
@@ -95,9 +101,11 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			float3 RefractionColor;
 			float RefractionDistance;
 			//SSS/Translucent
+			float DiffusionProfile;
+			float TransmissionMask;
+			// Transmission + Diffusion Profile
 			float Thickness;
 			float SubsurfaceMask;
-			float DiffusionProfile;
 			//Anisotropy
 			float Anisotropy;
 			float3 Tangent;
@@ -149,21 +157,13 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			float DepthOffset;
 		};
 
-		struct DistortionSurfaceDescription //Distortion
-		{
-			float Alpha;
-			float2 Distortion;
-			float DistortionBlur;
-			float AlphaClipThreshold;
-		};
-		
 		#ifndef ASE_TESS_FUNCS
 		#define ASE_TESS_FUNCS
 		float4 FixedTess( float tessValue )
 		{
 			return tessValue;
 		}
-		
+
 		float CalcDistanceTessFactor (float4 vertex, float minDist, float maxDist, float tess, float4x4 o2w, float3 cameraPos )
 		{
 			float3 wpos = mul(o2w,vertex).xyz;
@@ -258,6 +258,7 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 		}
 		#endif //ASE_TESS_FUNCS
 		ENDHLSL
+
 		
 		Pass
 		{
@@ -280,49 +281,77 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 
 
 			HLSLPROGRAM
+            #define _MATERIAL_FEATURE_SPECULAR_COLOR 1
+            #define _SPECULAR_OCCLUSION_FROM_AO 1
+            #pragma multi_compile_instancing
+            #pragma instancing_options renderinglayer
+            #define ASE_SRP_VERSION 101000
 
-			#define _MATERIAL_FEATURE_SPECULAR_COLOR 1
-			#define _SPECULAR_OCCLUSION_FROM_AO 1
-			#define ASE_SRP_VERSION 999999
-
-
-			#pragma shader_feature _SURFACE_TYPE_TRANSPARENT
+            #pragma shader_feature _SURFACE_TYPE_TRANSPARENT
+            #pragma shader_feature_local _TRANSPARENT_WRITES_MOTION_VEC
+            #pragma shader_feature_local _ENABLE_FOG_ON_TRANSPARENT
 			#pragma shader_feature_local _DOUBLESIDED_ON
-			#pragma shader_feature_local _ _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
-			#pragma shader_feature_local _ENABLE_FOG_ON_TRANSPARENT
 			#pragma shader_feature_local _ALPHATEST_ON
+			#pragma shader_feature_local _ _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
 
-			#if !defined(DEBUG_DISPLAY) && defined(_ALPHATEST_ON)
-			#define SHADERPASS_GBUFFER_BYPASS_ALPHA_TEST
-			#endif
-
-			#define SHADERPASS SHADERPASS_GBUFFER
+			#pragma multi_compile _ SHADOWS_SHADOWMASK
+			#pragma multi_compile _ LIGHT_LAYERS
 			#pragma multi_compile _ DEBUG_DISPLAY
 			#pragma multi_compile _ LIGHTMAP_ON
 			#pragma multi_compile _ DIRLIGHTMAP_COMBINED
 			#pragma multi_compile _ DYNAMICLIGHTMAP_ON
-			#pragma multi_compile _ SHADOWS_SHADOWMASK
 			#pragma multi_compile DECALS_OFF DECALS_3RT DECALS_4RT
-			#pragma multi_compile _ LIGHT_LAYERS
 
 			#pragma vertex Vert
 			#pragma fragment Frag
 
-			//#define UNITY_MATERIAL_LIT
-
-			#if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
-			#define OUTPUT_SPLIT_LIGHTING
-			#endif
-
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/NormalSurfaceGradient.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Tessellation.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
 
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-			#ifdef DEBUG_DISPLAY
-				#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+
+			#define SHADERPASS SHADERPASS_GBUFFER
+
+			#ifndef SHADER_UNLIT
+			#if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
+			#define VARYINGS_NEED_CULLFACE
+			#endif
+			#endif
+
+		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
+			#define OUTPUT_SPLIT_LIGHTING
+		    #endif
+
+		    #if (SHADERPASS == SHADERPASS_PATH_TRACING) && !defined(_DOUBLESIDED_ON) && (defined(_REFRACTION_PLANE) || defined(_REFRACTION_SPHERE))
+			#undef  _REFRACTION_PLANE
+			#undef  _REFRACTION_SPHERE
+			#define _REFRACTION_THIN
+		    #endif
+
+			#if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
+			#if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
+				#define WRITE_NORMAL_BUFFER
+			#endif
+			#endif
+
+			#ifndef DEBUG_DISPLAY
+				#if !defined(_SURFACE_TYPE_TRANSPARENT)
+					#if SHADERPASS == SHADERPASS_FORWARD
+					#define SHADERPASS_FORWARD_BYPASS_ALPHA_TEST
+					#elif SHADERPASS == SHADERPASS_GBUFFER
+					#define SHADERPASS_GBUFFER_BYPASS_ALPHA_TEST
+					#endif
+				#endif
+			#endif
+
+			#if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
+			#define _WRITE_TRANSPARENT_MOTION_VECTOR
 			#endif
 
 			CBUFFER_START( UnityPerMaterial )
@@ -341,8 +370,6 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			float _StencilWriteMaskDepth;
 			float _StencilRefMV;
 			float _StencilWriteMaskMV;
-			float _StencilRefDistortionVec;
-			float _StencilWriteMaskDistortionVec;
 			float _StencilWriteMaskGBuffer;
 			float _StencilRefGBuffer;
 			float _ZTestGBuffer;
@@ -350,6 +377,9 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			float _ReceivesSSR;
 			float _SurfaceType;
 			float _BlendMode;
+            #ifdef SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
+			float _EnableBlendModePreserveSpecularLighting;
+            #endif
 			float _SrcBlend;
 			float _DstBlend;
 			float _AlphaSrcBlend;
@@ -369,29 +399,49 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			float _DoubleSidedEnable;
 			float _DoubleSidedNormalMode;
 			float4 _DoubleSidedConstants;
-			#ifdef TESSELLATION_ON
-				float _TessPhongStrength;
-				float _TessValue;
-				float _TessMin;
-				float _TessMax;
-				float _TessEdgeLength;
-				float _TessMaxDisp;
+			#ifdef ASE_TESSELLATION
+			float _TessPhongStrength;
+			float _TessValue;
+			float _TessMin;
+			float _TessMax;
+			float _TessEdgeLength;
+			float _TessMaxDisp;
 			#endif
 			CBUFFER_END
+
+		    // Property used by ScenePickingPass
+            #ifdef SCENEPICKINGPASS
+			float4 _SelectionID;
+            #endif
+
+			// Properties used by SceneSelectionPass
+            #ifdef SCENESELECTIONPASS
+			int _ObjectId;
+			int _PassValue;
+            #endif
+
 			
 
+            #ifdef DEBUG_DISPLAY
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
+            #endif
+
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Material.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/NormalSurfaceGradient.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/Lit.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/BuiltinUtilities.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/MaterialUtilities.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalUtilities.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/LitDecalData.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphFunctions.hlsl"
+
+			// Setup DECALS_OFF so the shader stripper can remove variants
+            #define HAVE_DECALS ( (defined(DECALS_3RT) || defined(DECALS_4RT)) && !defined(_DISABLE_DECALS) )
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalUtilities.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/LitDecalData.hlsl"
 
 			
 
 			#if defined(_DOUBLESIDED_ON) && !defined(ASE_NEED_CULLFACE)
-				#define ASE_NEED_CULLFACE 1
+			#define ASE_NEED_CULLFACE 1
 			#endif
 
 			struct AttributesMesh
@@ -408,11 +458,11 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			struct PackedVaryingsMeshToPS
 			{
 				float4 positionCS : SV_Position;
-				float3 interp00 : TEXCOORD0;
-				float3 interp01 : TEXCOORD1;
-				float4 interp02 : TEXCOORD2;
-				float4 interp03 : TEXCOORD3;
-				float4 interp04 : TEXCOORD4;
+				float3 positionRWS : TEXCOORD0;
+				float3 normalWS : TEXCOORD1;
+				float4 tangentWS : TEXCOORD2;
+				float4 uv1 : TEXCOORD3;
+				float4 uv2 : TEXCOORD4;
 				
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				UNITY_VERTEX_OUTPUT_STEREO
@@ -430,7 +480,7 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				surfaceData.specularOcclusion = 1.0;
 
 				// surface data
-				surfaceData.baseColor =					surfaceDescription.Albedo;
+				surfaceData.baseColor =					surfaceDescription.BaseColor;
 				surfaceData.perceptualSmoothness =		surfaceDescription.Smoothness;
 				surfaceData.ambientOcclusion =			surfaceDescription.Occlusion;
 				surfaceData.metallic =					surfaceDescription.Metallic;
@@ -442,7 +492,7 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				#ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
 				surfaceData.subsurfaceMask =			surfaceDescription.SubsurfaceMask;
 				#endif
-				#if defined(_HAS_REFRACTION) || defined(_MATERIAL_FEATURE_TRANSMISSION)
+				#if defined(_HAS_REFRACTION) || defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) || defined(_MATERIAL_FEATURE_TRANSMISSION)
 				surfaceData.thickness =					surfaceDescription.Thickness;
 				#endif
 				#if defined( _MATERIAL_FEATURE_SUBSURFACE_SCATTERING ) || defined( _MATERIAL_FEATURE_TRANSMISSION )
@@ -494,10 +544,11 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				#ifdef _MATERIAL_FEATURE_TRANSMISSION
 				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
 				#endif
-				#ifdef _MATERIAL_FEATURE_ANISOTROPY
+                #ifdef _MATERIAL_FEATURE_ANISOTROPY
 				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
-				#endif
-				#ifdef ASE_LIT_CLEAR_COAT
+				surfaceData.normalWS = float3(0, 1, 0);
+                #endif
+				#ifdef _MATERIAL_FEATURE_CLEAR_COAT
 				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_CLEAR_COAT;
 				#endif
 				#ifdef _MATERIAL_FEATURE_IRIDESCENCE
@@ -511,6 +562,7 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				#if defined (_MATERIAL_FEATURE_SPECULAR_COLOR) && defined (_ENERGY_CONSERVING_SPECULAR)
 				surfaceData.baseColor *= ( 1.0 - Max3( surfaceData.specularColor.r, surfaceData.specularColor.g, surfaceData.specularColor.b ) );
 				#endif
+
 				#ifdef _DOUBLESIDED_ON
 				float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
 				#else
@@ -545,13 +597,12 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				#endif
 				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
 
-
-				#if defined(_SPECULAR_OCCLUSION_CUSTOM)
-				#elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO( V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness( surfaceData.perceptualSmoothness ) );
-				#elif defined(_AMBIENT_OCCLUSION) && defined(_SPECULAR_OCCLUSION_FROM_AO)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion( ClampNdotV( dot( surfaceData.normalWS, V ) ), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness( surfaceData.perceptualSmoothness ) );
-				#endif
+                #if defined(_SPECULAR_OCCLUSION_CUSTOM)
+                #elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
+				surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO(V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness(surfaceData.perceptualSmoothness));
+                #elif defined(_AMBIENT_OCCLUSION) && defined(_SPECULAR_OCCLUSION_FROM_AO)
+				surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion(ClampNdotV(dot(surfaceData.normalWS, V)), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness(surfaceData.perceptualSmoothness));
+                #endif
 
 				#ifdef _ENABLE_GEOMETRIC_SPECULAR_AA
 				surfaceData.perceptualSmoothness = GeometricNormalFiltering( surfaceData.perceptualSmoothness, fragInputs.tangentToWorld[ 2 ], surfaceDescription.SpecularAAScreenSpaceVariance, surfaceDescription.SpecularAAThreshold );
@@ -595,22 +646,15 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 
 				InitBuiltinData( posInput, surfaceDescription.Alpha, bentNormalWS, -fragInputs.tangentToWorld[ 2 ], fragInputs.texCoord1, fragInputs.texCoord2, builtinData );
 
-				#ifdef _ASE_BAKEDGI
+				#ifdef ASE_BAKEDGI
 				builtinData.bakeDiffuseLighting = surfaceDescription.BakedGI;
 				#endif
-				#ifdef _ASE_BAKEDBACKGI
+
+				#ifdef ASE_BAKEDBACKGI
 				builtinData.backBakeDiffuseLighting = surfaceDescription.BakedBackGI;
 				#endif
 
 				builtinData.emissiveColor = surfaceDescription.Emission;
-
-				#if (SHADERPASS == SHADERPASS_DISTORTION)
-				builtinData.distortion = surfaceDescription.Distortion;
-				builtinData.distortionBlur = surfaceDescription.DistortionBlur;
-				#else
-				builtinData.distortion = float2(0.0, 0.0);
-				builtinData.distortionBlur = 0.0;
-				#endif
 
 				PostInitBuiltinData(V, posInput, surfaceData, builtinData);
 			}
@@ -646,15 +690,15 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				float4 tangentWS = float4(TransformObjectToWorldDir(inputMesh.tangentOS.xyz), inputMesh.tangentOS.w);
 
 				outputPackedVaryingsMeshToPS.positionCS = TransformWorldToHClip(positionRWS);
-				outputPackedVaryingsMeshToPS.interp00.xyz = positionRWS;
-				outputPackedVaryingsMeshToPS.interp01.xyz = normalWS;
-				outputPackedVaryingsMeshToPS.interp02.xyzw = tangentWS;
-				outputPackedVaryingsMeshToPS.interp03.xyzw = inputMesh.uv1;
-				outputPackedVaryingsMeshToPS.interp04.xyzw = inputMesh.uv2;
+				outputPackedVaryingsMeshToPS.positionRWS.xyz = positionRWS;
+				outputPackedVaryingsMeshToPS.normalWS.xyz = normalWS;
+				outputPackedVaryingsMeshToPS.tangentWS.xyzw = tangentWS;
+				outputPackedVaryingsMeshToPS.uv1.xyzw = inputMesh.uv1;
+				outputPackedVaryingsMeshToPS.uv2.xyzw = inputMesh.uv2;
 				return outputPackedVaryingsMeshToPS;
 			}
 
-			#if defined(TESSELLATION_ON)
+			#if defined(ASE_TESSELLATION)
 			struct VertexControl
 			{
 				float3 positionOS : INTERNALTESSPOS;
@@ -760,15 +804,15 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				FragInputs input;
 				ZERO_INITIALIZE(FragInputs, input);
 				input.tangentToWorld = k_identity3x3;
-				float3 positionRWS = packedInput.interp00.xyz;
-				float3 normalWS = packedInput.interp01.xyz;
-				float4 tangentWS = packedInput.interp02.xyzw;
+				float3 positionRWS = packedInput.positionRWS.xyz;
+				float3 normalWS = packedInput.normalWS.xyz;
+				float4 tangentWS = packedInput.tangentWS.xyzw;
 
 				input.positionSS = packedInput.positionCS;
 				input.positionRWS = positionRWS;
 				input.tangentToWorld = BuildTangentToWorld(tangentWS, normalWS);
-				input.texCoord1 = packedInput.interp03.xyzw;
-				input.texCoord2 = packedInput.interp04.xyzw;
+				input.texCoord1 = packedInput.uv1.xyzw;
+				input.texCoord2 = packedInput.uv2.xyzw;
 
 				#if _DOUBLESIDED_ON && SHADER_STAGE_FRAGMENT
 				input.isFrontFace = IS_FRONT_VFACE( packedInput.cullFace, true, false);
@@ -786,7 +830,7 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 
 				GlobalSurfaceDescription surfaceDescription = (GlobalSurfaceDescription)0;
 				
-				surfaceDescription.Albedo = _Albedo.rgb;
+				surfaceDescription.BaseColor = _Albedo.rgb;
 				surfaceDescription.Normal = float3( 0, 0, 1 );
 				surfaceDescription.BentNormal = float3( 0, 0, 1 );
 				surfaceDescription.CoatMask = 0;
@@ -822,7 +866,7 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				#endif
 
 				#if defined(_HAS_REFRACTION) || defined(_MATERIAL_FEATURE_TRANSMISSION)
-				surfaceDescription.Thickness = 1;
+				surfaceDescription.Thickness = 0;
 				#endif
 
 				#ifdef _HAS_REFRACTION
@@ -849,15 +893,10 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				surfaceDescription.IridescenceThickness = 0;
 				#endif
 
-				#ifdef _ASE_DISTORTION
-				surfaceDescription.Distortion = float2 ( 2, -1 );
-				surfaceDescription.DistortionBlur = 1;
-				#endif
-
-				#ifdef _ASE_BAKEDGI
+				#ifdef ASE_BAKEDGI
 				surfaceDescription.BakedGI = 0;
 				#endif
-				#ifdef _ASE_BAKEDBACKGI
+				#ifdef ASE_BAKEDBACKGI
 				surfaceDescription.BakedBackGI = 0;
 				#endif
 
@@ -888,37 +927,66 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 
 			#define _MATERIAL_FEATURE_SPECULAR_COLOR 1
 			#define _SPECULAR_OCCLUSION_FROM_AO 1
-			#define ASE_SRP_VERSION 999999
+			#pragma multi_compile_instancing
+			#pragma instancing_options renderinglayer
+			#define ASE_SRP_VERSION 101000
 
 
 			#pragma shader_feature _SURFACE_TYPE_TRANSPARENT
-			#pragma shader_feature_local _DOUBLESIDED_ON
-			#pragma shader_feature_local _ _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
+			#pragma shader_feature_local _TRANSPARENT_WRITES_MOTION_VEC
 			#pragma shader_feature_local _ENABLE_FOG_ON_TRANSPARENT
+			#pragma shader_feature_local _DOUBLESIDED_ON
 			#pragma shader_feature_local _ALPHATEST_ON
 
-			#define SHADERPASS SHADERPASS_LIGHT_TRANSPORT
+			#pragma multi_compile _ SHADOWS_SHADOWMASK
+			#pragma multi_compile _ LIGHT_LAYERS
 
 			#pragma vertex Vert
 			#pragma fragment Frag
 
-			//#define UNITY_MATERIAL_LIT
-
-			#if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
-			#define OUTPUT_SPLIT_LIGHTING
-			#endif
-
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/NormalSurfaceGradient.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Tessellation.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
 
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-			#ifdef DEBUG_DISPLAY
-				#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+
+			#define SHADERPASS SHADERPASS_LIGHT_TRANSPORT
+
+			#ifndef SHADER_UNLIT
+			#if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
+			#define VARYINGS_NEED_CULLFACE
 			#endif
-			
+			#endif
+
+		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
+			#define OUTPUT_SPLIT_LIGHTING
+		    #endif
+
+			#if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
+			#if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
+				#define WRITE_NORMAL_BUFFER
+			#endif
+			#endif
+
+			#ifndef DEBUG_DISPLAY
+				#if !defined(_SURFACE_TYPE_TRANSPARENT)
+					#if SHADERPASS == SHADERPASS_FORWARD
+					#define SHADERPASS_FORWARD_BYPASS_ALPHA_TEST
+					#elif SHADERPASS == SHADERPASS_GBUFFER
+					#define SHADERPASS_GBUFFER_BYPASS_ALPHA_TEST
+					#endif
+				#endif
+			#endif
+
+			#if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
+			#define _WRITE_TRANSPARENT_MOTION_VECTOR
+			#endif
+
 			CBUFFER_START( UnityPerMaterial )
 			float4 _Albedo;
 			float4 _Specular;
@@ -935,8 +1003,6 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			float _StencilWriteMaskDepth;
 			float _StencilRefMV;
 			float _StencilWriteMaskMV;
-			float _StencilRefDistortionVec;
-			float _StencilWriteMaskDistortionVec;
 			float _StencilWriteMaskGBuffer;
 			float _StencilRefGBuffer;
 			float _ZTestGBuffer;
@@ -944,6 +1010,9 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			float _ReceivesSSR;
 			float _SurfaceType;
 			float _BlendMode;
+            #ifdef SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
+			float _EnableBlendModePreserveSpecularLighting;
+            #endif
 			float _SrcBlend;
 			float _DstBlend;
 			float _AlphaSrcBlend;
@@ -963,29 +1032,49 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			float _DoubleSidedEnable;
 			float _DoubleSidedNormalMode;
 			float4 _DoubleSidedConstants;
-			#ifdef TESSELLATION_ON
-				float _TessPhongStrength;
-				float _TessValue;
-				float _TessMin;
-				float _TessMax;
-				float _TessEdgeLength;
-				float _TessMaxDisp;
+			#ifdef ASE_TESSELLATION
+			float _TessPhongStrength;
+			float _TessValue;
+			float _TessMin;
+			float _TessMax;
+			float _TessEdgeLength;
+			float _TessMaxDisp;
 			#endif
 			CBUFFER_END
+
+			// Property used by ScenePickingPass
+            #ifdef SCENEPICKINGPASS
+			float4 _SelectionID;
+            #endif
+
+			// Properties used by SceneSelectionPass
+            #ifdef SCENESELECTIONPASS
+			int _ObjectId;
+			int _PassValue;
+            #endif
+
 			
 
+            #ifdef DEBUG_DISPLAY
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
+            #endif
+
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Material.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/NormalSurfaceGradient.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/Lit.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/BuiltinUtilities.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/MaterialUtilities.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalUtilities.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/LitDecalData.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphFunctions.hlsl"
+
+			// Setup DECALS_OFF so the shader stripper can remove variants
+            #define HAVE_DECALS ( (defined(DECALS_3RT) || defined(DECALS_4RT)) && !defined(_DISABLE_DECALS) )
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalUtilities.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/LitDecalData.hlsl"
 
 			
 
 			#if defined(_DOUBLESIDED_ON) && !defined(ASE_NEED_CULLFACE)
-				#define ASE_NEED_CULLFACE 1
+			#define ASE_NEED_CULLFACE 1
 			#endif
 
 			struct AttributesMesh
@@ -1018,7 +1107,7 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				surfaceData.specularOcclusion = 1.0;
 
 				// surface data
-				surfaceData.baseColor =					surfaceDescription.Albedo;
+				surfaceData.baseColor =					surfaceDescription.BaseColor;
 				surfaceData.perceptualSmoothness =		surfaceDescription.Smoothness;
 				surfaceData.ambientOcclusion =			surfaceDescription.Occlusion;
 				surfaceData.metallic =					surfaceDescription.Metallic;
@@ -1030,8 +1119,8 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				#ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
 				surfaceData.subsurfaceMask =			surfaceDescription.SubsurfaceMask;
 				#endif
-				#if defined(_HAS_REFRACTION) || defined(_MATERIAL_FEATURE_TRANSMISSION)
-				surfaceData.thickness =					surfaceDescription.Thickness;
+				#if defined(_HAS_REFRACTION) || defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) || defined(_MATERIAL_FEATURE_TRANSMISSION)
+				surfaceData.thickness = 				surfaceDescription.Thickness;
 				#endif
 				#if defined( _MATERIAL_FEATURE_SUBSURFACE_SCATTERING ) || defined( _MATERIAL_FEATURE_TRANSMISSION )
 				surfaceData.diffusionProfileHash =		asuint(surfaceDescription.DiffusionProfile);
@@ -1073,7 +1162,6 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				surfaceData.transmittanceMask = 0.0;
 				#endif
 
-
 				// material features
 				surfaceData.materialFeatures = MATERIALFEATUREFLAGS_LIT_STANDARD;
 				#ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
@@ -1082,10 +1170,11 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				#ifdef _MATERIAL_FEATURE_TRANSMISSION
 				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
 				#endif
-				#ifdef _MATERIAL_FEATURE_ANISOTROPY
+                #ifdef _MATERIAL_FEATURE_ANISOTROPY
 				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
-				#endif
-				#ifdef ASE_LIT_CLEAR_COAT
+				surfaceData.normalWS = float3(0, 1, 0);
+                #endif
+				#ifdef _MATERIAL_FEATURE_CLEAR_COAT
 				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_CLEAR_COAT;
 				#endif
 				#ifdef _MATERIAL_FEATURE_IRIDESCENCE
@@ -1123,7 +1212,7 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				#endif
 
 				bentNormalWS = surfaceData.normalWS;
-				
+
 				#ifdef ASE_BENT_NORMAL
 				GetNormalWS( fragInputs, surfaceDescription.BentNormal, bentNormalWS, doubleSidedConstants );
 				#endif
@@ -1133,13 +1222,12 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				#endif
 				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
 
-
-				#if defined(_SPECULAR_OCCLUSION_CUSTOM)
-				#elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO( V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness( surfaceData.perceptualSmoothness ) );
-				#elif defined(_AMBIENT_OCCLUSION) && defined(_SPECULAR_OCCLUSION_FROM_AO)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion( ClampNdotV( dot( surfaceData.normalWS, V ) ), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness( surfaceData.perceptualSmoothness ) );
-				#endif
+                #if defined(_SPECULAR_OCCLUSION_CUSTOM)
+                #elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
+				surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO(V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness(surfaceData.perceptualSmoothness));
+                #elif defined(_AMBIENT_OCCLUSION) && defined(_SPECULAR_OCCLUSION_FROM_AO)
+				surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion(ClampNdotV(dot(surfaceData.normalWS, V)), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness(surfaceData.perceptualSmoothness));
+                #endif
 
 				#ifdef _ENABLE_GEOMETRIC_SPECULAR_AA
 				surfaceData.perceptualSmoothness = GeometricNormalFiltering( surfaceData.perceptualSmoothness, fragInputs.tangentToWorld[ 2 ], surfaceDescription.SpecularAAScreenSpaceVariance, surfaceDescription.SpecularAAThreshold );
@@ -1184,14 +1272,6 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				InitBuiltinData( posInput, surfaceDescription.Alpha, bentNormalWS, -fragInputs.tangentToWorld[ 2 ], fragInputs.texCoord1, fragInputs.texCoord2, builtinData );
 
 				builtinData.emissiveColor = surfaceDescription.Emission;
-
-				#if (SHADERPASS == SHADERPASS_DISTORTION)
-				builtinData.distortion = surfaceDescription.Distortion;
-				builtinData.distortionBlur = surfaceDescription.DistortionBlur;
-				#else
-				builtinData.distortion = float2(0.0, 0.0);
-				builtinData.distortionBlur = 0.0;
-				#endif
 
 				PostInitBuiltinData(V, posInput, surfaceData, builtinData);
 			}
@@ -1243,7 +1323,7 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				return outputPackedVaryingsMeshToPS;
 			}
 
-			#if defined(TESSELLATION_ON)
+			#if defined(ASE_TESSELLATION)
 			struct VertexControl
 			{
 				float3 positionOS : INTERNALTESSPOS;
@@ -1363,7 +1443,7 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				BuiltinData builtinData;
 				GlobalSurfaceDescription surfaceDescription = (GlobalSurfaceDescription)0;
 				
-				surfaceDescription.Albedo = _Albedo.rgb;
+				surfaceDescription.BaseColor = _Albedo.rgb;
 				surfaceDescription.Normal = float3( 0, 0, 1 );
 				surfaceDescription.BentNormal = float3( 0, 0, 1 );
 				surfaceDescription.CoatMask = 0;
@@ -1458,37 +1538,72 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 
 			#define _MATERIAL_FEATURE_SPECULAR_COLOR 1
 			#define _SPECULAR_OCCLUSION_FROM_AO 1
-			#define ASE_SRP_VERSION 999999
+			#pragma multi_compile_instancing
+			#pragma instancing_options renderinglayer
+			#define ASE_SRP_VERSION 101000
 
 
 			#pragma shader_feature _SURFACE_TYPE_TRANSPARENT
-			#pragma shader_feature_local _DOUBLESIDED_ON
-			#pragma shader_feature_local _ _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
+			#pragma shader_feature_local _TRANSPARENT_WRITES_MOTION_VEC
 			#pragma shader_feature_local _ENABLE_FOG_ON_TRANSPARENT
+			#pragma shader_feature_local _DOUBLESIDED_ON
 			#pragma shader_feature_local _ALPHATEST_ON
 
-			#define SHADERPASS SHADERPASS_SHADOWS
+			#pragma multi_compile _ SHADOWS_SHADOWMASK
 
 			#pragma vertex Vert
 			#pragma fragment Frag
 
-			//#define UNITY_MATERIAL_LIT
-
-			#if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
-			#define OUTPUT_SPLIT_LIGHTING
-			#endif
-
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/NormalSurfaceGradient.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+        	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
+        	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Tessellation.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
 
 			//#define USE_LEGACY_UNITY_MATRIX_VARIABLES
 
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-			#ifdef DEBUG_DISPLAY
-				#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+
+			#define SHADERPASS SHADERPASS_SHADOWS
+
+			#ifndef SHADER_UNLIT
+			#if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
+			#define VARYINGS_NEED_CULLFACE
+			#endif
+			#endif
+
+		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
+			#define OUTPUT_SPLIT_LIGHTING
+		    #endif
+
+		    #if (SHADERPASS == SHADERPASS_PATH_TRACING) && !defined(_DOUBLESIDED_ON) && (defined(_REFRACTION_PLANE) || defined(_REFRACTION_SPHERE))
+			#undef  _REFRACTION_PLANE
+			#undef  _REFRACTION_SPHERE
+			#define _REFRACTION_THIN
+		    #endif
+
+			#if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
+			#if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
+			#define WRITE_NORMAL_BUFFER
+			#endif
+			#endif
+
+			#ifndef DEBUG_DISPLAY
+				#if !defined(_SURFACE_TYPE_TRANSPARENT)
+					#if SHADERPASS == SHADERPASS_FORWARD
+					#define SHADERPASS_FORWARD_BYPASS_ALPHA_TEST
+					#elif SHADERPASS == SHADERPASS_GBUFFER
+					#define SHADERPASS_GBUFFER_BYPASS_ALPHA_TEST
+					#endif
+				#endif
+			#endif
+
+			#if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
+			#define _WRITE_TRANSPARENT_MOTION_VECTOR
 			#endif
 
 			CBUFFER_START( UnityPerMaterial )
@@ -1507,8 +1622,6 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			float _StencilWriteMaskDepth;
 			float _StencilRefMV;
 			float _StencilWriteMaskMV;
-			float _StencilRefDistortionVec;
-			float _StencilWriteMaskDistortionVec;
 			float _StencilWriteMaskGBuffer;
 			float _StencilRefGBuffer;
 			float _ZTestGBuffer;
@@ -1516,6 +1629,9 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			float _ReceivesSSR;
 			float _SurfaceType;
 			float _BlendMode;
+            #ifdef SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
+			float _EnableBlendModePreserveSpecularLighting;
+            #endif
 			float _SrcBlend;
 			float _DstBlend;
 			float _AlphaSrcBlend;
@@ -1535,29 +1651,49 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			float _DoubleSidedEnable;
 			float _DoubleSidedNormalMode;
 			float4 _DoubleSidedConstants;
-			#ifdef TESSELLATION_ON
-				float _TessPhongStrength;
-				float _TessValue;
-				float _TessMin;
-				float _TessMax;
-				float _TessEdgeLength;
-				float _TessMaxDisp;
+			#ifdef ASE_TESSELLATION
+			float _TessPhongStrength;
+			float _TessValue;
+			float _TessMin;
+			float _TessMax;
+			float _TessEdgeLength;
+			float _TessMaxDisp;
 			#endif
 			CBUFFER_END
+
+			// Property used by ScenePickingPass
+            #ifdef SCENEPICKINGPASS
+			float4 _SelectionID;
+            #endif
+
+			// Properties used by SceneSelectionPass
+            #ifdef SCENESELECTIONPASS
+			int _ObjectId;
+			int _PassValue;
+            #endif
+
 			
 
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Material.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/Lit.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/BuiltinUtilities.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/MaterialUtilities.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalUtilities.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/LitDecalData.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphFunctions.hlsl"
+            #ifdef DEBUG_DISPLAY
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
+            #endif
+
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Material.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/NormalSurfaceGradient.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/Lit.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/BuiltinUtilities.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/MaterialUtilities.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphFunctions.hlsl"
+
+			// Setup DECALS_OFF so the shader stripper can remove variants
+            #define HAVE_DECALS ( (defined(DECALS_3RT) || defined(DECALS_4RT)) && !defined(_DISABLE_DECALS) )
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalUtilities.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/LitDecalData.hlsl"
 
 			
 
 			#if defined(_DOUBLESIDED_ON) && !defined(ASE_NEED_CULLFACE)
-				#define ASE_NEED_CULLFACE 1
+			#define ASE_NEED_CULLFACE 1
 			#endif
 
 			struct AttributesMesh
@@ -1571,7 +1707,7 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			struct PackedVaryingsMeshToPS
 			{
 				float4 positionCS : SV_Position;
-				float3 interp00 : TEXCOORD0;
+				float3 positionRWS : TEXCOORD0;
 				
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				UNITY_VERTEX_OUTPUT_STEREO
@@ -1620,10 +1756,11 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				#ifdef _MATERIAL_FEATURE_TRANSMISSION
 				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
 				#endif
-				#ifdef _MATERIAL_FEATURE_ANISOTROPY
+                #ifdef _MATERIAL_FEATURE_ANISOTROPY
 				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
-				#endif
-				#ifdef ASE_LIT_CLEAR_COAT
+				surfaceData.normalWS = float3(0, 1, 0);
+                #endif
+				#ifdef _MATERIAL_FEATURE_CLEAR_COAT
 				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_CLEAR_COAT;
 				#endif
 				#ifdef _MATERIAL_FEATURE_IRIDESCENCE
@@ -1649,7 +1786,7 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 
 				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
 				surfaceData.tangentWS = normalize( fragInputs.tangentToWorld[ 0 ].xyz );
-				
+
 				// decals
 				#if HAVE_DECALS
 				if( _EnableDecals )
@@ -1662,12 +1799,12 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				bentNormalWS = surfaceData.normalWS;
 				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
 
-				#if defined(_SPECULAR_OCCLUSION_CUSTOM)
-				#elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO( V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness( surfaceData.perceptualSmoothness ) );
-				#elif defined(_AMBIENT_OCCLUSION) && defined(_SPECULAR_OCCLUSION_FROM_AO)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion( ClampNdotV( dot( surfaceData.normalWS, V ) ), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness( surfaceData.perceptualSmoothness ) );
-				#endif
+                #if defined(_SPECULAR_OCCLUSION_CUSTOM)
+                #elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
+				surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO(V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness(surfaceData.perceptualSmoothness));
+                #elif defined(_AMBIENT_OCCLUSION) && defined(_SPECULAR_OCCLUSION_FROM_AO)
+				surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion(ClampNdotV(dot(surfaceData.normalWS, V)), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness(surfaceData.perceptualSmoothness));
+                #endif
 
 				// debug
 				#if defined(DEBUG_DISPLAY)
@@ -1740,11 +1877,11 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 
 				float3 positionRWS = TransformObjectToWorld(inputMesh.positionOS);
 				outputPackedVaryingsMeshToPS.positionCS = TransformWorldToHClip(positionRWS);
-				outputPackedVaryingsMeshToPS.interp00.xyz = positionRWS;
+				outputPackedVaryingsMeshToPS.positionRWS.xyz = positionRWS;
 				return outputPackedVaryingsMeshToPS;
 			}
 
-			#if defined(TESSELLATION_ON)
+			#if defined(ASE_TESSELLATION)
 			struct VertexControl
 			{
 				float3 positionOS : INTERNALTESSPOS;
@@ -1827,7 +1964,7 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				return VertexFunction( v );
 			}
 			#endif
-			
+
 			#if defined(WRITE_NORMAL_BUFFER) && defined(WRITE_MSAA_DEPTH)
 			#define SV_TARGET_DECAL SV_Target2
 			#elif defined(WRITE_NORMAL_BUFFER) || defined(WRITE_MSAA_DEPTH)
@@ -1841,7 +1978,6 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 						, out float4 outColor : SV_Target0
 						#else
 							#ifdef WRITE_MSAA_DEPTH
-							// We need the depth color as SV_Target0 for alpha to coverage
 							, out float4 depthColor : SV_Target0
 								#ifdef WRITE_NORMAL_BUFFER
 								, out float4 outNormalBuffer : SV_Target1
@@ -1852,7 +1988,6 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 								#endif
 							#endif
 
-							// Decal buffer must be last as it is bind but we can optionally write into it (based on _DISABLE_DECALS)
 							#if defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)
 							, out float4 outDecalBuffer : SV_TARGET_DECAL
 							#endif
@@ -1867,7 +2002,7 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX( packedInput );
 				UNITY_SETUP_INSTANCE_ID( packedInput );
 
-				float3 positionRWS = packedInput.interp00.xyz;
+				float3 positionRWS = packedInput.positionRWS.xyz;
 
 				FragInputs input;
 				ZERO_INITIALIZE(FragInputs, input);
@@ -1916,7 +2051,8 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 
 				#ifdef WRITE_NORMAL_BUFFER
 				EncodeIntoNormalBuffer( ConvertSurfaceDataToNormalData( surfaceData ), posInput.positionSS, outNormalBuffer );
-				#ifdef WRITE_MSAA_DEPTH
+
+                #ifdef WRITE_MSAA_DEPTH
 				depthColor = packedInput.positionCS.z;
 				#endif
 				#elif defined(WRITE_MSAA_DEPTH)
@@ -1935,43 +2071,77 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			
 			Name "SceneSelectionPass"
 			Tags { "LightMode"="SceneSelectionPass" }
-			ColorMask 0
+
+			Cull Off
 
 			HLSLPROGRAM
 
-			#define _MATERIAL_FEATURE_SPECULAR_COLOR 1
-			#define _SPECULAR_OCCLUSION_FROM_AO 1
-			#define ASE_SRP_VERSION 999999
+            #define _MATERIAL_FEATURE_SPECULAR_COLOR 1
+            #define _SPECULAR_OCCLUSION_FROM_AO 1
+            #pragma multi_compile_instancing
+            #pragma instancing_options renderinglayer
+            #define ASE_SRP_VERSION 101000
 
 
-			#pragma shader_feature _SURFACE_TYPE_TRANSPARENT
-			#pragma shader_feature_local _DOUBLESIDED_ON
-			#pragma shader_feature_local _ _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
+            #pragma shader_feature _SURFACE_TYPE_TRANSPARENT
+			#pragma shader_feature_local _TRANSPARENT_WRITES_MOTION_VEC
 			#pragma shader_feature_local _ENABLE_FOG_ON_TRANSPARENT
+			#pragma shader_feature_local _DOUBLESIDED_ON
 			#pragma shader_feature_local _ALPHATEST_ON
 
-			#define SHADERPASS SHADERPASS_DEPTH_ONLY
-			#define SCENESELECTIONPASS
 			#pragma editor_sync_compilation
 
 			#pragma vertex Vert
 			#pragma fragment Frag
 
-			//#define UNITY_MATERIAL_LIT
-
-			#if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
-			#define OUTPUT_SPLIT_LIGHTING
-			#endif
-
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/NormalSurfaceGradient.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Tessellation.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
 
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-			#ifdef DEBUG_DISPLAY
-				#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+
+			#define SHADERPASS SHADERPASS_DEPTH_ONLY
+		    #define SCENESELECTIONPASS 1
+
+			#ifndef SHADER_UNLIT
+			#if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
+			#define VARYINGS_NEED_CULLFACE
+			#endif
+			#endif
+
+		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
+			#define OUTPUT_SPLIT_LIGHTING
+		    #endif
+
+		    #if (SHADERPASS == SHADERPASS_PATH_TRACING) && !defined(_DOUBLESIDED_ON) && (defined(_REFRACTION_PLANE) || defined(_REFRACTION_SPHERE))
+			#undef  _REFRACTION_PLANE
+			#undef  _REFRACTION_SPHERE
+			#define _REFRACTION_THIN
+		    #endif
+
+			#if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
+			#if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
+				#define WRITE_NORMAL_BUFFER
+			#endif
+			#endif
+
+			#ifndef DEBUG_DISPLAY
+				#if !defined(_SURFACE_TYPE_TRANSPARENT)
+					#if SHADERPASS == SHADERPASS_FORWARD
+					#define SHADERPASS_FORWARD_BYPASS_ALPHA_TEST
+					#elif SHADERPASS == SHADERPASS_GBUFFER
+					#define SHADERPASS_GBUFFER_BYPASS_ALPHA_TEST
+					#endif
+				#endif
+			#endif
+
+			#if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
+			#define _WRITE_TRANSPARENT_MOTION_VECTOR
 			#endif
 
 			CBUFFER_START( UnityPerMaterial )
@@ -1990,8 +2160,6 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			float _StencilWriteMaskDepth;
 			float _StencilRefMV;
 			float _StencilWriteMaskMV;
-			float _StencilRefDistortionVec;
-			float _StencilWriteMaskDistortionVec;
 			float _StencilWriteMaskGBuffer;
 			float _StencilRefGBuffer;
 			float _ZTestGBuffer;
@@ -1999,6 +2167,9 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			float _ReceivesSSR;
 			float _SurfaceType;
 			float _BlendMode;
+            #ifdef SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
+			float _EnableBlendModePreserveSpecularLighting;
+            #endif
 			float _SrcBlend;
 			float _DstBlend;
 			float _AlphaSrcBlend;
@@ -2018,30 +2189,50 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			float _DoubleSidedEnable;
 			float _DoubleSidedNormalMode;
 			float4 _DoubleSidedConstants;
-			#ifdef TESSELLATION_ON
-				float _TessPhongStrength;
-				float _TessValue;
-				float _TessMin;
-				float _TessMax;
-				float _TessEdgeLength;
-				float _TessMaxDisp;
+			#ifdef ASE_TESSELLATION
+			float _TessPhongStrength;
+			float _TessValue;
+			float _TessMin;
+			float _TessMax;
+			float _TessEdgeLength;
+			float _TessMaxDisp;
 			#endif
 			CBUFFER_END
 
+			// Property used by ScenePickingPass
+            #ifdef SCENEPICKINGPASS
+			float4 _SelectionID;
+            #endif
+
+			// Properties used by SceneSelectionPass
+            #ifdef SCENESELECTIONPASS
+			int _ObjectId;
+			int _PassValue;
+            #endif
+
 			
 
+            #ifdef DEBUG_DISPLAY
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
+            #endif
+
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/PickingSpaceTransforms.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Material.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/NormalSurfaceGradient.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/Lit.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/BuiltinUtilities.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/MaterialUtilities.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalUtilities.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/LitDecalData.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphFunctions.hlsl"
+
+			// Setup DECALS_OFF so the shader stripper can remove variants
+            #define HAVE_DECALS ( (defined(DECALS_3RT) || defined(DECALS_4RT)) && !defined(_DISABLE_DECALS) )
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalUtilities.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/LitDecalData.hlsl"
 
 			
 
 			#if defined(_DOUBLESIDED_ON) && !defined(ASE_NEED_CULLFACE)
-				#define ASE_NEED_CULLFACE 1
+			#define ASE_NEED_CULLFACE 1
 			#endif
 
 			struct AttributesMesh
@@ -2055,7 +2246,7 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			struct PackedVaryingsMeshToPS
 			{
 				float4 positionCS : SV_Position;
-				float3 interp00 : TEXCOORD0;
+				float3 positionRWS : TEXCOORD0;
 				
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				UNITY_VERTEX_OUTPUT_STEREO
@@ -2063,9 +2254,6 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				FRONT_FACE_TYPE cullFace : FRONT_FACE_SEMANTIC;
 				#endif
 			};
-
-			int _ObjectId;
-			int _PassValue;
 
 			
 			void BuildSurfaceData(FragInputs fragInputs, inout SceneSurfaceDescription surfaceDescription, float3 V, PositionInputs posInput, out SurfaceData surfaceData, out float3 bentNormalWS)
@@ -2107,10 +2295,11 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				#ifdef _MATERIAL_FEATURE_TRANSMISSION
 				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
 				#endif
-				#ifdef _MATERIAL_FEATURE_ANISOTROPY
+                #ifdef _MATERIAL_FEATURE_ANISOTROPY
 				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
-				#endif
-				#ifdef ASE_LIT_CLEAR_COAT
+				surfaceData.normalWS = float3(0, 1, 0);
+                #endif
+				#ifdef _MATERIAL_FEATURE_CLEAR_COAT
 				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_CLEAR_COAT;
 				#endif
 				#ifdef _MATERIAL_FEATURE_IRIDESCENCE
@@ -2149,12 +2338,12 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				bentNormalWS = surfaceData.normalWS;
 				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
 
-				#if defined(_SPECULAR_OCCLUSION_CUSTOM)
-				#elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO( V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness( surfaceData.perceptualSmoothness ) );
-				#elif defined(_AMBIENT_OCCLUSION) && defined(_SPECULAR_OCCLUSION_FROM_AO)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion( ClampNdotV( dot( surfaceData.normalWS, V ) ), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness( surfaceData.perceptualSmoothness ) );
-				#endif
+                #if defined(_SPECULAR_OCCLUSION_CUSTOM)
+                #elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
+				surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO(V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness(surfaceData.perceptualSmoothness));
+                #elif defined(_AMBIENT_OCCLUSION) && defined(_SPECULAR_OCCLUSION_FROM_AO)
+				surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion(ClampNdotV(dot(surfaceData.normalWS, V)), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness(surfaceData.perceptualSmoothness));
+                #endif
 
 				// debug
 				#if defined(DEBUG_DISPLAY)
@@ -2223,11 +2412,11 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 
 				float3 positionRWS = TransformObjectToWorld(inputMesh.positionOS);
 				outputPackedVaryingsMeshToPS.positionCS = TransformWorldToHClip(positionRWS);
-				outputPackedVaryingsMeshToPS.interp00.xyz = positionRWS;
+				outputPackedVaryingsMeshToPS.positionRWS.xyz = positionRWS;
 				return outputPackedVaryingsMeshToPS;
 			}
 
-			#if defined(TESSELLATION_ON)
+			#if defined(ASE_TESSELLATION)
 			struct VertexControl
 			{
 				float3 positionOS : INTERNALTESSPOS;
@@ -2310,7 +2499,7 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				return VertexFunction( v );
 			}
 			#endif
-			
+
 			#if defined(WRITE_NORMAL_BUFFER) && defined(WRITE_MSAA_DEPTH)
 			#define SV_TARGET_DECAL SV_Target2
 			#elif defined(WRITE_NORMAL_BUFFER) || defined(WRITE_MSAA_DEPTH)
@@ -2350,7 +2539,7 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX( packedInput );
 				UNITY_SETUP_INSTANCE_ID( packedInput );
 
-				float3 positionRWS = packedInput.interp00.xyz;
+				float3 positionRWS = packedInput.positionRWS.xyz;
 
 				FragInputs input;
 				ZERO_INITIALIZE(FragInputs, input);
@@ -2432,19 +2621,19 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 
 			HLSLPROGRAM
 
-			#define _MATERIAL_FEATURE_SPECULAR_COLOR 1
-			#define _SPECULAR_OCCLUSION_FROM_AO 1
-			#define ASE_SRP_VERSION 999999
+            #define _MATERIAL_FEATURE_SPECULAR_COLOR 1
+            #define _SPECULAR_OCCLUSION_FROM_AO 1
+            #pragma multi_compile_instancing
+            #pragma instancing_options renderinglayer
+            #define ASE_SRP_VERSION 101000
 
 
-			#pragma shader_feature _SURFACE_TYPE_TRANSPARENT
-			#pragma shader_feature_local _DOUBLESIDED_ON
-			#pragma shader_feature_local _BLENDMODE_OFF _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
+            #pragma shader_feature _SURFACE_TYPE_TRANSPARENT
+			#pragma shader_feature_local _TRANSPARENT_WRITES_MOTION_VEC
 			#pragma shader_feature_local _ENABLE_FOG_ON_TRANSPARENT
+			#pragma shader_feature_local _DOUBLESIDED_ON
 			#pragma shader_feature_local _ALPHATEST_ON
-			#pragma shader_feature_local _ _DISABLE_DECALS
 
-			#define SHADERPASS SHADERPASS_DEPTH_ONLY
 			#pragma multi_compile _ WRITE_NORMAL_BUFFER
 			#pragma multi_compile _ WRITE_MSAA_DEPTH
 			#pragma multi_compile _ WRITE_DECAL_BUFFER
@@ -2452,23 +2641,55 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			#pragma vertex Vert
 			#pragma fragment Frag
 
-			//#define UNITY_MATERIAL_LIT
-
-			#if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
-			#define OUTPUT_SPLIT_LIGHTING
-			#endif
-
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/NormalSurfaceGradient.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Tessellation.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
 
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-			#ifdef DEBUG_DISPLAY
-				#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+
+			#define SHADERPASS SHADERPASS_DEPTH_ONLY
+
+			#ifndef SHADER_UNLIT
+			#if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
+			#define VARYINGS_NEED_CULLFACE
 			#endif
-			
+			#endif
+
+		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
+			#define OUTPUT_SPLIT_LIGHTING
+		    #endif
+
+		    #if (SHADERPASS == SHADERPASS_PATH_TRACING) && !defined(_DOUBLESIDED_ON) && (defined(_REFRACTION_PLANE) || defined(_REFRACTION_SPHERE))
+			#undef  _REFRACTION_PLANE
+			#undef  _REFRACTION_SPHERE
+			#define _REFRACTION_THIN
+		    #endif
+
+			#if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
+			#if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
+				#define WRITE_NORMAL_BUFFER
+			#endif
+			#endif
+
+			#ifndef DEBUG_DISPLAY
+				#if !defined(_SURFACE_TYPE_TRANSPARENT)
+					#if SHADERPASS == SHADERPASS_FORWARD
+					#define SHADERPASS_FORWARD_BYPASS_ALPHA_TEST
+					#elif SHADERPASS == SHADERPASS_GBUFFER
+					#define SHADERPASS_GBUFFER_BYPASS_ALPHA_TEST
+					#endif
+				#endif
+			#endif
+
+			#if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
+			#define _WRITE_TRANSPARENT_MOTION_VECTOR
+			#endif
+
 			CBUFFER_START( UnityPerMaterial )
 			float4 _Albedo;
 			float4 _Specular;
@@ -2485,8 +2706,6 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			float _StencilWriteMaskDepth;
 			float _StencilRefMV;
 			float _StencilWriteMaskMV;
-			float _StencilRefDistortionVec;
-			float _StencilWriteMaskDistortionVec;
 			float _StencilWriteMaskGBuffer;
 			float _StencilRefGBuffer;
 			float _ZTestGBuffer;
@@ -2494,6 +2713,9 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			float _ReceivesSSR;
 			float _SurfaceType;
 			float _BlendMode;
+            #ifdef SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
+			float _EnableBlendModePreserveSpecularLighting;
+            #endif
 			float _SrcBlend;
 			float _DstBlend;
 			float _AlphaSrcBlend;
@@ -2513,29 +2735,49 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			float _DoubleSidedEnable;
 			float _DoubleSidedNormalMode;
 			float4 _DoubleSidedConstants;
-			#ifdef TESSELLATION_ON
-				float _TessPhongStrength;
-				float _TessValue;
-				float _TessMin;
-				float _TessMax;
-				float _TessEdgeLength;
-				float _TessMaxDisp;
+			#ifdef ASE_TESSELLATION
+			float _TessPhongStrength;
+			float _TessValue;
+			float _TessMin;
+			float _TessMax;
+			float _TessEdgeLength;
+			float _TessMaxDisp;
 			#endif
 			CBUFFER_END
+
+			// Property used by ScenePickingPass
+            #ifdef SCENEPICKINGPASS
+			float4 _SelectionID;
+            #endif
+
+			// Properties used by SceneSelectionPass
+            #ifdef SCENESELECTIONPASS
+			int _ObjectId;
+			int _PassValue;
+            #endif
+
 			
 
+            #ifdef DEBUG_DISPLAY
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
+            #endif
+
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Material.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/NormalSurfaceGradient.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/Lit.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/BuiltinUtilities.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/MaterialUtilities.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphFunctions.hlsl"
+
+			// Setup DECALS_OFF so the shader stripper can remove variants
+            #define HAVE_DECALS ( (defined(DECALS_3RT) || defined(DECALS_4RT)) && !defined(_DISABLE_DECALS) )
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalUtilities.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/LitDecalData.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphFunctions.hlsl"
 
 			
 
 			#if defined(_DOUBLESIDED_ON) && !defined(ASE_NEED_CULLFACE)
-				#define ASE_NEED_CULLFACE 1
+			#define ASE_NEED_CULLFACE 1
 			#endif
 
 			struct AttributesMesh
@@ -2550,9 +2792,9 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			struct PackedVaryingsMeshToPS
 			{
 				float4 positionCS : SV_Position;
-				float3 interp00 : TEXCOORD0;
-				float3 interp01 : TEXCOORD1;
-				float4 interp02 : TEXCOORD2;
+				float3 positionRWS : TEXCOORD0;
+				float3 normalWS : TEXCOORD1;
+				float4 tangentWS : TEXCOORD2;
 				
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				UNITY_VERTEX_OUTPUT_STEREO
@@ -2602,10 +2844,11 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				#ifdef _MATERIAL_FEATURE_TRANSMISSION
 				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
 				#endif
-				#ifdef _MATERIAL_FEATURE_ANISOTROPY
+                #ifdef _MATERIAL_FEATURE_ANISOTROPY
 				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
-				#endif
-				#ifdef ASE_LIT_CLEAR_COAT
+				surfaceData.normalWS = float3(0, 1, 0);
+                #endif
+				#ifdef _MATERIAL_FEATURE_CLEAR_COAT
 				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_CLEAR_COAT;
 				#endif
 				#ifdef _MATERIAL_FEATURE_IRIDESCENCE
@@ -2632,7 +2875,7 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 
 				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
 				surfaceData.tangentWS = normalize( fragInputs.tangentToWorld[ 0 ].xyz );
-				
+
 				// decals
 				#if HAVE_DECALS
 				if( _EnableDecals )
@@ -2645,12 +2888,12 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				bentNormalWS = surfaceData.normalWS;
 				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
 
-				#if defined(_SPECULAR_OCCLUSION_CUSTOM)
-				#elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO( V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness( surfaceData.perceptualSmoothness ) );
-				#elif defined(_AMBIENT_OCCLUSION) && defined(_SPECULAR_OCCLUSION_FROM_AO)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion( ClampNdotV( dot( surfaceData.normalWS, V ) ), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness( surfaceData.perceptualSmoothness ) );
-				#endif
+                #if defined(_SPECULAR_OCCLUSION_CUSTOM)
+                #elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
+				surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO(V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness(surfaceData.perceptualSmoothness));
+                #elif defined(_AMBIENT_OCCLUSION) && defined(_SPECULAR_OCCLUSION_FROM_AO)
+				surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion(ClampNdotV(dot(surfaceData.normalWS, V)), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness(surfaceData.perceptualSmoothness));
+                #endif
 
 				// debug
 				#if defined(DEBUG_DISPLAY)
@@ -2727,13 +2970,13 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				float4 tangentWS = float4(TransformObjectToWorldDir(inputMesh.tangentOS.xyz), inputMesh.tangentOS.w);
 
 				outputPackedVaryingsMeshToPS.positionCS = TransformWorldToHClip(positionRWS);
-				outputPackedVaryingsMeshToPS.interp00.xyz = positionRWS;
-				outputPackedVaryingsMeshToPS.interp01.xyz = normalWS;
-				outputPackedVaryingsMeshToPS.interp02.xyzw = tangentWS;
+				outputPackedVaryingsMeshToPS.positionRWS.xyz = positionRWS;
+				outputPackedVaryingsMeshToPS.normalWS.xyz = normalWS;
+				outputPackedVaryingsMeshToPS.tangentWS.xyzw = tangentWS;
 				return outputPackedVaryingsMeshToPS;
 			}
-			
-			#if defined(TESSELLATION_ON)
+
+			#if defined(ASE_TESSELLATION)
 			struct VertexControl
 			{
 				float3 positionOS : INTERNALTESSPOS;
@@ -2833,7 +3076,6 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 						, out float4 outColor : SV_Target0
 						#else
 							#ifdef WRITE_MSAA_DEPTH
-							// We need the depth color as SV_Target0 for alpha to coverage
 							, out float4 depthColor : SV_Target0
 								#ifdef WRITE_NORMAL_BUFFER
 								, out float4 outNormalBuffer : SV_Target1
@@ -2844,7 +3086,6 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 								#endif
 							#endif
 
-							// Decal buffer must be last as it is bind but we can optionally write into it (based on _DISABLE_DECALS)
 							#if defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)
 							, out float4 outDecalBuffer : SV_TARGET_DECAL
 							#endif
@@ -2859,9 +3100,9 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX( packedInput );
 				UNITY_SETUP_INSTANCE_ID( packedInput );
 
-				float3 positionRWS = packedInput.interp00.xyz;
-				float3 normalWS = packedInput.interp01.xyz;
-				float4 tangentWS = packedInput.interp02.xyzw;
+				float3 positionRWS = packedInput.positionRWS.xyz;
+				float3 normalWS = packedInput.normalWS.xyz;
+				float4 tangentWS = packedInput.tangentWS.xyzw;
 
 				FragInputs input;
 				ZERO_INITIALIZE(FragInputs, input);
@@ -2954,42 +3195,74 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 
 			HLSLPROGRAM
 
-			#define _MATERIAL_FEATURE_SPECULAR_COLOR 1
-			#define _SPECULAR_OCCLUSION_FROM_AO 1
-			#define ASE_SRP_VERSION 999999
+            #define _MATERIAL_FEATURE_SPECULAR_COLOR 1
+            #define _SPECULAR_OCCLUSION_FROM_AO 1
+            #pragma multi_compile_instancing
+            #pragma instancing_options renderinglayer
+            #define ASE_SRP_VERSION 101000
 
 
-			#pragma shader_feature _SURFACE_TYPE_TRANSPARENT
-			#pragma shader_feature_local _DOUBLESIDED_ON
-			#pragma shader_feature_local _ _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
+            #pragma shader_feature _SURFACE_TYPE_TRANSPARENT
+			#pragma shader_feature_local _TRANSPARENT_WRITES_MOTION_VEC
 			#pragma shader_feature_local _ENABLE_FOG_ON_TRANSPARENT
+			#pragma shader_feature_local _DOUBLESIDED_ON
 			#pragma shader_feature_local _ALPHATEST_ON
 
-			#define SHADERPASS SHADERPASS_MOTION_VECTORS
 			#pragma multi_compile _ WRITE_NORMAL_BUFFER
 			#pragma multi_compile _ WRITE_MSAA_DEPTH
 
 			#pragma vertex Vert
 			#pragma fragment Frag
 
-			//#define UNITY_MATERIAL_LIT
-
-			#if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
-			#define OUTPUT_SPLIT_LIGHTING
-			#endif
-
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/NormalSurfaceGradient.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Tessellation.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
 
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
 
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-			#ifdef DEBUG_DISPLAY
-				#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
+			#define SHADERPASS SHADERPASS_MOTION_VECTORS
+
+			#ifndef SHADER_UNLIT
+			#if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
+			#define VARYINGS_NEED_CULLFACE
 			#endif
-			
+			#endif
+
+		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
+			#define OUTPUT_SPLIT_LIGHTING
+		    #endif
+
+		    #if (SHADERPASS == SHADERPASS_PATH_TRACING) && !defined(_DOUBLESIDED_ON) && (defined(_REFRACTION_PLANE) || defined(_REFRACTION_SPHERE))
+			#undef  _REFRACTION_PLANE
+			#undef  _REFRACTION_SPHERE
+			#define _REFRACTION_THIN
+		    #endif
+
+			#if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
+			#if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
+				#define WRITE_NORMAL_BUFFER
+			#endif
+			#endif
+
+			#ifndef DEBUG_DISPLAY
+				#if !defined(_SURFACE_TYPE_TRANSPARENT)
+					#if SHADERPASS == SHADERPASS_FORWARD
+					#define SHADERPASS_FORWARD_BYPASS_ALPHA_TEST
+					#elif SHADERPASS == SHADERPASS_GBUFFER
+					#define SHADERPASS_GBUFFER_BYPASS_ALPHA_TEST
+					#endif
+				#endif
+			#endif
+
+			#if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
+			#define _WRITE_TRANSPARENT_MOTION_VECTOR
+			#endif
+
 			CBUFFER_START( UnityPerMaterial )
 			float4 _Albedo;
 			float4 _Specular;
@@ -3006,8 +3279,6 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			float _StencilWriteMaskDepth;
 			float _StencilRefMV;
 			float _StencilWriteMaskMV;
-			float _StencilRefDistortionVec;
-			float _StencilWriteMaskDistortionVec;
 			float _StencilWriteMaskGBuffer;
 			float _StencilRefGBuffer;
 			float _ZTestGBuffer;
@@ -3015,6 +3286,9 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			float _ReceivesSSR;
 			float _SurfaceType;
 			float _BlendMode;
+            #ifdef SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
+			float _EnableBlendModePreserveSpecularLighting;
+            #endif
 			float _SrcBlend;
 			float _DstBlend;
 			float _AlphaSrcBlend;
@@ -3034,31 +3308,50 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			float _DoubleSidedEnable;
 			float _DoubleSidedNormalMode;
 			float4 _DoubleSidedConstants;
-			#ifdef TESSELLATION_ON
-				float _TessPhongStrength;
-				float _TessValue;
-				float _TessMin;
-				float _TessMax;
-				float _TessEdgeLength;
-				float _TessMaxDisp;
+			#ifdef ASE_TESSELLATION
+			float _TessPhongStrength;
+			float _TessValue;
+			float _TessMin;
+			float _TessMax;
+			float _TessEdgeLength;
+			float _TessMaxDisp;
 			#endif
 			CBUFFER_END
+
+			// Property used by ScenePickingPass
+            #ifdef SCENEPICKINGPASS
+			float4 _SelectionID;
+            #endif
+
+			// Properties used by SceneSelectionPass
+            #ifdef SCENESELECTIONPASS
+			int _ObjectId;
+			int _PassValue;
+            #endif
+
 			
 
+            #ifdef DEBUG_DISPLAY
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
+            #endif
+
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Material.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/NormalSurfaceGradient.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/Lit.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/BuiltinUtilities.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/MaterialUtilities.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalUtilities.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/LitDecalData.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphFunctions.hlsl"
+
+			// Setup DECALS_OFF so the shader stripper can remove variants
+            #define HAVE_DECALS ( (defined(DECALS_3RT) || defined(DECALS_4RT)) && !defined(_DISABLE_DECALS) )
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalUtilities.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/LitDecalData.hlsl"
 
 			
 
 			#if defined(_DOUBLESIDED_ON) && !defined(ASE_NEED_CULLFACE)
-				#define ASE_NEED_CULLFACE 1
+			#define ASE_NEED_CULLFACE 1
 			#endif
-
 
 			struct AttributesMesh
 			{
@@ -3085,7 +3378,6 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				FRONT_FACE_TYPE cullFace : FRONT_FACE_SEMANTIC;
 				#endif
 			};
-
 
 			
 			void BuildSurfaceData(FragInputs fragInputs, inout SmoothSurfaceDescription surfaceDescription, float3 V, PositionInputs posInput, out SurfaceData surfaceData, out float3 bentNormalWS)
@@ -3119,7 +3411,6 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				surfaceData.transmittanceMask = 0.0;
 				#endif
 
-
 				// material features
 				surfaceData.materialFeatures = MATERIALFEATUREFLAGS_LIT_STANDARD;
 				#ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
@@ -3128,10 +3419,11 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				#ifdef _MATERIAL_FEATURE_TRANSMISSION
 				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
 				#endif
-				#ifdef _MATERIAL_FEATURE_ANISOTROPY
+                #ifdef _MATERIAL_FEATURE_ANISOTROPY
 				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
-				#endif
-				#ifdef ASE_LIT_CLEAR_COAT
+				surfaceData.normalWS = float3(0, 1, 0);
+                #endif
+				#ifdef _MATERIAL_FEATURE_CLEAR_COAT
 				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_CLEAR_COAT;
 				#endif
 				#ifdef _MATERIAL_FEATURE_IRIDESCENCE
@@ -3171,12 +3463,12 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				bentNormalWS = surfaceData.normalWS;
 				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
 
-				#if defined(_SPECULAR_OCCLUSION_CUSTOM)
-				#elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO( V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness( surfaceData.perceptualSmoothness ) );
-				#elif defined(_AMBIENT_OCCLUSION) && defined(_SPECULAR_OCCLUSION_FROM_AO)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion( ClampNdotV( dot( surfaceData.normalWS, V ) ), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness( surfaceData.perceptualSmoothness ) );
-				#endif
+                #if defined(_SPECULAR_OCCLUSION_CUSTOM)
+                #elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
+				surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO(V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness(surfaceData.perceptualSmoothness));
+                #elif defined(_AMBIENT_OCCLUSION) && defined(_SPECULAR_OCCLUSION_FROM_AO)
+				surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion(ClampNdotV(dot(surfaceData.normalWS, V)), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness(surfaceData.perceptualSmoothness));
+                #endif
 
 				// debug
 				#if defined(DEBUG_DISPLAY)
@@ -3306,7 +3598,7 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				return outputPackedVaryingsMeshToPS;
 			}
 
-			#if defined(TESSELLATION_ON)
+			#if defined(ASE_TESSELLATION)
 			struct VertexControl
 			{
 				float3 positionOS : INTERNALTESSPOS;
@@ -3412,21 +3704,18 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 
 			void Frag( PackedVaryingsMeshToPS packedInput
 				#ifdef WRITE_MSAA_DEPTH
-					// We need the depth color as SV_Target0 for alpha to coverage
 					, out float4 depthColor : SV_Target0
 					, out float4 outMotionVector : SV_Target1
 						#ifdef WRITE_DECAL_BUFFER
 						, out float4 outDecalBuffer : SV_Target2
 						#endif
 					#else
-					// When no MSAA, the motion vector is always the first buffer
 					, out float4 outMotionVector : SV_Target0
 						#ifdef WRITE_DECAL_BUFFER
 						, out float4 outDecalBuffer : SV_Target1
 						#endif
 					#endif
 
-					// Decal buffer must be last as it is bind but we can optionally write into it (based on _DISABLE_DECALS)
 					#ifdef WRITE_NORMAL_BUFFER
 					, out float4 outNormalBuffer : SV_TARGET_NORMAL
 					#endif
@@ -3510,6 +3799,7 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			Tags { "LightMode"="Forward" }
 
 			Blend [_SrcBlend] [_DstBlend], [_AlphaSrcBlend] [_AlphaDstBlend]
+
 			Cull [_CullModeForward]
 			ZTest [_ZTestDepthEqualForOpaque]
 			ZWrite [_ZWrite]
@@ -3525,56 +3815,85 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			}
 
 
-			ColorMask [_ColorMaskTransparentVel] 1
+            ColorMask [_ColorMaskTransparentVel] 1
 
 			HLSLPROGRAM
 
-			#define _MATERIAL_FEATURE_SPECULAR_COLOR 1
-			#define _SPECULAR_OCCLUSION_FROM_AO 1
-			#define ASE_SRP_VERSION 999999
+            #define _MATERIAL_FEATURE_SPECULAR_COLOR 1
+            #define _SPECULAR_OCCLUSION_FROM_AO 1
+            #pragma multi_compile_instancing
+            #pragma instancing_options renderinglayer
+            #define ASE_SRP_VERSION 101000
 
 
-			#pragma shader_feature _SURFACE_TYPE_TRANSPARENT
-			#pragma shader_feature_local _DOUBLESIDED_ON
-			#pragma shader_feature_local _ _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
+            #pragma shader_feature _SURFACE_TYPE_TRANSPARENT
+			#pragma shader_feature_local _TRANSPARENT_WRITES_MOTION_VEC
 			#pragma shader_feature_local _ENABLE_FOG_ON_TRANSPARENT
+			#pragma shader_feature_local _DOUBLESIDED_ON
 			#pragma shader_feature_local _ALPHATEST_ON
 
-			#if !defined(DEBUG_DISPLAY) && defined(_ALPHATEST_ON)
-			#define SHADERPASS_FORWARD_BYPASS_ALPHA_TEST
-			#endif
-
-			#define SHADERPASS SHADERPASS_FORWARD
+			#pragma multi_compile _ SHADOWS_SHADOWMASK
+			#pragma multi_compile SHADOW_LOW SHADOW_MEDIUM SHADOW_HIGH
 			#pragma multi_compile _ DEBUG_DISPLAY
 			#pragma multi_compile _ LIGHTMAP_ON
 			#pragma multi_compile _ DIRLIGHTMAP_COMBINED
 			#pragma multi_compile _ DYNAMICLIGHTMAP_ON
-			#pragma multi_compile _ SHADOWS_SHADOWMASK
-			#pragma multi_compile DECALS_OFF DECALS_3RT DECALS_4RT
+            #pragma multi_compile DECALS_OFF DECALS_3RT DECALS_4RT
 			#pragma multi_compile USE_FPTL_LIGHTLIST USE_CLUSTERED_LIGHTLIST
-			#pragma multi_compile SHADOW_LOW SHADOW_MEDIUM SHADOW_HIGH
 
 			#pragma vertex Vert
 			#pragma fragment Frag
 
-			//#define UNITY_MATERIAL_LIT
-
-			#if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
-			#define OUTPUT_SPLIT_LIGHTING
-			#endif
-
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/NormalSurfaceGradient.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Tessellation.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
 
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-			#ifdef DEBUG_DISPLAY
-				#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+
+			#define SHADERPASS SHADERPASS_FORWARD
+		    #define HAS_LIGHTLOOP 1
+
+			#ifndef SHADER_UNLIT
+			#if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
+			#define VARYINGS_NEED_CULLFACE
+			#endif
 			#endif
 
-			// CBuffer must be declared before Material.hlsl since it internaly uses _BlendMode now
+		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
+			#define OUTPUT_SPLIT_LIGHTING
+		    #endif
+
+		    #if (SHADERPASS == SHADERPASS_PATH_TRACING) && !defined(_DOUBLESIDED_ON) && (defined(_REFRACTION_PLANE) || defined(_REFRACTION_SPHERE))
+			#undef  _REFRACTION_PLANE
+			#undef  _REFRACTION_SPHERE
+			#define _REFRACTION_THIN
+		    #endif
+
+			#if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
+			#if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
+				#define WRITE_NORMAL_BUFFER
+			#endif
+			#endif
+
+			#ifndef DEBUG_DISPLAY
+				#if !defined(_SURFACE_TYPE_TRANSPARENT)
+					#if SHADERPASS == SHADERPASS_FORWARD
+					#define SHADERPASS_FORWARD_BYPASS_ALPHA_TEST
+					#elif SHADERPASS == SHADERPASS_GBUFFER
+					#define SHADERPASS_GBUFFER_BYPASS_ALPHA_TEST
+					#endif
+				#endif
+			#endif
+
+			#if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
+			#define _WRITE_TRANSPARENT_MOTION_VECTOR
+			#endif
+
 			CBUFFER_START( UnityPerMaterial )
 			float4 _Albedo;
 			float4 _Specular;
@@ -3591,8 +3910,6 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			float _StencilWriteMaskDepth;
 			float _StencilRefMV;
 			float _StencilWriteMaskMV;
-			float _StencilRefDistortionVec;
-			float _StencilWriteMaskDistortionVec;
 			float _StencilWriteMaskGBuffer;
 			float _StencilRefGBuffer;
 			float _ZTestGBuffer;
@@ -3600,6 +3917,9 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			float _ReceivesSSR;
 			float _SurfaceType;
 			float _BlendMode;
+            #ifdef SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
+			float _EnableBlendModePreserveSpecularLighting;
+            #endif
 			float _SrcBlend;
 			float _DstBlend;
 			float _AlphaSrcBlend;
@@ -3619,33 +3939,52 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			float _DoubleSidedEnable;
 			float _DoubleSidedNormalMode;
 			float4 _DoubleSidedConstants;
-			#ifdef TESSELLATION_ON
-				float _TessPhongStrength;
-				float _TessValue;
-				float _TessMin;
-				float _TessMax;
-				float _TessEdgeLength;
-				float _TessMaxDisp;
+			#ifdef ASE_TESSELLATION
+			float _TessPhongStrength;
+			float _TessValue;
+			float _TessMin;
+			float _TessMax;
+			float _TessEdgeLength;
+			float _TessMaxDisp;
 			#endif
 			CBUFFER_END
+
+			// Property used by ScenePickingPass
+            #ifdef SCENEPICKINGPASS
+			float4 _SelectionID;
+            #endif
+
+			// Properties used by SceneSelectionPass
+            #ifdef SCENESELECTIONPASS
+			int _ObjectId;
+			int _PassValue;
+            #endif
+
 			
 
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Material.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Lighting/Lighting.hlsl"
-			#define HAS_LIGHTLOOP
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Lighting/LightLoop/LightLoopDef.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/Lit.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Lighting/LightLoop/LightLoop.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/BuiltinUtilities.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/MaterialUtilities.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalUtilities.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/LitDecalData.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphFunctions.hlsl"
+            #ifdef DEBUG_DISPLAY
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
+            #endif
+
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Material.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/NormalSurfaceGradient.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Lighting/Lighting.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Lighting/LightLoop/LightLoopDef.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/Lit.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Lighting/LightLoop/LightLoop.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/BuiltinUtilities.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/MaterialUtilities.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphFunctions.hlsl"
+
+			// Setup DECALS_OFF so the shader stripper can remove variants
+            #define HAVE_DECALS ( (defined(DECALS_3RT) || defined(DECALS_4RT)) && !defined(_DISABLE_DECALS) )
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalUtilities.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/LitDecalData.hlsl"
 
 			
 
 			#if defined(_DOUBLESIDED_ON) && !defined(ASE_NEED_CULLFACE)
-				#define ASE_NEED_CULLFACE 1
+			#define ASE_NEED_CULLFACE 1
 			#endif
 
 			struct AttributesMesh
@@ -3668,11 +4007,11 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			struct PackedVaryingsMeshToPS
 			{
 				float4 positionCS : SV_Position;
-				float3 interp00 : TEXCOORD0;
-				float3 interp01 : TEXCOORD1;
-				float4 interp02 : TEXCOORD2;
-				float4 interp03 : TEXCOORD3;
-				float4 interp04 : TEXCOORD4;
+				float3 positionRWS : TEXCOORD0;
+				float3 normalWS : TEXCOORD1;
+				float4 tangentWS : TEXCOORD2;
+				float4 uv1 : TEXCOORD3;
+				float4 uv2 : TEXCOORD4;
 				#ifdef _WRITE_TRANSPARENT_MOTION_VECTOR
 					float3 vpassPositionCS : TEXCOORD5;
 					float3 vpassPreviousPositionCS : TEXCOORD6;
@@ -3693,7 +4032,7 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				surfaceData.specularOcclusion = 1.0;
 
 				// surface data
-				surfaceData.baseColor =					surfaceDescription.Albedo;
+				surfaceData.baseColor =                 surfaceDescription.BaseColor;
 				surfaceData.perceptualSmoothness =		surfaceDescription.Smoothness;
 				surfaceData.ambientOcclusion =			surfaceDescription.Occlusion;
 				surfaceData.metallic =					surfaceDescription.Metallic;
@@ -3705,8 +4044,8 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				#ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
 				surfaceData.subsurfaceMask =			surfaceDescription.SubsurfaceMask;
 				#endif
-				#if defined(_HAS_REFRACTION) || defined(_MATERIAL_FEATURE_TRANSMISSION)
-				surfaceData.thickness =					surfaceDescription.Thickness;
+				#if defined(_HAS_REFRACTION) || defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) || defined(_MATERIAL_FEATURE_TRANSMISSION)
+				surfaceData.thickness = 				surfaceDescription.Thickness;
 				#endif
 				#if defined( _MATERIAL_FEATURE_SUBSURFACE_SCATTERING ) || defined( _MATERIAL_FEATURE_TRANSMISSION )
 				surfaceData.diffusionProfileHash =		asuint(surfaceDescription.DiffusionProfile);
@@ -3757,10 +4096,11 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				#ifdef _MATERIAL_FEATURE_TRANSMISSION
 				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
 				#endif
-				#ifdef _MATERIAL_FEATURE_ANISOTROPY
+                #ifdef _MATERIAL_FEATURE_ANISOTROPY
 				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
-				#endif
-				#ifdef ASE_LIT_CLEAR_COAT
+				surfaceData.normalWS = float3(0, 1, 0);
+                #endif
+				#ifdef _MATERIAL_FEATURE_CLEAR_COAT
 				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_CLEAR_COAT;
 				#endif
 				#ifdef _MATERIAL_FEATURE_IRIDESCENCE
@@ -3798,7 +4138,7 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				#endif
 
 				bentNormalWS = surfaceData.normalWS;
-				
+
 				#ifdef ASE_BENT_NORMAL
 				GetNormalWS( fragInputs, surfaceDescription.BentNormal, bentNormalWS, doubleSidedConstants );
 				#endif
@@ -3809,12 +4149,12 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
 
 
-				#if defined(_SPECULAR_OCCLUSION_CUSTOM)
-				#elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO( V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness( surfaceData.perceptualSmoothness ) );
-				#elif defined(_AMBIENT_OCCLUSION) && defined(_SPECULAR_OCCLUSION_FROM_AO)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion( ClampNdotV( dot( surfaceData.normalWS, V ) ), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness( surfaceData.perceptualSmoothness ) );
-				#endif
+                #if defined(_SPECULAR_OCCLUSION_CUSTOM)
+                #elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
+				surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO(V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness(surfaceData.perceptualSmoothness));
+                #elif defined(_AMBIENT_OCCLUSION) && defined(_SPECULAR_OCCLUSION_FROM_AO)
+				surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion(ClampNdotV(dot(surfaceData.normalWS, V)), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness(surfaceData.perceptualSmoothness));
+                #endif
 
 				#ifdef _ENABLE_GEOMETRIC_SPECULAR_AA
 				surfaceData.perceptualSmoothness = GeometricNormalFiltering( surfaceData.perceptualSmoothness, fragInputs.tangentToWorld[ 2 ], surfaceDescription.SpecularAAScreenSpaceVariance, surfaceDescription.SpecularAAThreshold );
@@ -3858,10 +4198,11 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 
 				InitBuiltinData( posInput, surfaceDescription.Alpha, bentNormalWS, -fragInputs.tangentToWorld[ 2 ], fragInputs.texCoord1, fragInputs.texCoord2, builtinData );
 
-				#ifdef _ASE_BAKEDGI
+				#ifdef ASE_BAKEDGI
 				builtinData.bakeDiffuseLighting = surfaceDescription.BakedGI;
 				#endif
-				#ifdef _ASE_BAKEDBACKGI
+
+				#ifdef ASE_BAKEDBACKGI
 				builtinData.backBakeDiffuseLighting = surfaceDescription.BakedBackGI;
 				#endif
 
@@ -3951,11 +4292,11 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				#endif
 
 				outputPackedVaryingsMeshToPS.positionCS = TransformWorldToHClip(positionRWS);
-				outputPackedVaryingsMeshToPS.interp00.xyz = positionRWS;
-				outputPackedVaryingsMeshToPS.interp01.xyz = normalWS;
-				outputPackedVaryingsMeshToPS.interp02.xyzw = tangentWS;
-				outputPackedVaryingsMeshToPS.interp03.xyzw = inputMesh.uv1;
-				outputPackedVaryingsMeshToPS.interp04.xyzw = inputMesh.uv2;
+				outputPackedVaryingsMeshToPS.positionRWS.xyz = positionRWS;
+				outputPackedVaryingsMeshToPS.normalWS.xyz = normalWS;
+				outputPackedVaryingsMeshToPS.tangentWS.xyzw = tangentWS;
+				outputPackedVaryingsMeshToPS.uv1.xyzw = inputMesh.uv1;
+				outputPackedVaryingsMeshToPS.uv2.xyzw = inputMesh.uv2;
 
 				#ifdef _WRITE_TRANSPARENT_MOTION_VECTOR
 					outputPackedVaryingsMeshToPS.vpassPositionCS = float3(VPASSpositionCS.xyw);
@@ -3964,7 +4305,7 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				return outputPackedVaryingsMeshToPS;
 			}
 
-			#if defined(TESSELLATION_ON)
+			#if defined(ASE_TESSELLATION)
 			struct VertexControl
 			{
 				float3 positionOS : INTERNALTESSPOS;
@@ -4098,9 +4439,9 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 
 				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX( packedInput );
 				UNITY_SETUP_INSTANCE_ID( packedInput );
-				float3 positionRWS = packedInput.interp00.xyz;
-				float3 normalWS = packedInput.interp01.xyz;
-				float4 tangentWS = packedInput.interp02.xyzw;
+				float3 positionRWS = packedInput.positionRWS.xyz;
+				float3 normalWS = packedInput.normalWS.xyz;
+				float4 tangentWS = packedInput.tangentWS.xyzw;
 
 				FragInputs input;
 				ZERO_INITIALIZE(FragInputs, input);
@@ -4108,8 +4449,8 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				input.positionSS = packedInput.positionCS;
 				input.positionRWS = positionRWS;
 				input.tangentToWorld = BuildTangentToWorld(tangentWS, normalWS);
-				input.texCoord1 = packedInput.interp03.xyzw;
-				input.texCoord2 = packedInput.interp04.xyzw;
+				input.texCoord1 = packedInput.uv1.xyzw;
+				input.texCoord2 = packedInput.uv2.xyzw;
 
 				#if _DOUBLESIDED_ON && SHADER_STAGE_FRAGMENT
 				input.isFrontFace = IS_FRONT_VFACE( packedInput.cullFace, true, false);
@@ -4129,7 +4470,7 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 
 				GlobalSurfaceDescription surfaceDescription = (GlobalSurfaceDescription)0;
 				
-				surfaceDescription.Albedo = _Albedo.rgb;
+				surfaceDescription.BaseColor = _Albedo.rgb;
 				surfaceDescription.Normal = float3( 0, 0, 1 );
 				surfaceDescription.BentNormal = float3( 0, 0, 1 );
 				surfaceDescription.CoatMask = 0;
@@ -4185,10 +4526,10 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 				surfaceDescription.IridescenceThickness = 0;
 				#endif
 
-				#ifdef _ASE_BAKEDGI
+				#ifdef ASE_BAKEDGI
 				surfaceDescription.BakedGI = 0;
 				#endif
-				#ifdef _ASE_BAKEDBACKGI
+				#ifdef ASE_BAKEDBACKGI
 				surfaceDescription.BakedBackGI = 0;
 				#endif
 
@@ -4245,9 +4586,7 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 					if (_DebugFullScreenMode == FULLSCREENDEBUGMODE_VALIDATE_DIFFUSE_COLOR || _DebugFullScreenMode == FULLSCREENDEBUGMODE_VALIDATE_SPECULAR_COLOR)
 					{
 						float3 result = float3(0.0, 0.0, 0.0);
-
 						GetPBRValidatorDebug(surfaceData, result);
-
 						outColor = float4(result, 1.0f);
 					}
 					else if (_DebugFullScreenMode == FULLSCREENDEBUGMODE_TRANSPARENCY_OVERDRAW)
@@ -4256,25 +4595,24 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 						outColor = result;
 					}
 					else
-				#endif
+                #endif
 					{
-				#ifdef _SURFACE_TYPE_TRANSPARENT
+                #ifdef _SURFACE_TYPE_TRANSPARENT
 						uint featureFlags = LIGHT_FEATURE_MASK_FLAGS_TRANSPARENT;
-				#else
+                #else
 						uint featureFlags = LIGHT_FEATURE_MASK_FLAGS_OPAQUE;
-				#endif
-					
+                #endif
 						LightLoopOutput lightLoopOutput;
 						LightLoop(V, posInput, preLightData, bsdfData, builtinData, featureFlags, lightLoopOutput);
 
 						// Alias
 						float3 diffuseLighting = lightLoopOutput.diffuseLighting;
 						float3 specularLighting = lightLoopOutput.specularLighting;
-					
+
 						diffuseLighting *= GetCurrentExposureMultiplier();
 						specularLighting *= GetCurrentExposureMultiplier();
 
-				#ifdef OUTPUT_SPLIT_LIGHTING
+                #ifdef OUTPUT_SPLIT_LIGHTING
 						if (_EnableSubsurfaceScattering != 0 && ShouldOutputSplitLighting(bsdfData))
 						{
 							outColor = float4(specularLighting, 1.0);
@@ -4286,10 +4624,21 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 							outDiffuseLighting = 0;
 						}
 						ENCODE_INTO_SSSBUFFER(surfaceData, posInput.positionSS, outSSSBuffer);
-				#else
+                #else
 						outColor = ApplyBlendMode(diffuseLighting, specularLighting, builtinData.opacity);
 						outColor = EvaluateAtmosphericScattering(posInput, V, outColor);
-				#endif
+
+                        #else
+
+						if (_BlendMode == BLENDMODE_ALPHA || _BlendMode == BLENDMODE_ADDITIVE)
+							return float4(diffuseLighting * opacity + specularLighting * (
+                        #ifdef SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
+							   _EnableBlendModePreserveSpecularLighting ? 1.0f :
+                        #endif
+								opacity), opacity);
+						else
+							return float4(diffuseLighting + specularLighting, opacity);
+                #endif
 
 				#ifdef _WRITE_TRANSPARENT_MOTION_VECTOR
 						float4 VPASSpositionCS = float4(packedInput.vpassPositionCS.xy, 0.0, packedInput.vpassPositionCS.z);
@@ -4303,7 +4652,7 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 							outMotionVec.zw = 1.0;
 						}
 				#endif
-					}
+				}
 
 				#ifdef DEBUG_DISPLAY
 				}
@@ -4315,32 +4664,379 @@ Shader "ASESampleShaders/Lit Refraction/HD Lit Specular"
 			}
 			ENDHLSL
 		}
+
+		
+	    Pass
+        {
+			
+            Name "ScenePickingPass"
+            Tags { "LightMode"="Picking" }
+
+            Cull [_CullMode]
+
+            HLSLPROGRAM
+
+			#define _MATERIAL_FEATURE_SPECULAR_COLOR 1
+			#define _SPECULAR_OCCLUSION_FROM_AO 1
+			#pragma multi_compile_instancing
+			#pragma instancing_options renderinglayer
+			#define ASE_SRP_VERSION 101000
+
+
+			#pragma editor_sync_compilation
+
+			#pragma vertex Vert
+			#pragma fragment Frag
+
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
+        	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
+        	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Tessellation.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
+
+			#define ATTRIBUTES_NEED_NORMAL
+			#define ATTRIBUTES_NEED_TANGENT
+			#define VARYINGS_NEED_TANGENT_TO_WORLD
+
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+
+			#define SHADERPASS SHADERPASS_DEPTH_ONLY
+			#define SCENEPICKINGPASS 1
+
+			#ifndef SHADER_UNLIT
+			#if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
+		    #define VARYINGS_NEED_CULLFACE
+			#endif
+			#endif
+
+			#if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
+			#if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
+			#define WRITE_NORMAL_BUFFER
+			#endif
+			#endif
+
+		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
+			#define OUTPUT_SPLIT_LIGHTING
+		    #endif
+
+			#if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
+			#define _WRITE_TRANSPARENT_MOTION_VECTOR
+			#endif
+
+			float4 _SelectionID;
+            CBUFFER_START( UnityPerMaterial )
+			float4 _Albedo;
+			float4 _Specular;
+			float _Smoothness;
+			float4 _EmissionColor;
+			float _AlphaCutoff;
+			float _RenderQueueType;
+			#ifdef _ADD_PRECOMPUTED_VELOCITY
+			float _AddPrecomputedVelocity;
+			#endif
+			float _StencilRef;
+			float _StencilWriteMask;
+			float _StencilRefDepth;
+			float _StencilWriteMaskDepth;
+			float _StencilRefMV;
+			float _StencilWriteMaskMV;
+			float _StencilWriteMaskGBuffer;
+			float _StencilRefGBuffer;
+			float _ZTestGBuffer;
+			float _RequireSplitLighting;
+			float _ReceivesSSR;
+			float _SurfaceType;
+			float _BlendMode;
+            #ifdef SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
+			float _EnableBlendModePreserveSpecularLighting;
+            #endif
+			float _SrcBlend;
+			float _DstBlend;
+			float _AlphaSrcBlend;
+			float _AlphaDstBlend;
+			float _ZWrite;
+			float _TransparentZWrite;
+			float _CullMode;
+			float _TransparentSortPriority;
+			float _EnableFogOnTransparent;
+			float _CullModeForward;
+			float _TransparentCullMode;
+			float _ZTestDepthEqualForOpaque;
+			float _ZTestTransparent;
+			float _TransparentBackfaceEnable;
+			float _AlphaCutoffEnable;
+			float _UseShadowThreshold;
+			float _DoubleSidedEnable;
+			float _DoubleSidedNormalMode;
+			float4 _DoubleSidedConstants;
+			#ifdef ASE_TESSELLATION
+			float _TessPhongStrength;
+			float _TessValue;
+			float _TessMin;
+			float _TessMax;
+			float _TessEdgeLength;
+			float _TessMaxDisp;
+			#endif
+			CBUFFER_END
+
+			
+
+            #ifdef DEBUG_DISPLAY
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
+            #endif
+
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/PickingSpaceTransforms.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Material.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Unlit/Unlit.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/BuiltinUtilities.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/MaterialUtilities.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphFunctions.hlsl"
+
+			
+
+			struct VertexInput
+			{
+				float3 positionOS : POSITION;
+				float3 normalOS : NORMAL;
+				float4 tangentOS : TANGENT;
+				
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+			};
+
+			struct VertexOutput
+			{
+				float4 positionCS : SV_POSITION;
+				float3 normalWS : TEXCOORD0;
+				float4 tangentWS : TEXCOORD1;
+				
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+				UNITY_VERTEX_OUTPUT_STEREO
+			};
+
+			
+            struct SurfaceDescription
+			{
+				float Alpha;
+				float AlphaClipThreshold;
+			};
+
+
+            void GetSurfaceAndBuiltinData(SurfaceDescription surfaceDescription, FragInputs fragInputs, float3 V, inout PositionInputs posInput, out SurfaceData surfaceData, out BuiltinData builtinData RAY_TRACING_OPTIONAL_PARAMETERS)
+            {
+                #ifdef LOD_FADE_CROSSFADE
+			        LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
+                #endif
+
+                #ifdef _ALPHATEST_ON
+                    float alphaCutoff = surfaceDescription.AlphaClipThreshold;
+                    GENERIC_ALPHA_TEST(surfaceDescription.Alpha, alphaCutoff);
+                #endif
+
+                ZERO_INITIALIZE(SurfaceData, surfaceData);
+				ZERO_INITIALIZE(BuiltinData, builtinData);
+                #if UNITY_VIRTUAL_TEXTURING
+				builtinData.vtPackedFeedback = float4(1.0f,1.0f,1.0f,1.0f);
+                #endif
+
+                builtinData.opacity = surfaceDescription.Alpha;
+
+                #if defined(DEBUG_DISPLAY)
+				builtinData.renderingLayers = GetMeshRenderingLightLayer();
+                #endif
+
+                #ifdef _ALPHATEST_ON
+				builtinData.alphaClipTreshold = alphaCutoff;
+                #endif
+
+                ApplyDebugToBuiltinData(builtinData);
+
+            }
+
+
+			VertexOutput VertexFunction(VertexInput inputMesh  )
+			{
+
+				VertexOutput o;
+				ZERO_INITIALIZE(VertexOutput, o);
+				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+
+				UNITY_SETUP_INSTANCE_ID(inputMesh);
+				UNITY_TRANSFER_INSTANCE_ID(inputMesh, o );
+
+				
+				#ifdef ASE_ABSOLUTE_VERTEX_POS
+				float3 defaultVertexValue = inputMesh.positionOS.xyz;
+				#else
+				float3 defaultVertexValue = float3( 0, 0, 0 );
+				#endif
+				float3 vertexValue =   defaultVertexValue ;
+				#ifdef ASE_ABSOLUTE_VERTEX_POS
+				inputMesh.positionOS.xyz = vertexValue;
+				#else
+				inputMesh.positionOS.xyz += vertexValue;
+				#endif
+
+				inputMesh.normalOS =  inputMesh.normalOS ;
+
+				float3 positionRWS = TransformObjectToWorld(inputMesh.positionOS);
+				float3 normalWS = TransformObjectToWorldNormal(inputMesh.normalOS);
+				float4 tangentWS = float4(TransformObjectToWorldDir(inputMesh.tangentOS.xyz), inputMesh.tangentOS.w);
+
+				o.positionCS = TransformWorldToHClip(positionRWS);
+				o.normalWS.xyz =  normalWS;
+				o.tangentWS.xyzw =  tangentWS;
+
+				return o;
+			}
+
+			#if defined(ASE_TESSELLATION)
+			struct VertexControl
+			{
+				float3 positionOS : INTERNALTESSPOS;
+				float3 normalOS : NORMAL;
+				float4 tangentOS : TANGENT;
+				
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+			};
+
+			struct TessellationFactors
+			{
+				float edge[3] : SV_TessFactor;
+				float inside : SV_InsideTessFactor;
+			};
+
+			VertexControl Vert ( VertexInput v )
+			{
+				VertexControl o;
+				UNITY_SETUP_INSTANCE_ID(v);
+				UNITY_TRANSFER_INSTANCE_ID(v, o);
+				o.positionOS = v.positionOS;
+				o.normalOS = v.normalOS;
+				o.tangentOS = v.tangentOS;
+				
+				return o;
+			}
+
+			TessellationFactors TessellationFunction (InputPatch<VertexControl,3> v)
+			{
+				TessellationFactors o;
+				float4 tf = 1;
+				float tessValue = _TessValue; float tessMin = _TessMin; float tessMax = _TessMax;
+				float edgeLength = _TessEdgeLength; float tessMaxDisp = _TessMaxDisp;
+				#if (SHADEROPTIONS_CAMERA_RELATIVE_RENDERING != 0)
+				float3 cameraPos = 0;
+				#else
+				float3 cameraPos = _WorldSpaceCameraPos;
+				#endif
+				#if defined(ASE_FIXED_TESSELLATION)
+				tf = FixedTess( tessValue );
+				#elif defined(ASE_DISTANCE_TESSELLATION)
+				tf = DistanceBasedTess(float4(v[0].positionOS,1), float4(v[1].positionOS,1), float4(v[2].positionOS,1), tessValue, tessMin, tessMax, GetObjectToWorldMatrix(), cameraPos );
+				#elif defined(ASE_LENGTH_TESSELLATION)
+				tf = EdgeLengthBasedTess(float4(v[0].positionOS,1), float4(v[1].positionOS,1), float4(v[2].positionOS,1), edgeLength, GetObjectToWorldMatrix(), cameraPos, _ScreenParams );
+				#elif defined(ASE_LENGTH_CULL_TESSELLATION)
+				tf = EdgeLengthBasedTessCull(float4(v[0].positionOS,1), float4(v[1].positionOS,1), float4(v[2].positionOS,1), edgeLength, tessMaxDisp, GetObjectToWorldMatrix(), cameraPos, _ScreenParams, _FrustumPlanes );
+				#endif
+				o.edge[0] = tf.x; o.edge[1] = tf.y; o.edge[2] = tf.z; o.inside = tf.w;
+				return o;
+			}
+
+			[domain("tri")]
+			[partitioning("fractional_odd")]
+			[outputtopology("triangle_cw")]
+			[patchconstantfunc("TessellationFunction")]
+			[outputcontrolpoints(3)]
+			VertexControl HullFunction(InputPatch<VertexControl, 3> patch, uint id : SV_OutputControlPointID)
+			{
+			   return patch[id];
+			}
+
+			[domain("tri")]
+			VertexOutput DomainFunction(TessellationFactors factors, OutputPatch<VertexControl, 3> patch, float3 bary : SV_DomainLocation)
+			{
+				VertexInput o = (VertexInput) 0;
+				o.positionOS = patch[0].positionOS * bary.x + patch[1].positionOS * bary.y + patch[2].positionOS * bary.z;
+				o.normalOS = patch[0].normalOS * bary.x + patch[1].normalOS * bary.y + patch[2].normalOS * bary.z;
+				o.tangentOS = patch[0].tangentOS * bary.x + patch[1].tangentOS * bary.y + patch[2].tangentOS * bary.z;
+				
+				#if defined(ASE_PHONG_TESSELLATION)
+				float3 pp[3];
+				for (int i = 0; i < 3; ++i)
+					pp[i] = o.positionOS.xyz - patch[i].normalOS * (dot(o.positionOS.xyz, patch[i].normalOS) - dot(patch[i].positionOS.xyz, patch[i].normalOS));
+				float phongStrength = _TessPhongStrength;
+				o.positionOS.xyz = phongStrength * (pp[0]*bary.x + pp[1]*bary.y + pp[2]*bary.z) + (1.0f-phongStrength) * o.positionOS.xyz;
+				#endif
+				UNITY_TRANSFER_INSTANCE_ID(patch[0], o);
+				return VertexFunction(o);
+			}
+			#else
+			VertexOutput Vert ( VertexInput v )
+			{
+				return VertexFunction( v );
+			}
+			#endif
+
+			void Frag(	VertexOutput packedInput
+						, out float4 outColor : SV_Target0
+						
+					)
+			{
+				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(packedInput);
+				UNITY_SETUP_INSTANCE_ID(packedInput);
+
+				FragInputs input;
+				ZERO_INITIALIZE(FragInputs, input);
+				input.tangentToWorld = k_identity3x3;
+				input.positionSS = packedInput.positionCS;
+
+				input.tangentToWorld = BuildTangentToWorld(packedInput.tangentWS.xyzw, packedInput.normalWS.xyz);
+
+				PositionInputs posInput = GetPositionInput(input.positionSS.xy, _ScreenSize.zw, input.positionSS.z, input.positionSS.w, input.positionRWS);
+
+				SurfaceDescription surfaceDescription = (SurfaceDescription)0;
+				
+				surfaceDescription.Alpha = 1;
+				surfaceDescription.AlphaClipThreshold =  _AlphaCutoff;
+
+
+				float3 V = float3(1.0, 1.0, 1.0);
+
+				SurfaceData surfaceData;
+				BuiltinData builtinData;
+				GetSurfaceAndBuiltinData(surfaceDescription, input, V, posInput, surfaceData, builtinData);
+				outColor = _SelectionID;
+			}
+
+            ENDHLSL
+		}
 		
 	}
 	
 	CustomEditor "Rendering.HighDefinition.LitShaderGraphGUI"
 	
-	
+	Fallback Off
 }
 /*ASEBEGIN
-Version=18921
-300;114.4;862.4;439;576.2;175.2;1;True;False
+Version=19103
 Node;AmplifyShaderEditor.RangedFloatNode;11;-237.5,142.5;Float;False;Property;_Smoothness;Smoothness;0;0;Create;True;0;0;0;False;0;False;0;0.8;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.ColorNode;13;-220.5,-228.5;Float;False;Property;_Albedo;Albedo;2;0;Create;True;0;0;0;False;0;False;0,0,0,0;0.3396225,0.3396225,0.3396225,1;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.ColorNode;12;-323.5,-72.5;Float;False;Property;_Specular;Specular;1;0;Create;True;0;0;0;False;0;False;0,0,0,0;1,0.7589244,0,1;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;14;62,-42;Float;False;True;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;5;ASESampleShaders/Lit Refraction/HD Lit Specular;53b46d85872c5b24c8f4f0a1c3fe4c87;True;GBuffer;0;0;GBuffer;35;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;-25;False;False;False;False;False;False;False;False;False;True;True;0;True;-13;255;False;-1;255;True;-12;7;False;-1;3;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;False;True;0;True;-14;False;True;1;LightMode=GBuffer;False;False;0;;0;0;Standard;42;Surface Type;0;  Rendering Pass;1;  Refraction Model;0;    Blending Mode;0;    Blend Preserves Specular;1;  Receive Fog;1;  Back Then Front Rendering;0;  Transparent Depth Prepass;0;  Transparent Depth Postpass;0;  Transparent Writes Motion Vector;0;  Distortion;0;    Distortion Mode;0;    Distortion Depth Test;1;  ZWrite;0;  Z Test;4;Double-Sided;0;Alpha Clipping;0;  Use Shadow Threshold;0;Material Type,InvertActionOnDeselection;4;  Energy Conserving Specular;0;  Transmission;1;Receive Decals;1;Receives SSR;1;Receive SSR Transparent;0;Motion Vectors;1;  Add Precomputed Velocity;0;Specular AA;0;Specular Occlusion Mode;1;Override Baked GI;0;Depth Offset;0;DOTS Instancing;0;LOD CrossFade;0;Tessellation;0;  Phong;0;  Strength;0.5,False,-1;  Type;0;  Tess;16,False,-1;  Min;10,False,-1;  Max;25,False,-1;  Edge Length;16,False,-1;  Max Displacement;25,False,-1;Vertex Position;1;0;11;True;True;True;True;True;True;False;False;False;False;True;False;;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;15;62,-42;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;META;0;1;META;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;-1;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=Meta;False;False;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;16;62,-42;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;ShadowCaster;0;2;ShadowCaster;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;-25;False;True;False;False;False;False;0;False;-1;False;False;False;False;False;False;False;False;False;True;1;False;-1;True;3;False;-1;False;True;1;LightMode=ShadowCaster;False;False;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;17;62,-42;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;SceneSelectionPass;0;3;SceneSelectionPass;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;False;False;False;False;0;False;-1;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=SceneSelectionPass;False;False;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;18;62,-42;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;DepthOnly;0;4;DepthOnly;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;-25;False;False;False;False;False;False;False;False;False;True;True;0;True;-6;255;False;-1;255;True;-7;7;False;-1;3;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;True;1;False;-1;False;False;True;1;LightMode=DepthOnly;False;False;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;19;62,-42;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;Motion Vectors;0;5;Motion Vectors;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;-25;False;False;False;False;False;False;False;False;False;True;True;0;True;-8;255;False;-1;255;True;-9;7;False;-1;3;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;True;1;False;-1;False;False;True;1;LightMode=MotionVectors;False;False;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;20;62,-42;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;Distortion;0;6;Distortion;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;True;4;1;False;-1;1;False;-1;4;1;False;-1;1;False;-1;True;1;False;-1;1;False;-1;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;0;True;-10;255;False;-1;255;True;-11;7;False;-1;3;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;True;2;False;-1;True;3;False;-1;False;True;1;LightMode=DistortionVectors;False;False;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;21;62,-42;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;TransparentBackface;0;7;TransparentBackface;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;True;1;0;True;-19;0;True;-20;1;0;True;-21;0;True;-22;False;False;False;False;False;False;False;False;False;False;False;False;True;1;False;-1;False;False;False;True;True;True;True;True;0;True;-44;False;False;False;False;False;False;False;True;0;True;-23;True;0;True;-31;False;True;1;LightMode=TransparentBackface;False;False;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;22;62,-42;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;TransparentDepthPrepass;0;8;TransparentDepthPrepass;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;True;1;1;False;-1;0;False;-1;0;1;False;-1;0;False;-1;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;-25;False;False;False;False;False;False;False;False;False;True;True;0;True;-7;255;False;-1;255;True;-8;7;False;-1;3;False;-1;1;False;-1;1;False;-1;7;False;-1;3;False;-1;1;False;-1;1;False;-1;False;True;1;False;-1;False;False;True;1;LightMode=TransparentDepthPrepass;False;False;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;23;62,-42;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;TransparentDepthPostpass;0;9;TransparentDepthPostpass;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;True;1;1;False;-1;0;False;-1;0;1;False;-1;0;False;-1;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;-25;False;True;False;False;False;False;0;False;-1;False;False;False;False;False;False;False;False;False;True;1;False;-1;False;False;True;1;LightMode=TransparentDepthPostpass;False;False;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;24;62,-42;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;Forward;0;10;Forward;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;True;1;0;True;-19;0;True;-20;1;0;True;-21;0;True;-22;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;-28;False;False;False;True;True;True;True;True;0;True;-44;False;False;False;False;False;True;True;0;True;-4;255;False;-1;255;True;-5;7;False;-1;3;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;True;0;True;-23;True;0;True;-30;False;True;1;LightMode=Forward;False;False;0;;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;14;62,-42;Float;False;True;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;14;ASESampleShaders/Lit Refraction/HD Lit Specular;53b46d85872c5b24c8f4f0a1c3fe4c87;True;GBuffer;0;0;GBuffer;33;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;8;d3d11;metal;vulkan;xboxone;xboxseries;playstation;ps5;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;0;True;_CullMode;False;False;False;False;False;False;False;False;True;True;True;0;True;_StencilRefGBuffer;255;False;;255;True;_StencilWriteMaskGBuffer;7;False;;3;False;;1;False;;1;False;;7;False;;1;False;;1;False;;1;False;;True;False;True;0;True;_ZTestGBuffer;False;True;1;LightMode=GBuffer;False;False;0;;0;0;Standard;39;Surface Type;0;0;  Rendering Pass;1;0;  Refraction Model;0;0;    Blending Mode;0;0;    Blend Preserves Specular;1;0;  Back Then Front Rendering;0;0;  Transparent Depth Prepass;0;0;  Transparent Depth Postpass;0;0;  ZWrite;0;0;  Z Test;4;0;Double-Sided;0;0;Alpha Clipping;0;0;  Use Shadow Threshold;0;0;Material Type,InvertActionOnDeselection;4;0;Forward Only;0;0;  Energy Conserving Specular;0;0;  Transmission;1;0;Receive Decals;1;0;Receives SSR;1;0;Receive SSR Transparent;0;0;Motion Vectors;1;0;  Add Precomputed Velocity;0;0;Specular AA;0;0;Specular Occlusion Mode;1;0;Override Baked GI;0;0;Depth Offset;0;0;DOTS Instancing;0;0;GPU Instancing;1;0;LOD CrossFade;0;0;Tessellation;0;0;  Phong;0;0;  Strength;0.5,False,;0;  Type;0;0;  Tess;16,False,;0;  Min;10,False,;0;  Max;25,False,;0;  Edge Length;16,False,;0;  Max Displacement;25,False,;0;Vertex Position;1;0;0;11;True;True;True;True;True;True;False;False;False;True;True;False;;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;15;62,-42;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;META;0;1;META;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;8;d3d11;metal;vulkan;xboxone;xboxseries;playstation;ps5;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=Meta;False;False;0;;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;16;62,-42;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;ShadowCaster;0;2;ShadowCaster;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;8;d3d11;metal;vulkan;xboxone;xboxseries;playstation;ps5;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;True;False;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;True;3;False;;False;True;1;LightMode=ShadowCaster;False;False;0;;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;17;62,-42;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;SceneSelectionPass;0;3;SceneSelectionPass;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;8;d3d11;metal;vulkan;xboxone;xboxseries;playstation;ps5;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=SceneSelectionPass;False;False;0;;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;18;62,-42;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;DepthOnly;0;4;DepthOnly;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;8;d3d11;metal;vulkan;xboxone;xboxseries;playstation;ps5;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;False;False;False;False;False;False;False;False;True;True;0;True;_StencilRefDepth;255;False;;255;True;_StencilWriteMaskDepth;7;False;;3;False;;1;False;;1;False;;7;False;;1;False;;1;False;;1;False;;False;True;1;False;;False;False;True;1;LightMode=DepthOnly;False;False;0;;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;19;62,-42;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;Motion Vectors;0;5;Motion Vectors;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;8;d3d11;metal;vulkan;xboxone;xboxseries;playstation;ps5;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;False;False;False;False;False;False;False;False;True;True;0;True;_StencilRefMV;255;False;;255;True;_StencilWriteMaskMV;7;False;;3;False;;1;False;;1;False;;7;False;;1;False;;1;False;;1;False;;False;True;1;False;;False;False;True;1;LightMode=MotionVectors;False;False;0;;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;21;62,-42;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;TransparentBackface;0;6;TransparentBackface;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;8;d3d11;metal;vulkan;xboxone;xboxseries;playstation;ps5;switch;0;False;True;1;0;True;_SrcBlend;0;True;_DstBlend;1;0;True;_AlphaSrcBlend;0;True;_AlphaDstBlend;False;False;False;False;False;False;False;False;False;False;False;False;True;1;False;;False;False;False;True;True;True;True;True;0;True;_ColorMaskTransparentVel;False;False;False;False;False;False;False;True;0;True;_ZWrite;True;0;True;_ZTestTransparent;False;True;1;LightMode=TransparentBackface;False;False;0;;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;22;62,-42;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;TransparentDepthPrepass;0;7;TransparentDepthPrepass;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;8;d3d11;metal;vulkan;xboxone;xboxseries;playstation;ps5;switch;0;False;True;1;1;False;;0;False;;0;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;False;False;False;False;False;False;False;False;True;True;0;True;_StencilRefDepth;255;False;;255;True;_StencilWriteMaskDepth;7;False;;3;False;;1;False;;1;False;;7;False;;3;False;;1;False;;1;False;;False;True;1;False;;False;False;True;1;LightMode=TransparentDepthPrepass;False;False;0;;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;23;62,-42;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;TransparentDepthPostpass;0;8;TransparentDepthPostpass;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;8;d3d11;metal;vulkan;xboxone;xboxseries;playstation;ps5;switch;0;False;True;1;1;False;;0;False;;0;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;True;False;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;False;False;True;1;LightMode=TransparentDepthPostpass;False;False;0;;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;24;62,-42;Float;False;False;-1;2;Rendering.HighDefinition.LitShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;Forward;0;9;Forward;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;8;d3d11;metal;vulkan;xboxone;xboxseries;playstation;ps5;switch;0;False;True;1;0;True;_SrcBlend;0;True;_DstBlend;1;0;True;_AlphaSrcBlend;0;True;_AlphaDstBlend;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullModeForward;False;False;False;True;True;True;True;True;0;True;_ColorMaskTransparentVel;False;False;False;False;False;True;True;0;True;_StencilRef;255;False;;255;True;_StencilWriteMask;7;False;;3;False;;1;False;;1;False;;7;False;;1;False;;1;False;;1;False;;False;True;0;True;_ZWrite;True;0;True;_ZTestDepthEqualForOpaque;False;True;1;LightMode=Forward;False;False;0;;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;25;62,407;Float;False;False;-1;2;Rendering.HighDefinition.LightingShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;ScenePickingPass;0;10;ScenePickingPass;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=Picking;False;False;0;;0;0;Standard;0;False;0
 WireConnection;14;0;13;0
 WireConnection;14;5;12;0
 WireConnection;14;7;11;0
 ASEEND*/
-//CHKSM=85357BDEBC75ADD92F01DB7F0006A34F2E64F7AA
+//CHKSM=255D454E070CE16224390C0090F866F2AE0285A0

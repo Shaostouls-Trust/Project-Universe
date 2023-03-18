@@ -43,5 +43,10 @@ namespace ProjectUniverse.Environment.Gas
                 gameObject.SetActive(false);
             }
         }
+
+        public void SetParentDuct(IGasPipe pipe)
+        {
+            parentDuct = pipe;
+        }
     }
 }

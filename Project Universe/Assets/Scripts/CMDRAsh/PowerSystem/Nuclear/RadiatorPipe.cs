@@ -13,7 +13,7 @@ namespace ProjectUniverse.PowerSystem.Nuclear
         [SerializeField] private IGasPipe radiatorPipe;
         [SerializeField] private VolumeAtmosphereController vac;
         private float steamTemp = 300f;
-        private float steamPressure = 0f;
+        [SerializeField] private float steamPressure = 0f;
         private float steamAmount = 0f;
         public float deltaHeatSteam =0f;
         /// <summary>
@@ -43,12 +43,15 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                 {
                     if (steamTemp > ((vac.Temperature - 32f) / 1.8f) + 273.15f)
                     {
-
                         vac.AddRoomHeat(steamQ);
                         deltaHeatSteam = (steamQ / (radiatorPipe.GetKgSteam() * 2010f));
                         radiatorPipe.RemoveHeat(steamQ);
                     }
                 }
+                //if (steamPressure < 1f)
+                //{
+                    //Debug.Log(steamPressure);
+                //}
             }
             
         }

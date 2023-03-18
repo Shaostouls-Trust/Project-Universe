@@ -14,11 +14,38 @@ namespace AmplifyShaderEditor
 
 		private const string ASEAttenVarName = "ase_lightAtten";
 
-		private readonly string[] LightweightPragmaMultiCompiles =
+		private readonly string[] URP10PragmaMultiCompiles =
 		{
 			"multi_compile _ _MAIN_LIGHT_SHADOWS",
 			"multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE",
-			"multi_compile _ _SHADOWS_SOFT"
+			"multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS",
+			"multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS",
+			"multi_compile_fragment _ _SHADOWS_SOFT"
+		};
+
+		private readonly string[] URP11PragmaMultiCompiles =
+		{
+			"multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN",
+			"multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS",
+			"multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS",
+			"multi_compile_fragment _ _SHADOWS_SOFT"
+		};
+
+		private readonly string[] URP12PragmaMultiCompiles =
+		{
+			"multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN",
+			"multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS",
+			"multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS",
+			"multi_compile_fragment _ _SHADOWS_SOFT"
+		};
+
+		private readonly string[] URP14PragmaMultiCompiles =
+		{
+			"multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN",
+			"multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS",
+			"multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS",
+			"multi_compile_fragment _ _SHADOWS_SOFT",
+			"multi_compile _ _FORWARD_PLUS"
 		};
 
 		//private readonly string[] LightweightVertexInstructions =
@@ -62,14 +89,34 @@ namespace AmplifyShaderEditor
 				}
 				else
 				{
-					if( dataCollector.CurrentSRPType == TemplateSRPType.Lightweight )
+					if( dataCollector.CurrentSRPType == TemplateSRPType.URP )
 					{
 						if( dataCollector.HasLocalVariable( LightweightLightAttenDecl ))
 							return ASEAttenVarName;
 
 						// Pragmas
-						for( int i = 0; i < LightweightPragmaMultiCompiles.Length; i++ )
-							dataCollector.AddToPragmas( UniqueId, LightweightPragmaMultiCompiles[ i ] );
+						string[] pragmas;
+						if ( ASEPackageManagerHelper.CurrentURPBaseline >= ASESRPBaseline.ASE_SRP_14 )
+						{
+							pragmas = URP14PragmaMultiCompiles;
+						}
+						else if ( ASEPackageManagerHelper.CurrentURPBaseline >= ASESRPBaseline.ASE_SRP_12 )
+						{
+							pragmas = URP12PragmaMultiCompiles;
+						}
+						else if ( ASEPackageManagerHelper.CurrentURPBaseline >= ASESRPBaseline.ASE_SRP_11 )
+						{
+							pragmas = URP11PragmaMultiCompiles;
+						}
+						else
+						{
+							pragmas = URP10PragmaMultiCompiles;
+						}
+
+						for ( int i = 0; i < pragmas.Length; i++ )
+						{
+							dataCollector.AddToPragmas( UniqueId, pragmas[ i ] );
+						}
 
 						//string shadowCoords = dataCollector.TemplateDataCollectorInstance.GetShadowCoords( UniqueId/*, false, dataCollector.PortCategory*/ );
 						//return shadowCoords;
@@ -115,7 +162,7 @@ namespace AmplifyShaderEditor
 		public override void Draw( DrawInfo drawInfo )
 		{
 			base.Draw( drawInfo );
-			if( ContainerGraph.CurrentCanvasMode == NodeAvailability.TemplateShader && ContainerGraph.CurrentSRPType != TemplateSRPType.Lightweight )
+			if( ContainerGraph.CurrentCanvasMode == NodeAvailability.TemplateShader && ContainerGraph.CurrentSRPType != TemplateSRPType.URP )
 			{
 				m_showErrorMessage = true;
 				m_errorMessageTypeIsError = NodeMessageType.Warning;
