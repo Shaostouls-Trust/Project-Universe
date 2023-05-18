@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using ProjectUniverse.PowerSystem.Nuclear;
 
 namespace ProjectUniverse.PowerSystem
 {
@@ -23,6 +24,10 @@ namespace ProjectUniverse.PowerSystem
         private int routerCap;
         private IRouter thisRouter;
         private IGenerator supplyingGenerator;
+        private SteamTurbine supplyingTurbine;
+        [SerializeField] private PowerOutputController poc;
+        private float lastReceived;
+        //private float lastOut;
 
         //power legs update
         private int legsRequired = 3;
@@ -30,15 +35,49 @@ namespace ProjectUniverse.PowerSystem
         private int legsOut;//calculate based on machines linked
         [SerializeField]
         private int availibleLegsOut;
+        private bool useGeneratorPower = true;
 
         void Start()
         {
             //create GUID
             guid = Guid.NewGuid();
             //legsOut = subRouters.Length;
-            energyBufferMax = 4320.0f;
+            energyBufferMax = 6000;
             ProxyStart();
         }
+
+        public float BufferCurrent
+        {
+            get { return bufferCurrent; }
+        }
+
+        public float BufferMax
+        {
+            get { return energyBufferMax; }
+        }
+
+        public IGenerator ConnectedGenerator
+        {
+            get { return supplyingGenerator; }
+        }
+
+        public SteamTurbine ConnectedTurbine
+        {
+            get { return supplyingTurbine; }
+        }
+        public float LastReceived
+        {
+            get { return lastReceived; }
+        }
+        public bool UseGeneratorPower
+        {
+            get { return useGeneratorPower; }
+            set { useGeneratorPower = value; }
+        }
+        //public float LastOut
+        //{
+        //    get { return lastOut; }
+        //}
 
         public void ProxyStart()
         {
@@ -58,10 +97,6 @@ namespace ProjectUniverse.PowerSystem
                     routTemp[i] = subRouters[i];
                 }
                 subRouters = routTemp;
-                //Array.Copy(subRouters, routTemp,subRouters.Length-routerCap);
-                //subRouters.CopyTo(routTemp, 0); //Destination array not long enough
-                //routTemp = subRouters;// = new IRouter[4];
-                //subRouters = new IRoutingSubstation[routerCap];
             }
             //set buffer current
             bufferCurrent = 0f;
@@ -77,6 +112,11 @@ namespace ProjectUniverse.PowerSystem
                     iCableDLL.AddLast(myIcable);
                     Debug.Log("Checking Substation state " + subRouters[i]);
                     subRouters[i].CheckMachineState(ref thisRouter);
+                    //create manager buttons
+                    if (poc != null)
+                    {
+                        poc.CreateButton(subRouters[i]);
+                    }
                 }
             }
         }
@@ -84,8 +124,10 @@ namespace ProjectUniverse.PowerSystem
         // Update is called once per frame
         void Update()
         {
+            //lastOut = 0f;
             availibleLegsOut = subRouters.Length * 3;//3 legs per substation
             totalRequiredPower = 0f;
+            lastReceived = 0f;
             //get leg states - this will be for when we have levers that close off indiv legs.
             //NYI
             //get requested power amount
@@ -93,22 +135,18 @@ namespace ProjectUniverse.PowerSystem
             {
                 if(subRouters[i] != null)
                 {
-                    totalRequiredPower += subRouters[i].GetTotalRequiredPower();
+                    totalRequiredPower += subRouters[i].TotalRequiredPower;
                 }
             }
             //power request to generator logic
             if (bufferCurrent < energyBufferMax)
             {
-                if (supplyingGenerator != null)
+                if (supplyingGenerator != null && useGeneratorPower)
                 {
                     //request power from generator
                     //Debug.Log(totalRequiredPower);
                     supplyingGenerator.RequestPowerFromGenerator(totalRequiredPower, thisRouter);
                 }
-                //if(bufferCurrent < 0f)
-                //{
-                //    bufferCurrent = 0f;
-                //}
             }
             if (bufferCurrent >= energyBufferMax)
             {
@@ -154,6 +192,7 @@ namespace ProjectUniverse.PowerSystem
                     //Debug.Log("req: "+requestedAmount +" -= "+ (requestedAmount * deficitVsubMachine));
                     requestedAmount -= (requestedAmount * deficitVsubMachine);//breaks low-power-output (buffer/3f)
                     requestedAmount = (float)Math.Round(requestedAmount, 2);
+                    //lastOut += requestedAmount;
                     //split power between legs
                     float[] powerAmount = new float[routerLegReq];
                     for (int l = 0; l < routerLegReq; l++)
@@ -191,6 +230,10 @@ namespace ProjectUniverse.PowerSystem
         {
             return subRouters.Length;
         }
+        public IRoutingSubstation[] SubStations
+        {
+            get { return subRouters; }
+        }
         public int GetLegRequirement()
         {
             return legsRequired;
@@ -208,8 +251,24 @@ namespace ProjectUniverse.PowerSystem
             for (int i = 0; i < legCount; i++)
             {
                 bufferCurrent += powerAmounts[i];
+                lastReceived += powerAmounts[i];
             }
             legsReceived = legCount;
+        }
+        /// <summary>
+        /// A simplified input func for turbines
+        /// </summary>
+        /// <param name="powerAmount"></param>
+        public void ReceivePowerFromTurbine(float powerAmount)
+        {
+            //Debug.Log("Received power from turbine: "+ powerAmount);
+            bufferCurrent += powerAmount;
+            if(bufferCurrent > BufferMax)
+            {
+                bufferCurrent = BufferMax;
+            }
+            lastReceived += powerAmount;
+            legsReceived = 4;
         }
 
         public float getTotalRequiredPower()

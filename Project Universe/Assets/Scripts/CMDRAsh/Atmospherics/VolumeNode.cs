@@ -12,6 +12,15 @@ namespace ProjectUniverse.Environment.Volumes
         [SerializeField] private GameObject originDoor;
         [SerializeField] private bool linkByImpact;
 
+        private void Start()
+        {
+            if (originDoor != null && linkedVolume != null)
+            {
+                originDoor.GetComponent<DoorAnimator>().OthersideTextMesh.text = linkedVolume.name;
+            }
+           
+        }
+
         public bool LinkByImpact
         {
             get { return linkByImpact; }
@@ -78,7 +87,8 @@ namespace ProjectUniverse.Environment.Volumes
 
         public bool DoorState()
         {
-            return originDoor.gameObject.GetComponent<DoorAnimator>().OpenOrOpening();
+            DoorAnimator da = originDoor.gameObject.GetComponent<DoorAnimator>();
+            return da.OpenOrOpening() || da.Closing;
         }
     }
 }

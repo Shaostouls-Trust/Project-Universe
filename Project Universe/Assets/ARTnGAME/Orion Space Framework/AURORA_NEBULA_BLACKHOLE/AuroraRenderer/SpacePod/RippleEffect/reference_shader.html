@@ -1,0 +1,329 @@
+<html><head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>PixAnvil Graphics Demo</title>
+  
+  <script src="https://www.cs.uaf.edu/2015/spring/cs482/demo/pixanvil_2015_01/three.js"></script>
+  <script src="https://www.cs.uaf.edu/2015/spring/cs482/demo/pixanvil_2015_01/pixanvil.js"></script>
+  <script src="https://www.cs.uaf.edu/2015/spring/cs482/demo/pixanvil_2015_01/gpu1D.js"></script>
+  <script src="https://www.cs.uaf.edu/2015/spring/cs482/demo/pixanvil_2015_01/gpu2D.js"></script>
+  <link rel="stylesheet" href="https://www.cs.uaf.edu/2015/spring/cs482/demo/pixanvil_2015_01/pixanvil.css">
+</head>
+<body onload="PixAnvil.create(['Reflect','Frag','Setup','Loop','UI',])">
+<H1>PixAnvil/Three.js demo</H1>
+<table class="pixanvil" id="draggable_outer">
+<tr>
+	<td id="draggable_left" style="width:40%">
+<p id="#errors" style="color:red;">Er, JavaScript or <a href="http://get.webgl.org/">WebGL</a> doesn't seem to be running, so basically all you're going to see is the bare code...</p>
+
+<table class="tabbed" style="width:100%;height:100%">
+<tr><td>
+	<p id="tabHeaders">
+</td></tr>
+<tr><td height="99%">
+<textarea class="tabBox" id="tab_Reflect" rows="25" cols="30">
+/* This GLSL shader shows the water ripples */
+varying vec3 world; // our XYZ location
+uniform sampler2D ripples;
+void main(void) {
+	// Look up water state
+	vec2 tc=world.xy*0.2;
+	vec4 water=texture2D(ripples,tc);
+
+	// Bounce incoming ray off water
+	vec3 inDir=normalize(world-cameraPosition);
+	vec3 N=normalize(vec3(water.x-0.5,water.y-0.5,1.0));
+	vec3 outDir=reflect(inDir,N);
+
+	// Send reflected ray into sky
+	vec3 sky=vec3(0.1,0.3,0.6);
+	// add white toward horizon
+	sky+=(1.0-outDir.z)*vec3(0.7); 
+	// add vertical black "piers"
+	float piers=sin(outDir.x*20.0)+0.9;
+	sky=clamp(20.0*piers,0.0,1.0)*sky;
+
+	gl_FragColor=vec4(sky,1.0);
+}
+
+
+
+
+
+
+
+
+
+</textarea>
+
+
+<textarea class="tabBox" id="tab_Frag" rows="25" cols="30">
+/* This GLSL shader calculates the new ice texture:
+    red: temperature.  0.2 is the freezing point.
+*/
+vec4 run(float index) {
+   float tex_size=512.0; // pixels across
+   float del=1.0/tex_size; // texture coordinates per pixel
+   float bias=-10.0; // mipmap bias (disable mipmaps)
+   
+   // P stores our texture coordinates
+   vec2 cen=vec2(0.50124,0.5024);
+   vec2 P=(texcoords-cen)*0.991;
+   float rot=0.001;
+   P.x+=rot*P.y;
+   P.y-=rot*P.x;
+   P+=cen;
+   vec4 C=texture2D(tex,P,bias);
+
+   C-=dt*0.4; // darken
+   C=fract(C); // wraparound (reaction)
+    
+
+   // Blur (diffusion)
+   float blurFrac=50.0;
+   vec3 neighbors=texture2D(tex,P.xy,1.5).rgb; // mipmaps
+   C.rgb+=dt*blurFrac*(neighbors-C.rgb); // blur heat
+
+   C.g=0.0; // no green
+
+   // Mix red and blue channels a bit
+   float purple=0.01;
+   C.r=(1.0-purple)*C.r+purple*C.b;
+   C.b=(1.0-purple)*C.b+purple*C.r;
+   
+   return C;
+}
+
+
+
+
+
+
+
+
+
+</textarea>
+
+
+<textarea class="tabBox" id="tab_Setup" rows="25" cols="30">
+// JavaScript setup: runs once at startup
+
+// Create 2D texture to store the particles
+var tex_size=512;
+sim.nP=tex_size*tex_size; // number of pixels
+
+// Enable mipmaps and texture filtering
+var options={
+ minFilter: THREE.LinearMipmapLinearFilter,
+ magFilter: THREE.LinearFilter,
+ //minFilter: THREE.NearestFilter,
+ //magFilter: THREE.NearestFilter,
+ //wrapS:THREE.RepeatWrapping, // horizontal
+ //wrapT:THREE.RepeatWrapping, // vertical
+ format:THREE.RGBAFormat,
+ type:THREE.FloatType 
+};
+
+sim.tex=new gVector1D(sim.nP,options); // current values
+sim.texnext=new gVector1D(sim.nP,options); // values in next frame
+
+// For debugging, show texture onscreen
+sim.tex.debugTo(scene,10.0,0.0,10.0,6.0); 
+
+// Compile shader
+sim.fnTex=new gFunction1D(PixAnvil.loadTab('Frag'));
+
+// Initialize pixel values
+new gFunction1D(
+"vec4 run(float index) {\n"+
+"   float tex_size=512.0; // pixels across\n"+
+"   float del=1.0/tex_size; // texture coordinates per pixel\n"+
+"   // P stores our texture coordinates\n"+
+"   vec2 P=fract(del*vec2(0.5+index, (0.5+index)/tex_size));\n"+
+"   // Boundary condition sphere:\n"+
+"   vec2 sphere=vec2(1.53,0.55);\n"+
+"   float r=length(sphere-P);\n"+
+"   if (fract(100.0*r)<0.5) return vec4(0.8,0.7,0.6,1);\n"+
+
+"   return vec4(0.0,0.0,0.0,1.0);\n"+
+"}\n"
+).run(sim.tex);
+
+
+
+// Ground
+sim.ground = new THREE.Mesh(
+  new THREE.BoxGeometry(500,500,0.0001),
+  new THREE.ShaderMaterial(
+{
+   uniforms: {
+		time: { type: "f", value: 1.0 },
+		ripples: { type: "t", value: sim.tex.tex }
+   },
+   vertexShader:
+"varying vec3 world;\n"+
+"void main(void) {\n"+
+"   vec3 P=vec3(position); \n"+
+"   world=P;\n"+
+"   gl_Position=projectionMatrix * modelViewMatrix * vec4( P, 1.0 );\n"+
+"   gl_PointSize = 4.0; \n"+
+"}\n"
+,
+    fragmentShader:
+       PixAnvil.loadTab("Reflect")
+})
+);
+sim.ground.position.z=-0.001;
+sim.ground.receiveShadow=true;
+scene.add(sim.ground);
+
+// Sun-like spotlight
+var l=new THREE.SpotLight();
+sim.light = l;
+l.position.set( -50, -100, 100 );
+l.castShadow=true;
+l.shadowCameraNear = 50; 
+l.shadowCameraFar = 500; 
+l.shadowCameraFov = 10; // degrees field of view
+scene.add(l);
+
+// Set up timestepping
+sim.target_t=sim.current_t=0;
+sim.framecount=0;
+
+
+
+
+
+
+
+
+
+</textarea>
+
+
+<textarea class="tabBox" id="tab_Loop" rows="25" cols="30">
+// Fix huge time warps
+if (lib.dt>0.3) sim.current_t=sim.target_t;
+else sim.target_t+=lib.dt;
+
+// Substepping loop:
+var dt=0.01; // simulation timestep size
+while (sim.current_t<sim.target_t) { // substep loop
+  sim.current_t+=dt;
+
+// This GLSL code updates the texture
+  sim.fnTex // set uniforms and compute V
+    .set("dt",dt)
+    .set("time",lib.time)
+    .set("tex",sim.tex.tex) // read from old F
+    .run(sim.texnext); // write to Vnext
+  sim.texnext.swap(sim.tex); // ping-pong buffers
+
+  sim.framecount++;
+} // end substep loop
+trace(sim.framecount);
+
+
+
+
+
+
+
+
+
+</textarea>
+
+
+<textarea class="tabBox" id="tab_UI" rows="25" cols="30">
+// Camera control:
+
+// Update camera coordinate system
+var s=camera;
+if (!s.X) { // startup: create initial coordinates
+    s.X=new vec3(1,0,0);
+    s.Y=new vec3(0,0,1);
+    s.Z=new vec3(0,-1,0); // camera Z is world Y
+    s.P=new vec3(0,-2,5); // initial location
+}
+
+// Move camera via keyboard
+var move=new vec3(0,0,0); // sums current frame motion
+
+// X control via A and D
+if (lib.key['a']) move.pe(new vec3(-1,0,0));
+if (lib.key['d']) move.pe(new vec3(+1,0,0));
+// Y control via W and S
+if (lib.key['w']) move.pe(new vec3(0,0,-1));
+if (lib.key['s']) move.pe(new vec3(0,0,+1));
+// Z control via Q and Z
+if (lib.key['q']) move.pe(new vec3(0,+1,0));
+if (lib.key['z']) move.pe(new vec3(0,-1,0));
+
+move.te(5.0*lib.dt); // meters/second motion rate
+s.P.pe(s.X.t(move.x).p(s.Y.t(move.y)).p(s.Z.t(move.z)));
+
+// Rotate camera via mouse
+var speed=0.01; // radians per mouse pixel
+if (lib.mouseleft) { // move Z with mouse
+    s.Z.pe(s.X.t(-lib.mousedx*speed).p(
+           s.Y.t( lib.mousedy*speed)));
+}
+
+// Keep level: make sure X is horizontal.
+s.X.z=0.0;
+s.Y.crossVectors(s.Z,s.X.normalize());
+
+// Orthonormalize
+s.X.crossVectors(s.Y,s.Z).normalize();
+s.Y.crossVectors(s.Z,s.X).normalize();
+s.Z.normalize();
+
+  
+// Write coordinate system into matrix
+s.matrixAutoUpdate=false; // don't trash
+s.matrixWorldNeedsUpdate=true; // show
+  
+var m=s.matrix; // the camera's matrix
+
+// Utility function: set a matrix column
+function setCol(m,col,vec) {
+  m.elements[4*col+0]=vec.x;
+  m.elements[4*col+1]=vec.y;
+  m.elements[4*col+2]=vec.z;
+}
+
+  setCol(m,0,s.X);
+  setCol(m,1,s.Y);
+  setCol(m,2,s.Z);
+  setCol(m,3,s.P); // position from sim
+
+
+
+
+
+
+
+
+
+
+
+</textarea>
+
+
+<div class="tabDiv" id="tab_Save" ></div>
+<div class="tabDiv" id="tab_Stats" > </div>
+
+</td></tr>
+<tr><td>
+<p id="timeControl">
+</td></tr>
+</table>
+
+	</td>
+	<td id="draggable_thumb"> </td>
+	<td id="draggable_right">  <div id="renderer" style="width:99%;" /> </td>
+</tr>
+</table>
+
+</body>
+</html>

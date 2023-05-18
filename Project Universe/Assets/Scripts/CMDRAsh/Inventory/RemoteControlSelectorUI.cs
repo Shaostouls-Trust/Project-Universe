@@ -116,7 +116,7 @@ public class RemoteControlSelectorUI : MonoBehaviour
 
     public void ConnectToTargetDrone()
     {
-        //Debug.Log("CONNECT");
+        Debug.Log("CONNECT");
         if (targetDrone != null)
         {
             connected = true;

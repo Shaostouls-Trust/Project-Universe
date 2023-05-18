@@ -21,6 +21,7 @@ public class ElevatorManager : MonoBehaviour
     [SerializeField] private bool Y_;
     [SerializeField] private bool YZ;
     [SerializeField] private bool Z_;
+    [SerializeField] private AudioSource src;
     public void Up()
     {
         if (!Move)
@@ -83,6 +84,7 @@ public class ElevatorManager : MonoBehaviour
 
     IEnumerator ElevatorMovement()
     {
+        src.Play();
         float xD = LevelDir.GetComponent<ElevatorPlatform>().ShaftCenterForLevel.x - (float)Math.Round(elevatorPlatform.transform.position.x, 2);
         float yD = LevelDir.GetComponent<ElevatorPlatform>().ShaftCenterForLevel.y - (float)Math.Round(elevatorPlatform.transform.position.y, 2);
         float zD = LevelDir.GetComponent<ElevatorPlatform>().ShaftCenterForLevel.z - (float)Math.Round(elevatorPlatform.transform.position.z, 2);

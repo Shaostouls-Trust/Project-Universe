@@ -1,0 +1,516 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8145014386001999340
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e0aae1702f96ff4aad9e81f61712f4b, type: 3}
+  m_Name: NebulaCloudsSM_HDRP
+  m_EditorClassIdentifier: 
+  active: 1
+  m_AdvancedMode: 0
+  cloudDistanceParams: {x: 0, y: 0, z: 1}
+  controlBackAlphaPower: 1
+  controlCloudAlphaPower: 0.001
+  controlCloudEdgeA: {x: 1, y: 1, z: 1, w: 1}
+  controlCloudEdgeOffset: 1
+  depthDilation: 1
+  enabledTemporalAA: 0
+  TemporalResponse: 1
+  TemporalGain: 1
+  enableVortex: 0
+  resetVortex: 0
+  vortexPosRadius: {x: 0, y: 0, z: 0, w: 280000}
+  vortexControlsA: {x: 1, y: 1, z: 1, w: 1}
+  superCellPosRadius: {x: 0, y: 0, z: 0, w: 1000}
+  superCellControlsA: {x: 1, y: 1, z: 1, w: 1}
+  renderClouds: 1
+  raysResolution: {x: 1, y: 1, z: 1, w: 1}
+  rayShadowing: {x: 1, y: 1, z: 1, w: 1}
+  WeatherTexture: {fileID: 0}
+  maskTexture: {fileID: 0}
+  cameraScale: 1
+  extendFarPlaneAboveClouds: 1
+  cloudChoice: 0
+  height: 1
+  useRadialDistance: 0
+  YCutHeightDepthScale: {x: 0, y: 1, z: 0, w: 1}
+  autoTranspChange: 0
+  transpToggleHeight: 100
+  enableBehindTranspClouds: 0
+  enableAboveTranspClouds: 0
+  scatterOn: 1
+  sunRaysOn: 1
+  zeroCountSteps: 0
+  sunShaftSteps: 5
+  renderInFront: 0
+  debugNoLowFreqNoise: 0
+  debugNoHighFreqNoise: 0
+  debugNoCurlNoise: 0
+  steps: 128
+  adjustDensity: 1
+  stepDensityAdjustmentCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 3.019
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.25
+      value: 1.233
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.892
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  allowFlyingInClouds: 0
+  downSample: 1
+  blueNoiseTexture: {fileID: 0}
+  randomJitterNoise: 2
+  temporalAntiAliasing: 1
+  gradientLow:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  gradientMed:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  gradientHigh:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  curlNoise: {fileID: 0}
+  lowFreqNoise: {fileID: 0}
+  highFreqNoise: {fileID: 0}
+  startHeight: 1500
+  thickness: 4000
+  planetSize: 35000
+  planetZeroCoordinate: {x: 0, y: 0, z: 0}
+  scale: 0.3
+  detailScale: 13.9
+  lowFreqMin: 0.366
+  lowFreqMax: 0.8
+  highFreqModifier: 0.21
+  curlDistortScale: 7.44
+  curlDistortAmount: 407
+  weatherScale: 0.1
+  maskScale: 0
+  topDownMaskCamera: {fileID: 0}
+  fogOfWarRadius: 0
+  playerPos: {fileID: 0}
+  fogOfWarPower: 0
+  coverage: 0.92
+  cloudSampleMultiplier: 1
+  cloudsHighTexture: {fileID: 0}
+  coverageHigh: 1
+  highCoverageScale: 1
+  highCloudsScale: 0.5
+  sunLight: {fileID: 0}
+  cloudBaseColor: {r: 0.78039217, g: 0.8627451, b: 1, a: 1}
+  cloudTopColor: {r: 1, g: 1, b: 1, a: 1}
+  ambientLightFactor: 0.551
+  sunLightFactor: 0.79
+  highSunColor: {r: 1, g: 0.9882353, b: 0.8235294, a: 1}
+  lowSunColor: {r: 1, g: 0.68235296, b: 0, a: 1}
+  henyeyGreensteinGForward: 0.4
+  henyeyGreensteinGBackward: 0.179
+  lightStepLength: 64
+  lightConeRadius: 0.4
+  randomUnitSphere: 1
+  density: 1
+  aLotMoreLightSamples: 0
+  globalMultiplier: 1
+  windSpeed: 15.9
+  windDirection: -22.4
+  coverageWindSpeed: 25
+  coverageWindDirection: 5
+  highCloudsWindSpeed: 49.2
+  highCloudsWindDirection: 77.8
+  _windOffset: {x: 0, y: 0, z: 0}
+  _coverageWindOffset: {x: 0, y: 0}
+  _highCloudsWindOffset: {x: 0, y: 0}
+  _windDirectionVector: {x: 0, y: 0, z: 0}
+  _multipliedWindSpeed: 0
+  farCamDistFactor: 1
+  colourPalette: {fileID: 0}
+  Made_texture: 0
+  DistGradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  GradientBounds: {x: 0, y: 0}
+  adjustNightLigting: 1
+  backShadeNight: 0.5
+  turbidityNight: 2
+  extinctionNight: 0.01
+  shift_dawn: 0
+  shift_dusk: 0
+  groundColorNight: {x: 0.5, y: 0.5, z: 0.5}
+  scatterNight: 0.12
+  reflectFogHeight: 1
+  WebGL: 0
+  fastest: 0
+  localLight: {fileID: 0}
+  localLightFalloff: 2
+  localLightIntensity: 1
+  localLightIntensityA: 1
+  currentLocalLightIntensity: 0
+  _SkyTint: {x: 0.5, y: 0.5, z: 0.5}
+  _AtmosphereThickness: 1
+  isForReflections: 0
+  _invertX: 0
+  _invertRay: 1
+  _WorldSpaceCameraPosC: {x: 0, y: 0, z: 0}
+  varianceAltitude1: 0
+  _mobileFactor: 1
+  _alphaFactor: 0.96
+  _InteractTexture: {fileID: 0}
+  _InteractTexturePos: {x: 0, y: 0, z: 0, w: 0}
+  _InteractTextureAtr: {x: 0, y: 0, z: 0, w: 0}
+  _InteractTextureOffset: {x: 0, y: 0, z: 0, w: 0}
+  _NearZCutoff: -2
+  _HorizonYAdjust: 0
+  _HorizonZAdjust: 0
+  _FadeThreshold: 0
+  _BackShade: 0
+  _UndersideCurveFactor: 0
+  _WorldClip:
+    e00: 0
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 0
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 0
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 0
+  _SampleCount0: 2
+  _SampleCount1: 3
+  _SampleCountL: 4
+  _NoiseTex1: {fileID: 0}
+  _NoiseTex2: {fileID: 0}
+  _NoiseFreq1: 3.1
+  _NoiseFreq2: 35.1
+  _NoiseAmp1: 5
+  _NoiseAmp2: 1
+  _NoiseBias: -0.2
+  _Scroll1: {x: 0.01, y: 0.08, z: 0.06}
+  _Scroll2: {x: 0.01, y: 0.05, z: 0.03}
+  _Altitude0: 1500
+  _Altitude1: 3500
+  _FarDist: 30000
+  _Scatter: 0.008
+  _HGCoeff: 0.5
+  _Extinct: 0.01
+  _SunSize: 0.04
+  _GroundColor: {x: 0.8, y: 0.8, z: 0.8}
+  _ExposureUnder: 3
+  frameFraction: 0
+  _LocalLightPos: {x: 0, y: 0, z: 0, w: 0}
+  _LocalLightColor: {x: 0, y: 0, z: 0, w: 0}
+  _FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+  noiseTexture: {fileID: 0}
+  _startDistance: 30
+  _fogHeight: 0.75
+  _fogDensity: 1
+  _cameraRoll: 0
+  _cameraDiff: {x: 0, y: 0, z: 0, w: 0}
+  _cameraTiltSign: 1
+  heightDensity: 1
+  noiseDensity: 1
+  noiseScale: 1
+  noiseThickness: 1
+  noiseSpeed: {x: 1, y: 1, z: 1}
+  occlusionDrop: 1
+  occlusionExp: 1
+  noise3D: 1
+  startDistance: 1
+  luminance: 1
+  lumFac: 1
+  ScatterFac: 1
+  TurbFac: 1
+  HorizFac: 1
+  turbidity: 1
+  reileigh: 1
+  mieCoefficient: 1
+  mieDirectionalG: 1
+  bias: 1
+  contrast: 1
+  TintColor: {r: 1, g: 1, b: 1, a: 1}
+  TintColorK: {x: 0, y: 0, z: 0}
+  TintColorL: {x: 0, y: 0, z: 0}
+  Sun: {x: 0, y: 0, z: 0, w: 0}
+  SunFOG: {x: 0, y: 0, z: 0, w: 0}
+  FogSky: 1
+  ClearSkyFac: 1
+  PointL: {x: 0, y: 0, z: 0, w: 0}
+  PointLParams: {x: 0, y: 0, z: 0, w: 0}
+  _useRadialDistance: 0
+  _fadeToSkybox: 1
+  allowHDR: 0
+  raysResolutionA: {x: 1, y: 1, z: 1, w: 1}
+  _rayColor: {r: 0.969, g: 0.549, b: 0.041, a: 1}
+  rayShadowingA: {x: 1, y: 1, z: 1, w: 1}
+  _underDomeColor: {r: 1, g: 1, b: 1, a: 1}
+  enableShafts: 0
+  blend: 0.5
+  inheritFromController: 1
+  enableFog: 1
+  blitShaderPassIndex: 0
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.006
+    min: 0
+    max: 1
+  shaftsFollowCamera:
+    m_OverrideState: 1
+    m_Value: 0
+  resolution: 1
+  screenBlendMode: 0
+  sunTransform:
+    m_OverrideState: 1
+    m_Value: {x: 0, y: 0, z: 0}
+  radialBlurIterations:
+    m_OverrideState: 1
+    m_Value: 2
+  sunColor:
+    m_OverrideState: 1
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    hdr: 0
+    showAlpha: 1
+    showEyeDropper: 1
+  sunThreshold:
+    m_OverrideState: 1
+    m_Value: {r: 0.87, g: 0.74, b: 0.65, a: 1}
+    hdr: 0
+    showAlpha: 1
+    showEyeDropper: 1
+  sunShaftBlurRadius:
+    m_OverrideState: 1
+    m_Value: 2.5
+  sunShaftIntensity:
+    m_OverrideState: 1
+    m_Value: 1.15
+  maxRadius:
+    m_OverrideState: 1
+    m_Value: 0.75
+  useDepthTexture:
+    m_OverrideState: 1
+    m_Value: 1
+  waterHeight:
+    m_OverrideState: 1
+    m_Value: 0
+  BumpMap:
+    m_OverrideState: 1
+    m_Value: {fileID: 0}
+  underwaterDepthFade:
+    m_OverrideState: 1
+    m_Value: 1.1
+  BumpIntensity:
+    m_OverrideState: 1
+    m_Value: 0.02
+  BumpVelocity:
+    m_OverrideState: 1
+    m_Value: {x: 0.15, y: 0.1, z: 0.2, w: 0.3}
+  BumpScale:
+    m_OverrideState: 1
+    m_Value: 0.1
+  underWaterTint:
+    m_OverrideState: 1
+    m_Value: {r: 0, g: 1, b: 1, a: 1}
+    hdr: 0
+    showAlpha: 1
+    showEyeDropper: 1
+  BumpIntensityRL:
+    m_OverrideState: 1
+    m_Value: 0.17
+  BumpScaleRL:
+    m_OverrideState: 1
+    m_Value: 0.4
+  BumpLineHeight:
+    m_OverrideState: 1
+    m_Value: 0.1
+  refractLineWidth:
+    m_OverrideState: 1
+    m_Value: 1
+  refractLineXDisp:
+    m_OverrideState: 1
+    m_Value: 1
+  refractLineXDispA:
+    m_OverrideState: 1
+    m_Value: 1
+  refractLineFade:
+    m_OverrideState: 1
+    m_Value: {x: 1, y: 1, z: 1, w: 1}
+  scalerMask:
+    m_OverrideState: 1
+    m_Value: 0.2
+  blendBackground: 0
+  backgroundCam: {fileID: 0}
+  backgroundMat: {fileID: 0}
+  splitPerFrames: 1
+  cameraMotionCompensate: 1
+  updateRate: 0.3
+  downScaleFactor: 2
+  downScale: 0
+  _needsReset: 1
+  enableReproject: 0
+  autoReproject: 0
+  lowerRefrReflResFactor: 3
+  spread: 0
+  feedback: 1
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
+  m_Name: VOLUME Profile NEBULA HDRP
+  m_EditorClassIdentifier: 
+  components:
+  - {fileID: -8145014386001999340}

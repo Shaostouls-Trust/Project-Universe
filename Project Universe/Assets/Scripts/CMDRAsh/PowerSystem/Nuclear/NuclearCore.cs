@@ -36,14 +36,6 @@ namespace ProjectUniverse.PowerSystem.Nuclear
         [SerializeField] private Color32 GREEN;
         [SerializeField] private Color32 RED;
         [SerializeField] private Color32 YELLOW;
-        //[SerializeField] private TMP_Text activityText;
-        //[SerializeField] private TMP_Text tempText;
-        //[SerializeField] private TMP_Text avgEFrTxt;
-        //[SerializeField] private TMP_Text totalEFrTxt;
-        //[SerializeField] private TMP_Text btuText;
-        //[SerializeField] private TMP_Text coolantText;
-        //[SerializeField] private TMP_Text mwhText;
-        //public TMP_Text controlRodGlobalText;
         private float timeScaled = 0f;
         [Range(0,1)]
         public float controlRodGlobal = 1f;
@@ -63,6 +55,7 @@ namespace ProjectUniverse.PowerSystem.Nuclear
         [SerializeField] private float leakAmount = 0f;//0 - 1 for amount of rads to release into Da Worldo
         private float detectedRads;
         [SerializeField] private IRadiationZone radiationArea;
+        public bool releaseRadsEvent = false;
 
         public float[,] NeighborActivityData
         {
@@ -392,6 +385,19 @@ namespace ProjectUniverse.PowerSystem.Nuclear
             /// < .25 to 0 means the vessel has been destroyed.
             radiationArea.GeneratorLeakMultiplier = leakAmount;
             detectedRads = radiationArea.RadiationAtOneMeter();
+
+            if (releaseRadsEvent)
+            {
+                leakAmount = averageTemperatureFuelRods / 1000f;
+                if(leakAmount > 1f)
+                {
+                    leakAmount = 1f;
+                }
+            }
+            else
+            {
+                leakAmount = 0f;
+            }
         }
 
         private void OnGUI()
@@ -652,6 +658,16 @@ namespace ProjectUniverse.PowerSystem.Nuclear
             {
                 // up 10
                 controlRodGlobal += .10f;
+            }
+            else if(i == 5)
+            {
+                //scram
+                controlRodGlobal = 1f;
+            }
+            else if (i == 6)
+            {
+                //leak
+                releaseRadsEvent = !releaseRadsEvent;
             }
             if (controlRodGlobal < 0)
             {

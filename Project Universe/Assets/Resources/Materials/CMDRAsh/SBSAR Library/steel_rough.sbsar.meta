@@ -17,14 +17,16 @@ ScriptedImporter:
     generateAllOutputs: 0
     generateMipMaps: 1
     preset: " <sbspreset pkgurl=\"pkg://steel_rough\" label=\"\" >\n  <presetinput
-      identifier=\"$outputsize\" uid=\"3599246198\" type=\"8\" value=\"11,11\" />\n
-      </sbspreset>\n"
+      identifier=\"$outputsize\" uid=\"3599246198\" type=\"8\" value=\"11,11\" />\n 
+      <presetinput identifier=\"steel_color\" uid=\"2785144288\" type=\"2\" value=\"0.192,0.192,0.192\"
+      />\n  <presetinput identifier=\"steel_roughness\" uid=\"2785141306\" type=\"0\"
+      value=\"0.75\" />\n  <presetinput identifier=\"normal_intensity\" uid=\"2789089973\"
+      type=\"0\" value=\"10\" />\n </sbspreset>\n"
     shaderName: HDRP/LitTessellation
     materialProperties:
       shader: {fileID: 4800000, guid: 756bac9090102564582875f4c7e30202, type: 3}
-      shaderKeywords: _DISABLE_SSR_TRANSPARENT _DISPLACEMENT_LOCK_TILING_SCALE _GLOSSINESSMAP
-        _MASKMAP _METALLICGLOSSMAP _NA_DIFFUSE _NORMALMAP _NORMALMAP_TANGENT_SPACE
-        _ROUGHNESSMAP _SPECULARCOLORMAP _TESSELLATION_DISPLACEMENT _VERTEX_DISPLACEMENT_LOCK_OBJECT_SCALE
+      shaderKeywords: _DISABLE_SSR_TRANSPARENT _GLOSSINESSMAP _MASKMAP _METALLICGLOSSMAP
+        _NA_DIFFUSE _NORMALMAP _NORMALMAP_TANGENT_SPACE _ROUGHNESSMAP _SPECULARCOLORMAP
       lightmapFlags: 4
       enableInstancingVariants: 1
       doubleSidedGI: 0
@@ -37,7 +39,7 @@ ScriptedImporter:
       - name: _BaseColorMap
         texture: {fileID: 1288657093450369310, guid: 1fc5589fa25e8f541b91e11fbf6950c2,
           type: 3}
-        scale: {x: 1, y: 1}
+        scale: {x: 2.2, y: 2.3}
         offset: {x: 0, y: 0}
       - name: _BentNormalMap
         texture: {instanceID: 0}
@@ -184,7 +186,7 @@ ScriptedImporter:
       - name: _DisplacementLockTilingScale
         float: 1
       - name: _DisplacementMode
-        float: 3
+        float: 0
       - name: _DoubleSidedEnable
         float: 0
       - name: _DoubleSidedNormalMode
@@ -226,7 +228,7 @@ ScriptedImporter:
       - name: _HeightTessCenter
         float: 0.5
       - name: _InvTilingScale
-        float: 1
+        float: 0.44444445
       - name: _Ior
         float: 1
       - name: _IridescenceMask

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5535355988526803435}
   - component: {fileID: 7725221165205576993}
   - component: {fileID: 7792975498887274843}
+  - component: {fileID: 1034676800562180041}
   m_Layer: 0
   m_Name: Overhead_LargeDuctFourwayA
   m_TagString: Untagged
@@ -94,20 +95,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7937c6540c271584688a51ff10620548, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gasses: []
   neighbors: []
   temp: 0
   tempTol:
   - -250
   - 250
-  pressure: 0
-  maxP: 1.25
+  maxPressure_bar: 216
+  globalPressure: 0
   volume_m3: 0.5
   health: 100
   leakRate: 0
   bulletHoles: []
-  throughput_m3: 4
   vent: {fileID: 0}
   ductVolume: {fileID: 0}
   insulationRating: 0.1
   burst: 0
+  ignoreNeighborConstraint: 0
+  throughput_m3hr: 0
+  equivalentDiameterInner_m: 0.408
+  maxVelocity_ms: 120.5
+  gassescount: 0
+--- !u!64 &1034676800562180041
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8085513603006332148}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2111871032252484449, guid: e438ae2b2e667e949bf4487a79dea27f, type: 3}

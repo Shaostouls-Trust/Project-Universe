@@ -1,0 +1,249 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: PlanetTerrainMaterial C
+  m_Shader: {fileID: 4800000, guid: 65d70ff5450bb9b4abe189e4fe2a6298, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BlendTex:
+        m_Texture: {fileID: 2800000, guid: fdef66b7929892a4eba1f726853edc18, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Bump:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: f56bf95966ebfb646b4a9e8e1365c053, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap2:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Cliff:
+        m_Texture: {fileID: 2800000, guid: 47bb9fd646beb8d428da5029e96cfcc5, type: 3}
+        m_Scale: {x: 10, y: 10}
+        m_Offset: {x: 0, y: 0}
+    - _Control:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DecalTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Detail:
+        m_Texture: {fileID: 2800000, guid: d5e750b65e2bd754c99e3e12f75a35ec, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Grass:
+        m_Texture: {fileID: 2800000, guid: 47bb9fd646beb8d428da5029e96cfcc5, type: 3}
+        m_Scale: {x: 10, y: 10}
+        m_Offset: {x: 0, y: 0}
+    - _Ground:
+        m_Texture: {fileID: 2800000, guid: 47bb9fd646beb8d428da5029e96cfcc5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _LightMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: d033313fb027c414a92115771b661790, type: 3}
+        m_Scale: {x: 1000, y: 1000}
+        m_Offset: {x: 0, y: 0}
+    - _Normal0:
+        m_Texture: {fileID: 2800000, guid: d5e750b65e2bd754c99e3e12f75a35ec, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Normal1:
+        m_Texture: {fileID: 2800000, guid: d5e750b65e2bd754c99e3e12f75a35ec, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Normal2:
+        m_Texture: {fileID: 2800000, guid: d5e750b65e2bd754c99e3e12f75a35ec, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Normal3:
+        m_Texture: {fileID: 2800000, guid: d5e750b65e2bd754c99e3e12f75a35ec, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 2800000, guid: faea0cf18ef7f72419b087f58a19a6a5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ShaderBG:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SkyDome:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SliderFill:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Splat0:
+        m_Texture: {fileID: 2800000, guid: 42a0e4d8b36f96341bc03c414e00d64c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Splat1:
+        m_Texture: {fileID: 2800000, guid: cc2a96c75eaf3c34d91e286469198869, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Splat2:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Splat3:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpriteTex:
+        m_Texture: {fileID: 2800000, guid: 47bb9fd646beb8d428da5029e96cfcc5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture1:
+        m_Texture: {fileID: 2800000, guid: 18214e9d6af6248559d501391856f1c7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture2:
+        m_Texture: {fileID: 2800000, guid: c6e0767b1f8c34890ac245217f4b9731, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - bumpTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - color_map:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - dayTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - nightTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - permutation:
+        m_Texture: {fileID: 2800000, guid: e80c3c84ea861404d8a427db8b7abf04, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Amp: 1
+    - _CameraHeight: 0
+    - _CameraHeight2: 0
+    - _CliffScale: 0.06
+    - _Contrast: 6
+    - _Distance: 10
+    - _EdgeDensity: 1.725506
+    - _Frequency: 0.002
+    - _Frq: 1
+    - _G: 0
+    - _G2: 0
+    - _Glossiness: 0.22855927
+    - _GrassScale: 0.06
+    - _InnerRadius: 0
+    - _InnerRadius2: 0
+    - _InvFade: 1
+    - _Km4PI: 0
+    - _KmESun: 0
+    - _Kr4PI: 0
+    - _KrESun: 0
+    - _MaxDistance: 5.5
+    - _MultiUVCliff: 0.3
+    - _MultiUVGrass: 0.2
+    - _MultiUVPassOne: 0.75
+    - _MultiUVPassTwo: 0.5
+    - _NoiseSize: 3.7
+    - _Octaves: 8
+    - _Offset: 4.8
+    - _OffsetPer: 1
+    - _OuterRadius: 0
+    - _OuterRadius2: 0
+    - _Parallax: 0.053214286
+    - _PlanetRadius: 6360
+    - _Ramp: 1
+    - _RimPower: 2.1838915
+    - _Samples: 0
+    - _Scale: 0
+    - _ScaleDepth: 0
+    - _ScaleOverScaleDepth: 0
+    - _Shininess: 0.123305574
+    - _Size: 2.5357144
+    - _TerrainBump: 152
+    - _TerrainBumpSample: 25
+    - _TerrainHeight: 30000
+    - _Tess: 16
+    - _TexSize: 1
+    - _fCameraHeight: 0
+    - _fCameraHeight2: 0
+    - _fInnerRadius: 0
+    - _fInnerRadius2: 0
+    - _fKm4PI: 0
+    - _fKmESun: 0
+    - _fKr4PI: 0
+    - _fKrESun: 0
+    - _fOuterRadius: 0
+    - _fOuterRadius2: 0
+    - _fScale: 0
+    - _fScaleDepth: 0
+    - _fScaleOverScaleDepth: 0
+    - gain: 10
+    - ringHeight: 0
+    - scale_x: 32
+    - scale_y: 32
+    - setup: 0.5
+    - shift_x: 0
+    - shift_y: 0
+    - shine: 32
+    m_Colors:
+    - _CameraPosition: {r: 0, g: 0, b: 0, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DiffuseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Emission: {r: 0.6911765, g: 0.6911765, b: 0.6911765, a: 1}
+    - _GroundColor: {r: 1, g: 1, b: 1, a: 1}
+    - _InvWaveLength: {r: 0, g: 0, b: 0, a: 0}
+    - _LightDir: {r: 0, g: 0, b: 0, a: 0}
+    - _MainColor: {r: 1, g: 1, b: 1, a: 1}
+    - _MultiUVCliff: {r: 0.15, g: 0.25, b: 0, a: 0}
+    - _MultiUVGrass: {r: 0.25, g: 0.5, b: 0, a: 0}
+    - _OffsetStartingPos: {r: 0.6, g: 0, b: 0, a: 0}
+    - _RimColor: {r: 1, g: 0.56643355, b: 0, a: 1}
+    - _Scale: {r: 1, g: 1, b: 1, a: 1}
+    - _SecondaryColor: {r: 1, g: 1, b: 1, a: 1}
+    - _SpecColor: {r: 0.07352942, g: 0.07352942, b: 0.07352942, a: 1}
+    - _SpecularColor: {r: 0.3006994, g: 1, b: 0, a: 1}
+    - _TintColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+    - _UVMultiply: {r: 64, g: 2048, b: 0, a: 0}
+    - _cInvWaveLength: {r: 0, g: 0, b: 0, a: 0}
+    - _v4CameraPos: {r: 0, g: 0, b: 0, a: 0}
+    - _v4LightDir: {r: 0, g: 0, b: 0, a: 0}
+    - ambient_color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - centrePosition: {r: 0, g: 0, b: 0, a: 0}
+    - diffuse_color: {r: 1, g: 1, b: 1, a: 1}
+    - lightpos: {r: -10, g: 10, b: 10, a: 1}
+    - specular_color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - starPositionRaw: {r: 0, g: 0, b: 0, a: 0}

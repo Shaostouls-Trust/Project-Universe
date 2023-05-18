@@ -57,6 +57,7 @@ MonoBehaviour:
     - Assemblies
     - KoroUseMe
     - StuffyGassesScene
+    - ShipScene1_D
     AllowRuntimeSceneChanges: 0
     NetworkPrefabs:
     - Prefab: {fileID: 78132463704456319, guid: a894c3058a5021146abd6c255e0085b8,
@@ -84,6 +85,15 @@ MonoBehaviour:
         type: 3}
       PlayerPrefab: 0
     - Prefab: {fileID: 5823428325703138199, guid: e3ef03034bd057d4cb49fbe92be7ba29,
+        type: 3}
+      PlayerPrefab: 0
+    - Prefab: {fileID: 4430757192973362158, guid: 487b38a8779602e4d8603264643705fe,
+        type: 3}
+      PlayerPrefab: 0
+    - Prefab: {fileID: 1012118136408124161, guid: 8b7c80429b543424291513751c390f43,
+        type: 3}
+      PlayerPrefab: 0
+    - Prefab: {fileID: 2141252192133074654, guid: 378312861e8ec6e49aee47701bd578c9,
         type: 3}
       PlayerPrefab: 0
     PlayerPrefabHash:
@@ -432,6 +442,8 @@ MonoBehaviour:
     - PowerSystem
     - PowerSystem_SoloDebugger
     - StuffyGassesScene
+    - ShipScene1_D
+    - MainMenu
     AllowRuntimeSceneChanges: 0
     NetworkPrefabs:
     - Prefab: {fileID: 9057284979555258255, guid: 16a693865fbae864e95d80169c5e714e,

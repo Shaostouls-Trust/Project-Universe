@@ -4,7 +4,6 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - TilingGhost
   - Ground
   - SaveObject
   - PlacedTile
@@ -34,6 +33,7 @@ TagManager:
   - Plant
   - Destructible
   - Drone
+  - Pipe
   layers:
   - Default
   - TransparentFX
@@ -42,7 +42,7 @@ TagManager:
   - Water
   - UI
   - BulletLayer
-  - 
+  - Bounding
   - PostProcessing
   - Snaps
   - HideFromCamera

@@ -22,6 +22,7 @@ namespace ProjectUniverse.Animation.Controllers
         private GameObject[] controlPanelScreens;
         private Mach_AirtightDoor M_door;
         [SerializeField] private AudioSource audsrc;
+        [SerializeField] private AudioClip[] clips;//0 is open, 1 is closed
         //IMPORTANT
         //elem 0 is door L
         //elem 1 is door R
@@ -38,14 +39,14 @@ namespace ProjectUniverse.Animation.Controllers
         private bool isLOpen;//door open
         private bool isLClosed;//door closed
         //private bool isLOpening;//door in process of opening
-        //private bool isLClosing;//door in process of closing
+        private bool isClosing;//door in process of closing
         private bool isROpen;
         private bool isRClosed;
         //private bool isROpening;
         //private bool isRClosing;
         private bool hasEmissive;
 
-        private bool locked;//whether or not the door can be opened
+        public bool locked;//whether or not the door can be opened
         private bool weldedClosed;//whether or not door has been welded shut
         private bool weldedOpen;//Allow welded open?
 
@@ -74,12 +75,22 @@ namespace ProjectUniverse.Animation.Controllers
         private NetworkVariableBool netIsRunning = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
         private NetworkVariableBool netThisRunMachine = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
         //private NetworkVariableFloat netAnimSpeed = new NetworkVariableFloat(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        [SerializeField] private TMPro.TMP_Text othersideID;
 
         public bool Open
         {
             get { return (isLOpen || isROpen); }
         }
-        
+
+        public bool Closing
+        {
+            get { return isClosing; }
+        }
+        public TMPro.TMP_Text OthersideTextMesh
+        {
+            get { return othersideID; }
+        }
+
         void Start()
         {
             NetworkListeners();
@@ -359,6 +370,7 @@ namespace ProjectUniverse.Animation.Controllers
         {
             //Debug.Log("ClientDoorOpen");
             //yellow blinking
+            isClosing = false;
             doorRIsOpening();
             doorLIsOpening();
             anim[0].Play("DoorLeftOpen");
@@ -366,7 +378,7 @@ namespace ProjectUniverse.Animation.Controllers
             doorLIsOpen();
             doorRIsOpen();
             //green
-            audsrc.Play();
+            audsrc.PlayOneShot(clips[0]);
         }
 
         [ServerRpc(RequireOwnership = false)]
@@ -377,6 +389,7 @@ namespace ProjectUniverse.Animation.Controllers
         [ClientRpc]
         private void CloseDoorClientRpc()
         {
+            isClosing = true;
             //yellow blinking
             doorRIsClosing();
             doorLIsClosing();
@@ -385,7 +398,7 @@ namespace ProjectUniverse.Animation.Controllers
             doorLIsClosed();
             doorRIsClosed();
             //green
-            audsrc.Play();
+            audsrc.PlayOneShot(clips[1]);
         }
 
         void OnTriggerEnter(Collider other)
@@ -405,7 +418,6 @@ namespace ProjectUniverse.Animation.Controllers
                 }
             }
         }
-
         void OnTriggerStay(Collider other)
         {
             if (!manualmode)
@@ -528,6 +540,7 @@ namespace ProjectUniverse.Animation.Controllers
         {
             if (isRunning && isPowered)
             {
+                isClosing = true;
                 //close door
                 netLocked.Value = true;
                 emissRenderer.material = MaterialLibrary.GetDoorStateMaterials(2);
@@ -547,7 +560,7 @@ namespace ProjectUniverse.Animation.Controllers
                     anim[1].Play("DoorRightClose");
                     doorRIsClosed();
                 }
-                audsrc.Play();
+                audsrc.PlayOneShot(clips[1]);
             }
         }
 
@@ -562,6 +575,7 @@ namespace ProjectUniverse.Animation.Controllers
         {
             if (isRunning && isPowered)
             {
+                isClosing = false;
                 netLocked.Value = false;
                 emissRenderer.material = MaterialLibrary.GetDoorStateMaterials(0);
                 for (int i = 0; i < panelRenderer.Length; i++)
@@ -577,7 +591,7 @@ namespace ProjectUniverse.Animation.Controllers
                 {
                     panelRenderer[i].material = MaterialLibrary.GetDoorDisplayMaterials(0);
                 }
-                audsrc.Play();                
+                audsrc.PlayOneShot(clips[0]);                
             }
         }
 
@@ -641,6 +655,7 @@ namespace ProjectUniverse.Animation.Controllers
         [ClientRpc]
         public void AnimEventOpenClientRpc()
         {
+            isClosing = true;
             //if locked, change to flashing red
             if (locked)
             {
@@ -677,6 +692,7 @@ namespace ProjectUniverse.Animation.Controllers
         [ClientRpc]
         public void animEventOpenDoneClientRpc()
         {
+            isClosing = false;
             //if locked, change to solid red
             if (locked)
             {

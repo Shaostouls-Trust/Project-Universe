@@ -1,0 +1,138 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: A23
+  m_Shader: {fileID: 4800000, guid: ecbe14f8538bf4b46a1f5fb7044fa2f9, type: 3}
+  m_ShaderKeywords: _CLOUDSADDITIVE_ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: 65c07d8223a8f4c0ab716441f5c8c0a1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CloudsMap:
+        m_Texture: {fileID: 2800000, guid: 3fd5cfb6f3e687d49a0895429f93f3a4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CloudsTex:
+        m_Texture: {fileID: 2800000, guid: c4c130b5d878ab42585d9deb39aa1091, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _GlossyMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 37f6d7c2760b578468528d8cbc0a66d6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NightMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NightTex:
+        m_Texture: {fileID: 2800000, guid: 0d067a39dc9a842be84d47c968b30dd8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _AtmosphereHeight: 60000
+    - _AtmosphereModifier: 30.65
+    - _AtmosphereRadius: 21.9
+    - _BumpScale: 1
+    - _CloudsAdditive: 1
+    - _CloudsAlpha: 1
+    - _CloudsSpeed: 0.005
+    - _Cutoff: 0.5
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _G: 0.75
+    - _GMie: 0.758
+    - _GlossMapScale: 1
+    - _Glossiness: 0.79
+    - _GlossyReflections: 1
+    - _LightSamples: 4
+    - _Metallic: 0
+    - _MieAnisotropy: -0.31
+    - _MieDirection: 0.758
+    - _MieHeight: 0.012
+    - _MieScaleHeight: 1200
+    - _MieScatteringCoefficient: 0.0021
+    - _Mode: 0
+    - _NightAlpha: 0.25
+    - _NightWrap: 0.59
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _PlanetRadius: 1371000
+    - _PlanetRadiusUnits: 20
+    - _RayScaleHeight: 8500
+    - _ScaleHeight: 0.85
+    - _ScaleModifier: 1
+    - _ScatteringModifier: 0.36
+    - _SmoothnessTextureChannel: 0
+    - _Specular: 0.5
+    - _SpecularHighlights: 1
+    - _SphereRadius: 1
+    - _SrcBlend: 1
+    - _StepSize: 0.01
+    - _SunIntensity: 14
+    - _SunPower: 1
+    - _SunStrength: 1
+    - _TerrainPower: 0.3
+    - _UVSec: 0
+    - _ViewSamples: 18
+    - _ZWrite: 1
+    - _iSteps: 16
+    - _jSteps: 8
+    - _passSunExternally: 0
+    m_Colors:
+    - _AtmosphereColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Centre: {r: 0, g: 0, b: 0, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _LightDirectionFX: {r: -1, g: 0, b: 0, a: 0}
+    - _MieScatteringCoefficient: {r: 0.0000055, g: 0.000013, b: 0.000022, a: 0}
+    - _NightColor: {r: 1.2500001, g: 1.2091221, b: 0.8363971, a: 1}
+    - _RayScatteringCoefficient: {r: 0.0000058, g: 0.0000035, b: 0.0000531, a: 0}
+    - _ScatteringCoefficient: {r: 5.5, g: 13, b: 22.4, a: 0}
+    - _SunCentre: {r: 75.2, g: 90.92, b: -43.64, a: 0}

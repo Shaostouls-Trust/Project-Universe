@@ -43,6 +43,8 @@ public class VectorInformationDistributor : MonoBehaviour
 
     /// Test method for passing rotation onto players
     ///
+    ///Causes mega lag for some reason
+    /*
     private void OnTriggerStay(Collider other)
     {
         if (other.TryGetComponent(out SupplementalController sc))
@@ -57,5 +59,5 @@ public class VectorInformationDistributor : MonoBehaviour
 
             oldEulerAngles = transform.rotation.eulerAngles;
         }
-    }
+    }*/
 }

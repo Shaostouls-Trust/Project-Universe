@@ -1,0 +1,114 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee9ae5c0e1ba4003ba89970012ed4df9, type: 3}
+  m_Name: FlareBySpriteEditor 1
+  m_EditorClassIdentifier: 
+  flareSprite: {fileID: 2800000, guid: 2a25a3fa426711f4b8ea671d4c6c9825, type: 3}
+  fadeWithScale: 1
+  fadeWithAlpha: 1
+  spriteBlocks:
+  - useLightColor: 1
+    useRotation: 0
+    index: 6
+    block:
+      serializedVersion: 2
+      x: 0.4112216
+      y: 0.6370739
+      width: 0.17613636
+      height: 0.17542614
+    scale: 1.58
+    offset: -0.25
+    color: {r: 0.2264151, g: 0.2264151, b: 0.2264151, a: 1}
+  - useLightColor: 0.26
+    useRotation: 0
+    index: 7
+    block:
+      serializedVersion: 2
+      x: 0.09588068
+      y: 0.45667613
+      width: 0.17613636
+      height: 0.17542614
+    scale: 2.22
+    offset: 0.07
+    color: {r: 0.1792453, g: 0.1792453, b: 0.1792453, a: 1}
+  - useLightColor: 1
+    useRotation: 0
+    index: 6
+    block:
+      serializedVersion: 2
+      x: 0.4112216
+      y: 0.6370739
+      width: 0.17613636
+      height: 0.17542614
+    scale: 2.21
+    offset: 0.37
+    color: {r: 0, g: 0.49299192, b: 0.5566038, a: 1}
+  - useLightColor: 1
+    useRotation: 0
+    index: 4
+    block:
+      serializedVersion: 2
+      x: 0.640625
+      y: 0.8245739
+      width: 0.17613636
+      height: 0.17542614
+    scale: 3.69
+    offset: 0.78
+    color: {r: 0.3654826, g: 0.3773585, b: 0.26877892, a: 1}
+  - useLightColor: 0.95
+    useRotation: 1
+    index: 4
+    block:
+      serializedVersion: 2
+      x: 0.640625
+      y: 0.8245739
+      width: 0.17613636
+      height: 0.17542614
+    scale: 5.56
+    offset: -0.28
+    color: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 1}
+  - useLightColor: 0
+    useRotation: 0
+    index: 8
+    block:
+      serializedVersion: 2
+      x: 0.27272728
+      y: 0.4580966
+      width: 0.17613636
+      height: 0.17542614
+    scale: 1.52
+    offset: 0.67
+    color: {r: 0.18867922, g: 0.18867922, b: 0.18867922, a: 1}
+  - useLightColor: 0.294
+    useRotation: 0
+    index: 7
+    block:
+      serializedVersion: 2
+      x: 0.09588068
+      y: 0.45667613
+      width: 0.17613636
+      height: 0.17542614
+    scale: 6.68
+    offset: 0
+    color: {r: 0.3962264, g: 0.2224101, b: 0.2224101, a: 1}
+  - useLightColor: 0
+    useRotation: 0
+    index: 0
+    block:
+      serializedVersion: 2
+      x: 0
+      y: 0.82954544
+      width: 0.1690341
+      height: 0.17045455
+    scale: 0.6
+    offset: 1
+    color: {r: 1, g: 0.65579164, b: 0, a: 1}

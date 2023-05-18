@@ -1,4 +1,4 @@
-Shader "TextMeshPro/Bitmap" {
+Shader "ORION/TextMeshPro/Bitmap" {
 
 Properties {
 	_MainTex		("Font Atlas", 2D) = "white" {}

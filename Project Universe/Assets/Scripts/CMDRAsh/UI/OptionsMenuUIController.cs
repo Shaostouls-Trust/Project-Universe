@@ -6,11 +6,14 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using ProjectUniverse.Serialization;
 using TMPro;
+using System;
+using UnityEngine.Rendering;
 
 namespace ProjectUniverse.UI
 {
     public class OptionsMenuUIController : MonoBehaviour
     {
+        [SerializeField] private VolumeProfile defaultVolumeProfile;
         [Header("Menus")]
         [SerializeField] private Button OptionsMasterButton;
         [SerializeField] private Button Cat_GameplayButton;
@@ -43,6 +46,7 @@ namespace ProjectUniverse.UI
         [SerializeField] private TMP_Dropdown fxaaDrop;
         [SerializeField] private TMP_Dropdown antiAliasingDrop;
         [SerializeField] private Slider fovSlider;
+        [SerializeField] private Slider sensSlider;
         [Header("Options - Detail")]
         [SerializeField] private TMP_Dropdown textureQualityDrop;
         [SerializeField] private TMP_Dropdown gameQualityDrop;
@@ -85,16 +89,56 @@ namespace ProjectUniverse.UI
         private ColorBlock sideMenuButtonDefaults;
         [SerializeField] private Color topMenuSelectedColor;
         [SerializeField] private Color sideMenuSelectedColor;
+        //
+        private int resIndex;
+        private bool isfullscreen;
+        private int fullscreen;//0 is false, 1 is true
+        private Resolution[] resolutions;
 
         public void Start()
         {
             topMenuButtonDefaults = Cat_VideoButton.colors;
             sideMenuButtonDefaults = Options_GeneralButton.colors;
+
+            resolutions = Screen.resolutions;
+            int currentRes = 0;
+            resolutionDrop.ClearOptions();
+            List<string> options = new List<string>();
+            for (int i = 0; i < resolutions.Length; i++)
+            {
+                if (resolutions[i].width == Screen.currentResolution.width && resolutions[i].height == Screen.currentResolution.height)
+                {
+                    currentRes = i;
+                }
+                string option = resolutions[i].width + " x " + resolutions[i].height;
+                options.Add(option);
+            }
+            resolutionDrop.AddOptions(options);
+            resolutionDrop.value = currentRes;
+            resolutionDrop.RefreshShownValue();
+
+            Cat_Bar.SetActive(false);
         }
 
         public void ShowOptionsMenu()
         {
             Cat_Bar.SetActive(true);
+            //load saved settings
+            float s = PlayerPrefs.GetFloat("sensitivity",1f);
+            int r = PlayerPrefs.GetInt("resolutionIndex", 0);
+            int w = PlayerPrefs.GetInt("windowMode", 0);
+            int ssr = PlayerPrefs.GetInt("doSSR", 1);
+            if(ssr == 1)
+            {
+                enableSSR.isOn = true;
+            }
+            else
+            {
+                enableSSR.isOn = false;
+            }
+            windowModeDrop.value = w;
+            resolutionDrop.value = r;
+            sensSlider.value = s;
         }
 
         public void ShowGamePlayOptions()
@@ -352,10 +396,21 @@ namespace ProjectUniverse.UI
         /// Options Methods
         ///
 
-        public void SetResolution()
+        public void SetResolution(int index)
         {
-            GlobalSettings.ScreenResolution = resolutionDrop.options[resolutionDrop.value].text;
+            GlobalSettings.ScreenResolution = resolutionDrop.value;
             Debug.Log(GlobalSettings.ScreenResolution);
+            try
+            {
+                Resolution res = resolutions[index];
+                Screen.SetResolution(res.width, res.height, Screen.fullScreen);
+                resIndex = index;
+            }
+            catch (Exception e)
+            {
+
+            }
+            PlayerPrefs.SetInt("resolutionIndex", GlobalSettings.ScreenResolution);
         }
         public void SetGraphicsGeneral()
         {
@@ -364,14 +419,31 @@ namespace ProjectUniverse.UI
         }
         public void SetWindowMode()
         {
-            GlobalSettings.WindowMode = windowModeDrop.options[windowModeDrop.value].text;
+            GlobalSettings.WindowMode = windowModeDrop.value;
             Debug.Log(GlobalSettings.WindowMode);
+            if (GlobalSettings.WindowMode == 0)
+            {
+                Screen.fullScreen = true;
+            }
+            else
+            {
+                Screen.fullScreen = false;
+            }
+            PlayerPrefs.SetInt("windowMode", GlobalSettings.WindowMode);
         }
         public void SetBrightness(float brightness)
         {
             GlobalSettings.Brightness = brightness;
             Debug.Log(GlobalSettings.Brightness);
         }
+
+        public void SetSensitivity(float sens)
+        {
+            GlobalSettings.Sensitivity = sens;
+            Debug.Log(GlobalSettings.Sensitivity);
+            PlayerPrefs.SetFloat("sensitivity", GlobalSettings.Sensitivity);
+        }
+
         public void SetGama(float gama)
         {
             GlobalSettings.Gama = gama;
@@ -543,6 +615,20 @@ namespace ProjectUniverse.UI
         {
             GlobalSettings.EnableSSR = enableSSR.isOn;
             Debug.Log(GlobalSettings.EnableSSR);
+            if(defaultVolumeProfile.TryGet<ScreenSpaceReflection>(out var ssr))
+            {
+                ssr.enabled.overrideState = true;
+                ssr.enabled.value = GlobalSettings.EnableSSR;
+            }
+            if (GlobalSettings.EnableSSR)
+            {
+                PlayerPrefs.SetInt("doSSR", 1);
+            }
+            else
+            {
+                PlayerPrefs.SetInt("doSSR", 0);
+            }
+            
         }
         public void SetSSRQuality()
         {

@@ -1,4 +1,5 @@
 using ProjectUniverse.PowerSystem.Nuclear;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -48,13 +49,13 @@ namespace ProjectUniverse.UI
             if (timer <= 0f)
             {
                 timer = 0.25f;
-                steamFlowRate.text = (steamTurb.SteamFlowRate / 3600f) + " Kg/s";
+                steamFlowRate.text = Math.Round((steamTurb.SteamFlowRate / 3600f),2) + " Kg/s";
                 steamTemp.text = steamTurb.InflowTemp + "K";
                 steamPres.text = steamTurb.TurbinePressure + " bar";//steamTurb.InflowPressure
                 outTemp.text = steamTurb.OutflowTemp + "K";
                 outPres.text = steamTurb.OutflowPressure + " bar";
-                turbRPM.text = steamTurb.RPM + "";
-                mwe.text = steamTurb.PowerOutput + " MWe";
+                turbRPM.text = Math.Round(steamTurb.RPM,2) + "";
+                mwe.text = Math.Round(steamTurb.PowerOutput,2) + " MWe";
             }
 
             ///Warnings

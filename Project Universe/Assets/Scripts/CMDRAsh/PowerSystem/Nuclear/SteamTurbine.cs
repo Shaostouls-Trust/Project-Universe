@@ -18,7 +18,7 @@ namespace ProjectUniverse.PowerSystem.Nuclear
         private float MWeGeneration = 0f;
         [SerializeField] private float maxSafeRotationSpeed = 5200f;
         private float currentRotationSpeed = 0f;
-        [SerializeField] private float steamFlowToRotation = 181.75f;//181
+        [SerializeField] private float steamFlowToRotation = 250f;//181.75
         [SerializeField] private float rotationToWatts = 0.2f;//.155
         private float[] pressureRange = new float[] { 100f, 215f };
         private float[] velocityRange = new float[] { 50, 120f };
@@ -41,7 +41,10 @@ namespace ProjectUniverse.PowerSystem.Nuclear
         [SerializeField] private bool bypassValveOperable = true;//true is usable
         private bool lowPressure = false;
         private bool lowVel = false;
+        [SerializeField] private IRouter outputRouter;
+        public bool outputToRouter = false;
         //private float timeScaled;
+        [SerializeField] private AudioSource src;
 
         public float LoPressureSteamRate
         { 
@@ -207,7 +210,8 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                     {
                         rotorHealth = 0f;
                         //explosion and sound stuff
-                        Debug.Log("BOOM!");
+                        src.Play();
+                        //Debug.Log("BOOM!");
                     }
                 }
 
@@ -264,6 +268,10 @@ namespace ProjectUniverse.PowerSystem.Nuclear
             }
 
             MWeGeneration = currentRotationSpeed * rotationToWatts;
+            if(outputRouter != null && outputToRouter)
+            {
+                outputRouter.ReceivePowerFromTurbine(MWeGeneration*1000f);
+            }
         }
     }
 }

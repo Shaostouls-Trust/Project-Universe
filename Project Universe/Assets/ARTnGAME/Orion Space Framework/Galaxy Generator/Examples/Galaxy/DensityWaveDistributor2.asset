@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4a1591ecf5e4f34b8d59a1d78948d70, type: 3}
+  m_Name: DensityWaveDistributor2
+  m_EditorClassIdentifier: 
+  periapsisDistance: 0.15
+  apsisDistance: 0.02
+  CenterMass: 130000
+  StarMass: 801
+  FocalPoint: -0.5
+  angleOffset: 12
+  m_heightVariance: 1
+  m_galaxyHeightMultiply:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.00008086581
+      value: 0.9473922
+      inSlope: -0.9130224
+      outSlope: -0.9130224
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.03777196
+      value: 0.7948538
+      inSlope: -6.380379
+      outSlope: -6.380379
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.1750727
+      value: 0.446302
+      inSlope: -0.5989536
+      outSlope: -0.5989536
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.9987727
+      value: 0.04905841
+      inSlope: -0.3058203
+      outSlope: -0.3058203
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

@@ -13,6 +13,7 @@ namespace ProjectUniverse.Environment.Gas
         {
             if (collision.gameObject.CompareTag("_GasPipeLink"))
             {
+                Debug.Log("linked");
                 //link the ducts
                 parentDuct.AddNeighbor(collision.gameObject.GetComponent<IGasPipeLinker>().parentDuct);
                 //collision.gameObject.GetComponent<IGasPipeLinker>().parentDuct.AddNeighbor(parentDuct);
@@ -32,6 +33,7 @@ namespace ProjectUniverse.Environment.Gas
             if (other.gameObject.CompareTag("_GasPipeLink"))
             {
                 //link the ducts
+                Debug.Log("linked " + transform.parent.parent + " to " + other.transform.parent.parent);
                 parentDuct.AddNeighbor(other.gameObject.GetComponent<IGasPipeLinker>().parentDuct);
                 //disable collisions and rigidbodies
                 //other.gameObject.GetComponent<Rigidbody>().detectCollisions = false;

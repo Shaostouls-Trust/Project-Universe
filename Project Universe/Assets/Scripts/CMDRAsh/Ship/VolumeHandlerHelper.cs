@@ -9,9 +9,10 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class VolumeHandlerHelper : MonoBehaviour
 {
-    public bool generate = false;
+    public bool generateVolumeNodes = false;
     public bool generateDuctLink = false;
     public bool repositionNodes = false;
+    public bool generatePlaneOccluders = false;
     public GameObject NeighborVolumeNodePrefab;
     public GameObject GasPipeSectionPrefab;
     public GameObject NeighborVolumeDuctPrefab;
@@ -20,9 +21,9 @@ public class VolumeHandlerHelper : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (generate)
+        if (generateVolumeNodes)
         {
-            generate = !generate;
+            generateVolumeNodes = !generateVolumeNodes;
             for (int i = 0; i < ThisVolumeDoors.Length; i++)
             {
                 //Place NVNs by offseting prefab from door by (-1.0, 2.25, 0.5) from each door origin
@@ -141,6 +142,35 @@ public class VolumeHandlerHelper : MonoBehaviour
                 vns[i].transform.localPosition = new Vector3(-0.5f, 2.25f, -1f);
                 vns[i].transform.SetParent(transform);
             }
+        }
+
+        if (generatePlaneOccluders)
+        {
+            generatePlaneOccluders = false;
+            //get VAC
+            VolumeAtmosphereController vac = GetComponentInParent<VolumeAtmosphereController>();
+            //call VAC func
+            GameObject pref = Resources.Load<GameObject>("Prefabs/CMDRAsh/Volumes/COLplane");
+            //check if there in an InstancedColliders object as a child of this transform. If not, create one.
+            bool neg = true;
+            Transform parent = null;
+            foreach(Transform tran in transform)
+            {
+                if(tran.name == "InstancedColliders")
+                {
+                    neg = false;
+                    parent = tran;
+                    break;
+                }
+            }
+            if (neg)
+            {
+                GameObject go = new GameObject("InstancedColliders");
+                go.transform.parent = transform;
+                go.transform.localPosition = Vector3.zero;
+                parent = go.transform;
+            }
+            vac.RenderPlaneSetup(ThisVolumeDoors,pref, parent);
         }
     }
 }

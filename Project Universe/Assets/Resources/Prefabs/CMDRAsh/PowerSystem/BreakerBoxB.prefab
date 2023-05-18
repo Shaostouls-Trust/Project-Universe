@@ -257,6 +257,7 @@ MonoBehaviour:
   occupiedSwitches: []
   switchCount: 12
   soundsource: {fileID: 9192875022376431262}
+  runMachine: 1
 --- !u!114 &5992857729058455556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -287,8 +288,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NetworkInstanceId: 0
-  PrefabHash: 13447336823832965395
-  PrefabHashGenerator: BreakerBoxA
+  PrefabHash: 13447336823832965392
+  PrefabHashGenerator: BreakerBoxB
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
 --- !u!205 &7706385813878867545

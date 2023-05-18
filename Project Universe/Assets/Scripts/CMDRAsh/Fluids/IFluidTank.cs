@@ -28,6 +28,7 @@ namespace ProjectUniverse.Environment.Fluid
         [SerializeField] private bool automaticControl;
         private float lastInlet = 0f;
         private float lastOutlet = 0f;
+        public bool fixAt85 = false;
 
         public float FluidLevel
         {
@@ -107,6 +108,16 @@ namespace ProjectUniverse.Environment.Fluid
                         }
                     }
                     fluids.AddRange(fluds);
+                }
+            }
+
+            if (fixAt85)
+            {
+                if(fluidLevel_L/capacity_L < 0.84f)
+                {
+                    //fill to 85%
+                    fluids[0].SetConcentration(capacity_L * 0.85f);
+                    fluidLevel_L = capacity_L * 0.85f;
                 }
             }
            

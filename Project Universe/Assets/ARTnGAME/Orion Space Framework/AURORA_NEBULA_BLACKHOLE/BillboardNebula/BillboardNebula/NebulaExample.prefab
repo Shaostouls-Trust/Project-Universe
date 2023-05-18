@@ -1,0 +1,165 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1140733332459212
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4563885368966444}
+  - component: {fileID: 64279900017533098}
+  m_Layer: 8
+  m_Name: Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4563885368966444
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140733332459212}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4536136586577080}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!64 &64279900017533098
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140733332459212}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 1
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300002, guid: 73c9a028bc6276c4b8c6b2ad7e7601bb, type: 3}
+--- !u!1 &1213393492716416
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4536136586577080}
+  - component: {fileID: 114941333842199766}
+  - component: {fileID: 114193095341585638}
+  - component: {fileID: 114987684867411364}
+  - component: {fileID: 114661920670250394}
+  m_Layer: 8
+  m_Name: NebulaExample
+  m_TagString: Nebula
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4536136586577080
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213393492716416}
+  m_LocalRotation: {x: 0, y: -0.9353804, z: 0, w: -0.35364312}
+  m_LocalPosition: {x: 0, y: 0, z: 30000}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 4563885368966444}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114941333842199766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213393492716416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88c20956a76e8f647ad6169f1038b057, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ambientLight: {r: 0.29098183, g: 0.37305364, b: 0.50735295, a: 0.5019608}
+  nebulaColor: {r: 0.50908303, g: 0.6144106, b: 0.78676474, a: 0.5019608}
+  maxViewDistance: 2000
+  fogStart: 0
+  fogEnd: 2000
+  dimensions: {x: 45000, y: 20000, z: 25000}
+  bitRadius: 14000
+  bitRadiusDeviation: 0.2
+  circleSprite: {fileID: 11444268, guid: 564bd8b1f2ab60647a1d72d6b085e9ea, type: 3}
+  exteriorSprite: {fileID: 11487088, guid: c848b302ea273e842a9a408ba955f4ba, type: 3}
+  exteriorSlices: 25
+--- !u!114 &114193095341585638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213393492716416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef1687c3085a2843b4a253c9fc6bd3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particle: {fileID: 11424520, guid: e8b56c412dbea6548a434ac22ca36c60, type: 3}
+  emitPuffs: 0
+  puffColor: {r: 0.5936419, g: 0.7087311, b: 0.89705884, a: 0.5254902}
+  count: 50
+  radius: 150
+  sizeVariation: 0.2
+  maxDistance: 400
+  drift: 1
+  driftRotation: 5
+  nearFadeDistance: 130
+  farFadeDistance: 200
+--- !u!114 &114987684867411364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213393492716416}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef1687c3085a2843b4a253c9fc6bd3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particle: {fileID: 11424520, guid: 6db9e0c994f039a47bddb011d458a2ef, type: 3}
+  emitPuffs: 0
+  puffColor: {r: 0.89705884, g: 0.8761335, b: 0.5936419, a: 0.22745098}
+  count: 40
+  radius: 0.5
+  sizeVariation: 0.2
+  maxDistance: 50
+  drift: 1
+  driftRotation: 0
+  nearFadeDistance: 1
+  farFadeDistance: 5
+--- !u!114 &114661920670250394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213393492716416}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d05e424d1199dd048af87daa70eab3a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: {r: 0, g: 0, b: 0, a: 0}
+  flash: 0

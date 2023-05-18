@@ -58,12 +58,14 @@ MonoBehaviour:
   type: 2
   generator: {fileID: 0}
   router: {fileID: 0}
-  sub: {fileID: 0}
+  sub: {fileID: 7238968088086015285}
   increment: 32
   machineStateButtonPrefab: {fileID: 3809009235064855826, guid: 6642541b69f49ba49b51fe67b1428a85,
     type: 3}
+  substationStateButtonPrefab: {fileID: 0}
   machinePanel: {fileID: 769938554626899748}
   breakerPanel: {fileID: 1526592172676746198}
+  substationPanel: {fileID: 0}
   buffer: {fileID: 5726018983133852600}
   bufferMax: {fileID: 2996508857407210164}
 --- !u!1 &769938554626899748
@@ -763,10 +765,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetMachine: []
   targetBreakers: []
-  energyBufferMax: 0
+  energyBufferMax: 2500
   bufferCurrent: 0
   availibleLegsOut: 0
   poc: {fileID: 1377015692180840333}
+  stationName: Substation 1
 --- !u!205 &2529411081933774658
 LODGroup:
   m_ObjectHideFlags: 0
@@ -781,7 +784,7 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.744155
+  - screenRelativeHeight: 0.69755703
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 4817830390273521528}

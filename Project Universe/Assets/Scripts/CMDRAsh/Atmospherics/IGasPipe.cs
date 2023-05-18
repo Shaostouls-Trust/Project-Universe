@@ -53,6 +53,7 @@ namespace ProjectUniverse.Environment.Gas
         [SerializeField] private float equivalentDiameterInner_m = 0.408f;
         [SerializeField] private float maxVelocity_ms = 120.5f;
         private float flowVelocity_ms = 0f;
+        public int gassescount;
 
         public bool IsBurst
         {
@@ -268,7 +269,7 @@ namespace ProjectUniverse.Environment.Gas
             float conc = 0f;
             foreach (IGas gas in gasses)
             {
-                conc += (gas.GetConcentration() * 1000f) / 1.093f;
+                conc += (gas.GetConcentration()) / 1.093f;//c*1000f
             }
             float dt = (qHeat / (conc * 2010f));
             foreach (IGas gas in gasses)
@@ -431,7 +432,7 @@ namespace ProjectUniverse.Environment.Gas
         {
             //Play the vent airflow sound from the vent object
             AudioSource ventAud = vent.GetComponentInChildren<AudioSource>();//GetComponent<AudioSource>();
-            if (!ventAud.isPlaying)
+            if (!ventAud.isPlaying && gasses.Count>1)
             {
                 ventAud.Play();
             }
@@ -495,52 +496,60 @@ namespace ProjectUniverse.Environment.Gas
                 //}
 
                 // Runs on linked (cross-volume) ducts.
-                if ((neighbors.Length > 0 || ignoreNeighborConstraint) && !burst)
+                if (ignoreNeighborConstraint)
                 {
-                    //Debug.Log("TRANSFER");
-                    float totalPressures = globalPressure;
-                    float totalVelocity = flowVelocity_ms;
-                    float totalConc = 0.0f;
-                    float totalTemp = temp;
+                    if ((neighbors.Length > 0) && !burst)
+                    {
+                        //Debug.Log("TRANSFER");
+                        float totalPressures = globalPressure;
+                        float totalVelocity = flowVelocity_ms;
+                        float totalConc = 0.0f;
+                        float totalTemp = temp;
 
-                    //get total volume, pressure, conc of all gasses in this and neighbors
-                    foreach (IGas gass in gasses)
-                    {
-                        totalConc += gass.GetConcentration();
-                    }
-                    foreach (IGasPipe pipe in neighbors)
-                    {
+                        //get total volume, pressure, conc of all gasses in this and neighbors
+                        foreach (IGas gass in gasses)
+                        {
+                            totalConc += gass.GetConcentration();
+                        }
+                        foreach (IGasPipe pipe in neighbors)
+                        {
 
-                        totalPressures += pipe.GlobalPressure;
-                        totalTemp += pipe.temp;
-                        totalVelocity += pipe.FlowVelocity;
-                        //get total concentration
-                        foreach (IGas gas in pipe.gasses)
-                        {
-                            totalConc += gas.GetConcentration();
+                            totalPressures += pipe.GlobalPressure;
+                            totalTemp += pipe.temp;
+                            totalVelocity += pipe.FlowVelocity;
+                            //get total concentration
+                            foreach (IGas gas in pipe.gasses)
+                            {
+                                totalConc += gas.GetConcentration();
+                            }
                         }
-                    }
-                    //Global Pressure Eq calc
-                    float tEq_global = totalTemp / (neighbors.Length + 1);
-                    float pEq_global = totalPressures / (neighbors.Length + 1);
-                    float cEq_global = totalConc / (neighbors.Length + 1);
-                    float vEq_global = totalVelocity / (neighbors.Length + 1);
-                    for (int g = 0; g < neighbors.Length; g++)
-                    {
-                        List<IGas> newGassesList = new List<IGas>();
-                        for (int j = 0; j < gasses.Count; j++)
+                        //Global Pressure Eq calc
+                        float tEq_global = totalTemp / (neighbors.Length + 1);
+                        float pEq_global = totalPressures / (neighbors.Length + 1);
+                        float cEq_global = totalConc / (neighbors.Length + 1);
+                        float vEq_global = totalVelocity / (neighbors.Length + 1);
+                        for (int g = 0; g < neighbors.Length; g++)
                         {
-                            //this gas is the Eq'd gas.
-                            IGas tempGas = new IGas(gasses[j].GetIDName(), tEq_global, cEq_global, pEq_global, volume_m3);
-                            tempGas.CalculateAtmosphericDensity();
-                            newGassesList.Add(tempGas);
+                            List<IGas> newGassesList = new List<IGas>();
+                            for (int j = 0; j < gasses.Count; j++)
+                            {
+                                //this gas is the Eq'd gas.
+                                IGas tempGas = new IGas(gasses[j].GetIDName(), tEq_global, cEq_global, pEq_global, volume_m3);
+                                tempGas.CalculateAtmosphericDensity();
+                                newGassesList.Add(tempGas);
+                            }
+                            //object[] newAtmoComp = { tEq_global, pEq_global, newGassesList };
+                            //This needs to be limitable by throughput, somehow
+                            TransferTo(neighbors[g], vEq_global, pEq_global, newGassesList, tEq_global);
                         }
-                        object[] newAtmoComp = { tEq_global, pEq_global, newGassesList };
-                        //This needs to be limitable by throughput, somehow
-                        TransferTo(neighbors[g],vEq_global,pEq_global,newGassesList,tEq_global);
                     }
                 }
+                if (Vent != null && ductVolume != null)
+                {
+                    VentToVolume();
+                }
             }
+            gassescount = gasses.Count;
         }
 
         //public float AppliedPressure

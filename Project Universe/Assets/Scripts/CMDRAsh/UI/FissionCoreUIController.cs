@@ -1,4 +1,5 @@
 using ProjectUniverse.PowerSystem.Nuclear;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -45,6 +46,7 @@ namespace ProjectUniverse.UI
         [SerializeField] private Color32 YELLOWON;
         [SerializeField] private Color32 YELLOWOFF;
         private float uiTimer = 0.25f;
+        [SerializeField] private AudioSource[] radAlarms;
 
         // Update is called once per frame
         void Update()
@@ -53,7 +55,7 @@ namespace ProjectUniverse.UI
             if (uiTimer <= 0f)
             {
                 uiTimer = 0.5f;
-                controlRodGlobalText.text = (core.GlobalControlRodInsertion*100f) + "%";
+                controlRodGlobalText.text = Math.Round((core.GlobalControlRodInsertion*100f),1) + "%";
                 float minTemp = 9999f;
                 float minAct = 9999f;
                 float avgTemp = 0f;
@@ -171,11 +173,26 @@ namespace ProjectUniverse.UI
             {
                 radsImg.color = YELLOWON;
                 radsImg2.color = YELLOWON;
+                //play alarms
+                for(int i = 0; i < radAlarms.Length; i++)
+                {
+                    if (!radAlarms[i].isPlaying)
+                    {
+                        radAlarms[i].Play();
+                    }
+                }
             }
             else
             {
                 radsImg.color = YELLOWOFF;
                 radsImg2.color = YELLOWOFF;
+                for (int i = 0; i < radAlarms.Length; i++)
+                {
+                    if (radAlarms[i].isPlaying)
+                    {
+                        radAlarms[i].Stop();
+                    }
+                }
             }
 
             //if coolant level in core is low

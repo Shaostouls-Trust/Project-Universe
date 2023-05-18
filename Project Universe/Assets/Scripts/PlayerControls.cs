@@ -417,7 +417,7 @@ namespace ProjectUniverse
                 {
                     ""name"": """",
                     ""id"": ""e47fa70d-1e04-4f12-8864-f5df9c9d3684"",
-                    ""path"": ""<Keyboard>/f"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",

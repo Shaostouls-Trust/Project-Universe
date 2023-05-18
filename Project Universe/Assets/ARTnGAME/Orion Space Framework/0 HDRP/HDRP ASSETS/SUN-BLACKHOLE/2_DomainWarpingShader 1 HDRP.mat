@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 2_DomainWarpingShader 1 HDRP
+  m_Shader: {fileID: 4800000, guid: 232aff3b04ab368418bf62cce0f7bbc6, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _GradientTex:
+        m_Texture: {fileID: 2800000, guid: e7857148a45a0254784169d999ff6294, type: 3}
+        m_Scale: {x: 20, y: 6}
+        m_Offset: {x: 0, y: 0}
+    - _GroundTex:
+        m_Texture: {fileID: 2800000, guid: a31b0df194a0e2e4a851db307e3bc378, type: 3}
+        m_Scale: {x: 0.1, y: 0.1}
+        m_Offset: {x: 1.96, y: 1.15}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 2aef2cae9dc209b4f909376ca3658306, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _DistortionStrength: 7.79
+    - _EllipseSize: 11
+    - _GridNumber: 1111
+    - _HoleEdgeSmoothness: 0.017
+    - _HoleSize: 0.87
+    - _Speed: 0.1
+    - _Speed_1: -1
+    - _Speed_2: -1
+    - _Speed_3: 1
+    m_Colors:
+    - _AddFactor_1: {r: 1, g: 1.3, b: 0, a: 0}
+    - _Fbm_ScaleFactor: {r: 1, g: 1, b: 3, a: -15}
+    - _HoleNumberDistrib: {r: 3.76, g: 2.01, b: 2.14, a: -3.89}
+    - _ScaleFactor_1: {r: 1, g: 1, b: 4, a: 4}
+    - _darkColor: {r: 2.19, g: 0.45, b: 0.08, a: 0.2}
+    - _hole2Pos: {r: 0, g: 0, b: 0, a: 0}
+    - _holePos: {r: 4.81, g: -25.93, b: 1, a: -1.96}
+    - _planetPos: {r: 0, g: 0, b: 0, a: 0}
+    - colors_Factor: {r: 0, g: -0.2, b: -2, a: -20}
+    - thres: {r: 1, g: 1, b: 1, a: 0.89}

@@ -16,9 +16,9 @@ namespace ProjectUniverse.Serialization
         /// Video
         /// 
         //General
-        [SerializeField] private static string _screenResolution;
+        [SerializeField] private static int _screenResolution;
         [SerializeField] private static string _graphicsGeneral;
-        [SerializeField] private static string _windowMode;
+        [SerializeField] private static int _windowMode;
         [SerializeField] private static float _brightness;
         [SerializeField] private static float _gama;
         [SerializeField] private static float _minExposure;
@@ -30,6 +30,7 @@ namespace ProjectUniverse.Serialization
         [SerializeField] private static bool _vsync;
         [SerializeField] private static string _fxaa;
         [SerializeField] private static string _antiAliasing;
+        [SerializeField] private static float _sensitivity;
         // Video - Detail
         [SerializeField] private static string _textureQuality;
         [SerializeField] private static string _gameQuality;
@@ -94,7 +95,7 @@ namespace ProjectUniverse.Serialization
         /// 
 
         ///Video - General
-        public static string ScreenResolution
+        public static int ScreenResolution
         {
             get { return _screenResolution; }
             set { _screenResolution = value; }
@@ -104,7 +105,7 @@ namespace ProjectUniverse.Serialization
             get { return _graphicsGeneral; }
             set { _graphicsGeneral = value; }
         }
-        public static string WindowMode
+        public static int WindowMode
         {
             get { return _windowMode; }
             set { _windowMode = value; }
@@ -148,6 +149,11 @@ namespace ProjectUniverse.Serialization
         {
             get { return _fov; }
             set { _fov = value; }
+        }
+        public static float Sensitivity
+        {
+            get { return _sensitivity; }
+            set { _sensitivity = value; }
         }
         public static bool VSync
         {

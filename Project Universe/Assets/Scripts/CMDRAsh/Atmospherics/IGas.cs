@@ -25,9 +25,10 @@ namespace ProjectUniverse.Environment.Gas {
         private bool nuclear;
         private float toxicity;//ppm/1,000,000 or (0-100% composition) in some volume.
         private float MolarMass = 31.9988f;//15.9994 is for one O. oxygen is diatomic, so 
-        private float specificHeat;
+        private float specificHeat=920f;//J/kg K
         //Mixed Property
         private float density;//in g/L IE oxygen is 1.427 g/L at 1 atm, 273.15K
+        private float stpDensity;
         //Instanced property
         private float temp;
         private float concentration;//amount of the gas in the local volume
@@ -57,6 +58,7 @@ namespace ProjectUniverse.Environment.Gas {
                 toxicity = definition.Toxicity;
                 MolarMass = definition.MolarMass;
                 specificHeat = definition.SpecificHeat;
+                stpDensity = (1f * MolarMass) / (0.0821f * 273.15f);
             }
         }
 
@@ -76,6 +78,7 @@ namespace ProjectUniverse.Environment.Gas {
                 toxicity = definition.Toxicity;
                 MolarMass = definition.MolarMass;
                 specificHeat = definition.SpecificHeat;
+                stpDensity = (1f * MolarMass) / (0.0821f * 273.15f);
             }
         }
 
@@ -95,6 +98,7 @@ namespace ProjectUniverse.Environment.Gas {
                 toxicity = definition.Toxicity;
                 MolarMass = definition.MolarMass;
                 specificHeat = definition.SpecificHeat;
+                stpDensity = (1f * MolarMass) / (0.0821f * 273.15f);
             }
         }
 
@@ -139,10 +143,15 @@ namespace ProjectUniverse.Environment.Gas {
         //    get { return (5f/9f) * (temp - 32f) + 273.15f; }
         //}
 
-        //Density value will be at STP.
+        //Density value may not be at STP.
         public float GetDensity()
         {
             return density;
+        }
+        //STP value for density
+        public float GetSTPDensity()
+        {
+            return stpDensity;
         }
 
         //amount per 1 m^3

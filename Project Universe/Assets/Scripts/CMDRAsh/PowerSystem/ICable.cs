@@ -29,7 +29,7 @@ namespace ProjectUniverse.PowerSystem
 		{
 			route = router;
 			gen = generator;
-			maximumThroughput = 4320;//EHV max
+			maximumThroughput = 6040;//EHV max
 			maxHeatCap = 14400f;
 			maxActiveLegs = 3;
 		}
@@ -39,7 +39,7 @@ namespace ProjectUniverse.PowerSystem
 		{
 			subst = substation;
 			route = router;
-			maximumThroughput = 1080;//MVmin + 360 (enough for 6 at 120)
+			maximumThroughput = 2550;//MVmin + 360 (enough for 6 at 120)
 			maxHeatCap = 3600f;
 			maxActiveLegs = 3;
 		}
@@ -49,7 +49,7 @@ namespace ProjectUniverse.PowerSystem
 		{
 			mach = machine;
 			subst = substation;
-			maximumThroughput = 360;//LVmax (one heavy machine)
+			maximumThroughput = 400;//LVmax (one heavy machine)360 + 5%ish
 			maxHeatCap = 1200f;
 			maxActiveLegs = 3;
 		}

@@ -29,6 +29,7 @@ public class MainMenuScript : MonoBehaviour
     [SerializeField] private GameObject SelectScenePanel;
     [SerializeField] private GameObject SelectSceneContentParent;
     [SerializeField] private GameObject LoadGameButtonPrefabs;
+    [SerializeField] private GameObject NotesWindow;
 
     private void Start()
     {
@@ -109,6 +110,8 @@ public class MainMenuScript : MonoBehaviour
 
         //when scene is loaded, connect player to scene 
         //(Eventually need to check if we're connecting to a multiplayer game and so need to connect as client, not host)
+        /// Do we need to use the connection manager for this?
+        /// Not sure how the player will load in, or what objects will need disabled/enabled.
         if (!NetworkManager.Singleton.IsHost)
         {
             Debug.Log("No Host");
@@ -121,7 +124,7 @@ public class MainMenuScript : MonoBehaviour
             if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
             {
                 GameObject player = networkedClient.PlayerObject.gameObject;
-                player.GetComponent<SupplementalController>().LoadPlayer();
+                //player.GetComponent<SupplementalController>().LoadPlayer();
             }
         }
         //take down splash
@@ -176,6 +179,16 @@ public class MainMenuScript : MonoBehaviour
     public void ShowMulitplayerMenu()
     {
 
+    }
+
+    public void ShowNotesMenu()
+    {
+        NotesWindow.SetActive(true);
+
+    }
+    public void HideNotesMenu()
+    {
+        NotesWindow.SetActive(false);
     }
 
     public void ConfirmQuit()

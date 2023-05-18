@@ -98,6 +98,22 @@ namespace ProjectUniverse.Environment.Volumes
             // may or may not be oxygen.
             BreatheAirFromVolume();
 
+            if (playerControllerSup.ShipMode)
+            {
+                //Debug.Log("playerVolume.RSM: " + playerVolume.RSM);
+                if(playerVolume != null && playerVolume.RSM != null)
+                {
+                    playerVolume.RSM.ExternalControllerState = true;
+                }
+            }
+            else
+            {
+                if (playerVolume != null && playerVolume.RSM != null)
+                {
+                    playerVolume.RSM.ExternalControllerState = false;
+                }
+            }
+
             if (myRoomTemp != playerTemp)
             ///need a scalar to apply to playerTemp. Also will need some way to simulate sweating bring the body temp to a stable
             ///temp to ensure that 90*F doesn't cause your character to slowly die of heatstroke.

@@ -6,7 +6,7 @@ using ProjectUniverse.Data.Libraries;
 
 namespace ProjectUniverse.Production.Resources
 {
-    public class Consumable_Component : MonoBehaviour
+    public class Consumable_Component : MonoBehaviour//to ScriptableObject
     {
         [SerializeField] private string componentID;
         private IComponentDefinition compDefinition;

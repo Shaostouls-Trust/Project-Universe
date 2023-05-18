@@ -1,4 +1,5 @@
 ﻿using ProjectUniverse.Player.PlayerController;
+using ProjectUniverse.Serialization;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -89,8 +90,8 @@ namespace CMF
 			//	return;
             
 			//Get input values;
-			float _inputHorizontal = sc.LookInput.x * 0.3f; //cameraInput.GetHorizontalCameraInput(); 0.2f
-			float _inputVertical = sc.LookInput.y * 0.3f;//cameraInput.GetVerticalCameraInput(); 0.2f
+			float _inputHorizontal = sc.LookInput.x * 0.3f * GlobalSettings.Sensitivity;
+			float _inputVertical = sc.LookInput.y * 0.3f * GlobalSettings.Sensitivity;
 			//Debug.Log(sc.LookInput);
 			RotateCamera(_inputHorizontal, _inputVertical);
 		}

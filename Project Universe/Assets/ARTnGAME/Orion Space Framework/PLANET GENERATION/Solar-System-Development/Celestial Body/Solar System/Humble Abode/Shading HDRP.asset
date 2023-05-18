@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db6f66ab3e2604c0d9bcf6649e6d7915, type: 3}
+  m_Name: Shading HDRP
+  m_EditorClassIdentifier: 
+  randomize: 0
+  seed: 0
+  terrainMaterial: {fileID: 2100000, guid: daf33517eb61dff469f16e86d187f34e, type: 2}
+  hasOcean: 1
+  oceanLevel: 0.136
+  oceanSettings: {fileID: 11400000, guid: 2dda04ece1bc5461c9c060d959433048, type: 2}
+  shadingDataCompute: {fileID: 7200000, guid: f3a2904f78271471481822700022a157, type: 3}
+  customizedCols:
+    shoreColLow: {r: 0.98039216, g: 1, b: 0.6666667, a: 1}
+    shoreColHigh: {r: 0.9528302, g: 0.90580887, b: 0.38203096, a: 1}
+    flatColLowA: {r: 0.58431375, g: 0.85882354, b: 0, a: 1}
+    flatColHighA: {r: 0.19073083, g: 0.4627451, b: 0, a: 1}
+    flatColLowB: {r: 0.25514066, g: 0.65882355, b: 0.06666665, a: 1}
+    flatColHighB: {r: 0.030037375, g: 0.4245283, b: 0.27462178, a: 1}
+    steepLow: {r: 0.5294118, g: 0.49019608, b: 0.1882353, a: 1}
+    steepHigh: {r: 0.14901961, g: 0.06666667, b: 0, a: 1}
+  randomizedCols:
+    shoreColLow: {r: 0.6832211, g: 0.94490933, b: 0.76851034, a: 1}
+    shoreColHigh: {r: 0.42310688, g: 0.6542926, b: 0.69436496, a: 1}
+    flatColLowA: {r: 0.32730755, g: 0.5343737, b: 0.70789117, a: 1}
+    flatColHighA: {r: 0.1918093, g: 0.44747287, b: 0.47733155, a: 1}
+    flatColLowB: {r: 0.30245164, g: 0.73446727, b: 0.40435565, a: 1}
+    flatColHighB: {r: 0.14522152, g: 0.5248066, b: 0.28599682, a: 1}
+    steepLow: {r: 0.34564206, g: 0.5879581, b: 0.5659826, a: 1}
+    steepHigh: {r: 0.17685957, g: 0.31506312, b: 0.1760424, a: 1}
+  detailWarpNoise:
+    numLayers: 4
+    lacunarity: 2
+    persistence: 0.5
+    scale: 2.96
+    elevation: 9.41
+    verticalShift: 0
+    offset: {x: 0, y: 0, z: 0}
+  detailNoise:
+    numLayers: 4
+    lacunarity: 2
+    persistence: 0.5
+    scale: 1.5
+    elevation: 1
+    verticalShift: 0
+    offset: {x: 0, y: 0, z: 0}
+  largeNoise:
+    numLayers: 4
+    lacunarity: 2
+    persistence: 0.5
+    scale: 1.77
+    elevation: 1
+    verticalShift: 0
+    offset: {x: 0.25, y: -0.09, z: 0}
+  smallNoise:
+    numLayers: 5
+    lacunarity: 4.13
+    persistence: 0.65
+    scale: 4.44
+    elevation: 0.52
+    verticalShift: 0
+    offset: {x: 0, y: 0, z: 0}

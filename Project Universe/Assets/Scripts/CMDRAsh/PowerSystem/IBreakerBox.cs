@@ -45,7 +45,7 @@ namespace ProjectUniverse.PowerSystem
         private NetworkVariableInt netLegsRequired = new NetworkVariableInt(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
         private NetworkVariableInt netLegsReceived = new NetworkVariableInt(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
         //private NetworkList<GameObject> netOccupiedSwitches = new NetworkList<GameObject>(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
-        private bool runMachine = true;
+        [SerializeField] private bool runMachine = true;
         private float lastReceived;
 
         public bool RunMachine
@@ -77,7 +77,7 @@ namespace ProjectUniverse.PowerSystem
         {
             occupiedSwitches = new GameObject[switchCount];
             thisBreaker = GetComponent<IBreakerBox>();
-            energyBufferMax = 300.0f;
+            energyBufferMax = 350.0f;//300
             bufferCurrent = 0f;
             totalRequiredPower = 0.0f;
             guid = Guid.NewGuid();
@@ -473,7 +473,10 @@ namespace ProjectUniverse.PowerSystem
                 //bufferCurrent += amounts[i];
                 netBufferCurrent.Value += amounts[i];
             }
-            lastReceived = amounts[0] * legCount;
+            if (amounts.Length != 0)
+            {
+                lastReceived = amounts[0] * legCount;
+            }
             //legsReceived = legCount;
             netLegsReceived.Value = legCount;
             if (netBufferCurrent.Value > energyBufferMax)

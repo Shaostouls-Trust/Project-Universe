@@ -1,0 +1,117 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: InfiniCLOUDS SPHERICAL
+  m_Shader: {fileID: 4800000, guid: a5907b10679ca284e8b3ead3bdee67c7, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CloudMap:
+        m_Texture: {fileID: 2800000, guid: 1c8481fcc3152ea4d8315a8bc2a0da51, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CloudMap1:
+        m_Texture: {fileID: 2800000, guid: 2f72804083408ae41b57b46b545b3aca, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _PaintMap:
+        m_Texture: {fileID: 2800000, guid: b03970cdaa98d8c43a6b24adec04f4b6, type: 3}
+        m_Scale: {x: 2, y: 3.42}
+        m_Offset: {x: 4.15, y: -9.71}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - Thickness: -914.7
+    - _BumpScale: 1
+    - _ColorDiff: -1.3
+    - _ColorDiffOffset: 2.4
+    - _Coverage: -22
+    - _CoverageOffset: 21.22
+    - _CullMode: 0
+    - _CutHeight: 16.9
+    - _Cutoff: 0.89
+    - _Density: 18.14
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _FogFactor: 1
+    - _FogUnity: 0
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _HorizonFactor: 4.25
+    - _Metallic: 0
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _TranspOffset: 0
+    - _Transparency: -4.53
+    - _UVSec: 0
+    - _ZWrite: 1
+    - pointLightPower: 1
+    m_Colors:
+    - _Color: {r: 0.9056604, g: 0.6536134, b: 0.6536134, a: 1}
+    - _Control: {r: 0.46666667, g: 0.34117648, b: 0.32941177, a: 1}
+    - _EdgeFactors: {r: 0, g: 0.52, b: -1, a: 0}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FogColor: {r: 0.5754717, g: 0.36102706, b: 0.36102706, a: 1}
+    - _LightingControl: {r: 1, g: 1, b: 1, a: 0}
+    - _ShadowColor: {r: 0.3207547, g: 0.3207547, b: 0.3207547, a: 0.53333336}
+    - _SunColor: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 0.8862745}
+    - _UVs: {r: 1, g: 1, b: 0, a: 0}
+    - _Velocity1: {r: 3, g: 1, b: 1, a: 1}
+    - _Velocity2: {r: 9, g: 1, b: 11, a: 1}
+    - maskPower: {r: 1.22, g: 30.26, b: 0, a: 0}
+    - pointLightColor: {r: 0, g: 0, b: 0, a: 0}
+    - pointLightPos: {r: 0, g: 0, b: 0, a: 0}
+    - vortexControl: {r: 0, g: 0, b: 0, a: 0}
+    - vortexPosRadius: {r: 0, g: 0, b: 0, a: 1}

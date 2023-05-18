@@ -49,6 +49,8 @@ namespace ProjectUniverse.Environment.Volumes
         [SerializeField] private GameObject[] lightGroups;
         [Tooltip("Volumes/objects that should render while in this volume. Useful for windows or large doors.")]
         [SerializeField] private GameObject[] additionalRenderVolumes;
+        private FrustrumState[] frustrumStates;
+        private GameObject[] pipes;
 
         private void Start()
         {
@@ -76,7 +78,7 @@ namespace ProjectUniverse.Environment.Volumes
             {
                 //rooomVolume += (etc)
                 qHeatLossPerSec += ((roomVolumeSections[j].size.x * 2f) + (roomVolumeSections[j].size.y * 2f) +
-                (roomVolumeSections[j].size.z * 2f)) * -40000f;
+                (roomVolumeSections[j].size.z * 2f)) * -400f;//40000f
             }
 
             if (doRenderStateLogic)
@@ -101,6 +103,7 @@ namespace ProjectUniverse.Environment.Volumes
                 lightGOs = lightList.ToArray();
                 //get all 1st level children
                 GOculls = new List<GameObject>();
+                List<FrustrumState> fsList = new List<FrustrumState>();
                 foreach (Transform child in transform)
                 {
                     //Debug.Log(child);
@@ -109,8 +112,22 @@ namespace ProjectUniverse.Environment.Volumes
                         if (child.TryGetComponent(out MeshRenderer render))
                         {
                             renderlist.Add(render);
+                            if (render.gameObject.TryGetComponent(out FrustrumState fs))
+                            {
+                                fsList.Add(fs);
+                            }
+                            //There are gameobjects hidden under the combined stacks that were kept separate
+                            //from the rest of the merged tiles that are not LODs. The following is intended
+                            //to grab them and add them to the LOD/GO cull stack.
+                            foreach(Transform obj in child)
+                            {
+                                if (!obj.TryGetComponent(out MeshRenderer r))
+                                {
+                                    GOculls.Add(obj.gameObject);
+                                }
+                            }
                         }
-                        if(child.gameObject.tag == "IBreaker")
+                        else if(child.gameObject.tag == "IBreaker")
                         {
                             foreach (Transform obj in child.transform)
                             {
@@ -123,42 +140,34 @@ namespace ProjectUniverse.Environment.Volumes
                         }
                         else
                         {
+                            //Debug.Log(">> " + child.name);
                             carryOver.Add(child);
                         }
                     }
                 }
-
+                frustrumStates = fsList.ToArray();
+                //Debug.Log(gameObject.name + " A has " + renderlist.Count);
                 //Get all child renderers of the carryover stack
                 foreach (Transform carry in carryOver)
                 {
-                    if (carry.gameObject.tag != "GUI")
+                    if (carry.gameObject.tag != "GUI" && carry.gameObject.tag != "Pipe")
                     {
                         MeshRenderer[] renderchilds = carry.GetComponentsInChildren<MeshRenderer>(false);
                         //Debug.Log(renderchilds.Length);
                         for (int r = 0; r < renderchilds.Length; r++)
                         {
-                            if (renderchilds[r].gameObject.tag != "GUI")
+                            if (renderchilds[r].gameObject.tag != "GUI" && renderchilds[r].gameObject.tag != "Button3D")
                             {
                                 renderlist.Add(renderchilds[r]);
+                                //Debug.Log("+ " + renderchilds[r]);
                             }
-                            //else if (carry.gameObject.tag != "_root")
-                            //{
-                            //    Debug.Log("Root rc");
-                            //}
-                            //else
-                            //{
-                            //   GOculls.Add(renderchilds[r].gameObject);
-                            //}
                         }
                     }
                 }
                 volumeRenders = renderlist.ToArray();
-                //Debug.Log(volumeRenders.Length);
                 LODGroup[] lodObjs = transform.GetComponentsInChildren<LODGroup>();
                 Canvas[] canvasObj = transform.GetComponentsInChildren<Canvas>();
-                //if(lodObjs.Length > 0)
-                //{
-                    
+                List<GameObject> pipesGOs = new List<GameObject>();
                 for(int j = 0; j < lodObjs.Length; j++)
                 {
                     //if not breaker, router, subst, gen, or anything else
@@ -167,13 +176,16 @@ namespace ProjectUniverse.Environment.Volumes
                     {
                         GOculls.Add(lodObjs[j].gameObject);
                     }
+                    else if (lodObjs[j].tag == "Pipe")
+                    {
+                        pipesGOs.Add(lodObjs[j].gameObject);
+                    }
                 }
                 for(int c = 0; c < canvasObj.Length; c++)
                 {
                     GOculls.Add(canvasObj[c].gameObject);
                 }
-                //}
-                //HideRenderVolume();
+                pipes = pipesGOs.ToArray();
             }
         }
 
@@ -211,6 +223,22 @@ namespace ProjectUniverse.Environment.Volumes
         {
             get { return neighborEmpties; }
         }
+
+        public FrustrumState[] GetFrustrumStates
+        {
+            get { return frustrumStates; }
+        }
+
+        public GameObject[] AdditionalRenderVolumes
+        {
+            get { return additionalRenderVolumes; }
+        }
+
+        public RenderStateManager RSM
+        {
+            get { return rsm; }
+        }
+
         ///check doors
         ///if two doors are open
         ///check the two volumes
@@ -222,7 +250,8 @@ namespace ProjectUniverse.Environment.Volumes
             /// Radiators will heat the room according to how open the radiator valve is.
             /// Larger rooms heat and cool more slowly b/c room gasses will must heat and cool as well.
             /// 
-            RoomHeatAmbiLoss();
+            //RoomHeatAmbiLoss();
+            //there is no point running this until reactor radiators are set up for the ship
 
             ///UnityEngine.Profiling.Profiler.BeginSample("Volume Equalization");
             //combine all same gasses in the volume
@@ -312,6 +341,7 @@ namespace ProjectUniverse.Environment.Volumes
                                         limiter = 30;
                                         VolumeAtmosphereController iNeighborVolume =
                                         neighborEmpties[i].GetComponent<VolumeNode>().VolumeLink.GetComponent<VolumeAtmosphereController>();
+                                        //Debug.Log("Eq "+ this + ""+ iNeighborVolume);
                                         Utils.LocalVolumeEqualizer(this, iNeighborVolume);
                                     }
 
@@ -416,6 +446,20 @@ namespace ProjectUniverse.Environment.Volumes
                     GasPipeSectionEqualization(ventList, false);
                 }
 
+                ///
+                /// Neighbor equalization
+                ///
+                //for(int p = 0; p < sectionList.Count; p++)
+                //{
+                //    if (sectionList[p].Neighbors.Length > 0)
+                //    {
+                        //List<IGasPipe> neighborList = new List<IGasPipe>();
+                        //neighborList.Add(sectionList[p]);
+                        //neighborList.AddRange(sectionList[p].Neighbors);
+                        //GasPipeSectionEqualization(neighborList, false);
+                //    }
+                //}
+
                 //if (temp > tempTol[1] || temp < tempTol[0])
                 //{
                 //melt and explode
@@ -428,42 +472,51 @@ namespace ProjectUniverse.Environment.Volumes
             ///Profiler.EndSample();
         }
 
+        /// <summary>
+        /// cools extremely quickly to -330 once down near zero.
+        /// Function of density?
+        /// </summary>
         public void RoomHeatAmbiLoss()
         {
-            float massGas = 0f;
-            float averageCp = 0f;
-            if (roomGases.Count > 0)
+            if (roomTemp > -330f)
             {
-                for (int q = 0; q < RoomGasses.Count; q++)
+                float massGas = 0f;
+                float averageCp = 0f;
+                if (roomGases.Count > 0)
                 {
-                    IGas gas = RoomGasses[q];
-                    massGas += gas.GetConcentration() * 1000f * gas.GetDensity();
-                    averageCp += gas.SpecificHeat;
+                    for (int q = 0; q < RoomGasses.Count; q++)
+                    {
+                        IGas gas = RoomGasses[q];
+                        massGas += gas.GetConcentration() * gas.GetSTPDensity();
+                        averageCp += gas.SpecificHeat;
+                    }
+                    averageCp /= RoomGasses.Count;
+                    float dt = (qHeatLossPerSec / (massGas * averageCp)) / RoomGasses.Count;
+                    ///
+                    /// This is all in F but we are subtracting K.
+                    /// As a temporary measure, multiple k dt by 5/9
+                    dt *= (5f / 9f);
+                    //Debug.Log(dt * Time.deltaTime);
+                    for (int q = 0; q < RoomGasses.Count; q++)
+                    {
+                        float temper = RoomGasses[q].GetTemp();//temper does not cange over time wit te volume temp?
+                        temper += (dt * Time.deltaTime);
+                        //Debug.Log(temper);
+                        RoomGasses[q].SetTemp(temper);
+                    }
                 }
-                averageCp /= RoomGasses.Count;
-                float dt = (qHeatLossPerSec / (massGas * averageCp))/RoomGasses.Count;
-                ///
-                /// This is all in F but we are subtracting K.
-                /// As a temporary measure, multiple k dt by 5/9
-                dt *= (5f / 9f);
-                //Debug.Log(dt * Time.deltaTime);
-                for (int q = 0; q < RoomGasses.Count; q++)
+                else
                 {
-                    float temper = RoomGasses[q].GetTemp();
-                    temper += (dt * Time.deltaTime);
-                    //Debug.Log(temper);
-                    RoomGasses[q].SetTemp(temper);
+                    //without gas to hold heat, temp will drop more quickly.
+                    float massRoom = (roomVolume) * 6836f;//6.836Kg in 1m3
+                    float dt = qHeatLossPerSec / (massRoom * 532f);//Cp of .8iron .2aluminum (440 and 900)
+                    dt *= (5f / 9f);
+                    //Debug.Log("+="+dt);
+                    //roomTemp += dt;
                 }
+
+                CalculateRoomTemp();
             }
-            else
-            {
-                //without gas to hold heat, temp will drop more quickly.
-                float massRoom = (roomVolume) * 6836f;//6.836Kg in 1m3
-                float dt = qHeatLossPerSec / (massRoom * 532f);//Cp of .8iron .2aluminum (440 and 900)
-                dt *= (5f / 9f);
-                roomTemp += dt;
-            }
-            CalculateRoomTemp();
         }
 
         public void AddRoomHeat(float heat)
@@ -475,7 +528,7 @@ namespace ProjectUniverse.Environment.Volumes
                 for (int q = 0; q < RoomGasses.Count; q++)
                 {
                     IGas gas = RoomGasses[q];
-                    massGas += gas.GetConcentration() * 1000f * gas.GetDensity();
+                    massGas += gas.GetConcentration() * gas.GetDensity();
                     averageCp += gas.SpecificHeat;
                 }
                 averageCp /= RoomGasses.Count;
@@ -489,7 +542,7 @@ namespace ProjectUniverse.Environment.Volumes
                 {
                     float temper = RoomGasses[q].GetTemp();
                     temper += (dt * Time.deltaTime);
-                    //Debug.Log(temper);
+                    Debug.Log(temper);
                     RoomGasses[q].SetTemp(temper);
                 }
             }
@@ -523,6 +576,15 @@ namespace ProjectUniverse.Environment.Volumes
                         ///
                         pipe.VentToVolume();
                     }
+                    /// This is a temporary bypass for the alpha demo
+                    else if(pipe.Vent != null)
+                    {
+                        AudioSource ventAud = pipe.Vent.GetComponentInChildren<AudioSource>();
+                        if (!ventAud.isPlaying)
+                        {
+                            ventAud.Play();
+                        }
+                    }
                 }
                 totalVelocity += pipe.FlowVelocity;
                 totalPressures += pipe.GlobalPressure;
@@ -536,6 +598,12 @@ namespace ProjectUniverse.Environment.Volumes
             //Global Pressure Eq calc
             float tEq_global = totalTemp / (equalizeList.Count);
             float pEq_global = totalPressures / (equalizeList.Count);
+            if(totalPressures != 0)
+            {
+                Debug.Log("total: "+totalPressures);
+            }
+            if (equalizeList[0].GlobalPressure != 0)
+            { Debug.Log("global: "+equalizeList[0].GlobalPressure + " over " + equalizeList.Count); }
             float cEq_global = totalConc / (equalizeList.Count);
             float vEq_global = totalVelocity / (equalizeList.Count);
 
@@ -551,7 +619,7 @@ namespace ProjectUniverse.Environment.Volumes
                     tempGas.CalculateAtmosphericDensity();
                     newGassesList.Add(tempGas);
                 }
-                object[] newAtmoComp = { tEq_global, pEq_global, newGassesList };
+                //object[] newAtmoComp = { tEq_global, pEq_global, newGassesList };
                 //This needs to be limitable by throughput, somehow?
                 //first duct TransferTo(other ducts, newAtmoComp)
                 equalizeList[0].TransferTo(equalizeList[j], vEq_global, pEq_global, newGassesList, tEq_global);
@@ -662,6 +730,37 @@ namespace ProjectUniverse.Environment.Volumes
             }
         }
 
+        /// <summary>
+        /// Render State Manager sends a list of the render state collision planes that were determined to be visible.
+        /// Use the Frustrum States attached to the VAC to disable or enable the appropriate mesh renderers.
+        /// </summary>
+        /// <param name="rsmp"></param>
+        public void ReceiveActiveFrustrumPlanes(List<MeshCollider> rsmp)
+        {
+            //disable all renderstate renderers in preparation for the below checks.
+            for (int q = 0; q < frustrumStates.Length; q++)
+            {
+                frustrumStates[q].gameObject.GetComponent<MeshRenderer>().enabled = false;
+                frustrumStates[q].HidByOccluder = true;
+                frustrumStates[q].visibleInFrustrum = true;//keep checking this section
+            }
+            //enable all visible renderers
+            for (int i = 0; i < frustrumStates.Length; i++)
+            {
+                for(int j = 0; j < frustrumStates[i].RenderStatePlanes.Length; j++)
+                {
+                    //if the active collider list contains the state plane, then the gameobject
+                    //attached to the frustrum state is visible (and should be rendered)
+                    if (rsmp.Contains(frustrumStates[i].RenderStatePlanes[j]))
+                    {
+                        frustrumStates[i].gameObject.GetComponent<MeshRenderer>().enabled = true;
+                        frustrumStates[i].HidByOccluder = false;
+                        frustrumStates[i].visibleInFrustrum = true;//implied
+                    }
+                }
+            }
+        }
+
         public List<IGas> CheckGasses(bool setToLocalPressure, float localPressure)
         {
             if (roomGases.Count > 1)
@@ -685,10 +784,10 @@ namespace ProjectUniverse.Environment.Volumes
                         }
                     }
                 }
-                foreach (IGas gas in newGassesList)
-                {
+                //foreach (IGas gas in newGassesList)
+                //{
                     //Debug.Log("EQM result: "+gas.ToString());
-                }
+                //}
                 return newGassesList;
             }
             else
@@ -741,9 +840,11 @@ namespace ProjectUniverse.Environment.Volumes
             float gasConc;
             float gasPressure;
 
+            ///Use Cp?
             float gasAt = gasA.GetTemp();
             float gasBt = gasB.GetTemp();
             gasTemp = (gasAt + gasBt) / 2;
+            //Debug.Log("set temp");
             gasA.SetTemp(gasTemp);
 
             gasConc = gasA.GetConcentration() + gasB.GetConcentration();
@@ -1006,15 +1107,25 @@ namespace ProjectUniverse.Environment.Volumes
         /// </summary>
         public void CalculateRoomTemp()
         {
+            //Debug.Log("Recalc");
             if (roomGases.Count > 0f)
-            {
+            {                
                 float temperature = 0.0f;
+                float totalconc = 0f;
+                //scale by volume
                 for (int j = 0; j < roomGases.Count; j++)
                 {
-                    temperature += roomGases[j].GetTemp();
+                    totalconc += roomGases[j].GetConcentration();
+                }
+                for (int j = 0; j < roomGases.Count; j++)
+                {
+                    //Debug.Log(roomGases[j].GetConcentration() / totalconc);
+                    temperature += (roomGases[j].GetTemp() * (roomGases[j].GetConcentration()/totalconc));
+                    //Debug.Log(temperature);
                 }
                 //Equalized temp of the gases in the room
-                roomTemp = temperature / (roomGases.Count);
+                //Debug.Log(roomTemp+"=>"+ (temperature / (roomGases.Count)));
+                roomTemp = temperature;// / (roomGases.Count);
             }
         }
 
@@ -1048,6 +1159,7 @@ namespace ProjectUniverse.Environment.Volumes
             foreach (IGas setGases in roomGases)
             {
                 setGases.SetLocalPressure(roomPressure);
+                //Debug.Log("Set");
                 setGases.SetTemp(roomTemp);
                 setGases.CalculateAtmosphericDensity();
             }
@@ -1085,7 +1197,7 @@ namespace ProjectUniverse.Environment.Volumes
         //Hide renderers and lights
         public void HideRenderVolume()
         {
-            Debug.Log("Hide " + gameObject);
+            //Debug.Log("Hide " + gameObject);
             rendersOn = false;
             if (volumeRenders != null && lightGOs != null)
             {
@@ -1105,6 +1217,36 @@ namespace ProjectUniverse.Environment.Volumes
                     GOculls[r].SetActive(false);
                 }
             }
+            if (additionalRenderVolumes != null)
+            {
+                for (int a = 0; a < additionalRenderVolumes.Length; a++)
+                {
+                    if (additionalRenderVolumes[a].TryGetComponent(out VolumeAtmosphereController vac2))
+                    {
+                        if (vac2.rendersOn)
+                        {
+                            vac2.HideRenderVolume();
+                        }
+                    }
+                    else
+                    {
+                        additionalRenderVolumes[a].SetActive(false);
+                    }
+                }
+            }
+            if (pipes != null)
+            {
+                for (int p = 0; p < pipes.Length; p++)
+                {
+                    //disable LODGroup
+                    //disable subrenderers
+                    pipes[p].GetComponent<LODGroup>().enabled = false;
+                    foreach(Transform lod in pipes[p].transform)
+                    {
+                        lod.GetComponent<MeshRenderer>().enabled = false;
+                    }
+                }
+            }
         }
 
         //show render groups, then next frame reactivate lights
@@ -1113,19 +1255,57 @@ namespace ProjectUniverse.Environment.Volumes
             //Debug.Log("Render " + gameObject);
             rendersOn = true;
             StartCoroutine(ShowRenders());
+            if (additionalRenderVolumes != null)
+            {
+                for (int a = 0; a < additionalRenderVolumes.Length; a++)
+                {
+                    if (additionalRenderVolumes[a].TryGetComponent(out VolumeAtmosphereController vac2))
+                    {
+                        if (!vac2.rendersOn)
+                        {
+                            vac2.ShowRenders();
+                        }
+                    }
+                    else
+                    {
+                        additionalRenderVolumes[a].SetActive(true);
+                    }
+                }
+            }
         }
 
         private IEnumerator ShowRenders()
         {
+            //foreach (BoxCollider box in roomVolumeSections)
+            //{
+                //box.isTrigger = true;
+                //box.enabled = true;
+            //}
+            //yield return null;
             for (int r = 0; r < volumeRenders.Length; r++)
             {
                 volumeRenders[r].enabled = true;
             }
+            yield return null;
             if (GOculls != null)
             {
                 for (int r = 0; r < GOculls.Count; r++)
                 {
                     GOculls[r].SetActive(true);
+                }
+            }
+            yield return null;
+            if (pipes != null)
+            {
+                for (int p = 0; p < pipes.Length; p++)
+                {
+                    //disable LODGroup
+                    //disable subrenderers
+                    pipes[p].GetComponent<LODGroup>().enabled = true;
+                    foreach (Transform lod in pipes[p].transform)
+                    {
+                        lod.GetComponent<MeshRenderer>().enabled = true;
+                    }
                 }
             }
             yield return null;
@@ -1140,5 +1320,209 @@ namespace ProjectUniverse.Environment.Volumes
         //    get { return renderstate; }
         //    set { renderstate = value; }
         //}
+
+        
+        public void RenderPlaneSetup(GameObject[] doors, GameObject planePrefab, Transform planeParent)
+        {
+            Debug.Log("RPS");
+            //get all top-level trigger colliders, including from doors
+            /*foreach (BoxCollider col in roomVolumeSections)
+            {
+                if (col.isTrigger)
+                {
+                    //prefab COLplanes to form a cube
+                    GameObject planeTo = Instantiate(planePrefab, planeParent);
+                    GameObject planeBo = Instantiate(planePrefab, planeParent);
+                    GameObject planeL = Instantiate(planePrefab, planeParent);
+                    GameObject planeR = Instantiate(planePrefab, planeParent);
+                    GameObject planeFr = Instantiate(planePrefab, planeParent);
+                    GameObject planeBk = Instantiate(planePrefab, planeParent);
+                    //center and side offsets for cube
+                    float xOff = col.size.x / 2f;
+                    float yOff = col.size.y / 2f;
+                    float zOff = col.size.z / 2f;
+                    Vector3 center = col.center;
+                    Debug.Log("local center: "+center);
+                    Debug.Log("local x offset: " + xOff);
+                    Debug.Log("local y offset: " + yOff);
+                    Debug.Log("local z offset: " + zOff);
+                    //position - coordinate system shifts by axis
+                    planeTo.transform.localPosition = new Vector3(center.x, center.y + yOff, center.z);
+                    planeBo.transform.localPosition = new Vector3(center.x, center.y - yOff, center.z);
+                    planeL.transform.localPosition = new Vector3(center.x - xOff, center.y, center.z);
+                    planeR.transform.localPosition = new Vector3(center.x + xOff, center.y, center.z);
+                    planeFr.transform.localPosition = new Vector3(center.x, center.y, center.z + zOff);
+                    planeBk.transform.localPosition = new Vector3(center.x, center.y, center.z - zOff);
+                    //scaling
+                    //To,Bo - ZX
+                    //L,R - ZY
+                    //Fr,Bk - XY
+                    planeTo.transform.localScale = new Vector3(xOff, 1f, zOff);
+                    planeBo.transform.localScale = new Vector3(xOff, 1f, zOff);
+                    planeL.transform.localRotation = Quaternion.Euler(0f, 0f, 90f);
+                    planeR.transform.localRotation = Quaternion.Euler(0f, 0f, 90f);
+                    planeL.transform.localScale = new Vector3(yOff, 1f, zOff);
+                    planeR.transform.localScale = new Vector3(yOff, 1f, zOff);
+                    planeFr.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
+                    planeBk.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
+                    planeFr.transform.localScale = new Vector3(xOff, 1f, yOff);
+                    planeBk.transform.localScale = new Vector3(xOff, 1f, yOff);
+                }
+            }
+
+            //generate a portal collider at each door
+            foreach(GameObject door in doors)
+            {
+                GameObject planeDoom = Instantiate(planePrefab, planeParent);
+                Vector3 bias = Vector3.zero;
+                if(door.transform.localRotation.eulerAngles == new Vector3(0f, 90f, 0f))
+                {
+                    //x+1, y +1, z - 0.5
+                    bias = new Vector3(-0.5f, 1f, 0.5f);
+                    planeDoom.transform.localRotation = Quaternion.Euler(90f, 0f, 90f);
+                    planeDoom.tag = "Door";
+                }
+                else if (door.transform.localRotation.eulerAngles == new Vector3(0f, 180f, 0f))
+                {
+                    //x+1, y +1, z - 0.5
+                    bias = new Vector3(+0.5f, 1f, 0.5f);
+                    planeDoom.transform.localRotation = Quaternion.Euler(0f, 90f, 90f);
+                    planeDoom.tag = "Door";
+                }
+                else if (door.transform.localRotation.eulerAngles == new Vector3(0f, 0f, 0f))
+                {
+                    //x+1, y +1, z - 0.5
+                    bias = new Vector3(-0.5f, 1f, -0.5f);
+                    planeDoom.transform.localRotation = Quaternion.Euler(90f, 90f, 90f);
+                    planeDoom.tag = "Door";
+                }
+                else if (door.transform.localRotation.eulerAngles == new Vector3(0f, 270f, 0f))
+                {
+                    //x+1, y +1, z - 0.5
+                    bias = new Vector3(0.5f, 1f, -0.5f);
+                    planeDoom.transform.localRotation = Quaternion.Euler(90f, 0f, 90f);
+                    planeDoom.tag = "Door";
+                }
+                planeDoom.transform.position = door.transform.position;
+                planeDoom.transform.localPosition += bias;
+                planeDoom.transform.localScale = new Vector3(1f, 1f, 1f);
+            }
+            */
+            //List<FrustrumState> fsList = new List<FrustrumState>();
+            foreach (Transform child in transform)
+            {
+                if (child.gameObject.activeInHierarchy)
+                {
+                    if (child.TryGetComponent(out MeshRenderer render))
+                    {
+                        //place a FrustrumState script in obj
+                        //render.gameObject.AddComponent<FrustrumState>();
+                    }
+                }
+            }
+            //now raycast from all instancedColliders' centers and find what walls or whatever they are flush to.
+            RaycastHit[] hits;
+            foreach (Transform obj in planeParent)
+            {
+                if (obj.gameObject.activeInHierarchy)
+                {
+                    //raycast front / back. if no valid collisions, cast L, R for 1.25m to catch edges of doors.
+                    //hits = Physics.SphereCastAll(obj.position, 0.1f, transform.forward, 0.25f);
+                    bool neg = true;
+                    hits = Physics.RaycastAll(obj.position, transform.forward, 0.25f);
+                    for (int k = 0; k < hits.Length; k++)
+                    {
+                        FrustrumState fs = hits[k].transform.GetComponentInParent<FrustrumState>();
+                        if (fs != null)
+                        {
+                            Debug.Log(hits[k].transform.name + ": " + fs.name);
+                            fs.AddStatePlate(obj.GetComponent<MeshCollider>());
+                            neg = false;
+                            //deactivate the object fir debug purposes
+                            obj.gameObject.SetActive(false);
+                        }
+                    }
+                    if (neg)
+                    {
+                        hits = Physics.RaycastAll(obj.position, -transform.forward, 0.25f);
+                        for (int k = 0; k < hits.Length; k++)
+                        {
+                            FrustrumState fs = hits[k].transform.GetComponentInParent<FrustrumState>();
+                            if (fs != null)
+                            {
+                                Debug.Log(hits[k].transform.name + ": " + fs.name);
+                                fs.AddStatePlate(obj.GetComponent<MeshCollider>());
+                                neg = false;
+                                //deactivate the object fir debug purposes
+                                obj.gameObject.SetActive(false);
+                            }
+                        }
+                        if (neg)
+                        {
+                            hits = Physics.RaycastAll(obj.position, transform.right, 1.5f);
+                            for (int k = 0; k < hits.Length; k++)
+                            {
+                                FrustrumState fs = hits[k].transform.GetComponentInParent<FrustrumState>();
+                                if (fs != null)
+                                {
+                                    Debug.Log(hits[k].transform.name + ": " + fs.name);
+                                    fs.AddStatePlate(obj.GetComponent<MeshCollider>());
+                                    neg = false;
+                                    //deactivate the object fir debug purposes
+                                    obj.gameObject.SetActive(false);
+                                }
+                            }
+                            if (neg)
+                            {
+                                hits = Physics.RaycastAll(obj.position, -transform.right, 1.5f);
+                                for (int k = 0; k < hits.Length; k++)
+                                {
+                                    FrustrumState fs = hits[k].transform.GetComponentInParent<FrustrumState>();
+                                    if (fs != null)
+                                    {
+                                        Debug.Log(hits[k].transform.name + ": " + fs.name);
+                                        fs.AddStatePlate(obj.GetComponent<MeshCollider>());
+                                        neg = false;
+                                        //deactivate the object fir debug purposes
+                                        obj.gameObject.SetActive(false);
+                                    }
+                                }
+                                if (neg)
+                                {
+                                    hits = Physics.RaycastAll(obj.position, transform.up, 0.5f);
+                                    for (int k = 0; k < hits.Length; k++)
+                                    {
+                                        FrustrumState fs = hits[k].transform.GetComponentInParent<FrustrumState>();
+                                        if (fs != null)
+                                        {
+                                            Debug.Log(hits[k].transform.name + ": " + fs.name);
+                                            fs.AddStatePlate(obj.GetComponent<MeshCollider>());
+                                            neg = false;
+                                            //deactivate the object fir debug purposes
+                                            obj.gameObject.SetActive(false);
+                                        }
+                                    }
+                                    if (neg)
+                                    {
+                                        hits = Physics.RaycastAll(obj.position, -transform.up, 0.5f);
+                                        for (int k = 0; k < hits.Length; k++)
+                                        {
+                                            FrustrumState fs = hits[k].transform.GetComponentInParent<FrustrumState>();
+                                            if (fs != null)
+                                            {
+                                                Debug.Log(hits[k].transform.name + ": " + fs.name);
+                                                fs.AddStatePlate(obj.GetComponent<MeshCollider>());
+                                                //deactivate the object fir debug purposes
+                                                obj.gameObject.SetActive(false);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

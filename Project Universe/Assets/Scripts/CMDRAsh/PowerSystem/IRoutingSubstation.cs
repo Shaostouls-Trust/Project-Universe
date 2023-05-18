@@ -35,13 +35,17 @@ namespace ProjectUniverse.PowerSystem
         private float _bufferMaxRedux;
         private float _requestRedux;
         [SerializeField] private PowerOutputController poc;
+        public string stationName = "Substation 1";
+        private float lastReceived = 0f;
+        private bool canRequestEnergy = true;
+        //private float lastOut;
 
         // Start is called before the first frame update
         void Start()
         {
             M_Substation = GetComponent<Mach_RoutingSubstation>();
             thisSubstation = GetComponent<IRoutingSubstation>();
-            energyBufferMax = 1080f;
+            energyBufferMax = 2500f;//1260f
             energyBufferMaxResetValue = energyBufferMax;
             bufferCurrent = 0f;
             totalRequiredPower = 0.0f;
@@ -65,6 +69,21 @@ namespace ProjectUniverse.PowerSystem
                 return energyBufferMax;
             }
         }
+        public float LastReceived
+        {
+            get { return lastReceived; }
+        }
+
+        public bool CanRequestEnergy
+        {
+            get { return canRequestEnergy; }
+            set { canRequestEnergy = value; }
+        }
+
+        //public float LastOut
+        //{
+        //   get { return lastOut; }
+        //}
 
         public void ProxyStart(int mode)
         {
@@ -123,9 +142,11 @@ namespace ProjectUniverse.PowerSystem
             //buildState = M_Substation.GetBuildState();
             //if (buildState)
             //{
+            //lastOut = 0f;
             availibleLegsOut = legsOut;
             totalRequiredPower = 0f;
             energyBufferMax = energyBufferMaxResetValue;
+            lastReceived = 0;
             //First apply effects of damaged components
             DamageEffectStack();
             //get leg states - this will be for when we have levers that close off indiv legs
@@ -156,7 +177,7 @@ namespace ProjectUniverse.PowerSystem
             }
             //Debug.Log("Breaker requirement: " + totalBreakerReq);
             //request the required energy from the router
-            if (bufferCurrent < energyBufferMax)
+            if (bufferCurrent < energyBufferMax && CanRequestEnergy)
             {
                 //request energy from Router
                 float requestPerRouter = totalRequiredPower / myRouters.Count;
@@ -260,8 +281,9 @@ namespace ProjectUniverse.PowerSystem
                         deficitVbreaker *= -1f;
                     }
                     //Debug.Log(requestedAmount +" -= "+ (requestedAmount * deficitVbreaker));
-                    requestedAmount -= (requestedAmount * deficitVbreaker);//new, was in for below
-                                                                           //split power between legs
+                    requestedAmount -= (requestedAmount * deficitVbreaker);
+                    //split power between legs
+                    //lastOut += requestedAmount;
                     float[] powerAmount = new float[breakerLegReq];
                     for (int l = 0; l < breakerLegReq; l++)
                     {
@@ -394,15 +416,20 @@ namespace ProjectUniverse.PowerSystem
             for (int i = 0; i < legCount; i++)
             {
                 bufferCurrent += powerAmounts[i];
+                lastReceived += powerAmounts[i];
             }
             legsReceived = legCount;
             bufferCurrent = (float)Math.Round(bufferCurrent, 3);
             poc.UpdateMachineUI();
+            if(bufferCurrent > BufferMax)
+            {
+                bufferCurrent = BufferMax;
+            }
         }
 
-        public float GetTotalRequiredPower()
+        public float TotalRequiredPower
         {
-            return totalRequiredPower;
+            get { return totalRequiredPower; }
         }
 
         public Guid getGUID()

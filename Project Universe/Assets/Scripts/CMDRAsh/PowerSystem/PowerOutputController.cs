@@ -19,12 +19,15 @@ namespace ProjectUniverse.PowerSystem {
         [SerializeField] private float increment;
         [Space]
         [SerializeField] private GameObject machineStateButtonPrefab;
+        [SerializeField] private GameObject substationStateButtonPrefab;
         [SerializeField] private GameObject machinePanel;
         [SerializeField] private GameObject breakerPanel;
+        [SerializeField] private GameObject substationPanel;
         [SerializeField] private TMP_Text buffer;
         [SerializeField] private TMP_Text bufferMax;
         private List<GameObject> machineStateButtons = new List<GameObject>();
         private List<GameObject> breakerStateButtons = new List<GameObject>();
+        private List<GameObject> substationStateButtons = new List<GameObject>();
         private float targetOutput = 1024f;
         private float maxOutput = 1024f;
         private float updateTime = 1f;
@@ -79,6 +82,14 @@ namespace ProjectUniverse.PowerSystem {
             }
             breakerStateButtons.Clear();
         }
+        public void ClearRouterButtons()
+        {
+            foreach (GameObject button in substationStateButtons)
+            {
+                Destroy(button);
+            }
+            substationStateButtons.Clear();
+        }
 
         public void CreateButton(IMachine mach)
         {
@@ -92,6 +103,13 @@ namespace ProjectUniverse.PowerSystem {
             GameObject button = Instantiate(machineStateButtonPrefab, breakerPanel.transform);
             button.GetComponent<MachineStateButtonController>().SetData(box);
             breakerStateButtons.Add(button);
+        }
+
+        public void CreateButton(IRoutingSubstation router)
+        {
+            GameObject button = Instantiate(substationStateButtonPrefab, substationPanel.transform);
+            button.GetComponent<SubstationStateButtonController>().SetData(router);
+            substationStateButtons.Add(button);
         }
 
         public void UpdateMachineUI()
@@ -110,7 +128,8 @@ namespace ProjectUniverse.PowerSystem {
                 {
                     if (router != null)
                     {
-
+                        buffer.text = "" + Math.Round(router.BufferCurrent, 2);
+                        bufferMax.text = "" + Math.Round(sub.BufferMax, 2);
                     }
                 }
                 else

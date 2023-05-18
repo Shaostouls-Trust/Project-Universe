@@ -18,6 +18,7 @@ namespace ProjectUniverse.Environment.World
         private float mass;
         //mine in 10Kg parts
         private float mineHealth = 2.5f;
+        private MeshRenderer renderer;
 
         public OreDefinition OreDef
         {
@@ -43,6 +44,16 @@ namespace ProjectUniverse.Environment.World
             // set { nDensity = value; }
         }
 
+        private void Start()
+        {
+            renderer = gameObject.GetComponent<MeshRenderer>();
+            if(renderer == null)
+            {
+                renderer = gameObject.GetComponentInChildren<MeshRenderer>();
+            }
+            //Debug.Log(renderer);
+        }
+
         /// <summary>
         /// Set the block's material to the material of the ore it is now representing.
         /// </summary>
@@ -65,7 +76,7 @@ namespace ProjectUniverse.Environment.World
                     //Debug.Log("Null");
                     oreMat = Resources.Load<Material>("Materials/CMDRAsh/RocksNOres/LibMat_Rock_Black_Dark");
                 }
-                gameObject.GetComponent<MeshRenderer>().material = oreMat;
+                renderer.material = oreMat;
             }
             else
             {
@@ -95,7 +106,7 @@ namespace ProjectUniverse.Environment.World
                         break;
                 }
                 Material rockMat = Resources.Load<Material>("Materials/CMDRAsh/RocksNOres/" + str);
-                gameObject.GetComponent<MeshRenderer>().material = rockMat;
+                renderer.material = rockMat;
             }
 
         }

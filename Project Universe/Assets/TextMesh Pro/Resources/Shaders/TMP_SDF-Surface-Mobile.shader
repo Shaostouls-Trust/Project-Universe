@@ -3,7 +3,7 @@
 // - Diffuse only lighting
 // - Fully supports only 1 directional light. Other lights can affect it, but it will be per-vertex/SH.
 
-Shader "TextMeshPro/Mobile/Distance Field (Surface)" {
+Shader "ORION/TextMeshPro/Mobile/Distance Field (Surface)" {
 
 Properties {
 	_FaceTex			("Fill Texture", 2D) = "white" {}

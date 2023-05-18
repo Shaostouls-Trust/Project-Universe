@@ -70,7 +70,7 @@ public class InGameMenuUIController : MonoBehaviour
     public void LoadScene()
     {
         //Save player
-        player.GetComponent<SupplementalController>().SavePlayer();
+        //player.GetComponent<SupplementalController>().SavePlayer();
         StartCoroutine(LoadingBar(SceneToLoad));
     }
 
@@ -101,11 +101,11 @@ public class InGameMenuUIController : MonoBehaviour
         NetworkManager.Singleton.StartHost();
         yield return null;
         //load player data
-        if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
-        {
-            GameObject player = networkedClient.PlayerObject.gameObject;
-            player.GetComponent<SupplementalController>().LoadPlayer();
-        }
+        //if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
+        //{
+        //   GameObject player = networkedClient.PlayerObject.gameObject;
+        //    player.GetComponent<SupplementalController>().LoadPlayer();
+        //}
         //take down splash
         LoadingScreenSplash.SetActive(false);
         yield return null;
@@ -115,7 +115,7 @@ public class InGameMenuUIController : MonoBehaviour
     public void ConfirmQuitToMenu()
     {
         //Save player
-        player.GetComponent<SupplementalController>().SavePlayer();
+        //player.GetComponent<SupplementalController>().SavePlayer();
         //disconnect
         if (NetworkManager.Singleton.IsClient)
         {
@@ -145,7 +145,7 @@ public class InGameMenuUIController : MonoBehaviour
     {
         if (Application.isEditor)
         {
-            player.GetComponent<SupplementalController>().SavePlayer();
+            //player.GetComponent<SupplementalController>().SavePlayer();
             EditorApplication.ExitPlaymode();
         }
         else

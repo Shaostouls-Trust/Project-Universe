@@ -27,10 +27,15 @@ namespace ProjectUniverse.Environment.World
             for (int i = 0; i < transform.childCount; i++)
             {
                 children[i] = transform.GetChild(i);
-
+                float vol = 0f;
                 //mass calcs
-                BoxCollider bc = children[i].gameObject.GetComponent<BoxCollider>();
-                float vol = bc.size.x * bc.size.y * bc.size.z;
+                if (children[i].gameObject.TryGetComponent(out BoxCollider bc))
+                {
+                    vol = bc.size.x * bc.size.y * bc.size.z;
+                }
+                else if(children[i].gameObject.TryGetComponent(out CapsuleCollider cc)){
+                    vol = (cc.radius * (4f / 3f) * Mathf.PI * cc.radius * cc.radius) + (cc.radius*2f*Mathf.PI*cc.height);
+                }
                 //rigidbody.mass += (vol * children[i].GetComponent<BlockOreSingle>().NDensity);
                 //Debug.Log("rgm: "+rigidbody.mass);
                 //PLAYER controll/mass is moving the asteroid b/c the pc doesn't rely on rigidbody mass

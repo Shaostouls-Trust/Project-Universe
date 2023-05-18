@@ -732,6 +732,7 @@ namespace ProjectUniverse.Player.PlayerController
                 }
             };
 
+            /*
             controls.Player.Crouch.performed += ctx =>
             {
                 if (!ShipMode)
@@ -830,7 +831,7 @@ namespace ProjectUniverse.Player.PlayerController
                     }
                 }
             };
-
+            */
             controls.Player.ShowInventory.performed += ctx =>
             {
                 if (!ShipMode)
@@ -1117,7 +1118,7 @@ namespace ProjectUniverse.Player.PlayerController
                         {
                             Jump = true;
                             //Debug.Log("jump");
-                            Vector3 force = new Vector3(0f, 500000f, 0f);
+                            Vector3 force = new Vector3(0f, 50000f, 0f);
                             force = transform.TransformVector(force);
                             rigidbody.AddForce(force);
                         }
@@ -1210,7 +1211,6 @@ namespace ProjectUniverse.Player.PlayerController
         void Update()
         {
             playerHealth = playerNetHealth.Value;
-
         }
 
         public void EndOfLadder(Vector3 forward)
@@ -1295,9 +1295,30 @@ namespace ProjectUniverse.Player.PlayerController
             }
         }
 
-        /*
+        
         private void FixedUpdate()
         {
+            //raycast to visible render planes
+            //get camera position
+            GameObject camGo;
+            if (cameraFirst)
+            {
+                camGo = firstPersonCameraRoot.GetComponentInChildren<Camera>().gameObject;
+            }
+            else
+            {
+                camGo = thirdPersonCameraRoot.GetComponentInChildren<Camera>().gameObject;
+            }
+            //Vector3 forward = camGo.transform.TransformDirection(0f, 0f, 1f);
+
+            //RaycastHit[] hits;
+            //hits = Physics.RaycastAll(camGo.transform.position, forward, 35f, 7, QueryTriggerInteraction.Ignore);
+            //for(int i = 0; i < hits.Length; i++)
+            //{
+
+            //}
+
+            /*
             grounded = GroundCheck();
             if (!grounded)
             {
@@ -1339,8 +1360,9 @@ namespace ProjectUniverse.Player.PlayerController
             floorOldHitPosition = floorHitPosition;
             
             playerLocalOldPosition = transform.localPosition;
-            
-        }*/
+            */
+
+        }
 
         public IEquipable[] EquippedWeapons
         {

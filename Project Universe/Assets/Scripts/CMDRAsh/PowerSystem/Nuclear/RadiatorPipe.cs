@@ -43,6 +43,7 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                 {
                     if (steamTemp > ((vac.Temperature - 32f) / 1.8f) + 273.15f)
                     {
+                        //Debug.Log("Add Room 4eat to "+vac.name);
                         vac.AddRoomHeat(steamQ);
                         deltaHeatSteam = (steamQ / (radiatorPipe.GetKgSteam() * 2010f));
                         radiatorPipe.RemoveHeat(steamQ);

@@ -1,4 +1,4 @@
-Shader "TextMeshPro/Distance Field (Surface)" {
+Shader "ORION/TextMeshPro/Distance Field (Surface)" {
 
 Properties {
 	_FaceTex			("Fill Texture", 2D) = "white" {}

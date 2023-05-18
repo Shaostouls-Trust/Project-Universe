@@ -227,7 +227,7 @@ namespace ProjectUniverse.Ship
             {
                 isRemoteDrone = true;
                 remoteConnected = true;
-                //Debug.Log("Enter ship mode");
+                Debug.Log("Enter ship mode");
                 playerSC.ControlConsole = this;
                 EnterShipControlMode(playerSC);
                 shipUI.SetActive(true);
@@ -240,7 +240,7 @@ namespace ProjectUniverse.Ship
             {
                 isRemoteDrone = false;
                 remoteConnected = false;
-                //Debug.Log("Exit ship mode");
+                Debug.Log("Exit ship mode");
                 playerSC.ControlConsole = null;
                 ExitShipControlMode(playerSC);
                 shipUI.SetActive(false);
