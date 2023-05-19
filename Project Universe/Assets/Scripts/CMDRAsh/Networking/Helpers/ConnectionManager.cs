@@ -20,6 +20,20 @@ namespace ProjectUniverse.Networking
         public Camera LobbyCam;
         private string IPaddress = "127.0.0.1";
         UNetTransport uNetTransportForClient;
+        [SerializeField] private GameObject loadScreen;
+
+        /// <summary>
+        /// Temporary Host function for singleplayer demo
+        /// </summary>
+        private void Start()
+        {
+            Debug.Log("Link Starto!");
+            Host();
+            if(loadScreen != null)
+            {
+                loadScreen.SetActive(false);
+            }
+        }
 
         public void Host()
         {

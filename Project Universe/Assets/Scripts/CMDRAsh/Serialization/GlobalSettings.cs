@@ -30,7 +30,7 @@ namespace ProjectUniverse.Serialization
         [SerializeField] private static bool _vsync;
         [SerializeField] private static string _fxaa;
         [SerializeField] private static string _antiAliasing;
-        [SerializeField] private static float _sensitivity;
+        [SerializeField] private static float _sensitivity = 1f;
         // Video - Detail
         [SerializeField] private static string _textureQuality;
         [SerializeField] private static string _gameQuality;

@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
-using UnityEditor;
+//using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -30,10 +30,15 @@ public class MainMenuScript : MonoBehaviour
     [SerializeField] private GameObject SelectSceneContentParent;
     [SerializeField] private GameObject LoadGameButtonPrefabs;
     [SerializeField] private GameObject NotesWindow;
-
+    [SerializeField] private AudioSource musicSrc;
     private void Start()
     {
-        LoadPlayerLastScene();
+        //LoadPlayerLastScene();
+        if (musicSrc != null && !musicSrc.isPlaying)
+        {
+            musicSrc.Play();
+        }
+        LoadingScreenSplash.SetActive(false);
     }
 
     public void LoadPlayerLastScene()
@@ -90,7 +95,12 @@ public class MainMenuScript : MonoBehaviour
 
     private IEnumerator LoadScene(string sceneString)
     {
+        if (musicSrc != null)
+        {
+            musicSrc.Stop();
+        }
         //load the scene
+        Debug.Log("Begin Load");
         LoadingScreenSplash.SetActive(true);
         yield return null;
         async = SceneManager.LoadSceneAsync(sceneString,LoadSceneMode.Single);
@@ -107,28 +117,30 @@ public class MainMenuScript : MonoBehaviour
         LoadingScreenBar.fillAmount = 1;
         async.allowSceneActivation = true;
         yield return null;
-
+        Debug.Log("Finished Load Stack");
         //when scene is loaded, connect player to scene 
         //(Eventually need to check if we're connecting to a multiplayer game and so need to connect as client, not host)
         /// Do we need to use the connection manager for this?
         /// Not sure how the player will load in, or what objects will need disabled/enabled.
-        if (!NetworkManager.Singleton.IsHost)
+        /*if (!NetworkManager.Singleton.IsHost)
         {
             Debug.Log("No Host");
-        }
-        NetworkManager.Singleton.StartHost();
-        yield return null;
+        }*/
+        ///Start HOST in Scene
+        ///
+        //NetworkManager.Singleton.StartHost();
+        //yield return null;
         //load player data
-        if (sceneString.CompareTo(NewGameSceneString) != 0)
-        {
-            if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
-            {
-                GameObject player = networkedClient.PlayerObject.gameObject;
+        //if (sceneString.CompareTo(NewGameSceneString) != 0)
+        //{
+        //    if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
+        //    {
+        //        GameObject player = networkedClient.PlayerObject.gameObject;
                 //player.GetComponent<SupplementalController>().LoadPlayer();
-            }
-        }
+        //    }
+        //}
         //take down splash
-        LoadingScreenSplash.SetActive(false);
+        //LoadingScreenSplash.SetActive(false);
         yield return null;
     }
 
@@ -196,7 +208,7 @@ public class MainMenuScript : MonoBehaviour
         
         if (Application.isEditor)
         {
-            EditorApplication.ExitPlaymode();
+            //EditorApplication.ExitPlaymode();
         }
         else
         {

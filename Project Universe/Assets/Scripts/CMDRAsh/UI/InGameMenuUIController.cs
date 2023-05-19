@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using ProjectUniverse.Player.PlayerController;
 using MLAPI;
-using UnityEditor;
+//using UnityEditor;
 using UnityEngine.SceneManagement;
 
 public class InGameMenuUIController : MonoBehaviour
@@ -15,6 +15,7 @@ public class InGameMenuUIController : MonoBehaviour
     [SerializeField] private GameObject LoadingScreenSplash;
     [SerializeField] private Image LoadingScreenBar;
     [SerializeField] private GameObject SelectScenePanel;
+    [SerializeField] private AudioSource musicSrc;
     private string SceneToLoad;
     private GameObject player;
     private AsyncOperation async;
@@ -69,6 +70,10 @@ public class InGameMenuUIController : MonoBehaviour
 
     public void LoadScene()
     {
+        if (musicSrc != null)
+        {
+            musicSrc.Stop();
+        }
         //Save player
         //player.GetComponent<SupplementalController>().SavePlayer();
         StartCoroutine(LoadingBar(SceneToLoad));
@@ -130,8 +135,10 @@ public class InGameMenuUIController : MonoBehaviour
             NetworkManager.Singleton.StopServer();
         }
         //Quit to tile/splash screen
+        LoadingScreenSplash.SetActive(true);
+        ConfirmQuitPanel.SetActive(false);
         StartCoroutine(LoadingBar("MainMenu"));
-        LoadingScreenSplash.SetActive(false);
+        
         //But for now:
         //Application.Quit();
     }
@@ -143,15 +150,15 @@ public class InGameMenuUIController : MonoBehaviour
 
     public void QuitToMenu()
     {
-        if (Application.isEditor)
-        {
+        //if (Application.isEditor)
+        //{
             //player.GetComponent<SupplementalController>().SavePlayer();
-            EditorApplication.ExitPlaymode();
-        }
-        else
-        {
+        //    EditorApplication.ExitPlaymode();
+        //}
+        //else
+        //{
             //Confirmation box
             ConfirmQuitPanel.SetActive(true);
-        }
+        //}
     }
 }
