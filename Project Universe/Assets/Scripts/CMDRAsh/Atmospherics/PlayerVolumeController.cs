@@ -10,6 +10,7 @@ using UnityEngine.UI;
 using TMPro;
 using ProjectUniverse.Util;
 using ProjectUniverse.Environment.Gas;
+using ProjectUniverse.Ship;
 //using UnityEngine.Rendering.PostProcessing;
 
 /// <summary>
@@ -54,6 +55,7 @@ namespace ProjectUniverse.Environment.Volumes
         private float toNextBreath;
         [SerializeField] private AudioSource playerSFX;
         public AudioClip[] breathClips;
+        public RenderStateManager tempRSMPlayer;
 
         // Start is called before the first frame update
         void Start()
@@ -105,12 +107,20 @@ namespace ProjectUniverse.Environment.Volumes
                 {
                     playerVolume.RSM.ExternalControllerState = true;
                 }
+                else if(tempRSMPlayer != null)
+                {
+                    tempRSMPlayer.ExternalControllerState = true;
+                }
             }
             else
             {
                 if (playerVolume != null && playerVolume.RSM != null)
                 {
                     playerVolume.RSM.ExternalControllerState = false;
+                }
+                else if (tempRSMPlayer != null)
+                {
+                    tempRSMPlayer.ExternalControllerState = false;
                 }
             }
 

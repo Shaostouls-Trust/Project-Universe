@@ -98,9 +98,9 @@ namespace ProjectUniverse.Data.Libraries
                     isInitialized = true;
                     Debug.Log("Inclusion Library Construction Initiated");
                     //find the xmls
-                    string xmlPath = "\\Assets\\Resources\\Data\\Production\\";
-                    string root = Directory.GetCurrentDirectory();
-                    string[] filesInDir = Directory.GetFiles(root + xmlPath, "*.xml", SearchOption.TopDirectoryOnly);
+                    //string xmlPath = "\\Assets\\Resources\\Data\\Production\\";
+                    //string root = Directory.GetCurrentDirectory();
+                    //string[] filesInDir = Directory.GetFiles(root + xmlPath, "*.xml", SearchOption.TopDirectoryOnly);
 
                     for(;zoneint <= 7; zoneint++)
                     {

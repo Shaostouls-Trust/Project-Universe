@@ -343,7 +343,7 @@ namespace ProjectUniverse.Util
         {
 			//float rng = ((float)Math.Sqrt(0.0000005263f * ((activity_TBq * Mathf.Pow(10, 12f))) * .1576555265f) /(exposureRate)) / 100f;
 			float rng = ((float)Math.Sqrt((activity_TBq * 36756.76) / (exposureRate))) / 100f;
-			Debug.Log("range: "+rng);
+			//Debug.Log("range: "+rng);
 			return rng;
 
 		}

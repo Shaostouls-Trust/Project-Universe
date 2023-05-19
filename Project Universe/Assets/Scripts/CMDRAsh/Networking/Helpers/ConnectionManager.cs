@@ -10,6 +10,8 @@ using ProjectUniverse.Player.PlayerController;
 using UnityEngine.Networking;
 using MLAPI.Connection;
 using System.Threading.Tasks;
+using ProjectUniverse.Ship;
+using ProjectUniverse.Environment.Volumes;
 
 namespace ProjectUniverse.Networking
 {
@@ -21,6 +23,7 @@ namespace ProjectUniverse.Networking
         private string IPaddress = "127.0.0.1";
         UNetTransport uNetTransportForClient;
         [SerializeField] private GameObject loadScreen;
+        public RenderStateManager rsmPlayer;
 
         /// <summary>
         /// Temporary Host function for singleplayer demo
@@ -45,6 +48,7 @@ namespace ProjectUniverse.Networking
             if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
             {
                 networkedClient.PlayerObject.gameObject.GetComponent<SupplementalController>().LockOnlyCursor();
+                networkedClient.PlayerObject.gameObject.GetComponent<PlayerVolumeController>().tempRSMPlayer = rsmPlayer;
             }
             Debug.Log("Started Host");
         }

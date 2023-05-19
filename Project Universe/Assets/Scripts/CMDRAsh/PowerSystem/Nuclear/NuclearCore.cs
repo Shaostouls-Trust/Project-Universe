@@ -191,6 +191,7 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                 x = 0.015f;
 
             }
+            Debug.Log("Gens: " + SteamGenerators.Length);
         }
 
         // Update is called once per frame

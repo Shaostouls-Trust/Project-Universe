@@ -33,7 +33,6 @@ namespace ProjectUniverse.Ship
                 {
                     vac.HideRenderVolume();
                 }
-
             }
         }
 

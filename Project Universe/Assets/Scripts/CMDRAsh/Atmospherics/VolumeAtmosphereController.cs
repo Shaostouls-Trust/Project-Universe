@@ -54,6 +54,16 @@ namespace ProjectUniverse.Environment.Volumes
 
         private void Start()
         {
+            if (autoFill)
+            {
+                AddRoomGas(new IGas("Oxygen", 60f, roomVolume, 1.0f, roomVolume));
+            }
+        }
+
+
+        //was all in Start
+        private void Awake()
+        {
             //roomVolume = (gameObject.GetComponent<BoxCollider>().size.x *
             //    gameObject.GetComponent<BoxCollider>().size.y *
             //    gameObject.GetComponent<BoxCollider>().size.z);
@@ -62,10 +72,7 @@ namespace ProjectUniverse.Environment.Volumes
                 roomVolume += (roomVolumeSections[i].size.x * roomVolumeSections[i].size.y * roomVolumeSections[i].size.z);
             }
 
-            if (autoFill)
-            {
-                AddRoomGas(new IGas("Oxygen", 60f, roomVolume, 1.0f, roomVolume));
-            }
+            
 
             ///
             /// This does not ensure that we are only losing heat from the outer sides of the volume,
@@ -85,6 +92,7 @@ namespace ProjectUniverse.Environment.Volumes
             {
                 //Debug.Log("- - - - -");
                 rsm = GetComponentInParent<RenderStateManager>();
+                Debug.Log("Room RSM: " + rsm);
                 ///Get all top-level renderers and light objects in this volume
                 ///
                 List<GameObject> lightList = new List<GameObject>();
@@ -1197,7 +1205,7 @@ namespace ProjectUniverse.Environment.Volumes
         //Hide renderers and lights
         public void HideRenderVolume()
         {
-            //Debug.Log("Hide " + gameObject);
+            Debug.Log("Hide " + gameObject);
             rendersOn = false;
             if (volumeRenders != null && lightGOs != null)
             {
@@ -1252,7 +1260,7 @@ namespace ProjectUniverse.Environment.Volumes
         //show render groups, then next frame reactivate lights
         public void ShowRenderVolume()
         {
-            //Debug.Log("Render " + gameObject);
+            Debug.Log("Render " + gameObject);
             rendersOn = true;
             StartCoroutine(ShowRenders());
             if (additionalRenderVolumes != null)

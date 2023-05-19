@@ -60,8 +60,8 @@ public class FleetBoy2000UIController : MonoBehaviour
         youBttn.onClick.AddListener(delegate { SetTopBarButton0Color(); ChangeActiveDisplay(0); });
         invBttn.onClick.AddListener(delegate { SetTopBarButton1Color(); ChangeActiveDisplay(1); });
         remoBttn.onClick.AddListener(delegate { SetTopBarButton2Color(); ChangeActiveDisplay(2); });
-        mapBttn.onClick.AddListener(delegate { SetTopBarButton3Color(); ChangeActiveDisplay(3); });
-        cmndBttn.onClick.AddListener(delegate { SetTopBarButton4Color(); ChangeActiveDisplay(4); });
+        mapBttn.onClick.AddListener(delegate { SetTopBarButton4Color(); ChangeActiveDisplay(4); });
+        cmndBttn.onClick.AddListener(delegate { SetTopBarButton3Color(); ChangeActiveDisplay(3); });
         transBttn.onClick.AddListener(delegate { SetTopBarButton5Color(); ChangeActiveDisplay(5); });
     }
 
