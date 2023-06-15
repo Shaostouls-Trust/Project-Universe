@@ -42,6 +42,7 @@ namespace ProjectUniverse.Animation.Controllers
         private bool isClosing;//door in process of closing
         private bool isROpen;
         private bool isRClosed;
+        private bool toClose;
         //private bool isROpening;
         //private bool isRClosing;
         private bool hasEmissive;
@@ -306,6 +307,10 @@ namespace ProjectUniverse.Animation.Controllers
                 }
                 //netDoorL_Position.Value = doorL_TF.position;
                 //netDoorR_Position.Value = doorR_TF.position;
+                if (toClose)
+                {
+                    CloseDoor();
+                }
             }
             else
             {
@@ -348,6 +353,7 @@ namespace ProjectUniverse.Animation.Controllers
             {
                 if (isLOpen && isROpen)
                 {
+                    toClose = false;
                     CloseDoorServerRpc();
                 }
             }
@@ -426,6 +432,7 @@ namespace ProjectUniverse.Animation.Controllers
                 {
                     if (isPowered && (!locked && isRunning))
                     {
+                        toClose = false;
                         //both doors are open (eval to false) or opening already.
                         if ((!isLOpen && !isROpen))// || (isROpening && isLOpening))
                         {
@@ -448,6 +455,11 @@ namespace ProjectUniverse.Animation.Controllers
                         {
                             CloseDoorServerRpc();
                         }
+                    }
+                    else
+                    {
+                        //cue the door to close
+                        toClose = true;
                     }
                 }
             }

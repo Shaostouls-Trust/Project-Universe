@@ -52,7 +52,6 @@ namespace ProjectUniverse.Player.PlayerController
         [SerializeField] private bool cameraLocked = false;
         [SerializeField] private bool cameraFirst = true;
         [SerializeField] private bool shift = false;
-        [SerializeField] int CursorCase = 0;
         [SerializeField] private bool toggleCursorLock = false;
         private float movementSpeed;
         [SerializeField] private int walkSpeed;
@@ -521,6 +520,7 @@ namespace ProjectUniverse.Player.PlayerController
             controls.Player.Look.Enable();
             controls.Player.Move.Enable();
             controls.Player.Jump.Enable();
+            //controls.Player.Escape.Enable();
 
             controls.Player.LeanLeft.Enable();
             controls.Player.LeanRight.Enable();
@@ -1088,9 +1088,18 @@ namespace ProjectUniverse.Player.PlayerController
                 else
                 {
                     //Debug.Log("Look: " + inputlook.x + " " + inputlook.y);
-                    lookInput = Vector2.zero;
-                    RemoteLookAxis_Horizonal = inputlook.x;
-                    RemoteLookAxis_Vertical = inputlook.y;
+                    if (!cameraLocked)
+                    {
+                        lookInput = Vector2.zero;
+                        RemoteLookAxis_Horizonal = inputlook.x;
+                        RemoteLookAxis_Vertical = inputlook.y;
+                    }
+                    else
+                    {
+                        lookInput = Vector2.zero;
+                        RemoteLookAxis_Horizonal = 0f;
+                        RemoteLookAxis_Vertical = 0f;
+                    }
                 }
             };
             controls.Player.Look.canceled += ctx =>
@@ -1118,9 +1127,9 @@ namespace ProjectUniverse.Player.PlayerController
                         {
                             Jump = true;
                             //Debug.Log("jump");
-                            Vector3 force = new Vector3(0f, 50000f, 0f);
-                            force = transform.TransformVector(force);
-                            rigidbody.AddForce(force);
+                            //Vector3 force = new Vector3(0f, 40000f, 0f);
+                            //force = transform.TransformVector(force);
+                            //rigidbody.AddForce(force);
                         }
                         //if ledgegrab trigger
                         //player hauls up into surface (elevate player to level of surface)
@@ -2162,13 +2171,11 @@ namespace ProjectUniverse.Player.PlayerController
             {
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = true;
-                CursorCase = 1;
             }
             if (toggleCursorLock == true)
             {
                 Cursor.lockState = CursorLockMode.Confined;
                 Cursor.visible = false;
-                CursorCase = 2;
             }
             toggleCursorLock = !toggleCursorLock;
         }
@@ -2192,18 +2199,20 @@ namespace ProjectUniverse.Player.PlayerController
         /// </summary>
         public void LockScreenAndFreeCursor()
         {
-            LockCursor();
-            cameraLocked = !cameraLocked;
+            //LockCursor();
+            cameraLocked = true;
             Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.Confined;
         }
         /// <summary>
         /// Unlock the screen and lock the cursor
         /// </summary>
         public void FreeScreenAndLockCursor()
         {
-            LockCursor();
-            cameraLocked = !cameraLocked;
+            //LockCursor();
+            cameraLocked = false;
             Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
         }
 
         /// <summary>

@@ -22,7 +22,7 @@ namespace ProjectUniverse.Environment.Radiation
             {
                 PVC.SetMaxRadsDetectable(maxRads);
             }
-            else
+            else if(DVC != null)
             {
                 DVC.SetMaxRadsDetectable(maxRads);
             }
@@ -35,33 +35,39 @@ namespace ProjectUniverse.Environment.Radiation
             {
                 detectedRoentgen = PVC.GetRadiationExposureRate();
             }
-            else
+            else if (DVC != null)
             {
                 detectedRoentgen = DVC.GetRadiationExposureRate();
             }
 
             if (detectedRoentgen > 0.0f)
             {
-                if (detectedRoentgen > maxRads)
+                float rate = 1f - curve.Evaluate(detectedRoentgen / maxRads);
+                int[] range = { 0, 3 };
+                if (detectedRoentgen >= maxRads)
                 {
                     detectedRoentgen = maxRads;
+                    //if greater than maxrads, only play the pulse 6 sound
+                    range[0] = 6;
+                    range[1] = 7;
                 }
-                float rate = 1f - curve.Evaluate(detectedRoentgen / maxRads);
-                int[] range = {0, 3};
-                if(rate <= 0.025f)
+                else
                 {
-                    range[0] = 4;
-                    range[1] = 6;
-                }
-                else if(rate <= 0.1f)
-                {
-                    range[0] = 2;
-                    range[1] = 6;
-                }
-                else if(rate <= 0.67f)
-                {
-                    range[0] = 1;
-                    range[1] = 4;
+                    if (rate <= 0.025f)
+                    {
+                        range[0] = 4;
+                        range[1] = 6;
+                    }
+                    else if (rate <= 0.1f)
+                    {
+                        range[0] = 2;
+                        range[1] = 6;
+                    }
+                    else if (rate <= 0.67f)
+                    {
+                        range[0] = 1;
+                        range[1] = 4;
+                    }
                 }
 
                 cyclesToPlaySound -= Time.deltaTime;

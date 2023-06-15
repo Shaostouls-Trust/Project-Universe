@@ -49,10 +49,29 @@ namespace ProjectUniverse.Environment.Fluid
         public bool AutomaticMode
         {
             get { return automaticControl; }
+            set { automaticControl = value; }
         }
         public bool ValveOperable
         {
             get { return valveOperable; }
+        }
+        public bool ValveState
+        {
+            get { return valveState; }
+            set { valveState = value; }
+        }
+        public float FlowVelocity
+        {
+            get { return flowVelocity_ms; }
+            set { flowVelocity_ms = value; }
+        }
+        public float FlowVelocityMax
+        {
+            get { return maxFlowVelocity_ms; }
+        }
+        public IFluidPipe OutflowPipe
+        {
+            get { return outflowPipe; }
         }
 
         // Start is called before the first frame update
@@ -151,7 +170,7 @@ namespace ProjectUniverse.Environment.Fluid
                             float limVel = flowVelocity_ms;
                             if (automaticControl)
                             {
-                                if(limVel >= outflowPipe.MaxVelocity)
+                                if(limVel != outflowPipe.MaxVelocity)
                                 {
                                     limVel = outflowPipe.MaxVelocity;
                                 }

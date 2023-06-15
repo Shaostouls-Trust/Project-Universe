@@ -31,6 +31,13 @@ public class MainMenuScript : MonoBehaviour
     [SerializeField] private GameObject LoadGameButtonPrefabs;
     [SerializeField] private GameObject NotesWindow;
     [SerializeField] private AudioSource musicSrc;
+
+    private void Awake()
+    {
+        QualitySettings.vSyncCount = 1;
+        Application.targetFrameRate = 60;
+    }
+
     private void Start()
     {
         //LoadPlayerLastScene();

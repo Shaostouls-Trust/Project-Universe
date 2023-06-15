@@ -335,6 +335,11 @@ namespace ProjectUniverse.Environment.Volumes
             }
         }
 
+        public VolumeAtmosphereController GetPlayerVAC()
+        {
+            return playerVolume;
+        }
+
         public void OnVolumeEnter(float myVolPress, float myVolTemp, float myVolOx)
         {
             myRoomPressure = myVolPress;

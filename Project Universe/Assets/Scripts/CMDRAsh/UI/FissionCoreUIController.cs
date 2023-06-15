@@ -25,6 +25,7 @@ namespace ProjectUniverse.UI
         [SerializeField] private TMP_Text mweText;
         [SerializeField] private TMP_Text vesselPresText;
         [SerializeField] private TMP_Text vesselTempText;
+        [SerializeField] private TMP_Text coreStateText;
         [SerializeField] private Image critTempImg;
         [SerializeField] private Image critPresImg;
         [SerializeField] private Image radsImg;
@@ -35,8 +36,7 @@ namespace ProjectUniverse.UI
         [SerializeField] private Image radsImg2;
         [SerializeField] private Image vesselTempImg;
         [SerializeField] private Image vesselPresTmg;
-        [SerializeField] private TMP_Text screenModeText;
-        private int screenMode;//0,1,2,3 for R,T,I,F
+        [SerializeField] private Image coreStateTmg;
         [SerializeField] private Color32 BLUE;
         [SerializeField] private Color32 GREEN;
         [SerializeField] private Color32 RED;
@@ -114,8 +114,8 @@ namespace ProjectUniverse.UI
                     coolant += core.SteamGenerators[g].CurrentPumpRate;
                 }
                 coolantFlowText.text = "" + coolant;
-                vesselPresText.text = core.VesselPres + " bar";
-                vesselTempText.text = core.VesselTemp + "K";
+                vesselPresText.text = Math.Round(core.VesselPres,1) + " / "+ Math.Round(core.MaxVesselPres,1) +"bar";
+                vesselTempText.text = Math.Round(core.VesselTemp,1) + " / 600 K";
 
                 if(maxTemp > 1300f)//100 below melting point uran
                 {
@@ -133,40 +133,62 @@ namespace ProjectUniverse.UI
 
             float vesTemp = core.VesselTemp;
             float vesPres = core.VesselPres;
+            float vesPresMax = core.MaxVesselPres;
             //temp and pressure checks
-            //Iron melts at 1811K. That is vessel meltdown.
-            if(vesTemp >= 573f)//600 is melting point lead. 600K is rad leak.
+            if(vesTemp >= 600)//600 is melting point lead. 600K is rad leak.
             {
                 //sound buzzer
                 //activate img
                 vesselTempImg.color = REDON;
+                coreStateText.text = "Unstable";
+                coreStateTmg.color = REDON;
+                vesselTempText.color = REDON;
             }
-            else if(vesTemp < 573f && vesTemp >= 373)
+            else if(vesTemp < 600f && vesTemp >= 500f)
             {
                 vesselTempImg.color = YELLOW;
+                coreStateTmg.color = YELLOWON;
+                vesselTempText.color = YELLOWON;
             }
-            else if (vesTemp < 373f)
+            else if (vesTemp < 500f)
             {
                 vesselTempImg.color = GREEN;
+                coreStateText.text = "Stable";
+                coreStateTmg.color = GREEN;
+                vesselTempText.color = GREEN;
             }
 
-            if (vesPres > 216f)//220 is burst
+            if (vesPres >= vesPresMax - 10f)//vesPresMax is burst
             {
                 vesselPresTmg.color = REDON;
                 critPresImg.color = REDON;
                 critPresImg2.color = REDON;
+                coreStateText.text = "Danger";
+                coreStateTmg.color = REDON;
+                coreStateText.color = REDON;
+                //alarm
             }
-            else if (vesPres < 216f && vesPres >= 210f)//210 is  pump pressure
+            else if (vesPres < (vesPresMax - 10f) && vesPres >= 240)//210 is  pump pressure
             {
                 vesselPresTmg.color = YELLOW;
                 critPresImg.color = REDOFF;
                 critPresImg2.color = REDOFF;
+                coreStateText.text = "Caution";
+                coreStateTmg.color = YELLOWON;
+                vesselPresText.color = YELLOWON;
             }
             else
             {
                 vesselPresTmg.color = GREEN;
+                vesselPresText.color = GREEN;
                 critPresImg.color = REDOFF;
                 critPresImg2.color = REDOFF;
+                if (vesTemp < 500f)
+                {
+                    coreStateText.text = "Stable";
+                    coreStateTmg.color = GREEN;
+                    coreStateText.color = GREEN;
+                }
             }
 
             if(core.DetectedRads > 0f)
@@ -210,6 +232,11 @@ namespace ProjectUniverse.UI
                     coolImg2.color = REDOFF;
                 }
             }
+        }
+
+        public void ExternalInteractFunc()
+        {
+            
         }
     }
 }

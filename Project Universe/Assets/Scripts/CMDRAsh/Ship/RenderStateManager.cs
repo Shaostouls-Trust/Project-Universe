@@ -4,6 +4,9 @@ using ProjectUniverse.Player.PlayerController;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.HighDefinition;
+using UnityEngine.Rendering;
+using ProjectUniverse.PowerSystem;
 
 namespace ProjectUniverse.Ship
 {
@@ -22,10 +25,22 @@ namespace ProjectUniverse.Ship
         //is the player's perspective outside the ship?
         [SerializeField] private bool controllerIsExternal;
         private bool stahp = false;
+        //[SerializeField] private Volume volume;
+        [SerializeField] private VolumeProfile oxygenatedVP;
 
         // Start is called before the first frame update
         void Start()
         {
+            //oxygenatedVP = volume.sharedProfile;
+            //reset the fog effect
+            if (oxygenatedVP.TryGet<Fog>(out var fog))
+            {
+                fog.enabled.overrideState = true;
+                fog.enabled.value = false;
+            }
+            //reset lights
+            AllLightsWhite();
+
             psttremaining = planeStateTesterTimer;
             foreach (GameObject obj in roomParents)
             {
@@ -34,6 +49,11 @@ namespace ProjectUniverse.Ship
                     vac.HideRenderVolume();
                 }
             }
+        }
+
+        public GameObject[] Rooms
+        {
+            get { return roomParents; }
         }
 
         public GameObject CurrentRoom
@@ -150,6 +170,90 @@ namespace ProjectUniverse.Ship
                         externalGameObjects[e].SetActive(false);
                     }
                 }
+            }
+        }
+
+        public void AllLightsRed()
+        {
+            Debug.Log("ALL LIGHTS RED");
+            for(int i = 0; i < roomParents.Length; i++)
+            {
+                VolumeAtmosphereController vac = roomParents[i].GetComponent<VolumeAtmosphereController>();
+                for (int j = 0; j < vac.LightGameObjects.Length; j++)
+                {
+                    if (vac.LightGameObjects[j].TryGetComponent(out Light light))
+                    {
+                        //if parent has submachine
+                        if(vac.LightGameObjects[j].GetComponentInParent<ISubMachine>(true) != null)
+                        {
+                            light.color = Color.red;
+                        }
+                    }
+                }
+            }
+        }
+
+        public void AllLightsWhite()
+        {
+            Debug.Log("ALL LIGHTS WHITE");
+            for (int i = 0; i < roomParents.Length; i++)
+            {
+                VolumeAtmosphereController vac = roomParents[i].GetComponent<VolumeAtmosphereController>();
+                for (int j = 0; j < vac.LightGameObjects.Length; j++)
+                {
+                    if (vac.LightGameObjects[j].TryGetComponent(out Light light))
+                    {
+                        //if parent has submachine
+                        if (vac.LightGameObjects[j].GetComponentInParent<ISubMachine>(true) != null)
+                        {
+                            light.color = Color.white;
+                        }
+                    }
+                }
+            }
+        }
+
+        public void AllVolumeEffect(int i)
+        {
+            if (i == 1)
+            {
+                //contamination
+                for(int f = 0; f < roomParents.Length; f++)
+                {
+                    roomParents[f].GetComponent<VolumeAtmosphereController>().Contamination = 1500f;
+                }
+                //fog (thickening) to oxygenated vp (method?)
+                //StartCoroutine(VolumeFogThickenOverTime(60f, 1f, 30f));
+                if (oxygenatedVP.TryGet<Fog>(out var fog))
+                {
+                    fog.enabled.overrideState = true;
+                    fog.enabled.value = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// log interp between min and max over time seconds.
+        /// </summary>
+        /// <param name="time"></param>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        public IEnumerator VolumeFogThickenOverTime(float time, float min, float max)
+        {
+            float current = min;
+            if (oxygenatedVP.TryGet<Fog>(out var fog))
+            {
+                fog.enabled.overrideState = true;
+                fog.enabled.value = true;
+            }
+            yield return new WaitForEndOfFrame();
+            //attenuation distance is fog intensity, which works logarithmically
+            
+            while (current < max)
+            {
+                current += (max - min) / time;
+                yield return new WaitForEndOfFrame();
             }
         }
 

@@ -54,7 +54,9 @@ namespace ProjectUniverse.UI
             {
                 timer = 0.25f;
 
-                if(!radiatorHead.Valve1 || !radiatorTail.Valve1)
+                //head is valve through radiator circuits
+                //tail is valve to condensors
+                if (!radiatorHead.Valve1 || !radiatorTail.Valve1)
                 {
                     automaticImgOff1.color = REDON;
                     automaticImgOn1.color = GREENOFF;
@@ -63,6 +65,39 @@ namespace ProjectUniverse.UI
                 {
                     automaticImgOff1.color = REDOFF;
                     automaticImgOn1.color = GREENON;
+                }
+
+                if (!radiatorHead.Valve2 || !radiatorTail.Valve2)
+                {
+                    automaticImgOff2.color = REDON;
+                    automaticImgOn2.color = GREENOFF;
+                }
+                else
+                {
+                    automaticImgOff2.color = REDOFF;
+                    automaticImgOn2.color = GREENON;
+                }
+
+                if (!radiatorHead.Valve3 || !radiatorTail.Valve3)
+                {
+                    automaticImgOff3.color = REDON;
+                    automaticImgOn3.color = GREENOFF;
+                }
+                else
+                {
+                    automaticImgOff3.color = REDOFF;
+                    automaticImgOn3.color = GREENON;
+                }
+
+                if (!radiatorHead.Valve4 || !radiatorTail.Valve4)
+                {
+                    automaticImgOff4.color = REDON;
+                    automaticImgOn4.color = GREENOFF;
+                }
+                else
+                {
+                    automaticImgOff4.color = REDOFF;
+                    automaticImgOn4.color = GREENON;
                 }
 
                 steamFlowRate1.text = Math.Round(radiatorHead.SteamFlow1 / 3600f,2) + " Kg/s";
@@ -84,6 +119,26 @@ namespace ProjectUniverse.UI
                 conRad2.text = radiatorHead.ConnectedRadiators2 + "";
                 conRad3.text = radiatorHead.ConnectedRadiators3 + "";
                 conRad4.text = radiatorHead.ConnectedRadiators4 + "";
+            }
+        }
+
+        public void ExternalInteractFunc(int i)
+        {
+            if (i == 1)
+            {
+                radiatorHead.Valve1 = !radiatorHead.Valve1;
+            }
+            else if (i == 2)
+            {
+                radiatorHead.Valve2 = !radiatorHead.Valve2;
+            }
+            else if (i == 3)
+            {
+                radiatorHead.Valve3 = !radiatorHead.Valve3;
+            }
+            else if (i == 4)
+            {
+                radiatorHead.Valve4 = !radiatorHead.Valve4;
             }
         }
     }

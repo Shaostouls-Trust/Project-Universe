@@ -27,6 +27,14 @@ namespace ProjectUniverse.UI
         [SerializeField] private Color32 REDOFF = new Color32(50, 0, 0, 255);
         [SerializeField] private Color32 YELLOWON = new Color32(255, 225, 0, 255);
         [SerializeField] private Color32 YELLOWOFF = new Color32(51, 43, 0, 255);
+        [SerializeField] private Color32 GREYOFF = new Color32(100, 100, 100, 255);
+        [SerializeField] private Color32 GREYON = new Color32(70, 70, 70, 255);
+        [Space]
+        [SerializeField] private Image bypassImg1;
+        [SerializeField] private Image bypassImg2;
+        [SerializeField] private Image bypassImg3;
+        [SerializeField] private Image bypassIcon;
+        [SerializeField] private Image outletIcon;
         [Space]
         [SerializeField] private Image warningA;
         [SerializeField] private Image warningB;
@@ -51,7 +59,7 @@ namespace ProjectUniverse.UI
                 timer = 0.25f;
                 steamFlowRate.text = Math.Round((steamTurb.SteamFlowRate / 3600f),2) + " Kg/s";
                 steamTemp.text = steamTurb.InflowTemp + "K";
-                steamPres.text = steamTurb.TurbinePressure + " bar";//steamTurb.InflowPressure
+                steamPres.text = Math.Round(steamTurb.TurbinePressure,1) + " bar";//steamTurb.InflowPressure
                 outTemp.text = steamTurb.OutflowTemp + "K";
                 outPres.text = steamTurb.OutflowPressure + " bar";
                 turbRPM.text = Math.Round(steamTurb.RPM,2) + "";
@@ -100,7 +108,7 @@ namespace ProjectUniverse.UI
                 warningC.color = REDOFF;
             }
 
-            if(steamTurb.TurbinePressure > 210f)
+            if(steamTurb.TurbinePressure > 214f)
             {
                 warningD.color = REDON;
             }
@@ -177,6 +185,40 @@ namespace ProjectUniverse.UI
                 warningL.color = YELLOWOFF;
                 automaticImgOn.color = GREENON;
                 automaticImgOff.color = REDOFF;
+            }
+        }
+
+        public void ExternalInteractFunc(int i)
+        {
+            if (i == 1)
+            {
+                steamTurb.BypassValve = !steamTurb.BypassValve;
+                if (!steamTurb.BypassValve)
+                {
+                    bypassImg3.color = GREYOFF;
+                    bypassImg2.color = GREYON;
+                    bypassImg1.color = GREYON;
+                    bypassIcon.color = REDON;
+                }
+                else
+                {
+                    bypassImg3.color = GREYON;
+                    bypassImg2.color = GREYOFF;
+                    bypassImg1.color = GREYOFF;
+                    bypassIcon.color = GREENON;
+                }
+            }
+            else if (i == 2)
+            {
+                steamTurb.OutletValve = !steamTurb.OutletValve;
+                if (steamTurb.OutletValve)
+                {
+                    outletIcon.color = GREENON;
+                }
+                else
+                {
+                    outletIcon.color = REDON;
+                }
             }
         }
     }

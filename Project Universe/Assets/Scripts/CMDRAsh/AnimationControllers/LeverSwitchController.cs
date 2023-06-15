@@ -64,6 +64,26 @@ public class LeverSwitchController : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (turbines[0].PowerOutput != 0f || turbines[1].PowerOutput != 0f || turbines[2].PowerOutput != 0f || turbines[3].PowerOutput != 0f)
+        {
+            if(powerStateSrc.clip != stateOnBGM)
+            {
+                powerStateSrc.clip = stateOnBGM;
+                powerStateSrc.Play();
+            }
+        }
+        else
+        {
+            if (powerStateSrc.clip != stateOffBGM)
+            {
+                powerStateSrc.clip = stateOffBGM;
+                powerStateSrc.Play();
+            }
+        }
+    }
+
     //called in the animation clip
     public void animEventTrigger()
     {
@@ -73,8 +93,13 @@ public class LeverSwitchController : MonoBehaviour
         {
             src.Stop();
             src.PlayOneShot(stateOn);
-            powerStateSrc.clip = stateOnBGM;
-            powerStateSrc.Play();
+            if (turbines[0].PowerOutput != 0f || turbines[1].PowerOutput != 0f
+                || turbines[2].PowerOutput != 0f|| turbines[3].PowerOutput != 0f)
+            {
+                powerStateSrc.clip = stateOnBGM;
+                powerStateSrc.Play();
+            }
+            
             auxLight.enabled = false;
             mainLight.enabled = true;
             auximg.color = auxOff;

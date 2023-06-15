@@ -22,57 +22,71 @@ public class ElevatorManager : MonoBehaviour
     [SerializeField] private bool YZ;
     [SerializeField] private bool Z_;
     [SerializeField] private AudioSource src;
+    [SerializeField] private AudioClip[] clips;
+
+    //hitting up when at top plays the up sound once,
+    //and then trying to go back down always takes two pushes, which on the second moves down two levels
     public void Up()
     {
         if (!Move)
         {
             // this is for sending it up one level
-            Debug.Log("received up call");
             Move = true;
             CurLevel += 1;
-            if(CurLevel > levels.Length - 1)
+
+            //if we aren't at the top
+            if (CurLevel <= levels.Length - 1)
             {
+                Debug.Log("received up call");
+                LevelDir = levels[CurLevel];
+                StartCoroutine(ElevatorMovement());
+            }
+            else
+            {
+                Debug.Log("at top");
+                Move = false;
                 CurLevel = levels.Length - 1;
             }
-            LevelDir = levels[CurLevel];
-            StartCoroutine(ElevatorMovement());
         }
     }
     public void SpecificLevel(int levelSpecified)
     {
-        //this is if you want to move the elevator to specified level like an actual elevator
-        // just make sure you add the int in the call function in elevator btn script
-        Debug.Log("received call to "+ levelSpecified);
-        Move = true;
-        LevelDir = levels[levelSpecified];
-        CurLevel = levelSpecified;
-        StartCoroutine(ElevatorMovement());
+        if (!Move)
+        {
+            //this is if you want to move the elevator to specified level like an actual elevator
+            // just make sure you add the int in the call function in elevator btn script
+            Debug.Log("received call to " + levelSpecified);
+            Move = true;
+            LevelDir = levels[levelSpecified];
+            CurLevel = levelSpecified;
+            StartCoroutine(ElevatorMovement());
+        }
     }
     public void Down()
     {
         if (!Move)
         {
             //this is for sending it down one level
-            Debug.Log("received down call");
             Move = true;
             CurLevel -= 1;
-            if(CurLevel < 0)
+
+            if (CurLevel >= 0)
             {
+                Debug.Log("received down call");
+                LevelDir = levels[CurLevel];
+                StartCoroutine(ElevatorMovement());
+            }
+            else
+            {
+                Debug.Log("already at bottom");
+                Move = false;
                 CurLevel = 0;
             }
-            LevelDir = levels[CurLevel];
-            StartCoroutine(ElevatorMovement());
         }
     }
-    public void RequestElevator()
-    {
-        //this is for requesting the elevator to the main level
-        Debug.Log("received Request elevator");
-        LevelDir = levels[0];
-        Move = true;
-    }
-    private void Update()
-    {
+
+    //private void Update()
+    //{
         //i made it in the update function so that you can animate it
         // you can also parent the player to the elevator or change the players position with the elevator so that you dont have to depend on the colliders
         //if (Move)
@@ -80,14 +94,19 @@ public class ElevatorManager : MonoBehaviour
             //elevatorPlatform.position = LevelDir.position;
             //Move = false;
         //}
-    }
+    //}
 
     IEnumerator ElevatorMovement()
     {
-        src.Play();
-        float xD = LevelDir.GetComponent<ElevatorPlatform>().ShaftCenterForLevel.x - (float)Math.Round(elevatorPlatform.transform.position.x, 2);
-        float yD = LevelDir.GetComponent<ElevatorPlatform>().ShaftCenterForLevel.y - (float)Math.Round(elevatorPlatform.transform.position.y, 2);
-        float zD = LevelDir.GetComponent<ElevatorPlatform>().ShaftCenterForLevel.z - (float)Math.Round(elevatorPlatform.transform.position.z, 2);
+        src.PlayOneShot(clips[0]);
+        //shaft positions need translated to world space
+        Vector3 worldSpaceDest = LevelDir.TransformPoint(LevelDir.GetComponent<ElevatorPlatform>().ShaftCenterForLevel);
+        float xD = worldSpaceDest.x - (float)Math.Round(elevatorPlatform.transform.position.x, 2);
+        float yD = LevelDir.GetComponent<ElevatorPlatform>().ShaftCenterForLevel.y - (float)Math.Round(elevatorPlatform.transform.localPosition.y, 2);
+        float zD = worldSpaceDest.z - (float)Math.Round(elevatorPlatform.transform.position.z, 2);
+        //Debug.Log(LevelDir.GetComponent<ElevatorPlatform>().ShaftCenterForLevel.y + " - " + (float)Math.Round(elevatorPlatform.transform.localPosition.y, 2));
+        //Debug.Log(yD);
+
         //if y etc
         if (Y_)
         {
@@ -118,21 +137,24 @@ public class ElevatorManager : MonoBehaviour
         //move elevator along velocity axis at elevator speed until elevator reaches target
         while (Move)
         {
+            if (!src.isPlaying)
+            {
+                src.Play();
+            }
             float elevY = elevatorPlatform.transform.localPosition.y;//global
-            float elevX = elevatorPlatform.transform.position.x;
-            float elevZ = elevatorPlatform.transform.position.z;
+            float elevX = elevatorPlatform.transform.localPosition.x;
+            float elevZ = elevatorPlatform.transform.localPosition.z;
             float posYadj = LevelDir.GetComponent<ElevatorPlatform>().ShaftCenterForLevel.y; // - elevatorOriginToFloorDistance;
             float posXadj = LevelDir.GetComponent<ElevatorPlatform>().ShaftCenterForLevel.x; //- elevatorOriginToWallInXDist;
             float posZadj = LevelDir.GetComponent<ElevatorPlatform>().ShaftCenterForLevel.z; //- elevatorOriginToWallInZDist;
             //Debug.Log(elevY+" to "+ posYadj);
-            //Bug: Over or undershoots are probably causing occasional issues with determining floor arrival.
             if (Y_)
             {
                 if(yD < 0f)//down
                 {
+                    //Debug.Log("152: " + elevY + " to " + posYadj);
                     if ((float)Math.Round(posYadj - elevY, 2) >= 0f)//<
-                    {
-                        //Debug.Log("128");
+                    { 
                         Move = false;
                     }
                 }
@@ -239,20 +261,16 @@ public class ElevatorManager : MonoBehaviour
             }
             yield return null;
         }
+        if (src.isPlaying)
+        {
+            src.Stop();
+        }
+        src.PlayOneShot(clips[2]);
+        Move = false;
     }
 
     public void ExternalInteractFunc(int i)
     {
-        if(i == -3)
-        {
-            //move up one level
-            Up();
-        }
-        else if(i == -2)
-        {
-            //move up down level
-            Down();
-        }
         switch (i)
         {
             case -3:

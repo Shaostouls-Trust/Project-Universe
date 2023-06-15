@@ -52,35 +52,33 @@ namespace ProjectUniverse.Environment.Volumes
                     other.GetComponent<VolumeNode>().GlobalLink = this.gameObject;
                 }
             }
-            if (other.gameObject.CompareTag("Player"))
+            //this should probably go to stay too
+            else if (other.gameObject.CompareTag("Player"))
             {
                 //other.GetComponent<PlayerVolumeController>().OnVolumeEnter(roomPressure, roomTemp, roomOxygenation);
                 PlayerVolumeController player = other.GetComponent<PlayerVolumeController>();
                 player.OnVolumeEnter(roomPressure, roomTemp, roomOxygenation);
                 player.SetPlayerVolume(this.GetComponents<Volume>());
             }
-        }
-
-        /*
-        private void OnTriggerStay(Collider other)
-        {
-            if (other.gameObject.CompareTag("_VolumeNode"))
+            else if (other.gameObject.CompareTag("Drone"))
             {
-                //Add to list to compare. Whatever exists in VAC is removed from VGAC
-                if (!exposedNodes.Contains(other.gameObject))
-                {
-                    //Debug.Log(this.name + " detecting VolumeNode: " + other.gameObject.name);
-                    exposedNodes.Add(other.gameObject);
-                    other.GetComponent<VolumeNode>().GlobalLink = this.gameObject;
-                }
-            }
-            if (other.gameObject.CompareTag("Player"))
-            {
-                PlayerVolumeController player = other.GetComponent<PlayerVolumeController>();
+                DroneVolumeController player = other.GetComponent<DroneVolumeController>();
                 player.OnVolumeEnter(roomPressure, roomTemp, roomOxygenation);
                 player.SetPlayerVolume(this.GetComponents<Volume>());
             }
+        }
+        /*private void OnTriggerStay(Collider other)
+        {
+            if(TryGetComponent(out PlayerVolumeController player))
+            {
+                if (player.GetPlayerVAC() == null)
+                {
+                    player.OnVolumeEnter(roomPressure, roomTemp, roomOxygenation);
+                    player.SetPlayerVolume(this.GetComponents<Volume>());
+                }
+            }
         }*/
+
         public float GetPressure()
         {
             return roomPressure;

@@ -55,7 +55,7 @@ public class PowerMonitorUIController : MonoBehaviour
     void OnGUI()
     {
         //if null, then we're drawing power from a turbine
-        if(router1.ConnectedTurbine != null)
+        if(!router1.UseGeneratorPower)
         {
             router1On.color = green;
             router1Off.color = darkred;
@@ -66,7 +66,7 @@ public class PowerMonitorUIController : MonoBehaviour
             router1Off.color = red;
         }
 
-        if (router2.ConnectedTurbine != null)
+        if (!router2.UseGeneratorPower)//ConnectedTurbine != null
         {
             router2On.color = green;
             router2Off.color = darkred;
@@ -121,29 +121,44 @@ public class PowerMonitorUIController : MonoBehaviour
             sub6Off.color = red;
         }
 
-        turbine1In.text = Math.Round(turbines[0].PowerOutput, 2) + " MWe";
-        turbine2In.text = Math.Round(turbines[1].PowerOutput, 2) + " MWe";
-        turbine3In.text = Math.Round(turbines[2].PowerOutput, 2) + " MWe";
-        turbine4In.text = Math.Round(turbines[3].PowerOutput, 2) + " MWe";
+        turbine1In.text = Mathf.Round(turbines[0].PowerOutput) + " MWe";
+        turbine2In.text = Mathf.Round(turbines[1].PowerOutput) + " MWe";
+        turbine3In.text = Mathf.Round(turbines[2].PowerOutput) + " MWe";
+        turbine4In.text = Mathf.Round(turbines[3].PowerOutput) + " MWe";
 
-        router1In.text = Math.Round(router1.LastReceived, 2) + " We";
-        router2In.text = Math.Round(router1.LastReceived, 2) + " We";
-        router1Out.text = Math.Round(router1.getTotalRequiredPower(), 2) + " We";
-        router2Out.text = Math.Round(router1.getTotalRequiredPower(), 2) + " We";
+        if (router1.LastReceived > 10000f)
+        {
+            router1In.text = Mathf.Round(router1.LastReceived / 10000f) + " MWe";
+        }
+        else
+        {
+            router1In.text = Mathf.Round(router1.LastReceived) + " We";
+        }
+        if (router2.LastReceived > 10000f)
+        {
+            router2In.text = Mathf.Round(router1.LastReceived/10000f) + " MWe";
+        }
+        else
+        {
+            router2In.text = Mathf.Round(router1.LastReceived) + " We";
+        }
 
-        sub1Buffer.text = router1subs[0].BufferCurrent + " We";
-        sub2Buffer.text = router1subs[1].BufferCurrent + " We";
-        sub5Buffer.text = router2subs[0].BufferCurrent + " We";
-        sub6Buffer.text = router2subs[1].BufferCurrent + " We";
+        router1Out.text = Mathf.Round(router1.getTotalRequiredPower()) + " We";
+        router2Out.text = Mathf.Round(router1.getTotalRequiredPower()) + " We";
 
-        sub1In.text = router1subs[0].LastReceived + " We";
-        sub2In.text = router1subs[1].LastReceived + " We";
-        sub5In.text = router2subs[0].LastReceived + " We";
-        sub6In.text = router2subs[1].LastReceived + " We";
+        sub1Buffer.text = Math.Round(router1subs[0].BufferCurrent,1) + " We";
+        sub2Buffer.text = Math.Round(router1subs[1].BufferCurrent,1) + " We";
+        sub5Buffer.text = Math.Round(router2subs[0].BufferCurrent,1) + " We";
+        sub6Buffer.text = Math.Round(router2subs[1].BufferCurrent,1) + " We";
 
-        sub1Out.text = router1subs[0].TotalRequiredPower + " We";
-        sub2Out.text = router1subs[1].TotalRequiredPower + " We";
-        sub5Out.text = router2subs[0].TotalRequiredPower + " We";
-        sub6Out.text = router2subs[1].TotalRequiredPower + " We";
+        sub1In.text = Math.Round(router1subs[0].LastReceived,1) + " We";
+        sub2In.text = Math.Round(router1subs[1].LastReceived,1) + " We";
+        sub5In.text = Math.Round(router2subs[0].LastReceived,1) + " We";
+        sub6In.text = Math.Round(router2subs[1].LastReceived,1) + " We";
+
+        sub1Out.text = Math.Round(router1subs[0].TotalRequiredPower,1) + " We";
+        sub2Out.text = Math.Round(router1subs[1].TotalRequiredPower,1) + " We";
+        sub5Out.text = Math.Round(router2subs[0].TotalRequiredPower,1) + " We";
+        sub6Out.text = Math.Round(router2subs[1].TotalRequiredPower,1) + " We";
     }
 }

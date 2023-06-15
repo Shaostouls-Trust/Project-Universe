@@ -30,7 +30,7 @@ namespace ProjectUniverse.Networking
         /// </summary>
         private void Start()
         {
-            Debug.Log("Link Starto!");
+            Debug.Log("Linke Starto!");
             Host();
             if(loadScreen != null)
             {

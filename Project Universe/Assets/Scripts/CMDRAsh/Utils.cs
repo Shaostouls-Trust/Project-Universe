@@ -627,5 +627,10 @@ namespace ProjectUniverse.Util
 			return Mathf.Lerp(roundedSV, valueBSV, dif);
         }
 
+		public static float StrengthVersusTemperature_Titanium(float tempK)
+        {
+			//lose 1MPa for every degree K
+			return 950f - (tempK);//- 273f
+		}
 	}
 }

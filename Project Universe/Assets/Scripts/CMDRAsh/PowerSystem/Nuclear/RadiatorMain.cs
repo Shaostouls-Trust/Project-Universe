@@ -45,18 +45,22 @@ namespace ProjectUniverse.PowerSystem.Nuclear
         public bool Valve1
         {
             get { return valve1; }
+            set { valve1 = value; }
         }
         public bool Valve2
         {
             get { return valve2; }
+            set { valve2 = value; }
         }
         public bool Valve3
         {
             get { return valve3; }
+            set { valve3 = value; }
         }
         public bool Valve4
         {
             get { return valve4; }
+            set { valve4 = value; }
         }
         public float SteamFlow1
         {
@@ -151,11 +155,20 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                 inlet3temp = 0f;
                 inlet4temp = 0f;
 
-                //pull steam from feedpipe
-                pressureAll = feedPipe.GlobalPressure;
-                flowVelAll = feedPipe.FlowVelocity / pathcnt;
                 List<IGas> Insteam = new List<IGas>();
-                Insteam = feedPipe.ExtractGasses(-1f);
+                if (valve1 || valve2 || valve3 || valve4)
+                {
+                    //pull steam from feedpipe
+                    pressureAll = feedPipe.GlobalPressure;
+                    flowVelAll = feedPipe.FlowVelocity / pathcnt;
+                    Insteam = feedPipe.ExtractGasses(-1f);
+                }
+                else
+                {
+                    pressureAll = feedPipe.GlobalPressure;
+                    flowVelAll = 0f;
+                    inlet1temp = 0f;
+                }
 
                 float steamFlowRate = 0f;
                 //get flow rate
@@ -166,6 +179,10 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                     //sfr is kg/hr
                 }
 
+                steamflow1 = 0f;
+                steamflow2 = 0f;
+                steamflow3 = 0f;
+                steamflow4 = 0f;
                 //send steam through as many radiators as are open
                 for (int i = 0; i < Insteam.Count; i++)
                 {
@@ -182,7 +199,12 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                         rad1.Receive(false, (flowVelAll), pressureAll, branchGas, branchGas.GetTemp());
                         //Debug.Log(feedPipe.GlobalPressure);
                         steamflow1 = steamFlowRate / pathcnt;
-                        
+
+                    }
+                    else
+                    {
+                        inlet1temp = 300f;
+                        steamflow1 = 0f;
                     }
                     if (valve2)
                     {
@@ -193,6 +215,11 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                         rad2.Receive(false, (flowVelAll), pressureAll, branchGas, branchGas.GetTemp());
                         steamflow2 = steamFlowRate / pathcnt;
                     }
+                    else
+                    {
+                        inlet2temp = 300f;
+                        steamflow2 = 0f;
+                    }
                     if (valve3)
                     {
                         IGas branchGas = new IGas(Insteam[i]);
@@ -202,6 +229,11 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                         rad3.Receive(false, (flowVelAll), pressureAll, branchGas, branchGas.GetTemp());
                         steamflow3 = steamFlowRate / pathcnt;
                     }
+                    else
+                    {
+                        inlet3temp = 300f;
+                        steamflow3 = 0f;
+                    }
                     if (valve4)
                     {
                         IGas branchGas = new IGas(Insteam[i]);
@@ -210,6 +242,11 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                         //Debug.Log("flow 4");
                         rad4.Receive(false, (flowVelAll), pressureAll, branchGas, branchGas.GetTemp());
                         steamflow4 = steamFlowRate / pathcnt;
+                    }
+                    else
+                    {
+                        inlet4temp = 300f;
+                        steamflow4 = 0f;
                     }
                 }
             }

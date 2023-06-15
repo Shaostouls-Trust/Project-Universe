@@ -93,84 +93,17 @@ public sealed class DroneVolumeController : MonoBehaviour
             }
         }
         */
-        /*
-        if (playerOxygen <= 0)
-        {
-            //take suffocation damage
-            shipController.InflictPlayerDamageServerRpc((3.2f - ((myRoomOxygenation / 100f) * 3.2f)) * Time.deltaTime);
-            //playerHealth -= (3.2f * Time.deltaTime);//suffocate to death in 30 seconds
-        }
-        if (myRoomOxygenation < 50.0f)//if the air is too thin
-        {
-            //float oxyDefecit = 100.0f - myRoomOxygenation;
-            //breath X from an air supply
-            //if no air supply:
-            ///1 minute of holding breath before taking damage at normal heart rate (1.6f)
-            ///If partial air, subtract that from the rate
-            ///scale down to 10 or so secs depending on heart rate
-            if (playerOxygen > 0f)
-            {
-                playerOxygen -= ((oxyUseRate - ((myRoomOxygenation / 100f)) * oxyUseRate) * Time.deltaTime);
-            }
-        }
-        else if (myRoomOxygenation >= 50.0)
-        {
-            if (playerOxygen < 100)
-            {
-                playerOxygen += ((myRoomOxygenation / 100f) * 50 * Time.deltaTime);//2 secs to recover from empty at 100% O2
-            }
-            if (playerOxygen > 100)
-            {
-                playerOxygen = 100;
-            }
-        }*/
-
-        //inflict toxicity damage
-        //shipController.InflictPlayerDamageServerRpc(Mathf.Lerp(0.0f, 3.0f, myRoomToxicity));
-
-        //if (myRoomPressure < 0.12f)//~121 millibar. 121 is lowest survivable w/ pure oxygen.
-        //{
-            //if in pressure gear:
-            //if not in pressure gear:
-            //playerHealth -= (6.6f * Time.deltaTime);//0 atm kills in 15 secs
-        //}
-        //if (myLastRoomPress - myRoomPressure > 0.5f)
-        //{
-            //if the air pressure changed too quickly, take damage or 'black out'
-        //}
-
-        //if (myRoomTemp != playerTemp)
-        ///need a scalar to apply to playerTemp. Also will need some way to simulate sweating bring the body temp to a stable
-        ///temp to ensure that 90*F doesn't cause your character to slowly die of heatstroke.
-        ///We also need to ensure that when pressure is zero, you freeze more slowly. Esp in vacuum of space where it takes 12 hoursish for cold to kill you.
-        //{
-            //slowly adjust player temp to match (use coroutine?)
-        //}
-        //if (playerTemp < 65f)//critical hypothermia
-        //{
-        //    shipController.InflictPlayerDamageServerRpc(0.5f * Time.deltaTime);
-            //playerHealth -= (0.5f*Time.deltaTime);
-        //}
-        //update last room pressure
-        //myLastRoomPress = myRoomPressure;
-
-        //player DEATH RAWR:
-        //if (shipController.PlayerHealth <= 0)
-        //{
-            //you dead, punk!
-        //}
-
         
         // radiation damage
-        // if radiation exposure rate is greater than 700, begin taking damage
-        if(GetRadiationExposureRate() >= 700f)
+        // if radiation exposure rate is greater than 600, begin taking damage
+        if(GetRadiationExposureRate() >= 600f)
         {
             radWarnUI.SetActive(true);
             if (!runningCo)
             {
                 //StartCoroutine(UIFlash());
             }
-            healthcur -= ((GetRadiationExposureRate() - 700f) / 10f) * Time.deltaTime;
+            healthcur -= ((GetRadiationExposureRate() - 600f) / 10f) * Time.deltaTime;
         }
         else
         {
@@ -292,7 +225,7 @@ public sealed class DroneVolumeController : MonoBehaviour
         }
         else
         {
-            myRoomTemp = 0f;
+            myRoomTemp = -328f;
             myRoomOxygenation = 0f;
             myLastRoomPress = myRoomPressure;
             myRoomPressure = 0f;
@@ -316,6 +249,7 @@ public sealed class DroneVolumeController : MonoBehaviour
 
     public void UpdateUI()
     {
+        //Debug.Log("room: " + playerVolume);
         pressureText.text = Math.Round(myRoomPressure, 2) + " atm";
         oxyText.text = Math.Round(myRoomOxygenation, 2) + " %";
         tempText.text = Math.Round(myRoomTemp, 2) + " F";

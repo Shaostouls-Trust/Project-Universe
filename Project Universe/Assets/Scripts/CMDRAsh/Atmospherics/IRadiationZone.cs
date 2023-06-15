@@ -132,8 +132,10 @@ namespace ProjectUniverse.Environment.Radiation
         {
             PlayerVolumeController playerVC;
             DroneVolumeController droneVC = null;
+            DoscimeterTerminalController DTC = null;
             if (other.gameObject.TryGetComponent<PlayerVolumeController>(out playerVC) ||
-                other.gameObject.TryGetComponent<DroneVolumeController>(out droneVC))
+                other.gameObject.TryGetComponent<DroneVolumeController>(out droneVC) || 
+                other.gameObject.TryGetComponent<DoscimeterTerminalController>(out DTC))
             {
                 Transform playerTans = other.gameObject.transform;
                 float shield_cm = GetThickness(playerTans.position);
@@ -152,9 +154,14 @@ namespace ProjectUniverse.Environment.Radiation
                     {
                         playerVC.SetRadiationExposureRate(absRate);//exposure
                     }
-                    else
+                    else if(droneVC != null)
                     {
                         droneVC.SetRadiationExposureRate(absRate);//exposure
+                    }
+                    else if(DTC != null)
+                    {
+                        DTC.DetectedRoentgen = absRate;
+                        DTC.RadiationAt10Meters = Utils.RadiationExposureRate(tBqs_rated, 1000f);
                     }
                     
                     //float absRate = Utils.RadiationAbsorbedDose(energyFluenceRate, 
@@ -165,7 +172,7 @@ namespace ProjectUniverse.Environment.Radiation
                         playerVC.AbsorbtionRate = absRate;
                         playerVC.CalculateAbsorbedDose();
                     }
-                    else
+                    else if(droneVC != null)
                     {
                         droneVC.AbsorbtionRate = absRate;
                         droneVC.CalculateAbsorbedDose();
@@ -183,8 +190,10 @@ namespace ProjectUniverse.Environment.Radiation
         {
             PlayerVolumeController playerVC;
             DroneVolumeController droneVC = null;
+            DoscimeterTerminalController DTC = null;
             if (other.gameObject.TryGetComponent<PlayerVolumeController>(out playerVC) ||
-                other.gameObject.TryGetComponent<DroneVolumeController>(out droneVC))
+                other.gameObject.TryGetComponent<DroneVolumeController>(out droneVC) ||
+                other.gameObject.TryGetComponent<DoscimeterTerminalController>(out DTC))
             {
                 Transform playerTans = other.gameObject.transform;
                 float shield_cm = GetThickness(playerTans.position);
@@ -206,13 +215,18 @@ namespace ProjectUniverse.Environment.Radiation
                         playerVC.AbsorbtionRate = absRate;
                         playerVC.CalculateAbsorbedDose();
                     }
-                    else
+                    else if(droneVC != null)
                     {
                         droneVC.SetRadiationExposureRate(absRate);
                         droneVC.AbsorbtionRate = absRate;
                         droneVC.CalculateAbsorbedDose();
                     }
-                    
+                    else if (DTC != null)
+                    {
+                        DTC.DetectedRoentgen = absRate;
+                        DTC.RadiationAt10Meters = Utils.RadiationExposureRate(tBqs_rated, 1000f);
+                    }
+
                 }
                 //if (radiationAreaPool != null)
                 //{
@@ -222,7 +236,7 @@ namespace ProjectUniverse.Environment.Radiation
                 {
                     playerVC.AddRadiationExposureTime(Time.deltaTime);
                 }
-                else
+                else if (droneVC != null)
                 {
                     droneVC.AddRadiationExposureTime(Time.deltaTime);
                 }
@@ -234,18 +248,24 @@ namespace ProjectUniverse.Environment.Radiation
         {
             PlayerVolumeController playerVC;
             DroneVolumeController droneVC = null;
+            DoscimeterTerminalController DTC = null;
             if (other.gameObject.TryGetComponent<PlayerVolumeController>(out playerVC) ||
-                other.gameObject.TryGetComponent<DroneVolumeController>(out droneVC))
+                other.gameObject.TryGetComponent<DroneVolumeController>(out droneVC) ||
+                other.gameObject.TryGetComponent<DoscimeterTerminalController>(out DTC))
             {
                 if(playerVC != null)
                 {
                     playerVC.SetRadiationExposureRate(0);//not going to work with multiple rad sources
                 }
-                else
+                else if (droneVC != null)
                 {
                     droneVC.SetRadiationExposureRate(0);//not going to work with multiple rad sources
                 }
-                
+                else if (DTC != null)
+                {
+                    DTC.DetectedRoentgen = 0;
+                    DTC.RadiationAt10Meters = 0;
+                }
             }
         }
 

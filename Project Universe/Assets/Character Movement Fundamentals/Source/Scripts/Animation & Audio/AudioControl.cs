@@ -15,6 +15,7 @@ namespace CMF
 		Transform tr;
 		public AudioSource audioSource;
 		public SupplementalController sc;
+		public AdvancedWalkerController awc;
 
 		//Whether footsteps will be based on the currently playing animation or calculated based on walked distance (see further below);
 		public bool useAnimationBasedFootsteps = true;
@@ -41,6 +42,7 @@ namespace CMF
 		public AudioClip[] footStepClips;
 		public AudioClip jumpClip;
 		public AudioClip landClip;
+		private bool hasJumped;
 
 		//Setup;
 		void Start () {
@@ -70,10 +72,23 @@ namespace CMF
 
 			FootStepUpdate(_horizontalVelocity.magnitude);
 
-            if (sc.Jump)
+			//jump
+			if(awc.IsGrounded() && sc.Jump && hasJumped == false)
             {
-                audioSource.PlayOneShot(jumpClip, audioClipVolume);
-            }
+				hasJumped = true;
+				audioSource.PlayOneShot(jumpClip, audioClipVolume);
+			}
+            //falling
+            //if (!awc.IsGrounded())
+            //{
+
+            //}
+			//land
+			if (awc.IsGrounded() && !sc.Jump && hasJumped == true)
+			{
+				hasJumped = false;
+				audioSource.PlayOneShot(landClip, audioClipVolume);
+			}
 		}
 
 		void FootStepUpdate(float _movementSpeed)
@@ -99,7 +114,7 @@ namespace CMF
 				currentFootstepDistance += Time.deltaTime * _movementSpeed;
 
 				//Play foot step audio clip if a certain distance has been traveled;
-				if(currentFootstepDistance > footstepDistance)
+				if(currentFootstepDistance > footstepDistance && awc.IsGrounded())
 				{
 					//Only play footstep sound if mover is grounded and movement speed is above the threshold;
 					//if(mover.IsGrounded() && _movementSpeed > _speedThreshold)
@@ -124,12 +139,6 @@ namespace CMF
 			//Play land audio clip;
 			audioSource.PlayOneShot(landClip, audioClipVolume);
 		}
-
-		//private void OnJump(Vector3 _v)
-		//{
-			//Play jump audio clip;
-		//	audioSource.PlayOneShot(jumpClip, audioClipVolume);//missing method exception for no reason sometimes
-		//}
 	}
 }
 

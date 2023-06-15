@@ -19,6 +19,7 @@ public class InGameMenuUIController : MonoBehaviour
     private string SceneToLoad;
     private GameObject player;
     private AsyncOperation async;
+    private bool menuOpen = false;
 
     private void Start()
     {
@@ -41,14 +42,34 @@ public class InGameMenuUIController : MonoBehaviour
                     player = networkedClient.PlayerObject.gameObject;
                 }
             }
-            player.GetComponent<SupplementalController>().LockScreenAndFreeCursor();
-            menu.enabled = true;
+
+            SupplementalController playersc = player.GetComponent<SupplementalController>();
+            if (playersc.FleetBoyOut)
+            {
+                playersc.ShowHideInventory();
+            }
+            else //only show the main menu if the inventory FB is closed
+            {
+                if (!menuOpen)
+                {
+                    menuOpen = true;
+                    playersc.LockScreenAndFreeCursor();
+                    menu.enabled = true;
+                }
+                else
+                {
+                    menuOpen = false;
+                    playersc.FreeScreenAndLockCursor();
+                    menu.enabled = false;
+                }
+            }
         };
     }
 
     public void ReturnToGame()
     {
         menu.enabled = false;
+        menuOpen = false;
         player.GetComponent<SupplementalController>().FreeScreenAndLockCursor();
     }
 

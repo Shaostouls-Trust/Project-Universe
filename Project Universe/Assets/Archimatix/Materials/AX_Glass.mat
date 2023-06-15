@@ -12,7 +12,7 @@ Material:
   m_ShaderKeywords: _DISABLE_SSR_TRANSPARENT _ENABLE_FOG_ON_TRANSPARENT _NORMALMAP_TANGENT_SPACE
     _SURFACE_TYPE_TRANSPARENT
   m_LightmapFlags: 1
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 3000
   stringTagMap:
@@ -274,9 +274,9 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 0
     m_Colors:
-    - _BaseColor: {r: 0.43685114, g: 0.5130652, b: 0.5882352, a: 0.634}
+    - _BaseColor: {r: 0.38390887, g: 0.49666005, b: 0.6037736, a: 0.13725491}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 0.4368511, g: 0.51306516, b: 0.5882352, a: 0.634}
+    - _Color: {r: 0.38390884, g: 0.49666005, b: 0.6037736, a: 0.13725491}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}

@@ -23,11 +23,11 @@ public class PassTriggerTo : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
+    /*private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.CompareTag(passTag))
         {
             target.SendMessage("ProxyTriggerStay", other, SendMessageOptions.DontRequireReceiver);
         }
-    }
+    }*/
 }

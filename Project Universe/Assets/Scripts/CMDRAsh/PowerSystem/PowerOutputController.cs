@@ -31,6 +31,7 @@ namespace ProjectUniverse.PowerSystem {
         private float targetOutput = 1024f;
         private float maxOutput = 1024f;
         private float updateTime = 1f;
+        [SerializeField] private bool managerMode = false;//run outside a router or substation
 
         public enum MachineType { Generator, Router, Substation }
 
@@ -63,6 +64,22 @@ namespace ProjectUniverse.PowerSystem {
                 maxOut.text = "" + maxOutput;
                 TargetOutput = maxOutput;
                 targetOut.text = "" + TargetOutput;
+            }
+            if (managerMode)
+            {
+                if (type == MachineType.Router)
+                {
+                    if (router != null)
+                    {
+                        for (int i = 0; i < router.SubStations.Length; i++)
+                        {
+                            if (router.SubStations[i] != null)
+                            {
+                                CreateButton(router.SubStations[i]);
+                            }
+                        }
+                    }
+                }
             }
         }
         

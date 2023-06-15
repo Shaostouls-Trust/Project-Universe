@@ -118,17 +118,13 @@ namespace ProjectUniverse.UI
             resolutionDrop.RefreshShownValue();
 
             Cat_Bar.SetActive(false);
-        }
 
-        public void ShowOptionsMenu()
-        {
-            Cat_Bar.SetActive(true);
             //load saved settings
-            float s = PlayerPrefs.GetFloat("sensitivity",1f);
+            float s = PlayerPrefs.GetFloat("sensitivity", 1f);
             int r = PlayerPrefs.GetInt("resolutionIndex", 0);
             int w = PlayerPrefs.GetInt("windowMode", 0);
             int ssr = PlayerPrefs.GetInt("doSSR", 1);
-            if(ssr == 1)
+            if (ssr == 1)
             {
                 enableSSR.isOn = true;
             }
@@ -137,7 +133,28 @@ namespace ProjectUniverse.UI
                 enableSSR.isOn = false;
             }
             windowModeDrop.value = w;
-            resolutionDrop.value = r;
+            resolutionDrop.value = resolutions.Length - 1;
+            sensSlider.value = s;
+        }
+
+        public void ShowOptionsMenu()
+        {
+            Cat_Bar.SetActive(true);
+            //load saved settings - again
+            float s = PlayerPrefs.GetFloat("sensitivity", 1f);
+            int r = PlayerPrefs.GetInt("resolutionIndex", 0);
+            int w = PlayerPrefs.GetInt("windowMode", 0);
+            int ssr = PlayerPrefs.GetInt("doSSR", 1);
+            if (ssr == 1)
+            {
+                enableSSR.isOn = true;
+            }
+            else
+            {
+                enableSSR.isOn = false;
+            }
+            windowModeDrop.value = w;
+            resolutionDrop.value = resolutions.Length - 1;
             sensSlider.value = s;
         }
 
@@ -387,7 +404,18 @@ namespace ProjectUniverse.UI
 
         public void BackToMainMenuBar()
         {
-            //save all settings
+            //save all settings - again
+            if (GlobalSettings.EnableSSR)
+            {
+                PlayerPrefs.SetInt("doSSR", 1);
+            }
+            else
+            {
+                PlayerPrefs.SetInt("doSSR", 0);
+            }
+            PlayerPrefs.SetFloat("sensitivity",GlobalSettings.Sensitivity);
+            PlayerPrefs.GetInt("resolutionIndex", GlobalSettings.ScreenResolution);
+            PlayerPrefs.GetInt("windowMode", GlobalSettings.WindowMode);
 
             Cat_Bar.SetActive(false);
         }
@@ -408,7 +436,8 @@ namespace ProjectUniverse.UI
             }
             catch (Exception e)
             {
-
+                Debug.Log("Failed To Set Resolution: " + e.Message);
+                Debug.Log(e.StackTrace);
             }
             PlayerPrefs.SetInt("resolutionIndex", GlobalSettings.ScreenResolution);
         }

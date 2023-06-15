@@ -1,4 +1,5 @@
 using ProjectUniverse.Environment.Fluid;
+using ProjectUniverse.Util;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -12,6 +13,8 @@ public class FluidTankUIController : MonoBehaviour
     [SerializeField] private Image valveImgOff;
     [SerializeField] private RectTransform fluidTankScale;
     [SerializeField] private TMP_Text fluidRes;
+    [SerializeField] private TMP_Text flowRate;
+    [SerializeField] private Transform dial;
     [Space]
     [SerializeField] private Color32 GREENON = new Color32(0, 170, 50, 255);
     [SerializeField] private Color32 GREENOFF = new Color32(0, 50, 0, 255);
@@ -36,7 +39,7 @@ public class FluidTankUIController : MonoBehaviour
         if (timer <= 0f)
         {
             timer = 0.25f;
-            if (tank.AutomaticMode)
+            if (tank.ValveState)
             {
                 valveImgOn.color = GREENON;
                 valveImgOff.color = REDOFF;
@@ -49,6 +52,8 @@ public class FluidTankUIController : MonoBehaviour
             float reservoirPer = tank.FluidLevel / tank.FluidCapacity;
             fluidRes.text = Mathf.Round(reservoirPer * 100f) + "%";
             fluidTankScale.localScale = new Vector3(1f, reservoirPer, 1f);
+            flowRate.text = Mathf.Round(Utils.CalculateFluidFlowThroughPipe(tank.OutflowPipe.InnerDiameter
+                , tank.FlowVelocity) / 3600f) + " m^3/s Max";
         }
 
         ///Warnings
@@ -119,5 +124,38 @@ public class FluidTankUIController : MonoBehaviour
         }
     }
 
-    
+    public void ExternalInteractFunc(int i)
+    {
+        if(i == 1)
+        {
+            tank.ValveState = !tank.ValveState;
+        }
+        else if(i==3)
+        {
+            //velocity up
+            tank.FlowVelocity += 10;
+            dial.localRotation = Quaternion.Euler(0f, dial.localRotation.eulerAngles.y + 10f, 0f);
+            if (tank.FlowVelocity > tank.FlowVelocityMax)
+            {
+                tank.FlowVelocity = tank.FlowVelocityMax;
+            }
+
+        }
+        else if (i == 2)
+        {
+            //velocity down
+            tank.FlowVelocity -= 10;
+            dial.localRotation = Quaternion.Euler(0f, dial.localRotation.eulerAngles.y - 10f, 0f);
+            if (tank.FlowVelocity < 0f)
+            {
+                tank.FlowVelocity = 0f;
+            }
+        }
+        else if (i == 4)
+        {
+            tank.AutomaticMode = !tank.AutomaticMode;
+        }
+    }
+
+
 }

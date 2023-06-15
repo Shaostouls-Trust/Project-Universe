@@ -35,7 +35,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _Albedo:
         m_Texture: {fileID: 2800000, guid: c905a3453ee2956449c78939d654f197, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 2, y: 2}
         m_Offset: {x: 0, y: 0}
     - _Albedo1:
         m_Texture: {fileID: 2800000, guid: c905a3453ee2956449c78939d654f197, type: 3}
@@ -71,7 +71,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _Depth:
         m_Texture: {fileID: 2800000, guid: 9cb5a4c3338328a449ce67068bb51200, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 2, y: 2}
         m_Offset: {x: 0, y: 0}
     - _Depth1:
         m_Texture: {fileID: 2800000, guid: 9cb5a4c3338328a449ce67068bb51200, type: 3}
@@ -111,7 +111,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _Lighting:
         m_Texture: {fileID: 2800000, guid: fa640239762fc5c4383b4fc8f94ce043, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 2, y: 2}
         m_Offset: {x: 0, y: 0}
     - _Lighting1:
         m_Texture: {fileID: 2800000, guid: fa640239762fc5c4383b4fc8f94ce043, type: 3}
@@ -131,7 +131,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MetalSmoothness:
         m_Texture: {fileID: 2800000, guid: 259ff061b45d28149a682673a92ac4b6, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 2, y: 2}
         m_Offset: {x: 0, y: 0}
     - _MetalSmoothness1:
         m_Texture: {fileID: 2800000, guid: 259ff061b45d28149a682673a92ac4b6, type: 3}
@@ -190,6 +190,7 @@ Material:
     - Vector1_8C898A51: 0
     - Vector1_A4078F02: 0
     - Vector1_BDA4AE9A: 1
+    - _AOLDodge: 0
     - _AOLDodge1: 0
     - _AORemapMax: 1
     - _AORemapMin: 0
@@ -236,7 +237,7 @@ Material:
     - _DoubleSidedNormalMode: 1
     - _DstBlend: 0
     - _EI: 1
-    - _EmissionIntensity: 50
+    - _EmissionIntensity: 0
     - _EmissionIntensity1: 50
     - _EmissiveColorMode: 1
     - _EmissiveExposureWeight: 1
@@ -246,7 +247,7 @@ Material:
     - _EnableFogOnTransparent: 1
     - _EnableGeometricSpecularAA: 0
     - _EnergyConservingSpecularColor: 1
-    - _ExposureWeight: 1
+    - _ExposureWeight: 0
     - _ExposureWeight1: 1
     - _GlobalTriplanarFalloff: 0.5
     - _HeightAmplitude: 0.02

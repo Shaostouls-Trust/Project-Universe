@@ -1,5 +1,6 @@
 using ProjectUniverse.Environment.Fluid;
 using ProjectUniverse.Environment.Radiation;
+using ProjectUniverse.Ship;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -36,7 +37,8 @@ namespace ProjectUniverse.PowerSystem.Nuclear
         [SerializeField] private Color32 GREEN;
         [SerializeField] private Color32 RED;
         [SerializeField] private Color32 YELLOW;
-        private float timeScaled = 0f;
+        [SerializeField] private TMPro.TMP_Text screenModeText;
+        //private float timeScaled = 0f;
         [Range(0,1)]
         public float controlRodGlobal = 1f;
         private int rodsReal = 0;
@@ -49,13 +51,28 @@ namespace ProjectUniverse.PowerSystem.Nuclear
         private IFluid coolantHotStored;
         private float hotCoolantLevel = 0f;
         public float monitorHotCoolant;
-        [SerializeField] private float vesselPres = 200f;
+        [SerializeField] private float vesselPres = 215f;
         [SerializeField] private float vesselTemp = 300f;
+        [SerializeField] private float vesselMaxPres = 224f;//bar
+        [SerializeField] private float vesselMaxTemp = 600;//K, melting point lead is 327C
+        //internal temp not to exceed 1350K, because 1400K is melting point of U
+        //vessel max temp is 600K (327C), or rads leak out
         private float uiTimer = 0.5f;
         [SerializeField] private float leakAmount = 0f;//0 - 1 for amount of rads to release into Da Worldo
         private float detectedRads;
         [SerializeField] private IRadiationZone radiationArea;
         public bool releaseRadsEvent = false;
+        private bool showActivity;
+        private bool showTemp = true;
+        private bool showFuel;
+        private float meltdownMarkiplier = 0f;//0 to 1.0
+        private bool manualMeltdownMarkiplier;
+        private bool playedOnce;
+        [SerializeField] private AudioSource src;
+        [SerializeField] private AudioSource[] breachAlarms;
+        //but pins will break first, so pressure (normal stress) cannot exceed max shear
+        //pins are titanium, to 900 MPa at 10C to 410MPa at 550C. Linear.
+        //private float stress;//MPa
 
         public float[,] NeighborActivityData
         {
@@ -97,6 +114,10 @@ namespace ProjectUniverse.PowerSystem.Nuclear
         {
             get { return vesselTemp; }
         }
+        public float MaxVesselPres
+        {
+            get { return vesselMaxPres; }
+        }
         public float DetectedRads
         {
             get { return detectedRads; }
@@ -105,7 +126,7 @@ namespace ProjectUniverse.PowerSystem.Nuclear
         // Start is called before the first frame update
         void Start()
         {
-            timeScaled = Time.deltaTime * 10f;
+            //timeScaled = Time.deltaTime * 10f;
             coolantHotStored = new IFluid("Coolant", 80.33f, 0, 200f, 0f);
             //for every row and column add nuclearfuelrods to nfrMatrix
             nfrMatrix = new NuclearFuelRod[mdnfrRows.Length, mdnfrRows[0].fuelRodsCol.Length];
@@ -129,46 +150,13 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                         nfrMatrix[i, j].NuclearCore = this;
                         nfrMatrix[i, j].RodPosInCoreMatrix = new int[] { i, j };
                         rodsReal++;
-                            
-                        //create a cell in the UI display
-                    //    GameObject newIcon = Instantiate(activityUIPrefab, activityUI.transform);
-                        //newIcon.transform.SetParent(activityUI.transform);
-                    //    newIcon.transform.localPosition = new Vector3(x, y, 0);
-                    //    neighborUISections[i,j] = newIcon;
-                    //    float activity = Mathf.Round(NeighborActivityData[i, j]);
-                        // neighbor activity round to whole
-                    //    newIcon.transform.GetChild(0).GetComponent<TMP_Text>().text = activity.ToString();
-                        // -0 is blue
-                        // 0 to 400 is green
-                        // 400 to 900 is yellow
-                        // 900+ is red.
-                    /*    if (activity <= 0f)
-                        {
-                            newIcon.GetComponent<Image>().color = BLUE;
-                        }
-                        else if(activity <= 400)
-                        {
-                            newIcon.GetComponent<Image>().color = GREEN;
-                        }
-                        else if (activity <= 900)
-                        {
-                            newIcon.GetComponent<Image>().color = YELLOW;
-                        }
-                        else
-                        {
-                            newIcon.GetComponent<Image>().color = RED;
-                        }*/
-
+                        
                         GameObject newIcon2 = Instantiate(activityUIPrefab, tempUI.transform);
                         //newIcon2.transform.SetParent(tempUI.transform);
                         newIcon2.transform.localPosition = new Vector3(x, y, 0);
                         rodUISections[i, j] = newIcon2;
                         float temp = Mathf.Round(nfrMatrix[i, j].RodCoreTemp);
                         newIcon2.transform.GetChild(0).GetComponent<TMP_Text>().text = temp.ToString();
-                        // 0 to 373.15 is blue
-                        // 373.15 to 875 is green
-                        // 875 to 1000 is yellow
-                        // 1000+ is red
                         if (temp < 373.15f)
                         {
                             newIcon2.GetComponent<Image>().color = BLUE;
@@ -198,10 +186,11 @@ namespace ProjectUniverse.PowerSystem.Nuclear
         void Update()
         {
             uiTimer -= Time.deltaTime;
-            timeScaled = Time.deltaTime * 15f;
+            //timeScaled = Time.deltaTime * 15f;
             totalRequiredCoolant = 0f;
             float currentCoolant = 0f;
             averageTemperatureFuelRods = 0f;
+            float supplyingGens = steamGens.Length;
 
             //calculate neighbor activity
             NeighborActivityStep();
@@ -245,6 +234,11 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                         totalPossibleCoolant += steamGens[i].MaxPumpRate;
                     }
                     realDiff += steamGens[i].CoolantCoolTemp;
+                    //determine how many gens are supplying
+                    if(steamGens[i].SysFail || (steamGens[i].ThresholdPumpRate <= 0f && steamGens[i].RequiredPumpRate >= 1f))
+                    {
+                        supplyingGens--;
+                    }
                 }
 
                 //set total possible coolant to the amount of coolant extracted
@@ -367,8 +361,21 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                         //assuming coolant in same in all pipes
                         IFluid coolantHot = new IFluid(coolantHotStored);
                         coolantHot.SetTemp(averageTemperatureFuelRods);
-                        //split concentration by number of pipes
-                        float conc = ((totalPossibleCoolant / 3600f) / 1000f * Time.fixedDeltaTime) / coolantOutPipes.Count;
+                        //split concentration by number of pipes (check end tank state)
+
+                        float gens = steamGens.Length;//assume that coolantOutPipes is equal to number of generators
+                        for(int g = 0;g < steamGens.Length; g++)
+                        {
+                            if (steamGens[g].CoolantReservoir > steamGens[g].CoolantReservoirMaxCap)
+                            {
+                                gens--;
+                            }
+                        }
+                        if(gens <= 0)
+                        {
+                            gens = coolantOutPipes.Count;
+                        }
+                        float conc = ((totalPossibleCoolant / 3600f) / 1000f * Time.fixedDeltaTime) / gens;//coolantOutPipes.Count;
                         coolantHot.SetConcentration(conc);
                         //Debug.Log("Core Out (m3): " + coolantHot.GetConcentration() + " of " + hotCoolantLevel);
                         hotCoolantLevel -= conc;
@@ -380,17 +387,102 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                     }
                 }
             }
+            //heat IO is done. Calculate vessel temp, pressure, and stress
+            //VesselTemp will gradually increase to 0.5f of the rod temp.
+            //the greater the difference, the faster it heats up
+            float progress = Mathf.Log10(Mathf.Abs((averageTemperatureFuelRods * 0.47f) - vesselTemp))/10f;
+            //Debug.Log(progress);
+            vesselTemp = Mathf.Lerp(vesselTemp, averageTemperatureFuelRods * 0.47f,progress);
+            /// <summary>
+            /// When all generators are running, the pressure will be only a little higher than the 210 input
+            /// As generators shut off the pressure must increase as a func of temp to some amount. 
+            /// 4 generators supplying: pressure is input + .025 * rod temp(K)
+            /// 3 gens: input + 10 + .05 * rod temp(K) (258/900 at 1030C)
+            /// 2 gens: input + 20 + .075 * rod temp (288/900 at 1030C)
+            /// 1 gen: input + 30 + .1 * rod temp (317/900 at 1030C)
+            /// 0 gens: base + .2 * rod temp (210 base 365/900 at 1030C)
+            /// </summary>
+            switch(supplyingGens)
+            {
+                case 4:
+                    vesselPres = 210f + (0.025f * averageTemperatureFuelRods);
+                    break;
+                case 3:
+                    vesselPres = 210f + 10f + (0.05f * averageTemperatureFuelRods);
+                    break;
+                case 2:
+                    vesselPres = 210f + 20f + (0.075f * averageTemperatureFuelRods);
+                    break;
+                case 1:
+                    vesselPres = 210f + 30f + (0.1f * averageTemperatureFuelRods);
+                    break;
+                case 0:
+                    vesselPres = 210f + (0.2f * averageTemperatureFuelRods);
+                    break;
+                default:
+                    vesselPres = 210f + (0.025f * averageTemperatureFuelRods);
+                    break;
+            }
+            
+            //strength is in MPa. Pressures in bar. 1 MPa = 10 bar, but pins will hold, say, 0.1f of that.
+            //350 bar at 600K.
+            vesselMaxPres = Util.Utils.StrengthVersusTemperature_Titanium(VesselTemp);
+            if(vesselPres > vesselMaxPres)
+            {
+                //boom.
+                releaseRadsEvent = true;
+                if (!playedOnce)
+                {
+                    playedOnce = true;
+                    src.Play();
+                    StartCoroutine(WaitForSeconds());
+                }
+                //release particles
+            }
+
+            if (vesselTemp > vesselMaxTemp)//the lead shielding has melted
+            {
+                //melt down - the longer we are over temp, the more rads are released
+                if(meltdownMarkiplier < 1.0f)
+                {
+                    meltdownMarkiplier += Time.smoothDeltaTime / 10f;
+                    if(meltdownMarkiplier > 1.0f)
+                    {
+                        meltdownMarkiplier = 1.0f;
+                    }
+                }
+                releaseRadsEvent = true;
+            }
+            else
+            {
+                //if we went over temp, but cooled down, stop releasing rads
+                if (meltdownMarkiplier > 0f && !manualMeltdownMarkiplier)
+                {
+                    if (!playedOnce)//the core has not been blown open
+                    {
+                        meltdownMarkiplier -= Time.smoothDeltaTime / 10f;
+                        if (meltdownMarkiplier <= 0f)
+                        {
+                            meltdownMarkiplier = 0f;
+                            releaseRadsEvent = false;
+                        }
+                    }
+                }
+                else if (manualMeltdownMarkiplier)
+                {
+                    meltdownMarkiplier = 0.01f;
+                }
+            }
+
             ///leakAmount is controlled by dmg to vessel
             /// 0 means the vessel is intact
             /// < 1 & > .25 means the vessel is damaged
             /// < .25 to 0 means the vessel has been destroyed.
-            radiationArea.GeneratorLeakMultiplier = leakAmount;
-            detectedRads = radiationArea.RadiationAtOneMeter();
-
+            
             if (releaseRadsEvent)
             {
-                leakAmount = averageTemperatureFuelRods / 1000f;
-                if(leakAmount > 1f)
+                leakAmount = (averageTemperatureFuelRods / 1000f) * meltdownMarkiplier;
+                if (leakAmount > 1f)
                 {
                     leakAmount = 1f;
                 }
@@ -399,17 +491,34 @@ namespace ProjectUniverse.PowerSystem.Nuclear
             {
                 leakAmount = 0f;
             }
+
+            radiationArea.GeneratorLeakMultiplier = leakAmount;
+            detectedRads = radiationArea.RadiationAtOneMeter();
+
+            
+        }
+
+        public IEnumerator WaitForSeconds()
+        {
+            //pause before turning these on
+            yield return new WaitForSeconds(2f);
+            for (int i = 0; i < breachAlarms.Length; i++)
+            {
+                breachAlarms[i].Play();
+            }
+            //lights red
+            RenderStateManager rsm = transform.GetComponentInParent<RenderStateManager>();
+            if(rsm != null)
+            {
+                rsm.AllLightsRed();
+                rsm.AllVolumeEffect(1);
+            }
         }
 
         private void OnGUI()
         {
             if (uiTimer <= 0f)
             {
-                //recalc core data
-                //float totalActivity = 0f;//average all rod
-                //float totalTemp = 0f;//average all rod
-                //float totalHeatEFr = 0f;
-                //float coolantFlowReq = 0f;
                 totalMWt = 0f;
                 totalBTU = 0f;
 
@@ -430,29 +539,9 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                             //if(neighborUISections[i, j] != null) { 
                             //if (uiTimer <= 0f)
                             //{
-                                //update UI with rod data
-                                //float activity = Mathf.Round(NeighborActivityData[i, j]);
-                                //float activity = Mathf.Round(nfrMatrix[i, j].PositiveActivity);
-
-                                // neighbor activity round to whole
-                                /*neighborUISections[i, j].transform.GetChild(0).GetComponent<TMP_Text>().text =
-                                    activity.ToString();// + "/" + activity2.ToString();
-                                if (activity <= 0f)
-                                {
-                                    neighborUISections[i, j].GetComponent<Image>().color = BLUE;
-                                }
-                                else if (activity <= 400)
-                                {
-                                    neighborUISections[i, j].GetComponent<Image>().color = GREEN;
-                                }
-                                else if (activity <= 900)
-                                {
-                                    neighborUISections[i, j].GetComponent<Image>().color = YELLOW;
-                                }
-                                else
-                                {
-                                    neighborUISections[i, j].GetComponent<Image>().color = RED;
-                                }*/
+                            //update UI with rod data
+                            if (showTemp)
+                            {
                                 float temp = Mathf.Round(nfrMatrix[i, j].RodCoreTemp);
                                 rodUISections[i, j].transform.GetChild(0).GetComponent<TMP_Text>().text = temp.ToString();
                                 if (temp < 373.15f)
@@ -471,33 +560,42 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                                 {
                                     rodUISections[i, j].GetComponent<Image>().color = RED;
                                 }
-                            //}
-                            //}
+                                screenModeText.text = "Main Screen Mode: | Reactivity | [Temperature] | Fuel Status |";
+                            }
+                            else if (showActivity)
+                            {
+                                float activity = Mathf.Round(nfrMatrix[i, j].PositiveActivity);
+                                rodUISections[i, j].transform.GetChild(0).GetComponent<TMP_Text>().text =
+                                activity.ToString();// + "/" + activity2.ToString();
+                                if (activity <= 0f)
+                                {
+                                    rodUISections[i, j].GetComponent<Image>().color = BLUE;
+                                }
+                                else if (activity <= 200)
+                                {
+                                    rodUISections[i, j].GetComponent<Image>().color = GREEN;
+                                }
+                                else if (activity <= 300)
+                                {
+                                    rodUISections[i, j].GetComponent<Image>().color = YELLOW;
+                                }
+                                else
+                                {
+                                    rodUISections[i, j].GetComponent<Image>().color = RED;
+                                }
+                                screenModeText.text = "Main Screen Mode: | [Reactivity] | Temperature | Fuel Status |";
+                            }
+                            else if(showFuel)
+                            {
+                                float fuel = Mathf.Round(nfrMatrix[i, j].FuelMass/1000f);
+                                rodUISections[i, j].transform.GetChild(0).GetComponent<TMP_Text>().text = fuel.ToString();
+                                rodUISections[i, j].GetComponent<Image>().color = Color.green;
+                                screenModeText.text = "Main Screen Mode: | Reactivity | Temperature | [Fuel Status] |";
+                            }
                         }
                     }
                 }
-                //averageActivity = totalActivity / rodsReal;
-                //averageTemp = totalTemp / rodsReal;
-                //averageHeatEFr = totalHeatEFr / rodsReal;
-                //totalEFr = totalHeatEFr;
-
-                //if (uiTimer <= 0f)
-                //{
-                    uiTimer = 0.5f;
-                    //set text
-                    //activityText.text = averageActivity.ToString();
-                    //tempText.text = averageTemperatureFuelRods.ToString();
-                   // avgEFrTxt.text = averageHeatEFr.ToString();
-                    //totalEFrTxt.text = totalEFr.ToString();
-                    //mwhText.text = totalMWt.ToString();
-                    //coolantText.text = coolantFlowReq.ToString();
-                    //btuText.text = totalBTU.ToString();
-                //ctrl
-                //if (controlRodGlobalText != null)
-                //{
-                //    controlRodGlobalText.text = ((int)(controlRodGlobal * 100f)).ToString();
-                    //}
-                //}
+                uiTimer = 0.5f;
             }
         }
 
@@ -640,36 +738,53 @@ namespace ProjectUniverse.PowerSystem.Nuclear
 
         public void ExternalInteractFunc(int i)
         {
-            if (i == 1)
+            switch (i)
             {
-                //control rods down 5
-                controlRodGlobal -= .05f;
+                case 1:
+                    //control rods down 5
+                    controlRodGlobal -= .05f;
+                    break;
+                case 2:
+                    //down 10
+                    controlRodGlobal -= .10f;
+                    break;
+                case 3:
+                    //up 5
+                    controlRodGlobal += .05f;
+                    break;
+                case 4:
+                    // up 10
+                    controlRodGlobal += .10f;
+                    break;
+                case 5:
+                    //scram
+                    controlRodGlobal = 1f;
+                    break;
+                case 6:
+                    //leak
+                    releaseRadsEvent = !releaseRadsEvent;
+                    manualMeltdownMarkiplier = releaseRadsEvent;
+                    break;
+                case 7:
+                    //show reactivity
+                    showActivity = true;
+                    showTemp = false;
+                    showFuel = false;
+                    break;
+                case 8:
+                    //show temp
+                    showActivity = false;
+                    showTemp = true;
+                    showFuel = false;
+                    break;
+                case 9:
+                    //show fuel
+                    showActivity = false;
+                    showTemp = false;
+                    showFuel = true;
+                    break;
             }
-            else if(i == 2)
-            {
-                //down 10
-                controlRodGlobal -= .10f;
-            }
-            else if(i == 3)
-            {
-                //up 5
-                controlRodGlobal += .05f;
-            }
-            else if(i == 4)
-            {
-                // up 10
-                controlRodGlobal += .10f;
-            }
-            else if(i == 5)
-            {
-                //scram
-                controlRodGlobal = 1f;
-            }
-            else if (i == 6)
-            {
-                //leak
-                releaseRadsEvent = !releaseRadsEvent;
-            }
+
             if (controlRodGlobal < 0)
             {
                 controlRodGlobal = 0f;

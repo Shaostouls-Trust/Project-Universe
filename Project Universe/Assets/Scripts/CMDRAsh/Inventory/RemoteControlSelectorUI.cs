@@ -124,7 +124,14 @@ public class RemoteControlSelectorUI : MonoBehaviour
             connectionText.text = "<Connected>";
             connectionText.color = Color.green;
             connectButton.SetActive(false);
-            
+
+            //reset drone vac
+            if (targetDrone.TryGetComponent(out DroneVolumeController dvc))
+            {
+                Debug.Log("set to null");
+                dvc.SetPlayerVolume(null);
+            }
+
             targetDrone.GetComponent<ShipControlConsole>().UIExternalInteract();
         }
     }

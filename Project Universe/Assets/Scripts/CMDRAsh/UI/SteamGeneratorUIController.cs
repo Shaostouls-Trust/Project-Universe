@@ -31,6 +31,13 @@ namespace ProjectUniverse.UI
         [SerializeField] private RectTransform coolTankScale;
         [SerializeField] private TMP_Text coolantRes2;
         [Space]
+        [SerializeField] private TMP_Text pumpRate2;
+        [SerializeField] private TMP_Text chamberPres;
+        [SerializeField] private Image waterValve;
+        [SerializeField] private Image steamValve;
+        [SerializeField] private Image coolantValve;
+        [SerializeField] private Transform dial;
+        [Space]
         [SerializeField] private Image warningA;
         [SerializeField] private Image warningB;
         [SerializeField] private Image warningC;
@@ -70,8 +77,10 @@ namespace ProjectUniverse.UI
                 coolantRes.text = Mathf.Round(reservoirPer*100f) + "%";
                 coolantRes2.text = Mathf.Round(reservoirPer*100f) + "%";
                 coolTankScale.localScale = new Vector3(1f, reservoirPer, 1f);
-                waterRes.text = "" + Mathf.Round(steamGen.WaterReservoir) + "%";
+                waterRes.text = "" + Mathf.Round(steamGen.WaterReservoir/steamGen.WaterReservoirMaxCap)*100f + "%";
                 coolantPres.text = "" + steamGen.CoolantPressure + " bar";
+                chamberPres.text = steamGen.ChamberPressure + "";
+                pumpRate2.text = steamGen.ThresholdPumpRate/3600f + " Kg/s";
             }
             ///Warnings
             ///A - SysFail: The Generator has exploded or smth and can no longer circulate coolant.
@@ -115,7 +124,7 @@ namespace ProjectUniverse.UI
                 warningC.color = REDOFF;
             }
 
-            if(steamGen.CoolantPressure >= 215f)
+            if(steamGen.CoolantPressure >= 215f || steamGen.ChamberPressure >= 225f)
             {
                 warningD.color = REDON;
             }
@@ -143,7 +152,14 @@ namespace ProjectUniverse.UI
             }
 
             //Tank leak implementation? Rely on damage to tank detection?
-            warningG.color = YELLOWOFF;
+            if (steamGen.TankLeak)
+            {
+                warningG.color = YELLOWON;
+            }
+            else
+            {
+                warningG.color = YELLOWOFF;
+            }
 
             if(steamGen.CoolantReservoir <= (steamGen.CoolantReservoirMaxCap * 0.25f))
             {
@@ -164,7 +180,7 @@ namespace ProjectUniverse.UI
             }
 
             //should also include steam pressure
-            if (steamGen.CoolantPressure >= 211f)
+            if (steamGen.CoolantPressure >= 210f || steamGen.ChamberPressure >= 215f)
             {
                 warningJ.color = YELLOWON;
             }
@@ -189,6 +205,63 @@ namespace ProjectUniverse.UI
             else
             {
                 warningL.color = YELLOWOFF;
+            }
+        }
+
+        public void ExternalInteractFunc(int i)
+        {
+            switch (i)
+            {
+                case 1:
+                    //automatic
+                    steamGen.AutomaticControl = !steamGen.AutomaticControl;
+                    break;
+                case 2:
+                    //pump rate down
+                    steamGen.DecrementThresholdValue();
+                    dial.localRotation = Quaternion.Euler(0f, dial.localRotation.eulerAngles.y - 10f, 0f);
+                    break;
+                case 3:
+                    //rate up
+                    steamGen.IncrementThresholdValue();
+                    dial.localRotation = Quaternion.Euler(0f, dial.localRotation.eulerAngles.y + 10f, 0f);
+                    break;
+                case 4:
+                    //steam vavle
+                    steamGen.SteamValveState = !steamGen.SteamValveState;
+                    if (steamGen.SteamValveState)
+                    {
+                        steamValve.color = GREENON;
+                    }
+                    else
+                    {
+                        steamValve.color = REDON;
+                    }
+                    break;
+                case 5:
+                    //water valve
+                    steamGen.WaterValveState = !steamGen.WaterValveState;
+                    if (steamGen.WaterValveState)
+                    {
+                        waterValve.color = GREENON;
+                    }
+                    else
+                    {
+                        waterValve.color = REDON;
+                    }
+                    break;
+                case 6:
+                    //coolant valve
+                    steamGen.CoolantValveState = !steamGen.CoolantValveState;
+                    if (steamGen.CoolantValveState)
+                    {
+                        coolantValve.color = GREENON;
+                    }
+                    else
+                    {
+                        coolantValve.color = REDON;
+                    }
+                    break;
             }
         }
     }

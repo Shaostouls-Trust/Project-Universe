@@ -127,7 +127,6 @@ namespace ProjectUniverse.PowerSystem
             //lastOut = 0f;
             availibleLegsOut = subRouters.Length * 3;//3 legs per substation
             totalRequiredPower = 0f;
-            lastReceived = 0f;
             //get leg states - this will be for when we have levers that close off indiv legs.
             //NYI
             //get requested power amount
@@ -166,7 +165,12 @@ namespace ProjectUniverse.PowerSystem
                 deficitVsubMachine = 0f;
             }
             //Debug.Log("Total Required: " + totalRequiredPower);
+            if(bufferCurrent == 0f)
+            {
+                lastReceived = 0f;
+            }
         }
+
         public bool CheckMachineState(ref IGenerator thisGenerator)
         {
             supplyingGenerator = thisGenerator;
@@ -248,6 +252,7 @@ namespace ProjectUniverse.PowerSystem
         {
             //Debug.Log("Received power from generator: "+ (powerAmounts[0]*legCount));
             //receive 3 legs of X amount
+            lastReceived = 0f;
             for (int i = 0; i < legCount; i++)
             {
                 bufferCurrent += powerAmounts[i];
@@ -262,6 +267,7 @@ namespace ProjectUniverse.PowerSystem
         public void ReceivePowerFromTurbine(float powerAmount)
         {
             //Debug.Log("Received power from turbine: "+ powerAmount);
+            lastReceived = 0f;
             bufferCurrent += powerAmount;
             if(bufferCurrent > BufferMax)
             {

@@ -38,6 +38,7 @@ namespace ProjectUniverse.PowerSystem.Nuclear
         private float timeScaled = 0f;
         //core position
         private int[] pos = new int[2];
+        private float maxTemp = 1350f;
 
         /// <summary>
         /// The net activity of the cell in question. Used in neighbor and nextframe calcs
@@ -94,6 +95,11 @@ namespace ProjectUniverse.PowerSystem.Nuclear
             get { return coolantMDotPerHour; }
         }
 
+        public float DeltaTemp
+        {
+            get { return netHeat; }
+        }
+
         public NuclearCore NuclearCore
         {
             get
@@ -116,6 +122,11 @@ namespace ProjectUniverse.PowerSystem.Nuclear
             get { return heatEFrRod; }
         }
 
+        public float FuelMass
+        {
+            get { return rodMass; }
+        }
+
         public float BTUPerHour { get { return btuPerHour; } }
 
         // Start is called before the first frame update
@@ -136,7 +147,7 @@ namespace ProjectUniverse.PowerSystem.Nuclear
         public void RecalculateData()
         {
             controlRodInsertion = nuclearCoreBody.GlobalControlRodInsertion;
-            timeScaled = Time.deltaTime * 15f;
+            timeScaled = Time.deltaTime * 10f;//15f
             
             coreTemp += netHeat;
             neighborActivity = nuclearCoreBody.NeighborActivityData[pos[0],pos[1]];

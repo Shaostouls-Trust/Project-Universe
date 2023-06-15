@@ -1,5 +1,7 @@
 using ProjectUniverse.Environment.Fluid;
 using ProjectUniverse.Environment.Gas;
+using ProjectUniverse.Environment.Volumes;
+using ProjectUniverse.Util;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +17,9 @@ namespace ProjectUniverse.PowerSystem.Nuclear
         [SerializeField] private bool autofail = false;
         [SerializeField] private bool sysfail = false;
         [SerializeField] private bool steamValveState = true;//true is open
+        [SerializeField] private bool waterValve = true;
+        [SerializeField] private bool coolantValve = true;
+        [SerializeField] private bool tankLeak = false;
         private float currentPumpRate;//current output
         private float requiredPumpRate;//required amount by reactor;
         [SerializeField] private float thresholdPumpRate = 2700000f;//reported output and for limited flow scenarios
@@ -37,6 +42,14 @@ namespace ProjectUniverse.PowerSystem.Nuclear
         [SerializeField] private float outputVelocity = 120f;
         [SerializeField] private float outputPressure = 210.75f;//p should be determined by massflow and vel
         [SerializeField] private float coolantOutputVelocity = 32f;
+        [SerializeField] private float steamChamberVolume = 278f;//m^3
+        private float maxChamberStress = 900f;//MPa (can withstand 231.5bar at 0.0129 t/d)
+        private float thicknessToDiamRatio = 0.0129f;//2.75in thick / 5.43m diam
+        private float chamberPressure = 200f;//bar (20MPA)
+        [SerializeField] private VolumeAtmosphereController vac;
+        private bool tankBlown;
+        [SerializeField] private AudioSource src;
+
         //old turbine vars
         private float coolantFlowRateCurrent = 0f;//Kg/hr
         private float steamFlowRateCurrent = 0f;//Kg/hr
@@ -50,7 +63,7 @@ namespace ProjectUniverse.PowerSystem.Nuclear
             coolantInReservoir = new IFluid("Coolant", 80.33f, primaryCoolantReservoir, 200f, 100f);
         }
 
-        public bool AutomaticControl { get { return automaticControl; } }
+        public bool AutomaticControl { get { return automaticControl; } set { automaticControl = value; } }
 
         public float MaxPumpRate
         {
@@ -102,13 +115,28 @@ namespace ProjectUniverse.PowerSystem.Nuclear
         {
             get { return primaryCoolantMaxCap; }
         }
-        public void AdjustCoolantThreshold(float value)
+        public float ChamberPressure
         {
-            thresholdPumpRate += value;
+            get { return chamberPressure; }
+        }
+        public bool TankLeak
+        {
+            get { return tankLeak; }
         }
         public bool SteamValveState
         {
             get { return steamValveState; }
+            set { steamValveState = value; }
+        }
+        public bool WaterValveState
+        {
+            get { return waterValve; }
+            set { waterValve = value; }
+        }
+        public bool CoolantValveState
+        {
+            get { return coolantValve; }
+            set { coolantValve = value; }
         }
         public float SteamFlowRate
         {
@@ -129,43 +157,49 @@ namespace ProjectUniverse.PowerSystem.Nuclear
         private void Update()
         {
             //collect water from pipe
-            if ((waterStored_monitor < waterStoredMax) && waterIn != null)
+            if (waterValve)
             {
-                //grab the incoming water (m^3/sec)
-                // but don't overfill!
-                float rate = (waterStoredMax - waterStored_monitor);
-                List<IFluid> IncommingWater = waterIn.ExtractFluid(rate);
-                //float waterInFlowRateCurrent = 0f;
-                for (int i = 0; i < IncommingWater.Count; i++)
+                if ((waterStored_monitor < waterStoredMax) && waterIn != null)
                 {
-                    waterStored_monitor += IncommingWater[i].GetConcentration();
-                }
-                //combine dupes
-                for (int i = IncommingWater.Count - 1; i >= 0; i--)
-                {
-                    for (int j = 0; j < storedWater.Count; j++)
+                    //grab the incoming water (m^3/sec)
+                    // but don't overfill!
+                    float rate = (waterStoredMax - waterStored_monitor);
+                    List<IFluid> IncommingWater = waterIn.ExtractFluid(rate);
+                    //float waterInFlowRateCurrent = 0f;
+                    for (int i = 0; i < IncommingWater.Count; i++)
                     {
-                        if (IncommingWater[i].GetIDName() == storedWater[j].GetIDName())
+                        waterStored_monitor += IncommingWater[i].GetConcentration();
+                    }
+                    //combine dupes
+                    for (int i = IncommingWater.Count - 1; i >= 0; i--)
+                    {
+                        for (int j = 0; j < storedWater.Count; j++)
                         {
-                            float newConc = storedWater[j].GetConcentration() + IncommingWater[i].GetConcentration();
-                            storedWater[j].SetConcentration(newConc);
-                            IncommingWater.RemoveAt(i);
+                            if (IncommingWater[i].GetIDName() == storedWater[j].GetIDName())
+                            {
+                                float newConc = storedWater[j].GetConcentration() + IncommingWater[i].GetConcentration();
+                                storedWater[j].SetConcentration(newConc);
+                                IncommingWater.RemoveAt(i);
+                            }
                         }
                     }
+                    storedWater.AddRange(IncommingWater);
                 }
-                storedWater.AddRange(IncommingWater);
             }
 
-            if (coolantIn != null)
+            if (coolantIn != null && coolantValve)
             {
-                //get hot coolant from in pipe
-                float coolantHotFlowRateCurrent = 0f;
-                List<IFluid> IncommingCoolant = coolantIn.ExtractFluid(-1f);
-                for (int i = 0; i < IncommingCoolant.Count; i++)
+                if (CoolantReservoir < CoolantReservoirMaxCap)
                 {
-                    coolantHotFlowRateCurrent += IncommingCoolant[i].GetConcentration();
-                    primaryCoolantReservoir += IncommingCoolant[i].GetConcentration();
-                    //Debug.Log("Gen In (m3): " + IncommingCoolant[i].GetConcentration());
+                    //get hot coolant from in pipe
+                    float coolantHotFlowRateCurrent = 0f;
+                    List<IFluid> IncommingCoolant = coolantIn.ExtractFluid(-1f);
+                    for (int i = 0; i < IncommingCoolant.Count; i++)
+                    {
+                        coolantHotFlowRateCurrent += IncommingCoolant[i].GetConcentration();
+                        primaryCoolantReservoir += IncommingCoolant[i].GetConcentration();
+                        //Debug.Log("Gen In (m3): " + IncommingCoolant[i].GetConcentration());
+                    }
                 }
             }
 
@@ -251,12 +285,50 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                 waterStored_monitor = 0f;
             }
             
-            //add steamFlowRateCurrent to steam_monitor and steam gas [no steam stor, send inst rate]
-            //steamStored_monitor += instFlowRateCurrent;
-            //steamOut.AddConcentration(instFlowRateCurrent);
-            steamOut.SetConcentration(instFlowRateCurrent);
-            // /\ get the pressure of this gas for steam tank pressure?
+            //add steamFlowRateCurrent to steam gas
+            steamOut.AddConcentration(instFlowRateCurrent);
+            //steamOut.SetConcentration(instFlowRateCurrent);
+            //the tank volume is 525m^3. 0.0054*1000. 1/18.02 g/mol * g steam. Steam is(?) 455C. p=nrt/v. 200 is base pressure.
+            chamberPressure = 200f + (8.3145f*0.0555f*steamOut.GetConcentration()*108f*728.15f) / 525f;
+            if(steamOut.GetConcentration() <= 0f)
+            {
+                //default (shutdown) pressure
+                chamberPressure = 1.01f;
+            }
+            if (chamberPressure >= 219f)
+            {
+                steamOut.SetLocalPressure(219f);
+            }
+            else
+            {
+                steamOut.SetLocalPressure(chamberPressure);
+            }
 
+            if (ChamberPressure > 231.5f || tankBlown)
+            {
+                //blow;
+                tankLeak = true;
+                if (!tankBlown)//on first run will be false
+                {
+                    src.Play();
+                }
+                tankBlown = true;
+                //sfx and material stuff duh
+                //steam and water leak into room
+                if (vac != null)
+                {
+                    vac.AddRoomGas(steamOut);
+                    chamberPressure = vac.Pressure;
+                    vac.AddRoomFluid(new IFluid("water",300f,WaterReservoir,vac.Pressure,WaterReservoir));
+                    waterStored_monitor = 0f;
+                    steamOut.SetConcentration(0f);
+                }
+                else
+                {
+                    chamberPressure = 1.01f;
+                    waterStored_monitor = 0f;
+                }
+            }
             //else
             //change to include coolant flow, not just water flow
             //if required is greater than available
@@ -288,24 +360,34 @@ namespace ProjectUniverse.PowerSystem.Nuclear
             }
             coolantInReservoir.SetTemp(CoolantCoolTemp);
 
-            if (steamOutPipe != null && steamValveState)//steamvalvestate should also make sure steam builds up
+            if (steamOutPipe != null && steamValveState)
             {
                 // Send steam to turbine
                 if (steamOutPipe.GetConcentration() < steamOutPipe.Volume)
                 {
-                    steamOutPipe.Receive(false, outputVelocity, outputPressure, steamOut, steamOut.GetTemp());
+                    //calc max flow rate for pipe
+                    float throughput_m3 = Utils.CalculateGasFlowThroughPipe(
+                        steamOutPipe.InnerDiameter, outputVelocity, outputPressure)/180000000f;// /3600f and 50000f
+                    //Debug.Log(throughput_m3);
+                    if (steamOut.GetConcentration() < throughput_m3)
+                    {
+                        throughput_m3 = steamOut.GetConcentration();
+                    }
+                    IGas outputSteamInst = new IGas(steamOut);
+                    outputSteamInst.SetConcentration(throughput_m3);
+
+                    steamOutPipe.Receive(false, outputVelocity, outputPressure, outputSteamInst, outputSteamInst.GetTemp());
                     //subtract steam from generator
-                    //steamStored_monitor -= instFlowRateCurrent;
-                    //steamOut.AddConcentration(-instFlowRateCurrent);
+                    steamOut.AddConcentration(-throughput_m3);
                 }
             }
 
-            if (coolantOut != null)
+            if (coolantOut != null && coolantValve)
             {
                 //send coolant into core
                 if (primaryCoolantReservoir > 0)
                 {
-                    if (RequiredPumpRate > 0f)
+                    if (RequiredPumpRate > 0f && !SysFail)
                     {
                         IFluid outFlowCoolant = new IFluid(coolantInReservoir);
                         //Kg/hr to m3[inst]
@@ -320,6 +402,27 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                         }
                     }
                 }
+                else
+                {
+                    primaryCoolantReservoir = 0f;
+                }
+            }
+        }
+
+        public void IncrementThresholdValue()
+        {
+            thresholdPumpRate += 108000f;
+            if(thresholdPumpRate > maxPumpRate)
+            {
+                thresholdPumpRate = maxPumpRate;
+            }
+        }
+        public void DecrementThresholdValue()
+        {
+            thresholdPumpRate -= 108000f;
+            if (thresholdPumpRate < 0f)
+            {
+                thresholdPumpRate = 0f;
             }
         }
         public void ExternalInteractFunc(int i)

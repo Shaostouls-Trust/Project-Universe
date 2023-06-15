@@ -26,7 +26,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
-    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,7 +35,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
-    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <NoConfig>true</NoConfig>
@@ -377,6 +377,7 @@
     <Compile Include="Assets\Scripts\CMDRAsh\Networking\Helpers\ConnectionManager.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\Galaxy Generator\Examples\Galaxy\Scripts\GalaxyDemoManager.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\AURORA_NEBULA_BLACKHOLE\NebulaTutorial\setSkyboxSM.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\UI\FuelRodUIController.cs" />
     <Compile Include="Assets\JMO Assets\WarFX\Demo\Assets\WFX_Demo_DeleteAfterDelay.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Data\Interfaces\IImpactContactPoint.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters2D\Repeater2D.cs" />
@@ -475,6 +476,7 @@
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Geometry_3D\Curve3D.cs" />
     <Compile Include="Assets\Scripts\Koro\Gun.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\Debug Viewer\Libaries\Triangle\TriangleLocator.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Ship\DoscimeterTerminalController.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Player\MyLimb.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\Spaceship Generator\Generator\GenMeshVertex.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Max.cs" />
@@ -625,6 +627,7 @@
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\MINI GAMES\Space Shooter 2.5D\Scripts\Mover.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\Delaunay\Sweep\DTSweepBasin.cs" />
     <Compile Include="Assets\Scripts\ChangeColor.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\UI\ShipVolumeInformationDisplayUI.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Production\IComponentDefinition.cs" />
     <Compile Include="Assets\Scripts\SimpleCameraController.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Noise2D.cs" />

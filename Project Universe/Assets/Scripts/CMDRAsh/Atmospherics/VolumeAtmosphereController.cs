@@ -9,6 +9,7 @@ using ProjectUniverse.Animation.Controllers;
 using UnityEngine.Profiling;
 using ProjectUniverse.Util;
 using ProjectUniverse.Ship;
+using ProjectUniverse.PowerSystem;
 
 namespace ProjectUniverse.Environment.Volumes
 {
@@ -20,7 +21,8 @@ namespace ProjectUniverse.Environment.Volumes
         [SerializeField] private float roomOxygenation;
         [SerializeField] private float roomVolume;
         [SerializeField] private float humidity;
-        [SerializeField] private float toxicity;
+        [SerializeField] private float toxicity;//gasses and stuff
+        [SerializeField] private float contamination;//radioactive particles
         /// <summary>
         /// Order roomGases into a defined array for ease of access?
         /// </summary>
@@ -72,8 +74,6 @@ namespace ProjectUniverse.Environment.Volumes
                 roomVolume += (roomVolumeSections[i].size.x * roomVolumeSections[i].size.y * roomVolumeSections[i].size.z);
             }
 
-            
-
             ///
             /// This does not ensure that we are only losing heat from the outer sides of the volume,
             /// but from all sides of each section of the volume, which is not a valid assumption.
@@ -103,6 +103,13 @@ namespace ProjectUniverse.Environment.Volumes
                     {
                         //Debug.Log(lights[l]);
                         lightList.Add(lights[l].gameObject);
+                        //set the intensity to 0 to preempt lighting bugs when there is no power on first volume activation.
+                        //if (lights[l].transform.parent.TryGetComponent(out ISubMachine _))
+                        //{
+                        //    lights[l].intensity = 0f;
+                        //    lights[l].enabled = false;
+                        //}
+
                     }
                 }
 
@@ -217,6 +224,11 @@ namespace ProjectUniverse.Environment.Volumes
             get { return toxicity; }
             set { toxicity = value; }
         }
+        public float Contamination
+        {
+            get { return contamination; }
+            set { contamination = value; }
+        }
         public List<IGas> RoomGasses
         {
             get { return roomGases; }
@@ -245,6 +257,11 @@ namespace ProjectUniverse.Environment.Volumes
         public RenderStateManager RSM
         {
             get { return rsm; }
+        }
+
+        public GameObject[] LightGameObjects
+        {
+            get { return lightGOs; }
         }
 
         ///check doors
@@ -708,6 +725,7 @@ namespace ProjectUniverse.Environment.Volumes
             }
             else if (other.gameObject.CompareTag("Drone"))
             {
+                //Debug.Log("entered "+this.name);
                 DroneVolumeController player = other.GetComponent<DroneVolumeController>();
                 player.OnVolumeEnter(roomPressure, roomTemp, roomOxygenation);
                 player.SetPlayerVolume(this.GetComponents<Volume>());
@@ -726,15 +744,29 @@ namespace ProjectUniverse.Environment.Volumes
             }
         }
 
+        /// <summary>
+        /// This is the source of the rsm/atmo bug, most likely. When the player exits a volume, if they haven't
+        /// entered another (or even if they have), it's setting to null for a sec.
+        /// Need a better determination method for exiting a volume into the global atmosphere control space.
+        /// </summary>
+        /// <param name="other"></param>
         private void OnTriggerExit(Collider other)
         {
-            if (other.gameObject.CompareTag("Player"))
+            /**/
+            StartCoroutine(WaitForVolumeUpdate(other));
+        }
+
+        public IEnumerator WaitForVolumeUpdate(Collider other)
+        {
+            yield return null;
+            if(other.TryGetComponent(out PlayerVolumeController player))
             {
-                other.GetComponent<PlayerVolumeController>().ResetPlayerVolumeController(this);
+                //if the player's volume is still this after 'exited', it's likely we've left the ship.              
+                player.ResetPlayerVolumeController(this);
             }
-            else if (other.gameObject.CompareTag("Drone"))
+            else if (other.TryGetComponent(out DroneVolumeController drone))
             {
-                other.GetComponent<DroneVolumeController>().ResetPlayerVolumeController(this);
+                drone.ResetPlayerVolumeController(this);
             }
         }
 
@@ -1184,9 +1216,12 @@ namespace ProjectUniverse.Environment.Volumes
             }
             float volumeRatio = fluidConc / roomVolume;
             float translatedFill = (float)Math.Round((volumeRatio * gameObject.GetComponent<BoxCollider>().size.y),3);
-            roomFluidPlanes[0].transform.localPosition = new Vector3(
+            if (roomFluidPlanes[0] != null)
+            {
+                roomFluidPlanes[0].transform.localPosition = new Vector3(
                     roomFluidPlanes[0].transform.localPosition.x, translatedFill,
                     roomFluidPlanes[0].transform.localPosition.z);
+            }
         }
 
         public float GetPressure()
