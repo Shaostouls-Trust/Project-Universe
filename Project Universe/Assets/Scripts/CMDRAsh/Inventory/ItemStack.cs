@@ -463,7 +463,7 @@ namespace ProjectUniverse.Base
                         {
                             float need = amountToRemove - runningAmount;
                             tempComp.RemoveComponentAmount((int)amountToRemove);
-                            Consumable_Component newComp = new Consumable_Component(tempComp.ComponentID,
+                            Consumable_Component newComp = Consumable_Component.ConstructComponent(tempComp.ComponentID,
                                 (int)amountToRemove, tempComp.GetComponentDefinition());
                             returnStack.AddItem(newComp);
                             //Debug.Log("Added: " + newComp.ToString());
@@ -478,7 +478,7 @@ namespace ProjectUniverse.Base
                                 float need = amountToRemove - runningAmount;
                                 //remove the need from the quantity and add to running
                                 tempComp.RemoveComponentAmount((int)amountToRemove);
-                                Consumable_Component newComp = new Consumable_Component(tempComp.ComponentID,
+                                Consumable_Component newComp = Consumable_Component.ConstructComponent(tempComp.ComponentID,
                                     (int)amountToRemove, tempComp.GetComponentDefinition());
                                 returnStack.AddItem(newComp);
                                 //Debug.Log("Added: " + newComp.ToString());
@@ -489,7 +489,7 @@ namespace ProjectUniverse.Base
                             {
                                 runningAmount += tempComp.GetQuantity();
                                 tempComp.RemoveComponentAmount((int)amountToRemove);
-                                Consumable_Component newComp = new Consumable_Component(tempComp.ComponentID,
+                                Consumable_Component newComp = Consumable_Component.ConstructComponent(tempComp.ComponentID,
                                     (int)amountToRemove, tempComp.GetComponentDefinition());
                                 returnStack.AddItem(newComp);
                                 //Debug.Log("Added: " + newComp.ToString());

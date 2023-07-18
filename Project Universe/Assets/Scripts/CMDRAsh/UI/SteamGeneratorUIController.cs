@@ -75,8 +75,14 @@ namespace ProjectUniverse.UI
                 cooltemp.text = "" + Mathf.Round(steamGen.CoolantCoolTemp) + "K";
                 float reservoirPer = steamGen.CoolantReservoir / steamGen.CoolantReservoirMaxCap;
                 coolantRes.text = Mathf.Round(reservoirPer*100f) + "%";
-                coolantRes2.text = Mathf.Round(reservoirPer*100f) + "%";
-                coolTankScale.localScale = new Vector3(1f, reservoirPer, 1f);
+                if (coolantRes2 != null)
+                {
+                    coolantRes2.text = Mathf.Round(reservoirPer * 100f) + "%";
+                }
+                if (coolTankScale != null)
+                {
+                    coolTankScale.localScale = new Vector3(1f, reservoirPer, 1f);
+                }
                 waterRes.text = "" + Mathf.Round(steamGen.WaterReservoir/steamGen.WaterReservoirMaxCap)*100f + "%";
                 coolantPres.text = "" + steamGen.CoolantPressure + " bar";
                 chamberPres.text = steamGen.ChamberPressure + "";
@@ -206,6 +212,32 @@ namespace ProjectUniverse.UI
             {
                 warningL.color = YELLOWOFF;
             }
+
+            //ui update
+            if (steamGen.SteamValveState)
+            {
+                steamValve.color = GREENON;
+            }
+            else
+            {
+                steamValve.color = REDON;
+            }
+            if (steamGen.WaterValveState)
+            {
+                waterValve.color = GREENON;
+            }
+            else
+            {
+                waterValve.color = REDON;
+            }
+            if (steamGen.CoolantValveState)
+            {
+                coolantValve.color = GREENON;
+            }
+            else
+            {
+                coolantValve.color = REDON;
+            }
         }
 
         public void ExternalInteractFunc(int i)
@@ -219,48 +251,30 @@ namespace ProjectUniverse.UI
                 case 2:
                     //pump rate down
                     steamGen.DecrementThresholdValue();
-                    dial.localRotation = Quaternion.Euler(0f, dial.localRotation.eulerAngles.y - 10f, 0f);
+                    if(steamGen.ThresholdPumpRate >= 0f)
+                    {
+                        dial.localRotation = Quaternion.Euler(0f, dial.localRotation.eulerAngles.y - 10f, 0f);
+                    }
                     break;
                 case 3:
                     //rate up
                     steamGen.IncrementThresholdValue();
-                    dial.localRotation = Quaternion.Euler(0f, dial.localRotation.eulerAngles.y + 10f, 0f);
+                    if (steamGen.ThresholdPumpRate <= steamGen.MaxPumpRate)
+                    {
+                        dial.localRotation = Quaternion.Euler(0f, dial.localRotation.eulerAngles.y + 10f, 0f);
+                    }
                     break;
                 case 4:
                     //steam vavle
                     steamGen.SteamValveState = !steamGen.SteamValveState;
-                    if (steamGen.SteamValveState)
-                    {
-                        steamValve.color = GREENON;
-                    }
-                    else
-                    {
-                        steamValve.color = REDON;
-                    }
                     break;
                 case 5:
                     //water valve
                     steamGen.WaterValveState = !steamGen.WaterValveState;
-                    if (steamGen.WaterValveState)
-                    {
-                        waterValve.color = GREENON;
-                    }
-                    else
-                    {
-                        waterValve.color = REDON;
-                    }
                     break;
                 case 6:
                     //coolant valve
                     steamGen.CoolantValveState = !steamGen.CoolantValveState;
-                    if (steamGen.CoolantValveState)
-                    {
-                        coolantValve.color = GREENON;
-                    }
-                    else
-                    {
-                        coolantValve.color = REDON;
-                    }
                     break;
             }
         }

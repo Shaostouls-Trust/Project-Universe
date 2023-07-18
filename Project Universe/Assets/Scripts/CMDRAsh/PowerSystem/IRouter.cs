@@ -42,7 +42,7 @@ namespace ProjectUniverse.PowerSystem
             //create GUID
             guid = Guid.NewGuid();
             //legsOut = subRouters.Length;
-            energyBufferMax = 6000;
+            //energyBufferMax = 6000;
             ProxyStart();
         }
 

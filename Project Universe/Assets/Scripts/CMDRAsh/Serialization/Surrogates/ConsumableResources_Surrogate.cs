@@ -19,13 +19,13 @@ public class ConsumableResources_Surrogate
 
         public object SetObjectData(object obj, SerializationInfo info, StreamingContext context, ISurrogateSelector selector)
         {
-            Consumable_Component comp = new Consumable_Component(
+            Consumable_Component comp = Consumable_Component.ConstructComponent(
                 (string)info.GetValue("componentID", typeof(string)),
-                (int)info.GetValue("quantity", typeof(int)))
-            {
-                HealthValue = (int)info.GetValue("healthAdjusted", typeof(int)),
-                RemainingHealth = (float)info.GetValue("healthRemaining", typeof(float))
-            };
+                (int)info.GetValue("quantity", typeof(int)));
+            //{
+            comp.HealthValue = (int)info.GetValue("healthAdjusted", typeof(int));
+            comp.RemainingHealth = (float)info.GetValue("healthRemaining", typeof(float));
+            //};
             obj = comp;
             return obj;
         }

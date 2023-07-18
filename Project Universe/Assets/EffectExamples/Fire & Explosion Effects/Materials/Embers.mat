@@ -14,7 +14,7 @@ Material:
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: 2750
   stringTagMap:
     MotionVector: User
     RenderType: Transparent
@@ -86,11 +86,11 @@ Material:
     m_Floats:
     - _AddPrecomputedVelocity: 0
     - _AlphaCutoffEnable: 0
-    - _AlphaDstBlend: 1
+    - _AlphaDstBlend: 10
     - _AlphaSrcBlend: 1
     - _AlphaToMask: 0
     - _AlphaToMaskInspectorValue: 0
-    - _BlendMode: 1
+    - _BlendMode: 0
     - _BlendOp: 0
     - _BumpScale: 1
     - _CameraFadingEnabled: 0
@@ -109,7 +109,7 @@ Material:
     - _DistortionStrengthScaled: 0
     - _DoubleSidedEnable: 0
     - _DoubleSidedNormalMode: 2
-    - _DstBlend: 1
+    - _DstBlend: 10
     - _EmissionEnabled: 0
     - _EnableBlendModePreserveSpecularLighting: 0
     - _EnableFogOnTransparent: 0

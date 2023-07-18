@@ -10,7 +10,7 @@ namespace ProjectUniverse.Environment.Radiation
     {
         public SphereCollider radiationArea;
         public BoxCollider radiationAreaPool;
-        [Tooltip("Radiological activity of material per gram. Unit is 10^12 Becquerels. Ex: 1g CS-137 is 3.215TBq.")]
+        [Tooltip("Radiological activity of material per gram. Unit is 10^12 (TerraBecquerels). Ex: 1g CS-137 is 3.215TBq.")]
         //5% U235 95% U238 is .126 TBq
         [SerializeField] private float teraBecquerels = 3.215f;//x10^12, activity of one gram CS-137
         [Tooltip("Mass of radioactive material in grams. Linearly increases radioactivity.")]
@@ -93,12 +93,12 @@ namespace ProjectUniverse.Environment.Radiation
             RaycastHit[] rHits = Physics.RaycastAll((transform.position+radiationArea.center), direction.normalized, direction.magnitude);
             for(int i = 0; i < rHits.Length; i++)
             {
-                RaycastHit firstHit = rHits[i];
-                RaycastHit secondHit;
+                //RaycastHit firstHit = rHits[i];
+                //RaycastHit secondHit;
                 //Debug.Log(rHits[i].collider.gameObject);
                 //get thickness of collider along this axis
-                Vector3 origin = (firstHit.point + (direction.normalized));
-                Vector3 closest = firstHit.collider.ClosestPoint(origin);
+                //Vector3 origin = (firstHit.point + (direction.normalized));
+                //Vector3 closest = firstHit.collider.ClosestPoint(origin);
                 //Ray opDirRay = new Ray(closest, (direction.normalized*-1f));
                 //Debug.DrawRay(origin, (direction.normalized * -1f), Color.magenta);
                 //Debug.DrawRay(closest, (direction.normalized * -1f), Color.red);

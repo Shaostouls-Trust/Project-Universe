@@ -10,6 +10,7 @@ using ProjectUniverse.Data.Libraries.Definitions;
 using static ProjectUniverse.Environment.Volumes.VolumeConstructionSection;
 using ProjectUniverse.Data.Libraries;
 using ProjectUniverse.Environment.Fluid;
+using ProjectUniverse.Animation.Controllers;
 
 namespace ProjectUniverse.Util
 {
@@ -278,6 +279,170 @@ namespace ProjectUniverse.Util
 			}
 			VAC.PostProcessVolumeUpdate();
 		}
+
+		/// <summary>
+		/// Equalize water levels between two volumes over time.
+		/// Water will flow at a rate proportional to the total height of plane 0
+		/// Water will equalize such that the heights of the two relative planes are even
+		/// Water can completely drain out of a room.
+		/// </summary>
+		public static void LocalFluidEqualization(VolumeAtmosphereController origin, VolumeAtmosphereController target,
+			DoorAnimator originDoor, DoorAnimator targetDoor)
+        {
+			//Debug.Log("==========");
+			//get water levels of each room
+			float levelO = origin.WaterLevel(false);
+			float levelT = target.WaterLevel(false);
+
+			//if one level is below the door levels, there is no flow, so don't bother with the rest here
+			//the world space to visual position is off by ~0.25f
+			//Debug.Log((levelO+0.25f) +" > " + originDoor.transform.position.y +" || "+ (levelT + 0.25f) + " > "+ targetDoor.transform.position.y);
+			if ((levelO+0.25f) > originDoor.transform.position.y || (levelT + 0.25f) > targetDoor.transform.position.y)
+			{
+
+				//Debug.Log(levelO + " & " + levelT);
+				//get which doors are open
+				int oI = 0;
+				int tI = 0;
+				for (int a = 0; a < origin.RoomDoorsFluidOrder.Length; a++)
+				{
+					if (origin.RoomDoorsFluidOrder[a] == originDoor)
+					{
+						oI = a;
+						break;
+					}
+				}
+				for (int b = 0; b < target.RoomDoorsFluidOrder.Length; b++)
+				{
+					if (target.RoomDoorsFluidOrder[b] == targetDoor)
+					{
+						tI = b;
+						break;
+					}
+				}
+				//zero the world space positions so that the lowest level is 0
+				float offset = 0f;
+				//Debug.Log(levelO + " " + levelT);
+
+				if (levelO > levelT)
+				{
+					offset = levelO - levelT;
+					levelO -= levelT;
+					levelT = 0f;
+				}
+				else if (levelO < levelT)
+				{
+					offset = levelT - levelO;
+					levelT -= levelO;
+					levelO = 0f;
+				}
+				//if offset == 0, then there is no difference between the water levels.
+				if (offset != 0)
+				{
+					//offset the world space positions by the relative door position
+					//if negative, add, else sub (is this correct?)
+					if (levelO >= 0f)
+					{
+						//levelO -= origin.RoomFluidPlaneLevels[oI];
+					}
+					else
+					{
+						//levelO += origin.RoomFluidPlaneLevels[oI];
+					}
+					if (levelT >= 0f)
+					{
+						//levelT -= target.RoomFluidPlaneLevels[tI];
+					}
+					else
+					{
+						//levelT += target.RoomFluidPlaneLevels[tI];
+					}
+					//Debug.Log(levelO + " & " + levelT);
+
+					//get volume of water over door levels
+					float freeVolO = 0f;
+					float freeVolT = 0f;
+					//float originArea = (origin.GetVolume() / origin.RoomHeight);
+					//float targetArea = (target.GetVolume() / target.RoomHeight);
+					if (levelO > 0f) //origin.RoomFluidPlaneLevels[oI]
+					{
+						//get the average area of the room's floor and multiply it by the water above the limit
+						freeVolO = Math.Abs(origin.RoomArea * levelO);
+					}
+					if (levelT > 0f)//= target.RoomFluidPlaneLevels[tI]
+					{
+						//get the average area of the room's floor and multiply it by the water above the limit
+						freeVolT = Math.Abs(target.RoomArea * levelT);
+					}
+					//add the two free volumes. This is how much fluid can be split between the two.
+					float eqVol = freeVolO + freeVolT;
+					//Debug.Log(eqVol + " = " + freeVolO + " + " + freeVolT);
+					//divide by totalarea to get total eq height
+					//Debug.Log(eqVol +" / "+ origin.RoomArea + " + " + target.RoomArea);
+					float eqHeight = eqVol / (origin.RoomArea + target.RoomArea);
+					//Debug.Log(eqHeight + " = " + eqVol + " / (" + origin.RoomArea + " + " + target.RoomArea + ")");
+					float Oheight = 0f;
+					float Theight = 0f;
+					if (eqHeight > origin.RoomHeight)
+					{
+						Oheight = eqHeight - origin.RoomHeight;
+					}
+					if (eqHeight > target.RoomHeight)
+					{
+						Theight = eqHeight - target.RoomHeight;
+					}
+					//Debug.Log(eqHeight + " -| " + Oheight + " |- " + Theight);
+					//multiply eqheight with volume and remove the volume of the ceiling overflow
+					//this is a ratio of the fluid in each room to the total fluid
+					float Otrans = ((eqHeight * origin.RoomArea) - (Oheight * origin.RoomArea)) / eqVol;
+					float Ttrans = ((eqHeight * target.RoomArea) - (Theight * target.RoomArea)) / eqVol;
+					//Debug.Log(Otrans + " -||- " + Ttrans);
+					//combine the fluids
+					List<IFluid> totalFluids = new List<IFluid>();
+					totalFluids.AddRange(origin.RemoveRoomFluid(eqVol));
+					totalFluids.AddRange(target.RemoveRoomFluid(eqVol));
+					//Debug.Log(totalFluids.Count);
+					if (totalFluids.Count > 0)
+					{
+						//divy the fluid volume to each room.
+						for (int f = 0; f < totalFluids.Count; f++)
+						{
+							IFluid oAdd = new IFluid(totalFluids[f]);
+							oAdd.SetConcentration(totalFluids[f].GetConcentration() * Otrans);
+							IFluid tAdd = new IFluid(totalFluids[f]);
+							tAdd.SetConcentration(totalFluids[f].GetConcentration() * Ttrans);
+							origin.AddRoomFluid(oAdd);
+							target.AddRoomFluid(tAdd);
+						}
+						totalFluids.Clear();
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// There will be 2-way reversible fluid pumps to/from auxilliary reservoirs to drain flooded rooms.
+		/// The alternate use of this function is to vent fluids into space.
+		/// </summary>
+		/// <param name="origin"></param>
+		/// <param name="rate"></param> m^3 removed per second
+		public static void LocalFluidDrain(VolumeAtmosphereController origin, float rate, IFluidPipe pipe)
+        {
+			if(rate == -1f)
+            {
+				//vent into space
+				origin.RemoveRoomFluid(6f);
+            }
+            else
+            {
+				//remove into some other pipe
+				List<IFluid> fluids = origin.RemoveRoomFluid(rate);
+				if (fluids != null)
+				{
+					pipe.Receive(false, 10f, 2f, fluids, fluids[0].GetTemp());
+				}
+			}
+        }
 
 		public static float RefinementMassLoss(int tier, int quality)
 		{

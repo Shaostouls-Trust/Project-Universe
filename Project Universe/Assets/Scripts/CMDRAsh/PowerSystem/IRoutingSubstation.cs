@@ -45,12 +45,13 @@ namespace ProjectUniverse.PowerSystem
         {
             M_Substation = GetComponent<Mach_RoutingSubstation>();
             thisSubstation = GetComponent<IRoutingSubstation>();
-            energyBufferMax = 2500f;//1260f
+            //energyBufferMax = 2500f;//1260f
             energyBufferMaxResetValue = energyBufferMax;
             bufferCurrent = 0f;
             totalRequiredPower = 0.0f;
             guid = Guid.NewGuid();
             //create a cable between substation and machine/s
+            legsOut = 0;
             ProxyStart(2);
             ProxyStart(1);
         }
@@ -87,7 +88,7 @@ namespace ProjectUniverse.PowerSystem
 
         public void ProxyStart(int mode)
         {
-            legsOut = 0;
+            //legsOut = 0;
             if (mode == 1)
             {
                 if (poc != null)

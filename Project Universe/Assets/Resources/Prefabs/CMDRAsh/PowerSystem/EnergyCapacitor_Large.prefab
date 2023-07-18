@@ -109,11 +109,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5f2eccf90475ac4cab617d6729f5ca1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outputMax: 720
+  outputMax: 21600
   generatorLevel: 1
   powerGrid: devGrid
-  outputCurrent: 0
+  lastOutput: 0
   maxRouters: 4
   routers:
   - {fileID: 0}
+  leaking: 0
+  outputController: {fileID: 0}
+  radZone: {fileID: 0}
+  leakAlarm: {fileID: 0}
   availibleLegsOut: 0

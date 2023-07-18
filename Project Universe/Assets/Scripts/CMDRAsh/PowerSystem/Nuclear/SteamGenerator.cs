@@ -1,3 +1,4 @@
+using ProjectUniverse.Base;
 using ProjectUniverse.Environment.Fluid;
 using ProjectUniverse.Environment.Gas;
 using ProjectUniverse.Environment.Volumes;
@@ -5,6 +6,7 @@ using ProjectUniverse.Util;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 namespace ProjectUniverse.PowerSystem.Nuclear
 {
@@ -49,6 +51,7 @@ namespace ProjectUniverse.PowerSystem.Nuclear
         [SerializeField] private VolumeAtmosphereController vac;
         private bool tankBlown;
         [SerializeField] private AudioSource src;
+        [SerializeField] private ScriptedExplosion scrExp;
 
         //old turbine vars
         private float coolantFlowRateCurrent = 0f;//Kg/hr
@@ -60,7 +63,7 @@ namespace ProjectUniverse.PowerSystem.Nuclear
         {
             thresholdPumpRate = maxPumpRate;
             steamOut = new IGas("Steam", 851f, 0f, 200f, 72f);
-            coolantInReservoir = new IFluid("Coolant", 80.33f, primaryCoolantReservoir, 200f, 100f);
+            coolantInReservoir = new IFluid("Coolant", 80.33f, primaryCoolantReservoir, 200f);
         }
 
         public bool AutomaticControl { get { return automaticControl; } set { automaticControl = value; } }
@@ -154,9 +157,20 @@ namespace ProjectUniverse.PowerSystem.Nuclear
         {
             get { return sysfail; }
         }
+
+        public void SetTankPressure(int hash, float pressure)
+        {
+            if(hash == 85432657)
+            {
+                chamberPressure = pressure;
+            }
+        }
+
         private void Update()
         {
             //collect water from pipe
+            /// SAMPLE WATER LOGIC
+            //Profiler.BeginSample("Water");
             if (waterValve)
             {
                 if ((waterStored_monitor < waterStoredMax) && waterIn != null)
@@ -186,7 +200,10 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                     storedWater.AddRange(IncommingWater);
                 }
             }
+            //Profiler.EndSample();
 
+            /// SAMPLE COOLANT INPUT LOGIC
+            //Profiler.BeginSample("CoolantIn");
             if (coolantIn != null && coolantValve)
             {
                 if (CoolantReservoir < CoolantReservoirMaxCap)
@@ -202,7 +219,10 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                     }
                 }
             }
+            //Profiler.EndSample();
 
+            /// SAMPLE EXCHANGE LOGIC
+            //Profiler.BeginSample("Exchange");
             //Hot/Cold Coolant cycle
             if (!float.IsNaN(CurrentPumpRate))
             {
@@ -253,6 +273,10 @@ namespace ProjectUniverse.PowerSystem.Nuclear
             }
 
             float instFlowRateCurrent = (steamFlowRateCurrent / 1000f / 3600f)*Time.fixedDeltaTime;//Kg/hr to m^3/hr to m^3(instantaneous)
+            //Profiler.EndSample();
+
+            /// SAMPLE STEAM LOGIC
+            //Profiler.BeginSample("Steam");
             //Debug.Log(instFlowRateCurrent);
             if (instFlowRateCurrent > waterStored_monitor)
             {
@@ -287,6 +311,10 @@ namespace ProjectUniverse.PowerSystem.Nuclear
             
             //add steamFlowRateCurrent to steam gas
             steamOut.AddConcentration(instFlowRateCurrent);
+            //Profiler.EndSample();
+
+            /// SAMPLE CHAMBER PRESSURE LOGIC
+            //Profiler.BeginSample("Chamber Pressure A");
             //steamOut.SetConcentration(instFlowRateCurrent);
             //the tank volume is 525m^3. 0.0054*1000. 1/18.02 g/mol * g steam. Steam is(?) 455C. p=nrt/v. 200 is base pressure.
             chamberPressure = 200f + (8.3145f*0.0555f*steamOut.GetConcentration()*108f*728.15f) / 525f;
@@ -303,25 +331,39 @@ namespace ProjectUniverse.PowerSystem.Nuclear
             {
                 steamOut.SetLocalPressure(chamberPressure);
             }
+            //Profiler.EndSample();
 
+            Profiler.BeginSample("Chamber Pressure");
             if (ChamberPressure > 231.5f || tankBlown)
             {
                 //blow;
                 tankLeak = true;
                 if (!tankBlown)//on first run will be false
                 {
-                    src.Play();
+                    scrExp.ExplodeEffect();
+                    //src.Play();
                 }
                 tankBlown = true;
                 //sfx and material stuff duh
                 //steam and water leak into room
                 if (vac != null)
                 {
-                    vac.AddRoomGas(steamOut);
+                    Profiler.BeginSample("Chamber Pressure Sub A");
+                    //don't add empty steam and water
+                    if(steamOut.GetConcentration() > 0f)
+                    {
+                        vac.AddRoomGas(steamOut);
+                    }
                     chamberPressure = vac.Pressure;
-                    vac.AddRoomFluid(new IFluid("water",300f,WaterReservoir,vac.Pressure,WaterReservoir));
-                    waterStored_monitor = 0f;
+                    Profiler.EndSample();
+                    Profiler.BeginSample("Chamber Pressure Sub B");
+                    if(WaterReservoir > 0f)
+                    {
+                        vac.AddRoomFluid(new IFluid("water", 300f, WaterReservoir, vac.Pressure));
+                        waterStored_monitor = 0f;
+                    }
                     steamOut.SetConcentration(0f);
+                    Profiler.EndSample();
                 }
                 else
                 {
@@ -329,9 +371,13 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                     waterStored_monitor = 0f;
                 }
             }
+            Profiler.EndSample();
+
             //else
             //change to include coolant flow, not just water flow
             //if required is greater than available
+            /// SAMPLE STEAM OUT LOGIC
+            //Profiler.BeginSample("Steam Out");
             if (absoluteRequiredWater_Steam > steamFlowRateCurrent || coolantFlowRateCurrent < 1000f)
             {
                 
@@ -381,7 +427,10 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                     steamOut.AddConcentration(-throughput_m3);
                 }
             }
+            //Profiler.EndSample();
 
+            /// SAMPLE COOLANT OUT LOGIC
+            //Profiler.BeginSample("Coolant Out");
             if (coolantOut != null && coolantValve)
             {
                 //send coolant into core
@@ -407,6 +456,7 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                     primaryCoolantReservoir = 0f;
                 }
             }
+            //Profiler.EndSample();
         }
 
         public void IncrementThresholdValue()
@@ -425,6 +475,37 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                 thresholdPumpRate = 0f;
             }
         }
+
+        public void CheckPressureImmediate()
+        {
+            if (ChamberPressure > 231.5f || tankBlown)
+            {
+                //blow;
+                tankLeak = true;
+                if (!tankBlown)//on first run will be false
+                {
+                    scrExp.ExplodeEffect();
+                    //src.Play();
+                }
+                tankBlown = true;
+                //sfx and material stuff duh
+                //steam and water leak into room
+                if (vac != null)
+                {
+                    vac.AddRoomGas(steamOut);
+                    chamberPressure = vac.Pressure;
+                    vac.AddRoomFluid(new IFluid("water", 300f, WaterReservoir, vac.Pressure));
+                    waterStored_monitor = 0f;
+                    steamOut.SetConcentration(0f);
+                }
+                else
+                {
+                    chamberPressure = 1.01f;
+                    waterStored_monitor = 0f;
+                }
+            }
+        }
+
         public void ExternalInteractFunc(int i)
         {
             if (i == 1)

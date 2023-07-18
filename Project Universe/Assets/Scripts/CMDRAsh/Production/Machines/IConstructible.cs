@@ -74,7 +74,7 @@ namespace ProjectUniverse.Base
 			//Fill the empty list with empty Itemstacks of the type provided by RequiredComponents
 			for (int x = 0; x < IConstructible_RequiredComponents.Length; x++)
 			{
-				Consumable_Component comp0 = new Consumable_Component(IConstructible_RequiredComponents[x].Item1.GetComponentType(),
+				Consumable_Component comp0 = Consumable_Component.ConstructComponent(IConstructible_RequiredComponents[x].Item1.GetComponentType(),
 						 0, IConstructible_RequiredComponents[x].Item1);
 				ItemStack stackx = new ItemStack(comp0.ComponentID, 9000, typeof(Consumable_Component));
 				IConstructible_ComponentsReal.Add(stackx);
@@ -100,7 +100,7 @@ namespace ProjectUniverse.Base
 					//if the numbers aren't equal, then we're missing components
 					if (IConstructible_ComponentsReal[i].GetRealLength() != IConstructible_RequiredComponents[i].Item2)
 					{
-						Consumable_Component compToAdd = new Consumable_Component(IConstructible_RequiredComponents[i].Item1.GetComponentType(),
+						Consumable_Component compToAdd = Consumable_Component.ConstructComponent(IConstructible_RequiredComponents[i].Item1.GetComponentType(),
 							 1, IConstructible_RequiredComponents[i].Item1);
 						ItemStack stack = new ItemStack(compToAdd.ComponentID, 9000, typeof(Consumable_Component));
 						stack.AddItem(compToAdd);
@@ -320,7 +320,7 @@ namespace ProjectUniverse.Base
 				{
                     if (i >= IConstructible_ComponentsReal.Count)
                     {
-						Consumable_Component comp0 = new Consumable_Component(
+						Consumable_Component comp0 = Consumable_Component.ConstructComponent(
 							IConstructible_RequiredComponents[i].Item1.GetComponentType(), 0,
 							IConstructible_RequiredComponents[i].Item1);
 						ItemStack stackx = new ItemStack(comp0.ComponentID, 9000, typeof(Consumable_Component));
@@ -519,7 +519,7 @@ namespace ProjectUniverse.Base
 									IConstructible_MachineFullyBuilt = false;
 									IConstructible_ComponentsReal[c].RemoveTArrayIndex(0);
 									//inject a 'dead' dummy component into the last index of the TArray. This is to prevent NullPointers
-								    Consumable_Component dummy = new Consumable_Component(comp.ComponentID, 0, comp.GetComponentDefinition());
+								    Consumable_Component dummy = Consumable_Component.ConstructComponent(comp.ComponentID, 0, comp.GetComponentDefinition());
 									dummy.RemainingHealth = 0f;
 									//if lastindex is 0 then this is auto null pointer
 									if(IConstructible_ComponentsReal[c].LastIndex == 0)

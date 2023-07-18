@@ -127,6 +127,29 @@ namespace ProjectUniverse.PowerSystem.Nuclear
             get { return rodMass; }
         }
 
+        public void SetAbsorbedNeighbor(int hash, float newRate)
+        {
+            if(hash == 10963574)
+            {
+                absorbedNeighborActivity = newRate;
+            }
+        }
+        public void SetAbsorbedSelf(int hash, float newSelf)
+        {
+            if(hash == 98123576)
+            {
+                absorbedSelfActivity = newSelf;
+            }
+        }
+
+        public void RemoveHeat(int hash, float less)
+        {
+            if(hash == 29754639)
+            {
+                coreTemp -= less;
+            }
+        }
+
         public float BTUPerHour { get { return btuPerHour; } }
 
         // Start is called before the first frame update
@@ -136,60 +159,6 @@ namespace ProjectUniverse.PowerSystem.Nuclear
             positiveActivity = baseActivity;
             timeScaled = Time.deltaTime * 10f;
         }
-        
-        
-        // Update is called once per frame
-        /*void Update()
-        {
-            timeScaled = nuclearCoreBody.TimeScaled;
-        }*/
-
-        public void RecalculateData()
-        {
-            controlRodInsertion = nuclearCoreBody.GlobalControlRodInsertion;
-            timeScaled = Time.deltaTime * 10f;//15f
-            
-            coreTemp += netHeat;
-            neighborActivity = nuclearCoreBody.NeighborActivityData[pos[0],pos[1]];
-            positiveActivity = ((absorbedSelfActivity * netActivity) + (baseActivity * 0.5f)
-                + ((coreTemp - 273.15f) * tempToActivityMult)) * timeScaled;
-            positiveActivity += neighborActivity;
-            //positive activityNoRods is the activity before control rods are applied. Flat lim on pos act.
-            positiveActivityNoRods = positiveActivity;
-            //positiveActivity *= (1 - controlRodInsertion);
-            //The positive activity is a flat limit on the activityNoRods
-            positiveActivity = positiveActivityNoRods * (1 - controlRodInsertion);
-            positiveHeat = neutronSecondsToKelvin * positiveActivity * rodMass * timeScaled;
-            //energy exchange
-            if (coreTemp >= 373.15f)
-            {
-                heatEFrRod = (coreTemp - 373.15f) * kelvinToJoule * 3600f;
-                btuPerHour = (heatEFrRod * primaryCoolantEfficiency) / 155.06f;
-                //coolantMDotPerHour is the required/proper amount
-                coolantMDotPerHour = (btuPerHour / 1.0f * (heatEFrRod*0.05f)) / 2.2f;//heatEFr / 3600f
-                
-                //else the coolant rate is too high, which will be adjusted by the core/steam generators
-                kiloWatHourThermal = (coolantMDotPerHour * 2086.8524f) / 3412.142f;//coolantMDotPerHour
-                megaWatHourThermal = kiloWatHourThermal / 1000f;
-                negativeActivity = ((positiveActivity * negativeActivityPercent)
-                    + (kiloWatHourThermal * negativeActivitySteam)) * timeScaled;
-            }
-            else
-            {
-                heatEFrRod = 0f;
-                btuPerHour = 0f;
-                coolantMDotPerHour = 0f;
-                kiloWatHourThermal = 0f;
-                megaWatHourThermal = 0f;
-                negativeActivity = 0f;
-            }
-            negativeHeat = (heatEFrRod * 0.0008f) * timeScaled;
-
-            //recalc net vars for next update
-            netHeat = (positiveHeat - negativeHeat);
-            // also remove reactivity according to control rod insertion
-            netActivity = (positiveActivity - negativeActivity);// - ((controlRodInsertion)*PositiveActivity);
-        }
 
         public void RecalcDataStage1()
         {
@@ -197,6 +166,16 @@ namespace ProjectUniverse.PowerSystem.Nuclear
             timeScaled = Time.deltaTime * 15f;
 
             coreTemp += netHeat;
+            //temp cannot be greater than 27 million F or less than -189 F
+            if (coreTemp >= 1.5E7f)
+            {
+                coreTemp = 1.5E7f;
+            }
+            else if(coreTemp < 150f)
+            {
+                coreTemp = 150f;
+            }   
+            
             //float appliedBaseActivity = baseActivity * (1 - controlRodInsertion);
             neighborActivity = nuclearCoreBody.NeighborActivityData[pos[0], pos[1]];
             positiveActivity = ((absorbedSelfActivity * netActivity) + (baseActivity * 0.5f)
@@ -214,7 +193,11 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                 heatEFrRod = (coreTemp - 373.15f) * kelvinToJoule * 3600f;
                 btuPerHour = (heatEFrRod * primaryCoolantEfficiency) / 155.06f;
                 //coolantMDotPerHour is the required/proper amount
-                coolantMDotPerHour = (btuPerHour / 1.0f * (heatEFrRod * 0.05f)) / 2.2f;//heatEFr / 3600f
+                coolantMDotPerHour = (btuPerHour / 1.0f * (heatEFrRod * 0.05f)) / 2.2f;
+                if (float.IsNaN(coolantMDotPerHour))
+                {
+                    coolantMDotPerHour = 0f;
+                }
             }
             else
             {
@@ -232,6 +215,10 @@ namespace ProjectUniverse.PowerSystem.Nuclear
         /// <param name="coolantEfficiency"></param>
         public void RecalcDataStage2(float realMDot, float coolantEfficiency)
         {
+            if (float.IsNaN(realMDot))
+            {
+                realMDot = 0f;
+            }
             //coolantMDotReal = realMDot;
             if (coreTemp >= 373.15f)
             {
@@ -246,16 +233,8 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                 megaWatHourThermal = 0f;
                 negativeActivity = 0f;
             }
-            //replace neg heat with realMDot calculation
-            if (float.IsNaN(realMDot))
-            {
-                negativeHeat = (heatEFrRod * 0.0008f) * timeScaled;
-            }
-            else
-            {
-                //Debug.Log("realMDot:" + realMDot);
-                negativeHeat = (realMDot * 0.0004f) * coolantEfficiency * timeScaled;//.0005
-            }
+            //Debug.Log("realMDot:" + realMDot);
+            negativeHeat = (realMDot * 0.0004f) * coolantEfficiency * timeScaled;
             //recalc net vars for next update
             netHeat = (positiveHeat - negativeHeat);
             // also remove reactivity according to control rod insertion

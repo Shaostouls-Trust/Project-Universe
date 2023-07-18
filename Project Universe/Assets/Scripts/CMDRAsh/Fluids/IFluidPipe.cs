@@ -428,7 +428,7 @@ namespace ProjectUniverse.Environment.Fluid
                             for (int j = 0; j < fluids.Count; j++)
                             {
                                 //this gas is the Eq'd gas.
-                                IFluid tempGas = new IFluid(fluids[j].GetIDName(), tEq_global, cEq_global, pEq_global, volume_m3);
+                                IFluid tempGas = new IFluid(fluids[j].GetIDName(), tEq_global, cEq_global, pEq_global);
                                 newGassesList.Add(tempGas);
                             }
                             object[] newAtmoComp = { tEq_global, pEq_global, newGassesList };

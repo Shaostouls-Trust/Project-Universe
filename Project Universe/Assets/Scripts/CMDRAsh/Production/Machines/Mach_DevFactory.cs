@@ -111,7 +111,7 @@ namespace ProjectUniverse.Production.Machines
                         counterIng = 0;
                         counterComp = 0;
                         IComponentLibrary.ComponentDictionary.TryGetValue(ProduceComponent, out def);
-                        newComp = new Consumable_Component(ProduceComponent, 1, def);
+                        newComp = Consumable_Component.ConstructComponent(ProduceComponent, 1, def);
                         processtime = def.GetBuildTime();
                         float targetNumber = 0.0f;
                         //remove the required materials

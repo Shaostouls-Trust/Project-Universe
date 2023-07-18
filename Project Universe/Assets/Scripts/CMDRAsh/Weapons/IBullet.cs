@@ -20,6 +20,8 @@ namespace ProjectUniverse.Items.Weapons
             }
             //Bullets not making it through to the limbs b/c of the char controller (even with collision layers)
             collision.gameObject.SendMessage("TakeDamageFromBullet", this, SendMessageOptions.DontRequireReceiver);
+            collision.gameObject.SendMessageUpwards("TakeDamageFromBullet", this, SendMessageOptions.DontRequireReceiver);
+            //Debug.Log(collision.gameObject.name);
             ///Eventually play an impact sound and do all the ballistics stuff
             ///here
         }

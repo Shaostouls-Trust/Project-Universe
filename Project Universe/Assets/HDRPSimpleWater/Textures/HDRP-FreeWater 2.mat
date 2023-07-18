@@ -1,5 +1,20 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6450877664427522636
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa486462e6be1764e89c788ba30e61f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_DiffusionProfileReferences:
+  - {fileID: 0}
+  m_MaterialReferences: []
 --- !u!21 &2100000
 Material:
   serializedVersion: 6
@@ -304,8 +319,8 @@ Material:
     m_Floats:
     - Vector1_10BE3CD8: 0.25
     - Vector1_2DCE38F4: -0.154
-    - Vector1_3034A0E7: 2.5
-    - Vector1_35CC0B3F: 0.5
+    - Vector1_3034A0E7: 0.25
+    - Vector1_35CC0B3F: 0.25
     - Vector1_3894EE55: 0.025
     - Vector1_4159F3F: 0.05
     - Vector1_4AC4A68B: 0.025
@@ -313,7 +328,7 @@ Material:
     - Vector1_4FE3D16D: 2.69
     - Vector1_717AF822: 0
     - Vector1_75458A12: 9
-    - Vector1_895CAB23: 0.5
+    - Vector1_895CAB23: 0.25
     - Vector1_8DAAF4DB: 0.05
     - Vector1_9BC3A5CD: 0
     - Vector1_A8100DE7: 0.025
@@ -370,7 +385,7 @@ Material:
     - _DiffusionProfile1: 0
     - _DiffusionProfile2: 0
     - _DiffusionProfile3: 0
-    - _DiffusionProfileHash: 0
+    - _DiffusionProfileHash: 2.8604925
     - _DisplacementLockObjectScale: 1
     - _DisplacementLockTilingScale: 1
     - _DisplacementMode: 0
@@ -568,7 +583,7 @@ Material:
     - _TransparentDepthPrepassEnable: 1
     - _TransparentSortPriority: 0
     - _TransparentWritingMotionVec: 0
-    - _TransparentZWrite: 0
+    - _TransparentZWrite: 1
     - _UVBase0: 0
     - _UVBase1: 0
     - _UVBase2: 0
@@ -595,13 +610,13 @@ Material:
     - _ZTestDepthEqualForOpaque: 4
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
-    - _ZWrite: 0
+    - _ZWrite: 1
     - __dirty: 0
     m_Colors:
-    - Color_8DF95E1F: {r: 0.07636168, g: 0.30515486, b: 0.4150943, a: 1}
-    - Color_A0995202: {r: 0.095007114, g: 0.25094274, b: 0.3301887, a: 1}
+    - Color_8DF95E1F: {r: 0.593592, g: 0.72845167, b: 0.7924528, a: 1}
+    - Color_A0995202: {r: 0.5938056, g: 0.7010799, b: 0.754717, a: 1}
     - Color_DD167ECF: {r: 0.9433962, g: 0, b: 0, a: 1}
-    - Color_F4D2E00B: {r: 0.14195444, g: 0.5134238, b: 0.5471698, a: 1}
+    - Color_F4D2E00B: {r: 1, g: 1, b: 1, a: 1}
     - Vector2_6E1E59F4: {r: 15, g: 15, b: 0, a: 0}
     - _BaseColor0: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor1: {r: 1, g: 1, b: 1, a: 1}
@@ -610,7 +625,8 @@ Material:
     - _Color: {r: 0, g: 0, b: 0, a: 1}
     - _Color0: {r: 0.1532764, g: 0.6105888, b: 0.9926471, a: 0}
     - _DeepColor: {r: 0.07058769, g: 0.17646986, b: 0.32941103, a: 1}
-    - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
+    - _DiffusionProfileAsset: {r: -2.6677194e-33, g: 1.6377669e+22, b: 181946.12,
+        a: -1.290991e+35}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}

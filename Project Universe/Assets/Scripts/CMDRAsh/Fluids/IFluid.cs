@@ -31,13 +31,13 @@ namespace ProjectUniverse.Environment.Fluid {
         private float density;//in g/L IE water is 1g/cm3 so 1000g/L
         private float temp;
         private float concentration;//amount of the fluid in the local volume
-        private float volume_m3;//amount of fluid in m^3
+        //private float volume_m3;//amount of fluid in m^3
         private float localPressure;//pressure of the fluid in it's local volume
 
         override
         public string ToString()
         {
-            string compile = "" + IDname + " at " + temp + "F, " + density + "g/L, " + concentration + "m3 in " + volume_m3 + "m3 at " + localPressure + "atm";
+            string compile = "" + IDname + " at " + temp + "F, " + density + "g/L, " + concentration + "m3 at " + localPressure + "atm";// volume_m3 + "m3 at " 
             return compile;
         }
 
@@ -50,13 +50,13 @@ namespace ProjectUniverse.Environment.Fluid {
             //fill other values from gasID lib
         }
 
-        public IFluid(string gasID, float mytemp, float myconcentration, float localpressure, float localvolume)
+        public IFluid(string gasID, float mytemp, float myconcentration, float localpressure)//, float localvolume)
         {
             IDname = gasID;
             temp = mytemp;
             localPressure = localpressure;
             concentration = myconcentration;
-            volume_m3 = localvolume;
+            //volume_m3 = localvolume;
             //fill other values from gasID lib
         }
 
@@ -66,7 +66,7 @@ namespace ProjectUniverse.Environment.Fluid {
             temp = otherFluid.GetTemp();
             localPressure = otherFluid.GetLocalPressure();
             concentration = otherFluid.GetConcentration();
-            volume_m3 = otherFluid.GetLocalVolume();
+            //volume_m3 = otherFluid.GetLocalVolume();
         }
 
         public string GetIDName()
@@ -113,10 +113,10 @@ namespace ProjectUniverse.Environment.Fluid {
         {
             return localPressure;
         }
-        public float GetLocalVolume()
-        {
-            return volume_m3;
-        }
+        //public float GetLocalVolume()
+        //{
+        //    return volume_m3;
+        //}
         public float GetFilledVolume()
         {
             return 1000f * concentration;//1000L in 1 m^3 water
@@ -138,10 +138,10 @@ namespace ProjectUniverse.Environment.Fluid {
         {
             localPressure = pipePressure;
         }
-        public void SetLocalVolume(float localVolume)
-        {
-            volume_m3 = localVolume;
-        }
+        //public void SetLocalVolume(float localVolume)
+        //{
+        //    volume_m3 = localVolume;
+        //}
         public void SetConcentration(float newConcentration)
         {
             concentration = newConcentration;

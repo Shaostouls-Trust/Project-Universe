@@ -77,7 +77,7 @@ namespace ProjectUniverse.PowerSystem
         {
             occupiedSwitches = new GameObject[switchCount];
             thisBreaker = GetComponent<IBreakerBox>();
-            energyBufferMax = 350.0f;//300
+            energyBufferMax = 5600.0f;
             bufferCurrent = 0f;
             totalRequiredPower = 0.0f;
             guid = Guid.NewGuid();

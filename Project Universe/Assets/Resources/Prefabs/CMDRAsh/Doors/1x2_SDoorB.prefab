@@ -464,10 +464,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a99f22c62263c24aa8091282b281440, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  requestedEnergy: 15
-  requiredEnergy: 15
+  requestedEnergy: 400
+  requiredEnergy: 400
   percentDrawToFill: 5
-  energyBuffer: 150
+  energyBuffer: 4500
   bufferCurrent: 0
   machineType: door
   runMachine: 1

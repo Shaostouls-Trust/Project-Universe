@@ -46,13 +46,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a99f22c62263c24aa8091282b281440, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  requestedEnergy: 2
-  requiredEnergy: 2
-  percentDrawToFill: 10
-  energyBuffer: 10
+  requestedEnergy: 60
+  requiredEnergy: 60
+  percentDrawToFill: 5
+  energyBuffer: 180
   bufferCurrent: 0
   machineType: light_point
   runMachine: 1
+  lightComponent: {fileID: 0}
   legsRequired: 2
 --- !u!114 &8050201619289185640
 MonoBehaviour:

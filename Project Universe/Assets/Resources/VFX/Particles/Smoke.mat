@@ -254,7 +254,7 @@ Material:
     - _TransparentDepthPrepassEnable: 0
     - _TransparentSortPriority: 0
     - _TransparentWritingMotionVec: 0
-    - _TransparentZWrite: 0
+    - _TransparentZWrite: 1
     - _UVBase: 0
     - _UVDetail: 0
     - _UVEmissive: 0
@@ -264,7 +264,7 @@ Material:
     - _ZTestGBuffer: 3
     - _ZTestModeDistortion: 4
     - _ZTestTransparent: 4
-    - _ZWrite: 0
+    - _ZWrite: 1
     m_Colors:
     - Vector2_4F8D01F9: {r: 0, g: 1, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 0}

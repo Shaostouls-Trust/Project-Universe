@@ -14,7 +14,7 @@ namespace ProjectUniverse.Items.Weapons
     {
         //private ProjectUniverse.PlayerControls controls;//temp
         [SerializeField] private float Damage = 10f;
-        [SerializeField] private float RoundsPerMinute = 180f;
+        [SerializeField] private float RoundsPerMinute = 300f;
         //[SerializeField] private float Range = 1000f; //Estimate based off of gun and bullet properties, bullets will travel until they hit something
         //unless in space, at which point we do need a bullet life.
         [SerializeField] private float BulletSpeed = 850f;//m/s

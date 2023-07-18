@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using ProjectUniverse.Data.Libraries.Definitions;
 using ProjectUniverse.Data.Libraries;
+using System;
 
 namespace ProjectUniverse.Production.Resources
 {
-    public class Consumable_Component : MonoBehaviour//to ScriptableObject
+    public class Consumable_Component : ScriptableObject//MonoBehaviour
     {
         [SerializeField] private string componentID;
         private IComponentDefinition compDefinition;
@@ -15,7 +16,38 @@ namespace ProjectUniverse.Production.Resources
         private int Priority_Inherited;
         private float HealthCurrent;
 
-        
+        public static Consumable_Component ConstructComponent(string compID, int num, IComponentDefinition definition)
+        {
+            Consumable_Component comp = (Consumable_Component)ScriptableObject.CreateInstance(typeof(Consumable_Component));
+            comp.componentID = compID;
+            comp.quantity = num;
+            comp.compDefinition = definition;
+            comp.Health_Adjusted = comp.compDefinition.GetHealth();
+            comp.HealthCurrent = comp.Health_Adjusted;
+            comp.Priority_Inherited = comp.compDefinition.GetPriority();
+            return comp;
+        }
+        public static Consumable_Component ConstructComponent(string compID, int num)
+        {
+            Consumable_Component comp = (Consumable_Component)ScriptableObject.CreateInstance(typeof(Consumable_Component));
+            comp.componentID = compID;
+            comp.quantity = num;
+            bool success = IComponentLibrary.ComponentDictionary.TryGetValue(comp.componentID, out comp.compDefinition);
+            if (!success)
+            {
+                Debug.LogError("Failed to grab IComponentDefinition " + comp.componentID + " from IComponentLibrary");
+            }
+            else
+            {
+                comp.Health_Adjusted = comp.compDefinition.GetHealth();
+                comp.Priority_Inherited = comp.compDefinition.GetPriority();
+                comp.HealthCurrent = comp.Health_Adjusted;
+            }
+            //do we want to track what resources make up this component?
+            return comp;
+        }
+
+        [Obsolete("use ConstructComponent to create a new consumable component.", false)]
         public Consumable_Component(string compID, int num, IComponentDefinition definition)
         {
             componentID = compID;
@@ -26,6 +58,8 @@ namespace ProjectUniverse.Production.Resources
             Priority_Inherited = compDefinition.GetPriority();
             //do we want to track what resources make up this component?
         }
+
+        [Obsolete("use ConstructComponent to create a new consumable component.", false)]
         public Consumable_Component(string compID, int num)
         {
             componentID = compID;

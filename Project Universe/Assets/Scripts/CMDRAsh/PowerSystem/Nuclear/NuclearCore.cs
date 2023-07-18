@@ -1,5 +1,7 @@
+using ProjectUniverse.Base;
 using ProjectUniverse.Environment.Fluid;
 using ProjectUniverse.Environment.Radiation;
+using ProjectUniverse.Environment.Volumes;
 using ProjectUniverse.Ship;
 using System.Collections;
 using System.Collections.Generic;
@@ -68,8 +70,10 @@ namespace ProjectUniverse.PowerSystem.Nuclear
         private float meltdownMarkiplier = 0f;//0 to 1.0
         private bool manualMeltdownMarkiplier;
         private bool playedOnce;
-        [SerializeField] private AudioSource src;
+        [SerializeField] private ScriptedExplosion scrExp;
+        //[SerializeField] private AudioSource src;
         [SerializeField] private AudioSource[] breachAlarms;
+        [SerializeField] private VolumeAtmosphereController coreVAC;
         //but pins will break first, so pressure (normal stress) cannot exceed max shear
         //pins are titanium, to 900 MPa at 10C to 410MPa at 550C. Linear.
         //private float stress;//MPa
@@ -127,7 +131,7 @@ namespace ProjectUniverse.PowerSystem.Nuclear
         void Start()
         {
             //timeScaled = Time.deltaTime * 10f;
-            coolantHotStored = new IFluid("Coolant", 80.33f, 0, 200f, 0f);
+            coolantHotStored = new IFluid("Coolant", 80.33f, 0, 200f);
             //for every row and column add nuclearfuelrods to nfrMatrix
             nfrMatrix = new NuclearFuelRod[mdnfrRows.Length, mdnfrRows[0].fuelRodsCol.Length];
             nfrNeighborData = new float[mdnfrRows.Length, mdnfrRows[0].fuelRodsCol.Length];
@@ -273,6 +277,11 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                 if (totalRequiredCoolant >= totalPossibleCoolant)
                 {
                     float ratio = totalPossibleCoolant / totalRequiredCoolant;
+                    if (float.IsNaN(ratio))
+                    {
+                        ratio = 0f;
+                    }
+
                     for (int i = 0; i < nfrMatrix.GetLength(0); i++)
                     {
                         for (int j = 0; j < nfrMatrix.GetLength(1); j++)
@@ -292,6 +301,11 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                     if (totalManual >= totalRequiredCoolant)
                     {
                         float ratio = totalManual / totalRequiredCoolant;
+                        if (float.IsNaN(ratio))
+                        {
+                            ratio = 0f;
+                        }
+
                         for (int i = 0; i < nfrMatrix.GetLength(0); i++)
                         {
                             for (int j = 0; j < nfrMatrix.GetLength(1); j++)
@@ -356,34 +370,45 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                 //Debug.Log("hot coolant: " + hotCoolantLevel);
                 if (hotCoolantLevel > 0f)
                 {
-                    for (int q = 0; q < coolantOutPipes.Count; q++)
+                    if (!playedOnce)
                     {
-                        //assuming coolant in same in all pipes
+                        for (int q = 0; q < coolantOutPipes.Count; q++)
+                        {
+                            //assuming coolant in same in all pipes
+                            IFluid coolantHot = new IFluid(coolantHotStored);
+                            coolantHot.SetTemp(averageTemperatureFuelRods);
+                            //split concentration by number of pipes (check end tank state)
+
+                            float gens = steamGens.Length;//assume that coolantOutPipes is equal to number of generators
+                            for (int g = 0; g < steamGens.Length; g++)
+                            {
+                                if (steamGens[g].CoolantReservoir > steamGens[g].CoolantReservoirMaxCap)
+                                {
+                                    gens--;
+                                }
+                            }
+                            if (gens <= 0)
+                            {
+                                gens = coolantOutPipes.Count;
+                            }
+                            float conc = ((totalPossibleCoolant / 3600f) / 1000f * Time.fixedDeltaTime) / gens;//coolantOutPipes.Count;
+                            coolantHot.SetConcentration(conc);
+                            //Debug.Log("Core Out (m3): " + coolantHot.GetConcentration() + " of " + hotCoolantLevel);
+                            hotCoolantLevel -= conc;
+                            if (hotCoolantLevel < 0f)
+                            {
+                                hotCoolantLevel = 0f;
+                            }
+                            coolantOutPipes[q].Receive(false, outputVelocity, outputPressure, coolantHot, coolantHot.GetTemp());
+                        }
+                    }
+                    else
+                    {
+                        //once the core has exploded, coolant will vent into the volume
                         IFluid coolantHot = new IFluid(coolantHotStored);
                         coolantHot.SetTemp(averageTemperatureFuelRods);
-                        //split concentration by number of pipes (check end tank state)
-
-                        float gens = steamGens.Length;//assume that coolantOutPipes is equal to number of generators
-                        for(int g = 0;g < steamGens.Length; g++)
-                        {
-                            if (steamGens[g].CoolantReservoir > steamGens[g].CoolantReservoirMaxCap)
-                            {
-                                gens--;
-                            }
-                        }
-                        if(gens <= 0)
-                        {
-                            gens = coolantOutPipes.Count;
-                        }
-                        float conc = ((totalPossibleCoolant / 3600f) / 1000f * Time.fixedDeltaTime) / gens;//coolantOutPipes.Count;
-                        coolantHot.SetConcentration(conc);
-                        //Debug.Log("Core Out (m3): " + coolantHot.GetConcentration() + " of " + hotCoolantLevel);
-                        hotCoolantLevel -= conc;
-                        if (hotCoolantLevel < 0f)
-                        {
-                            hotCoolantLevel = 0f;
-                        }
-                        coolantOutPipes[q].Receive(false, outputVelocity, outputPressure, coolantHot, coolantHot.GetTemp());
+                        coreVAC.AddRoomFluid(coolantHot);
+                        coolantHotStored.SetConcentration(0f);
                     }
                 }
             }
@@ -434,7 +459,34 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                 if (!playedOnce)
                 {
                     playedOnce = true;
-                    src.Play();
+                    scrExp.ExplodeEffect();
+                    //src.Play();
+                    //reduce effectiveness of neighbor and self activity
+                    for (int i = 0; i < nfrMatrix.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < nfrMatrix.GetLength(1); j++)
+                        {
+                            if (nfrMatrix[i, j] != null)
+                            {
+                                //nfrMatrix[i, j].SetAbsorbedNeighbor(10963574,0.74f);
+                                //nfrMatrix[i, j].SetAbsorbedSelf(98123576, 0.87f);
+                            }
+                        }
+                    }
+                    //steam tanks burst
+                    for(int g = 0; g < steamGens.Length; g++)
+                    {
+                        Debug.Log("Overpressurize");
+                        steamGens[g].SetTankPressure(85432657, 450f);
+                        steamGens[g].CheckPressureImmediate();
+                    }
+                    //material, fission, generator, and decal/particle effects
+                    //core model change
+                    //burn material change
+                    //decals
+                    //pressure burst
+                    //all pipes in room burst
+
                     StartCoroutine(WaitForSeconds());
                 }
                 //release particles
@@ -470,9 +522,35 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                 }
                 else if (manualMeltdownMarkiplier)
                 {
-                    meltdownMarkiplier = 0.01f;
+                    if (!playedOnce)
+                    {
+                        meltdownMarkiplier = 0.01f;
+                    }
                 }
             }
+            //core has been blown open - independant of cause
+            /*if (playedOnce)
+            {
+                //heat up room and cool core
+                //get heat from rods
+                float heatRods = 0f;
+                for (int i = 0; i < nfrMatrix.GetLength(0); i++)
+                {
+                    for (int j = 0; j < nfrMatrix.GetLength(1); j++)
+                    {
+                        if (nfrMatrix[i, j] != null)
+                        {
+                            if (nfrMatrix[i, j].RodCoreTemp > ((coreVAC.Temperature + 460f) * (5f / 9f) * 2f))
+                            {
+                                //heat to remove 1K from the rod heat
+                                heatRods += nfrMatrix[i, j].FuelMass * 120f;
+                                nfrMatrix[i, j].RemoveHeat(29754639, 1f);
+                            }
+                        }
+                    }
+                }
+                coreVAC.AddRoomHeat(heatRods);
+            }*/
 
             ///leakAmount is controlled by dmg to vessel
             /// 0 means the vessel is intact
@@ -496,6 +574,22 @@ namespace ProjectUniverse.PowerSystem.Nuclear
             detectedRads = radiationArea.RadiationAtOneMeter();
 
             
+        }
+
+        public bool HasCoreExploded()
+        {
+            return playedOnce;
+        }
+        public bool IsCoreContaminated()
+        {
+            if(coreVAC.Contamination > 0.1f)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public IEnumerator WaitForSeconds()
@@ -560,7 +654,7 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                                 {
                                     rodUISections[i, j].GetComponent<Image>().color = RED;
                                 }
-                                screenModeText.text = "Main Screen Mode: | Reactivity | [Temperature] | Fuel Status |";
+                                screenModeText.text = " Reactivity " + "\n" + "[Temperature]" + "\n" + " Fuel Status ";
                             }
                             else if (showActivity)
                             {
@@ -583,14 +677,14 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                                 {
                                     rodUISections[i, j].GetComponent<Image>().color = RED;
                                 }
-                                screenModeText.text = "Main Screen Mode: | [Reactivity] | Temperature | Fuel Status |";
+                                screenModeText.text = "[Reactivity]" + "\n" + " Temperature " + "\n" + " Fuel Status ";
                             }
                             else if(showFuel)
                             {
                                 float fuel = Mathf.Round(nfrMatrix[i, j].FuelMass/1000f);
                                 rodUISections[i, j].transform.GetChild(0).GetComponent<TMP_Text>().text = fuel.ToString();
                                 rodUISections[i, j].GetComponent<Image>().color = Color.green;
-                                screenModeText.text = "Main Screen Mode: | Reactivity | Temperature | [Fuel Status] |";
+                                screenModeText.text = " Reactivity " + "\n" + " Temperature " + "\n" + "[Fuel Status]";
                             }
                         }
                     }
@@ -738,62 +832,90 @@ namespace ProjectUniverse.PowerSystem.Nuclear
 
         public void ExternalInteractFunc(int i)
         {
-            switch (i)
+            if (!playedOnce)
             {
-                case 1:
-                    //control rods down 5
-                    controlRodGlobal -= .05f;
-                    break;
-                case 2:
-                    //down 10
-                    controlRodGlobal -= .10f;
-                    break;
-                case 3:
-                    //up 5
-                    controlRodGlobal += .05f;
-                    break;
-                case 4:
-                    // up 10
-                    controlRodGlobal += .10f;
-                    break;
-                case 5:
-                    //scram
+                switch (i)
+                {
+                    case 1:
+                        //control rods down 5
+                        controlRodGlobal -= .05f;
+                        break;
+                    case 2:
+                        //down 10
+                        controlRodGlobal -= .10f;
+                        break;
+                    case 3:
+                        //up 5
+                        controlRodGlobal += .05f;
+                        break;
+                    case 4:
+                        // up 10
+                        controlRodGlobal += .10f;
+                        break;
+                    case 5:
+                        //scram
+                        controlRodGlobal = 1f;
+                        break;
+                    case 6:
+                        //leak
+                        releaseRadsEvent = !releaseRadsEvent;
+                        manualMeltdownMarkiplier = releaseRadsEvent;
+                        break;
+                    case 7:
+                        //show reactivity
+                        showActivity = true;
+                        showTemp = false;
+                        showFuel = false;
+                        break;
+                    case 8:
+                        //show temp
+                        showActivity = false;
+                        showTemp = true;
+                        showFuel = false;
+                        break;
+                    case 9:
+                        //show fuel
+                        showActivity = false;
+                        showTemp = false;
+                        showFuel = true;
+                        break;
+                    case 10:
+                        controlRodGlobal -= .01f;
+                        break;
+                    case 11:
+                        controlRodGlobal += .01f;
+                        break;
+                }
+
+                if (controlRodGlobal < 0)
+                {
+                    controlRodGlobal = 0f;
+                }
+                else if (controlRodGlobal > 1)
+                {
                     controlRodGlobal = 1f;
-                    break;
-                case 6:
-                    //leak
-                    releaseRadsEvent = !releaseRadsEvent;
-                    manualMeltdownMarkiplier = releaseRadsEvent;
-                    break;
-                case 7:
-                    //show reactivity
-                    showActivity = true;
-                    showTemp = false;
-                    showFuel = false;
-                    break;
-                case 8:
-                    //show temp
-                    showActivity = false;
-                    showTemp = true;
-                    showFuel = false;
-                    break;
-                case 9:
-                    //show fuel
-                    showActivity = false;
-                    showTemp = false;
-                    showFuel = true;
-                    break;
+                }
             }
 
-            if (controlRodGlobal < 0)
+            if (i == 12)
             {
-                controlRodGlobal = 0f;
+                for (int b = 0; b < breachAlarms.Length; b++)
+                {
+                    if (playedOnce)
+                    {
+                        if (breachAlarms[b].isPlaying)
+                        {
+                            //Debug.Log("stop");
+                            breachAlarms[b].Stop();
+                        }
+                        else
+                        {
+                            //Debug.Log("play");
+                            breachAlarms[b].Play();
+                        }
+                    }
+                }
             }
-            else if (controlRodGlobal > 1)
-            {
-                controlRodGlobal = 1f;
-            }
-            
         }
     }
 }

@@ -41,6 +41,7 @@ namespace ProjectUniverse.PowerSystem.Nuclear
         //public float SteamRate { get => steamRate; set => steamRate = value; }
         private float flowVelAll = 120f;
         private float pressureAll = 15f;
+        [SerializeField] private Light[] stateLights;
 
         public bool Valve1
         {
@@ -308,6 +309,72 @@ namespace ProjectUniverse.PowerSystem.Nuclear
 
                 //push into feedpipe
                 feedPipe.Receive(false, avgV, avgP, AllSteams, avgT);
+            }
+
+            //light update
+            if (stateLights[0] != null)
+            {
+                if (!Valve1)
+                {
+                    stateLights[0].enabled = true;
+                }
+                else
+                {
+                    stateLights[0].enabled = false;
+                }
+            }
+            if (stateLights[1] != null)
+            {
+                if (!Valve2)
+                {
+                    stateLights[1].enabled = true;
+                }
+                else
+                {
+                    stateLights[1].enabled = false;
+                }
+            }
+            if (stateLights[2] != null)
+            {
+                if (!Valve3)
+                {
+                    stateLights[2].enabled = true;
+                }
+                else
+                {
+                    stateLights[2].enabled = false;
+                }
+            }
+            if (stateLights[3] != null)
+            {
+                if (!Valve4)
+                {
+                    stateLights[3].enabled = true;
+                }
+                else
+                {
+                    stateLights[3].enabled = false;
+                }
+            }
+        }
+
+        public void ExternalInteractFunc(int i)
+        {
+            if (i == 1)
+            {
+                Valve1 = !Valve1;             
+            }
+            else if (i == 2)
+            {
+                Valve2 = !Valve2;
+            }
+            else if (i == 3)
+            {
+                Valve3 = !Valve3;
+            }
+            else if (i == 4)
+            {
+                Valve4 = !Valve4;
             }
         }
     }

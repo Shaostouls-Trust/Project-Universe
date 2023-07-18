@@ -29,8 +29,8 @@ namespace ProjectUniverse.PowerSystem
 		{
 			route = router;
 			gen = generator;
-			maximumThroughput = 6040;//EHV max
-			maxHeatCap = 14400f;
+			maximumThroughput = 181200f;//EHV max
+			maxHeatCap = 288000f;
 			maxActiveLegs = 3;
 		}
 
@@ -39,8 +39,8 @@ namespace ProjectUniverse.PowerSystem
 		{
 			subst = substation;
 			route = router;
-			maximumThroughput = 2550;//MVmin + 360 (enough for 6 at 120)
-			maxHeatCap = 3600f;
+			maximumThroughput = 95000f;//MVmin + 360 (enough for 6 at 120)
+			maxHeatCap = 72000f;
 			maxActiveLegs = 3;
 		}
 
@@ -49,8 +49,8 @@ namespace ProjectUniverse.PowerSystem
 		{
 			mach = machine;
 			subst = substation;
-			maximumThroughput = 400;//LVmax (one heavy machine)360 + 5%ish
-			maxHeatCap = 1200f;
+			maximumThroughput = 12000f;//LVmax (one heavy machine)360 + 5%ish
+			maxHeatCap = 24000f;
 			maxActiveLegs = 3;
 		}
 
@@ -59,9 +59,9 @@ namespace ProjectUniverse.PowerSystem
 		{
 			subst = substation;
 			breaker = brBox;
-			maximumThroughput = 180;//LV low + 60 (30 connections. 30 lights is 60. 12 doors is 180 (actual is 11 b/c of drawToCharge)
+			maximumThroughput = 5400f;//LV low + 60 (30 connections. 30 lights is 60. 12 doors is 180 (actual is 11 b/c of drawToCharge)
 									//Ideal is 9 doors (135) + 15 lights (30)).
-			maxHeatCap = 600f;
+			maxHeatCap = 12000f;
 			maxActiveLegs = 3;
 		}
 
@@ -70,8 +70,8 @@ namespace ProjectUniverse.PowerSystem
 		{
 			breaker = brBox;
 			subMach = submachine;
-			maximumThroughput = 25;//ELV med (5 + 20)
-			maxHeatCap = 100f;
+			maximumThroughput = 750f;//ELV med (5 + 20)
+			maxHeatCap = 2000f;
 			maxActiveLegs = 2;
 		}
 
@@ -92,7 +92,7 @@ namespace ProjectUniverse.PowerSystem
 				heatAmount += overcap * .01f;//100 seconds at 10+, 60 fps, 1200f max (*.02f).
 				heatAmount = (float)Math.Round(heatAmount, 3);
 				//overcap will cause sparks
-				//Debug.Log("heat: "+heatAmount+"/"+maxHeatCap);
+				Debug.Log("heat: "+heatAmount+"/"+maxHeatCap);
 			}
 			else if (powerinTotal <= maximumThroughput)
 			{

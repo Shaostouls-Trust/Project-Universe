@@ -84,7 +84,7 @@ namespace ProjectUniverse.Environment.Fluid
                 fluid.SetDensity(1000);
                 fluid.SetTemp(60);
                 fluid.SetLocalPressure(1f);
-                fluid.SetLocalVolume(capacity_L / 1000f);
+                //fluid.SetLocalVolume(capacity_L / 1000f);
                 fluids.Add(fluid);
                 for (int i = 0; i < fluids.Count; i++)
                 {

@@ -133,27 +133,27 @@ namespace ProjectUniverse.Player
             p_inventory.Add(devCompStack6);
             p_inventory.Add(devCompStack7);
             */
-            Consumable_Component steelComps = new Consumable_Component("Component_SteelComponents", 99);
+            Consumable_Component steelComps = Consumable_Component.ConstructComponent("Component_SteelComponents", 99);
             ItemStack devSteelCompStack = new ItemStack("Component_SteelComponents", 9000, typeof(Consumable_Component));
             devSteelCompStack.AddItem(steelComps);
             //p_inventory.Add(devSteelCompStack);
 
-            Consumable_Component ironComps = new Consumable_Component("Component_IronComponents", 99);
+            Consumable_Component ironComps = Consumable_Component.ConstructComponent("Component_IronComponents", 99);
             ItemStack devIronCompStack = new ItemStack("Component_IronComponents", 9000, typeof(Consumable_Component));
             devIronCompStack.AddItem(ironComps);
             //p_inventory.Add(devIronCompStack);
 
-            Consumable_Component alumComps = new Consumable_Component("Component_AluminumComponents", 99);
+            Consumable_Component alumComps = Consumable_Component.ConstructComponent("Component_AluminumComponents", 99);
             ItemStack devAlumCompStack = new ItemStack("Component_AluminumComponents", 9000, typeof(Consumable_Component));
             devAlumCompStack.AddItem(alumComps);
             //p_inventory.Add(devAlumCompStack);
 
-            Consumable_Component tinComps = new Consumable_Component("Component_TinComponents", 99);
+            Consumable_Component tinComps = Consumable_Component.ConstructComponent("Component_TinComponents", 99);
             ItemStack devTinCompStack = new ItemStack("Component_TinComponents", 9000, typeof(Consumable_Component));
             devTinCompStack.AddItem(tinComps);
             //p_inventory.Add(devTinCompStack);
 
-            Consumable_Component nickelComps = new Consumable_Component("Component_NickelComponents", 99);
+            Consumable_Component nickelComps = Consumable_Component.ConstructComponent("Component_NickelComponents", 99);
             ItemStack devNickelCompStack = new ItemStack("Component_NickelComponents", 9000, typeof(Consumable_Component));
             devNickelCompStack.AddItem(nickelComps);
             //p_inventory.Add(devNickelCompStack);

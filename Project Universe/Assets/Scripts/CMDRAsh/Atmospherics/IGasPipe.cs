@@ -54,6 +54,7 @@ namespace ProjectUniverse.Environment.Gas
         [SerializeField] private float maxVelocity_ms = 120.5f;
         private float flowVelocity_ms = 0f;
         public int gassescount;
+        private AudioSource ventSFX;
 
         public bool IsBurst
         {
@@ -431,11 +432,30 @@ namespace ProjectUniverse.Environment.Gas
         public void VentToVolume()
         {
             //Play the vent airflow sound from the vent object
-            AudioSource ventAud = vent.GetComponentInChildren<AudioSource>();//GetComponent<AudioSource>();
-            if (!ventAud.isPlaying && gasses.Count>1)
+            if (ventSFX == null)
             {
-                ventAud.Play();
+                ventSFX = Vent.GetComponent<AudioSource>();
+                if (ventSFX == null)
+                {
+                    ventSFX = Vent.GetComponentInChildren<AudioSource>();
+                }
             }
+            if(ventSFX != null)
+            {
+                if (!ventSFX.isPlaying && gasses.Count > 1)
+                {
+                    ventSFX.Play();
+                }
+                else if (ventSFX.isPlaying && gasses.Count == 0)
+                {
+                    ventSFX.Stop();
+                }
+            }
+            else
+            {
+                Debug.Log("no ventSFX on " + gameObject.transform.parent.parent.name);
+            }
+            
             //Debug.Log("Vent?");
             VolumeAtmosphereController roomVAC = ductVolume.GetComponent<VolumeAtmosphereController>();
             //float roomVolume = roomVAC.GetVolume();
@@ -487,6 +507,11 @@ namespace ProjectUniverse.Environment.Gas
 
         void Update()
         {
+            if (Neighbors.Length > 0)
+            {
+                ignoreNeighborConstraint = true;
+            }
+
             if (gasses.Count > 0)
             {
                 //TempEQWithDuct();
@@ -502,6 +527,10 @@ namespace ProjectUniverse.Environment.Gas
                     {
                         //Debug.Log("TRANSFER");
                         float totalPressures = globalPressure;
+                        if (float.IsNaN(totalPressures))
+                        {
+                            totalPressures = 0f;
+                        }
                         float totalVelocity = flowVelocity_ms;
                         float totalConc = 0.0f;
                         float totalTemp = temp;
@@ -513,8 +542,10 @@ namespace ProjectUniverse.Environment.Gas
                         }
                         foreach (IGasPipe pipe in neighbors)
                         {
-
-                            totalPressures += pipe.GlobalPressure;
+                            if (!float.IsNaN(pipe.GlobalPressure))
+                            {
+                                totalPressures += pipe.GlobalPressure;
+                            }
                             totalTemp += pipe.temp;
                             totalVelocity += pipe.FlowVelocity;
                             //get total concentration
@@ -549,6 +580,11 @@ namespace ProjectUniverse.Environment.Gas
                     VentToVolume();
                 }
             }
+            else
+            {
+                //no gasses
+                globalPressure = 0f;
+            }
             gassescount = gasses.Count;
         }
 
@@ -577,6 +613,7 @@ namespace ProjectUniverse.Environment.Gas
         public void AddNeighbor(IGasPipe neighborDuct)
         {
             //Debug.Log(this.name + " and " + neighborDuct.name);
+            //reset the neighbor list??
             neighbors = new IGasPipe[1];
             neighbors[0] = neighborDuct;
 

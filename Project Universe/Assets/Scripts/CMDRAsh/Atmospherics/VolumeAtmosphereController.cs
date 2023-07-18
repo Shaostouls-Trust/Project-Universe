@@ -29,7 +29,14 @@ namespace ProjectUniverse.Environment.Volumes
         private List<IGas> roomGases = new List<IGas>();
         private List<IGas> gasesToEq = new List<IGas>();
         private List<IFluid> roomFluids = new List<IFluid>();
+        [Tooltip("Fluid planes in order of lowest to highest.")]
         [SerializeField] private List<GameObject> roomFluidPlanes = new List<GameObject>();
+        [Tooltip("The y level at which the next fluid plane will begin to rise.")]
+        [SerializeField] private float[] roomFluidPlaneLevelLimits;
+        [Tooltip("The y level after which fluid can pass through this door.")]
+        [SerializeField] private float[] roomFluidPlaneDoorLevels;
+        [Tooltip("All doors in volume in order of their above plane level.")]
+        [SerializeField] private DoorAnimator[] roomDoorsFluidOrder;
         [SerializeField] private GameObject[] neighborEmpties;
         //All volumes that define the shape of the room.
         [SerializeField] private List<BoxCollider> roomVolumeSections;
@@ -39,6 +46,7 @@ namespace ProjectUniverse.Environment.Volumes
         [SerializeField] private int DeOxygenatedRoom_Priority = 9;
         [SerializeField] public List<PipeSection> volumeGasPipeSections;
         [SerializeField] private bool autoFill;
+        [SerializeField] private bool flood;
         public int limiter = 30;
         private float qHeatLossPerSec = 0f;//-40000
         public bool doRenderStateLogic = true;
@@ -53,6 +61,8 @@ namespace ProjectUniverse.Environment.Volumes
         [SerializeField] private GameObject[] additionalRenderVolumes;
         private FrustrumState[] frustrumStates;
         private GameObject[] pipes;
+        private float maxFluidFillHeight;
+        private float roomFloorArea;
 
         private void Start()
         {
@@ -60,19 +70,30 @@ namespace ProjectUniverse.Environment.Volumes
             {
                 AddRoomGas(new IGas("Oxygen", 60f, roomVolume, 1.0f, roomVolume));
             }
+            if(roomFluids.Count == 0)
+            {
+                for(int j = 0; j < roomFluidPlanes.Count; j++)
+                {
+                    roomFluidPlanes[j].SetActive(false);
+                }
+            }
         }
 
 
         //was all in Start
         private void Awake()
         {
-            //roomVolume = (gameObject.GetComponent<BoxCollider>().size.x *
-            //    gameObject.GetComponent<BoxCollider>().size.y *
-            //    gameObject.GetComponent<BoxCollider>().size.z);
+            float maxy = 0;
             for (int i = 0; i < roomVolumeSections.Count; i++)
             {
                 roomVolume += (roomVolumeSections[i].size.x * roomVolumeSections[i].size.y * roomVolumeSections[i].size.z);
+                roomFloorArea += (roomVolumeSections[i].size.x * roomVolumeSections[i].size.z);
+                if (roomVolumeSections[i].size.y > maxy)
+                {
+                    maxy = roomVolumeSections[i].size.y;
+                }
             }
+            maxFluidFillHeight = maxy;
 
             ///
             /// This does not ensure that we are only losing heat from the outer sides of the volume,
@@ -264,6 +285,39 @@ namespace ProjectUniverse.Environment.Volumes
             get { return lightGOs; }
         }
 
+        public float WaterLevel(bool useLocal)
+        {
+            if (useLocal)
+            {
+                return roomFluidPlanes[0].transform.localPosition.y;
+            }
+            else
+            {
+                return roomFluidPlanes[0].transform.position.y;        
+            }
+        }
+
+        public DoorAnimator[] RoomDoorsFluidOrder
+        {
+            get { return roomDoorsFluidOrder; }
+        }
+        public float[] RoomFluidPlaneLevels
+        {
+            get { return roomFluidPlaneDoorLevels; }
+        }
+        public float RoomHeight
+        {
+            get { return maxFluidFillHeight; }
+        }
+        public List<IFluid> RoomFluids
+        {
+            get { return roomFluids; }
+        }
+        public float RoomArea
+        {
+            get { return roomFloorArea; }
+        }
+
         ///check doors
         ///if two doors are open
         ///check the two volumes
@@ -292,6 +346,15 @@ namespace ProjectUniverse.Environment.Volumes
             {
                 limiter = 0;
             }
+            //intended to be temp
+            if (flood)
+            {
+                IFluid tWat = new IFluid("water", 80f, 0.2f);
+                AddRoomFluid(tWat);
+                //render control is not showing/hiding water plane
+                //hall to control is not hiding water
+            }
+
             for (int i = 0; i < neighborEmpties.Length; i++)//roomVolumeDoors.Length
             {
                 GameObject door = neighborEmpties[i].GetComponent<VolumeNode>().GetDoor();
@@ -307,7 +370,8 @@ namespace ProjectUniverse.Environment.Volumes
                         door.transform.position.y + 0.025f, door.transform.position.z), back, 1.0f);
                     foreach(RaycastHit hit in hits)
                     {
-                        if(hit.collider.gameObject != door)
+                        GameObject myDoorGameobject = null;
+                        if (hit.collider.gameObject != door)
                         {
                             //check if it's a door
                             //select the parent object via the DoorAnimator
@@ -316,44 +380,44 @@ namespace ProjectUniverse.Environment.Volumes
                             Component myComponent2 = hit.collider.GetComponent<DoorAnimator>();
                             Component myComponent3 = hit.collider.GetComponentInChildren<DoorAnimator>();
                             //Debug.Log(hit.collider.gameObject);
-                            try
+                            //try
+                            //{
+                            if (myComponent != null)
                             {
-                                GameObject myDoorGameobject = null;
-                                if (myComponent != null)
-                                {
-                                    myDoorGameobject = myComponent.gameObject;
-                                }
-                                else if (myComponent2 != null)
-                                {
-                                    myDoorGameobject = myComponent2.gameObject;
-                                }
-                                else if (myComponent3 != null)
-                                {
-                                    myDoorGameobject = myComponent3.gameObject;
-                                }
-                                if(myDoorGameobject != null)
-                                {
-                                    clear = myDoorGameobject.GetComponent<DoorAnimator>().OpenOrOpening();
-                                }
-                                else
-                                {
-                                    clear = true;//no door on other side, it is what it is when this door opens.
-                                }
-                                if (clear)
-                                {
-                                    //Debug.Log("---");
-                                    //Debug.Log(door);
-                                    //Debug.Log(myDoorGameobject);
-                                }
-
+                                myDoorGameobject = myComponent.gameObject;
                             }
-                            catch (Exception e)
+                            else if (myComponent2 != null)
                             {
+                                myDoorGameobject = myComponent2.gameObject;
+                            }
+                            else if (myComponent3 != null)
+                            {
+                                myDoorGameobject = myComponent3.gameObject;
+                            }
+
+                            if(myDoorGameobject != null)
+                            {
+                                clear = myDoorGameobject.GetComponent<DoorAnimator>().OpenOrOpening();
+                            }
+                            else
+                            {
+                                clear = true;//no door on other side, it is what it is when this door opens.
+                            }
+                            //if (clear)
+                            //{
+                                //Debug.Log("---");
+                                //Debug.Log(door);
+                                //Debug.Log(myDoorGameobject);
+                            //}
+
+                            //}
+                            //catch (Exception e)
+                            //{
                                 //Debug.Log(e);
                                 //Debug.Log("Case 1: " + myComponent);
                                 //Debug.Log("Case 2: " + myComponent2);
                                 //Debug.Log("Case 3: " + myComponent3);
-                            }
+                            //}
                             //Debug.Log(clear);
                             if (clear)
                             {
@@ -368,8 +432,13 @@ namespace ProjectUniverse.Environment.Volumes
                                         neighborEmpties[i].GetComponent<VolumeNode>().VolumeLink.GetComponent<VolumeAtmosphereController>();
                                         //Debug.Log("Eq "+ this + ""+ iNeighborVolume);
                                         Utils.LocalVolumeEqualizer(this, iNeighborVolume);
+                                        //Fluid Equalization
+                                        if(myDoorGameobject != null)
+                                        {
+                                            Utils.LocalFluidEqualization(this, iNeighborVolume,
+                                                door.GetComponent<DoorAnimator>(), myDoorGameobject.GetComponent<DoorAnimator>());
+                                        }
                                     }
-
                                 }
                                 else
                                 {
@@ -379,8 +448,11 @@ namespace ProjectUniverse.Environment.Volumes
                                         VolumeGlobalAtmosphereController iGlobalNeighbor =
                                             neighborEmpties[i].GetComponent<VolumeNode>().GlobalLink.GetComponent<VolumeGlobalAtmosphereController>();
                                         Utils.GlobalVolumeEqualizer(this, iGlobalNeighbor);
+                                        //Fluid Drain into void
+                                        Utils.LocalFluidDrain(this, -1f, null);
                                     }
                                 }
+                                
                             }
 
                         }
@@ -567,7 +639,7 @@ namespace ProjectUniverse.Environment.Volumes
                 {
                     float temper = RoomGasses[q].GetTemp();
                     temper += (dt * Time.deltaTime);
-                    Debug.Log(temper);
+                    //Debug.Log(temper);
                     RoomGasses[q].SetTemp(temper);
                 }
             }
@@ -586,6 +658,14 @@ namespace ProjectUniverse.Environment.Volumes
             {
                 totalConc += gass.GetConcentration();
             }
+            if (ventAndTempEq)
+            {
+                equalizeList[0].TempEQWithDuct();
+                if (equalizeList[0].Vent != null && equalizeList[0].Gasses.Count > 0)
+                {
+                    equalizeList[0].VentToVolume();
+                }
+            }
 
             // Skip the first duct
             for (int j = 1; j < equalizeList.Count; j++)
@@ -596,23 +676,18 @@ namespace ProjectUniverse.Environment.Volumes
                     if (pipe.Vent != null && pipe.Gasses.Count > 0)
                     {
                         ///
-                        /// Maybe make vents (that havn't been breached) one-way? IE air can only flow out into the room. Then, airvents that have
+                        /// Maybe make vents (that havn't been breached) one-way? 
+                        /// IE air can only flow out into the room. Then, airvents that have
                         /// been kicked or busted out will Eq both ways w/out a throttle (1000L/s or whatev)
                         ///
                         pipe.VentToVolume();
                     }
-                    /// This is a temporary bypass for the alpha demo
-                    else if(pipe.Vent != null)
-                    {
-                        AudioSource ventAud = pipe.Vent.GetComponentInChildren<AudioSource>();
-                        if (!ventAud.isPlaying)
-                        {
-                            ventAud.Play();
-                        }
-                    }
                 }
                 totalVelocity += pipe.FlowVelocity;
-                totalPressures += pipe.GlobalPressure;
+                if (!float.IsNaN(pipe.GlobalPressure))
+                {
+                     totalPressures += pipe.GlobalPressure;
+                }
                 totalTemp += pipe.Temperature;
                 //get total concentration
                 foreach (IGas gas in pipe.Gasses)
@@ -623,12 +698,14 @@ namespace ProjectUniverse.Environment.Volumes
             //Global Pressure Eq calc
             float tEq_global = totalTemp / (equalizeList.Count);
             float pEq_global = totalPressures / (equalizeList.Count);
-            if(totalPressures != 0)
-            {
-                Debug.Log("total: "+totalPressures);
-            }
-            if (equalizeList[0].GlobalPressure != 0)
-            { Debug.Log("global: "+equalizeList[0].GlobalPressure + " over " + equalizeList.Count); }
+            //if(totalPressures != 0)
+            //{
+            //    Debug.Log("total: "+totalPressures);
+            //}
+            //if (equalizeList[0].GlobalPressure != 0)
+            //{ 
+            //    Debug.Log("global: "+equalizeList[0].GlobalPressure + " over " + equalizeList.Count);
+            //}
             float cEq_global = totalConc / (equalizeList.Count);
             float vEq_global = totalVelocity / (equalizeList.Count);
 
@@ -841,12 +918,12 @@ namespace ProjectUniverse.Environment.Volumes
             if (roomFluids.Count > 1)
             {
                 //Debug.Log(roomGases.Count + " gasses in pipe.");
-                List<IFluid> newFluidsList = roomFluids;//new List<IGas>();
-                                                        //foreach(IFluid fluid in roomFluids)
-                                                        //{
-                                                        //    Debug.Log(fluid);
-                                                        //}
-                                                        //combine all same gasses
+                List<IFluid> newFluidsList = roomFluids;
+                //foreach(IFluid fluid in roomFluids)
+                //{
+                //    Debug.Log(fluid);
+                //}
+                //combine all same gasses
                 for (int i = 0; i < newFluidsList.Count; i++)
                 {
                     for (int j = 0; j < newFluidsList.Count; j++)
@@ -858,7 +935,7 @@ namespace ProjectUniverse.Environment.Volumes
                                 //Debug.Log("i "+newFluidsList[i]);
                                 //Debug.Log("j "+newFluidsList[j]);
                                 IFluid EQFluid = CombineFluids(roomFluids[i], roomFluids[j], localPressure, setToLocalPressure);
-                                Debug.Log("EQFluid " + EQFluid);
+                                //Debug.Log("EQFluid " + EQFluid);
                                 newFluidsList.Remove(roomFluids[i]);
                                 newFluidsList.Remove(roomFluids[j - 1]);//?
                                 newFluidsList.Add(EQFluid);
@@ -930,10 +1007,13 @@ namespace ProjectUniverse.Environment.Volumes
             {
                 float gasAp = FluidA.GetLocalPressure();
                 float gasBp = FluidB.GetLocalPressure();
-                FluidPressure = (gasAp + gasBp);
+                FluidPressure = (gasAp + gasBp)/2f;// /2?
                 FluidA.SetLocalPressure(FluidPressure);
             }
 
+            float dens = FluidA.GetDensity();
+            dens += FluidB.GetDensity();
+            FluidA.SetDensity(dens / 2f);
             //FluidA.CalculateAtmosphericDensity();
             //Debug.Log("Volume Gas Combiner: "+gasPressure);
             return FluidA;
@@ -1046,44 +1126,42 @@ namespace ProjectUniverse.Environment.Volumes
 
         public void AddRoomFluid(IFluid fluidToAdd)
         {
-            bool add = false;
+            //bool add = false;
             IFluid fluid = new IFluid(fluidToAdd);
-            fluidToAdd.SetLocalVolume(roomVolume);
-            //If the roomFluids list is empty or does not contain the passed fluid
+            roomFluids.Add(fluid);
+            roomFluids = CheckFluids(true, Pressure);
+            UpdateRoomFluidLevel();
+        }
+
+        public List<IFluid> RemoveRoomFluid(float amount)
+        {
             if (roomFluids.Count > 0)
             {
+                List<IFluid> fluidsRemoved = new List<IFluid>();
+                float per = amount / roomFluids.Count;
                 for (int j = 0; j < roomFluids.Count; j++)
                 {
-                    if (roomFluids[j].GetIDName() == fluid.GetIDName())
+                    fluidsRemoved.Add(new IFluid(roomFluids[j]));
+
+                    if (roomFluids[j].GetConcentration() < per)
                     {
-                        add = false;
+                        fluidsRemoved[j].SetConcentration(roomFluids[j].GetConcentration());
+                        roomFluids[j].SetConcentration(0f);
                     }
                     else
                     {
-                        add = true;
+                        fluidsRemoved[j].SetConcentration(per);
+                        roomFluids[j].AddConcentration(-per);
                     }
                 }
-                if (add)
-                {
-                    roomFluids.Add(fluid);
-                }
+                return fluidsRemoved;
             }
             else
             {
-                roomFluids.Add(fluid);
+                //protect against ArgNullException
+                return new List<IFluid>();
             }
-            //Combine the passed fluid with fluids already in volume
-            for (int j = 0; j < roomFluids.Count; j++)
-            {
-                if (roomFluids[j].GetIDName() == fluid.GetIDName())
-                {
-                    IFluid EQFluid = CombineFluids(roomFluids[j], fluid, roomPressure, true);
-                    //Debug.Log("EQFluid " + EQFluid);
-                    roomFluids.Remove(roomFluids[j]);
-                    roomFluids.Add(EQFluid);
-                }
-            }
-            UpdateRoomFluidLevel();
+
         }
 
         public void AddRoomFluid(List<IFluid> fluidToAdd)
@@ -1092,7 +1170,6 @@ namespace ProjectUniverse.Environment.Volumes
             for(int f = 0; f < fluidToAdd.Count; f++)
             {
                 IFluid fluid = new IFluid(fluidToAdd[f]);
-                fluidToAdd[f].SetLocalVolume(roomVolume);
                 //If the roomFluids list is empty or does not contain the passed fluid
                 if (roomFluids.Count > 0)
                 {
@@ -1214,13 +1291,46 @@ namespace ProjectUniverse.Environment.Volumes
             {
                 fluidConc += roomFluids[i].GetConcentration();
             }
-            float volumeRatio = fluidConc / roomVolume;
-            float translatedFill = (float)Math.Round((volumeRatio * gameObject.GetComponent<BoxCollider>().size.y),3);
-            if (roomFluidPlanes[0] != null)
+            if(fluidConc <= 0.1f)
             {
-                roomFluidPlanes[0].transform.localPosition = new Vector3(
-                    roomFluidPlanes[0].transform.localPosition.x, translatedFill,
-                    roomFluidPlanes[0].transform.localPosition.z);
+                //set all planes false, as the room has emptied
+                for (int f = 0; f < roomFluidPlanes.Count; f++)
+                {
+                    roomFluidPlanes[f].SetActive(false);
+                }
+            }
+
+            float volumeRatio = fluidConc / roomVolume;
+            //volumeRatio * gameObject.GetComponent<BoxCollider>().size.y)
+            float translatedFill = (float)Math.Round((volumeRatio * maxFluidFillHeight),3);
+            for(int p = 0; p < roomFluidPlanes.Count; p++)
+            {
+                if (roomFluidPlanes[p] != null)
+                {
+                    if ((p-1) < 0)
+                    {
+                        roomFluidPlanes[p].SetActive(true);
+                        roomFluidPlanes[p].transform.localPosition = new Vector3(
+                        roomFluidPlanes[p].transform.localPosition.x, translatedFill,
+                        roomFluidPlanes[p].transform.localPosition.z);
+                    }
+                    else
+                    {
+                        float tfnot = translatedFill - roomFluidPlaneLevelLimits[p - 1];
+                        if (tfnot <= 0f)
+                        {
+                            roomFluidPlanes[p].SetActive(false);
+                        }
+                        else
+                        {
+                            roomFluidPlanes[p].SetActive(true);
+                            roomFluidPlanes[p].transform.localPosition = new Vector3(
+                            roomFluidPlanes[p].transform.localPosition.x, tfnot,
+                            roomFluidPlanes[p].transform.localPosition.z);
+                        }
+                    }
+                    
+                }
             }
         }
 

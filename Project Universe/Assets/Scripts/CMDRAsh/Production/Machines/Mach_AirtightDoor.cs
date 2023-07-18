@@ -1,5 +1,6 @@
 using ProjectUniverse.Animation.Controllers;
 using ProjectUniverse.Base;
+using ProjectUniverse.Items.Weapons;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,7 +25,7 @@ namespace ProjectUniverse.Production.Machines
 
         protected override void ProcessDamageToComponents()
         {
-
+            Debug.Log("Dmg");
         }
     }
 }

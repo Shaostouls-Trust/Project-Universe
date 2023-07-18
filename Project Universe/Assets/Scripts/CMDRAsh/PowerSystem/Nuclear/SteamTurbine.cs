@@ -133,7 +133,7 @@ namespace ProjectUniverse.PowerSystem.Nuclear
             float inputvelocity = 0f;
             List<IGas> Insteam = new List<IGas>();
             steamInTemp = 0f;
-            if (steamPipe != null && !bypassValve)
+            if (steamPipe != null)// && !bypassValve
             {
                 inputpressure = steamPipe.GlobalPressure;
                 if (inputpressure == 0f)
@@ -217,7 +217,7 @@ namespace ProjectUniverse.PowerSystem.Nuclear
 
                 }*/
 
-            if (rotorHealth > 0f)
+            if (rotorHealth > 0f || bypassValve)
             {
                 if (bypassValve)
                 {
@@ -230,6 +230,11 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                     {
                         float progress = Mathf.Log10(Mathf.Abs((steamFlowRateCurrent / 100000f * steamFlowToRotation) - currentRotationSpeed)) / 15f;
                         currentRotationSpeed = Mathf.Lerp(currentRotationSpeed, (steamFlowRateCurrent / 100000f * steamFlowToRotation), progress);
+                    }
+                    else
+                    {
+                        float progress = Mathf.Log10(Mathf.Abs(0f - currentRotationSpeed)) / 25f;
+                        currentRotationSpeed = Mathf.Lerp(currentRotationSpeed, 0f, progress);
                     }
                 }
                 //currentRotationSpeed = (steamFlowRateCurrent / 100000f * steamFlowToRotation);

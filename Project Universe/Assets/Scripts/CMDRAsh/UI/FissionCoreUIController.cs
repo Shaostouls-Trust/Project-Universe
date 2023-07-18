@@ -37,6 +37,8 @@ namespace ProjectUniverse.UI
         [SerializeField] private Image vesselTempImg;
         [SerializeField] private Image vesselPresTmg;
         [SerializeField] private Image coreStateTmg;
+        [SerializeField] private Image catastrophyImg;
+        [SerializeField] private Image contaminationImg;
         [SerializeField] private Color32 BLUE;
         [SerializeField] private Color32 GREEN;
         [SerializeField] private Color32 RED;
@@ -47,6 +49,8 @@ namespace ProjectUniverse.UI
         [SerializeField] private Color32 YELLOWOFF;
         private float uiTimer = 0.25f;
         [SerializeField] private AudioSource[] radAlarms;
+        private bool alarmOverride;
+        [SerializeField] private FissionCoreUIController[] otherStations;
 
         // Update is called once per frame
         void Update()
@@ -114,19 +118,25 @@ namespace ProjectUniverse.UI
                     coolant += core.SteamGenerators[g].CurrentPumpRate;
                 }
                 coolantFlowText.text = "" + coolant;
-                vesselPresText.text = Math.Round(core.VesselPres,1) + " / "+ Math.Round(core.MaxVesselPres,1) +"bar";
+                vesselPresText.text = Math.Round(core.VesselPres,1) + " / "+ Math.Round(core.MaxVesselPres,1) +" bar";
                 vesselTempText.text = Math.Round(core.VesselTemp,1) + " / 600 K";
 
                 if(maxTemp > 1300f)//100 below melting point uran
                 {
                     //sound buzzer
                     //activate img
-                    critTempImg.color = REDON;
+                    if (critTempImg != null)
+                    {
+                        critTempImg.color = REDON;
+                    }
                     critTempImg2.color = REDON;
                 }
                 else
                 {
-                    critTempImg.color = REDOFF;
+                    if (critTempImg != null)
+                    {
+                        critTempImg.color = REDOFF;
+                    }
                     critTempImg2.color = REDOFF;
                 }
             }
@@ -161,7 +171,10 @@ namespace ProjectUniverse.UI
             if (vesPres >= vesPresMax - 10f)//vesPresMax is burst
             {
                 vesselPresTmg.color = REDON;
-                critPresImg.color = REDON;
+                if (critPresImg != null)
+                {
+                    critPresImg.color = REDON;
+                }
                 critPresImg2.color = REDON;
                 coreStateText.text = "Danger";
                 coreStateTmg.color = REDON;
@@ -171,7 +184,10 @@ namespace ProjectUniverse.UI
             else if (vesPres < (vesPresMax - 10f) && vesPres >= 240)//210 is  pump pressure
             {
                 vesselPresTmg.color = YELLOW;
-                critPresImg.color = REDOFF;
+                if (critPresImg)
+                {
+                    critPresImg.color = REDOFF;
+                }
                 critPresImg2.color = REDOFF;
                 coreStateText.text = "Caution";
                 coreStateTmg.color = YELLOWON;
@@ -181,7 +197,10 @@ namespace ProjectUniverse.UI
             {
                 vesselPresTmg.color = GREEN;
                 vesselPresText.color = GREEN;
-                critPresImg.color = REDOFF;
+                if (critPresImg)
+                {
+                    critPresImg.color = REDOFF;
+                }
                 critPresImg2.color = REDOFF;
                 if (vesTemp < 500f)
                 {
@@ -193,12 +212,15 @@ namespace ProjectUniverse.UI
 
             if(core.DetectedRads > 0f)
             {
-                radsImg.color = YELLOWON;
+                if (radsImg)
+                {
+                    radsImg.color = YELLOWON;
+                }
                 radsImg2.color = YELLOWON;
                 //play alarms
                 for(int i = 0; i < radAlarms.Length; i++)
                 {
-                    if (!radAlarms[i].isPlaying)
+                    if (!radAlarms[i].isPlaying && !alarmOverride)
                     {
                         radAlarms[i].Play();
                     }
@@ -206,7 +228,10 @@ namespace ProjectUniverse.UI
             }
             else
             {
-                radsImg.color = YELLOWOFF;
+                if (radsImg)
+                {
+                    radsImg.color = YELLOWOFF;
+                }
                 radsImg2.color = YELLOWOFF;
                 for (int i = 0; i < radAlarms.Length; i++)
                 {
@@ -217,26 +242,73 @@ namespace ProjectUniverse.UI
                 }
             }
 
+            if (core.HasCoreExploded())
+            {
+                catastrophyImg.color = REDON;
+            }
+            else
+            {
+                catastrophyImg.color = REDOFF;
+            }
+            if (core.IsCoreContaminated())
+            {
+                contaminationImg.color = YELLOWON;
+            }
+            else
+            {
+                contaminationImg.color = YELLOWOFF;
+            }
+
             //if coolant level in core is low
             for(int i = 0; i < core.SteamGenerators.Length; i++)
             {
                 if (core.SteamGenerators[i].CoolantReservoir < (core.SteamGenerators[i].CoolantReservoirMaxCap) * 0.25f)
                 {
-                    coolImg.color = REDON;
+                    if (coolImg)
+                    {
+                        coolImg.color = REDON;
+                    }
                     coolImg2.color = REDON;
                     break;
                 }
                 else
                 {
-                    coolImg.color = REDOFF;
+                    if (coolImg)
+                    {
+                        coolImg.color = REDOFF;
+                    }
                     coolImg2.color = REDOFF;
                 }
             }
         }
 
-        public void ExternalInteractFunc()
+        public void ExternalInteractFunc(int i)
         {
-            
+            if(i == 1)
+            {
+                //rad alarm state
+                for (int b = 0; b < radAlarms.Length; b++)
+                {
+                    if (radAlarms[b].isPlaying)
+                    {
+                        alarmOverride = true;
+                        radAlarms[b].Stop();
+                        for(int c = 0; c < otherStations.Length; c++)
+                        {
+                            otherStations[c].alarmOverride = true;
+                        }
+                    }
+                    else
+                    {
+                        alarmOverride = false;
+                        for (int c = 0; c < otherStations.Length; c++)
+                        {
+                            otherStations[c].alarmOverride = false;
+                        }
+                    }
+                }
+                
+            }
         }
     }
 }

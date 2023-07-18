@@ -66,8 +66,8 @@ namespace ProjectUniverse.PowerSystem.Nuclear
         // Start is called before the first frame update
         void Start()
         {
-            waterStored = new IFluid("water", 80f, 0f, 10.0f, 0f);//m^3
-            waterOut = new IFluid("water", 80f, 0f, 10.0f, 0f);
+            waterStored = new IFluid("water", 80f, 0f, 10.0f);//m^3
+            waterOut = new IFluid("water", 80f, 0f, 10.0f);
             waterStored.SetDensity(1.0f);
             waterOut.SetDensity(1.0f);
         }

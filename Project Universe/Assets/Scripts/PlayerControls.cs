@@ -266,7 +266,7 @@ namespace ProjectUniverse
                     ""path"": ""<Joystick>/stick"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Joystick"",
+                    ""groups"": """",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -354,7 +354,7 @@ namespace ProjectUniverse
                     ""path"": ""<Joystick>/{Hatswitch}"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Joystick"",
+                    ""groups"": """",
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -387,7 +387,7 @@ namespace ProjectUniverse
                     ""path"": ""<Joystick>/trigger"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Joystick"",
+                    ""groups"": """",
                     ""action"": ""Fire"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -398,7 +398,7 @@ namespace ProjectUniverse
                     ""path"": ""<XRController>/{PrimaryAction}"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""XR"",
+                    ""groups"": """",
                     ""action"": ""Fire"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false

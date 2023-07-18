@@ -187,14 +187,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Version: 11
-  m_ObsoleteShadowResolutionTier: 1
-  m_ObsoleteUseShadowQualitySettings: 0
-  m_ObsoleteCustomShadowResolution: 512
-  m_ObsoleteContactShadows: 0
-  m_PointlightHDType: 0
-  m_SpotLightShape: 0
-  m_AreaLightShape: 0
   m_Intensity: 2500
   m_EnableSpotReflector: 0
   m_LuxAtDistance: 1
@@ -297,6 +289,14 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
+  m_PointlightHDType: 0
+  m_SpotLightShape: 0
+  m_AreaLightShape: 0
+  m_Version: 11
+  m_ObsoleteShadowResolutionTier: 1
+  m_ObsoleteUseShadowQualitySettings: 0
+  m_ObsoleteCustomShadowResolution: 512
+  m_ObsoleteContactShadows: 0
 --- !u!1 &4430757192973362158
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,15 +345,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a99f22c62263c24aa8091282b281440, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  requestedEnergy: 10
-  requiredEnergy: 10
-  percentDrawToFill: 10
-  energyBuffer: 100
+  requestedEnergy: 120
+  requiredEnergy: 120
+  percentDrawToFill: 5
+  energyBuffer: 600
   bufferCurrent: 0
   machineType: light_point
   runMachine: 1
-  maxLightIntensity: 2500
-  maxLightRange: 9
+  lightComponent: {fileID: 0}
   legsRequired: 2
 --- !u!114 &8368146945776765732
 MonoBehaviour:
@@ -559,14 +558,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Version: 11
-  m_ObsoleteShadowResolutionTier: 1
-  m_ObsoleteUseShadowQualitySettings: 0
-  m_ObsoleteCustomShadowResolution: 512
-  m_ObsoleteContactShadows: 0
-  m_PointlightHDType: 0
-  m_SpotLightShape: 0
-  m_AreaLightShape: 0
   m_Intensity: 1000
   m_EnableSpotReflector: 0
   m_LuxAtDistance: 1
@@ -669,3 +660,11 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
+  m_PointlightHDType: 0
+  m_SpotLightShape: 0
+  m_AreaLightShape: 0
+  m_Version: 11
+  m_ObsoleteShadowResolutionTier: 1
+  m_ObsoleteUseShadowQualitySettings: 0
+  m_ObsoleteCustomShadowResolution: 512
+  m_ObsoleteContactShadows: 0
