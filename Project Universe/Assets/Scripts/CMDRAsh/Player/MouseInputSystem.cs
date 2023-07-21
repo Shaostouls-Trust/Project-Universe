@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CMF;
-using MLAPI;
+using Unity.Netcode;
 
 namespace ProjectUniverse.Player.PlayerController {
     public class MouseInputSystem : CameraInput

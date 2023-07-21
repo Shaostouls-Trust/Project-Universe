@@ -1,5 +1,4 @@
-using MLAPI;
-using MLAPI.NetworkVariable;
+using Unity.Netcode;
 using ProjectUniverse.Items.Weapons;
 using ProjectUniverse.Player.PlayerController;
 using System.Collections;
@@ -13,7 +12,7 @@ namespace ProjectUniverse.Player
         [SerializeField] private int limbID;
         [SerializeField] private float limbHealth;
         [SerializeField] private float limbHealthMax;
-        private NetworkVariableFloat netLimbHealth = new NetworkVariableFloat(100f);
+        private NetworkVariable<float> netLimbHealth = new NetworkVariable<float>(100f);
         private GameObject player;
         
         public float NetLimbHealth 

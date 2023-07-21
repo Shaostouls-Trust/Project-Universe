@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using ProjectUniverse.PowerSystem;
 using ProjectUniverse.Data.Libraries;
-using MLAPI.NetworkVariable;
-using MLAPI;
-using MLAPI.Messaging;
 using ProjectUniverse.Production.Machines;
+using Unity.Netcode;
 
 namespace ProjectUniverse.Animation.Controllers
 {
@@ -47,7 +45,7 @@ namespace ProjectUniverse.Animation.Controllers
         //private bool isRClosing;
         private bool hasEmissive;
 
-        public bool locked;//whether or not the door can be opened
+        public bool locked=false;//whether or not the door can be opened
         private bool weldedClosed;//whether or not door has been welded shut
         private bool weldedOpen;//Allow welded open?
 
@@ -69,12 +67,12 @@ namespace ProjectUniverse.Animation.Controllers
         //private ISubMachine doorMachine;
         private bool thisRunMachine = false;
         [Space]
-        private NetworkVariableBool netLocked = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
-        private NetworkVariableBool netWeldedClosed = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
-        private NetworkVariableBool netWeldedOpen = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
-        private NetworkVariableBool netIsPowered = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
-        private NetworkVariableBool netIsRunning = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
-        private NetworkVariableBool netThisRunMachine = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        private NetworkVariable<bool> netLocked = new NetworkVariable<bool>();//new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone }
+        private NetworkVariable<bool> netWeldedClosed = new NetworkVariable<bool>();//new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone }
+        private NetworkVariable<bool> netWeldedOpen = new NetworkVariable<bool>();//new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone }
+        private NetworkVariable<bool> netIsPowered = new NetworkVariable<bool>();//new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone }
+        private NetworkVariable<bool> netIsRunning = new NetworkVariable<bool>();//new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone }
+        private NetworkVariable<bool> netThisRunMachine = new NetworkVariable<bool>();//new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone }
         //private NetworkVariableFloat netAnimSpeed = new NetworkVariableFloat(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
         [SerializeField] private TMPro.TMP_Text othersideID;
 
@@ -119,6 +117,7 @@ namespace ProjectUniverse.Animation.Controllers
 
             isRunning = true;
             netThisRunMachine.Value = GetComponent<ISubMachine>().GetRunMachine();
+            //Debug.Log("NetworkObject "+NetworkObject.NetworkObjectId);
         }
 
         private void NetworkListeners()
@@ -130,6 +129,7 @@ namespace ProjectUniverse.Animation.Controllers
             netIsPowered.Value = isPowered;
             netIsRunning.Value = isPowered;
             netThisRunMachine.Value = thisRunMachine;
+
             //set up events
             netLocked.OnValueChanged += delegate { locked = netLocked.Value; };
             netWeldedClosed.OnValueChanged += delegate { weldedClosed = netWeldedClosed.Value; };
@@ -142,8 +142,10 @@ namespace ProjectUniverse.Animation.Controllers
 
         void Update()
         {
+            //Debug.Log("thisRunMachine " + thisRunMachine);
+            //Debug.Log("locked " + locked);
             if (thisRunMachine)
-            {
+            { 
                 //isRunning = true;
                 netIsRunning.Value = true;
                 if (!locked)
@@ -176,6 +178,7 @@ namespace ProjectUniverse.Animation.Controllers
             //if door is powered, run the below checks
             if (isPowered && isRunning)
             {
+                Debug.Log("Powered and Running");
                 //check door positions and animation cycles
                 //when the door is at open position, but the animation is not done opening.
                 if (doorAnimIsInX)

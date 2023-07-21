@@ -14,7 +14,7 @@ using System.Reflection;
 using ProjectUniverse.Items.Containers;
 using ProjectUniverse.UI;
 using UnityEngine.InputSystem;
-using MLAPI;
+using Unity.Netcode;
 using ProjectUniverse.Player.PlayerController;
 using ProjectUniverse.Items.Weapons;
 using ProjectUniverse.Items;

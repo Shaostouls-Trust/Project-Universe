@@ -105,7 +105,7 @@ TextureImporter:
       213: 21300066
     second: arrow_right1
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -122,10 +122,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -134,9 +136,9 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: -1
+    filterMode: 1
     aniso: 16
-    mipBias: -100
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -164,6 +166,8 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 1
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -175,6 +179,33 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
@@ -862,9 +893,41 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-  spritePackingTag: 
+    nameFileIdTable:
+      arrow_left: 21300036
+      arrow_left1: 21300064
+      arrow_right: 21300038
+      arrow_right1: 21300066
+      back_arrow: 21300030
+      background_bar: 21300050
+      background_bar1: 21300060
+      bar_blue: 21300040
+      bar_blue1: 21300052
+      bar_green: 21300042
+      bar_green1: 21300058
+      bar_purple: 21300044
+      bar_purple1: 21300062
+      bar_red: 21300046
+      bar_red1: 21300054
+      bullets: 21300022
+      button1: 21300014
+      button_active: 21300024
+      button_pushed: 21300016
+      jotstick_back: 21300004
+      joystikc: 21300006
+      long_arrow_left: 21300034
+      long_arrow_right: 21300026
+      pause: 21300018
+      plus: 21300012
+      progress_bar: 21300032
+      progress_bar1: 21300008
+      progress_bar_background: 21300010
+      progress_bar_background1: 21300028
+      rocket: 21300020
+      window: 21300000
+      window1: 21300002
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

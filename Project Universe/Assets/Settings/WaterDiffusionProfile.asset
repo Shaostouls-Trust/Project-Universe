@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2686e09ec7aef44bad2843e4416f057, type: 3}
   m_Name: WaterDiffusionProfile
   m_EditorClassIdentifier: 
-  m_Version: 1
   profile:
-    scatteringDistance: {r: 0.08627451, g: 0.4745098, b: 0.7254902, a: 1}
+    scatteringDistance: {r: 0.08907261, g: 0.4898993, b: 0.7490196, a: 1}
+    scatteringDistanceMultiplier: 0.9685864
     transmissionTint: {r: 0.2073325, g: 1.0884956, b: 1.6500212, a: 1}
     texturingMode: 0
     transmissionMode: 1
@@ -22,3 +22,4 @@ MonoBehaviour:
     worldScale: 1
     ior: 1.33
     hash: 1077350991
+  m_Version: 2

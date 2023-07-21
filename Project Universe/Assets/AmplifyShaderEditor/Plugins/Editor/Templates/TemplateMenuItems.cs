@@ -16,18 +16,18 @@ namespace AmplifyShaderEditor
 		{
 			AmplifyShaderEditorWindow.CreateConfirmationTemplateShader( "32120270d1b3a8746af2aca8bc749736" );
 		}
-		[MenuItem( "Assets/Create/Amplify Shader/HD/Decal", false, 85 )]
-		public static void ApplyTemplateHDDecal()
+		[MenuItem( "Assets/Create/Amplify Shader/HDRP/Decal", false, 85 )]
+		public static void ApplyTemplateHDRPDecal()
 		{
 			AmplifyShaderEditorWindow.CreateConfirmationTemplateShader( "d345501910c196f4a81c9eff8a0a5ad7" );
 		}
-		[MenuItem( "Assets/Create/Amplify Shader/HD/Fabric", false, 85 )]
-		public static void ApplyTemplateHDFabric()
+		[MenuItem( "Assets/Create/Amplify Shader/HDRP/Fabric", false, 85 )]
+		public static void ApplyTemplateHDRPFabric()
 		{
 			AmplifyShaderEditorWindow.CreateConfirmationTemplateShader( "41e04be03f2c20941bc749271be1c937" );
 		}
-		[MenuItem( "Assets/Create/Amplify Shader/HD/Hair", false, 85 )]
-		public static void ApplyTemplateHDHair()
+		[MenuItem( "Assets/Create/Amplify Shader/HDRP/Hair", false, 85 )]
+		public static void ApplyTemplateHDRPHair()
 		{
 			AmplifyShaderEditorWindow.CreateConfirmationTemplateShader( "e4fe21624ace6de4b9fbaabdda0c51de" );
 		}

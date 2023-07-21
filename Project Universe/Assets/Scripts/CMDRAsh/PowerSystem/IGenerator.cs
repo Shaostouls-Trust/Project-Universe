@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using MLAPI.NetworkVariable;
-using MLAPI;
+using Unity.Netcode;
 using ProjectUniverse.Environment.Radiation;
 using ProjectUniverse.Audio;
 
@@ -33,8 +32,8 @@ namespace ProjectUniverse.PowerSystem
         private int availibleLegsOut;
 
         //MLAPI
-        private NetworkVariableInt netOutputMax = new NetworkVariableInt(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
-        private NetworkVariableInt netLegsOut = new NetworkVariableInt(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        private NetworkVariable<int> netOutputMax = new NetworkVariable<int>();//new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone }
+        private NetworkVariable<int> netLegsOut = new NetworkVariable<int>();
 
         public int OutputMax
         {

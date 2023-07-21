@@ -1,7 +1,5 @@
 ﻿
-using MLAPI;
-using MLAPI.Messaging;
-using MLAPI.NetworkVariable;
+using Unity.Netcode;
 using ProjectUniverse.Player.PlayerController;
 using UnityEngine;
 
@@ -9,7 +7,7 @@ public class WeaponSwitching : NetworkBehaviour
 {
     private ProjectUniverse.PlayerControls controls;
     public int selectedWeapon = 0;
-    private NetworkVariableInt netSelectedWeapon = new NetworkVariableInt(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone } ,0);
+    private NetworkVariable<int> netSelectedWeapon = new NetworkVariable<int>(0);//new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone } ,
 
     private void OnEnable()
     {

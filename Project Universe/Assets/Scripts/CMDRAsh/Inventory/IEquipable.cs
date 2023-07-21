@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 using static ProjectUniverse.Base.ItemStack;
 
 namespace ProjectUniverse.Items
@@ -111,7 +112,7 @@ namespace ProjectUniverse.Items
         {
             if(i == 0)
             {
-                if (MLAPI.NetworkManager.Singleton.ConnectedClients.TryGetValue(MLAPI.NetworkManager.Singleton.LocalClientId, out var networkedClient))
+                if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
                 {
                     gameObject.GetComponent<InteractionElement>().Parameter = 1;
                     networkedClient.PlayerObject.gameObject.GetComponent<IPlayer_Inventory>().AddToPlayerInventory<Weapons.Weapon_Gun>(this);

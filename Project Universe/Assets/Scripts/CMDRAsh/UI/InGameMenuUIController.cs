@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using ProjectUniverse.Player.PlayerController;
-using MLAPI;
+using Unity.Netcode;
 //using UnityEditor;
 using UnityEngine.SceneManagement;
 
@@ -23,10 +23,16 @@ public class InGameMenuUIController : MonoBehaviour
 
     private void Start()
     {
-        if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
+        NetworkObject playNet = NetworkManager.Singleton.LocalClient.PlayerObject;
+            //NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject();
+        if(playNet != null)
         {
-            controls = networkedClient.PlayerObject.gameObject.GetComponent<SupplementalController>().PlayerController;
+            controls = playNet.gameObject.GetComponent<SupplementalController>().PlayerController;
         }
+        //if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
+        //{
+        //    controls = networkedClient.PlayerObject.gameObject.GetComponent<SupplementalController>().PlayerController;
+        //}
         else
         {
             controls = new ProjectUniverse.PlayerControls();
@@ -37,10 +43,11 @@ public class InGameMenuUIController : MonoBehaviour
         {
             if (player == null)
             {
-                if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
-                {
-                    player = networkedClient.PlayerObject.gameObject;
-                }
+                //NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient)
+                //if ()
+                //{
+                    player = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject;
+                //}
             }
 
             SupplementalController playersc = player.GetComponent<SupplementalController>();
@@ -147,13 +154,9 @@ public class InGameMenuUIController : MonoBehaviour
         {
             NetworkManager.Singleton.DisconnectClient(NetworkManager.Singleton.LocalClientId);
         }
-        else if (NetworkManager.Singleton.IsHost)
+        else if (NetworkManager.Singleton.IsHost || NetworkManager.Singleton.IsServer)
         {
-            NetworkManager.Singleton.StopHost();
-        }
-        else if (NetworkManager.Singleton.IsServer)
-        {
-            NetworkManager.Singleton.StopServer();
+            NetworkManager.Singleton.Shutdown();
         }
         //Quit to tile/splash screen
         LoadingScreenSplash.SetActive(true);

@@ -13,7 +13,7 @@ using ProjectUniverse.PowerSystem;
 
 namespace ProjectUniverse.Environment.Volumes
 {
-    [RequireComponent(typeof(VolumeComponent))]
+    //[RequireComponent(typeof(VolumeComponent))]
     public sealed class VolumeAtmosphereController : MonoBehaviour
     {
         private float roomPressure;
@@ -113,7 +113,7 @@ namespace ProjectUniverse.Environment.Volumes
             {
                 //Debug.Log("- - - - -");
                 rsm = GetComponentInParent<RenderStateManager>();
-                Debug.Log("Room RSM: " + rsm);
+                //Debug.Log("Room RSM: " + rsm);
                 ///Get all top-level renderers and light objects in this volume
                 ///
                 List<GameObject> lightList = new List<GameObject>();

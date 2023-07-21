@@ -1,4 +1,4 @@
-﻿using MLAPI;
+﻿using Unity.Netcode;
 using ProjectUniverse.Player.PlayerController;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,11 +21,14 @@ namespace ProjectUniverse.Environment.Interactable
         private bool triggered;
         void Start()
         {
-            if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
-            {
-                player = networkedClient.PlayerObject.gameObject;
-            }
-            else player = null;
+            // NotAServer Exception
+            //if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
+            //{
+            //    player = networkedClient.PlayerObject.gameObject;
+            //}
+            //player = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject;
+                //NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject().gameObject;
+            //else player = null;
         }
 
         // Update is called once per frame
@@ -78,6 +81,10 @@ namespace ProjectUniverse.Environment.Interactable
                     if (triggered)
                     {
                         //lock and hide cursor, we have left the detection area
+                        if(player == null)
+                        {
+                            player = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject;
+                        }
                         player.GetComponent<SupplementalController>().LockOnlyCursor();//LockCursor
                         player.GetComponent<SupplementalController>().ShowCenterUI();
                         triggered = false;
@@ -94,6 +101,10 @@ namespace ProjectUniverse.Environment.Interactable
             {
                 if (triggered)
                 {
+                    if(player == null)
+                    {
+                        player = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject;
+                    }
                     //lock and hide cursor, we have left the detection area
                     player.GetComponent<SupplementalController>().LockOnlyCursor();
                     player.GetComponent<SupplementalController>().ShowCenterUI();

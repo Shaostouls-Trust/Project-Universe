@@ -9,10 +9,8 @@ using ProjectUniverse.Serialization;
 using ProjectUniverse.Environment.Volumes;
 using System;
 using UnityEngine.SceneManagement;
-using MLAPI;
-using MLAPI.NetworkVariable;
+using Unity.Netcode;
 using ProjectUniverse.Items.Weapons;
-using MLAPI.Messaging;
 using ProjectUniverse.Animation.Controllers;
 using ProjectUniverse.Items;
 using static ProjectUniverse.Items.IEquipable;
@@ -62,7 +60,7 @@ namespace ProjectUniverse.Player.PlayerController
         private Vector3 localVelocity;
         //Player stats2
         private float playerHealthMax = 100f;
-        private NetworkVariableFloat playerNetHealth = new NetworkVariableFloat(100f);
+        private NetworkVariable<float> playerNetHealth = new NetworkVariable<float>(100f);
         [SerializeField] private float playerHealth = 100f;//Non-standard. Radiation, suffocation, etc.
         //[SerializeField] private MyLimb head;//0
         //[SerializeField] private MyLimb chest;//1
@@ -170,8 +168,8 @@ namespace ProjectUniverse.Player.PlayerController
         private bool remoteLight;
         private bool remoteInventory;
 
-        private NetworkVariableBool netFlashlightState = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
-        private NetworkVariableInt netSelectedWeapon = new NetworkVariableInt(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone }, 0);
+        private NetworkVariable<bool> netFlashlightState = new NetworkVariable<bool>();//new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone }
+        private NetworkVariable<int> netSelectedWeapon = new NetworkVariable<int>(0);//new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone }, 
         public CMF.AdvancedWalkerController awc;
         public float HeadHealth
         {
@@ -1192,6 +1190,27 @@ namespace ProjectUniverse.Player.PlayerController
                     RemoteRoll = 0f;
                 }
             };
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        public void TeleportPlayerServerRPC(Vector3 newGlobalPosition)
+        {
+            Debug.Log("TP SRPC");
+            transform.position = newGlobalPosition;
+            TeleportPlayerClientRPC(newGlobalPosition);
+
+        }
+
+        [ClientRpc]
+        public void TeleportPlayerClientRPC(Vector3 newGlobalPosition)
+        {
+            Debug.Log("TP CRPC");
+            TeleportPlayer(newGlobalPosition);
+        }
+        private void TeleportPlayer(Vector3 newGlobalPosition)
+        {
+            Debug.Log("TP: "+newGlobalPosition);
+            transform.position = newGlobalPosition;
         }
 
         public bool CameraLocked

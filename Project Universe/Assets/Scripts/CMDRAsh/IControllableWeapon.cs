@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
-using MLAPI;
+using Unity.Netcode;
 
 public class IControllableWeapon : MonoBehaviour
 {

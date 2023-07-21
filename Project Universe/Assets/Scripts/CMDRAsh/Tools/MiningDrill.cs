@@ -1,4 +1,4 @@
-using MLAPI;
+using Unity.Netcode;
 using ProjectUniverse.Base;
 using ProjectUniverse.Environment.World;
 using ProjectUniverse.Items.Containers;
@@ -34,10 +34,11 @@ namespace ProjectUniverse.Items.Tools
         // Start is called before the first frame update
         void Start()
         {
-            if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
-            {
-                player = networkedClient.PlayerObject.gameObject;
-            }
+            //if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
+            //{
+            //    player = networkedClient.PlayerObject.gameObject;
+            //}
+            
         }
 
         public GameObject Player
@@ -103,6 +104,10 @@ namespace ProjectUniverse.Items.Tools
                                 //add the ore to the player inventory
                                 if (!mounted)
                                 {
+                                    if(player == null)
+                                    {
+                                        player = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject;
+                                    }
                                     player.GetComponent<IPlayer_Inventory>().AddStackToPlayerInventory(stack);
                                 }
                                 else

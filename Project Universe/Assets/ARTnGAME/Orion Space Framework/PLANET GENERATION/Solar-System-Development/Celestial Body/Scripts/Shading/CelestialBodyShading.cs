@@ -89,7 +89,7 @@ namespace Artngame.Orion.ProceduralPlanets
             }
             else if (texture.width != width)
             {
-                texture.Resize(width, 1);
+                texture.Reinitialize(width, 1);
             }
             if (gradient == null)
             {

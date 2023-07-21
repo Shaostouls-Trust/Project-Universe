@@ -21,9 +21,7 @@ ScriptedImporter:
     shaderName: HDRP/LitTessellation
     materialProperties:
       shader: {fileID: 4800000, guid: 756bac9090102564582875f4c7e30202, type: 3}
-      shaderKeywords: _DISPLACEMENT_LOCK_TILING_SCALE _HEIGHTMAP _MASKMAP _NORMALMAP
-        _NORMALMAP_TANGENT_SPACE _OCCLUSIONMAP _ROUGHNESSMAP _TESSELLATION_DISPLACEMENT
-        _VERTEX_DISPLACEMENT_LOCK_OBJECT_SCALE
+      shaderKeywords: 
       lightmapFlags: 4
       enableInstancingVariants: 1
       doubleSidedGI: 0
@@ -109,6 +107,10 @@ ScriptedImporter:
         texture: {instanceID: 0}
         scale: {x: 1, y: 1}
         offset: {x: 0, y: 0}
+      - name: _TransmissionMaskMap
+        texture: {instanceID: 0}
+        scale: {x: 1, y: 1}
+        offset: {x: 0, y: 0}
       - name: _TransmittanceColorMap
         texture: {instanceID: 0}
         scale: {x: 1, y: 1}
@@ -148,12 +150,12 @@ ScriptedImporter:
         float: 0.5
       - name: _AlphaDstBlend
         float: 0
+      - name: _AlphaRemapMax
+        float: 1
+      - name: _AlphaRemapMin
+        float: 0
       - name: _AlphaSrcBlend
         float: 1
-      - name: _AlphaToMask
-        float: 0
-      - name: _AlphaToMaskInspectorValue
-        float: 0
       - name: _Anisotropy
         float: 0
       - name: _BlendMode
@@ -185,6 +187,8 @@ ScriptedImporter:
       - name: _DisplacementMode
         float: 3
       - name: _DoubleSidedEnable
+        float: 0
+      - name: _DoubleSidedGIMode
         float: 0
       - name: _DoubleSidedNormalMode
         float: 1
@@ -246,6 +250,10 @@ ScriptedImporter:
         float: 0
       - name: _NormalScale
         float: 1
+      - name: _ObjectSpaceUVMapping
+        float: 0
+      - name: _ObjectSpaceUVMappingEmissive
+        float: 0
       - name: _OpaqueCullMode
         float: 2
       - name: _PPDLodThreshold
@@ -314,8 +322,12 @@ ScriptedImporter:
         float: 100
       - name: _TessellationMode
         float: 0
+      - name: _TessellationObjectScale
+        float: 1
       - name: _TessellationShapeFactor
         float: 0.75
+      - name: _TessellationTilingScale
+        float: 1
       - name: _TexWorldScale
         float: 1
       - name: _TexWorldScaleEmissive
@@ -323,6 +335,8 @@ ScriptedImporter:
       - name: _Thickness
         float: 1
       - name: _TransmissionEnable
+        float: 1
+      - name: _TransmissionMask
         float: 1
       - name: _TransparentBackfaceEnable
         float: 0

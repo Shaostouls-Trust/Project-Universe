@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using ProjectUniverse.Data.Libraries;
-using MLAPI.NetworkVariable;
-using MLAPI.NetworkVariable.Collections;
-using MLAPI.Messaging;
-using MLAPI;
+using Unity.Netcode;
 using ProjectUniverse.Animation.Controllers;
 using ProjectUniverse.Environment.Interactable;
 
@@ -15,7 +12,7 @@ namespace ProjectUniverse.PowerSystem
     /*
      * The purpose of this class is to distribute power to large amounts of small IMachines (not unlike IRoutingSubtation, save simpler).
      */
-    public sealed class IBreakerBox : MonoBehaviour//NetworkBehaviour
+    public sealed class IBreakerBox : NetworkBehaviour//MonoBehavior
     {
         private Guid guid;
         //power group or machine this unit provides power to.
@@ -37,13 +34,13 @@ namespace ProjectUniverse.PowerSystem
         private int legsRequired = 3;
         private int legsReceived;
         //Network variable
-        private NetworkVariableFloat netTotalRequiredPower = new NetworkVariableFloat(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
-        private NetworkVariableFloat netEnergyBufferMax = new NetworkVariableFloat(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
-        private NetworkVariableFloat netBufferCurrent = new NetworkVariableFloat(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
-        private NetworkVariableInt netSwitchCount = new NetworkVariableInt(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
-        private NetworkVariableFloat netDefecitVBreaker = new NetworkVariableFloat(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
-        private NetworkVariableInt netLegsRequired = new NetworkVariableInt(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
-        private NetworkVariableInt netLegsReceived = new NetworkVariableInt(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        private NetworkVariable<float> netTotalRequiredPower = new NetworkVariable<float>();//new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone }
+        private NetworkVariable<float> netEnergyBufferMax = new NetworkVariable<float>();
+        private NetworkVariable<float> netBufferCurrent = new NetworkVariable<float>();
+        private NetworkVariable<int> netSwitchCount = new NetworkVariable<int>();
+        private NetworkVariable<float> netDefecitVBreaker = new NetworkVariable<float>();
+        private NetworkVariable<int> netLegsRequired = new NetworkVariable<int>();
+        private NetworkVariable<int> netLegsReceived = new NetworkVariable<int>();
         //private NetworkList<GameObject> netOccupiedSwitches = new NetworkList<GameObject>(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
         [SerializeField] private bool runMachine = true;
         private float lastReceived;
@@ -89,13 +86,13 @@ namespace ProjectUniverse.PowerSystem
         private void NetworkListeners()
         {
             //set starting values
-            netTotalRequiredPower.Value = totalRequiredPower;
+            /*netTotalRequiredPower.Value = totalRequiredPower;
             netEnergyBufferMax.Value = energyBufferMax;
             netBufferCurrent.Value = bufferCurrent;
             netSwitchCount.Value = switchCount;
             netDefecitVBreaker.Value = defecitVbreaker;
             netLegsReceived.Value = legsReceived;
-            netLegsRequired.Value = legsRequired;
+            netLegsRequired.Value = legsRequired;*/
             //for(int i = 0; i < occupiedSwitches.Length; i++)
             //{
             //    netOccupiedSwitches.Add(occupiedSwitches[i]);

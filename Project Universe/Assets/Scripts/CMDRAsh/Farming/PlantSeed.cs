@@ -1,4 +1,3 @@
-using MLAPI;
 using ProjectUniverse.Base;
 using ProjectUniverse.Items;
 using ProjectUniverse.Items.Consumable;

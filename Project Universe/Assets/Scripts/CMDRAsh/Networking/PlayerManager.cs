@@ -1,4 +1,4 @@
-using MLAPI;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace ProjectUniverse.Networking
@@ -14,7 +14,7 @@ namespace ProjectUniverse.Networking
             }
             else
             {
-                StatusLabels();
+                //StatusLabels();
 
                 //SubmitNewPosition();
             }

@@ -1,17 +1,15 @@
-using MLAPI;
-using MLAPI.Spawning;
+using Unity.Netcode;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MLAPI.Transports.UNET;
 using TMPro;
 using ProjectUniverse.Player.PlayerController;
 using UnityEngine.Networking;
-using MLAPI.Connection;
 using System.Threading.Tasks;
 using ProjectUniverse.Ship;
 using ProjectUniverse.Environment.Volumes;
+using Unity.Netcode.Transports.UTP;
 
 namespace ProjectUniverse.Networking
 {
@@ -21,15 +19,17 @@ namespace ProjectUniverse.Networking
         [SerializeField] private GameObject ConnectionUIGO;
         public Camera LobbyCam;
         private string IPaddress = "127.0.0.1";
-        UNetTransport uNetTransportForClient;
+        UnityTransport unityTransportForClient;
         [SerializeField] private GameObject loadScreen;
         public RenderStateManager rsmPlayer;
+        //[SerializeField] private NetworkManager networkManager;
 
         /// <summary>
         /// Temporary Host function for singleplayer demo
         /// </summary>
         private void Start()
         {
+            Debug.Log("RT: " + SystemInfo.supportsRayTracing);
             Debug.Log("Linke Starto!");
             Host();
             if(loadScreen != null)
@@ -44,21 +44,40 @@ namespace ProjectUniverse.Networking
             LobbyCam.gameObject.SetActive(false);
             ConnectionUIGO.SetActive(false);
             NetworkManager.Singleton.ConnectionApprovalCallback += ApprovalCheck;
-            NetworkManager.Singleton.StartHost(new Vector3?(DefSpawnPosMarker.transform.position));//starthost takes in the starting position
-            if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
+            NetworkManager.Singleton.StartHost();//starthost takes in the starting position
+            NetworkObject playNet = NetworkManager.Singleton.LocalClient.PlayerObject;
+            //if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
+            //{
+            if (playNet != null)
             {
-                networkedClient.PlayerObject.gameObject.GetComponent<SupplementalController>().LockOnlyCursor();
-                networkedClient.PlayerObject.gameObject.GetComponent<PlayerVolumeController>().tempRSMPlayer = rsmPlayer;
+                Debug.Log("Startcode");
+                //move to start position (temp)
+                playNet.GetComponent<SupplementalController>().TeleportPlayerServerRPC(DefSpawnPosMarker.transform.position);
+                //Debug.Log(playNet.name);
+                playNet.gameObject.GetComponent<SupplementalController>().LockOnlyCursor();
+                playNet.gameObject.GetComponent<PlayerVolumeController>().tempRSMPlayer = rsmPlayer;
             }
+            //}
             Debug.Log("Started Host");
         }
 
-        private void ApprovalCheck(byte[] connectionData, ulong clientID, NetworkManager.ConnectionApprovedDelegate callback)
+        private void ApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
         {
-            Debug.Log("ApprovalCheck");
-            //check the incoming data (password) against a the server password
-            bool approved = System.Text.Encoding.ASCII.GetString(connectionData) == "79213";
-            callback(true, null, approved, DefSpawnPosMarker.transform.position, Quaternion.identity);
+            //bool approved = System.Text.Encoding.ASCII.GetString(request.Payload) == "79213";
+            //if (approved)
+            //{
+            var clientId = request.ClientNetworkId;
+            Debug.Log("Payload: "+System.Text.Encoding.ASCII.GetString(request.Payload));
+            //Debug.Log("Spawn At: " + response.Position);
+            response.Approved = true;
+            response.Position = new Vector3?(DefSpawnPosMarker.transform.position);
+            response.CreatePlayerObject = true;
+            //}
+            //else
+            //{
+            //    response.Reason = "Bad Access Code";
+            //    response.Approved = false;
+            //}
         }
 
         private System.Action<ulong> ClientDisconnectCallback()

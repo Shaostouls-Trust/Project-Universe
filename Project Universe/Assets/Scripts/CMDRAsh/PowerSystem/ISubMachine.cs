@@ -4,11 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using ProjectUniverse.Data.Libraries;
 using ProjectUniverse.Animation.Controllers;
-using MLAPI.NetworkVariable;
-using MLAPI;
-using MLAPI.NetworkVariable.Collections;
-using MLAPI.Messaging;
-
+using Unity.Netcode;
 namespace ProjectUniverse.PowerSystem
 {
     public sealed class ISubMachine : NetworkBehaviour
@@ -39,17 +35,17 @@ namespace ProjectUniverse.PowerSystem
         private int legsRequired;
         private int legsReceived;
         //network vars
-        private NetworkVariableFloat netRequestedEnergy = new NetworkVariableFloat(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
-        private NetworkVariableFloat netRequiredEnergy = new NetworkVariableFloat(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
-        private NetworkVariableFloat netEnergyBuffer = new NetworkVariableFloat(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
-        private NetworkVariableFloat netBufferCurrent = new NetworkVariableFloat(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
-        private NetworkVariableBool netIsPowered = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
-        private NetworkVariableBool netRunMachine = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
-        private NetworkVariableFloat netMaxLightIntensity = new NetworkVariableFloat(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
-        private NetworkVariableFloat netMaxLightRange = new NetworkVariableFloat(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
-        private NetworkVariableInt netLegsRequired = new NetworkVariableInt(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
-        private NetworkVariableInt netLegsReceived = new NetworkVariableInt(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
-        private NetworkVariableBool netLightEnabled = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        private NetworkVariable<float> netRequestedEnergy = new NetworkVariable<float>();//new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone }
+        private NetworkVariable<float> netRequiredEnergy = new NetworkVariable<float>();
+        private NetworkVariable<float> netEnergyBuffer = new NetworkVariable<float>();
+        private NetworkVariable<float> netBufferCurrent = new NetworkVariable<float>();
+        private NetworkVariable<bool> netIsPowered = new NetworkVariable<bool>();
+        private NetworkVariable<bool> netRunMachine = new NetworkVariable<bool>();
+        private NetworkVariable<float> netMaxLightIntensity = new NetworkVariable<float>();
+        private NetworkVariable<float> netMaxLightRange = new NetworkVariable<float>();
+        private NetworkVariable<int> netLegsRequired = new NetworkVariable<int>();
+        private NetworkVariable<int> netLegsReceived = new NetworkVariable<int>();
+        private NetworkVariable<bool> netLightEnabled = new NetworkVariable<bool>();
         //anti-spaz timer
         private float chillTime = 7f;
         private float lastEnergyReceived = 0f;

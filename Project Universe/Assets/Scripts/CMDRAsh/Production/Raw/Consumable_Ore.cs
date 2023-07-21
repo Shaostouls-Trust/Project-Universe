@@ -4,7 +4,7 @@ using UnityEngine;
 using ProjectUniverse.Player;
 using ProjectUniverse.Data.Libraries.Definitions;
 using ProjectUniverse.Data.Libraries;
-using MLAPI;
+using Unity.Netcode;
 
 namespace ProjectUniverse.Production.Resources
 {

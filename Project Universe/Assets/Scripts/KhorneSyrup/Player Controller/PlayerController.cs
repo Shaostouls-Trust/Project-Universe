@@ -1,6 +1,4 @@
-﻿using MLAPI;
-using MLAPI.Messaging;
-using MLAPI.NetworkVariable;
+﻿using Unity.Netcode;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -64,7 +62,7 @@ namespace ProjectUniverse.Player.PlayerController
         private float lookClamp;
         private float timeInAir = 0.0f;
 
-        private NetworkVariableBool netFlashlightState = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
+        private NetworkVariable<bool> netFlashlightState = new NetworkVariable<bool>();//new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone }
 
         private ProjectUniverse.PlayerControls controls;
 
@@ -229,10 +227,10 @@ namespace ProjectUniverse.Player.PlayerController
             //}
         }
 
-        public override void NetworkStart()
-        {
+        //public override void NetworkStart()
+        //{
             //Move();
-        }
+        //}
 
         ///Temp location - Technically belongs in a GUI controller
         ///Used with GUIs to free the cursor for GUI interaction

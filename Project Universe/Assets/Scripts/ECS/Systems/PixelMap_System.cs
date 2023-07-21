@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Entities;
 
-public class PixelMap_System : ComponentSystem//, IConvertGameObjectToEntity
+public class PixelMap_System : ComponentSystemBase//, IConvertGameObjectToEntity
 {
 	[SerializeField]
 	private GameObject rootGameObject;
 	//public bool ECSIntFinished;
 
-    protected override void OnUpdate()
+    public override void Update()
     {
 		
 	}

@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2686e09ec7aef44bad2843e4416f057, type: 3}
   m_Name: StandardDiffusionProfile
   m_EditorClassIdentifier: 
-  m_Version: 1
   profile:
-    scatteringDistance: {r: 0.5019609, g: 0.4415153, b: 0.2496664, a: 1}
+    scatteringDistance: {r: 0.7490196, g: 0.65882355, b: 0.37254903, a: 1}
+    scatteringDistanceMultiplier: 0.6701572
     transmissionTint: {r: 0.9019608, g: 0.9137255, b: 0.76862746, a: 1}
     texturingMode: 0
     transmissionMode: 0
@@ -22,3 +22,4 @@ MonoBehaviour:
     worldScale: 1
     ior: 1
     hash: 1073921248
+  m_Version: 2

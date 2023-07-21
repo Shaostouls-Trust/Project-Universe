@@ -311,49 +311,52 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                 feedPipe.Receive(false, avgV, avgP, AllSteams, avgT);
             }
 
-            //light update
-            if (stateLights[0] != null)
+            if (mainHeadMode)
             {
-                if (!Valve1)
+                //light update
+                if (stateLights[0] != null)
                 {
-                    stateLights[0].enabled = true;
+                    if (!Valve1)
+                    {
+                        stateLights[0].enabled = true;
+                    }
+                    else
+                    {
+                        stateLights[0].enabled = false;
+                    }
                 }
-                else
+                if (stateLights[1] != null)
                 {
-                    stateLights[0].enabled = false;
+                    if (!Valve2)
+                    {
+                        stateLights[1].enabled = true;
+                    }
+                    else
+                    {
+                        stateLights[1].enabled = false;
+                    }
                 }
-            }
-            if (stateLights[1] != null)
-            {
-                if (!Valve2)
+                if (stateLights[2] != null)
                 {
-                    stateLights[1].enabled = true;
+                    if (!Valve3)
+                    {
+                        stateLights[2].enabled = true;
+                    }
+                    else
+                    {
+                        stateLights[2].enabled = false;
+                    }
                 }
-                else
+                if (stateLights[3] != null)
                 {
-                    stateLights[1].enabled = false;
-                }
-            }
-            if (stateLights[2] != null)
-            {
-                if (!Valve3)
-                {
-                    stateLights[2].enabled = true;
-                }
-                else
-                {
-                    stateLights[2].enabled = false;
-                }
-            }
-            if (stateLights[3] != null)
-            {
-                if (!Valve4)
-                {
-                    stateLights[3].enabled = true;
-                }
-                else
-                {
-                    stateLights[3].enabled = false;
+                    if (!Valve4)
+                    {
+                        stateLights[3].enabled = true;
+                    }
+                    else
+                    {
+                        stateLights[3].enabled = false;
+                    }
                 }
             }
         }

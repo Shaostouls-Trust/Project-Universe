@@ -12,13 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2686e09ec7aef44bad2843e4416f057, type: 3}
   m_Name: Fire_Diffuse
   m_EditorClassIdentifier: 
-  m_Version: 1
   profile:
-    scatteringDistance: {r: 1, g: 0.4634402, b: 0, a: 1}
-    transmissionTint: {r: 1, g: 1, b: 1, a: 1}
+    scatteringDistance: {r: 0.7615293, g: 0.43043944, b: 0.0022015655, a: 1}
+    scatteringDistanceMultiplier: 1.3350785
+    transmissionTint: {r: 1, g: 0.35840422, b: 0, a: 1}
     texturingMode: 0
     transmissionMode: 1
-    thicknessRemap: {x: 0.24384297, y: 5.243842}
+    thicknessRemap: {x: 0, y: 9.762692}
     worldScale: 1
-    ior: 2
+    ior: 1.2
     hash: 1080676246
+  m_Version: 2

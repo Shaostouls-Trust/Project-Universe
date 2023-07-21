@@ -1,53 +1,63 @@
-Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
+Shader /*ase_name*/ "Hidden/HDRP/Unlit" /*end*/
 {
 	Properties
 	{
 		/*ase_props*/
-		[HideInInspector]_RenderQueueType("Render Queue Type", Float) = 1
-		[HideInInspector][ToggleUI]_AddPrecomputedVelocity("Add Precomputed Velocity", Float) = 1
-		[HideInInspector]_ShadowMatteFilter("Shadow Matte Filter", Float) = 2.006836
-		[HideInInspector]_StencilRef("Stencil Ref", Int) = 0
-		[HideInInspector]_StencilWriteMask("StencilWrite Mask", Int) = 6
-		[HideInInspector]_StencilRefDepth("StencilRefDepth", Int) = 0
-		[HideInInspector]_StencilWriteMaskDepth("_StencilWriteMaskDepth", Int) = 8
-		[HideInInspector]_StencilRefMV("_StencilRefMV", Int) = 32
-		[HideInInspector]_StencilWriteMaskMV("_StencilWriteMaskMV", Int) = 40
-		[HideInInspector]_StencilRefDistortionVec("_StencilRefDistortionVec", Int) = 4
-		[HideInInspector]_StencilWriteMaskDistortionVec("_StencilWriteMaskDistortionVec", Int) = 4
-		[HideInInspector]_StencilWriteMaskGBuffer("_StencilWriteMaskGBuffer", Int) = 14
-		[HideInInspector]_StencilRefGBuffer("_StencilRefGBuffer", Int) = 2
-		[HideInInspector]_ZTestGBuffer("_ZTestGBuffer", Int) = 4
-		[HideInInspector][ToggleUI]_RequireSplitLighting("_RequireSplitLighting", Float) = 0
-		[HideInInspector][ToggleUI]_ReceivesSSR("_ReceivesSSR", Float) = 0
-		[HideInInspector]_SurfaceType("_SurfaceType", Float) = 0
-		[HideInInspector]_BlendMode("_BlendMode", Float) = 0
-		[HideInInspector]_SrcBlend("_SrcBlend", Float) = 1
-		[HideInInspector]_DstBlend("_DstBlend", Float) = 0
-		[HideInInspector]_AlphaSrcBlend("Vec_AlphaSrcBlendtor1", Float) = 1
-		[HideInInspector]_AlphaDstBlend("_AlphaDstBlend", Float) = 0
-		[HideInInspector][ToggleUI]_ZWrite("_ZWrite", Float) = 1
-		[HideInInspector][ToggleUI]_TransparentZWrite("_TransparentZWrite", Float) = 1
-		[HideInInspector]_CullMode("Cull Mode", Float) = 2
-		[HideInInspector]_TransparentSortPriority("_TransparentSortPriority", Int) = 0
-		[HideInInspector][ToggleUI]_EnableFogOnTransparent("_EnableFogOnTransparent", Float) = 1
-		[HideInInspector]_CullModeForward("_CullModeForward", Float) = 2
-		[HideInInspector][Enum(Front, 1, Back, 2)]_TransparentCullMode("_TransparentCullMode", Float) = 2
-		[HideInInspector]_ZTestDepthEqualForOpaque("_ZTestDepthEqualForOpaque", Int) = 4
-		[HideInInspector][Enum(UnityEngine.Rendering.CompareFunction)]_ZTestTransparent("_ZTestTransparent", Float) = 4
-		[HideInInspector][ToggleUI]_TransparentBackfaceEnable("_TransparentBackfaceEnable", Float) = 0
-		[HideInInspector][ToggleUI]_AlphaCutoffEnable("_AlphaCutoffEnable", Float) = 0
-		[HideInInspector][ToggleUI]_UseShadowThreshold("_UseShadowThreshold", Float) = 0
-		[HideInInspector][ToggleUI]_DoubleSidedEnable("_DoubleSidedEnable", Float) = 0
-		[HideInInspector][Enum(Flip, 0, Mirror, 1, None, 2)]_DoubleSidedNormalMode("_DoubleSidedNormalMode", Float) = 2
-		[HideInInspector]_DoubleSidedConstants("_DoubleSidedConstants", Vector) = (1, 1, -1, 0)
-		[HideInInspector]_DistortionEnable("_DistortionEnable",Float) = 0
-		[HideInInspector]_DistortionOnly("_DistortionOnly",Float) = 0
+		[HideInInspector] _RenderQueueType("Render Queue Type", Float) = 1
+		[HideInInspector][ToggleUI] _AddPrecomputedVelocity("Add Precomputed Velocity", Float) = 1
+		[HideInInspector] _ShadowMatteFilter("Shadow Matte Filter", Float) = 2.006836
+		[HideInInspector] _StencilRef("Stencil Ref", Int) = 0 // StencilUsage.Clear
+		[HideInInspector] _StencilWriteMask("Stencil Write Mask", Int) = 3 // StencilUsage.RequiresDeferredLighting | StencilUsage.SubsurfaceScattering
+		[HideInInspector] _StencilRefDepth("Stencil Ref Depth", Int) = 0 // Nothing
+		[HideInInspector] _StencilWriteMaskDepth("Stencil Write Mask Depth", Int) = 8 // StencilUsage.TraceReflectionRay
+		[HideInInspector] _StencilRefMV("Stencil Ref MV", Int) = 32 // StencilUsage.ObjectMotionVector
+		[HideInInspector] _StencilWriteMaskMV("Stencil Write Mask MV", Int) = 32 // StencilUsage.ObjectMotionVector
+		[HideInInspector] _StencilRefDistortionVec("Stencil Ref Distortion Vec", Int) = 2 // StencilUsage.DistortionVectors
+		[HideInInspector] _StencilWriteMaskDistortionVec("Stencil Write Mask Distortion Vec", Int) = 2 // StencilUsage.DistortionVectors
+		[HideInInspector] _StencilWriteMaskGBuffer("Stencil Write Mask GBuffer", Int) = 3 // StencilUsage.RequiresDeferredLighting | StencilUsage.SubsurfaceScattering
+		[HideInInspector] _StencilRefGBuffer("Stencil Ref GBuffer", Int) = 2 // StencilUsage.RequiresDeferredLighting
+		[HideInInspector] _ZTestGBuffer("ZTest GBuffer", Int) = 4
+		[HideInInspector][ToggleUI] _RequireSplitLighting("Require Split Lighting", Float) = 0
+		[HideInInspector][ToggleUI] _ReceivesSSR("Receives SSR", Float) = 1
+		[HideInInspector] _SurfaceType("Surface Type", Float) = 0
+		[HideInInspector] _BlendMode("Blend Mode", Float) = 0
+		[HideInInspector] _SrcBlend("Src Blend", Float) = 1
+		[HideInInspector] _DstBlend("Dst Blend", Float) = 0
+		[HideInInspector] _AlphaSrcBlend("Alpha Src Blend", Float) = 1
+		[HideInInspector] _AlphaDstBlend("Alpha Dst Blend", Float) = 0
+		[HideInInspector][ToggleUI] _ZWrite("ZWrite", Float) = 1
+		[HideInInspector][ToggleUI] _TransparentZWrite("Transparent ZWrite", Float) = 0
+		[HideInInspector] _CullMode("Cull Mode", Float) = 2
+		[HideInInspector] _TransparentSortPriority("Transparent Sort Priority", Float) = 0
+		[HideInInspector][ToggleUI] _EnableFogOnTransparent("Enable Fog", Float) = 1
+		[HideInInspector] _CullModeForward("Cull Mode Forward", Float) = 2 // This mode is dedicated to Forward to correctly handle backface then front face rendering thin transparent
+		[HideInInspector][Enum(UnityEditor.Rendering.HighDefinition.TransparentCullMode)] _TransparentCullMode("Transparent Cull Mode", Int) = 2 // Back culling by default
+		[HideInInspector] _ZTestDepthEqualForOpaque("ZTest Depth Equal For Opaque", Int) = 4 // Less equal
+		[HideInInspector][Enum(UnityEngine.Rendering.CompareFunction)] _ZTestTransparent("ZTest Transparent", Int) = 4 // Less equal
+		[HideInInspector][ToggleUI] _TransparentBackfaceEnable("Transparent Backface Enable", Float) = 0
+		[HideInInspector][ToggleUI] _AlphaCutoffEnable("Alpha Cutoff Enable", Float) = 0
+		[HideInInspector][ToggleUI] _UseShadowThreshold("Use Shadow Threshold", Float) = 0
+		[HideInInspector][ToggleUI] _DoubleSidedEnable("Double Sided Enable", Float) = 0
+		[HideInInspector][Enum(Flip, 0, Mirror, 1, None, 2)] _DoubleSidedNormalMode("Double Sided Normal Mode", Float) = 2
+		[HideInInspector] _DoubleSidedConstants("DoubleSidedConstants", Vector) = (1,1,-1,0)
+		[HideInInspector] _DistortionEnable("_DistortionEnable",Float) = 0
+		[HideInInspector] _DistortionOnly("_DistortionOnly",Float) = 0
+
 		//_TessPhongStrength( "Tess Phong Strength", Range( 0, 1 ) ) = 0.5
 		//_TessValue( "Tess Max Tessellation", Range( 1, 32 ) ) = 16
 		//_TessMin( "Tess Min Distance", Float ) = 10
 		//_TessMax( "Tess Max Distance", Float ) = 25
 		//_TessEdgeLength ( "Tess Edge length", Range( 2, 50 ) ) = 16
 		//_TessMaxDisp( "Tess Max Displacement", Float ) = 25
+
+		[HideInInspector][ToggleUI] _TransparentWritingMotionVec("Transparent Writing MotionVec", Float) = 0
+		[HideInInspector][Enum(UnityEditor.Rendering.HighDefinition.OpaqueCullMode)] _OpaqueCullMode("Opaque Cull Mode", Int) = 2 // Back culling by default
+		[HideInInspector][ToggleUI] _SupportDecals("Support Decals", Float) = 1
+		[HideInInspector][ToggleUI] _ReceivesSSRTransparent("Receives SSR Transparent", Float) = 0
+		[HideInInspector] _EmissionColor("Color", Color) = (1, 1, 1)
+		[HideInInspector] _UnlitColorMap_MipInfo("_UnlitColorMap_MipInfo", Vector) = (0, 0, 0, 0)
+
+		[HideInInspector][Enum(Auto, 0, On, 1, Off, 2)] _DoubleSidedGIMode("Double sided GI mode", Float) = 0 //DoubleSidedGIMode added in api 12x and higher
 	}
 
 	SubShader
@@ -58,7 +68,7 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			Option:Surface Type:Opaque,Transparent:Opaque
 				Opaque:SetShaderProperty:_SurfaceType,0
 				Opaque:SetPropertyOnSubShader:RenderQueue,Geometry
-				Opaque:ShowOption:  Rendering Pass 
+				Opaque:ShowOption:  Rendering Pass
 				Opaque:HideOption:  Rendering Pass
 				Opaque:HideOption:  Blending Mode
 				Opaque:HideOption:  Receive Fog
@@ -68,7 +78,7 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 				Opaque:HideOption:  Depth Test
 				Transparent:SetShaderProperty:_SurfaceType,1
 				Transparent:SetPropertyOnSubShader:RenderQueue,Transparent
-				Transparent:HideOption:  Rendering Pass 
+				Transparent:HideOption:  Rendering Pass
 				Transparent:ShowOption:  Rendering Pass
 				Transparent:ShowOption:  Blending Mode
 				Transparent:ShowOption:  Receive Fog
@@ -97,6 +107,8 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			Option:  Receive Fog:false,true:true
 				true:SetShaderProperty:_EnableFogOnTransparent,1
 				false,disable:SetShaderProperty:_EnableFogOnTransparent,0
+				true:SetDefine:pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
+				false:RemoveDefine:pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
 			Option:  Distortion:false,true:false
 				true:ExcludeAllPassesBut:DistortionVectors
 				true:IncludePass:DistortionVectors
@@ -146,22 +158,32 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 				true:ShowPort:Forward Unlit:Alpha Clip Threshold
 				false:HidePort:Forward Unlit:Alpha Clip Threshold
 			Option:Motion Vectors:false,true:true
-				true:SetShaderProperty:_AddPrecomputedVelocity,[HideInInspector][ToggleUI]_AddPrecomputedVelocity("Add Precomputed Velocity", Float) = 1
-				false:SetShaderProperty:_AddPrecomputedVelocity,//[HideInInspector][ToggleUI]_AddPrecomputedVelocity("Add Precomputed Velocity", Float) = 1
+				true:SetShaderProperty:_AddPrecomputedVelocity,[HideInInspector][ToggleUI] _AddPrecomputedVelocity("Add Precomputed Velocity", Float) = 1
+				false:SetShaderProperty:_AddPrecomputedVelocity,//[HideInInspector][ToggleUI] _AddPrecomputedVelocity("Add Precomputed Velocity", Float) = 1
 				true:ShowOption:  Add Precomputed Velocity
 				false:HideOption:  Add Precomputed Velocity
 				true:IncludePass:Motion Vectors
 				false:ExcludePass:Motion Vectors
 			Option:  Add Precomputed Velocity:false,true:false
 				false,disable:RemoveDefine:_ADD_PRECOMPUTED_VELOCITY 1
+                false,disable:RemoveDefine:pragma shader_feature_local _ADD_PRECOMPUTED_VELOCITY
 				true:SetDefine:_ADD_PRECOMPUTED_VELOCITY 1
+				true:SetDefine:pragma shader_feature_local _ADD_PRECOMPUTED_VELOCITY
 				true:SetShaderProperty:_AddPrecomputedVelocity,1
 			Option:Shadow Matte:false,true:false
-				false,disable:SetShaderProperty:_ShadowMatteFilter,//[HideInInspector]_ShadowMatteFilter("Shadow Matte Filter", Float) = 2
-				true:ShowPort:Forward Unlit:Shadow Tint
+				false,disable:SetShaderProperty:_ShadowMatteFilter,//[HideInInspector] _ShadowMatteFilter("Shadow Matte Filter", Float) = 2.006836
 				false,disable:HidePort:Forward Unlit:Shadow Tint
-				true:SetDefine:_ENABLE_SHADOW_MATTE 1
 				false,disable:RemoveDefine:_ENABLE_SHADOW_MATTE 1
+				false,disable:RemoveDefine:Forward Unlit:pragma multi_compile_fragment SHADOW_LOW SHADOW_MEDIUM SHADOW_HIGH SHADOW_VERY_HIGH
+				false,disable:RemoveDefine:Forward Unlit:pragma multi_compile_fragment SCREEN_SPACE_SHADOWS_OFF SCREEN_SPACE_SHADOWS_ON
+				false,disable:RemoveDefine:Motion Vectors:WRITE_NORMAL_BUFFER
+				false,disable:RemoveDefine:DepthForwardOnly:WRITE_NORMAL_BUFFER
+				true:SetDefine:_ENABLE_SHADOW_MATTE 1
+				true:ShowPort:Forward Unlit:Shadow Tint
+				true:SetDefine:Forward Unlit:pragma multi_compile_fragment SHADOW_LOW SHADOW_MEDIUM SHADOW_HIGH SHADOW_VERY_HIGH
+				true:SetDefine:Forward Unlit:pragma multi_compile_fragment SCREEN_SPACE_SHADOWS_OFF SCREEN_SPACE_SHADOWS_ON
+				true:SetDefine:Motion Vectors:WRITE_NORMAL_BUFFER
+				true:SetDefine:DepthForwardOnly:WRITE_NORMAL_BUFFER
 			Option:Cast Shadows:false,true:true
 				true:IncludePass:ShadowCaster
 				false,disable:ExcludePass:ShadowCaster
@@ -170,15 +192,17 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 				false:RemoveDefine:pragma multi_compile _ DOTS_INSTANCING_ON
 			Option:GPU Instancing:false,true:true
 				true:SetDefine:pragma multi_compile_instancing
+				true:SetDefine:pragma instancing_options renderinglayer
 				false:RemoveDefine:pragma multi_compile_instancing
+				false:RemoveDefine:pragma instancing_options renderinglayer
 			Option:Tessellation:false,true:false
-				true:SetDefine:TESSELLATION_ON 1
+				true:SetDefine:ASE_TESSELLATION 1
 				true:SetDefine:pragma require tessellation tessHW
 				true:SetDefine:pragma hull HullFunction
 				true:SetDefine:pragma domain DomainFunction
 				true:ShowOption:  Phong
 				true:ShowOption:  Type
-				false,disable:RemoveDefine:TESSELLATION_ON 1
+				false,disable:RemoveDefine:ASE_TESSELLATION 1
 				false,disable:RemoveDefine:pragma require tessellation tessHW
 				false,disable:RemoveDefine:pragma hull HullFunction
 				false,disable:RemoveDefine:pragma domain DomainFunction
@@ -236,6 +260,9 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 				Absolute:SetDefine:ASE_ABSOLUTE_VERTEX_POS 1
 				Absolute:SetPortName:Forward Unlit:6,Vertex Position
 				Relative:SetPortName:Forward Unlit:6,Vertex Offset
+			Option:LOD CrossFade:false,true:false
+				true:SetDefine:pragma multi_compile _ LOD_FADE_CROSSFADE
+				false:RemoveDefine:pragma multi_compile _ LOD_FADE_CROSSFADE
 		*/
 
 		Tags
@@ -248,7 +275,9 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 		HLSLINCLUDE
 		#pragma target 4.5
 		#pragma only_renderers d3d11 playstation xboxone xboxseries vulkan metal switch
-		#pragma instancing_options renderinglayer
+
+		#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
+		#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Filtering.hlsl"
 
 		#ifndef ASE_TESS_FUNCS
 		#define ASE_TESS_FUNCS
@@ -256,7 +285,7 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 		{
 			return tessValue;
 		}
-		
+
 		float CalcDistanceTessFactor (float4 vertex, float minDist, float maxDist, float tess, float4x4 o2w, float3 cameraPos )
 		{
 			float3 wpos = mul(o2w,vertex).xyz;
@@ -350,7 +379,6 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			return tess;
 		}
 		#endif //ASE_TESS_FUNCS
-
 		ENDHLSL
 
 		/*ase_pass*/
@@ -361,9 +389,12 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			Tags { "LightMode" = "ForwardOnly" }
 
 			Blend [_SrcBlend] [_DstBlend], [_AlphaSrcBlend] [_AlphaDstBlend]
-			Cull [_CullMode]
-			ZTest [_ZTestTransparent]
+
+			Cull [_CullModeForward]
+			ZTest [_ZTestDepthEqualForOpaque]
 			ZWrite [_ZWrite]
+
+			ColorMask [_ColorMaskTransparentVel] 1
 
 			Stencil
 			{
@@ -372,23 +403,31 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			   Comp Always
 			   Pass Replace
 			}
+
 			HLSLPROGRAM
-			#define SHADERPASS SHADERPASS_FORWARD_UNLIT
-			#pragma multi_compile _ DEBUG_DISPLAY
 
 			#pragma shader_feature _SURFACE_TYPE_TRANSPARENT
-			#pragma shader_feature_local _ _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
 			#pragma shader_feature_local _ALPHATEST_ON
-			#pragma shader_feature_local _ENABLE_FOG_ON_TRANSPARENT
+
+			#pragma multi_compile _ DEBUG_DISPLAY
 
 			#pragma vertex Vert
 			#pragma fragment Frag
 
+	        #if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
+	        #define _WRITE_TRANSPARENT_MOTION_VECTOR
+	        #endif
+
+			#define SHADERPASS SHADERPASS_FORWARD_UNLIT
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
+        	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
+        	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Tessellation.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
 
 			#if defined(_ENABLE_SHADOW_MATTE) && SHADERPASS == SHADERPASS_FORWARD_UNLIT
 				#define LIGHTLOOP_DISABLE_TILE_AND_CLUSTER
@@ -402,8 +441,6 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 				#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Lighting/PunctualLightCommon.hlsl"
 				#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Lighting/LightLoop/HDShadowLoop.hlsl"
 			#endif
-
-
 
 			/*ase_pragma*/
 
@@ -468,7 +505,8 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			float _DoubleSidedEnable;
 			float _DoubleSidedNormalMode;
 			float4 _DoubleSidedConstants;
-			#ifdef TESSELLATION_ON
+			float _EnableBlendModePreserveSpecularLighting;
+			#ifdef ASE_TESSELLATION
 				float _TessPhongStrength;
 				float _TessValue;
 				float _TessMin;
@@ -477,6 +515,7 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 				float _TessMaxDisp;
 			#endif
 			CBUFFER_END
+
 			/*ase_globals*/
 
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Material.hlsl"
@@ -494,6 +533,7 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 				float4 ShadowTint;
 				float Alpha;
 				float AlphaClipThreshold;
+				float4 VTPackedFeedback;
 			};
 
 			void BuildSurfaceData(FragInputs fragInputs, SurfaceDescription surfaceDescription, float3 V, out SurfaceData surfaceData)
@@ -504,11 +544,23 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 
 			void GetSurfaceAndBuiltinData(SurfaceDescription surfaceDescription , FragInputs fragInputs, float3 V, inout PositionInputs posInput, out SurfaceData surfaceData, out BuiltinData builtinData)
 			{
+				#ifdef LOD_FADE_CROSSFADE
+                LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
+                #endif
+
 				#if _ALPHATEST_ON
 				DoAlphaTest ( surfaceDescription.Alpha, surfaceDescription.AlphaClipThreshold );
 				#endif
 
+				#if _DEPTHOFFSET_ON
+                ApplyDepthOffsetPositionInput(V, surfaceDescription.DepthOffset, GetViewForwardDir(), GetWorldToHClipMatrix(), posInput);
+                #endif
+
 				BuildSurfaceData(fragInputs, surfaceDescription, V, surfaceData);
+
+				#ifdef WRITE_NORMAL_BUFFER
+				surfaceData.normalWS = fragInputs.tangentToWorld[2];
+				#endif
 
 				#if defined(_ENABLE_SHADOW_MATTE) && SHADERPASS == SHADERPASS_FORWARD_UNLIT
 					HDShadowContext shadowContext = InitShadowContext();
@@ -534,7 +586,35 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 
 				ZERO_INITIALIZE(BuiltinData, builtinData);
 				builtinData.opacity = surfaceDescription.Alpha;
+
+				#if defined(DEBUG_DISPLAY)
+					builtinData.renderingLayers = GetMeshRenderingLightLayer();
+				#endif
+
+                #ifdef _ALPHATEST_ON
+                    builtinData.alphaClipTreshold = surfaceDescription.AlphaClipThreshold;
+                #endif
+
 				builtinData.emissiveColor = surfaceDescription.Emission;
+
+				#ifdef UNITY_VIRTUAL_TEXTURING
+                builtinData.vtPackedFeedback = surfaceDescription.VTPackedFeedback;
+                #endif
+
+				#if _DEPTHOFFSET_ON
+                builtinData.depthOffset = surfaceDescription.DepthOffset;
+                #endif
+
+                ApplyDebugToBuiltinData(builtinData);
+			}
+
+			float GetDeExposureMultiplier()
+			{
+			#if defined(DISABLE_UNLIT_DEEXPOSURE)
+				return 1.0;
+			#else
+				return _DeExposureMultiplier;
+			#endif
 			}
 
 			VertexOutput VertexFunction( VertexInput inputMesh /*ase_vert_input*/ )
@@ -565,7 +645,7 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 				return o;
 			}
 
-			#if defined(TESSELLATION_ON)
+			#if defined(ASE_TESSELLATION)
 			struct VertexControl
 			{
 				float3 positionOS : INTERNALTESSPOS;
@@ -649,7 +729,23 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			}
 			#endif
 
-			float4 Frag( VertexOutput packedInput /*ase_frag_input*/) : SV_Target
+			#ifdef UNITY_VIRTUAL_TEXTURING
+			#define VT_BUFFER_TARGET SV_Target1
+			#define EXTRA_BUFFER_TARGET SV_Target2
+			#else
+			#define EXTRA_BUFFER_TARGET SV_Target1
+			#endif
+
+			void Frag( VertexOutput packedInput,
+						out float4 outColor : SV_Target0
+						#ifdef UNITY_VIRTUAL_TEXTURING
+						,out float4 outVTFeedback : VT_BUFFER_TARGET
+						#endif
+						#ifdef _DEPTHOFFSET_ON
+						, out float outputDepth : DEPTH_OFFSET_SEMANTIC
+						#endif
+					/*ase_frag_input*/
+					)
 			{
 				UNITY_SETUP_INSTANCE_ID( packedInput );
 				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX( packedInput );
@@ -675,14 +771,34 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 				float2 Distortion = /*ase_frag_out:Distortion;Float2;4;-1;_Distortion*/float2 ( 0, 0 )/*end*/;
 				float DistortionBlur = /*ase_frag_out:Distortion Blur;Float;5;-1;_DistortionBlur*/0/*end*/;
 
+				surfaceDescription.VTPackedFeedback = float4(1.0f,1.0f,1.0f,1.0f);
 				SurfaceData surfaceData;
 				BuiltinData builtinData;
 				GetSurfaceAndBuiltinData(surfaceDescription, input, V, posInput, surfaceData, builtinData);
 
 				BSDFData bsdfData = ConvertSurfaceDataToBSDFData( input.positionSS.xy, surfaceData );
 
-				float4 outColor = ApplyBlendMode( bsdfData.color + builtinData.emissiveColor * GetCurrentExposureMultiplier(), builtinData.opacity );
-				outColor = EvaluateAtmosphericScattering( posInput, V, outColor );
+				#if defined(_ENABLE_SHADOW_MATTE)
+				bsdfData.color *= GetScreenSpaceAmbientOcclusion(input.positionSS.xy);
+				#endif
+
+
+			#ifdef DEBUG_DISPLAY
+				if (_DebugLightingMode >= DEBUGLIGHTINGMODE_DIFFUSE_LIGHTING && _DebugLightingMode <= DEBUGLIGHTINGMODE_EMISSIVE_LIGHTING)
+				{
+					if (_DebugLightingMode != DEBUGLIGHTINGMODE_EMISSIVE_LIGHTING)
+					{
+						builtinData.emissiveColor = 0.0;
+					}
+					else
+					{
+						bsdfData.color = 0.0;
+					}
+				}
+			#endif
+
+				float4 outResult = ApplyBlendMode(bsdfData.color * GetDeExposureMultiplier() + builtinData.emissiveColor * GetCurrentExposureMultiplier(), builtinData.opacity);
+				outResult = EvaluateAtmosphericScattering(posInput, V, outResult);
 
 				#ifdef DEBUG_DISPLAY
 					int bufferSize = int(_DebugViewMaterialArray[0].x);
@@ -703,17 +819,26 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 							if (!needLinearToSRGB)
 								result = SRGBToLinear(max(0, result));
 
-							outColor = float4(result, 1.0);
+							outResult = float4(result, 1.0);
 						}
 					}
 
 					if (_DebugFullScreenMode == FULLSCREENDEBUGMODE_TRANSPARENCY_OVERDRAW)
 					{
 						float4 result = _DebugTransparencyOverdrawWeight * float4(TRANSPARENCY_OVERDRAW_COST, TRANSPARENCY_OVERDRAW_COST, TRANSPARENCY_OVERDRAW_COST, TRANSPARENCY_OVERDRAW_A);
-						outColor = result;
+						outResult = result;
 					}
 				#endif
-				return outColor;
+
+				outColor = outResult;
+
+				#ifdef _DEPTHOFFSET_ON
+					outputDepth = posInput.deviceDepth;
+				#endif
+
+				#ifdef UNITY_VIRTUAL_TEXTURING
+					outVTFeedback = builtinData.vtPackedFeedback;
+				#endif
 			}
 
 			ENDHLSL
@@ -732,21 +857,27 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			ColorMask 0
 
 			HLSLPROGRAM
-			#define SHADERPASS SHADERPASS_SHADOWS
 
 			#pragma shader_feature _SURFACE_TYPE_TRANSPARENT
-			#pragma shader_feature_local _ _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
 			#pragma shader_feature_local _ALPHATEST_ON
-			#pragma shader_feature_local _ENABLE_FOG_ON_TRANSPARENT
 
 			#pragma vertex Vert
 			#pragma fragment Frag
 
+			#if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
+			#define _WRITE_TRANSPARENT_MOTION_VECTOR
+			#endif
+
+			#define SHADERPASS SHADERPASS_SHADOWS
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
+        	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
+        	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Tessellation.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
 
 			/*ase_pragma*/
 
@@ -810,7 +941,8 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			float _DoubleSidedEnable;
 			float _DoubleSidedNormalMode;
 			float4 _DoubleSidedConstants;
-			#ifdef TESSELLATION_ON
+			float _EnableBlendModePreserveSpecularLighting;
+			#ifdef ASE_TESSELLATION
 				float _TessPhongStrength;
 				float _TessValue;
 				float _TessMin;
@@ -819,8 +951,10 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 				float _TessMaxDisp;
 			#endif
 			CBUFFER_END
+
 			/*ase_globals*/
 
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Material.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Unlit/Unlit.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/BuiltinUtilities.hlsl"
@@ -838,17 +972,43 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			void BuildSurfaceData(FragInputs fragInputs, SurfaceDescription surfaceDescription, float3 V, out SurfaceData surfaceData)
 			{
 				ZERO_INITIALIZE(SurfaceData, surfaceData);
+				#ifdef WRITE_NORMAL_BUFFER
+				surfaceData.normalWS = fragInputs.tangentToWorld[2];
+				#endif
 			}
 
 			void GetSurfaceAndBuiltinData(SurfaceDescription surfaceDescription, FragInputs fragInputs, float3 V, inout PositionInputs posInput, out SurfaceData surfaceData, out BuiltinData builtinData)
 			{
+				#ifdef LOD_FADE_CROSSFADE
+                LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
+                #endif
+
 				#if _ALPHATEST_ON
 				DoAlphaTest(surfaceDescription.Alpha, surfaceDescription.AlphaClipThreshold);
 				#endif
 
+				#if _DEPTHOFFSET_ON
+                ApplyDepthOffsetPositionInput(V, surfaceDescription.DepthOffset, GetViewForwardDir(), GetWorldToHClipMatrix(), posInput);
+                #endif
+
 				BuildSurfaceData(fragInputs, surfaceDescription, V, surfaceData);
+
 				ZERO_INITIALIZE (BuiltinData, builtinData);
 				builtinData.opacity = surfaceDescription.Alpha;
+
+				#if defined(DEBUG_DISPLAY)
+					builtinData.renderingLayers = GetMeshRenderingLightLayer();
+				#endif
+
+				#ifdef _ALPHATEST_ON
+                    builtinData.alphaClipTreshold = surfaceDescription.AlphaClipThreshold;
+                #endif
+
+                #if _DEPTHOFFSET_ON
+                builtinData.depthOffset = surfaceDescription.DepthOffset;
+                #endif
+
+                ApplyDebugToBuiltinData(builtinData);
 			}
 
 			VertexOutput VertexFunction( VertexInput inputMesh /*ase_vert_input*/ )
@@ -878,7 +1038,7 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 				return o;
 			}
 
-			#if defined(TESSELLATION_ON)
+			#if defined(ASE_TESSELLATION)
 			struct VertexControl
 			{
 				float3 positionOS : INTERNALTESSPOS;
@@ -963,20 +1123,19 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			#endif
 
 			void Frag( VertexOutput packedInput
-					#ifdef WRITE_NORMAL_BUFFER
-					, out float4 outNormalBuffer : SV_Target0
 						#ifdef WRITE_MSAA_DEPTH
-						, out float1 depthColor : SV_Target1
+						, out float4 depthColor : SV_Target0
+							#ifdef WRITE_NORMAL_BUFFER
+							, out float4 outNormalBuffer : SV_Target1
+							#endif
+						#else
+							#ifdef WRITE_NORMAL_BUFFER
+							, out float4 outNormalBuffer : SV_Target0
+							#endif
 						#endif
-					#elif defined(WRITE_MSAA_DEPTH)
-					, out float4 outNormalBuffer : SV_Target0
-					, out float1 depthColor : SV_Target1
-					#elif defined(SCENESELECTIONPASS)
-					, out float4 outColor : SV_Target0
-					#endif
-					#ifdef _DEPTHOFFSET_ON
-					, out float outputDepth : SV_Depth
-					#endif
+						#if defined(_DEPTHOFFSET_ON)
+						, out float outputDepth : DEPTH_OFFSET_SEMANTIC
+						#endif
 					/*ase_frag_input*/
 					)
 			{
@@ -1002,20 +1161,29 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 				BuiltinData builtinData;
 				GetSurfaceAndBuiltinData(surfaceDescription,input, V, posInput, surfaceData, builtinData);
 
-				#ifdef _DEPTHOFFSET_ON
+				#if defined(_DEPTHOFFSET_ON)
 				outputDepth = posInput.deviceDepth;
+				float bias = max(abs(ddx(posInput.deviceDepth)), abs(ddy(posInput.deviceDepth))) * _SlopeScaleDepthBias;
+				outputDepth += bias;
 				#endif
 
-				#ifdef WRITE_NORMAL_BUFFER
-				EncodeIntoNormalBuffer( ConvertSurfaceDataToNormalData( surfaceData ), posInput.positionSS, outNormalBuffer );
 				#ifdef WRITE_MSAA_DEPTH
-				depthColor = packedInput.positionCS.z;
+				depthColor = packedInput.vmesh.positionCS.z;
+
+				#ifdef _ALPHATOMASK_ON
+				depthColor.a = SharpenAlpha(builtinData.opacity, builtinData.alphaClipTreshold);
 				#endif
-				#elif defined(WRITE_MSAA_DEPTH)
-				outNormalBuffer = float4( 0.0, 0.0, 0.0, 1.0 );
-				depthColor = packedInput.positionCS.z;
-				#elif defined(SCENESELECTIONPASS)
-				outColor = float4( _ObjectId, _PassValue, 1.0, 1.0 );
+				#endif
+
+				#if defined(WRITE_NORMAL_BUFFER)
+				EncodeIntoNormalBuffer(ConvertSurfaceDataToNormalData(surfaceData), outNormalBuffer);
+				#endif
+
+				#if defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)
+				DecalPrepassData decalPrepassData;
+				decalPrepassData.geomNormalWS = surfaceData.geomNormalWS;
+				decalPrepassData.decalLayerMask = GetMeshRenderingDecalLayer();
+				EncodeIntoDecalPrepassBuffer(decalPrepassData, outDecalBuffer);
 				#endif
 			}
 			ENDHLSL
@@ -1031,21 +1199,29 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			Cull Off
 
 			HLSLPROGRAM
-			#define SHADERPASS SHADERPASS_LIGHT_TRANSPORT
 
 			#pragma shader_feature _SURFACE_TYPE_TRANSPARENT
-			#pragma shader_feature_local _ _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
 			#pragma shader_feature_local _ALPHATEST_ON
-			#pragma shader_feature_local _ENABLE_FOG_ON_TRANSPARENT
+
+			#pragma shader_feature _ EDITOR_VISUALIZATION
 
 			#pragma vertex Vert
 			#pragma fragment Frag
 
+			#if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
+			#define _WRITE_TRANSPARENT_MOTION_VECTOR
+			#endif
+
+			#define SHADERPASS SHADERPASS_LIGHT_TRANSPORT
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
+        	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
+        	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Tessellation.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
 
 			CBUFFER_START( UnityPerMaterial )
 			float4 _EmissionColor;
@@ -1091,7 +1267,8 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			float _DoubleSidedEnable;
 			float _DoubleSidedNormalMode;
 			float4 _DoubleSidedConstants;
-			#ifdef TESSELLATION_ON
+			float _EnableBlendModePreserveSpecularLighting;
+			#ifdef ASE_TESSELLATION
 				float _TessPhongStrength;
 				float _TessValue;
 				float _TessMin;
@@ -1101,15 +1278,9 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			#endif
 			CBUFFER_END
 
-			CBUFFER_START( UnityMetaPass )
-			bool4 unity_MetaVertexControl;
-			bool4 unity_MetaFragmentControl;
-			CBUFFER_END
-
-			float unity_OneOverOutputBoost;
-			float unity_MaxOutputValue;
 			/*ase_globals*/
 
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Material.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Unlit/Unlit.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/BuiltinUtilities.hlsl"
@@ -1122,16 +1293,22 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			{
 				float3 positionOS : POSITION;
 				float3 normalOS : NORMAL;
+				float4 uv0 : TEXCOORD0;
 				float4 uv1 : TEXCOORD1;
 				float4 uv2 : TEXCOORD2;
-				/*ase_vdata:p=p;n=n;uv1=tc1;uv2=tc2*/
+				float4 uv3 : TEXCOORD3;
+				/*ase_vdata:p=p;n=n;uv0=tc0;uv1=tc1;uv2=tc2;uv3=tc3*/
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
 			struct VertexOutput
 			{
 				float4 positionCS : SV_Position;
-				/*ase_interp(0,):sp=sp.xyzw*/
+				#ifdef EDITOR_VISUALIZATION
+				float2 VizUV : TEXCOORD0;
+				float4 LightCoord : TEXCOORD1;
+				#endif
+				/*ase_interp(2,):sp=sp.xyzw*/
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
@@ -1150,19 +1327,50 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			{
 				ZERO_INITIALIZE( SurfaceData, surfaceData );
 				surfaceData.color = surfaceDescription.Color;
+
+				#ifdef WRITE_NORMAL_BUFFER
+				surfaceData.normalWS = fragInputs.tangentToWorld[2];
+				#endif
 			}
 
 			void GetSurfaceAndBuiltinData( SurfaceDescription surfaceDescription, FragInputs fragInputs, float3 V, inout PositionInputs posInput, out SurfaceData surfaceData, out BuiltinData builtinData )
 			{
+				#ifdef LOD_FADE_CROSSFADE
+                LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
+                #endif
+
 				#if _ALPHATEST_ON
 				DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThreshold );
 				#endif
 
+				#if _DEPTHOFFSET_ON
+                ApplyDepthOffsetPositionInput(V, surfaceDescription.DepthOffset, GetViewForwardDir(), GetWorldToHClipMatrix(), posInput);
+                #endif
+
 				BuildSurfaceData( fragInputs, surfaceDescription, V, surfaceData );
 				ZERO_INITIALIZE( BuiltinData, builtinData );
 				builtinData.opacity = surfaceDescription.Alpha;
+				#if defined(DEBUG_DISPLAY)
+					builtinData.renderingLayers = GetMeshRenderingLightLayer();
+				#endif
+
+				#ifdef _ALPHATEST_ON
+                    builtinData.alphaClipTreshold = surfaceDescription.AlphaClipThreshold;
+                #endif
+
 				builtinData.emissiveColor = surfaceDescription.Emission;
+
+				#if _DEPTHOFFSET_ON
+                builtinData.depthOffset = surfaceDescription.DepthOffset;
+                #endif
+
+
+                ApplyDebugToBuiltinData(builtinData);
 			}
+
+			#define SCENEPICKINGPASS
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/PickingSpaceTransforms.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/MetaPass.hlsl"
 
 			VertexOutput VertexFunction( VertexInput inputMesh /*ase_vert_input*/ )
 			{
@@ -1185,6 +1393,12 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 
 				inputMesh.normalOS = /*ase_vert_out:Vertex Normal;Float3;5;-1;_VertexNormal*/ inputMesh.normalOS /*end*/;
 
+			#ifdef EDITOR_VISUALIZATION
+				float2 vizUV = 0;
+				float4 lightCoord = 0;
+				UnityEditorVizData(inputMesh.positionOS.xyz, inputMesh.uv0.xy, inputMesh.uv1.xy, inputMesh.uv2.xy, vizUV, lightCoord);
+			#endif
+
 				float2 uv = float2( 0.0, 0.0 );
 				if( unity_MetaVertexControl.x )
 				{
@@ -1195,17 +1409,24 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 					uv = inputMesh.uv2.xy * unity_DynamicLightmapST.xy + unity_DynamicLightmapST.zw;
 				}
 
+				#ifdef EDITOR_VISUALIZATION
+					o.VizUV.xy = vizUV;
+					o.LightCoord = lightCoord;
+				#endif
+
 				o.positionCS = float4( uv * 2.0 - 1.0, inputMesh.positionOS.z > 0 ? 1.0e-4 : 0.0, 1.0 );
 				return o;
 			}
 
-			#if defined(TESSELLATION_ON)
+			#if defined(ASE_TESSELLATION)
 			struct VertexControl
 			{
 				float3 positionOS : INTERNALTESSPOS;
 				float3 normalOS : NORMAL;
+				float4 uv0 : TEXCOORD0;
 				float4 uv1 : TEXCOORD1;
 				float4 uv2 : TEXCOORD2;
+				float4 uv3 : TEXCOORD3;
 				/*ase_vcontrol*/
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
@@ -1223,8 +1444,10 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 				UNITY_TRANSFER_INSTANCE_ID(v, o);
 				o.positionOS = v.positionOS;
 				o.normalOS = v.normalOS;
+				o.uv0 = v.uv0;
 				o.uv1 = v.uv1;
 				o.uv2 = v.uv2;
+				o.uv3 = v.uv3;
 				/*ase_control_code:v=VertexInput;o=VertexControl*/
 				return o;
 			}
@@ -1269,8 +1492,10 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 				VertexInput o = (VertexInput) 0;
 				o.positionOS = patch[0].positionOS * bary.x + patch[1].positionOS * bary.y + patch[2].positionOS * bary.z;
 				o.normalOS = patch[0].normalOS * bary.x + patch[1].normalOS * bary.y + patch[2].normalOS * bary.z;
+				o.uv0 = patch[0].uv0 * bary.x + patch[1].uv0 * bary.y + patch[2].uv0 * bary.z;
 				o.uv1 = patch[0].uv1 * bary.x + patch[1].uv1 * bary.y + patch[2].uv1 * bary.z;
 				o.uv2 = patch[0].uv2 * bary.x + patch[1].uv2 * bary.y + patch[2].uv2 * bary.z;
+				o.uv3 = patch[0].uv3 * bary.x + patch[1].uv3 * bary.y + patch[2].uv3 * bary.z;
 				/*ase_domain_code:patch=VertexControl;o=VertexInput;bary=SV_DomainLocation*/
 				#if defined(ASE_PHONG_TESSELLATION)
 				float3 pp[3];
@@ -1316,15 +1541,14 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 				LightTransportData lightTransportData = GetLightTransportData( surfaceData, builtinData, bsdfData );
 
 				float4 res = float4( 0.0, 0.0, 0.0, 1.0 );
-				if( unity_MetaFragmentControl.x )
-				{
-					res.rgb = clamp( pow( abs( lightTransportData.diffuseColor ), saturate( unity_OneOverOutputBoost ) ), 0, unity_MaxOutputValue );
-				}
-
-				if( unity_MetaFragmentControl.y )
-				{
-					res.rgb = lightTransportData.emissiveColor;
-				}
+				UnityMetaInput metaInput;
+				metaInput.Albedo = lightTransportData.diffuseColor.rgb;
+				metaInput.Emission = lightTransportData.emissiveColor;
+			#ifdef EDITOR_VISUALIZATION
+				metaInput.VizUV = packedInput.VizUV;
+				metaInput.LightCoord = packedInput.LightCoord;
+			#endif
+				res = UnityMetaFragment(metaInput);
 
 				return res;
 			}
@@ -1339,29 +1563,29 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			Name "SceneSelectionPass"
 			Tags { "LightMode" = "SceneSelectionPass" }
 
-			Cull [_CullMode]
-			ZWrite On
-
-			ColorMask 0
+			Cull Off
 
 			HLSLPROGRAM
-			#define SHADERPASS SHADERPASS_DEPTH_ONLY
-			#define SCENESELECTIONPASS
-			#pragma editor_sync_compilation
 
 			#pragma shader_feature _SURFACE_TYPE_TRANSPARENT
-			#pragma shader_feature_local _ _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
 			#pragma shader_feature_local _ALPHATEST_ON
-			#pragma shader_feature_local _ENABLE_FOG_ON_TRANSPARENT
+
+			#pragma editor_sync_compilation
 
 			#pragma vertex Vert
 			#pragma fragment Frag
 
+			#define SHADERPASS SHADERPASS_DEPTH_ONLY
+			#define SCENESELECTIONPASS 1
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
+        	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
+        	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Tessellation.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
 
 			int _ObjectId;
 			int _PassValue;
@@ -1410,7 +1634,8 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			float _DoubleSidedEnable;
 			float _DoubleSidedNormalMode;
 			float4 _DoubleSidedConstants;
-			#ifdef TESSELLATION_ON
+			float _EnableBlendModePreserveSpecularLighting;
+			#ifdef ASE_TESSELLATION
 				float _TessPhongStrength;
 				float _TessValue;
 				float _TessMin;
@@ -1419,8 +1644,11 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 				float _TessMaxDisp;
 			#endif
 			CBUFFER_END
+
 			/*ase_globals*/
 
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/PickingSpaceTransforms.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Material.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Unlit/Unlit.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/BuiltinUtilities.hlsl"
@@ -1457,10 +1685,18 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			void BuildSurfaceData(FragInputs fragInputs, SurfaceDescription surfaceDescription, float3 V, out SurfaceData surfaceData)
 			{
 				ZERO_INITIALIZE(SurfaceData, surfaceData);
+
+				#ifdef WRITE_NORMAL_BUFFER
+				surfaceData.normalWS = fragInputs.tangentToWorld[2];
+				#endif
 			}
 
 			void GetSurfaceAndBuiltinData(SurfaceDescription surfaceDescription, FragInputs fragInputs, float3 V, inout PositionInputs posInput, out SurfaceData surfaceData, out BuiltinData builtinData)
 			{
+				#ifdef LOD_FADE_CROSSFADE
+                LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
+                #endif
+
 				#if _ALPHATEST_ON
 				DoAlphaTest ( surfaceDescription.Alpha, surfaceDescription.AlphaClipThreshold );
 				#endif
@@ -1468,6 +1704,17 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 				BuildSurfaceData(fragInputs, surfaceDescription, V, surfaceData);
 				ZERO_INITIALIZE(BuiltinData, builtinData);
 				builtinData.opacity =  surfaceDescription.Alpha;
+
+				#ifdef _ALPHATEST_ON
+                    builtinData.alphaClipTreshold = surfaceDescription.AlphaClipThreshold;
+                #endif
+
+				#if _DEPTHOFFSET_ON
+                builtinData.depthOffset = surfaceDescription.DepthOffset;
+                #endif
+
+
+                ApplyDebugToBuiltinData(builtinData);
 			}
 
 			VertexOutput VertexFunction( VertexInput inputMesh /*ase_vert_input*/ )
@@ -1497,7 +1744,7 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 				return o;
 			}
 
-			#if defined(TESSELLATION_ON)
+			#if defined(ASE_TESSELLATION)
 			struct VertexControl
 			{
 				float3 positionOS : INTERNALTESSPOS;
@@ -1639,22 +1886,25 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			ColorMask 0 0
 
 			HLSLPROGRAM
-			#define SHADERPASS SHADERPASS_DEPTH_ONLY
-			#pragma multi_compile _ WRITE_MSAA_DEPTH
 
 			#pragma shader_feature _SURFACE_TYPE_TRANSPARENT
-			#pragma shader_feature_local _ _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
 			#pragma shader_feature_local _ALPHATEST_ON
-			#pragma shader_feature_local _ENABLE_FOG_ON_TRANSPARENT
+
+			#pragma multi_compile _ WRITE_MSAA_DEPTH
 
 			#pragma vertex Vert
 			#pragma fragment Frag
 
+			#define SHADERPASS SHADERPASS_DEPTH_ONLY
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
+        	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
+        	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Tessellation.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
 
 			CBUFFER_START( UnityPerMaterial )
 			float4 _EmissionColor;
@@ -1700,7 +1950,8 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			float _DoubleSidedEnable;
 			float _DoubleSidedNormalMode;
 			float4 _DoubleSidedConstants;
-			#ifdef TESSELLATION_ON
+			float _EnableBlendModePreserveSpecularLighting;
+			#ifdef ASE_TESSELLATION
 				float _TessPhongStrength;
 				float _TessValue;
 				float _TessMin;
@@ -1709,8 +1960,10 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 				float _TessMaxDisp;
 			#endif
 			CBUFFER_END
+
 			/*ase_globals*/
 
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Material.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Unlit/Unlit.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/BuiltinUtilities.hlsl"
@@ -1746,17 +1999,42 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			void BuildSurfaceData(FragInputs fragInputs, SurfaceDescription surfaceDescription, float3 V, out SurfaceData surfaceData)
 			{
 				ZERO_INITIALIZE(SurfaceData, surfaceData);
+				#ifdef WRITE_NORMAL_BUFFER
+				surfaceData.normalWS = fragInputs.tangentToWorld[2];
+				#endif
 			}
 
 			void GetSurfaceAndBuiltinData(SurfaceDescription surfaceDescription, FragInputs fragInputs, float3 V, inout PositionInputs posInput, out SurfaceData surfaceData, out BuiltinData builtinData)
 			{
+				#ifdef LOD_FADE_CROSSFADE
+                LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
+                #endif
+
 				#if _ALPHATEST_ON
 				DoAlphaTest ( surfaceDescription.Alpha, surfaceDescription.AlphaClipThreshold );
 				#endif
 
+				#if _DEPTHOFFSET_ON
+                ApplyDepthOffsetPositionInput(V, surfaceDescription.DepthOffset, GetViewForwardDir(), GetWorldToHClipMatrix(), posInput);
+                #endif
+
 				BuildSurfaceData(fragInputs, surfaceDescription, V, surfaceData);
 				ZERO_INITIALIZE(BuiltinData, builtinData);
 				builtinData.opacity =  surfaceDescription.Alpha;
+
+				#if defined(DEBUG_DISPLAY)
+					builtinData.renderingLayers = GetMeshRenderingLightLayer();
+				#endif
+
+                #ifdef _ALPHATEST_ON
+                    builtinData.alphaClipTreshold = surfaceDescription.AlphaClipThreshold;
+                #endif
+
+				#if _DEPTHOFFSET_ON
+                builtinData.depthOffset = surfaceDescription.DepthOffset;
+                #endif
+
+                ApplyDebugToBuiltinData(builtinData);
 			}
 
 			VertexOutput VertexFunction( VertexInput inputMesh /*ase_vert_input*/ )
@@ -1786,7 +2064,7 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 				return o;
 			}
 
-			#if defined(TESSELLATION_ON)
+			#if defined(ASE_TESSELLATION)
 			struct VertexControl
 			{
 				float3 positionOS : INTERNALTESSPOS;
@@ -1871,20 +2149,19 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			#endif
 
 			void Frag( VertexOutput packedInput
-					#ifdef WRITE_NORMAL_BUFFER
-					, out float4 outNormalBuffer : SV_Target0
 						#ifdef WRITE_MSAA_DEPTH
-						, out float1 depthColor : SV_Target1
+						, out float4 depthColor : SV_Target0
+							#ifdef WRITE_NORMAL_BUFFER
+							, out float4 outNormalBuffer : SV_Target1
+							#endif
+						#else
+							#ifdef WRITE_NORMAL_BUFFER
+							, out float4 outNormalBuffer : SV_Target0
+							#endif
 						#endif
-					#elif defined(WRITE_MSAA_DEPTH)
-					, out float4 outNormalBuffer : SV_Target0
-					, out float1 depthColor : SV_Target1
-					#elif defined(SCENESELECTIONPASS)
-					, out float4 outColor : SV_Target0
-					#endif
-					#ifdef _DEPTHOFFSET_ON
-					, out float outputDepth : SV_Depth
-					#endif
+						#if defined(_DEPTHOFFSET_ON) && !defined(SCENEPICKINGPASS)
+						, out float outputDepth : DEPTH_OFFSET_SEMANTIC
+						#endif
 					/*ase_frag_input*/
 					)
 			{
@@ -1913,16 +2190,15 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 				outputDepth = posInput.deviceDepth;
 				#endif
 
-				#ifdef WRITE_NORMAL_BUFFER
-				EncodeIntoNormalBuffer( ConvertSurfaceDataToNormalData( surfaceData ), posInput.positionSS, outNormalBuffer );
 				#ifdef WRITE_MSAA_DEPTH
-				depthColor = packedInput.positionCS.z;
+					depthColor = packedInput.positionCS.z;
+					#ifdef _ALPHATOMASK_ON
+					depthColor.a = SharpenAlpha(builtinData.opacity, builtinData.alphaClipTreshold);
+					#endif
 				#endif
-				#elif defined(WRITE_MSAA_DEPTH)
-				outNormalBuffer = float4( 0.0, 0.0, 0.0, 1.0 );
-				depthColor = packedInput.positionCS.z;
-				#elif defined(SCENESELECTIONPASS)
-				outColor = float4( _ObjectId, _PassValue, 1.0, 1.0 );
+
+				#if defined(WRITE_NORMAL_BUFFER)
+					EncodeIntoNormalBuffer(ConvertSurfaceDataToNormalData(surfaceData), outNormalBuffer);
 				#endif
 			}
 
@@ -1949,22 +2225,29 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			}
 
 			HLSLPROGRAM
-			#define SHADERPASS SHADERPASS_MOTION_VECTORS
-			#pragma multi_compile _ WRITE_MSAA_DEPTH
 
 			#pragma shader_feature _SURFACE_TYPE_TRANSPARENT
-			#pragma shader_feature_local _ _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
 			#pragma shader_feature_local _ALPHATEST_ON
-			#pragma shader_feature_local _ENABLE_FOG_ON_TRANSPARENT
+
+			#pragma multi_compile _ WRITE_MSAA_DEPTH
 
 			#pragma vertex Vert
 			#pragma fragment Frag
 
+			#if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
+			#define _WRITE_TRANSPARENT_MOTION_VECTOR
+			#endif
+
+			#define SHADERPASS SHADERPASS_MOTION_VECTORS
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
+        	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
+        	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Tessellation.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
 
 			CBUFFER_START( UnityPerMaterial )
 			float4 _EmissionColor;
@@ -2010,7 +2293,8 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			float _DoubleSidedEnable;
 			float _DoubleSidedNormalMode;
 			float4 _DoubleSidedConstants;
-			#ifdef TESSELLATION_ON
+			float _EnableBlendModePreserveSpecularLighting;
+			#ifdef ASE_TESSELLATION
 				float _TessPhongStrength;
 				float _TessValue;
 				float _TessMin;
@@ -2019,8 +2303,10 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 				float _TessMaxDisp;
 			#endif
 			CBUFFER_END
+
 			/*ase_globals*/
 
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Material.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Unlit/Unlit.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/BuiltinUtilities.hlsl"
@@ -2034,9 +2320,7 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 				float3 positionOS : POSITION;
 				float3 normalOS : NORMAL;
 				float3 previousPositionOS : TEXCOORD4;
-				#if defined (_ADD_PRECOMPUTED_VELOCITY)
-					float3 precomputedVelocity : TEXCOORD5;
-				#endif
+				float3 precomputedVelocity : TEXCOORD5;
 				/*ase_vdata:p=p;n=n;uv4=tc4;uv5=tc5*/
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
@@ -2063,17 +2347,44 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			void BuildSurfaceData(FragInputs fragInputs, SurfaceDescription surfaceDescription, float3 V, out SurfaceData surfaceData)
 			{
 				ZERO_INITIALIZE(SurfaceData, surfaceData);
+				#ifdef WRITE_NORMAL_BUFFER
+				surfaceData.normalWS = fragInputs.tangentToWorld[2];
+				#endif
 			}
 
 			void GetSurfaceAndBuiltinData(SurfaceDescription surfaceDescription, FragInputs fragInputs, float3 V, inout PositionInputs posInput, out SurfaceData surfaceData, out BuiltinData builtinData)
 			{
+				#ifdef LOD_FADE_CROSSFADE
+                LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
+                #endif
+
 				#if _ALPHATEST_ON
 				DoAlphaTest ( surfaceDescription.Alpha, surfaceDescription.AlphaClipThreshold );
 				#endif
 
+				#if _DEPTHOFFSET_ON
+                ApplyDepthOffsetPositionInput(V, surfaceDescription.DepthOffset, GetViewForwardDir(), GetWorldToHClipMatrix(), posInput);
+                #endif
+
 				BuildSurfaceData(fragInputs, surfaceDescription, V, surfaceData);
 				ZERO_INITIALIZE(BuiltinData, builtinData);
 				builtinData.opacity =  surfaceDescription.Alpha;
+
+				#if defined(DEBUG_DISPLAY)
+                    builtinData.renderingLayers = GetMeshRenderingLightLayer();
+                #endif
+
+
+                #ifdef _ALPHATEST_ON
+                    builtinData.alphaClipTreshold = surfaceDescription.AlphaClipThreshold;
+                #endif
+
+
+                #if _DEPTHOFFSET_ON
+                builtinData.depthOffset = surfaceDescription.DepthOffset;
+                #endif
+
+                ApplyDebugToBuiltinData(builtinData);
 			}
 
 			VertexInput ApplyMeshModification(VertexInput inputMesh, float3 timeParameters, inout VertexOutput o/*ase_vert_input*/ )
@@ -2169,15 +2480,13 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 				return o;
 			}
 
-			#if defined(TESSELLATION_ON)
+			#if defined(ASE_TESSELLATION)
 			struct VertexControl
 			{
 				float3 positionOS : INTERNALTESSPOS;
 				float3 normalOS : NORMAL;
 				float3 previousPositionOS : TEXCOORD4;
-				#if defined (_ADD_PRECOMPUTED_VELOCITY)
-					float3 precomputedVelocity : TEXCOORD5;
-				#endif
+				float3 precomputedVelocity : TEXCOORD5;
 				/*ase_vcontrol*/
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
@@ -2266,19 +2575,25 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			#endif
 
 			void Frag( VertexOutput packedInput
-						, out float4 outMotionVector : SV_Target0
-						#ifdef WRITE_NORMAL_BUFFER
-						, out float4 outNormalBuffer : SV_Target1
-							#ifdef WRITE_MSAA_DEPTH
-								, out float1 depthColor : SV_Target2
+						#ifdef WRITE_MSAA_DEPTH
+						, out float4 depthColor : SV_Target0
+						, out float4 outMotionVector : SV_Target1
+							#ifdef WRITE_DECAL_BUFFER
+							, out float4 outDecalBuffer : SV_Target2
 							#endif
-						#elif defined(WRITE_MSAA_DEPTH)
-						, out float4 outNormalBuffer : SV_Target1
-						, out float1 depthColor : SV_Target2
+						#else
+						, out float4 outMotionVector : SV_Target0
+							#ifdef WRITE_DECAL_BUFFER
+							, out float4 outDecalBuffer : SV_Target1
+							#endif
+						#endif
+
+						#ifdef WRITE_NORMAL_BUFFER
+						, out float4 outNormalBuffer : SV_TARGET_NORMAL
 						#endif
 
 						#ifdef _DEPTHOFFSET_ON
-							, out float outputDepth : SV_Depth
+						, out float outputDepth : DEPTH_OFFSET_SEMANTIC
 						#endif
 						/*ase_frag_input*/
 					)
@@ -2319,15 +2634,32 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 				if( forceNoMotion )
 					outMotionVector = float4( 2.0, 0.0, 0.0, 0.0 );
 
-				#ifdef WRITE_NORMAL_BUFFER
-				EncodeIntoNormalBuffer( ConvertSurfaceDataToNormalData( surfaceData ), posInput.positionSS, outNormalBuffer );
-
+				// Depth and Alpha to coverage
 				#ifdef WRITE_MSAA_DEPTH
-				depthColor = packedInput.vmeshPositionCS.z;
+					// In case we are rendering in MSAA, reading the an MSAA depth buffer is way too expensive. To avoid that, we export the depth to a color buffer
+					depthColor = packedInput.vmeshPositionCS.z;
+
+					// Alpha channel is used for alpha to coverage
+					depthColor.a = SharpenAlpha(builtinData.opacity, builtinData.alphaClipTreshold);
 				#endif
-				#elif defined(WRITE_MSAA_DEPTH)
-				outNormalBuffer = float4( 0.0, 0.0, 0.0, 1.0 );
-				depthColor = packedInput.vmeshPositionCS.z;
+
+				// Normal Buffer Processing
+				#ifdef WRITE_NORMAL_BUFFER
+					EncodeIntoNormalBuffer(ConvertSurfaceDataToNormalData(surfaceData), outNormalBuffer);
+				#endif
+
+				#if defined(WRITE_DECAL_BUFFER)
+					DecalPrepassData decalPrepassData;
+					#ifdef _DISABLE_DECALS
+					ZERO_INITIALIZE(DecalPrepassData, decalPrepassData);
+					#else
+					decalPrepassData.geomNormalWS = surfaceData.geomNormalWS;
+					decalPrepassData.decalLayerMask = GetMeshRenderingDecalLayer();
+					#endif
+					EncodeIntoDecalPrepassBuffer(decalPrepassData, outDecalBuffer);
+
+					// make sure we don't overwrite light layers
+					outDecalBuffer.w = (GetMeshRenderingLightLayer() & 0x000000FF) / 255.0;
 				#endif
 
 				#ifdef _DEPTHOFFSET_ON
@@ -2361,21 +2693,23 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			}
 
 			HLSLPROGRAM
-			#define SHADERPASS SHADERPASS_DISTORTION
 
 			#pragma shader_feature _SURFACE_TYPE_TRANSPARENT
-			#pragma shader_feature_local _ _BLENDMODE_ALPHA _BLENDMODE_ADD _BLENDMODE_PRE_MULTIPLY
 			#pragma shader_feature_local _ALPHATEST_ON
-			#pragma shader_feature_local _ENABLE_FOG_ON_TRANSPARENT
 
 			#pragma vertex Vert
 			#pragma fragment Frag
 
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/NormalSurfaceGradient.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
+			#define SHADERPASS SHADERPASS_DISTORTION
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
+        	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl" // Required by Tessellation.hlsl
+        	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Tessellation.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl" // Required to be include before we include properties as it define DECLARE_STACK_CB
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl" // Need to be here for Gradient struct definition
 
 			#define SHADER_UNLIT
 
@@ -2423,7 +2757,7 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			float _DoubleSidedEnable;
 			float _DoubleSidedNormalMode;
 			float4 _DoubleSidedConstants;
-			#ifdef TESSELLATION_ON
+			#ifdef ASE_TESSELLATION
 				float _TessPhongStrength;
 				float _TessValue;
 				float _TessMin;
@@ -2432,8 +2766,10 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 				float _TessMaxDisp;
 			#endif
 			CBUFFER_END
+
 			/*ase_globals*/
 
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Material.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Unlit/Unlit.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/BuiltinUtilities.hlsl"
@@ -2517,7 +2853,7 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 				return o;
 			}
 
-			#if defined(TESSELLATION_ON)
+			#if defined(ASE_TESSELLATION)
 			struct VertexControl
 			{
 				float3 positionOS : INTERNALTESSPOS;
@@ -2631,6 +2967,564 @@ Shader /*ase_name*/ "Hidden/HD/Unlit" /*end*/
 			}
 			ENDHLSL
 		}
+
+		/*ase_pass*/
+        Pass
+		{
+			/*ase_hide_pass*/
+            Name "ScenePickingPass"
+            Tags { "LightMode" = "Picking" }
+
+            Cull [_CullMode]
+
+			HLSLPROGRAM
+
+			#pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
+			#pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC
+
+			#pragma editor_sync_compilation
+
+			#pragma vertex Vert
+			#pragma fragment Frag
+
+			#if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
+			#define _WRITE_TRANSPARENT_MOTION_VECTOR
+			#endif
+
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
+        	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
+        	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Tessellation.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
+
+            #define ATTRIBUTES_NEED_NORMAL
+            #define ATTRIBUTES_NEED_TANGENT
+            #define VARYINGS_NEED_TANGENT_TO_WORLD
+
+			#define SHADERPASS SHADERPASS_DEPTH_ONLY
+			#define SCENEPICKINGPASS 1
+
+			#define SHADER_UNLIT
+
+			float4 _SelectionID;
+
+            CBUFFER_START( UnityPerMaterial )
+			float4 _EmissionColor;
+			float _RenderQueueType;
+			#ifdef _ADD_PRECOMPUTED_VELOCITY
+			float _AddPrecomputedVelocity;
+			#endif
+			#ifdef _ENABLE_SHADOW_MATTE
+			float _ShadowMatteFilter;
+			#endif
+			float _StencilRef;
+			float _StencilWriteMask;
+			float _StencilRefDepth;
+			float _StencilWriteMaskDepth;
+			float _StencilRefMV;
+			float _StencilWriteMaskMV;
+			float _StencilRefDistortionVec;
+			float _StencilWriteMaskDistortionVec;
+			float _StencilWriteMaskGBuffer;
+			float _StencilRefGBuffer;
+			float _ZTestGBuffer;
+			float _RequireSplitLighting;
+			float _ReceivesSSR;
+			float _SurfaceType;
+			float _BlendMode;
+			float _SrcBlend;
+			float _DstBlend;
+			float _AlphaSrcBlend;
+			float _AlphaDstBlend;
+			float _ZWrite;
+			float _TransparentZWrite;
+			float _CullMode;
+			float _TransparentSortPriority;
+			float _EnableFogOnTransparent;
+			float _CullModeForward;
+			float _TransparentCullMode;
+			float _ZTestDepthEqualForOpaque;
+			float _ZTestTransparent;
+			float _TransparentBackfaceEnable;
+			float _AlphaCutoffEnable;
+			float _AlphaCutoff;
+			float _UseShadowThreshold;
+			float _DoubleSidedEnable;
+			float _DoubleSidedNormalMode;
+			float4 _DoubleSidedConstants;
+			float _EnableBlendModePreserveSpecularLighting;
+			#ifdef ASE_TESSELLATION
+				float _TessPhongStrength;
+				float _TessValue;
+				float _TessMin;
+				float _TessMax;
+				float _TessEdgeLength;
+				float _TessMaxDisp;
+			#endif
+			CBUFFER_END
+
+			/*ase_globals*/
+
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/PickingSpaceTransforms.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Material.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Unlit/Unlit.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/BuiltinUtilities.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/MaterialUtilities.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphFunctions.hlsl"
+
+			/*ase_pragma*/
+
+			struct VertexInput
+			{
+				float3 positionOS : POSITION;
+				float3 normalOS : NORMAL;
+				float4 tangentOS : TANGENT;
+				/*ase_vdata:p=p;n=n;t=t*/
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+			};
+
+			struct VertexOutput
+			{
+				float4 positionCS : SV_POSITION;
+				float3 normalWS : TEXCOORD0;
+				float4 tangentWS : TEXCOORD1;
+				/*ase_interp(2,):sp=sp.xyzw;wn=tc0;wt=tc1*/
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+				UNITY_VERTEX_OUTPUT_STEREO
+			};
+
+			/*ase_funcs*/
+
+            struct SurfaceDescription
+			{
+				float Alpha;
+				float AlphaClipThreshold;
+			};
+
+
+            void GetSurfaceAndBuiltinData(SurfaceDescription surfaceDescription, FragInputs fragInputs, float3 V, inout PositionInputs posInput, out SurfaceData surfaceData, out BuiltinData builtinData RAY_TRACING_OPTIONAL_PARAMETERS)
+            {
+                #ifdef LOD_FADE_CROSSFADE
+			        LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
+                #endif
+
+                #ifdef _ALPHATEST_ON
+                    float alphaCutoff = surfaceDescription.AlphaClipThreshold;
+                    GENERIC_ALPHA_TEST(surfaceDescription.Alpha, alphaCutoff);
+                #endif
+
+                #if !defined(SHADER_STAGE_RAY_TRACING) && _DEPTHOFFSET_ON
+                ApplyDepthOffsetPositionInput(V, surfaceDescription.DepthOffset, GetViewForwardDir(), GetWorldToHClipMatrix(), posInput);
+                #endif
+
+
+				ZERO_INITIALIZE(SurfaceData, surfaceData);
+
+				ZERO_BUILTIN_INITIALIZE(builtinData);
+				builtinData.opacity = surfaceDescription.Alpha;
+
+				#if defined(DEBUG_DISPLAY)
+					builtinData.renderingLayers = GetMeshRenderingLightLayer();
+				#endif
+
+                #ifdef _ALPHATEST_ON
+                    builtinData.alphaClipTreshold = alphaCutoff;
+                #endif
+
+                #if _DEPTHOFFSET_ON
+                builtinData.depthOffset = surfaceDescription.DepthOffset;
+                #endif
+
+
+                ApplyDebugToBuiltinData(builtinData);
+
+            }
+
+
+			VertexOutput VertexFunction(VertexInput inputMesh /*ase_vert_input*/ )
+			{
+
+				VertexOutput o;
+				ZERO_INITIALIZE(VertexOutput, o);
+				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+
+				UNITY_SETUP_INSTANCE_ID(inputMesh);
+				UNITY_TRANSFER_INSTANCE_ID(inputMesh, o );
+
+				/*ase_vert_code:inputMesh=VertexInput;o=VertexOutput*/
+				#ifdef ASE_ABSOLUTE_VERTEX_POS
+				float3 defaultVertexValue = inputMesh.positionOS.xyz;
+				#else
+				float3 defaultVertexValue = float3( 0, 0, 0 );
+				#endif
+				float3 vertexValue =  /*ase_vert_out:Vertex Offset;Float3;2;-1;_VertexOffset*/ defaultVertexValue /*end*/;
+				#ifdef ASE_ABSOLUTE_VERTEX_POS
+				inputMesh.positionOS.xyz = vertexValue;
+				#else
+				inputMesh.positionOS.xyz += vertexValue;
+				#endif
+
+				inputMesh.normalOS = /*ase_vert_out:Vertex Normal;Float3;3;-1;_VertexNormal*/ inputMesh.normalOS /*end*/;
+
+				float3 positionRWS = TransformObjectToWorld(inputMesh.positionOS);
+				float3 normalWS = TransformObjectToWorldNormal(inputMesh.normalOS);
+				float4 tangentWS = float4(TransformObjectToWorldDir(inputMesh.tangentOS.xyz), inputMesh.tangentOS.w);
+
+				o.positionCS = TransformWorldToHClip(positionRWS);
+				o.normalWS.xyz =  normalWS;
+				o.tangentWS.xyzw =  tangentWS;
+
+				return o;
+			}
+
+			#if defined(ASE_TESSELLATION)
+			struct VertexControl
+			{
+				float3 positionOS : INTERNALTESSPOS;
+				float3 normalOS : NORMAL;
+				float4 tangentOS : TANGENT;
+				/*ase_vcontrol*/
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+			};
+
+			struct TessellationFactors
+			{
+				float edge[3] : SV_TessFactor;
+				float inside : SV_InsideTessFactor;
+			};
+
+			VertexControl Vert ( VertexInput v )
+			{
+				VertexControl o;
+				UNITY_SETUP_INSTANCE_ID(v);
+				UNITY_TRANSFER_INSTANCE_ID(v, o);
+				o.positionOS = v.positionOS;
+				o.normalOS = v.normalOS;
+				o.tangentOS = v.tangentOS;
+				/*ase_control_code:v=VertexInput;o=VertexControl*/
+				return o;
+			}
+
+			TessellationFactors TessellationFunction (InputPatch<VertexControl,3> v)
+			{
+				TessellationFactors o;
+				float4 tf = 1;
+				float tessValue = /*ase_inline_begin*/_TessValue/*ase_inline_end*/; float tessMin = /*ase_inline_begin*/_TessMin/*ase_inline_end*/; float tessMax = /*ase_inline_begin*/_TessMax/*ase_inline_end*/;
+				float edgeLength = /*ase_inline_begin*/_TessEdgeLength/*ase_inline_end*/; float tessMaxDisp = /*ase_inline_begin*/_TessMaxDisp/*ase_inline_end*/;
+				#if (SHADEROPTIONS_CAMERA_RELATIVE_RENDERING != 0)
+				float3 cameraPos = 0;
+				#else
+				float3 cameraPos = _WorldSpaceCameraPos;
+				#endif
+				#if defined(ASE_FIXED_TESSELLATION)
+				tf = FixedTess( tessValue );
+				#elif defined(ASE_DISTANCE_TESSELLATION)
+				tf = DistanceBasedTess(float4(v[0].positionOS,1), float4(v[1].positionOS,1), float4(v[2].positionOS,1), tessValue, tessMin, tessMax, GetObjectToWorldMatrix(), cameraPos );
+				#elif defined(ASE_LENGTH_TESSELLATION)
+				tf = EdgeLengthBasedTess(float4(v[0].positionOS,1), float4(v[1].positionOS,1), float4(v[2].positionOS,1), edgeLength, GetObjectToWorldMatrix(), cameraPos, _ScreenParams );
+				#elif defined(ASE_LENGTH_CULL_TESSELLATION)
+				tf = EdgeLengthBasedTessCull(float4(v[0].positionOS,1), float4(v[1].positionOS,1), float4(v[2].positionOS,1), edgeLength, tessMaxDisp, GetObjectToWorldMatrix(), cameraPos, _ScreenParams, _FrustumPlanes );
+				#endif
+				o.edge[0] = tf.x; o.edge[1] = tf.y; o.edge[2] = tf.z; o.inside = tf.w;
+				return o;
+			}
+
+			[domain("tri")]
+			[partitioning("fractional_odd")]
+			[outputtopology("triangle_cw")]
+			[patchconstantfunc("TessellationFunction")]
+			[outputcontrolpoints(3)]
+			VertexControl HullFunction(InputPatch<VertexControl, 3> patch, uint id : SV_OutputControlPointID)
+			{
+			   return patch[id];
+			}
+
+			[domain("tri")]
+			VertexOutput DomainFunction(TessellationFactors factors, OutputPatch<VertexControl, 3> patch, float3 bary : SV_DomainLocation)
+			{
+				VertexInput o = (VertexInput) 0;
+				o.positionOS = patch[0].positionOS * bary.x + patch[1].positionOS * bary.y + patch[2].positionOS * bary.z;
+				o.normalOS = patch[0].normalOS * bary.x + patch[1].normalOS * bary.y + patch[2].normalOS * bary.z;
+				o.tangentOS = patch[0].tangentOS * bary.x + patch[1].tangentOS * bary.y + patch[2].tangentOS * bary.z;
+				/*ase_domain_code:patch=VertexControl;o=VertexInput;bary=SV_DomainLocation*/
+				#if defined(ASE_PHONG_TESSELLATION)
+				float3 pp[3];
+				for (int i = 0; i < 3; ++i)
+					pp[i] = o.positionOS.xyz - patch[i].normalOS * (dot(o.positionOS.xyz, patch[i].normalOS) - dot(patch[i].positionOS.xyz, patch[i].normalOS));
+				float phongStrength = /*ase_inline_begin*/_TessPhongStrength/*ase_inline_end*/;
+				o.positionOS.xyz = phongStrength * (pp[0]*bary.x + pp[1]*bary.y + pp[2]*bary.z) + (1.0f-phongStrength) * o.positionOS.xyz;
+				#endif
+				UNITY_TRANSFER_INSTANCE_ID(patch[0], o);
+				return VertexFunction(o);
+			}
+			#else
+			VertexOutput Vert ( VertexInput v )
+			{
+				return VertexFunction( v );
+			}
+			#endif
+
+			void Frag(	VertexOutput packedInput
+						, out float4 outColor : SV_Target0
+						/*ase_frag_input*/
+					)
+			{
+				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(packedInput);
+				UNITY_SETUP_INSTANCE_ID(packedInput);
+
+				FragInputs input;
+				ZERO_INITIALIZE(FragInputs, input);
+				input.tangentToWorld = k_identity3x3;
+				input.positionSS = packedInput.positionCS;
+
+				input.tangentToWorld = BuildTangentToWorld(packedInput.tangentWS.xyzw, packedInput.normalWS.xyz);
+
+				PositionInputs posInput = GetPositionInput(input.positionSS.xy, _ScreenSize.zw, input.positionSS.z, input.positionSS.w, input.positionRWS);
+
+				SurfaceDescription surfaceDescription = (SurfaceDescription)0;
+				/*ase_frag_code:packedInput=VertexOutput*/
+				surfaceDescription.Alpha = /*ase_frag_out:Alpha;Float;0;-1;_Alpha*/1/*end*/;
+				surfaceDescription.AlphaClipThreshold =  /*ase_frag_out:Alpha Clip Threshold;Float;1;-1;_AlphaClip*/_AlphaCutoff/*end*/;
+
+
+				float3 V = float3(1.0, 1.0, 1.0);
+
+				SurfaceData surfaceData;
+				BuiltinData builtinData;
+				GetSurfaceAndBuiltinData(surfaceDescription, input, V, posInput, surfaceData, builtinData);
+				outColor = _SelectionID;
+			}
+
+            ENDHLSL
+        }
+
+		Pass
+		{
+
+            Name "FullScreenDebug"
+            Tags { "LightMode" = "FullScreenDebug" }
+
+            Cull [_CullMode]
+			ZTest LEqual
+			ZWrite Off
+
+			HLSLPROGRAM
+
+			#pragma multi_compile_instancing
+			#pragma instancing_options renderinglayer
+
+			#pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
+			#pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC
+
+			#pragma vertex Vert
+			#pragma fragment Frag
+
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
+        	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
+        	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Tessellation.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
+
+            #define ATTRIBUTES_NEED_NORMAL
+            #define ATTRIBUTES_NEED_TANGENT
+
+            #define SHADERPASS SHADERPASS_FULL_SCREEN_DEBUG
+			#define SHADER_UNLIT
+
+            #if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
+            #define _WRITE_TRANSPARENT_MOTION_VECTOR
+            #endif
+
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Material.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/NormalSurfaceGradient.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Unlit/Unlit.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/BuiltinUtilities.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/MaterialUtilities.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphFunctions.hlsl"
+
+            struct AttributesMesh
+			{
+				 float3 positionOS : POSITION;
+				 float3 normalOS : NORMAL;
+				 float4 tangentOS : TANGENT;
+				#if UNITY_ANY_INSTANCING_ENABLED
+				 uint instanceID : INSTANCEID_SEMANTIC;
+				#endif
+			};
+
+			struct VaryingsMeshToPS
+			{
+				SV_POSITION_QUALIFIERS float4 positionCS : SV_POSITION;
+				#if UNITY_ANY_INSTANCING_ENABLED
+				 uint instanceID : CUSTOM_INSTANCE_ID;
+				#endif
+			};
+
+			struct VertexDescriptionInputs
+			{
+				 float3 ObjectSpaceNormal;
+				 float3 ObjectSpaceTangent;
+				 float3 ObjectSpacePosition;
+			};
+
+			struct SurfaceDescriptionInputs
+			{
+			};
+
+			struct PackedVaryingsMeshToPS
+			{
+				SV_POSITION_QUALIFIERS float4 positionCS : SV_POSITION;
+				#if UNITY_ANY_INSTANCING_ENABLED
+				 uint instanceID : CUSTOM_INSTANCE_ID;
+				#endif
+			};
+
+			PackedVaryingsMeshToPS PackVaryingsMeshToPS (VaryingsMeshToPS input)
+			{
+				PackedVaryingsMeshToPS output;
+				ZERO_INITIALIZE(PackedVaryingsMeshToPS, output);
+				output.positionCS = input.positionCS;
+				#if UNITY_ANY_INSTANCING_ENABLED
+				output.instanceID = input.instanceID;
+				#endif
+				return output;
+			}
+
+			VaryingsMeshToPS UnpackVaryingsMeshToPS (PackedVaryingsMeshToPS input)
+			{
+				VaryingsMeshToPS output;
+				output.positionCS = input.positionCS;
+				#if UNITY_ANY_INSTANCING_ENABLED
+				output.instanceID = input.instanceID;
+				#endif
+				return output;
+			}
+
+            struct VertexDescription
+			{
+				float3 Position;
+				float3 Normal;
+				float3 Tangent;
+			};
+
+			VertexDescription VertexDescriptionFunction(VertexDescriptionInputs IN)
+			{
+				VertexDescription description = (VertexDescription)0;
+				description.Position = IN.ObjectSpacePosition;
+				description.Normal = IN.ObjectSpaceNormal;
+				description.Tangent = IN.ObjectSpaceTangent;
+				return description;
+			}
+
+
+            struct SurfaceDescription
+			{
+				float3 BaseColor;
+				float3 Emission;
+				float Alpha;
+			};
+
+			SurfaceDescription SurfaceDescriptionFunction(SurfaceDescriptionInputs IN)
+			{
+				SurfaceDescription surface = (SurfaceDescription)0;
+				surface.BaseColor = IsGammaSpace() ? float3(0.5, 0.5, 0.5) : SRGBToLinear(float3(0.5, 0.5, 0.5));
+				surface.Emission = float3(0, 0, 0);
+				surface.Alpha = 1;
+				return surface;
+			}
+
+
+
+			VertexDescriptionInputs AttributesMeshToVertexDescriptionInputs(AttributesMesh input)
+			{
+				VertexDescriptionInputs output;
+				ZERO_INITIALIZE(VertexDescriptionInputs, output);
+				output.ObjectSpaceNormal =                          input.normalOS;
+				output.ObjectSpaceTangent =                         input.tangentOS.xyz;
+				output.ObjectSpacePosition =                        input.positionOS;
+				return output;
+			}
+
+			AttributesMesh ApplyMeshModification(AttributesMesh input, float3 timeParameters )
+			{
+				VertexDescriptionInputs vertexDescriptionInputs = AttributesMeshToVertexDescriptionInputs(input);
+				VertexDescription vertexDescription = VertexDescriptionFunction(vertexDescriptionInputs);
+				input.positionOS = vertexDescription.Position;
+				input.normalOS = vertexDescription.Normal;
+				input.tangentOS.xyz = vertexDescription.Tangent;
+				return input;
+			}
+
+			FragInputs BuildFragInputs(VaryingsMeshToPS input)
+			{
+				FragInputs output;
+				ZERO_INITIALIZE(FragInputs, output);
+
+				output.tangentToWorld = k_identity3x3;
+				output.positionSS = input.positionCS;
+
+				return output;
+			}
+
+
+			FragInputs UnpackVaryingsMeshToFragInputs(PackedVaryingsMeshToPS input)
+			{
+				UNITY_SETUP_INSTANCE_ID(input);
+				VaryingsMeshToPS unpacked = UnpackVaryingsMeshToPS(input);
+				return BuildFragInputs(unpacked);
+			}
+				SurfaceDescriptionInputs FragInputsToSurfaceDescriptionInputs(FragInputs input, float3 viewWS)
+			{
+				SurfaceDescriptionInputs output;
+				ZERO_INITIALIZE(SurfaceDescriptionInputs, output);
+
+
+        		return output;
+			}
+
+			#define DEBUG_DISPLAY
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/FullScreenDebug.hlsl"
+
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/VertMesh.hlsl"
+
+			PackedVaryingsType Vert(AttributesMesh inputMesh)
+			{
+				VaryingsType varyingsType;
+				varyingsType.vmesh = VertMesh(inputMesh);
+				return PackVaryingsType(varyingsType);
+			}
+
+			#if !defined(_DEPTHOFFSET_ON)
+			[earlydepthstencil]
+			#endif
+			void Frag(PackedVaryingsToPS packedInput)
+			{
+				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(packedInput);
+				FragInputs input = UnpackVaryingsToFragInputs(packedInput);
+
+				PositionInputs posInput = GetPositionInput(input.positionSS.xy, _ScreenSize.zw, input.positionSS.z, input.positionSS.w, input.positionRWS.xyz);
+
+			#ifdef PLATFORM_SUPPORTS_PRIMITIVE_ID_IN_PIXEL_SHADER
+				if (_DebugFullScreenMode == FULLSCREENDEBUGMODE_QUAD_OVERDRAW)
+				{
+					IncrementQuadOverdrawCounter(posInput.positionSS.xy, input.primitiveID);
+				}
+			#endif
+			}
+
+            ENDHLSL
+        }
 		/*ase_pass_end*/
 	}
 	/*ase_lod*/

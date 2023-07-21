@@ -55,50 +55,50 @@ namespace ProjectUniverse.Player
 
             //create a gun
             //GameObject gun = Instantiate(Resources.Load<GameObject>("Prefabs/Resources/Equipable/Weapons/DevWeapon"));
-            GameObject gun2 = Instantiate(Resources.Load<GameObject>("Prefabs/Resources/Equipable/Weapons/Scar"));
+        //    GameObject gun2 = Instantiate(Resources.Load<GameObject>("Prefabs/Resources/Equipable/Weapons/Scar"));
             //create a drill, welder
-            GameObject drill = Instantiate(Resources.Load<GameObject>("Prefabs/Resources/Equipable/Tools/Drill"));
-            GameObject welder = Instantiate(Resources.Load<GameObject>("Prefabs/Resources/Equipable/Tools/Welder"));
+        //    GameObject drill = Instantiate(Resources.Load<GameObject>("Prefabs/Resources/Equipable/Tools/Drill"));
+        //    GameObject welder = Instantiate(Resources.Load<GameObject>("Prefabs/Resources/Equipable/Tools/Welder"));
             //create a consumable
-            GameObject throwgren = Instantiate(Resources.Load<GameObject>("Prefabs/Resources/Equipable/Consumables/Consumable_Grenade"));
-            GameObject throwsmoke = Instantiate(Resources.Load<GameObject>("Prefabs/Resources/Equipable/Consumables/Consumable_SmokeGrenade"));
-            GameObject cornseed = Instantiate(Resources.Load<GameObject>("Prefabs/Resources/Equipable/Consumables/Applyable_SeedCorn"));
+        //    GameObject throwgren = Instantiate(Resources.Load<GameObject>("Prefabs/Resources/Equipable/Consumables/Consumable_Grenade"));
+        //    GameObject throwsmoke = Instantiate(Resources.Load<GameObject>("Prefabs/Resources/Equipable/Consumables/Consumable_SmokeGrenade"));
+        //    GameObject cornseed = Instantiate(Resources.Load<GameObject>("Prefabs/Resources/Equipable/Consumables/Applyable_SeedCorn"));
 
             //gun.SetActive(false);
-            gun2.SetActive(false);
-            drill.SetActive(false);
-            welder.SetActive(false);
-            throwgren.SetActive(false);
-            cornseed.SetActive(false);
+        //    gun2.SetActive(false);
+        //    drill.SetActive(false);
+        //    welder.SetActive(false);
+        //    throwgren.SetActive(false);
+        //    cornseed.SetActive(false);
 
             //Weapon_Gun wep_gun = gun.GetComponent<Weapon_Gun>();
-            Weapon_Gun wep_gun2 = gun2.GetComponent<Weapon_Gun>();
-            MiningDrill tool_drill = drill.GetComponent<MiningDrill>();
-            IMachineWelder tool_welder = welder.GetComponent<IMachineWelder>();
-            Consumable_Throwable cons_gren = throwgren.GetComponent<Consumable_Throwable>();
-            Consumable_Throwable cons_smokegren = throwsmoke.GetComponent<Consumable_Throwable>();
-            Consumable_Applyable apply_cornseed = cornseed.GetComponent<Consumable_Applyable>();
+        //    Weapon_Gun wep_gun2 = gun2.GetComponent<Weapon_Gun>();
+        //    MiningDrill tool_drill = drill.GetComponent<MiningDrill>();
+        //    IMachineWelder tool_welder = welder.GetComponent<IMachineWelder>();
+        //    Consumable_Throwable cons_gren = throwgren.GetComponent<Consumable_Throwable>();
+        //    Consumable_Throwable cons_smokegren = throwsmoke.GetComponent<Consumable_Throwable>();
+        //    Consumable_Applyable apply_cornseed = cornseed.GetComponent<Consumable_Applyable>();
 
             //ItemStack gunstack = new ItemStack("Weapon_DevWeapon", 1, typeof(Weapon_Gun));
-            ItemStack gunstack2 = new ItemStack("Weapon_Scar", 1, typeof(Weapon_Gun));
-            ItemStack drillStack = new ItemStack("Tool_Drill", 1, typeof(MiningDrill));
-            ItemStack welderStack = new ItemStack("Tool_Welder", 1 , typeof(IMachineWelder));
-            ItemStack grenStack = new ItemStack("Consumable_Grenade", 4, typeof(Consumable_Throwable));
-            ItemStack smokeStack = new ItemStack("Consumable_SmokeGrenade", 4, typeof(Consumable_Throwable));
-            ItemStack seedStack = new ItemStack("Applyable_CornSeed", 9000, typeof(Consumable_Applyable));
+        //    ItemStack gunstack2 = new ItemStack("Weapon_Scar", 1, typeof(Weapon_Gun));
+        //    ItemStack drillStack = new ItemStack("Tool_Drill", 1, typeof(MiningDrill));
+        //    ItemStack welderStack = new ItemStack("Tool_Welder", 1 , typeof(IMachineWelder));
+        //    ItemStack grenStack = new ItemStack("Consumable_Grenade", 4, typeof(Consumable_Throwable));
+        //    ItemStack smokeStack = new ItemStack("Consumable_SmokeGrenade", 4, typeof(Consumable_Throwable));
+        //    ItemStack seedStack = new ItemStack("Applyable_CornSeed", 9000, typeof(Consumable_Applyable));
 
             //gunstack.AddItem(wep_gun);
-            gunstack2.AddItem(wep_gun2);
-            drillStack.AddItem(tool_drill);
-            welderStack.AddItem(tool_welder);
-            grenStack.AddItem(cons_gren);
-            smokeStack.AddItem(cons_smokegren);
-            seedStack.AddItem(apply_cornseed);
+        //    gunstack2.AddItem(wep_gun2);
+        //    drillStack.AddItem(tool_drill);
+        //    welderStack.AddItem(tool_welder);
+        //    grenStack.AddItem(cons_gren);
+        //    smokeStack.AddItem(cons_smokegren);
+        //    seedStack.AddItem(apply_cornseed);
 
             //p_inventory.Add(gunstack);
-            p_inventory.Add(gunstack2);
-            p_inventory.Add(drillStack);
-            p_inventory.Add(welderStack);
+        //    p_inventory.Add(gunstack2);
+        //    p_inventory.Add(drillStack);
+        //    p_inventory.Add(welderStack);
             //p_inventory.Add(grenStack);
             //p_inventory.Add(smokeStack);
             //p_inventory.Add(seedStack);

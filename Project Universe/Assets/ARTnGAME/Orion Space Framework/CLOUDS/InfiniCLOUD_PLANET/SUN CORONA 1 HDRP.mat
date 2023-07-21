@@ -12,10 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da692e001514ec24dbc4cca1949ff7e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 11
+  version: 13
+  hdPluginSubTargetMaterialVersions:
+    m_Keys: []
+    m_Values: 
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -23,7 +26,12 @@ Material:
   m_Name: SUN CORONA 1 HDRP
   m_Shader: {fileID: -6465566751694194690, guid: c3a61f64d7d331841869d2f76d090226,
     type: 3}
-  m_ShaderKeywords: _ENABLE_FOG_ON_TRANSPARENT _SURFACE_TYPE_TRANSPARENT
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _ENABLE_FOG_ON_TRANSPARENT
+  - _SURFACE_TYPE_TRANSPARENT
+  m_InvalidKeywords: []
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -36,6 +44,7 @@ Material:
   - TransparentDepthPostpass
   - TransparentBackface
   - MOTIONVECTORS
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -91,6 +100,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _Absorption: 50
     - _AbsorptionLight: 50
@@ -107,6 +117,7 @@ Material:
     - _CameraFarFadeDistance: 2
     - _CameraNearFadeDistance: 1
     - _ColorMode: 0
+    - _ConservativeDepthOffsetEnable: 0
     - _Cull: 2
     - _CullMode: 2
     - _CullModeForward: 2
@@ -118,6 +129,7 @@ Material:
     - _DistortionStrength: 1
     - _DistortionStrengthScaled: 0.1
     - _DoubleSidedEnable: 0
+    - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 2
     - _DstBlend: 10
     - _EmissionEnabled: 1
@@ -151,15 +163,15 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _StencilRef: 0
-    - _StencilRefDepth: 0
+    - _StencilRefDepth: 1
     - _StencilRefDistortionVec: 4
     - _StencilRefGBuffer: 2
-    - _StencilRefMV: 32
+    - _StencilRefMV: 33
     - _StencilWriteMask: 6
-    - _StencilWriteMaskDepth: 8
+    - _StencilWriteMaskDepth: 9
     - _StencilWriteMaskDistortionVec: 4
     - _StencilWriteMaskGBuffer: 14
-    - _StencilWriteMaskMV: 40
+    - _StencilWriteMaskMV: 43
     - _SurfaceType: 1
     - _TransparentBackfaceEnable: 0
     - _TransparentCullMode: 2
