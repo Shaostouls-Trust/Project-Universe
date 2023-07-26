@@ -1,0 +1,100 @@
+ManifestFileVersion: 0
+CRC: 1596199104
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 2a5d6755cab501a82aa81c6fae31178f
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: c8a18592a16d07e06ba259b6a02586ec
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 0c4834e6077abe64e968f9f87c9ac70a, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: f0188188c253e0c4bb9b46e19fa7312e, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: ac718b8ce852d1445b8fbe5c323134ac, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: d6ce19a51999011448644fc01e9cec03, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: UMA_Core
+  ClassName: UMA.CharacterSystem.WardrobeRecipeThumb
+- AssemblyName: UMA_Core
+  ClassName: UMA.DNAConverterField
+- AssemblyName: UMA_Core
+  ClassName: UMA.SubMeshTriangles
+- AssemblyName: UMA_Core
+  ClassName: UMA.UMABoneWeight
+- AssemblyName: UMA_Core
+  ClassName: UMA.UMADataEvent
+- AssemblyName: UMA_Core
+  ClassName: UMA.UMADataSlotMaterialRectEvent
+- AssemblyName: UMA_Core
+  ClassName: UMA.UMAMaterial/MaterialChannel
+- AssemblyName: UMA_Core
+  ClassName: UMA.UMAMeshData
+- AssemblyName: UMA_Core
+  ClassName: UMA.UMAPredefinedDNA
+- AssemblyName: UMA_Core
+  ClassName: UMA.UMATransform
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.BoneWeight1
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Events.PersistentCallGroup
+Assets:
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Textures/TorsoArmorMetal_Albedo.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Textures/ShoulderPad_Normal.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Overlays/ChallengerTorsoArmor.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Textures/Gloves_Albedo.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Recipes/Thumbs/MaleChallengerShouderPads.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Textures/ShoulderPadMetal_Albedo.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Textures/TorsoArmorLeather_Albedo.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Textures/ChallengerBoot_Normal.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Overlays/ChallengerGlovesMetal.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Textures/ShoulderPadLeather_Albedo.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Textures/TorsoArmor_Albedo.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Textures/TorsoArmor_Normal.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Textures/GlovesLeather_Albedo.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Overlays/ChallengerShoulderPadsMetal.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Textures/ShoulderPad_Albedo.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Textures/ChallengerBootLeather_Albedo.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Textures/TorsoArmor_Roughness.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Overlays/ChallengerBoots.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Textures/GlovesMetal_Albedo.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Overlays/ChallengerBootsLeather.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Overlays/ChallengerShoulderPadsLeather.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Recipes/MaleChallengerTorso.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Recipes/MaleChallengerShouderPads.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Recipes/Thumbs/MaleChallengerTorso.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Slots/MaleChallengerBoots_Slot.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Slots/MaleChallengerShouderPads_Slot.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Overlays/ChallengerBootsMetal.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Overlays/ChallengerShoulderPads.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Recipes/MaleChallengerBoots.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Textures/ShoulderPad_Roughness.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Overlays/ChallengerTorsoArmorMetal.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Recipes/MaleChallengerGloves.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Overlays/ChallengerTorsoArmorLeather.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Overlays/ChallengerGlovesLeather.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Slots/MaleChallengerGloves_Slot.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Textures/Gloves_Normal.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Recipes/Thumbs/MaleChallengerBoots.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Textures/ChallengerBoot_Roughness.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Textures/ChallengerBoot_Albedo.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Slots/MaleChallengerTorsoArmor_Slot.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Textures/Gloves_Roughness.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Recipes/Thumbs/MaleChallengerGloves.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Textures/ChallengerBootMetal_Albedo.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/UnityChallengerArmorSet/Overlays/ChallengerGloves.asset
+Dependencies: []

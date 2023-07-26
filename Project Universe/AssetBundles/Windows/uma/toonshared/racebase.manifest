@@ -1,0 +1,200 @@
+ManifestFileVersion: 0
+CRC: 4250080705
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 48c1e49ec4d10e5cb78c187d694f90d5
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 58868d04526eeb1124fb6a36a73f7954
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 9f9558e6e7404a242920748f24487bfa, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 28add7ad4625f8748a81d045544985b2, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 225228a85d6ce40b8a39f95282f42f5d, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 0bb2689319b4d5a418829cf43a059e3a, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 56c6edb17218abd469257d07a2bc5559, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 0c4834e6077abe64e968f9f87c9ac70a, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2323fdffbbd0f51409581a5ae1bab046, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: ac718b8ce852d1445b8fbe5c323134ac, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: d6ce19a51999011448644fc01e9cec03, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 01b68d44e3ab744b98027a983d66b345, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: UMA_Core
+  ClassName: UMA.BaseCharacterModifier
+- AssemblyName: UMA_Core
+  ClassName: UMA.CharacterSystem.SkeletonModifier
+- AssemblyName: UMA_Core
+  ClassName: UMA.CharacterSystem.SkeletonModifier/spVal
+- AssemblyName: UMA_Core
+  ClassName: UMA.CharacterSystem.SkeletonModifier/spVal/spValValue
+- AssemblyName: UMA_Core
+  ClassName: UMA.CharacterSystem.SkeletonModifier/spVal/spValValue/spValModifier
+- AssemblyName: UMA_Core
+  ClassName: UMA.DNAConverterField
+- AssemblyName: UMA_Core
+  ClassName: UMA.DNAEvaluationGraph
+- AssemblyName: UMA_Core
+  ClassName: UMA.DNAEvaluator
+- AssemblyName: UMA_Core
+  ClassName: UMA.DNAEvaluatorList
+- AssemblyName: UMA_Core
+  ClassName: UMA.DynamicDNAPlugin/MasterWeight
+- AssemblyName: UMA_Core
+  ClassName: UMA.PoseTools.UMABonePose/PoseBone
+- AssemblyName: UMA_Core
+  ClassName: UMA.PoseTools.UMAExpressionSet/PosePair
+- AssemblyName: UMA_Core
+  ClassName: UMA.SubMeshTriangles
+- AssemblyName: UMA_Core
+  ClassName: UMA.UMABoneWeight
+- AssemblyName: UMA_Core
+  ClassName: UMA.UMADataEvent
+- AssemblyName: UMA_Core
+  ClassName: UMA.UMADataSlotMaterialRectEvent
+- AssemblyName: UMA_Core
+  ClassName: UMA.UMADnaBase
+- AssemblyName: UMA_Core
+  ClassName: UMA.UMAMaterial/MaterialChannel
+- AssemblyName: UMA_Core
+  ClassName: UMA.UMAMaterial/ShaderParms
+- AssemblyName: UMA_Core
+  ClassName: UMA.UMAMeshData
+- AssemblyName: UMA_Core
+  ClassName: UMA.UMATransform
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.BoneWeight1
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Events.PersistentCallGroup
+Assets:
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/MouthFrown-R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/EyesClose-R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/HeadTiltRight.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/TPoses/UMA_Toon_1.0_UNIFIED_TPose.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/EyesOut-L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/BrowsOuterUp-L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/EyesIn-L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/DNA/ToonSerializedDNAConverterController.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/TongueWide.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/EyesUp-R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/UMAMaterials/STARCASTER_Edge.mat
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/TongueRight.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/UMAMaterials/UMAToon_Mat_Fade_Diffuse.mat
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/NeckUp.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/EyesOut-R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/BaseRecipe/BaseTextures/UMA_Toon_Body_metallic.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/UMAMaterials/UMAToon_Mat_Fade_Diffuse_Normal.mat
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/BaseRecipe/BaseTextures/UMA_Toon_Eye_diffuse.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/BrowIn.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/EyesUp-L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/MouthWide-L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/BrowInnerDown.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/JawForward.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/UpperLipDown-L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/EyesClose-L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/UpperLipDown-R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/MouthUp.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/UMAMaterials/STARCASTER_Main.mat
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/NeckLeft.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/NoseSneer.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/UMAMaterials/UMAToon_Mat_Diffuse_Normal_Metallic_MaskMap.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/LowerLipDown-R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/HeadRight.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/JawRight.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/JawOpen.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/EyesOpen-R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/BaseRecipe/BaseTextures/UMA_Toon_InnerMouth_normal.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/NeckDown.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/BaseRecipe/BaseOverlays/UMA_Toon_Eyes.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/BaseRecipe/BaseTextures/UMA_Toon_Eye_Normal.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/UpperLipUp-R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/JawClose.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/MouthLeft.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/HeadUp.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/UMAMaterials/UMAToon_Mat_Diffuse_Normal_MetallicTest_MaskMap.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/UMAMaterials/UMAToon_Mat_Diffuse_Normal_Metallic.mat
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/BaseRecipe/BaseSlots/UMA_Toon_EYES_Slot.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/NeckTiltLeft.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/TongueUp.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/TongueNarrow.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/EyesSquint-R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/UMAMaterials/STARCASTER_Main_MaskMap.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/UMAMaterials/UMAToon_Mat_Diffuse_Normal_MetallicTest.mat
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/BrowsOuterUp-R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/BaseRecipe/BaseSlots/UMA_Toon_INNERMOUTH_Slot.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/BaseRecipe/BaseTextures/blank_diffuse
+  1.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/BaseRecipe/BaseTextures/UMA_Toon_InnerMouth_diffuse.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/NeckTiltRight.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/EyesOpen-L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/UMAMaterials/STARCASTER_Main.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/UMAMaterials/STARCASTER_Edge_MaskMap.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/Toon
+  Expression Set.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/TongueOut.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/HeadDown.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/UMAMaterials/UMAToon_Mat_Fade_Diffuse_Normal_Metallic.mat
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/UMAMaterials/UMAToon_Fade_Diffuse.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/BrowsOuterDown-L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/MouthPucker.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/LowerLipDown-L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/BaseRecipe/BaseSlots/UMA_Toon_FEET_Slot.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/BaseRecipe/BaseTextures/blank_normal
+  1.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/BrowInnerUp.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/HeadLeft.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/UMAMaterials/STARCASTER_Edge.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/JawLeft.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/MouthDown.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/MouthRight.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/CheeksPuff-R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/TongueLeft.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/UMAMaterials/UMAToon_Mat_Fade_Diffuse_Normal_Metallic_MaskMap.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/DNA/ToonDynamicDNAAsset.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/CheeksPuff-L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/MouthNarrow.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/UpperLipUp-L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/EyesSquint-L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/MouthWide-R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/UMAMaterials/UMAToon_Fade_Diffuse_Normal_Metalic.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/BaseRecipe/BaseSlots/UMA_Toon_HANDS_Slot.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/HeadTiltLeft.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/UMAMaterials/UMAToon_Fade_Diffuse_Normal.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/DNA/LegacyDNA/ToonSerializedDNAConverterBehaviour
+  Legacy.prefab
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/MouthFrown-L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/NeckRight.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/BaseRecipe/BaseTextures/UMA_Toon_Body_Mask_diffuse.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/LowerLipUp-R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/EyesIn-R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/UMAMaterials/UMAToon_Diffuse_Normal_Metalic.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/LowerLipUp-L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/BaseRecipe/BaseTextures/UMA_Toon_Body_diffuse.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/EyesDown-R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/EyesDown-L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/BaseRecipe/BaseOverlays/UMA_Toon_InnerMouth.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/BrowsOuterDown-R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonShared/RaceBase/Expressions/ToonPoses/TongueDown.asset
+Dependencies: []

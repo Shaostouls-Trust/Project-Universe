@@ -107,7 +107,6 @@
     <Compile Include="Assets\Archimatix\Scripts\Editor\AXGrapher.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Editor\NodeGraph\AXNodeGraph_NodePalette.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Editor\Test\ColourTestEditor.cs" />
-    <Compile Include="Assets\SplineMesh\Scripts\Editor\SplineExtrusionEditor.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\SPECIAL FX\unity-lens-flare-1\Standard Assets\Effects\Common\Editor\FieldFinder.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Editor\NodeGraph\NodeMenuItemGenerator.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Editor\GeneratorHandlers\RepeaterHandlers.cs" />
@@ -119,7 +118,6 @@
     <Compile Include="Assets\Scenes\Koro\LightningBolt\Editor\LightningBoltEditor.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Editor\AXModelInspector.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Celestial Body\Scripts\3rd party\Bloom\Editor\BloomEditor.cs" />
-    <Compile Include="Assets\JMO Assets\Cartoon FX Easy Editor\Editor\CFXEasyEditor.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Editor\GeneratorHandlers\FreeCurve3DHandler.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\SPECIAL FX\unity-lens-flare-1\Standard Assets\Effects\AntiAliasing\Editor\AntiAliasingEditor.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Editor\AXModelInspectorGUI\InspectorParameterGUI.cs" />
@@ -153,7 +151,6 @@
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Octahedron Sphere\Editor\OctahedronSphereWizard.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Celestial Body\Scripts\Editor\TextureCombinerEditor.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Editor\GeneratorHandlers\PrimitiveHandlers.cs" />
-    <Compile Include="Assets\SplineMesh\Scripts\Editor\SplineEditor.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\Editor\SceneCamHelper.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Celestial Body\Scripts\3rd party\Bloom\Editor\BloomGraphDrawer.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Editor\AXEditorUtilities.cs" />
@@ -988,6 +985,9 @@
     <Reference Include="Unity.Multiplayer.Tools.Initialization">
       <HintPath>Library\ScriptAssemblies\Unity.Multiplayer.Tools.Initialization.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Addressables.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Addressables.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Postprocessing.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Postprocessing.Editor.dll</HintPath>
     </Reference>
@@ -1012,6 +1012,9 @@
     <Reference Include="Unity.Multiplayer.Tools.NetworkSimulator.Runtime">
       <HintPath>Library\ScriptAssemblies\Unity.Multiplayer.Tools.NetworkSimulator.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Addressables">
+      <HintPath>Library\ScriptAssemblies\Unity.Addressables.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Multiplayer.Tools.NetStatsMonitor.Component">
       <HintPath>Library\ScriptAssemblies\Unity.Multiplayer.Tools.NetStatsMonitor.Component.dll</HintPath>
     </Reference>
@@ -1029,6 +1032,9 @@
     </Reference>
     <Reference Include="Unity.AI.Navigation">
       <HintPath>Library\ScriptAssemblies\Unity.AI.Navigation.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ResourceManager">
+      <HintPath>Library\ScriptAssemblies\Unity.ResourceManager.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Multiplayer.Tools.NetworkSolutionInterface">
       <HintPath>Library\ScriptAssemblies\Unity.Multiplayer.Tools.NetworkSolutionInterface.dll</HintPath>

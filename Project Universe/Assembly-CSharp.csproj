@@ -117,10 +117,8 @@
     <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\PhysicAddTorqueAtStart.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Celestial Body\Scripts\SphereMesh.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\AURORA_NEBULA_BLACKHOLE\UnityRayMarchingFramework\Scripts\MergeRayMarch.cs" />
-    <Compile Include="Assets\SplineMesh\Scripts\Utils\UOUtility.cs" />
     <Compile Include="Assets\AmplifyOcclusion\Samples\Blacksmith\Scripts\Controls.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\Debug Viewer\Libaries\Triangle\Meshing\Data\BadTriangle.cs" />
-    <Compile Include="Assets\SplineMesh\Scripts\MeshProcessing\SourceMesh.cs" />
     <Compile Include="Assets\JMO Assets\WarFX\Demo\Assets\WFX_Demo_RandomDir.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\Nuclear\SteamGenerator.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Triggers\Physics Triggers\3D\ImpactSlideAndRollTrigger3D.cs" />
@@ -168,8 +166,8 @@
     <Compile Include="Assets\Archimatix\Scripts\Core\plugins\AXParser.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Triggers\ImpactTriggerBase.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Objects\ImpactTerrain.cs" />
-    <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\TriangulationContext.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\plugins\SoftCircuits\SCTextParser.cs" />
+    <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\TriangulationContext.cs" />
     <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\RoverAudio.cs" />
     <Compile Include="Assets\Character Movement Fundamentals\Source\Scripts\Core scripts\Mover.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\Orientation.cs" />
@@ -216,8 +214,8 @@
     <Compile Include="Assets\Shared\Scripts\SimpleCharacterMotor.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Runtime\AXRuntimeControllerBase.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Displace.cs" />
-    <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\CustomPostProcessing.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\GPU-Planetary-Rendering\Scripts\PlanetCreator.cs" />
+    <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\CustomPostProcessing.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\UI\MiningDroneUIController.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Interactions\Particles\ImpactParticlePool.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Interactions\Particles\ImpactParticleInteraction.cs" />
@@ -253,7 +251,6 @@
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\Spaceship Generator\Scripts\projectileThrowerSM.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Ship\VolumeConstructionSection.cs" />
     <Compile Include="Assets\Scripts\TileSystem\MaterialContainer.cs" />
-    <Compile Include="Assets\SplineMesh\Scripts\Example\ExampleContortAlong.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Procedural-planet-generation_HEX\Scripts\PlanetData.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Atmospherics\IGas.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\AXTexCoords.cs" />
@@ -267,7 +264,6 @@
     <Compile Include="Assets\Scripts\ObjectsInScene.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Interactions\Audio\AudioInteractionResult.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\GPU-Planetary-Rendering\Scripts\PlanetChunkObject.cs" />
-    <Compile Include="Assets\SplineMesh\Scripts\MeshProcessing\SplineMeshTiling.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Production\IngotLibrary.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Production\IComponentLibrary.cs" />
     <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\RoverControler_A.cs" />
@@ -330,16 +326,16 @@
     <Compile Include="Assets\Scripts\Koro\RefilHealth.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\Debug Viewer\Libaries\Triangle\Meshing\Algorithm\Dwyer.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters2D\Instance2D.cs" />
-    <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Utility\FixedArray3.cs" />
     <Compile Include="Assets\Scripts\Koro\grenadelauncher.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Organizer\Grouper.cs" />
+    <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Utility\FixedArray3.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\PowerOutputController.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\AURORA_NEBULA_BLACKHOLE\AuroraRenderer\Earth\EarthSpinScript.cs" />
     <Compile Include="Assets\Character Movement Fundamentals\Source\Scripts\Controllers\AdvancedWalkerController.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\PlanetFX\Shared\Rotater.cs" />
     <Compile Include="Assets\Scripts\HaloReach252\FarmingSystem\Crop.cs" />
-    <Compile Include="Assets\Scripts\CMDRAsh\Serialization\Surrogates\ConsumableResources_Surrogate.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\UI\FleetBoyItemButton.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Serialization\Surrogates\ConsumableResources_Surrogate.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Utilities.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\Debug Viewer\Libaries\Triangle\Smoothing\SimpleSmoother.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Fluid Planets\PlanetBase(GPU)\PlanetScene.cs" />
@@ -396,7 +392,6 @@
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Max.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Ship\RenderStateManager.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Audio\SoundLibA.cs" />
-    <Compile Include="Assets\SplineMesh\Scripts\Utils\MeshUtility.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\Debug Viewer\Libaries\Triangle\Meshing\ITriangulator.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\SPECIAL FX\unity-lens-flare-1\Lens Flare\GhostNebula.cs" />
     <Compile Include="Assets\AmplifyOcclusion\Plugins\AmplifyOcclusionEffect.cs" />
@@ -412,9 +407,8 @@
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Geometry_2D\AXSpline3D.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Materials\ImpactMaterialInteractionSet.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Utility\DestroyMessenger.cs" />
-    <Compile Include="Assets\SplineMesh\Scripts\Bezier\Spline.cs" />
-    <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Celestial Body\Scripts\Normalizer.cs" />
     <Compile Include="Assets\Scripts\ApplicationManager.cs" />
+    <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Celestial Body\Scripts\Normalizer.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\UI\LockOnUI.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\Util\PolygonGenerator.cs" />
     <Compile Include="Assets\Scripts\HaloReach252\ObjectManager.cs" />
@@ -433,13 +427,13 @@
     <Compile Include="Assets\Character Movement Fundamentals\Source\Scripts\Environment\GravityTunnel.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Primitives\Primitives.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Pather.cs" />
-    <Compile Include="Assets\Impact Interaction System\Scripts\Utility\Object Pool\ObjectPoolFallbackMode.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\Debug Viewer\Libaries\Triangle\Meshing\Algorithm\SweepLine.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Player\PoVRotationTracker.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\UI\Atmo_Environ\RadiationUIController.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters2D\LinearRepeater2D.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\FloorMeshCombiner.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\Debug Viewer\Libaries\Triangle\Voronoi\BoundedVoronoi.cs" />
+    <Compile Include="Assets\Impact Interaction System\Scripts\Utility\Object Pool\ObjectPoolFallbackMode.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Interactions\ImpactInteractionUtilities.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\Debug Viewer\Libaries\Triangle\Logging\ILogItem.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Interactions\HatchButton.cs" />
@@ -460,7 +454,6 @@
     <Compile Include="Assets\Archimatix\Scenes Runtime\RuntimeCube\CubeRuntimeController.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Abs.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Celestial Body\Scripts\CameraUtility.cs" />
-    <Compile Include="Assets\SplineMesh\Scripts\Example\ExampleTrack.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Data\AlignmentAxis.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\Galaxy Generator\Examples\Galaxy Map\Scripts\StarSystemManager.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Tag Library\ImpactTagLibrary.cs" />
@@ -502,7 +495,6 @@
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Generator\Checker.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\ProceduralMapShowcase\_app\Scripts\MapGeneratorA.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Celestial Body\Scripts\NoiseSettings\CraterSettings.cs" />
-    <Compile Include="Assets\SplineMesh\Scripts\Bezier\CurveSample.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\Galaxy Generator\Examples\Galaxy Map\Scripts\StarSystem.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\CamOrbiter.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\Delaunay\Sweep\DTSweepEdgeEvent.cs" />
@@ -579,19 +571,17 @@
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Celestial Body\Scripts\NoiseSettings\RidgeNoiseSettings.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Triggers\ImpactRaycastTrigger.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\PlanetFX\Nanobots\Selection.cs" />
-    <Compile Include="Assets\Scripts\CMDRAsh\Atmospherics\VolumeAtmosphereJobs.cs" />
     <Compile Include="Assets\Character Movement Fundamentals\Source\Scripts\Animation &amp; Audio\TurnTowardControllerVelocity.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\Galaxy Generator\Particles.cs" />
     <Compile Include="Assets\Character Movement Fundamentals\Source\Scripts\Controllers\ClickToMoveController.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Atmospherics\VolumeAtmosphereJobs.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\Spaceship Generator\Generator\GenMeshTriangleFace.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters\ChainRepeater.cs" />
-    <Compile Include="Assets\SplineMesh\Scripts\Utils\CameraUtility.cs" />
     <Compile Include="Assets\Scripts\Koro\target.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Materials\ImpactMaterialBase.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\DebugHelper.cs" />
     <Compile Include="Assets\Scripts\KhorneSyrup\Player Controller\PlayerGuiController.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Meshers\WinWall.cs" />
-    <Compile Include="Assets\SplineMesh\Scripts\MeshProcessing\MeshBender.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\Debug Viewer\Libaries\Triangle\Voronoi\VoronoiBase.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\Debug Viewer\Libaries\Triangle\Topology\DCEL\HalfEdge.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\TriangulationPoint.cs" />
@@ -621,9 +611,9 @@
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\ProceduralMapShowcase\_app\Scripts\ScreenshotTaker.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\PlanetFX\Shared\CameraRotator.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\ICable.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Audio\AudioManager.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Inventory\ItemStack.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Repeaters\InstanceRepeater.cs" />
-    <Compile Include="Assets\Scripts\CMDRAsh\Audio\AudioManager.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\PlanetFX\Planet\PlanetOrbiter.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\Galaxy Generator\StarFinder.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Generator\Perlin.cs" />
@@ -645,7 +635,6 @@
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\Galaxy Generator\GalaxyPrefab.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\Debug Viewer\Libaries\Triangle\IO\IFileFormat.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\SubsplineIndices.cs" />
-    <Compile Include="Assets\SplineMesh\Scripts\Example\ExampleFollowSpline.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\Debug Viewer\Libaries\Triangle\Logging\LogItem.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Ship.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\PlanSweeper.cs" />
@@ -667,7 +656,6 @@
     <Compile Include="Assets\JMO Assets\WarFX\Scripts\CFX_LightIntensityFade.cs" />
     <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\Turn_Move.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\AnimationControllers\CrawlDoorAnimator.cs" />
-    <Compile Include="Assets\SplineMesh\Scripts\Bezier\SplineSmoother.cs" />
     <Compile Include="Assets\Character Movement Fundamentals\Source\Scripts\Showcase\DemoMenu.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\ShaderBasedAtmosphericScatter\toggleAtmospheresORION.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\AURORA_NEBULA_BLACKHOLE\NebulaTutorial\setSkyboxSM.cs" />
@@ -677,7 +665,6 @@
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\TriangulationUtil.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Utility\FixedBitArray3.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Triggers\Physics Triggers\ImpactVelocityCollisionTriggerBase.cs" />
-    <Compile Include="Assets\SplineMesh\Scripts\Bezier\CubicBezierCurve.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Data\Interfaces\IInteractionData.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Geometry_3D\AXHalfRoundShellGenerator.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Celestial Body\Scripts\Texture Gen\TextureViewer.cs" />
@@ -702,16 +689,13 @@
     <Compile Include="Assets\Scripts\CMDRAsh\AudioManager.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Generator\RiggedMultifractal.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Data\ImpactTagMask.cs" />
-    <Compile Include="Assets\SplineMesh\Scripts\MeshProcessing\MeshVertex.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Player\SupplementalController.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\SPECIAL FX\unity-lens-flare-1\Standard Assets\Effects\AntiAliasing\SMAA\SMAA.cs" />
     <Compile Include="Assets\Scripts\ECS\Components\Component_PrefabEntity.cs" />
-    <Compile Include="Assets\SplineMesh\Scripts\Bezier\SplineNode.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\SubstationStateButtonController.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\PlanetFX\EField\Charge.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Test\CamTest.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\UI\ShipVolumeInformationDisplayUI.cs" />
-    <Compile Include="Assets\ScifiOfficeLite\Scripts\DemoDoor.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\Debug Viewer\Libaries\Triangle\Configuration.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Interactions\Particles\ParticleInteractionResult.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\CustomNodeTemplate.cs" />
@@ -740,8 +724,8 @@
     <Compile Include="Assets\Archimatix\Scripts\Core\DataHolders\AXGenratorProduct.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\MINI GAMES\Space Shooter 2.5D\Scripts\Mover.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\Debug Viewer\Libaries\Triangle\Geometry\Polygon.cs" />
-    <Compile Include="Assets\ARTnGAME\Common Tools\ObjectExporter\UnityFBXExporter\FBXUnityMeshGetter.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Utility\Extensions.cs" />
+    <Compile Include="Assets\ARTnGAME\Common Tools\ObjectExporter\UnityFBXExporter\FBXUnityMeshGetter.cs" />
     <Compile Include="Assets\AmplifyOcclusion\Plugins\AmplifyOcclusionCommon.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\AURORA_NEBULA_BLACKHOLE\UnityRayMarchingFramework\Scripts\ThirdPersonUserControl.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Production\Raw\Consumable_Ore.cs" />
@@ -798,7 +782,6 @@
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\Debug Viewer\Libaries\Triangulator.cs" />
     <Compile Include="Assets\Scripts\Koro\MainGridPlanting.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Production\MachineLibrary.cs" />
-    <Compile Include="Assets\SplineMesh\Scripts\MeshProcessing\ExtrusionSegment.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\Debug Viewer\Libaries\Triangle\Voronoi\Legacy\VoronoiRegion.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\PlanetFX\Nanobots\CellController.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\Debug Viewer\Libaries\Triangle\Smoothing\VoronoiFactory.cs" />
@@ -844,8 +827,8 @@
     <Compile Include="Assets\Scripts\CMDRAsh\Transfer\CargoLoader.cs" />
     <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\RoverWheelDrive.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Inventory\IEquipable.cs" />
-    <Compile Include="Assets\Scripts\TileSystem\Materials.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\GameSetUp.cs" />
+    <Compile Include="Assets\Scripts\TileSystem\Materials.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Generator\Billow.cs" />
     <Compile Include="Assets\JMO Assets\WarFX\Demo\Assets\CFX_Demo_Translate.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\LibNoise.Unity\Operator\Scale.cs" />
@@ -902,8 +885,8 @@
     <Compile Include="Assets\Scripts\CMDRAsh\Ship\VolumeConstructionController.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\CelestialBody.cs" />
     <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\_Interactions_Scripts\Container_Open_Close.cs" />
-    <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\Debug Viewer\Libaries\Triangle\Meshing\Converter.cs" />
     <Compile Include="Assets\Scripts\Koro\ChildPlant2.cs" />
+    <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\Debug Viewer\Libaries\Triangle\Meshing\Converter.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Triggers\Physics Triggers\2D\ImpactSpeculativeCollisionTrigger2D.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\AURORA_NEBULA_BLACKHOLE\AuroraRenderer\DemoTools\OrbitalCamera.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Fluids\IFluid.cs" />
@@ -918,7 +901,6 @@
     <Compile Include="Assets\Impact Interaction System\Scripts\Data\ImpactRigidbodyWrapper.cs" />
     <Compile Include="Assets\Scripts\KhorneSyrup\Player Controller\PlayerController.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\AXParameter.cs" />
-    <Compile Include="Assets\SplineMesh\Scripts\MeshProcessing\SplineExtrusion.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Triangulation\Delaunay\Sweep\DTSweepBasin.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Fluid Planets\PlanetBase(GPU)\FluidSimulation.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Serialization\Surrogates\ColliderSurrogate.cs" />
@@ -949,9 +931,8 @@
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\SPECIAL FX\Kvant Spray Asteroids\DeferredAO\DeferredAO.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Deformers\DomicalDeformer.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Meshers\BuildingExtruder.cs" />
-    <Compile Include="Assets\SplineMesh\Scripts\Example\ExampleTentacle.cs" />
-    <Compile Include="Assets\Impact Interaction System\Demo\Scripts\DemoCharacterController.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\SPECIAL FX\URPLensFlare\MoonFlowLensFlare\MFLensFlare.cs" />
+    <Compile Include="Assets\Impact Interaction System\Demo\Scripts\DemoCharacterController.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Atmospherics\IOxygenGenerator.cs" />
     <Compile Include="Assets\Archimatix\Scripts\AXGeometryTools\Geometry_3D\AXPolygonGenerator.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Test\RaySphereTest.cs" />
@@ -995,8 +976,8 @@
     <Compile Include="Assets\Shared\Scripts\AdjustTimeScale.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\Debug Viewer\Libaries\Triangle\Voronoi\Legacy\IVoronoi.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\Nuclear\NuclearCore.cs" />
-    <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Deformers\NoiseDeformer.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\Debug Viewer\Libaries\Triangle\Enums.cs" />
+    <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Deformers\NoiseDeformer.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\UI\ProductionUIController.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\MINI GAMES\Space Shooter 2.5D\Scripts\DestroyByBoundary.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\Debug Viewer\Libaries\Triangle\Meshing\GenericMesher.cs" />
@@ -1071,7 +1052,6 @@
     <Compile Include="Assets\Scripts\CMDRAsh\Production\Machines\Mach_DevFactory.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\PlanetFX\Nanobots\CellCamController.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Shapers\ImageShaper.cs" />
-    <Compile Include="Assets\SplineMesh\Scripts\Example\RopeBuilder.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Shapers\ShapeConnector.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\Debug Viewer\Libaries\Triangle\IO\IPolygonFormat.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Farming\Consumable_Produce.cs" />
@@ -1101,7 +1081,6 @@
     <Compile Include="Assets\Impact Interaction System\Scripts\Tag Library\ImpactTagLibraryConstants.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\poly2tri-cs-master\Polygon\PolygonSet.cs" />
     <Compile Include="Assets\Scripts\TileSystem\TileMetadata.cs" />
-    <Compile Include="Assets\SplineMesh\Scripts\Example\ExampleSower.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\Debug Viewer\Libaries\Triangle\Meshing\IConstraintMesher.cs" />
     <Compile Include="Assets\JMO Assets\WarFX\Demo\Assets\WFX_Demo.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Utility\Object Pool\ObjectPool.cs" />
@@ -1129,7 +1108,6 @@
     <Compile Include="Assets\Scripts\CMDRAsh\ExplosionsAndDamage\ScriptedExplosion.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Incorporated3rdPartyLibraries\SimpleJSON\SimpleJSON.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Serialization\Surrogates\Vector3_Surrogate.cs" />
-    <Compile Include="Assets\ScifiOfficeLite\Scripts\DemoFirstPersonController.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\PassTriggerTo.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\LightToggleScript.cs" />
     <Compile Include="Assets\Scripts\KhorneSyrup\Player Controller\Interaction\Exploding_Prop.cs" />
@@ -1144,7 +1122,6 @@
     <Compile Include="Assets\Scripts\CMDRAsh\Production\IComponentDefinition.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Inventory\InventoryUI.cs" />
     <Compile Include="Assets\Scripts\Koro\boom.cs" />
-    <Compile Include="Assets\SplineMesh\Scripts\Example\ExampleGrowingRoot.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Data\VelocityData.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\Debug Viewer\Libaries\Triangle\Meshing\Iterators\RegionIterator.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Triggers\Physics Triggers\2D\ImpactCollisionTriggerWithCooldown2D.cs" />
@@ -1264,7 +1241,6 @@
     <None Include="Assets\ARTnGAME\Orion Space Framework\AURORA_NEBULA_BLACKHOLE\UnityRayMarchingFramework\Shaders\HighlandLake.shader" />
     <None Include="Assets\Tiles.xml" />
     <None Include="Assets\ARTnGAME\Orion Space Framework\SPECIAL FX\unity-lens-flare-1\Standard Assets\Effects\AntiAliasing\SMAA\Resources\SMAA.shader" />
-    <None Include="Assets\JMO Assets\Cartoon FX Easy Editor\CartoonFX Easy Editor Readme.txt" />
     <None Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\GPU-Planetary-Rendering\Shaders\PlanetSurface.shader" />
     <None Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Shaders\Stipple.shader" />
     <None Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Earth and Moon Keijiro\Moon\Shaders\Base MOON HDRP.shader" />
@@ -1305,7 +1281,6 @@
     <None Include="Assets\ARTnGAME\Orion Space Framework\SPECIAL FX\unity-lens-flare-1\Standard Assets\Effects\TonemappingColorGrading\Resources\TonemappingColorGrading.shader" />
     <None Include="Assets\ARTnGAME\Orion Space Framework\SPECIAL FX\URPLensFlare\MoonFlowLensFlare\MFLensflare HDRP.shader" />
     <None Include="Assets\ARTnGAME\Orion Space Framework\SPECIAL FX\unity-lens-flare-1\Lens Flare\Shaders\SubMul.shader" />
-    <None Include="Assets\Plastic External Assets\_Creepy_Cat\_3D Scifi Kit Vol 3\Prefabs\Props\_Update 1.06-Station Ptolemy\_Planet_01\Materials\Planet_Base.shader" />
     <None Include="Assets\ARTnGAME\Orion Space Framework\SPECIAL FX\Pixel-Burn-Effect\Shaders\PixelBurnEffect.shader" />
     <None Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Celestial Body\Scripts\Shaders\Compute\Other\SteepnessCompute.compute" />
     <None Include="Assets\ARTnGAME\Orion Space Framework\AURORA_NEBULA_BLACKHOLE\AuroraRenderer\StarryBackdrop\gsfc_star_backdrop.shader" />
@@ -1529,10 +1504,8 @@
     <None Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Celestial Body\Scripts\Shaders\Includes\Craters.cginc" />
     <None Include="Assets\ARTnGAME\Orion Space Framework\AURORA_NEBULA_BLACKHOLE\AuroraRenderer\Aurora\SimpleSphereRaytrace.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile.shader" />
-    <None Include="Assets\Plastic External Assets\_Creepy_Cat\_3D Scifi Kit Vol 3\Prefabs\Props\_Update 1.06-Station Ptolemy\_Planet_01\Materials\Planet_Clouds_Atmosphere.shader" />
     <None Include="Assets\ARTnGAME\Orion Space Framework\SPECIAL FX\unity-lens-flare-1\Lens Flare\Shaders\GhostFeature.shader" />
     <None Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Procedural-planet-generation_HEX\LICENSE.txt" />
-    <None Include="Assets\Plastic External Assets\_Creepy_Cat\_3D Scifi Kit Vol 3\Prefabs\Props\_Update 1.06-Station Ptolemy\_Planet_01\Licence.txt" />
     <None Include="Assets\JMO Assets\WarFX\Shaders\WFX_S AlphaBlend NoSoftParticles.shader" />
     <None Include="Assets\Resources\Shaders\Water_Basic.shader" />
     <None Include="Assets\ParticleShadersVol1\Shaders\EMParticleFunctions.cginc" />
@@ -1550,7 +1523,6 @@
     <None Include="Assets\EffectExamples\Misc Effects\Shaders\Dissolve.shader" />
     <None Include="Assets\ARTnGAME\Orion Space Framework\MINI GAMES\Space Shooter 2.5D\LICENSE.txt" />
     <None Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Celestial Body\Scripts\Shaders\Compute\Shading\MoonShading.compute" />
-    <None Include="Assets\SplineMesh\Doc.txt" />
     <None Include="Assets\ARTnGAME\Orion Space Framework\SPECIAL FX\unity-lens-flare-1\Chromatic Aberration\ChromaticAberration.shader" />
     <None Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\GPU-Planetary-Rendering\Shaders\PlanetMapGenerator.compute" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Sprite.shader" />
@@ -2300,6 +2272,9 @@
     <Reference Include="Unity.Multiplayer.Tools.Initialization">
       <HintPath>Library\ScriptAssemblies\Unity.Multiplayer.Tools.Initialization.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Addressables.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Addressables.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Postprocessing.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Postprocessing.Editor.dll</HintPath>
     </Reference>
@@ -2324,6 +2299,9 @@
     <Reference Include="Unity.Multiplayer.Tools.NetworkSimulator.Runtime">
       <HintPath>Library\ScriptAssemblies\Unity.Multiplayer.Tools.NetworkSimulator.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Addressables">
+      <HintPath>Library\ScriptAssemblies\Unity.Addressables.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Multiplayer.Tools.NetStatsMonitor.Component">
       <HintPath>Library\ScriptAssemblies\Unity.Multiplayer.Tools.NetStatsMonitor.Component.dll</HintPath>
     </Reference>
@@ -2341,6 +2319,9 @@
     </Reference>
     <Reference Include="Unity.AI.Navigation">
       <HintPath>Library\ScriptAssemblies\Unity.AI.Navigation.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ResourceManager">
+      <HintPath>Library\ScriptAssemblies\Unity.ResourceManager.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Multiplayer.Tools.NetworkSolutionInterface">
       <HintPath>Library\ScriptAssemblies\Unity.Multiplayer.Tools.NetworkSolutionInterface.dll</HintPath>

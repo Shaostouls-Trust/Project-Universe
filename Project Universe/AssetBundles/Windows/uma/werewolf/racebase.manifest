@@ -1,0 +1,319 @@
+ManifestFileVersion: 0
+CRC: 1098000919
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 4f5f21af5de3803c232be81c63f0e641
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: c21b47575c6a28ffefbca3ea4fa62301
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 9f9558e6e7404a242920748f24487bfa, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 28add7ad4625f8748a81d045544985b2, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 225228a85d6ce40b8a39f95282f42f5d, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 0bb2689319b4d5a418829cf43a059e3a, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 56c6edb17218abd469257d07a2bc5559, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 0c4834e6077abe64e968f9f87c9ac70a, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2323fdffbbd0f51409581a5ae1bab046, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 83d33591a744673429e1681df5574ac0, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: ac718b8ce852d1445b8fbe5c323134ac, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: d6ce19a51999011448644fc01e9cec03, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 01b68d44e3ab744b98027a983d66b345, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 9448878e2e40f1a4c9f8fd2b56832b13, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: UMA_Core
+  ClassName: UMA.BaseCharacterModifier
+- AssemblyName: UMA_Core
+  ClassName: UMA.CharacterSystem.SkeletonModifier
+- AssemblyName: UMA_Core
+  ClassName: UMA.CharacterSystem.SkeletonModifier/spVal
+- AssemblyName: UMA_Core
+  ClassName: UMA.CharacterSystem.SkeletonModifier/spVal/spValValue
+- AssemblyName: UMA_Core
+  ClassName: UMA.CharacterSystem.SkeletonModifier/spVal/spValValue/spValModifier
+- AssemblyName: UMA_Core
+  ClassName: UMA.DNAConverterField
+- AssemblyName: UMA_Core
+  ClassName: UMA.DNAConverterList
+- AssemblyName: UMA_Core
+  ClassName: UMA.DNAEvaluationGraph
+- AssemblyName: UMA_Core
+  ClassName: UMA.DNAEvaluator
+- AssemblyName: UMA_Core
+  ClassName: UMA.DNAEvaluatorList
+- AssemblyName: UMA_Core
+  ClassName: UMA.DynamicDNAPlugin/MasterWeight
+- AssemblyName: UMA_Core
+  ClassName: UMA.PoseTools.UMABonePose/PoseBone
+- AssemblyName: UMA_Core
+  ClassName: UMA.PoseTools.UMAExpressionSet/PosePair
+- AssemblyName: UMA_Core
+  ClassName: UMA.RaceData/CrossCompatibilityData
+- AssemblyName: UMA_Core
+  ClassName: UMA.RaceData/CrossCompatibilitySettings
+- AssemblyName: UMA_Core
+  ClassName: UMA.RaceData/CrossCompatibilitySettingsList
+- AssemblyName: UMA_Core
+  ClassName: UMA.RaceData/RaceThumbnails
+- AssemblyName: UMA_Core
+  ClassName: UMA.RaceData/RaceThumbnails/WardrobeSlotThumb
+- AssemblyName: UMA_Core
+  ClassName: UMA.SubMeshTriangles
+- AssemblyName: UMA_Core
+  ClassName: UMA.UMABoneWeight
+- AssemblyName: UMA_Core
+  ClassName: UMA.UMADataEvent
+- AssemblyName: UMA_Core
+  ClassName: UMA.UMADataSlotMaterialRectEvent
+- AssemblyName: UMA_Core
+  ClassName: UMA.UMADnaBase
+- AssemblyName: UMA_Core
+  ClassName: UMA.UMAMaterial/MaterialChannel
+- AssemblyName: UMA_Core
+  ClassName: UMA.UMAMeshData
+- AssemblyName: UMA_Core
+  ClassName: UMA.UMAPredefinedDNA
+- AssemblyName: UMA_Core
+  ClassName: UMA.UMATransform
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.BoneWeight1
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Events.PersistentCallGroup
+Assets:
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/UpperLipDown.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/TongueRight.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseRecipe/BaseRecipeSlots/UMA_Werewolf_Teeth_Slot.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/EyesUp.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/UpperLipUp.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/MouthUp.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/TPoses/WerewolfRace_Unified_TPose.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/BrowOuterUp_R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/MouthFrown_L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/NeckLeft.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseRecipe/BaseRecipeTextures/Fur-normal.jpg
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/MouthFrown.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/BrowOuterUp_L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/HeadTiltLeft.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/NeckTiltRight.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/EyeOut_R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseRecipe/BaseRecipeTextures/WerewolfInnerMouth_Normal.psd
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseRecipe/BaseRecipeTextures/WerewolfBlank_Specular.psd
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/TongueUp.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/NeckUp.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseRecipe/BaseRecipeOverlays/WerewolfClaws.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/DNA/LegacyDNA/WerewolfSerializedDNAConverterBehaviour
+  Legacy.prefab
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/MouthNarrow.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/LowerLipUp_L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/EyeOut_L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Werewolf.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/MouthPucker.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseRecipe/WerewolfBase.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Expression Set.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/EyeClose_R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/EyeIn_L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseRecipe/BaseRecipeSlots/UMA_Werewolf_Feet_Slot.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/UpperLipUp_R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseRecipe/BaseRecipeSlots/UMA_Werewolf_Face_Slot.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/NoseSneer.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseRecipe/BaseRecipeSlots/UMA_Werewolf_InnerMouth_Slot.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/TongueOut.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseRecipe/BaseRecipeTextures/WerewolfClaws_Normal.psd
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/BrowInnerUp.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/EyeDown_L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/EyeIn_R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/NeckRight.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/JawOpen.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/UpperLipUp_L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/TongueDown.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/HeadRight.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/JawRight.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/HeadDown.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/MouthLeft.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/EyesOut.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/UpperLipDown_R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/EyesIn.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseRecipe/BaseRecipeTextures/WerewolfBody_Diffuse.psd
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/NeckTiltLeft.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Werewolf.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/EyesClose.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/BrowOuterDown_L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/CheekPuff_R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/LowerLipUp.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/MouthRight.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseRecipe/BaseRecipeOverlays/WerewolfEyes.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseThumbs/WerewolfHeadNone.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/EyeUp_L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/LowerLipUp_R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/MouthWide_R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseThumbs/WerewolfHandsNone.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/HeadUp.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/HeadTiltRight.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/BrowOuterDown_R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseRecipe/BaseRecipeSlots/UMA_Werewolf_Hands_Slot.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/EyeSquint_R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/BrowOuterUp.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/UpperLipDown_L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/NeckDown.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseRecipe/BaseRecipeOverlays/WerewolfBody.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/EyeOpen_L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/BrowIn.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/TongueNarrow.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/MouthWide.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/JawClose.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseRecipe/BaseRecipeSlots/UMA_Werewolf_Claws_Slot.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseRecipe/BaseRecipeTextures/WerewolfHead_Diffuse.psd
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/MouthDown.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseRecipe/BaseRecipeOverlays/WerewolfHead.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/MouthFrown_R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/TongueOut_Partial.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/DNA/WerewolfSerializedDNAConverterController.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/EyeUp_R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/EyesDown.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/TongueLeft.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseThumbs/WerewolfLegsNone.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseRecipe/BaseRecipeSlots/UMA_Werewolf_Legs_Slot.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseThumbs/WerewolfFeetNone.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseRecipe/BaseRecipeOverlays/WerewolfHandsAndFeet.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/JawForward.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/MouthWide_L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/DNA/WerewolfDNAAsset.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseRecipe/BaseRecipeTextures/WerewolfClaws_Diffuse.psd
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/BrowOuterDown.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/HeadLeft.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/EyesOpen.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseRecipe/BaseRecipeOverlays/WerewolfTeeth.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseThumbs/WerewolfOutfitNone.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/LowerLipDown_R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/EyeSquint_L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/CheeksPuff.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/LowerLipDown.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseRecipe/BaseRecipeTextures/WerewolfHandsAndFeet_Diffuse.psd
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseRecipe/BaseRecipeTextures/WerewolfTeeth_Normal.psd
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/TongueWide.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/EyeDown_R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseRecipe/BaseRecipeTextures/WerewolfInnerMouth_Diffuse.psd
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseRecipe/BaseRecipeOverlays/WerewolfInnerMouth.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseThumbs/WerewolfChestNone.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/EyeClose_L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseRecipe/BaseRecipeSlots/UMA_Werewolf_Eyes_Slot.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/LowerLipDown_L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/JawLeft.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/EyesSquint.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/CheekPuff_L.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/BaseRecipe/BaseRecipeSlots/UMA_Werewolf_Torso_Slot.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/EyeOpen_R.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/Werewolf/RaceBase/Expressions/Werewolf
+  Poses/BrowInnerDown.asset
+Dependencies:
+- D:/PU GIT/Project-Universe/Project Universe/AssetBundles/Windows/uma/werewolf/wardrobe1

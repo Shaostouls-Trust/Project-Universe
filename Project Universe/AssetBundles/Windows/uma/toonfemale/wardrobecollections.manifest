@@ -1,0 +1,38 @@
+ManifestFileVersion: 0
+CRC: 2591136276
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: f09ec98287d735dbfc57c536b4742b07
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: e3908b77d4e032e996a85786ed80e43c
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 6ae7341e07d1b8f41aa37f5e2c910168, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: UMA_Core
+  ClassName: UMA.CharacterSystem.WardrobeCollectionList
+- AssemblyName: UMA_Core
+  ClassName: UMA.CharacterSystem.WardrobeRecipeThumb
+- AssemblyName: UMA_Core
+  ClassName: UMA.CharacterSystem.WardrobeSet
+- AssemblyName: UMA_Core
+  ClassName: UMA.CharacterSystem.WardrobeSettings
+- AssemblyName: UMA_Core
+  ClassName: UMA.UMAPredefinedDNA
+Assets:
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonFemale/WardrobeCollections/Thumbs/ToonTopsCover.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonFemale/WardrobeCollections/ToonTopsBundle.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonFemale/WardrobeCollections/Thumbs/FemaleStarDancerCover1.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonFemale/WardrobeCollections/ToonStarDancerCollection.asset
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonFemale/WardrobeCollections/Thumbs/FemaleDancerCover1.png
+- Assets/UMA/Examples/DynamicCharacterSystem Examples/Assets/DemoAssetBundles/ToonFemale/WardrobeCollections/ToonDancerCollection.asset
+Dependencies: []

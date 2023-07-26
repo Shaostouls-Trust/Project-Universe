@@ -124,11 +124,11 @@ namespace ProjectUniverse.Animation.Controllers
         {
             //set starting values
             netLocked.Value = locked;
-            netWeldedClosed.Value = weldedClosed;
-            netWeldedOpen.Value = weldedOpen;
-            netIsPowered.Value = isPowered;
-            netIsRunning.Value = isPowered;
-            netThisRunMachine.Value = thisRunMachine;
+            //netWeldedClosed.Value = weldedClosed;
+            //netWeldedOpen.Value = weldedOpen;
+            //netIsPowered.Value = isPowered;
+            //netIsRunning.Value = isRunning;
+            //netThisRunMachine.Value = thisRunMachine;
 
             //set up events
             netLocked.OnValueChanged += delegate { locked = netLocked.Value; };
@@ -178,7 +178,7 @@ namespace ProjectUniverse.Animation.Controllers
             //if door is powered, run the below checks
             if (isPowered && isRunning)
             {
-                Debug.Log("Powered and Running");
+                //Debug.Log("Powered and Running");
                 //check door positions and animation cycles
                 //when the door is at open position, but the animation is not done opening.
                 if (doorAnimIsInX)

@@ -1,0 +1,23 @@
+ManifestFileVersion: 0
+CRC: 577708200
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 0dc85968d13d2c77f5f9fe4fafd0d331
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: d55f67b478ec24c1186d0fc0d17328e2
+HashAppended: 0
+ClassTypes:
+- Class: 114
+  Script: {fileID: 11500000, guid: 33cd2701e2874af4eb67ed5ee146eb7b, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: UMA_Core
+  ClassName: UMA.AssetBundles.AssetBundleIndex/AssetBundleIndexItem
+- AssemblyName: UMA_Core
+  ClassName: UMA.AssetBundles.AssetBundleIndex/AssetBundleIndexList
+Assets:
+- Assets/WindowsIndex.asset
+Dependencies: []
