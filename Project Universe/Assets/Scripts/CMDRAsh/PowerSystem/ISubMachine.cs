@@ -49,7 +49,30 @@ namespace ProjectUniverse.PowerSystem
         //anti-spaz timer
         private float chillTime = 7f;
         private float lastEnergyReceived = 0f;
-        
+
+        public override void OnNetworkSpawn()
+        {
+            if (IsServer || IsHost)
+            {
+                //set starting values
+                netRequestedEnergy.Value = requestedEnergy;
+                netRequiredEnergy.Value = requiredEnergy;
+                netEnergyBuffer.Value = energyBuffer;
+                netBufferCurrent.Value = bufferCurrent;
+                netIsPowered.Value = isPowered;
+                netRunMachine.Value = runMachine;
+                netMaxLightIntensity.Value = maxLightIntensity;
+                netMaxLightRange.Value = maxLightRange;
+                netLegsReceived.Value = legsReceived;
+                netLegsRequired.Value = legsRequired;
+                if (lightComponent != null)
+                {
+                    netLightEnabled.Value = lightComponent.enabled;
+                }
+                base.OnNetworkSpawn();
+            }
+        }
+
         void Start()
         {
             //RunMachine = true;
@@ -76,21 +99,7 @@ namespace ProjectUniverse.PowerSystem
 
         private void NetworkListeners()
         {
-            //set starting values
-            netRequestedEnergy.Value = requestedEnergy;
-            netRequiredEnergy.Value = requiredEnergy;
-            netEnergyBuffer.Value = energyBuffer;
-            netBufferCurrent.Value = bufferCurrent;
-            netIsPowered.Value = isPowered;
-            netRunMachine.Value = runMachine;
-            netMaxLightIntensity.Value = maxLightIntensity;
-            netMaxLightRange.Value = maxLightRange;
-            netLegsReceived.Value = legsReceived;
-            netLegsRequired.Value = legsRequired;
-            if(lightComponent != null)
-            {
-                netLightEnabled.Value = lightComponent.enabled;
-            }
+            
 
             //Establish events
             netRequestedEnergy.OnValueChanged += delegate { requestedEnergy = netRequestedEnergy.Value; };

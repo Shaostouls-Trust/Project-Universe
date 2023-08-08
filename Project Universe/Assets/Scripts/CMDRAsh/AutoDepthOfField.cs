@@ -42,7 +42,7 @@ namespace ProjectUniverse.Util
                     if(0f <= cam.transform.localEulerAngles.x && 180f > cam.transform.localEulerAngles.x)
                     {
                         //positive angles
-                        adjust -= 1f;
+                        adjust -= 2f;
                     }
                     else if(180 <= cam.transform.localEulerAngles.x && 360 > cam.transform.localEulerAngles.x)
                     {

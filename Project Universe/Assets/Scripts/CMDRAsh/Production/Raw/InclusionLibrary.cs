@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using System.IO;
 using UnityEngine;
 using ProjectUniverse.Data.Libraries.Definitions;
+using System.Globalization;
 
 namespace ProjectUniverse.Data.Libraries
 {
@@ -125,7 +126,8 @@ namespace ProjectUniverse.Data.Libraries
                                     foreach (XElement materials in inclusionSet.Elements("Materials"))
                                     {
                                         type = materials.Element("STR_ID").Attribute("Material_Type").Value;
-                                        ratio = float.Parse(materials.Element("Ratio").Attribute("Ratio").Value);
+                                        ratio = float.Parse(materials.Element("Ratio").Attribute("Ratio").Value
+                                            , CultureInfo.InvariantCulture);
                                         if (OreLibrary.MaterialDictionary.TryGetValue(type, out tempMatDef))
                                         {
                                             tempMatDic.Add(tempMatDef, ratio);
@@ -138,7 +140,8 @@ namespace ProjectUniverse.Data.Libraries
                                     foreach (XElement ores in inclusionSet.Elements("Ore"))
                                     {
                                         type = ores.Element("STR_ID").Attribute("Ore_Type").Value;
-                                        ratio = float.Parse(ores.Element("Ratio").Attribute("Ratio").Value);
+                                        ratio = float.Parse(ores.Element("Ratio").Attribute("Ratio").Value
+                                            , CultureInfo.InvariantCulture);
                                         if (OreLibrary.OreDictionary.TryGetValue(type, out tempOreDef))
                                         {
                                             tempOreDic.Add(tempOreDef, ratio);

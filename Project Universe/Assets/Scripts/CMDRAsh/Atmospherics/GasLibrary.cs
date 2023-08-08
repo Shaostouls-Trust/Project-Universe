@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using System.IO;
 using UnityEngine;
 using ProjectUniverse.Data.Libraries.Definitions;
+using System.Globalization;
 
 namespace ProjectUniverse.Data.Libraries
 {
@@ -44,12 +45,17 @@ namespace ProjectUniverse.Data.Libraries
 						foreach (XElement ingot in ingotDefs.Elements("Gas"))
 						{
 							gasType = ingot.Element("Gas_Type").Attribute("STR_ID").Value;
-                            flamability = int.Parse(ingot.Element("Flamability").Attribute("Value").Value);
-                            combustability = int.Parse(ingot.Element("Combustability").Attribute("Value").Value);
-							molarMass = float.Parse(ingot.Element("MolarMass").Attribute("Value").Value);
+                            flamability = int.Parse(ingot.Element("Flamability").Attribute("Value").Value
+								, CultureInfo.InvariantCulture);
+                            combustability = int.Parse(ingot.Element("Combustability").Attribute("Value").Value
+								, CultureInfo.InvariantCulture);
+							molarMass = float.Parse(ingot.Element("MolarMass").Attribute("Value").Value
+								, CultureInfo.InvariantCulture);
 							isNuclear = bool.Parse(ingot.Element("IsNuclear").Attribute("BoolValue").Value);
-                            toxicity = float.Parse(ingot.Element("Toxicity").Attribute("Value").Value);
-                            specificHeat = float.Parse(ingot.Element("SpecificHeat").Attribute("Value").Value);
+                            toxicity = float.Parse(ingot.Element("Toxicity").Attribute("Value").Value
+								, CultureInfo.InvariantCulture);
+                            specificHeat = float.Parse(ingot.Element("SpecificHeat").Attribute("Value").Value
+								, CultureInfo.InvariantCulture);
                             GasDefinition newingotDef = new GasDefinition(gasType,flamability,
 								combustability,molarMass,isNuclear,toxicity,specificHeat);
                             GL_GasDictionary.Add(gasType, newingotDef);

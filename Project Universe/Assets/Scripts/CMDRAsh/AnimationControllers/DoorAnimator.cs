@@ -120,16 +120,20 @@ namespace ProjectUniverse.Animation.Controllers
             //Debug.Log("NetworkObject "+NetworkObject.NetworkObjectId);
         }
 
-        private void NetworkListeners()
+        public override void OnNetworkSpawn()
         {
             //set starting values
             netLocked.Value = locked;
-            //netWeldedClosed.Value = weldedClosed;
-            //netWeldedOpen.Value = weldedOpen;
-            //netIsPowered.Value = isPowered;
-            //netIsRunning.Value = isRunning;
-            //netThisRunMachine.Value = thisRunMachine;
+            netWeldedClosed.Value = weldedClosed;
+            netWeldedOpen.Value = weldedOpen;
+            netIsPowered.Value = isPowered;
+            netIsRunning.Value = isRunning;
+            netThisRunMachine.Value = thisRunMachine;
+            base.OnNetworkSpawn();
+        }
 
+        private void NetworkListeners()
+        {
             //set up events
             netLocked.OnValueChanged += delegate { locked = netLocked.Value; };
             netWeldedClosed.OnValueChanged += delegate { weldedClosed = netWeldedClosed.Value; };

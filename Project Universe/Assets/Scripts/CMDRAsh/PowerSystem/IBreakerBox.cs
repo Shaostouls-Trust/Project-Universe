@@ -83,20 +83,26 @@ namespace ProjectUniverse.PowerSystem
             ProxyStart();
         }
 
-        private void NetworkListeners()
+        public override void OnNetworkSpawn()
         {
             //set starting values
-            /*netTotalRequiredPower.Value = totalRequiredPower;
+            netTotalRequiredPower.Value = totalRequiredPower;
             netEnergyBufferMax.Value = energyBufferMax;
             netBufferCurrent.Value = bufferCurrent;
             netSwitchCount.Value = switchCount;
             netDefecitVBreaker.Value = defecitVbreaker;
             netLegsReceived.Value = legsReceived;
-            netLegsRequired.Value = legsRequired;*/
+            netLegsRequired.Value = legsRequired;
             //for(int i = 0; i < occupiedSwitches.Length; i++)
             //{
             //    netOccupiedSwitches.Add(occupiedSwitches[i]);
-           // }
+            //}
+            base.OnNetworkSpawn();
+        }
+
+        private void NetworkListeners()
+        {
+            
             
             //Establish events
             netTotalRequiredPower.OnValueChanged += delegate { totalRequiredPower = netTotalRequiredPower.Value; };

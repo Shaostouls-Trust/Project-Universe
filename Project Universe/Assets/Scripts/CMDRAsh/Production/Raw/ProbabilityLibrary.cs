@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using System.IO;
 using UnityEngine;
 using ProjectUniverse.Data.Libraries.Definitions;
+using System.Globalization;
 
 namespace ProjectUniverse.Data.Libraries
 {
@@ -74,7 +75,8 @@ namespace ProjectUniverse.Data.Libraries
                                 {
                                     type = ores.Element("STR_ID").Attribute("Ore_Type").Value;
                                     //Debug.Log(type);
-                                    ratio = int.Parse(ores.Element("Ratio").Attribute("Ratio").Value);
+                                    ratio = int.Parse(ores.Element("Ratio").Attribute("Ratio").Value
+                                        , CultureInfo.InvariantCulture);
                                     if (OreLibrary.OreDictionary.TryGetValue(type, out tempOreDef))
                                     {
                                         //Debug.Log(tempOreDef.GetOreType() + " is type " + type);

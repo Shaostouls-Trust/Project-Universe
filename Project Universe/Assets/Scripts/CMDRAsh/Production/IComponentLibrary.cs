@@ -6,6 +6,7 @@ using UnityEngine;
 using System.Linq;
 using ProjectUniverse.Data.Libraries.Definitions;
 using ProjectUniverse.Data.Libraries;
+using System.Globalization;
 
 namespace ProjectUniverse.Data.Libraries
 {
@@ -53,10 +54,13 @@ namespace ProjectUniverse.Data.Libraries
 						foreach (XElement comp in compDefs.Elements("Component"))
 						{
 							componentType = comp.Element("CompData").Attribute("Component_Type").Value;
-							quantity = int.Parse(comp.Element("CompData").Attribute("Quantity").Value);
+							quantity = int.Parse(comp.Element("CompData").Attribute("Quantity").Value
+								, CultureInfo.InvariantCulture);
 							factory = comp.Element("Factory").Value;
-							health = int.Parse(comp.Element("Health").Attribute("Value").Value);
-							priority = int.Parse(comp.Element("Priority").Attribute("Value").Value);
+							health = int.Parse(comp.Element("Health").Attribute("Value").Value
+								, CultureInfo.InvariantCulture);
+							priority = int.Parse(comp.Element("Priority").Attribute("Value").Value
+								, CultureInfo.InvariantCulture);
 							RssPath = comp.Element("ResourcePath").Attribute("Path").Value;
 							IComponentDefinition newCompDef = new IComponentDefinition(componentType, quantity, factory, RssPath, health, priority);
 							ICL_ComponentDictionary.Add(componentType, newCompDef);
@@ -82,7 +86,8 @@ namespace ProjectUniverse.Data.Libraries
 									if (part.Attribute("Ingot") != null)
 									{
 										recMat = part.Attribute("Ingot").Value;
-										recQ = int.Parse(part.Attribute("Quantity").Value);
+										recQ = int.Parse(part.Attribute("Quantity").Value
+											, CultureInfo.InvariantCulture);
 										if (IngotLibrary.IngotDictionary.TryGetValue(recMat, out ingDef))
 										{
 											newCompDef.AddToRecipe(ingDef, recQ);
@@ -96,7 +101,8 @@ namespace ProjectUniverse.Data.Libraries
 									if (part.Attribute("Component") != null)
 									{
 										recMat = part.Attribute("Component").Value;
-										recQ = int.Parse(part.Attribute("Quantity").Value);
+										recQ = int.Parse(part.Attribute("Quantity").Value
+											, CultureInfo.InvariantCulture);
 										if (ICL_ComponentDictionary.TryGetValue(recMat, out comDef))
 										{
 											newCompDef.AddToRecipe(comDef, recQ);
@@ -140,7 +146,8 @@ namespace ProjectUniverse.Data.Libraries
 											//Debug.Log(type);
 											recMat = part.Attribute("Component").Value;
 											if (returnTo.Contains(recMat)) { 
-												recQ = int.Parse(part.Attribute("Quantity").Value);
+												recQ = int.Parse(part.Attribute("Quantity").Value
+													, CultureInfo.InvariantCulture);
 												if (ICL_ComponentDictionary.TryGetValue(recMat, out comDef))
 												{
 													//check if the component is already in the recipe.

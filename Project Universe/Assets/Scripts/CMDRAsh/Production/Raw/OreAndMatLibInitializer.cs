@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,26 +18,98 @@ namespace ProjectUniverse.Data.Libraries
         void Awake()
         {
             OreLib = new OreLibrary.OreMaterialLibrary();
-            OreLib.InitializeOreDictionary();
-            OreLib.InitializeMaterialDictionary();
+            try
+            {
+                OreLib.InitializeOreDictionary();
+            }
+            catch(Exception e)
+            {
+                Debug.Log("Ore Library Failed to Load:");
+                Debug.LogError(e);
+                Debug.Log("===========================");
+            }
+            try
+            {
+                OreLib.InitializeMaterialDictionary();
+            }
+            catch (Exception e)
+            {
+                Debug.Log("Material Library Failed to Load:");
+                Debug.LogError(e);
+                Debug.Log("===========================");
+            }
 
             IDL = new InclusionLibrary.InclusionDictionary();
-            IDL.InitializeInclusionDictionary();
+            try
+            {
+                IDL.InitializeInclusionDictionary();
+            }
+            catch (Exception e)
+            {
+                Debug.Log("Inclusion Library Failed to Load:");
+                Debug.LogError(e);
+                Debug.Log("===========================");
+            }
 
             IngotLib = new IngotLibrary.IngotDefinitionLibrary();
-            IngotLib.InitializeIngotDictionary();
+            try
+            {
+                IngotLib.InitializeIngotDictionary();
+            }
+            catch (Exception e)
+            {
+                Debug.Log("Ingot Library Failed to Load:");
+                Debug.LogError(e);
+                Debug.Log("===========================");
+            }
 
             CDL = new IComponentLibrary.ComponentDefinitionLibrary();
-            CDL.InitializeComponentDictionary();
+            try
+            {
+                CDL.InitializeComponentDictionary();
+            }
+            catch (Exception e)
+            {
+                Debug.Log("Component Library Failed to Load:");
+                Debug.LogError(e);
+                Debug.Log("===========================");
+            }
 
             MDL = new MachineLibrary.MachineDefinitionLibrary();
-            MDL.InitializeMachineDictionary();
+            try
+            {
+                MDL.InitializeMachineDictionary();
+            }
+            catch (Exception e)
+            {
+                Debug.Log("Machine Library Failed to Load:");
+                Debug.LogError(e);
+                Debug.Log("===========================");
+            }
 
             PBD = new ProbabilityLibrary.ProbabilityDictionary();
-            PBD.InitializeProbabilityDictionary();
+            try
+            {
+                PBD.InitializeProbabilityDictionary();
+            }
+            catch (Exception e)
+            {
+                Debug.Log("Probability Library Failed to Load:");
+                Debug.LogError(e);
+                Debug.Log("===========================");
+            }
 
             GDL = new GasLibrary.GasDefinitionLibrary();
-            GDL.InitializeGasDictionary();
+            try
+            {
+                GDL.InitializeGasDictionary();
+            }
+            catch (Exception e)
+            {
+                Debug.Log("Gas Library Failed to Load:");
+                Debug.LogError(e);
+                Debug.Log("===========================");
+            }
         }
     }
 }

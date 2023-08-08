@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using System.IO;
 using UnityEngine;
 using ProjectUniverse.Data.Libraries.Definitions;
+using System.Globalization;
 
 namespace ProjectUniverse.Data.Libraries
 {
@@ -41,7 +42,8 @@ namespace ProjectUniverse.Data.Libraries
 						{
 							ingotType = ingot.Element("STR_ID").Attribute("Ingot_Type").Value;
 							ingotRSPath = ingot.Element("ResourcePath").Attribute("Path").Value;
-							ingotDensity = float.Parse(ingot.Element("Density").Attribute("Density").Value);
+							ingotDensity = float.Parse(ingot.Element("Density").Attribute("Density").Value
+								, CultureInfo.InvariantCulture);
 							IngotDefinition newingotDef = new IngotDefinition(ingotType, ingotRSPath, ingotDensity);
 							IL_IngotDictionary.Add(ingotType, newingotDef);
 						}

@@ -5,6 +5,7 @@ using System.IO;
 using UnityEngine;
 using ProjectUniverse.Data.Libraries.Definitions;
 using ProjectUniverse.Data.Libraries;
+using System.Globalization;
 
 namespace ProjectUniverse.Data.Libraries
 {
@@ -48,7 +49,8 @@ namespace ProjectUniverse.Data.Libraries
 						{
 							machineType = mach.Element("MachData").Attribute("Machine_Type").Value;
 							RssPath = mach.Element("ResourcePath").Attribute("Path").Value;
-							baseLevel = int.Parse(mach.Element("BaseLevel").Attribute("Level").Value);
+							baseLevel = int.Parse(mach.Element("BaseLevel").Attribute("Level").Value
+								, CultureInfo.InvariantCulture);
 							MachineDefinition newMachDef = new MachineDefinition(machineType, RssPath, baseLevel);
 							MDL_MachineDictionary.Add(machineType, newMachDef);
 							//get build costs
@@ -60,7 +62,8 @@ namespace ProjectUniverse.Data.Libraries
 									if (part.Attribute("Component") != null)
 									{
 										recMat = part.Attribute("Component").Value;
-										recQ = float.Parse(part.Attribute("Quantity").Value);
+										recQ = float.Parse(part.Attribute("Quantity").Value
+											, CultureInfo.InvariantCulture);
 										if (IComponentLibrary.ComponentDictionary.TryGetValue(recMat, out compDef))
 										{
 											//Debug.Log("AddToMachineRecipe");
@@ -76,7 +79,8 @@ namespace ProjectUniverse.Data.Libraries
 									if (part.Attribute("Ingot") != null)
 									{
 										recMat = part.Attribute("Ingot").Value;
-										recQ = float.Parse(part.Attribute("Quantity").Value);
+										recQ = float.Parse(part.Attribute("Quantity").Value
+											, CultureInfo.InvariantCulture);
 										if (IngotLibrary.IngotDictionary.TryGetValue(recMat, out ingDef))
 										{
 											newMachDef.AddToRecipe(ingDef, recQ);
@@ -91,7 +95,8 @@ namespace ProjectUniverse.Data.Libraries
 									if (part.Attribute("Material") != null)
 									{
 										recMat = part.Attribute("Material").Value;
-										recQ = float.Parse(part.Attribute("Quantity").Value);
+										recQ = float.Parse(part.Attribute("Quantity").Value
+											, CultureInfo.InvariantCulture);
 										if (OreLibrary.MaterialDictionary.TryGetValue(recMat, out matDef))
 										{
 											newMachDef.AddToRecipe(matDef, recQ);
@@ -114,7 +119,8 @@ namespace ProjectUniverse.Data.Libraries
 											if (part.Attribute("Component") != null)
 											{
 												recMat = part.Attribute("Component").Value;
-												recQ = float.Parse(part.Attribute("Quantity").Value);
+												recQ = float.Parse(part.Attribute("Quantity").Value
+													, CultureInfo.InvariantCulture);
 												if (IComponentLibrary.ComponentDictionary.TryGetValue(recMat, out compDef))
 												{
 													newMachDef.AddToUpgrade(compDef, recQ);
@@ -128,7 +134,8 @@ namespace ProjectUniverse.Data.Libraries
 											if (part.Attribute("Ingot") != null)
 											{
 												recMat = part.Attribute("Ingot").Value;
-												recQ = float.Parse(part.Attribute("Quantity").Value);
+												recQ = float.Parse(part.Attribute("Quantity").Value
+													, CultureInfo.InvariantCulture);
 												if (IngotLibrary.IngotDictionary.TryGetValue(recMat, out ingDef))
 												{
 													newMachDef.AddToUpgrade(ingDef, recQ);
@@ -142,7 +149,8 @@ namespace ProjectUniverse.Data.Libraries
 											if (part.Attribute("Material") != null)
 											{
 												recMat = part.Attribute("Material").Value;
-												recQ = float.Parse(part.Attribute("Quantity").Value);
+												recQ = float.Parse(part.Attribute("Quantity").Value
+													, CultureInfo.InvariantCulture);
 												if (OreLibrary.MaterialDictionary.TryGetValue(recMat, out matDef))
 												{
 													newMachDef.AddToUpgrade(matDef, recQ);

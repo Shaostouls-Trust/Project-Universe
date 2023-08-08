@@ -61,10 +61,16 @@ namespace ProjectUniverse.PowerSystem
             ProxyStart();
         }
 
-        private void NetworkListeners()
+        public override void OnNetworkSpawn()
         {
             //set starting values
             netOutputMax.Value = outputMax;
+            base.OnNetworkSpawn();
+        }
+
+        private void NetworkListeners()
+        {
+            
             //netLegsOut.Value = routers.Length * 3;
             //set up events
             netOutputMax.OnValueChanged += delegate { outputMax = netOutputMax.Value; };
