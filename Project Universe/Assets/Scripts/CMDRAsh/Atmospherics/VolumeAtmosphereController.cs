@@ -63,6 +63,7 @@ namespace ProjectUniverse.Environment.Volumes
         private GameObject[] pipes;
         private float maxFluidFillHeight;
         private float roomFloorArea;
+        [SerializeField] private VolumeAtmosphereJobs VAJobs;
 
         private void Start()
         {
@@ -83,6 +84,16 @@ namespace ProjectUniverse.Environment.Volumes
         //was all in Start
         private void Awake()
         {
+            //subscribe to VA Jobs manager
+            if (VAJobs != null)
+            {
+                VAJobs.AddVolume(this);
+            }
+            else
+            {
+                Debug.LogError("Volume Atmosphere Not Subscribed to Update System!");
+            }
+            //room volume and fill height
             float maxy = 0;
             for (int i = 0; i < roomVolumeSections.Count; i++)
             {
@@ -285,6 +296,26 @@ namespace ProjectUniverse.Environment.Volumes
             get { return lightGOs; }
         }
 
+        public GameObject[] NeighborEmpties
+        {
+            get { return neighborEmpties; }
+        }
+
+        public List<PipeSection> VolumeGasPipeSections
+        {
+            get { return volumeGasPipeSections; }
+        }
+
+        public bool Flood
+        {
+            get { return flood; }
+        }
+
+        public float RoomVolume
+        {
+            get { return roomVolume; }
+        }
+
         public float WaterLevel(bool useLocal)
         {
             if (useLocal)
@@ -318,10 +349,17 @@ namespace ProjectUniverse.Environment.Volumes
             get { return roomFloorArea; }
         }
 
-        ///check doors
-        ///if two doors are open
+        ///<summary>
+        /// check doors
+        /// if two doors are open
         ///check the two volumes
-        ///go through equalization.
+        ///go through equalization. 
+        /// </summary>
+        /// 
+        /// Use FIXEDUPDATE to spin up a worker thread to handle the update logic so that the main thread
+        /// can continue on?
+
+
         void FixedUpdate()
         {
             ///
@@ -347,14 +385,14 @@ namespace ProjectUniverse.Environment.Volumes
                 limiter = 0;
             }
             //intended to be temp
-            if (flood)
+            /*if (flood)
             {
                 IFluid tWat = new IFluid("water", 80f, 0.2f);
                 AddRoomFluid(tWat);
                 //render control is not showing/hiding water plane
                 //hall to control is not hiding water
             }
-
+            */
             for (int i = 0; i < neighborEmpties.Length; i++)//roomVolumeDoors.Length
             {
                 GameObject door = neighborEmpties[i].GetComponent<VolumeNode>().GetDoor();
@@ -363,14 +401,16 @@ namespace ProjectUniverse.Environment.Volumes
                 if (door.GetComponent<DoorAnimator>().OpenOrOpening())//roomVolumeDoors
                 {
                     Vector3 back = door.transform.TransformDirection(Vector3.back);//is Vector3.back for all cases?
-                    //raycastAll to check neighbor door
-                    //A raycast every frame?
-                    RaycastHit[] hits;
-                    hits = Physics.RaycastAll(new Vector3(door.transform.position.x,
-                        door.transform.position.y + 0.025f, door.transform.position.z), back, 1.0f);
-                    foreach(RaycastHit hit in hits)
+                    //raycastAll to check neighbor door. Might need 3, not two indicies.
+                    RaycastHit[] hits = new RaycastHit[2];
+                    Physics.RaycastNonAlloc(new Vector3(door.transform.position.x,
+                        door.transform.position.y + 0.025f, door.transform.position.z), back, hits, 1.0f);
+                    //hits = Physics.RaycastAll(new Vector3(door.transform.position.x,
+                    //    door.transform.position.y + 0.025f, door.transform.position.z), back, 1.0f);
+                    GameObject myDoorGameobject;
+                    foreach (RaycastHit hit in hits)
                     {
-                        GameObject myDoorGameobject = null;
+                        myDoorGameobject = null;
                         if (hit.collider.gameObject != door)
                         {
                             //check if it's a door
@@ -380,8 +420,6 @@ namespace ProjectUniverse.Environment.Volumes
                             Component myComponent2 = hit.collider.GetComponent<DoorAnimator>();
                             Component myComponent3 = hit.collider.GetComponentInChildren<DoorAnimator>();
                             //Debug.Log(hit.collider.gameObject);
-                            //try
-                            //{
                             if (myComponent != null)
                             {
                                 myDoorGameobject = myComponent.gameObject;
@@ -395,7 +433,7 @@ namespace ProjectUniverse.Environment.Volumes
                                 myDoorGameobject = myComponent3.gameObject;
                             }
 
-                            if(myDoorGameobject != null)
+                            if (myDoorGameobject != null)
                             {
                                 clear = myDoorGameobject.GetComponent<DoorAnimator>().OpenOrOpening();
                             }
@@ -403,21 +441,6 @@ namespace ProjectUniverse.Environment.Volumes
                             {
                                 clear = true;//no door on other side, it is what it is when this door opens.
                             }
-                            //if (clear)
-                            //{
-                                //Debug.Log("---");
-                                //Debug.Log(door);
-                                //Debug.Log(myDoorGameobject);
-                            //}
-
-                            //}
-                            //catch (Exception e)
-                            //{
-                                //Debug.Log(e);
-                                //Debug.Log("Case 1: " + myComponent);
-                                //Debug.Log("Case 2: " + myComponent2);
-                                //Debug.Log("Case 3: " + myComponent3);
-                            //}
                             //Debug.Log(clear);
                             if (clear)
                             {
@@ -433,7 +456,7 @@ namespace ProjectUniverse.Environment.Volumes
                                         //Debug.Log("Eq "+ this + ""+ iNeighborVolume);
                                         Utils.LocalVolumeEqualizer(this, iNeighborVolume);
                                         //Fluid Equalization
-                                        if(myDoorGameobject != null)
+                                        if (myDoorGameobject != null)
                                         {
                                             Utils.LocalFluidEqualization(this, iNeighborVolume,
                                                 door.GetComponent<DoorAnimator>(), myDoorGameobject.GetComponent<DoorAnimator>());
@@ -452,13 +475,14 @@ namespace ProjectUniverse.Environment.Volumes
                                         Utils.LocalFluidDrain(this, -1f, null);
                                     }
                                 }
-                                
+
                             }
 
                         }
                     }
                 }
             }
+            /*
             ///
             /// Volume Gas Pipe Section Updates
             /// 
@@ -543,20 +567,6 @@ namespace ProjectUniverse.Environment.Volumes
                     GasPipeSectionEqualization(ventList, false);
                 }
 
-                ///
-                /// Neighbor equalization
-                ///
-                //for(int p = 0; p < sectionList.Count; p++)
-                //{
-                //    if (sectionList[p].Neighbors.Length > 0)
-                //    {
-                        //List<IGasPipe> neighborList = new List<IGasPipe>();
-                        //neighborList.Add(sectionList[p]);
-                        //neighborList.AddRange(sectionList[p].Neighbors);
-                        //GasPipeSectionEqualization(neighborList, false);
-                //    }
-                //}
-
                 //if (temp > tempTol[1] || temp < tempTol[0])
                 //{
                 //melt and explode
@@ -567,13 +577,14 @@ namespace ProjectUniverse.Environment.Volumes
                 //yada yada
             }
             ///Profiler.EndSample();
+        */
         }
 
-        /// <summary>
-        /// cools extremely quickly to -330 once down near zero.
-        /// Function of density?
-        /// </summary>
-        public void RoomHeatAmbiLoss()
+            /// <summary>
+            /// cools extremely quickly to -330 once down near zero.
+            /// Function of density?
+            /// </summary>
+            public void RoomHeatAmbiLoss()
         {
             if (roomTemp > -330f)
             {
@@ -646,7 +657,7 @@ namespace ProjectUniverse.Environment.Volumes
             CalculateRoomTemp();
         }
         
-        private void GasPipeSectionEqualization(List<IGasPipe> equalizeList, bool ventAndTempEq)
+        public void GasPipeSectionEqualization(List<IGasPipe> equalizeList, bool ventAndTempEq)
         {
             float totalPressures = equalizeList[0].GlobalPressure;
             float totalConc = 0.0f;
@@ -661,7 +672,8 @@ namespace ProjectUniverse.Environment.Volumes
             if (ventAndTempEq)
             {
                 equalizeList[0].TempEQWithDuct();
-                if (equalizeList[0].Vent != null && equalizeList[0].Gasses.Count > 0)
+                //GameObject null checks are main thread only *sigh*
+                if (equalizeList[0].HasVent && equalizeList[0].Gasses.Count > 0)
                 {
                     equalizeList[0].VentToVolume();
                 }
@@ -673,7 +685,7 @@ namespace ProjectUniverse.Environment.Volumes
                 IGasPipe pipe = equalizeList[j];
                 if (ventAndTempEq) { 
                     pipe.TempEQWithDuct();
-                    if (pipe.Vent != null && pipe.Gasses.Count > 0)
+                    if (pipe.HasVent && pipe.Gasses.Count > 0)
                     {
                         ///
                         /// Maybe make vents (that havn't been breached) one-way? 
@@ -1305,6 +1317,7 @@ namespace ProjectUniverse.Environment.Volumes
             float translatedFill = (float)Math.Round((volumeRatio * maxFluidFillHeight),3);
             for(int p = 0; p < roomFluidPlanes.Count; p++)
             {
+                // Main thread API problem?
                 if (roomFluidPlanes[p] != null)
                 {
                     if ((p-1) < 0)

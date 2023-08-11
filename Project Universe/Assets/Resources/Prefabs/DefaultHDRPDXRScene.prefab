@@ -2535,6 +2535,8 @@ GameObject:
   - component: {fileID: 2926797779209462069}
   - component: {fileID: 5913051603218511196}
   - component: {fileID: 1906529877338857304}
+  - component: {fileID: 4023275071619831787}
+  - component: {fileID: 9094033275272243168}
   m_Layer: 0
   m_Name: DefaultHDRPDXRScene
   m_TagString: Untagged
@@ -2624,6 +2626,30 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
+--- !u!114 &4023275071619831787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6860855536074816562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e14f85317185084580e9d59f2abee83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &9094033275272243168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6860855536074816562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1dbbaa2e64cf24e9f840a6defbe04a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7227681744985564566
 GameObject:
   m_ObjectHideFlags: 0

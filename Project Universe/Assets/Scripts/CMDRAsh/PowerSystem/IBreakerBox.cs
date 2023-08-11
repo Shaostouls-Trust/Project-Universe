@@ -123,21 +123,24 @@ namespace ProjectUniverse.PowerSystem
             netTotalRequiredPower.Value = 0f;
             //if (bufferCurrent < 0.0f)
             //{
-           //     netBufferCurrent.Value = 0f;
+            //     netBufferCurrent.Value = 0f;
             //}
             //int numSuppliers = 0;
             //requestedPower = new float[targetSubMachine.Length];
             //Uses the number and type of connections to predict how much power to allocate to each SubMachine.
+            float ttrp = 0f;
             for (int i = 0; i < targetSubMachine.Length; i++)
             {
                 if (targetSubMachine[i] != null)
                 {
                     if (targetSubMachine[i].RunMachine) 
-                    { 
-                        netTotalRequiredPower.Value += (float)Math.Round(targetSubMachine[i].RequestedEnergyAmount(),2);
+                    {
+                        ttrp += (float)Math.Round(targetSubMachine[i].RequestedEnergyAmount(),2);
                     }
                 }
             }
+            netTotalRequiredPower.Value = ttrp;
+
             //Breaker Box power request to IRoutingSubstation
             if (bufferCurrent < energyBufferMax)
             {
@@ -232,11 +235,12 @@ namespace ProjectUniverse.PowerSystem
                 //Debug.Log("SubMachine testee:" + thisSubMachine);
                 if (cable.subMach == thisSubMachine)
                 {
-                    //Debug.Log(thisSubMachine.gameObject.name + " requests "+requestedAmount);
+                    //JobLogger.Log("Request: "+requestedAmount);
                     //get machine's leg req
-                    int machineLegReq = cable.subMach.GetLegRequirement();
+                    float machineLegReq = (float)thisSubMachine.GetLegRequirement();//cable.subMach
                     //split power between legs
-                    float[] powerAmount = new float[machineLegReq];
+                    float[] powerAmount = new float[((int)machineLegReq)];
+                    //JobLogger.Log(machineLegReq);
                     //Debug.Log("dVb this update: "+defecitVbreaker);
                     for (int l = 0; l < machineLegReq; l++)
                     {
@@ -255,21 +259,23 @@ namespace ProjectUniverse.PowerSystem
                         if (bufferCurrent - requestedAmount >= 0)
                         {
                             //transfer the uniquely requested amount to the machine
-                            
-                            cable.TransferIn(machineLegReq, powerAmount, 5);
-                            //bufferCurrent -= requestedAmount;
-                            netBufferCurrent.Value -= requestedAmount;
-                            //Debug.Log(netBufferCurrent.Value + ", - " + requestedAmount);
+                            //JobLogger.Log( powerAmount[0] * machineLegReq);
+                            cable.TransferIn((int)machineLegReq, powerAmount, 5);
+                            bufferCurrent -= requestedAmount;
+                            //net was removed to allow for multithreading - need to flag for update
+                            //netBufferCurrent.Value -= requestedAmount;
+                            //JobLogger.Log(bufferCurrent + ", - " + requestedAmount);
                         }
                         else if (bufferCurrent - requestedAmount < 0)
                         {
                             float[] tempfloat = new float[] { bufferCurrent / 3.0f, bufferCurrent / 3.0f, bufferCurrent / 3.0f };
                             //or transfer all that remains in the buffer
                             
-                            cable.TransferIn(machineLegReq, tempfloat, 5);
-                            //bufferCurrent = 0f;
-                            netBufferCurrent.Value = 0f;
-                            //Debug.Log("bufferCurrent = " + bufferCurrent);
+                            cable.TransferIn((int)machineLegReq, tempfloat, 5);
+                            bufferCurrent = 0f;
+                            //net was removed to allow for multithreading - need to flag for update
+                            //netBufferCurrent.Value = 0f;
+                            //JobLogger.Log("bufferCurrent = " + 0f);
                         }
                     }
                     break;
@@ -502,6 +508,13 @@ namespace ProjectUniverse.PowerSystem
         public Guid GetGUID()
         {
             return guid;
+        }
+
+
+        public override void OnDestroy()
+        {
+            Resources.UnloadUnusedAssets();
+            base.OnDestroy();
         }
     }
 }

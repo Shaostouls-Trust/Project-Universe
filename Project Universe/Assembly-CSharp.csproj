@@ -343,6 +343,7 @@
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\AURORA_NEBULA_BLACKHOLE\BillboardNebula\BillboardNebula\Scripts\Nebula\NebulaExteriorQuad.cs" />
     <Compile Include="Assets\Scripts\KhorneSyrup\Props Loader\PropMetadata.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\GPU-Planetary-Rendering\Scripts\PlanetChunkProperties.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\Serialization\CustomNativeContainer.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\IRouter.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Ship\ShipController.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\SPECIAL FX\unity-lens-flare-1\Chromatic Aberration\ChromaticAberration.cs" />
@@ -393,6 +394,7 @@
     <Compile Include="Assets\Scripts\CMDRAsh\Ship\RenderStateManager.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Audio\SoundLibA.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\Debug Viewer\Libaries\Triangle\Meshing\ITriangulator.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\PowerSystem\SubMachineJobs.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\SPECIAL FX\unity-lens-flare-1\Lens Flare\GhostNebula.cs" />
     <Compile Include="Assets\AmplifyOcclusion\Plugins\AmplifyOcclusionEffect.cs" />
     <Compile Include="Assets\AmplifyOcclusion\Plugins\SRP\AmplifyOcclusionPostProcessing.cs" />
@@ -886,10 +888,10 @@
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\CelestialBody.cs" />
     <Compile Include="Assets\Plastic External Assets\_Creepy_Cat\Common Scripts\_Interactions_Scripts\Container_Open_Close.cs" />
     <Compile Include="Assets\Scripts\Koro\ChildPlant2.cs" />
-    <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\Debug Viewer\Libaries\Triangle\Meshing\Converter.cs" />
+    <Compile Include="Assets\Scripts\AssetBundleBuild.cs" />
     <Compile Include="Assets\Impact Interaction System\Scripts\Triggers\Physics Triggers\2D\ImpactSpeculativeCollisionTrigger2D.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\AURORA_NEBULA_BLACKHOLE\AuroraRenderer\DemoTools\OrbitalCamera.cs" />
-    <Compile Include="Assets\Scripts\AssetBundleBuild.cs" />
+    <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Scripts\Debug\Debug Viewer\Libaries\Triangle\Meshing\Converter.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Fluids\IFluid.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\AXSceneViewBillboard.cs" />
     <Compile Include="Assets\Scripts\CMDRAsh\Ship\RigidbodyJointScript.cs" />
@@ -1002,6 +1004,7 @@
     <Compile Include="Assets\Scripts\Koro\CraftingTablet.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Fluid Planets\Iris (CPU)\IrisScene.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Deformers\FlattenerDeformer.cs" />
+    <Compile Include="Assets\Scripts\CMDRAsh\JobLogger.cs" />
     <Compile Include="Assets\Archimatix\Scripts\Core\Generators\Primitives\GroundPrimitive.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\Galaxy Generator\Examples\VR Galaxy\Scripts\VRGalaxyManager.cs" />
     <Compile Include="Assets\ARTnGAME\Orion Space Framework\PLANET GENERATION\Solar-System-Development\Celestial Body\Scripts\CelestialBodySettings.cs" />

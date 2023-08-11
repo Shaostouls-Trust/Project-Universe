@@ -248,8 +248,8 @@ public class InventoryUI : MonoBehaviour
         controls.Player.Inv_Drop.Enable();
         controls.Player.Inv_Transfer.Enable();
         controls.Player.Inv_Use.Enable();
-        controls.Player.Num1.Enable();
-        controls.Player.Num2.Enable();
+        controls.Player.Throwables.Enable();
+        controls.Player.Gadgets.Enable();
     }
 
     private void OnDisable()
@@ -257,8 +257,8 @@ public class InventoryUI : MonoBehaviour
         controls.Player.Inv_Drop.Disable();
         controls.Player.Inv_Transfer.Disable();
         controls.Player.Inv_Use.Disable();
-        controls.Player.Num1.Disable();
-        controls.Player.Num2.Disable();
+        controls.Player.Throwables.Disable();
+        controls.Player.Gadgets.Disable();
     }
 
     /// Bind methods to buttons
@@ -286,11 +286,11 @@ public class InventoryUI : MonoBehaviour
         {
             UseSelected();
         };
-        controls.Player.Num1.performed += ctx =>
+        controls.Player.Throwables.performed += ctx =>
         {
             EquipToQuickSelect(1);
         };
-        controls.Player.Num2.performed += ctx =>
+        controls.Player.Gadgets.performed += ctx =>
         {
             EquipToQuickSelect(2);
         };

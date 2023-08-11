@@ -8,6 +8,7 @@ using ProjectUniverse.Serialization;
 using TMPro;
 using System;
 using UnityEngine.Rendering;
+using UnityEngine.InputSystem;
 
 namespace ProjectUniverse.UI
 {
@@ -39,6 +40,7 @@ namespace ProjectUniverse.UI
         [SerializeField] private GameObject Options_SSGIPanel;
         [SerializeField] private GameObject Options_FogPanel;
         [SerializeField] private GameObject Options_Raytracing;
+        [SerializeField] private GameObject Controls_Panel;
         [Header("Options - General")]
         [SerializeField] private TMP_Dropdown resolutionDrop;
         [SerializeField] private TMP_Dropdown graphicsDrop;
@@ -84,9 +86,13 @@ namespace ProjectUniverse.UI
         [SerializeField] private TMP_Dropdown vfDenoisingMode;
         [SerializeField] private Slider vfVolDistance;
         [Header("Options - RayTracing")]
+        [Header("Controls")]
+        [SerializeField] private PlayerControls controlsFile;
+        [SerializeField] private TMP_Text[] controlsArray=new TMP_Text[18];
         [Header("Misc")]
         private ColorBlock topMenuButtonDefaults;
         private ColorBlock sideMenuButtonDefaults;
+
         [SerializeField] private Color topMenuSelectedColor;
         [SerializeField] private Color sideMenuSelectedColor;
         //
@@ -97,6 +103,7 @@ namespace ProjectUniverse.UI
 
         public void Start()
         {
+            controlsFile = new PlayerControls();
             topMenuButtonDefaults = Cat_VideoButton.colors;
             sideMenuButtonDefaults = Options_GeneralButton.colors;
 
@@ -135,6 +142,7 @@ namespace ProjectUniverse.UI
             windowModeDrop.value = w;
             resolutionDrop.value = resolutions.Length - 1;
             sensSlider.value = s;
+            controlsArray[0].text = "" + s;
         }
 
         public void ShowOptionsMenu()
@@ -156,6 +164,12 @@ namespace ProjectUniverse.UI
             windowModeDrop.value = w;
             resolutionDrop.value = resolutions.Length - 1;
             sensSlider.value = s;
+            controlsArray[0].text = "" + s;
+            //
+            for(int n = 1; n < controlsArray.Length; n++)
+            {
+                //controlsArray[n].text = 
+            }
         }
 
         public void ShowGamePlayOptions()
@@ -204,6 +218,9 @@ namespace ProjectUniverse.UI
             Cat_VideoButton.colors = topMenuButtonDefaults;
             Cat_AudioButton.colors = topMenuButtonDefaults;
             Cat_SecretButton.colors = topMenuButtonDefaults;
+
+            //show controls options
+            Controls_Panel.SetActive(true);
         }
         public void ShowSecretOptions()
         {
@@ -468,8 +485,8 @@ namespace ProjectUniverse.UI
 
         public void SetSensitivity(float sens)
         {
-            GlobalSettings.Sensitivity = sens;
-            Debug.Log(GlobalSettings.Sensitivity);
+            GlobalSettings.Sensitivity = (float)Math.Round(sens,1);
+            //Debug.Log(GlobalSettings.Sensitivity);
             PlayerPrefs.SetFloat("sensitivity", GlobalSettings.Sensitivity);
         }
 
@@ -753,6 +770,60 @@ namespace ProjectUniverse.UI
         {
             GlobalSettings.VFVolumetricDistance = (int)vfVolDistance.value;
             Debug.Log(GlobalSettings.VFVolumetricDistance);
+        }
+
+        public void SetKeyBind(int i)
+        {
+            //use i to get targetted binding
+            switch (i)
+            {
+                case 1:
+                    
+                    break;
+                case 2: break;
+                case 3: break;
+                case 4: break;
+                case 5:
+                    //set button text to "Bind To: ..."
+                    controlsArray[i].text = "Bind To: ...";
+                    //wait for keyboard press
+                    InputActionReference m_Action = InputActionReference.Create(controlsFile.FindAction("Fire"));
+                    InputActionRebindingExtensions.RebindingOperation op = InputActionRebindingExtensions.PerformInteractiveRebinding(m_Action.action);
+                    op.OnComplete(_ => UpdateKeybindings(5, m_Action));
+                    op.Start();
+                    break;
+                case 6: break;
+                case 7: break;
+                case 8: break;
+                case 9: break;
+                case 10: break;
+                case 11: break;
+                case 12: break;
+                case 13: break;
+                case 14: break;
+                case 15: break;
+                case 16: break;
+                case 17: break;
+                case 18: break;
+            }
+            
+           
+            //assign key to bind
+        }
+
+        private void UpdateKeybindings(int i, InputActionReference m_Action)
+        {
+            controlsArray[i].text = "?";
+            Debug.Log(m_Action.action.bindings.ToString());
+        }
+
+        public void LoadBindings()
+        {
+
+        }
+        public void SaveBindings()
+        {
+            
         }
     }
 }

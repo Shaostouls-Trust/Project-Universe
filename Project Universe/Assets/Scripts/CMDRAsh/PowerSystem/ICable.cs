@@ -2,6 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using UnityEngine;
+using ProjectUniverse.Util;
 
 namespace ProjectUniverse.PowerSystem
 {
@@ -92,11 +93,15 @@ namespace ProjectUniverse.PowerSystem
 				heatAmount += overcap * .01f;//100 seconds at 10+, 60 fps, 1200f max (*.02f).
 				heatAmount = (float)Math.Round(heatAmount, 3);
 				//overcap will cause sparks
-				Debug.Log("heat: "+heatAmount+"/"+maxHeatCap);
+				//JobLogger.Log("heat: "+heatAmount+"/"+maxHeatCap);
 			}
 			else if (powerinTotal <= maximumThroughput)
 			{
-				heatAmount -= 0.1f * Time.deltaTime; //cooldown in 200 seconds from 1200f max, 60fps
+				heatAmount -= 0.01f * Utils.LastDeltaTime;//Time.deltaTime; //cooldown in 200 seconds from 1200f max, 60fps
+				if (heatAmount <= 0f)
+                {
+					heatAmount = 0f;
+                }
 			}
 			if (heatAmount > maxHeatCap)
 			{

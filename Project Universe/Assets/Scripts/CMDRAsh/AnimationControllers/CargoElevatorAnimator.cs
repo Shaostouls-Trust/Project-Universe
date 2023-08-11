@@ -12,8 +12,8 @@ namespace ProjectUniverse.Animation.Controllers
         private GameObject linkedRamp;
         private bool isUp;
         private bool isDown;
-        private bool isRising;
-        private bool isFalling;
+        //private bool isRising;
+        //private bool isFalling;
         public bool startAtPosUp;
 
 
@@ -24,7 +24,7 @@ namespace ProjectUniverse.Animation.Controllers
             if (isUp)
             {
                 isDown = true;
-                isRising = false;
+                //isRising = false;
                 //Debug.Log("Crawl Door Open");
                 anim.Play("CargoElevatorA_Down");
                 isDown = true;
@@ -32,8 +32,8 @@ namespace ProjectUniverse.Animation.Controllers
             }
             else if (isDown)
             {
-                isFalling = false;
-                isRising = true;
+                //isFalling = false;
+                //isRising = true;
                 //Debug.Log("Crawl Door Close");
                 anim.Play("CargoElevatorA_Up");
                 isDown = false;
@@ -57,15 +57,15 @@ namespace ProjectUniverse.Animation.Controllers
             {
                 isUp = true;
                 isDown = false;
-                isRising = false;
-                isFalling = false;
+                //isRising = false;
+                //isFalling = false;
             }
             else
             {
                 isUp = false;
                 isDown = true;
-                isRising = false;
-                isFalling = false;
+                //isRising = false;
+                //isFalling = false;
             }
 
             //doorTF = anim.gameObject.transform;

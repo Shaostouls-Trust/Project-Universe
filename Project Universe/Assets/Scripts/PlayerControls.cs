@@ -183,7 +183,7 @@ namespace ProjectUniverse
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Num1"",
+                    ""name"": ""Throwables"",
                     ""type"": ""Button"",
                     ""id"": ""d182b5f2-f30f-4bb4-8fd3-e82a4cb5031f"",
                     ""expectedControlType"": ""Button"",
@@ -192,7 +192,7 @@ namespace ProjectUniverse
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Num2"",
+                    ""name"": ""Gadgets"",
                     ""type"": ""Button"",
                     ""id"": ""98daeae4-5afa-49e7-aa97-b6c00a5ede6c"",
                     ""expectedControlType"": ""Button"",
@@ -201,7 +201,7 @@ namespace ProjectUniverse
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Num3"",
+                    ""name"": ""Mode"",
                     ""type"": ""Button"",
                     ""id"": ""c03fc0c4-25b7-461a-8a2e-ec6242e2b4ac"",
                     ""expectedControlType"": ""Button"",
@@ -210,7 +210,7 @@ namespace ProjectUniverse
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Num4"",
+                    ""name"": ""Tools"",
                     ""type"": ""Button"",
                     ""id"": ""f4439b06-8fe3-45fe-8699-6a0952fbe1ce"",
                     ""expectedControlType"": ""Button"",
@@ -553,7 +553,7 @@ namespace ProjectUniverse
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Num1"",
+                    ""action"": ""Throwables"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -564,7 +564,7 @@ namespace ProjectUniverse
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Num2"",
+                    ""action"": ""Gadgets"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -575,7 +575,7 @@ namespace ProjectUniverse
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Num3"",
+                    ""action"": ""Mode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -586,7 +586,7 @@ namespace ProjectUniverse
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Num4"",
+                    ""action"": ""Tools"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1224,10 +1224,10 @@ namespace ProjectUniverse
             m_Player_Escape = m_Player.FindAction("Escape", throwIfNotFound: true);
             m_Player_ScrollWheel = m_Player.FindAction("ScrollWheel", throwIfNotFound: true);
             m_Player_Shift = m_Player.FindAction("Shift", throwIfNotFound: true);
-            m_Player_Num1 = m_Player.FindAction("Num1", throwIfNotFound: true);
-            m_Player_Num2 = m_Player.FindAction("Num2", throwIfNotFound: true);
-            m_Player_Num3 = m_Player.FindAction("Num3", throwIfNotFound: true);
-            m_Player_Num4 = m_Player.FindAction("Num4", throwIfNotFound: true);
+            m_Player_Throwables = m_Player.FindAction("Throwables", throwIfNotFound: true);
+            m_Player_Gadgets = m_Player.FindAction("Gadgets", throwIfNotFound: true);
+            m_Player_Mode = m_Player.FindAction("Mode", throwIfNotFound: true);
+            m_Player_Tools = m_Player.FindAction("Tools", throwIfNotFound: true);
             m_Player_LeanLeft = m_Player.FindAction("LeanLeft", throwIfNotFound: true);
             m_Player_LeanRight = m_Player.FindAction("LeanRight", throwIfNotFound: true);
             // UI
@@ -1320,10 +1320,10 @@ namespace ProjectUniverse
         private readonly InputAction m_Player_Escape;
         private readonly InputAction m_Player_ScrollWheel;
         private readonly InputAction m_Player_Shift;
-        private readonly InputAction m_Player_Num1;
-        private readonly InputAction m_Player_Num2;
-        private readonly InputAction m_Player_Num3;
-        private readonly InputAction m_Player_Num4;
+        private readonly InputAction m_Player_Throwables;
+        private readonly InputAction m_Player_Gadgets;
+        private readonly InputAction m_Player_Mode;
+        private readonly InputAction m_Player_Tools;
         private readonly InputAction m_Player_LeanLeft;
         private readonly InputAction m_Player_LeanRight;
         public struct PlayerActions
@@ -1347,10 +1347,10 @@ namespace ProjectUniverse
             public InputAction @Escape => m_Wrapper.m_Player_Escape;
             public InputAction @ScrollWheel => m_Wrapper.m_Player_ScrollWheel;
             public InputAction @Shift => m_Wrapper.m_Player_Shift;
-            public InputAction @Num1 => m_Wrapper.m_Player_Num1;
-            public InputAction @Num2 => m_Wrapper.m_Player_Num2;
-            public InputAction @Num3 => m_Wrapper.m_Player_Num3;
-            public InputAction @Num4 => m_Wrapper.m_Player_Num4;
+            public InputAction @Throwables => m_Wrapper.m_Player_Throwables;
+            public InputAction @Gadgets => m_Wrapper.m_Player_Gadgets;
+            public InputAction @Mode => m_Wrapper.m_Player_Mode;
+            public InputAction @Tools => m_Wrapper.m_Player_Tools;
             public InputAction @LeanLeft => m_Wrapper.m_Player_LeanLeft;
             public InputAction @LeanRight => m_Wrapper.m_Player_LeanRight;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -1413,18 +1413,18 @@ namespace ProjectUniverse
                 @Shift.started += instance.OnShift;
                 @Shift.performed += instance.OnShift;
                 @Shift.canceled += instance.OnShift;
-                @Num1.started += instance.OnNum1;
-                @Num1.performed += instance.OnNum1;
-                @Num1.canceled += instance.OnNum1;
-                @Num2.started += instance.OnNum2;
-                @Num2.performed += instance.OnNum2;
-                @Num2.canceled += instance.OnNum2;
-                @Num3.started += instance.OnNum3;
-                @Num3.performed += instance.OnNum3;
-                @Num3.canceled += instance.OnNum3;
-                @Num4.started += instance.OnNum4;
-                @Num4.performed += instance.OnNum4;
-                @Num4.canceled += instance.OnNum4;
+                @Throwables.started += instance.OnThrowables;
+                @Throwables.performed += instance.OnThrowables;
+                @Throwables.canceled += instance.OnThrowables;
+                @Gadgets.started += instance.OnGadgets;
+                @Gadgets.performed += instance.OnGadgets;
+                @Gadgets.canceled += instance.OnGadgets;
+                @Mode.started += instance.OnMode;
+                @Mode.performed += instance.OnMode;
+                @Mode.canceled += instance.OnMode;
+                @Tools.started += instance.OnTools;
+                @Tools.performed += instance.OnTools;
+                @Tools.canceled += instance.OnTools;
                 @LeanLeft.started += instance.OnLeanLeft;
                 @LeanLeft.performed += instance.OnLeanLeft;
                 @LeanLeft.canceled += instance.OnLeanLeft;
@@ -1486,18 +1486,18 @@ namespace ProjectUniverse
                 @Shift.started -= instance.OnShift;
                 @Shift.performed -= instance.OnShift;
                 @Shift.canceled -= instance.OnShift;
-                @Num1.started -= instance.OnNum1;
-                @Num1.performed -= instance.OnNum1;
-                @Num1.canceled -= instance.OnNum1;
-                @Num2.started -= instance.OnNum2;
-                @Num2.performed -= instance.OnNum2;
-                @Num2.canceled -= instance.OnNum2;
-                @Num3.started -= instance.OnNum3;
-                @Num3.performed -= instance.OnNum3;
-                @Num3.canceled -= instance.OnNum3;
-                @Num4.started -= instance.OnNum4;
-                @Num4.performed -= instance.OnNum4;
-                @Num4.canceled -= instance.OnNum4;
+                @Throwables.started -= instance.OnThrowables;
+                @Throwables.performed -= instance.OnThrowables;
+                @Throwables.canceled -= instance.OnThrowables;
+                @Gadgets.started -= instance.OnGadgets;
+                @Gadgets.performed -= instance.OnGadgets;
+                @Gadgets.canceled -= instance.OnGadgets;
+                @Mode.started -= instance.OnMode;
+                @Mode.performed -= instance.OnMode;
+                @Mode.canceled -= instance.OnMode;
+                @Tools.started -= instance.OnTools;
+                @Tools.performed -= instance.OnTools;
+                @Tools.canceled -= instance.OnTools;
                 @LeanLeft.started -= instance.OnLeanLeft;
                 @LeanLeft.performed -= instance.OnLeanLeft;
                 @LeanLeft.canceled -= instance.OnLeanLeft;
@@ -1703,10 +1703,10 @@ namespace ProjectUniverse
             void OnEscape(InputAction.CallbackContext context);
             void OnScrollWheel(InputAction.CallbackContext context);
             void OnShift(InputAction.CallbackContext context);
-            void OnNum1(InputAction.CallbackContext context);
-            void OnNum2(InputAction.CallbackContext context);
-            void OnNum3(InputAction.CallbackContext context);
-            void OnNum4(InputAction.CallbackContext context);
+            void OnThrowables(InputAction.CallbackContext context);
+            void OnGadgets(InputAction.CallbackContext context);
+            void OnMode(InputAction.CallbackContext context);
+            void OnTools(InputAction.CallbackContext context);
             void OnLeanLeft(InputAction.CallbackContext context);
             void OnLeanRight(InputAction.CallbackContext context);
         }

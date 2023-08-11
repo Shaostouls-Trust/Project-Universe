@@ -19,7 +19,7 @@ namespace ProjectUniverse.Player.PlayerController
         [Header("Input Manager")]
         [SerializeField] private float mouseXSensitivity, mouseYSensitivity;
         //Pointer lock and centering
-        [SerializeField] int CursorCase = 0;
+        //[SerializeField] int CursorCase = 0;
         [SerializeField] private bool toggleCursorLock = false;
 
         //End Input List
@@ -30,7 +30,7 @@ namespace ProjectUniverse.Player.PlayerController
         [SerializeField] private CharacterController charController;
         [SerializeField] private Light flashLight;
         //[SerializeField] private PlayerGuiController guiController;
-        private int activeFL = 0;
+        //private int activeFL = 0;
         //Movement Settings
         private float movementSpeed;
         [SerializeField] private float walkSpeed = 5.50f;
@@ -43,7 +43,7 @@ namespace ProjectUniverse.Player.PlayerController
         [SerializeField] private bool sprinting = false;
 
         //Jump Settings
-        [SerializeField] private float jumpForce = 10.0f;
+        //[SerializeField] private float jumpForce = 10.0f;
         [SerializeField] private float jumpMult = 1.0f;
         [SerializeField] private bool isJumping = false;
         [SerializeField] private AnimationCurve jumpFallOff;
@@ -201,13 +201,13 @@ namespace ProjectUniverse.Player.PlayerController
             {
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = true;
-                CursorCase = 1;
+                //CursorCase = 1;
             }
             if (toggleCursorLock == true)
             {
                 Cursor.lockState = CursorLockMode.Confined;
                 Cursor.visible = false;
-                CursorCase = 2;
+                //CursorCase = 2;
             }
             toggleCursorLock = !toggleCursorLock;
         }

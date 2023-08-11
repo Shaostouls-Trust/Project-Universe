@@ -509,10 +509,10 @@ namespace ProjectUniverse.Player.PlayerController
 
             controls.Player.Fire.Enable();
             controls.Player.Reload.Enable();
-            controls.Player.Num1.Enable();
-            controls.Player.Num2.Enable();
-            controls.Player.Num3.Enable();
-            controls.Player.Num4.Enable();
+            controls.Player.Throwables.Enable();
+            controls.Player.Gadgets.Enable();
+            controls.Player.Mode.Enable();
+            controls.Player.Tools.Enable();
             controls.Player.ScrollWheel.Enable();
 
             controls.Player.Look.Enable();
@@ -535,10 +535,10 @@ namespace ProjectUniverse.Player.PlayerController
 
             controls.Player.Fire.Disable();
             controls.Player.Reload.Disable();
-            controls.Player.Num1.Disable();
-            controls.Player.Num2.Disable();
-            controls.Player.Num3.Disable();
-            controls.Player.Num4.Disable();
+            controls.Player.Throwables.Disable();
+            controls.Player.Gadgets.Disable();
+            controls.Player.Mode.Disable();
+            controls.Player.Tools.Disable();
             controls.Player.ScrollWheel.Disable();
 
             controls.Player.Look.Disable();
@@ -634,7 +634,7 @@ namespace ProjectUniverse.Player.PlayerController
                     }
                 }
             };
-            controls.Player.Num1.performed += ctx =>
+            controls.Player.Throwables.performed += ctx =>
             {
                 if (!ShipMode)
                 {
@@ -645,7 +645,7 @@ namespace ProjectUniverse.Player.PlayerController
                     }
                 }
             };
-            controls.Player.Num2.performed += ctx =>
+            controls.Player.Gadgets.performed += ctx =>
             {
                 if (!ShipMode)
                 {
@@ -656,7 +656,7 @@ namespace ProjectUniverse.Player.PlayerController
                     }
                 }
             };
-            controls.Player.Num3.performed += ctx =>
+            controls.Player.Mode.performed += ctx =>
             {
                 if (!ShipMode)
                 {
@@ -681,7 +681,7 @@ namespace ProjectUniverse.Player.PlayerController
                     }
                 }
             };
-            controls.Player.Num4.performed += ctx =>
+            controls.Player.Tools.performed += ctx =>
             {
                 if (!ShipMode)
                 {

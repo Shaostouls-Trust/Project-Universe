@@ -44,6 +44,7 @@ namespace ProjectUniverse.Environment.Gas
         [SerializeField] private float leakRate;
         [SerializeField] private GameObject[] bulletHoles;
         [SerializeField] private GameObject vent;
+        private bool hasVent;
         [SerializeField] private Volume ductVolume;
         [SerializeField] private float insulationRating = 0.1f;
         [SerializeField] private bool burst;
@@ -55,6 +56,8 @@ namespace ProjectUniverse.Environment.Gas
         private float flowVelocity_ms = 0f;
         public int gassescount;
         private AudioSource ventSFX;
+        private bool hasVentSFX;
+        private VolumeAtmosphereController roomVAC;
 
         public bool IsBurst
         {
@@ -431,33 +434,8 @@ namespace ProjectUniverse.Environment.Gas
 
         public void VentToVolume()
         {
-            //Play the vent airflow sound from the vent object
-            if (ventSFX == null)
-            {
-                ventSFX = Vent.GetComponent<AudioSource>();
-                if (ventSFX == null)
-                {
-                    ventSFX = Vent.GetComponentInChildren<AudioSource>();
-                }
-            }
-            if(ventSFX != null)
-            {
-                if (!ventSFX.isPlaying && gasses.Count > 1)
-                {
-                    ventSFX.Play();
-                }
-                else if (ventSFX.isPlaying && gasses.Count == 0)
-                {
-                    ventSFX.Stop();
-                }
-            }
-            else
-            {
-                Debug.Log("no ventSFX on " + gameObject.transform.parent.parent.name);
-            }
-            
             //Debug.Log("Vent?");
-            VolumeAtmosphereController roomVAC = ductVolume.GetComponent<VolumeAtmosphereController>();
+            //VolumeAtmosphereController roomVAC = ductVolume.GetComponent<VolumeAtmosphereController>();
             //float roomVolume = roomVAC.GetVolume();
             IGas remainder;
             //Vents will fill rooms with IGas Oxygen at 1000L/s. 
@@ -502,6 +480,51 @@ namespace ProjectUniverse.Environment.Gas
                     //Debug.Log("Outflow: " + outflow.ToString());
                     roomVAC.AddRoomGas(outflow);
                 }
+            }
+        }
+
+        public bool HasVent
+        {
+            get { return hasVent; }
+        }
+        public bool HasSFX
+        {
+            get { return hasVentSFX; }
+        }
+
+        private void Start()
+        {
+            if(Vent != null)
+            {
+                hasVent = true;
+            }
+            else
+            {
+                hasVent = false;
+            }
+
+            if (HasVent)
+            {
+                if (ventSFX == null)
+                {
+                    if (!Vent.TryGetComponent<AudioSource>(out ventSFX))
+                    {
+                        ventSFX = Vent.GetComponentInChildren<AudioSource>();
+                    }
+                }
+            }
+            if (ventSFX == null)
+            {
+                hasVentSFX = false;
+            }
+            else
+            {
+                hasVentSFX = true;
+            }
+
+            if (ductVolume != null)
+            {
+                ductVolume.TryGetComponent<VolumeAtmosphereController>(out roomVAC);
             }
         }
 
@@ -584,6 +607,26 @@ namespace ProjectUniverse.Environment.Gas
             {
                 //no gasses
                 globalPressure = 0f;
+            }
+
+            if (HasVent)
+            {
+                //Play the vent airflow sound from the vent object
+                if (HasSFX)
+                {
+                    if (!ventSFX.isPlaying && gasses.Count > 1)
+                    {
+                        ventSFX.Play();
+                    }
+                    else if (ventSFX.isPlaying && gasses.Count == 0)
+                    {
+                        ventSFX.Stop();
+                    }
+                }
+                else
+                {
+                    Debug.Log("no ventSFX on " + gameObject.name + " in " + gameObject.transform.parent.parent.name);
+                }
             }
             gassescount = gasses.Count;
         }

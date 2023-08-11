@@ -22,8 +22,8 @@ public class RoomController : MonoBehaviour
     [SerializeField] private int maxTiles; // Maximum tiles per floor.
     [SerializeField] private int currentTile = 0; // Current tile value.
     // Floats.
-    [SerializeField] private float tileWidth = 0.10f; // Set the width of each tile. ( can be adjusted per tile for multi-block tiles.
-    [SerializeField] private float floorHeight = 0.30f; // set the height of each floor. ( can be adjusted for larger dead space).
+    //[SerializeField] private float tileWidth = 0.10f; // Set the width of each tile. ( can be adjusted per tile for multi-block tiles.
+    //[SerializeField] private float floorHeight = 0.30f; // set the height of each floor. ( can be adjusted for larger dead space).
     // Arrays.
     [SerializeField] public TileList[] tileList; // Array of arrays. Used one per floor each with x amount of tiles.
     // Booleans.

@@ -15,7 +15,7 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private List<GameObject> targets = new List<GameObject>(); // All targets that have been created. may convert to list.
     [SerializeField] private GameObject currentTarget; // Currently cycled target.
     public GameObject targetBin; // Stores all the targetpoint gameObjects.
-    [SerializeField] private int maxTargets = 12; // Max targets. currently is "maxInventory" / 5. will possibly change to some other less arbitrary value in the future. should likely be based off of hardware.
+    //[SerializeField] private int maxTargets = 12; // Max targets. currently is "maxInventory" / 5. will possibly change to some other less arbitrary value in the future. should likely be based off of hardware.
     // Define Inventory Values.
     [SerializeField] private GameObject IconPrefab;
     [SerializeField] private GameObject InventoryPanel;
@@ -23,7 +23,7 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private List<GameObject> objects = new List<GameObject>(); // Stores gameobjects associated with players inventory. Should probably convert to list in the future.
     public GameObject inventoryContainer; // Stores all objects in the players inventory.
     [SerializeField] private int maxInventory = 60; // Max inventory size.. Currently arbitrary. will link to player carry capacity in the future.
-    [SerializeField] private int itemCount = 0;
+    //[SerializeField] private int itemCount = 0;
     [SerializeField] private List<GameObject> Icons = new List<GameObject>(); // created icons.
     [SerializeField] private List<CustomRenderTexture> RenderTextures = new List<CustomRenderTexture>();
     [SerializeField] private List<RawImage> IconTex = new List<RawImage>(); // Saved custom render textures to apply to icons.
@@ -34,7 +34,7 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private int renderMult = 1; // Multiplier for rendertexture scale.
     public bool processed = false; // Check for if the inventory has been processed.
     [SerializeField] private BoxCollider2D panelCollider;
-    private static int hideLayer = 18;
+    //private static int hideLayer = 18;
     private static int showLayer = 17;
 
     public int target = 0;

@@ -16,6 +16,8 @@ namespace ProjectUniverse.Util
 {
     public static class Utils
 	{
+		public static float LastDeltaTime = 0f;
+
 		/// <summary>
 		/// Sort the referenced list by whatever value is reflexively returned by the provided MethodInfo.
 		/// The referenced list is directly modified in-place.
@@ -61,7 +63,7 @@ namespace ProjectUniverse.Util
 		/// <returns></returns>
 		public static IGas SubtractGas(float amountPerSecond, IGas gasFrom, out IGas remainder)
 		{
-			float amount = amountPerSecond * Time.deltaTime;
+			float amount = amountPerSecond * LastDeltaTime;
 			IGas returnGas = new IGas(gasFrom.GetIDName(), gasFrom.GetTemp(), 0.0f);
 			returnGas.SetLocalPressure(gasFrom.GetLocalPressure());
 			returnGas.SetLocalVolume(gasFrom.GetLocalVolume());
