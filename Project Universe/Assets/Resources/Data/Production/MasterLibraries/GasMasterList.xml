@@ -28,6 +28,24 @@
 		<SpecificHeat Value="846.0"/>
 	</Gas>
 	<Gas>
+		<Gas_Type STR_ID="NitrousOxide" />
+		<Flamability Value="4"/>
+		<Combustability Value="0"/>
+		<MolarMass Value="44.013" />
+		<IsNuclear BoolValue="false" />
+		<Toxicity Value="3.0" />
+		<SpecificHeat Value="387.0"/>
+	</Gas>
+	<Gas>
+		<Gas_Type STR_ID="Ammonia" />
+		<Flamability Value="0"/>
+		<Combustability Value="6"/>
+		<MolarMass Value="17.031" />
+		<IsNuclear BoolValue="false" />
+		<Toxicity Value="5.0" />
+		<SpecificHeat Value="3700"/>
+	</Gas>
+	<Gas>
 		<Gas_Type STR_ID="Steam" />
 		<Flamability Value="0"/>
 		<Combustability Value="0"/>
@@ -46,6 +64,42 @@
 		<SpecificHeat Value="1900"/>
 	</Gas>
 	<Gas>
+		<Gas_Type STR_ID="Neon" />
+		<Flamability Value="0"/>
+		<Combustability Value="0"/>
+		<MolarMass Value="20.180" />
+		<IsNuclear BoolValue="false" />
+		<Toxicity Value="0.0" />
+		<SpecificHeat Value="1030.1"/>
+	</Gas>
+	<Gas>
+		<Gas_Type STR_ID="Argon" />
+		<Flamability Value="0"/>
+		<Combustability Value="0"/>
+		<MolarMass Value="39.95" />
+		<IsNuclear BoolValue="false" />
+		<Toxicity Value="0.0" />
+		<SpecificHeat Value="520.3"/>
+	</Gas>
+	<Gas>
+		<Gas_Type STR_ID="Xenon" />
+		<Flamability Value="0"/>
+		<Combustability Value="0"/>
+		<MolarMass Value="131.293" />
+		<IsNuclear BoolValue="false" />
+		<Toxicity Value="2.0" />
+		<SpecificHeat Value="2079"/>
+	</Gas>
+	<Gas>
+		<Gas_Type STR_ID="Radon" />
+		<Flamability Value="0"/>
+		<Combustability Value="0"/>
+		<MolarMass Value="222" />
+		<IsNuclear BoolValue="false" />
+		<Toxicity Value="9.0" />
+		<SpecificHeat Value="90.0"/>
+	</Gas>
+	<Gas>
 		<Gas_Type STR_ID="Helium4" />
 		<Flamability Value="0"/>
 		<Combustability Value="0"/>
@@ -60,8 +114,17 @@
 		<Combustability Value="0"/>
 		<MolarMass Value="70.906" />
 		<IsNuclear BoolValue="false" />
-		<Toxicity Value="0.1" />
+		<Toxicity Value="10" />
 		<SpecificHeat Value="480"/>
+	</Gas>
+	<Gas>
+		<Gas_Type STR_ID="Acetylene" />
+		<Flamability Value="9"/>
+		<Combustability Value="9"/>
+		<MolarMass Value="26.04" />
+		<IsNuclear BoolValue="false" />
+		<Toxicity Value="3" />
+		<SpecificHeat Value="1674"/>
 	</Gas>
 	<Gas>
 		<Gas_Type STR_ID="Helium3" />
@@ -96,7 +159,7 @@
 		<Combustability Value="10"/>
 		<MolarMass Value="28.07" />
 		<IsNuclear BoolValue="false" />
-		<Toxicity Value="0.0" />
+		<Toxicity Value="3.0" />
 		<SpecificHeat Value="2138"/>
 	</Gas>
 	<Gas>
@@ -109,21 +172,12 @@
 		<SpecificHeat Value="880"/>
 	</Gas>
 	<Gas>
-		<Gas_Type STR_ID="Ammonia" />
-		<Flamability Value="0"/>
-		<Combustability Value="6"/>
-		<MolarMass Value="17.03"/>
-		<IsNuclear BoolValue="false" />
-		<Toxicity Value="1.0" />
-		<SpecificHeat Value="3700"/>
-	</Gas>
-	<Gas>
 		<Gas_Type STR_ID="HydrogenChloride" />
 		<Flamability Value="0"/>
 		<Combustability Value="0"/>
 		<MolarMass Value="36.461"/>
 		<IsNuclear BoolValue="false" />
-		<Toxicity Value="0.1" />
+		<Toxicity Value="9.0" />
 		<SpecificHeat Value="3110"/>
 	</Gas>
 	<Gas>
@@ -132,7 +186,7 @@
 		<Combustability Value="0"/>
 		<MolarMass Value="64.07"/>
 		<IsNuclear BoolValue="false" />
-		<Toxicity Value="0.1" />
+		<Toxicity Value="4.0" />
 		<SpecificHeat Value="1370"/>
 	</Gas>
 	<Gas>
@@ -141,7 +195,7 @@
 		<Combustability Value="0"/>
 		<MolarMass Value="80.07"/>
 		<IsNuclear BoolValue="false" />
-		<Toxicity Value="0.1" />
+		<Toxicity Value="5.0" />
 		<SpecificHeat Value="519.56"/>
 	</Gas>
 	<Gas>
@@ -150,7 +204,7 @@
 		<Combustability Value="0"/>
 		<MolarMass Value="98.08"/>
 		<IsNuclear BoolValue="false" />
-		<Toxicity Value="0.1" />
+		<Toxicity Value="9.0" />
 		<SpecificHeat Value="1340"/>
 	</Gas>
 	<Gas>

@@ -8,6 +8,16 @@ namespace ProjectUniverse.Items.Weapons
     {
         //public AudioClip audClip;
         public AudioSource audSrc;
+        [SerializeField] private float liveTime;
+
+        private void Update()
+        {
+            liveTime -= Time.deltaTime;
+            if(liveTime <= 0f)
+            {
+                Destroy(this);
+            }
+        }
 
         private void OnCollisionEnter(Collision collision)
         {

@@ -105,11 +105,134 @@
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
 		<Density Density="6.11" />
 	</Ingot>
-	
+	<Ingot>
+		<STR_ID Ingot_Type="Ingot_Boron" />
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Density Density="2.34" />
+	</Ingot>
 	<Ingot>
 		<STR_ID Ingot_Type="Ingot_Cobalt" />
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
 		<Density Density="8.9" />
+	</Ingot>
+	<Ingot>
+		<STR_ID Ingot_Type="Ingot_Magnesium" />
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Density Density="1.738" />
+	</Ingot>
+	<Ingot>
+		<STR_ID Ingot_Type="Ingot_Zirconium" />
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Density Density="6.51" />
+	</Ingot>
+	<Ingot>
+		<STR_ID Ingot_Type="Ingot_Niobium" />
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Density Density="8.57" />
+	</Ingot>
+	<Ingot>
+		<STR_ID Ingot_Type="Ingot_Silver" />
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Density Density="10.49" />
+	</Ingot>
+	<Ingot>
+		<STR_ID Ingot_Type="Ingot_Tellurium" />
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Density Density="6.24" />
+	</Ingot>
+	<Ingot>
+		<STR_ID Ingot_Type="Ingot_Cesium" />
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Density Density="1.93" />
+	</Ingot>
+	<Ingot>
+		<STR_ID Ingot_Type="Ingot_Neodymium" />
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Density Density="7.01" />
+	</Ingot>
+	<Ingot>
+		<STR_ID Ingot_Type="Ingot_Tantalum" />
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Density Density="16.69" />
+	</Ingot>
+	<Ingot>
+		<STR_ID Ingot_Type="Ingot_Polonium" />
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Density Density="9.20" />
+	</Ingot>
+	<Ingot>
+		<STR_ID Ingot_Type="Ingot_Astatine" />
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Density Density="6.35" />
+	</Ingot>
+	<Ingot>
+		<STR_ID Ingot_Type="Ingot_Francium" />
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Density Density="1.87" />
+	</Ingot>
+	<Ingot>
+		<STR_ID Ingot_Type="Ingot_Radium" />
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Density Density="5.5" />
+	</Ingot>
+	<Ingot>
+		<STR_ID Ingot_Type="Ingot_Actinium" />
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Density Density="1.87" />
+	</Ingot>
+	<Ingot>
+		<STR_ID Ingot_Type="Ingot_Thorium" />
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Density Density="11.724" />
+	</Ingot>
+	<Ingot>
+		<STR_ID Ingot_Type="Ingot_Protactinium" />
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Density Density="15.37" />
+	</Ingot>
+	<Ingot>
+		<STR_ID Ingot_Type="Ingot_Neptunium" />
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Density Density="20.45" />
+	</Ingot>
+	<Ingot>
+		<STR_ID Ingot_Type="Ingot_Americium" />
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Density Density="13.69" />
+	</Ingot>
+	<Ingot>
+		<STR_ID Ingot_Type="Ingot_Curium" />
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Density Density="13.51" />
+	</Ingot>
+	<Ingot>
+		<STR_ID Ingot_Type="Ingot_Californium" />
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Density Density="15.1" />
+	</Ingot>
+	<!-- Feldspar can be split into silicates and aluminas -->
+	<Ingot>
+		<STR_ID Ingot_Type="Ingot_Feldspar" />
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Density Density="2.56" />
+	</Ingot>
+	<!-- Magnesite can be split into magnesium and carbonate (CO3) -->
+	<Ingot>
+		<STR_ID Ingot_Type="Ingot_Magnesite" />
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Density Density="2.96" />
+	</Ingot>
+	<!-- Pyrite can be split into iron and sulfur -->
+	<Ingot>
+		<STR_ID Ingot_Type="Ingot_Pyrite" />
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Density Density="4.85" />
+	</Ingot>
+	<!-- TiO2 can be split into oxygen and titanium -->
+	<Ingot>
+		<STR_ID Ingot_Type="Ingot_TitaniumDioxide" />
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Density Density="4.26" />
 	</Ingot>
 	<!-- Alloys below this line -->
 	<Ingot>
@@ -131,5 +254,10 @@
 		<STR_ID Ingot_Type="Ingot_Invar" />
 		<ResourcePath Path="Prefabs\CMDRAsh\" />
 		<Density Density="8.05" />
+	</Ingot>
+	<Ingot>
+		<STR_ID Ingot_Type="Ingot_TelluriumLead" />
+		<ResourcePath Path="Prefabs\CMDRAsh\" />
+		<Density Density="11.09" />
 	</Ingot>
 </IngotDefinitions>

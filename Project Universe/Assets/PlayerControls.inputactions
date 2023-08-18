@@ -51,6 +51,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "71d7b23e-27c4-45cc-8245-1e752aa1fd94",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Interact_Hold",
                     "type": "Button",
                     "id": "a79f2e95-c629-4d48-9c11-dc4f1a44e814",
@@ -598,6 +607,17 @@
                     "action": "Interact_Hold",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e6d64013-b4e9-4924-8c15-2fe3831c0c73",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -1116,6 +1136,12 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Paused",
+            "id": "a946adea-5544-4eaa-b2d7-db2244e59dd8",
+            "actions": [],
+            "bindings": []
         }
     ],
     "controlSchemes": [

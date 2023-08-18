@@ -1,3 +1,15 @@
+# Project Universe 1.0.2.5
+* What's new:
+	- Interaction Controller Keybinding Fix.
+	- Dynamic Keybinds.
+	- Bullet and Casing Lifetimes.
+	- Resource XMLs have been updated.
+
+* What's Next:
+	- The XML fields likely will need updated, and thus the loaders too
+	- Split volume controls
+	- We will attempt to split certain resources, such as textures, into a package file that can be downloaded separately to reduce the initial project download size. Barring that, additional cleaning to the file structure will be performed.
+
 # Project Universe 1.0.2.4
 * What's New:
 	- Volume Atmosphere Controllers have been moved to a Jobs System

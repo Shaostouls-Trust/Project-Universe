@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using ProjectUniverse.Ship;
 using ProjectUniverse.Environment.Volumes;
 using Unity.Netcode.Transports.UTP;
+using ProjectUniverse.UI;
+using UnityEngine.InputSystem;
 
 namespace ProjectUniverse.Networking
 {
@@ -22,6 +24,7 @@ namespace ProjectUniverse.Networking
         UnityTransport unityTransportForClient;
         [SerializeField] private GameObject loadScreen;
         public RenderStateManager rsmPlayer;
+        [SerializeField] private OptionsMenuUIController omuic;
         //[SerializeField] private NetworkManager networkManager;
 
         /// <summary>
@@ -56,6 +59,7 @@ namespace ProjectUniverse.Networking
                 //Debug.Log(playNet.name);
                 playNet.gameObject.GetComponent<SupplementalController>().LockOnlyCursor();
                 playNet.gameObject.GetComponent<PlayerVolumeController>().tempRSMPlayer = rsmPlayer;
+                omuic.PlayerControlsInput = playNet.gameObject.GetComponent<PlayerInput>();
             }
             //}
             Debug.Log("Started Host");

@@ -16,6 +16,15 @@ namespace ProjectUniverse.Util
 {
     public static class Utils
 	{
+		public enum ImpactBehaviorType
+        {
+			NORM = 0,
+			AP = 1,
+			HE = 2,
+			APHE = 3,
+			HESH = 4
+        }
+
 		public static float LastDeltaTime = 0f;
 
 		/// <summary>

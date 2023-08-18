@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ProjectUniverse.Util.Utils;
 
 namespace ProjectUniverse.Items.Weapons
 {
@@ -9,7 +10,28 @@ namespace ProjectUniverse.Items.Weapons
         private float damage;
         private float penData; //NYI
         [SerializeField] private AudioSource audSrc;
-        
+        [SerializeField] private ImpactBehaviorType ibht;
+        [SerializeField] private float liveTimeMin;
+        [SerializeField] private float liveTimeMax;
+        [SerializeField] private Rigidbody rb;
+
+        private void FixedUpdate()
+        {
+            if (liveTimeMin > 0f)
+                liveTimeMin -= Time.fixedDeltaTime;
+
+            liveTimeMax -= Time.deltaTime;
+            if (liveTimeMax <= 0f)
+            {
+                Destroy(this);
+            }
+
+            if(liveTimeMin <= 0f && rb.velocity.magnitude <= 1.0f)
+            {
+                Destroy(this);
+            }
+        }
+
         private void OnCollisionEnter(Collision collision)
         {
             //for now, only deal damage
@@ -22,7 +44,8 @@ namespace ProjectUniverse.Items.Weapons
             collision.gameObject.SendMessageUpwards("TakeDamageFromBullet", this, SendMessageOptions.DontRequireReceiver);
             //Debug.Log(collision.gameObject.name);
             ///Eventually play an impact sound and do all the ballistics stuff
-            ///here
+            
+            //
         }
 
         public void SetDamageAmount(float num)

@@ -87,8 +87,10 @@ namespace ProjectUniverse.UI
         [SerializeField] private Slider vfVolDistance;
         [Header("Options - RayTracing")]
         [Header("Controls")]
-        [SerializeField] private PlayerControls controlsFile;
+        private PlayerInput controlsFile;
         [SerializeField] private TMP_Text[] controlsArray=new TMP_Text[18];
+        [SerializeField] private InputActionReference[] actionRefs = new InputActionReference[18];
+        private InputActionRebindingExtensions.RebindingOperation rebindOp;
         [Header("Misc")]
         private ColorBlock topMenuButtonDefaults;
         private ColorBlock sideMenuButtonDefaults;
@@ -101,9 +103,15 @@ namespace ProjectUniverse.UI
         private int fullscreen;//0 is false, 1 is true
         private Resolution[] resolutions;
 
+        public PlayerInput PlayerControlsInput
+        {
+            get { return controlsFile; }
+            set { controlsFile = value; }
+        }
+
         public void Start()
         {
-            controlsFile = new PlayerControls();
+            //controlsFile = new PlayerControls();
             topMenuButtonDefaults = Cat_VideoButton.colors;
             sideMenuButtonDefaults = Options_GeneralButton.colors;
 
@@ -166,10 +174,7 @@ namespace ProjectUniverse.UI
             sensSlider.value = s;
             controlsArray[0].text = "" + s;
             //
-            for(int n = 1; n < controlsArray.Length; n++)
-            {
-                //controlsArray[n].text = 
-            }
+            LoadBindings();
         }
 
         public void ShowGamePlayOptions()
@@ -220,6 +225,7 @@ namespace ProjectUniverse.UI
             Cat_SecretButton.colors = topMenuButtonDefaults;
 
             //show controls options
+            
             Controls_Panel.SetActive(true);
         }
         public void ShowSecretOptions()
@@ -435,6 +441,8 @@ namespace ProjectUniverse.UI
             PlayerPrefs.GetInt("windowMode", GlobalSettings.WindowMode);
 
             Cat_Bar.SetActive(false);
+            SaveBindings();
+            Controls_Panel.SetActive(false);
         }
 
         ///
@@ -774,56 +782,50 @@ namespace ProjectUniverse.UI
 
         public void SetKeyBind(int i)
         {
-            //use i to get targetted binding
-            switch (i)
-            {
-                case 1:
-                    
-                    break;
-                case 2: break;
-                case 3: break;
-                case 4: break;
-                case 5:
-                    //set button text to "Bind To: ..."
-                    controlsArray[i].text = "Bind To: ...";
-                    //wait for keyboard press
-                    InputActionReference m_Action = InputActionReference.Create(controlsFile.FindAction("Fire"));
-                    InputActionRebindingExtensions.RebindingOperation op = InputActionRebindingExtensions.PerformInteractiveRebinding(m_Action.action);
-                    op.OnComplete(_ => UpdateKeybindings(5, m_Action));
-                    op.Start();
-                    break;
-                case 6: break;
-                case 7: break;
-                case 8: break;
-                case 9: break;
-                case 10: break;
-                case 11: break;
-                case 12: break;
-                case 13: break;
-                case 14: break;
-                case 15: break;
-                case 16: break;
-                case 17: break;
-                case 18: break;
-            }
-            
-           
-            //assign key to bind
+            //set button text to "Bind To: ..."
+            controlsArray[i+1].text = "Bind To: ...";
+            //pause player inputs
+            controlsFile.SwitchCurrentActionMap("Paused");
+            //run the rebinding event
+            rebindOp = actionRefs[i].action.PerformInteractiveRebinding()
+                .WithControlsExcluding("Mouse")
+                .WithMatchingEventsBeingSuppressed(true)
+                .OnMatchWaitForAnother(0.1f)
+                .OnComplete(_ => UpdateKeybindings(i, actionRefs[i]));
+            rebindOp.Start();
         }
 
         private void UpdateKeybindings(int i, InputActionReference m_Action)
         {
-            controlsArray[i].text = "?";
-            Debug.Log(m_Action.action.bindings.ToString());
+            Debug.Log("Rebound");
+            //assign key to bind
+            int bindingIndex = m_Action.action.GetBindingIndexForControl(m_Action.action.controls[0]);
+            controlsArray[i + 1].text = InputControlPath.ToHumanReadableString(m_Action.action.bindings[bindingIndex].effectivePath
+                , InputControlPath.HumanReadableStringOptions.OmitDevice);
+
+            //return control to player
+            controlsFile.SwitchCurrentActionMap("Player");
+            try { rebindOp.Dispose(); }catch(Exception e) { }
         }
 
         public void LoadBindings()
         {
+            string rebinds = PlayerPrefs.GetString("rebinds", string.Empty);
+            if (string.IsNullOrEmpty(rebinds)) { return; }
+            controlsFile.actions.LoadBindingOverridesFromJson(rebinds);
 
+            for (int i = 0; i < actionRefs.Length; i++)
+            {
+                int b = actionRefs[i].action.GetBindingIndexForControl(actionRefs[i].action.controls[0]);
+                controlsArray[i+1].text = InputControlPath.ToHumanReadableString(actionRefs[i].action.bindings[b].effectivePath
+                    , InputControlPath.HumanReadableStringOptions.OmitDevice);
+            }
+            
         }
         public void SaveBindings()
         {
-            
+            string rebinds = controlsFile.actions.SaveBindingOverridesAsJson();
+            PlayerPrefs.SetString("keybinds", rebinds);
         }
     }
 }

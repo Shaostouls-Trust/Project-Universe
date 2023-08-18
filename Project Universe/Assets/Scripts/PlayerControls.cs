@@ -75,6 +75,15 @@ namespace ProjectUniverse
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""71d7b23e-27c4-45cc-8245-1e752aa1fd94"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Interact_Hold"",
                     ""type"": ""Button"",
                     ""id"": ""a79f2e95-c629-4d48-9c11-dc4f1a44e814"",
@@ -622,6 +631,17 @@ namespace ProjectUniverse
                     ""action"": ""Interact_Hold"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e6d64013-b4e9-4924-8c15-2fe3831c0c73"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1140,6 +1160,12 @@ namespace ProjectUniverse
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Paused"",
+            ""id"": ""a946adea-5544-4eaa-b2d7-db2244e59dd8"",
+            ""actions"": [],
+            ""bindings"": []
         }
     ],
     ""controlSchemes"": [
@@ -1212,6 +1238,7 @@ namespace ProjectUniverse
             m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
             m_Player_Inv_Transfer = m_Player.FindAction("Inv_Transfer", throwIfNotFound: true);
             m_Player_Inv_Use = m_Player.FindAction("Inv_Use", throwIfNotFound: true);
+            m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
             m_Player_Interact_Hold = m_Player.FindAction("Interact_Hold", throwIfNotFound: true);
             m_Player_Inv_Drop = m_Player.FindAction("Inv_Drop", throwIfNotFound: true);
             m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
@@ -1242,6 +1269,8 @@ namespace ProjectUniverse
             m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
             m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
             m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
+            // Paused
+            m_Paused = asset.FindActionMap("Paused", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -1308,6 +1337,7 @@ namespace ProjectUniverse
         private readonly InputAction m_Player_Fire;
         private readonly InputAction m_Player_Inv_Transfer;
         private readonly InputAction m_Player_Inv_Use;
+        private readonly InputAction m_Player_Interact;
         private readonly InputAction m_Player_Interact_Hold;
         private readonly InputAction m_Player_Inv_Drop;
         private readonly InputAction m_Player_Crouch;
@@ -1335,6 +1365,7 @@ namespace ProjectUniverse
             public InputAction @Fire => m_Wrapper.m_Player_Fire;
             public InputAction @Inv_Transfer => m_Wrapper.m_Player_Inv_Transfer;
             public InputAction @Inv_Use => m_Wrapper.m_Player_Inv_Use;
+            public InputAction @Interact => m_Wrapper.m_Player_Interact;
             public InputAction @Interact_Hold => m_Wrapper.m_Player_Interact_Hold;
             public InputAction @Inv_Drop => m_Wrapper.m_Player_Inv_Drop;
             public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
@@ -1377,6 +1408,9 @@ namespace ProjectUniverse
                 @Inv_Use.started += instance.OnInv_Use;
                 @Inv_Use.performed += instance.OnInv_Use;
                 @Inv_Use.canceled += instance.OnInv_Use;
+                @Interact.started += instance.OnInteract;
+                @Interact.performed += instance.OnInteract;
+                @Interact.canceled += instance.OnInteract;
                 @Interact_Hold.started += instance.OnInteract_Hold;
                 @Interact_Hold.performed += instance.OnInteract_Hold;
                 @Interact_Hold.canceled += instance.OnInteract_Hold;
@@ -1450,6 +1484,9 @@ namespace ProjectUniverse
                 @Inv_Use.started -= instance.OnInv_Use;
                 @Inv_Use.performed -= instance.OnInv_Use;
                 @Inv_Use.canceled -= instance.OnInv_Use;
+                @Interact.started -= instance.OnInteract;
+                @Interact.performed -= instance.OnInteract;
+                @Interact.canceled -= instance.OnInteract;
                 @Interact_Hold.started -= instance.OnInteract_Hold;
                 @Interact_Hold.performed -= instance.OnInteract_Hold;
                 @Interact_Hold.canceled -= instance.OnInteract_Hold;
@@ -1639,6 +1676,44 @@ namespace ProjectUniverse
             }
         }
         public UIActions @UI => new UIActions(this);
+
+        // Paused
+        private readonly InputActionMap m_Paused;
+        private List<IPausedActions> m_PausedActionsCallbackInterfaces = new List<IPausedActions>();
+        public struct PausedActions
+        {
+            private @PlayerControls m_Wrapper;
+            public PausedActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+            public InputActionMap Get() { return m_Wrapper.m_Paused; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(PausedActions set) { return set.Get(); }
+            public void AddCallbacks(IPausedActions instance)
+            {
+                if (instance == null || m_Wrapper.m_PausedActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_PausedActionsCallbackInterfaces.Add(instance);
+            }
+
+            private void UnregisterCallbacks(IPausedActions instance)
+            {
+            }
+
+            public void RemoveCallbacks(IPausedActions instance)
+            {
+                if (m_Wrapper.m_PausedActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            public void SetCallbacks(IPausedActions instance)
+            {
+                foreach (var item in m_Wrapper.m_PausedActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_PausedActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        public PausedActions @Paused => new PausedActions(this);
         private int m_KeyboardMouseSchemeIndex = -1;
         public InputControlScheme KeyboardMouseScheme
         {
@@ -1691,6 +1766,7 @@ namespace ProjectUniverse
             void OnFire(InputAction.CallbackContext context);
             void OnInv_Transfer(InputAction.CallbackContext context);
             void OnInv_Use(InputAction.CallbackContext context);
+            void OnInteract(InputAction.CallbackContext context);
             void OnInteract_Hold(InputAction.CallbackContext context);
             void OnInv_Drop(InputAction.CallbackContext context);
             void OnCrouch(InputAction.CallbackContext context);
@@ -1722,6 +1798,9 @@ namespace ProjectUniverse
             void OnRightClick(InputAction.CallbackContext context);
             void OnTrackedDevicePosition(InputAction.CallbackContext context);
             void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
+        }
+        public interface IPausedActions
+        {
         }
     }
 }

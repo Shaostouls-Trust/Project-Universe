@@ -19,16 +19,37 @@ namespace ProjectUniverse.Environment.Interactable
         private bool showingInteractPointer = false;
         private GameObject player;
         private bool triggered;
+        [SerializeField] private SupplementalController controller;
+        private PlayerControls controls;
+        private GameObject target;
         void Start()
         {
-            // NotAServer Exception
-            //if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId, out var networkedClient))
-            //{
-            //    player = networkedClient.PlayerObject.gameObject;
-            //}
-            //player = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject;
-                //NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject().gameObject;
-            //else player = null;
+            controls = controller.PlayerController;
+            controls.Player.Interact.Enable();
+
+            controls.Player.Interact.performed += ctx =>
+            {
+                //if (target.TryGetComponent(out InteractionElement con))
+                //{
+                if(target != null)
+                    target.GetComponent<InteractionElement>().Interact();
+                //}
+            };
+        }
+
+        private void OnEnable()
+        {
+            if(controls != null)
+            {
+                controls.Player.Interact.Enable();
+            }
+            
+        }
+
+        private void OnDisable()
+        {
+            if (controls != null)
+                controls.Player.Interact.Disable();
         }
 
         // Update is called once per frame
@@ -58,26 +79,19 @@ namespace ProjectUniverse.Environment.Interactable
                     }
                     if (!triggered)
                     {
-
                         //PointerDetector
                         if (hit.collider.gameObject.TryGetComponent(out PointerDetector pd))
                         {
                             pd.ExternalInteractFunc();
                             triggered = true;
-                            
                         }
-                        //Normal interaction
-                        if (Input.GetKeyUp(KeyCode.F))
-                        {
-                            //get Interaction Element and call backend function
-                            hit.collider.gameObject.GetComponent<InteractionElement>().Interact();
-                            //triggered = true;
-                            
-                        }
+                        //get Interaction Element and call backend function
+                        target = hit.collider.gameObject;
                     }
                 }
                 else
                 {
+                    target = null;
                     if (triggered)
                     {
                         //lock and hide cursor, we have left the detection area
@@ -99,6 +113,7 @@ namespace ProjectUniverse.Environment.Interactable
             }
             else
             {
+                target = null;
                 if (triggered)
                 {
                     if(player == null)

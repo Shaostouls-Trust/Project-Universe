@@ -970,7 +970,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1552955436397392209
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1643,10 +1643,10 @@ RectTransform:
   - {fileID: 5113915972814408776}
   m_Father: {fileID: 5948318827396122826}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -400}
+  m_SizeDelta: {x: 750, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &257471406066668394
 GameObject:
@@ -1894,10 +1894,10 @@ RectTransform:
   - {fileID: 7774782763929154690}
   m_Father: {fileID: 5948318827396122826}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -100}
+  m_SizeDelta: {x: 750, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &299724667614822457
 GameObject:
@@ -4982,7 +4982,7 @@ GameObject:
   - component: {fileID: 1775604779307199760}
   - component: {fileID: 635572799396021207}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text (TMP) 7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6653,7 +6653,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 8
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -6855,7 +6855,7 @@ GameObject:
   - component: {fileID: 9196204383149483756}
   - component: {fileID: 3076832464153411010}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text (TMP) 9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7393,7 +7393,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 14
+          m_IntArgument: 9
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -10020,8 +10020,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4985906600077667281}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -11439,10 +11439,10 @@ RectTransform:
   - {fileID: 4966690966052030830}
   m_Father: {fileID: 5948318827396122826}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -50}
+  m_SizeDelta: {x: 750, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1720126079072009433
 GameObject:
@@ -13494,7 +13494,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 10
+          m_IntArgument: 5
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -14081,7 +14081,7 @@ GameObject:
   - component: {fileID: 2128185638960599918}
   - component: {fileID: 8506205174220588814}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text (TMP) 13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15100,7 +15100,7 @@ GameObject:
   - component: {fileID: 7081118417720740229}
   - component: {fileID: 4073789603353067091}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text (TMP) 14
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15429,7 +15429,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 18
+          m_IntArgument: 13
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -15562,7 +15562,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 13
+          m_IntArgument: 8
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -17191,10 +17191,10 @@ RectTransform:
   - {fileID: 1397677884086958053}
   m_Father: {fileID: 5948318827396122826}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -650}
+  m_SizeDelta: {x: 750, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &2492008919269867675
 GameObject:
@@ -17208,7 +17208,7 @@ GameObject:
   - component: {fileID: 9049767305552742171}
   - component: {fileID: 2032146291510161239}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text (TMP) 6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19425,7 +19425,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 6
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -19517,7 +19517,7 @@ GameObject:
   - component: {fileID: 1089091247123890219}
   - component: {fileID: 6452202657488389814}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text (TMP) 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21209,10 +21209,10 @@ RectTransform:
   - {fileID: 3286132823070618960}
   m_Father: {fileID: 5948318827396122826}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -450}
+  m_SizeDelta: {x: 750, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &3114278578458946522
 GameObject:
@@ -22256,10 +22256,10 @@ RectTransform:
   - {fileID: 7803678042710429710}
   m_Father: {fileID: 5948318827396122826}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -350}
+  m_SizeDelta: {x: 750, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &3189348074802015067
 GameObject:
@@ -22593,10 +22593,10 @@ RectTransform:
   - {fileID: 1282761768072841246}
   m_Father: {fileID: 5948318827396122826}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -500}
+  m_SizeDelta: {x: 750, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &3331257339669623389
 GameObject:
@@ -24880,7 +24880,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 9
+          m_IntArgument: 4
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -27845,7 +27845,7 @@ GameObject:
   - component: {fileID: 8575629720682389600}
   - component: {fileID: 6562444168245982263}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text (TMP) 10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29487,10 +29487,10 @@ RectTransform:
   - {fileID: 5556354943797819584}
   m_Father: {fileID: 5948318827396122826}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -300}
+  m_SizeDelta: {x: 750, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &4383986716955155868
 GameObject:
@@ -31299,7 +31299,7 @@ GameObject:
   - component: {fileID: 2673221233845663261}
   - component: {fileID: 4858080672361808085}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text (TMP) 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31887,7 +31887,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 12
+          m_IntArgument: 7
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -32260,7 +32260,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 15
+          m_IntArgument: 10
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -33723,14 +33723,14 @@ RectTransform:
   m_Children:
   - {fileID: 3012525514295065470}
   - {fileID: 2296637851625767826}
-  - {fileID: 5383137154975605992}
   - {fileID: 634120395688984482}
+  - {fileID: 5383137154975605992}
   m_Father: {fileID: 5948318827396122826}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 750, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &5125181566112926175
 GameObject:
@@ -34067,7 +34067,7 @@ GameObject:
   - component: {fileID: 3533911708968751225}
   - component: {fileID: 4221534794840741300}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text (TMP) 5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34736,7 +34736,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 11
+          m_IntArgument: 6
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -35027,7 +35027,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 5
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -36121,10 +36121,10 @@ RectTransform:
   - {fileID: 819891502319602238}
   m_Father: {fileID: 5948318827396122826}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -250}
+  m_SizeDelta: {x: 750, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &5463694638298369308
 GameObject:
@@ -38988,7 +38988,7 @@ GameObject:
   - component: {fileID: 7523907934423711383}
   - component: {fileID: 2275744392909018963}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text (TMP) 11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39429,7 +39429,7 @@ GameObject:
   - component: {fileID: 3716156302106198329}
   - component: {fileID: 7550480129032674516}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text (TMP) 12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40560,10 +40560,10 @@ RectTransform:
   - {fileID: 7102408378816971171}
   m_Father: {fileID: 5948318827396122826}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -550}
+  m_SizeDelta: {x: 750, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &6307486891518513568
 GameObject:
@@ -43552,7 +43552,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 7
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -44012,7 +44012,7 @@ MonoBehaviour:
   Options_SSGIPanel: {fileID: 6686611643281455695}
   Options_FogPanel: {fileID: 6686611644235987369}
   Options_Raytracing: {fileID: 6686611643268899313}
-  Controls_Panel: {fileID: 0}
+  Controls_Panel: {fileID: 184231033137737318}
   resolutionDrop: {fileID: 6686611644116950152}
   graphicsDrop: {fileID: 6686611642499318842}
   windowModeDrop: {fileID: 6686611643613710415}
@@ -44052,10 +44052,6 @@ MonoBehaviour:
   vfVolDistance: {fileID: 6686611643705795424}
   controlsArray:
   - {fileID: 1799610247670660316}
-  - {fileID: 2951801829398118369}
-  - {fileID: 101600839140462514}
-  - {fileID: 5286181939467651874}
-  - {fileID: 2401184906512354221}
   - {fileID: 3885506158831578420}
   - {fileID: 6452202657488389814}
   - {fileID: 2096355080021910553}
@@ -44070,6 +44066,21 @@ MonoBehaviour:
   - {fileID: 7550480129032674516}
   - {fileID: 8506205174220588814}
   - {fileID: 4073789603353067091}
+  actionRefs:
+  - {fileID: -6745003240204980254, guid: 6f09ea3544c08d9419824394d8ba7c50, type: 3}
+  - {fileID: -3108065947265787829, guid: 6f09ea3544c08d9419824394d8ba7c50, type: 3}
+  - {fileID: -5669403311242008579, guid: 6f09ea3544c08d9419824394d8ba7c50, type: 3}
+  - {fileID: -4593300311514741463, guid: 6f09ea3544c08d9419824394d8ba7c50, type: 3}
+  - {fileID: 4191131659474145276, guid: 6f09ea3544c08d9419824394d8ba7c50, type: 3}
+  - {fileID: -3000519261449449386, guid: 6f09ea3544c08d9419824394d8ba7c50, type: 3}
+  - {fileID: 724718352012219401, guid: 6f09ea3544c08d9419824394d8ba7c50, type: 3}
+  - {fileID: -7639069059602592858, guid: 6f09ea3544c08d9419824394d8ba7c50, type: 3}
+  - {fileID: 5683838718361271719, guid: 6f09ea3544c08d9419824394d8ba7c50, type: 3}
+  - {fileID: -1850043938366638710, guid: 6f09ea3544c08d9419824394d8ba7c50, type: 3}
+  - {fileID: -5141968100755547429, guid: 6f09ea3544c08d9419824394d8ba7c50, type: 3}
+  - {fileID: -1254355171800535570, guid: 6f09ea3544c08d9419824394d8ba7c50, type: 3}
+  - {fileID: -410424569233756146, guid: 6f09ea3544c08d9419824394d8ba7c50, type: 3}
+  - {fileID: -370031261803422301, guid: 6f09ea3544c08d9419824394d8ba7c50, type: 3}
   topMenuSelectedColor: {r: 0.85490197, g: 0.64705884, b: 0.1254902, a: 1}
   sideMenuSelectedColor: {r: 1, g: 0.84313726, b: 0, a: 1}
 --- !u!1 &6686611642136424484
@@ -68565,7 +68576,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6686611643084293699
 RectTransform:
   m_ObjectHideFlags: 0
@@ -101293,10 +101304,10 @@ RectTransform:
   - {fileID: 3057990166551734504}
   m_Father: {fileID: 5948318827396122826}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -200}
+  m_SizeDelta: {x: 750, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &7051081412958423028
 GameObject:
@@ -102252,10 +102263,10 @@ RectTransform:
   - {fileID: 7350725322933797216}
   m_Father: {fileID: 5948318827396122826}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -600}
+  m_SizeDelta: {x: 750, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &7247160687473687641
 GameObject:
@@ -102840,7 +102851,7 @@ GameObject:
   - component: {fileID: 7092773579053212250}
   - component: {fileID: 2096355080021910553}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text (TMP) 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -104852,10 +104863,10 @@ RectTransform:
   - {fileID: 523524573114512194}
   m_Father: {fileID: 5948318827396122826}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -700}
+  m_SizeDelta: {x: 750, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &7574130667381366604
 GameObject:
@@ -108393,7 +108404,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 16
+          m_IntArgument: 11
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -109429,7 +109440,7 @@ GameObject:
   - component: {fileID: 8482048761564284527}
   - component: {fileID: 3885506158831578420}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text (TMP) 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -111132,7 +111143,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 17
+          m_IntArgument: 12
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -112325,7 +112336,7 @@ RectTransform:
   m_Father: {fileID: 5111185009676051032}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -113118,10 +113129,10 @@ RectTransform:
   - {fileID: 898529816552928707}
   m_Father: {fileID: 5948318827396122826}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -150}
+  m_SizeDelta: {x: 750, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &8912955235948430966
 GameObject:
@@ -113814,7 +113825,7 @@ GameObject:
   - component: {fileID: 2272245902408698319}
   - component: {fileID: 2253483535268613267}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text (TMP) 8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
