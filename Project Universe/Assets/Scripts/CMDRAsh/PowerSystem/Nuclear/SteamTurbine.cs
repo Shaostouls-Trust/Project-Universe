@@ -1,5 +1,6 @@
 using ProjectUniverse.Environment.Gas;
 using ProjectUniverse.Environment.Volumes;
+using ProjectUniverse.Serialization;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -246,6 +247,7 @@ namespace ProjectUniverse.PowerSystem.Nuclear
                     {
                         rotorHealth = 0f;
                         //explosion and sound stuff
+                        src.volume *= GlobalSettings.MasterVolume * GlobalSettings.SFXVolume;
                         src.Play();
                         //Debug.Log("BOOM!");
                     }

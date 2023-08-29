@@ -1,3 +1,4 @@
+using ProjectUniverse.Serialization;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,6 +24,7 @@ namespace ProjectUniverse.Items.Weapons
         {
             if (GetComponent<Rigidbody>().velocity.magnitude > 1f)
             {
+                audSrc.volume *= GlobalSettings.MasterVolume * GlobalSettings.SFXVolume;
                 audSrc.Play(0);
             }
             ///

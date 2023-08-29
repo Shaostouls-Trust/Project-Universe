@@ -1,3 +1,4 @@
+using ProjectUniverse.Serialization;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -66,6 +67,7 @@ namespace ProjectUniverse.Ship
             currentEnergy = maxEnergy;
             if(ambientAudSrc != null)
             {
+                ambientAudSrc.volume *= GlobalSettings.MasterVolume * GlobalSettings.EnvVolume;
                 ambientAudSrc.Play();
             }
         }

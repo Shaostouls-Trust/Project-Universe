@@ -1,3 +1,4 @@
+using ProjectUniverse.Serialization;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,6 +27,7 @@ namespace ProjectUniverse.Base
             }
             for (int s = 0; s < soundsToPlay.Length; s++)
             {
+                soundsToPlay[s].volume *= GlobalSettings.MasterVolume * GlobalSettings.SFXVolume;
                 soundsToPlay[s].Play();
             }
             for (int m = 0; m < materialsToChange.Length; m++)

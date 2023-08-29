@@ -1,4 +1,5 @@
 ﻿using ProjectUniverse.Player.PlayerController;
+using ProjectUniverse.Serialization;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -76,6 +77,7 @@ namespace CMF
 			if(awc.IsGrounded() && sc.Jump && hasJumped == false)
             {
 				hasJumped = true;
+				audioSource.volume *= GlobalSettings.MasterVolume * GlobalSettings.PlayerVolume;
 				audioSource.PlayOneShot(jumpClip, audioClipVolume);
 			}
             //falling
@@ -87,6 +89,7 @@ namespace CMF
 			if (awc.IsGrounded() && !sc.Jump && hasJumped == true)
 			{
 				hasJumped = false;
+				audioSource.volume *= GlobalSettings.MasterVolume * GlobalSettings.PlayerVolume;
 				audioSource.PlayOneShot(landClip, audioClipVolume);
 			}
 		}
