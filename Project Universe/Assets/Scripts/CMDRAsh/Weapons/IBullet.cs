@@ -1,3 +1,4 @@
+using ProjectUniverse.Serialization;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -37,6 +38,7 @@ namespace ProjectUniverse.Items.Weapons
             //for now, only deal damage
             if (GetComponent<Rigidbody>().velocity.magnitude > 1f)
             {
+                audSrc.volume *= GlobalSettings.MasterVolume * GlobalSettings.SFXVolume;
                 //audSrc.Play(0);
             }
             //Bullets not making it through to the limbs b/c of the char controller (even with collision layers)

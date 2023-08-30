@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using ProjectUniverse.Serialization;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -49,6 +50,7 @@ namespace ProjectUniverse.Audio
             speaker.clip = audioClip;
             speaker.outputAudioMixerGroup = mixer.FindMatchingGroups(value[0])[0];
             speaker.volume = float.Parse(value[1]);
+            speaker.volume *= GlobalSettings.MasterVolume * GlobalSettings.SFXVolume;
             speaker.dopplerLevel = float.Parse(value[2]);
             speaker.minDistance = int.Parse(value[3]);
             speaker.maxDistance = int.Parse(value[4]);

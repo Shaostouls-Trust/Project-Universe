@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ProjectUniverse.Serialization;
 
 namespace ProjectUniverse.Items.Weapons
 {
@@ -217,6 +218,7 @@ namespace ProjectUniverse.Items.Weapons
             casing.transform.SetParent(null);
             
             Speaker.clip = ShotSound;
+            Speaker.volume *= GlobalSettings.MasterVolume * GlobalSettings.SFXVolume;
             Speaker.Play(0);
             playerRB.AddForce(Vector3.back * RecoilForce);
 
@@ -246,6 +248,7 @@ namespace ProjectUniverse.Items.Weapons
             casing.transform.SetParent(null);
 
             Speaker.clip = ShotSound;
+            Speaker.volume *= GlobalSettings.MasterVolume * GlobalSettings.SFXVolume;
             Speaker.Play(0);
             playerRB.AddForce(Vector3.back * RecoilForce);
         }

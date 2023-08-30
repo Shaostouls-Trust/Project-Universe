@@ -11,6 +11,7 @@ using TMPro;
 using ProjectUniverse.Util;
 using ProjectUniverse.Environment.Gas;
 using ProjectUniverse.Ship;
+using ProjectUniverse.Serialization;
 //using UnityEngine.Rendering.PostProcessing;
 
 /// <summary>
@@ -166,6 +167,7 @@ namespace ProjectUniverse.Environment.Volumes
                         if (toNextBreath <= 0f)
                         {
                             int clipIndex = UnityEngine.Random.Range(0, breathClips.Length);
+                            playerSFX.volume *= GlobalSettings.MasterVolume * GlobalSettings.PlayerVolume;
                             playerSFX.PlayOneShot(breathClips[clipIndex]);
                             breathInGas.SetTemp(myRoomTemp);
                             breathInGas.SetLocalPressure(myRoomPressure);
@@ -187,6 +189,7 @@ namespace ProjectUniverse.Environment.Volumes
                     if (toNextBreath <= 0f)
                     {
                         int clipIndex = UnityEngine.Random.Range(0, breathClips.Length);
+                        playerSFX.volume *= GlobalSettings.MasterVolume * GlobalSettings.PlayerVolume;
                         playerSFX.PlayOneShot(breathClips[clipIndex]);
                         //Air conversion is every breath. Logic is constant
                         breathInGas.SetTemp(myRoomTemp);

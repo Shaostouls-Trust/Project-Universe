@@ -85,7 +85,13 @@ namespace ProjectUniverse.Serialization
         /// 
         /// Audio
         /// 
-
+        [SerializeField] private static float _masterVol;
+        [SerializeField] private static float _musicVol;
+        [SerializeField] private static float _sfxVol;
+        [SerializeField] private static float _envVol;
+        [SerializeField] private static float _creatureVol;
+        [SerializeField] private static float _playerVol;
+        [SerializeField] private static float _voiceVol;
         /// 
         /// Controls
         /// 
@@ -392,5 +398,43 @@ namespace ProjectUniverse.Serialization
             set { _vfVolumetricDistance = value; }
         }
         /// Video - RayTracing
+        /// 
+
+        /// Audio
+        public static float MasterVolume
+        {
+            get { return _masterVol; }
+            set { _masterVol = value; }
+        }
+        public static float MusicVolume
+        {
+            get { return _musicVol; }
+            set { _musicVol = value; }
+        }
+        public static float SFXVolume
+        {
+            get { return _sfxVol; }
+            set { _sfxVol = value; }
+        }
+        public static float EnvVolume
+        {
+            get { return _envVol; }
+            set { _envVol = value; }
+        }
+        public static float CreatureVolume
+        {
+            get { return _creatureVol; }
+            set { _creatureVol = value; }
+        }
+        public static float PlayerVolume
+        {
+            get { return _playerVol; }
+            set { _playerVol = value; }
+        }
+        public static float VoiceVolume
+        {
+            get { return _voiceVol; }
+            set { _voiceVol = value; }
+        }
     }
 }

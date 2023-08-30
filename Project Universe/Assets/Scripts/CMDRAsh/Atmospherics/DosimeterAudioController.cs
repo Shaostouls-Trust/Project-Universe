@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using ProjectUniverse.Environment.Volumes;
+using ProjectUniverse.Serialization;
 
 namespace ProjectUniverse.Environment.Radiation
 {
@@ -75,7 +76,8 @@ namespace ProjectUniverse.Environment.Radiation
                 {
                     if (!speaker.isPlaying)
                     {
-                        speaker.panStereo = Random.Range(-1f, 1f);
+                        speaker.volume *= GlobalSettings.MasterVolume * GlobalSettings.PlayerVolume;
+                        //speaker.panStereo = Random.Range(-1f, 1f);
                         speaker.PlayOneShot(soundBlips[Random.Range(range[0], range[1])]);
                         cyclesToPlaySound = rate;
                     }

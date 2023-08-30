@@ -6,6 +6,7 @@ using ProjectUniverse.Data.Libraries;
 using Unity.Netcode;
 using ProjectUniverse.Animation.Controllers;
 using ProjectUniverse.Environment.Interactable;
+using ProjectUniverse.Serialization;
 
 namespace ProjectUniverse.PowerSystem
 {
@@ -313,6 +314,7 @@ namespace ProjectUniverse.PowerSystem
             if (targetSubMachine[numID] != null && targetSubMachine[numID].enabled)
             {
                 //play switch sound (It should not be set to loop).
+                soundsource.volume *= GlobalSettings.MasterVolume * GlobalSettings.SFXVolume;
                 soundsource.Play();
                 //if the machines are not running, turn red emissive on. If running, green.
                 if (targetSubMachine[numID].RunMachine)

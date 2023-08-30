@@ -41,6 +41,7 @@ namespace ProjectUniverse.UI
         [SerializeField] private GameObject Options_FogPanel;
         [SerializeField] private GameObject Options_Raytracing;
         [SerializeField] private GameObject Controls_Panel;
+        [SerializeField] private GameObject Audio_Panel;
         [Header("Options - General")]
         [SerializeField] private TMP_Dropdown resolutionDrop;
         [SerializeField] private TMP_Dropdown graphicsDrop;
@@ -91,6 +92,9 @@ namespace ProjectUniverse.UI
         [SerializeField] private TMP_Text[] controlsArray=new TMP_Text[18];
         [SerializeField] private InputActionReference[] actionRefs = new InputActionReference[18];
         private InputActionRebindingExtensions.RebindingOperation rebindOp;
+        [Header("Audio")]
+        [SerializeField] private TMP_Text[] soundOptions = new TMP_Text[7];
+        [SerializeField] private Slider[] volSlider = new Slider[7];
         [Header("Misc")]
         private ColorBlock topMenuButtonDefaults;
         private ColorBlock sideMenuButtonDefaults;
@@ -150,7 +154,7 @@ namespace ProjectUniverse.UI
             windowModeDrop.value = w;
             resolutionDrop.value = resolutions.Length - 1;
             sensSlider.value = s;
-            controlsArray[0].text = "" + s;
+            controlsArray[0].text = "" + Math.Round(s, 1);
         }
 
         public void ShowOptionsMenu()
@@ -172,7 +176,7 @@ namespace ProjectUniverse.UI
             windowModeDrop.value = w;
             resolutionDrop.value = resolutions.Length - 1;
             sensSlider.value = s;
-            controlsArray[0].text = "" + s;
+            controlsArray[0].text = "" + Math.Round(s, 1); ;
             //
             LoadBindings();
         }
@@ -212,6 +216,9 @@ namespace ProjectUniverse.UI
             Cat_VideoButton.colors = topMenuButtonDefaults;
             Cat_ControlsButton.colors = topMenuButtonDefaults;
             Cat_SecretButton.colors = topMenuButtonDefaults;
+
+            Audio_Panel.SetActive(true);
+            LoadVolumes();
         }
         public void ShowControlsOptions()
         {
@@ -443,6 +450,7 @@ namespace ProjectUniverse.UI
             Cat_Bar.SetActive(false);
             SaveBindings();
             Controls_Panel.SetActive(false);
+            Audio_Panel.SetActive(false);
         }
 
         ///
@@ -827,5 +835,74 @@ namespace ProjectUniverse.UI
             string rebinds = controlsFile.actions.SaveBindingOverridesAsJson();
             PlayerPrefs.SetString("keybinds", rebinds);
         }
+
+        public void SetVolume_Master(float vol)
+        {
+            GlobalSettings.MasterVolume =(float)Math.Round(vol, 2);
+            soundOptions[0].text = "" + GlobalSettings.MasterVolume;
+            PlayerPrefs.SetFloat("MasterVolume", GlobalSettings.MasterVolume);
+        }
+        public void SetVolume_Music(float vol)
+        {
+            GlobalSettings.MusicVolume = (float)Math.Round(vol, 2);
+            soundOptions[1].text = "" + GlobalSettings.MusicVolume;
+            PlayerPrefs.SetFloat("MusicVolume", GlobalSettings.MusicVolume);
+        }
+        public void SetVolume_SFX(float vol)
+        {
+            GlobalSettings.SFXVolume = (float)Math.Round(vol, 2);
+            soundOptions[2].text = "" + GlobalSettings.SFXVolume;
+            PlayerPrefs.SetFloat("SFXVolume", GlobalSettings.SFXVolume);
+        }
+        public void SetVolume_Env(float vol)
+        {
+            GlobalSettings.EnvVolume = (float)Math.Round(vol, 2);
+            soundOptions[3].text = "" + GlobalSettings.EnvVolume;
+            PlayerPrefs.SetFloat("EnvVolume", GlobalSettings.EnvVolume);
+        }
+        public void SetVolume_Creature(float vol)
+        {
+            GlobalSettings.CreatureVolume = (float)Math.Round(vol, 2);
+            soundOptions[4].text = "" + GlobalSettings.CreatureVolume;
+            PlayerPrefs.SetFloat("CreatureVolume", GlobalSettings.CreatureVolume);
+        }
+        public void SetVolume_Player(float vol)
+        {
+            GlobalSettings.PlayerVolume = (float)Math.Round(vol, 2);
+            soundOptions[5].text = "" + GlobalSettings.PlayerVolume;
+            PlayerPrefs.SetFloat("PlayerVolume", GlobalSettings.PlayerVolume);
+        }
+        public void SetVolume_Voice(float vol)
+        {
+            GlobalSettings.VoiceVolume = (float)Math.Round(vol, 2);
+            soundOptions[6].text = "" + GlobalSettings.VoiceVolume;
+            PlayerPrefs.SetFloat("VoiceVolume", GlobalSettings.VoiceVolume);
+        }
+
+        public void LoadVolumes()
+        {
+            GlobalSettings.MasterVolume = PlayerPrefs.GetFloat("MasterVolume", 1.00f);
+            soundOptions[0].text = "" + GlobalSettings.MasterVolume;
+            volSlider[0].value = GlobalSettings.MasterVolume;
+            GlobalSettings.MusicVolume = PlayerPrefs.GetFloat("MusicVolume", 1.00f);
+            soundOptions[1].text = "" + GlobalSettings.MusicVolume;
+            volSlider[1].value = GlobalSettings.MasterVolume;
+            GlobalSettings.SFXVolume = PlayerPrefs.GetFloat("SFXVolume", 1.00f);
+            soundOptions[2].text = "" + GlobalSettings.SFXVolume;
+            volSlider[2].value = GlobalSettings.MasterVolume;
+            GlobalSettings.EnvVolume = PlayerPrefs.GetFloat("EnvVolume", 1.00f);
+            soundOptions[3].text = "" + GlobalSettings.EnvVolume;
+            volSlider[3].value = GlobalSettings.MasterVolume;
+            GlobalSettings.CreatureVolume = PlayerPrefs.GetFloat("CreatureVolume", 1.00f);
+            soundOptions[4].text = "" + GlobalSettings.CreatureVolume;
+            volSlider[4].value = GlobalSettings.MasterVolume;
+            GlobalSettings.PlayerVolume = PlayerPrefs.GetFloat("PlayerVolume", 1.00f);
+            soundOptions[5].text = "" + GlobalSettings.PlayerVolume;
+            volSlider[5].value = GlobalSettings.MasterVolume;
+            GlobalSettings.VoiceVolume = PlayerPrefs.GetFloat("VoiceVolume", 1.00f);
+            soundOptions[6].text = "" + GlobalSettings.VoiceVolume;
+            volSlider[6].value = GlobalSettings.MasterVolume;
+        }
+
     }
 }
