@@ -1,3 +1,17 @@
+# Project Universe 1.0.2.7
+* What's new:
+	- Updated to 2022.3.8f1
+	- Updated Entities Packages
+	- Added Dedicated Server Support
+	- Netcode.IO.Net Implementation
+	- Tested Network Connection and Transport
+	
+* What's Next:
+	- The XML fields likely will need updated, and thus the loaders too.
+	- Test sending collider data to server
+	- Test sending position and state data
+	- Test server events to client
+
 # Project Universe 1.0.2.6
 * What's new:
 	- Split Volume Controls
