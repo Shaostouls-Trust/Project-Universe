@@ -16,7 +16,7 @@ namespace ProjectUniverse.PowerSystem
 		public ISubMachine subMach;
 
 		private float requestedEnergy;
-		private float maximumThroughput;
+		protected float maximumThroughput;
 
 		private float maxHeatCap;
 		private float heatAmount;
@@ -55,7 +55,7 @@ namespace ProjectUniverse.PowerSystem
 			maxActiveLegs = 3;
 		}
 
-		//power from substation to breaker box -- 100mm cable
+		//power from substation to breaker box -- 150mm cable
 		public ICable(IRoutingSubstation substation, IBreakerBox brBox)
 		{
 			subst = substation;
@@ -66,7 +66,7 @@ namespace ProjectUniverse.PowerSystem
 			maxActiveLegs = 3;
 		}
 
-		//power from breaker box to machine -- 50mm cable
+		//power from breaker box to submachine -- 50mm cable
 		public ICable(IBreakerBox brBox, ISubMachine submachine)
 		{
 			breaker = brBox;

@@ -14,7 +14,7 @@ public class GridSlot : MonoBehaviour, IDropHandler
     
     private void Start()
     {
-        CT = FindObjectOfType<CraftingTablet>();
+        CT = FindFirstObjectByType<CraftingTablet>();
 
     }
     

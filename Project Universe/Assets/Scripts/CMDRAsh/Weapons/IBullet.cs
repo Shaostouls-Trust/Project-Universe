@@ -27,7 +27,7 @@ namespace ProjectUniverse.Items.Weapons
                 Destroy(this);
             }
 
-            if(liveTimeMin <= 0f && rb.velocity.magnitude <= 1.0f)
+            if(liveTimeMin <= 0f && rb.linearVelocity.magnitude <= 1.0f)
             {
                 Destroy(this);
             }
@@ -36,7 +36,7 @@ namespace ProjectUniverse.Items.Weapons
         private void OnCollisionEnter(Collision collision)
         {
             //for now, only deal damage
-            if (GetComponent<Rigidbody>().velocity.magnitude > 1f)
+            if (GetComponent<Rigidbody>().linearVelocity.magnitude > 1f)
             {
                 audSrc.volume *= GlobalSettings.MasterVolume * GlobalSettings.SFXVolume;
                 //audSrc.Play(0);

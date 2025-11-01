@@ -206,7 +206,7 @@ namespace ProjectUniverse.Items.Weapons
             //create a bullet to shoot
             GameObject bullet = Instantiate(SlugToShoot, MuzzleDummy.transform.position, Quaternion.Euler(rotation), MuzzleDummy.transform);
             bullet.SetActive(true);
-            bullet.GetComponent<Rigidbody>().velocity = motionVector;
+            bullet.GetComponent<Rigidbody>().linearVelocity = motionVector;
             bullet.transform.SetParent(null);
             bullet.GetComponent<IBullet>().SetDamageAmount(Damage);
 
@@ -214,7 +214,7 @@ namespace ProjectUniverse.Items.Weapons
             //create a casing and spit it out as well
             GameObject casing = Instantiate(CasingToShoot, CasingDummy.transform.position, Quaternion.Euler(casingRot), CasingDummy.transform);
             casing.SetActive(true);
-            casing.GetComponent<Rigidbody>().velocity = MuzzleDummy.transform.right * 3f + playerRB.velocity;
+            casing.GetComponent<Rigidbody>().linearVelocity = MuzzleDummy.transform.right * 3f + playerRB.linearVelocity;
             casing.transform.SetParent(null);
             
             Speaker.clip = ShotSound;
@@ -236,7 +236,7 @@ namespace ProjectUniverse.Items.Weapons
             //create a bullet to shoot
             GameObject bullet = Instantiate(SlugToShoot, MuzzleDummy.transform.position, Quaternion.Euler(rotation), MuzzleDummy.transform);
             bullet.SetActive(true);
-            bullet.GetComponent<Rigidbody>().velocity = motionVector;
+            bullet.GetComponent<Rigidbody>().linearVelocity = motionVector;
             bullet.transform.SetParent(null);
             bullet.GetComponent<IBullet>().SetDamageAmount(Damage);
 
@@ -244,7 +244,7 @@ namespace ProjectUniverse.Items.Weapons
             //create a casing and spit it out as well
             GameObject casing = Instantiate(CasingToShoot, CasingDummy.transform.position, Quaternion.Euler(casingRot), CasingDummy.transform);
             casing.SetActive(true);
-            casing.GetComponent<Rigidbody>().velocity = MuzzleDummy.transform.right * 3f + playerRB.velocity;
+            casing.GetComponent<Rigidbody>().linearVelocity = MuzzleDummy.transform.right * 3f + playerRB.linearVelocity;
             casing.transform.SetParent(null);
 
             Speaker.clip = ShotSound;
@@ -280,7 +280,7 @@ namespace ProjectUniverse.Items.Weapons
             //scaled = (sampleZ * range) + min;
             //float z = (float)scaled;
 
-            Vector3 motionVector = MuzzleDummy.transform.forward * BulletSpeed + playerRB.velocity;
+            Vector3 motionVector = MuzzleDummy.transform.forward * BulletSpeed + playerRB.linearVelocity;
             motionVector += new Vector3(x, y, 0);
             return motionVector;
         }

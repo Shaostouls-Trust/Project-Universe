@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReactionDatabase>
+  <!-- COMBUSTION REACTIONS -->
+  <Reaction id="methane_complete_combustion" type="Combustion">
+    <Name>Methane Complete Combustion</Name>
+    <Description>Complete oxidation of methane to carbon dioxide and water</Description>
+    <Reactants>
+      <Reactant compound="Methane" coefficient="1.0" minConcentration="0.05"/>
+      <Reactant compound="Oxygen" coefficient="2.0" minConcentration="0.10"/>
+    </Reactants>
+    <Products>
+      <Product compound="CO2" coefficient="1.0"/>
+      <Product compound="Water" coefficient="2.0"/>
+    </Products>
+    <Conditions>
+      <MinTemperature>537</MinTemperature> <!-- Celsius -->
+      <MaxTemperature>999999</MaxTemperature>
+      <MinPressure>0.1</MinPressure> <!-- atm -->
+      <MaxPressure>100</MaxPressure>
+      <RequiresIgnition>true</RequiresIgnition>
+      <InhibitedBy>CO2,Nitrogen,Water</InhibitedBy>
+      <InhibitorThreshold>40.0</InhibitorThreshold> <!-- % by volume -->
+    </Conditions>
+    <Energetics>
+      <EnthalpyChange>-890300</EnthalpyChange> <!-- J/mol, negative = exothermic -->
+      <ActivationEnergy>270000</ActivationEnergy> <!-- J/mol -->
+    </Energetics>
+    <Effects>
+      <ContaminationPerMol>0.0</ContaminationPerMol>
+      <ExplosionPotential>7</ExplosionPotential> <!-- 0-10 scale -->
+    </Effects>
+  </Reaction>
+
+  <Reaction id="hydrogen_combustion" type="Combustion">
+    <Name>Hydrogen Combustion</Name>
+    <Description>Hydrogen oxidation to water vapor</Description>
+    <Reactants>
+      <Reactant compound="Hydrogen" coefficient="2.0" minConcentration="0.04"/>
+      <Reactant compound="Oxygen" coefficient="1.0" minConcentration="0.05"/>
+    </Reactants>
+    <Products>
+      <Product compound="Water" coefficient="2.0"/>
+    </Products>
+    <Conditions>
+      <MinTemperature>500</MinTemperature>
+      <MaxTemperature>999999</MaxTemperature>
+      <MinPressure>0.1</MinPressure>
+      <MaxPressure>100</MaxPressure>
+      <RequiresIgnition>true</RequiresIgnition>
+      <InhibitedBy>CO2,Nitrogen,Water</InhibitedBy>
+      <InhibitorThreshold>50.0</InhibitorThreshold>
+    </Conditions>
+    <Energetics>
+      <EnthalpyChange>-483600</EnthalpyChange> <!-- Per 2 moles Hydrogen -->
+      <ActivationEnergy>150000</ActivationEnergy>
+    </Energetics>
+    <Effects>
+      <ContaminationPerMol>0.0</ContaminationPerMol>
+      <ExplosionPotential>10</ExplosionPotential>
+    </Effects>
+  </Reaction>
+
+  <!-- DECOMPOSITION REACTIONS -->
+  <Reaction id="nitrous_oxide_decomposition" type="Decomposition">
+    <Name>Nitrous Oxide Decomposition</Name>
+    <Description>Thermal decomposition of N2O to nitrogen and oxygen</Description>
+    <Reactants>
+      <Reactant compound="N2O" coefficient="2.0" minConcentration="0.01"/>
+    </Reactants>
+    <Products>
+      <Product compound="Nitrogen" coefficient="2.0"/>
+      <Product compound="Oxygen" coefficient="1.0"/>
+    </Products>
+    <Conditions>
+      <MinTemperature>450</MinTemperature>
+      <MaxTemperature>999999</MaxTemperature>
+      <MinPressure>0.1</MinPressure>
+      <MaxPressure>100</MaxPressure>
+      <RequiresIgnition>false</RequiresIgnition> <!-- Heat alone is sufficient -->
+      <InhibitedBy></InhibitedBy>
+      <InhibitorThreshold>0</InhibitorThreshold>
+    </Conditions>
+    <Energetics>
+      <EnthalpyChange>-164100</EnthalpyChange> <!-- Exothermic decomposition -->
+      <ActivationEnergy>250000</ActivationEnergy>
+    </Energetics>
+    <Effects>
+      <ContaminationPerMol>0.0</ContaminationPerMol>
+      <ExplosionPotential>8</ExplosionPotential> <!-- Can be explosive -->
+    </Effects>
+  </Reaction>
+
+  <Reaction id="ammonia_decomposition" type="Decomposition">
+    <Name>Ammonia Decomposition</Name>
+    <Description>High temperature decomposition of ammonia</Description>
+    <Reactants>
+      <Reactant compound="NH3" coefficient="2.0" minConcentration="0.01"/>
+    </Reactants>
+    <Products>
+      <Product compound="Nitrogen" coefficient="1.0"/>
+      <Product compound="Hydrogen" coefficient="3.0"/>
+    </Products>
+    <Conditions>
+      <MinTemperature>800</MinTemperature> <!-- Requires very high temperature -->
+      <MaxTemperature>999999</MaxTemperature>
+      <MinPressure>0.1</MinPressure>
+      <MaxPressure>100</MaxPressure>
+      <RequiresIgnition>false</RequiresIgnition>
+      <InhibitedBy></InhibitedBy>
+      <InhibitorThreshold>0</InhibitorThreshold>
+    </Conditions>
+    <Energetics>
+      <EnthalpyChange>91800</EnthalpyChange> <!-- Endothermic -->
+      <ActivationEnergy>335000</ActivationEnergy>
+    </Energetics>
+    <Effects>
+      <ContaminationPerMol>0.1</ContaminationPerMol> <!-- Slight contamination -->
+      <ExplosionPotential>2</ExplosionPotential>
+    </Effects>
+  </Reaction>
+
+  <!-- REDOX REACTIONS -->
+  <Reaction id="ammonia_oxidation" type="Redox">
+    <Name>Ammonia Oxidation</Name>
+    <Description>Partial oxidation of ammonia to nitric oxide and water</Description>
+    <Reactants>
+      <Reactant compound="NH3" coefficient="4.0" minConcentration="0.15"/>
+      <Reactant compound="Oxygen" coefficient="5.0" minConcentration="0.10"/>
+    </Reactants>
+    <Products>
+      <Product compound="NO" coefficient="4.0"/>
+      <Product compound="Water" coefficient="6.0"/>
+    </Products>
+    <Conditions>
+      <MinTemperature>700</MinTemperature>
+      <MaxTemperature>999999</MaxTemperature>
+      <MinPressure>0.1</MinPressure>
+      <MaxPressure>100</MaxPressure>
+      <RequiresIgnition>true</RequiresIgnition>
+      <InhibitedBy>Nitrogen,CO2</InhibitedBy>
+      <InhibitorThreshold>60.0</InhibitorThreshold>
+    </Conditions>
+    <Energetics>
+      <EnthalpyChange>-905200</EnthalpyChange> <!-- Highly exothermic -->
+      <ActivationEnergy>180000</ActivationEnergy>
+    </Energetics>
+    <Effects>
+      <ContaminationPerMol>0.2</ContaminationPerMol>
+      <ExplosionPotential>6</ExplosionPotential>
+    </Effects>
+  </Reaction>
+
+  <Reaction id="hydrogen_oxidation_nitrous" type="Redox">
+    <Name>Hydrogen Oxidation with N2O</Name>
+    <Description>Hydrogen combustion using nitrous oxide as oxidizer</Description>
+    <Reactants>
+      <Reactant compound="Hydrogen" coefficient="1.0" minConcentration="0.04"/>
+      <Reactant compound="N2O" coefficient="1.0" minConcentration="0.05"/>
+    </Reactants>
+    <Products>
+      <Product compound="Water" coefficient="1.0"/>
+      <Product compound="Nitrogen" coefficient="1.0"/>
+    </Products>
+    <Conditions>
+      <MinTemperature>450</MinTemperature>
+      <MaxTemperature>999999</MaxTemperature>
+      <MinPressure>0.1</MinPressure>
+      <MaxPressure>100</MaxPressure>
+      <RequiresIgnition>true</RequiresIgnition>
+      <InhibitedBy>CO2</InhibitedBy>
+      <InhibitorThreshold>40.0</InhibitorThreshold>
+    </Conditions>
+    <Energetics>
+      <EnthalpyChange>-323850</EnthalpyChange> <!-- Exothermic -->
+      <ActivationEnergy>120000</ActivationEnergy>
+    </Energetics>
+    <Effects>
+      <ContaminationPerMol>0.0</ContaminationPerMol>
+      <ExplosionPotential>9</ExplosionPotential> <!-- Very explosive -->
+    </Effects>
+  </Reaction>
+
+  <!-- SYNTHESIS REACTION (example for future use) -->
+  <Reaction id="water_synthesis" type="Synthesis">
+    <Name>Water Formation</Name>
+    <Description>Direct synthesis of water from elements (same as Hydrogen combustion but lower temp)</Description>
+    <Reactants>
+      <Reactant compound="Hydrogen" coefficient="2.0" minConcentration="0.10"/>
+      <Reactant compound="Oxygen" coefficient="1.0" minConcentration="0.10"/>
+    </Reactants>
+    <Products>
+      <Product compound="Water" coefficient="2.0"/>
+    </Products>
+    <Conditions>
+      <MinTemperature>300</MinTemperature> <!-- Lower threshold with catalyst -->
+      <MaxTemperature>999999</MaxTemperature>
+      <MinPressure>1.0</MinPressure> <!-- Requires higher pressure -->
+      <MaxPressure>100</MaxPressure>
+      <RequiresIgnition>true</RequiresIgnition>
+      <InhibitedBy>Nitrogen,CO2</InhibitedBy>
+      <InhibitorThreshold>70.0</InhibitorThreshold>
+    </Conditions>
+    <Energetics>
+      <EnthalpyChange>-483600</EnthalpyChange>
+      <ActivationEnergy>200000</ActivationEnergy>
+    </Energetics>
+    <Effects>
+      <ContaminationPerMol>0.0</ContaminationPerMol>
+      <ExplosionPotential>8</ExplosionPotential>
+    </Effects>
+  </Reaction>
+</ReactionDatabase>

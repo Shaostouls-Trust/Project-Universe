@@ -17,7 +17,7 @@ public class HeuristicsTest : MonoBehaviour
             rb.MoveRotation(rb.rotation * Quaternion.Euler(rotationAxis * (rotationSpeed * Time.deltaTime)));
 
             //rb.MovePosition(rb.position + (translations * Time.deltaTime));//does not affect velocity
-            rb.velocity = translations;
+            rb.linearVelocity = translations;
         }
         else
         {

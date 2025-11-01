@@ -112,7 +112,8 @@ namespace AmplifyShaderEditor
 			shaderBody = UIUtils.ForceLFLineEnding( shaderBody );
 
 			// @diogo: Process SRP Conditionals => high priority
-			shaderBody  = TemplateHelperFunctions.ProcessSRPConditionals( shaderBody );
+			shaderBody = TemplateHelperFunctions.ProcessUnityConditionals( shaderBody );
+			shaderBody = TemplateHelperFunctions.ProcessSRPConditionals( shaderBody );
 
 			// Insert Before Tag
 			MatchCollection col = Regex.Matches( shaderBody, TemplateHelperFunctions.BeforePragmaPattern, RegexOptions.Singleline );

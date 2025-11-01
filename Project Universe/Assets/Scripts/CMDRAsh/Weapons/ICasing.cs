@@ -22,7 +22,7 @@ namespace ProjectUniverse.Items.Weapons
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (GetComponent<Rigidbody>().velocity.magnitude > 1f)
+            if (GetComponent<Rigidbody>().linearVelocity.magnitude > 1f)
             {
                 audSrc.volume *= GlobalSettings.MasterVolume * GlobalSettings.SFXVolume;
                 audSrc.Play(0);

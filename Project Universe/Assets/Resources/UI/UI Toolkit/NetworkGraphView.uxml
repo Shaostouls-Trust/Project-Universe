@@ -1,0 +1,15 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <Style src="NetworkGraphStyles.uss" />
+    <ui:VisualElement name="root" style="width: 50%; height: 100%;">
+        <ui:VisualElement name="toolbar" style="height: 40px; background-color: #333; flex-direction: row; align-items: center; padding-left: 10px; padding-right: 10px;">
+            <ui:Button name="delete-node-button" text="Delete Node" style="margin-left: 10px;" />
+            <ui:Button name="scan-components-button" text="Scan Components" style="margin-left: 10px;" />
+            <ui:Label text="Zoom:" style="color: white; margin-left: 20px;" />
+            <ui:Label name="zoom-label" text="100%" style="color: white; width: 50px;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="graph-container" class="graph-container">
+            <ui:VisualElement name="connections-container" class="connections-container" />
+            <ui:VisualElement name="nodes-container" class="nodes-container" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

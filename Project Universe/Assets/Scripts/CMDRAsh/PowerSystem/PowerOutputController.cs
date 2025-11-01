@@ -197,5 +197,34 @@ namespace ProjectUniverse.PowerSystem {
                 LowerTargetOutput();
             }
         }
+
+        // Hold operation started
+        public void ExternalHoldStart(int parameter)
+        {
+            if (parameter == 0)
+            {
+                RaiseTargetOutput();
+            }
+            else if (parameter == 1)
+            {
+                LowerTargetOutput();
+            }
+        }
+
+        // Hold operation update (called periodically during hold)
+        public void ExternalHoldUpdate(HoldData data)
+        {
+            if (data.parameter == 0)
+            {
+                RaiseTargetOutput();
+            }
+            else if (data.parameter == 1)
+            {
+                LowerTargetOutput();
+            }
+        }
+
+        // Hold operation ended
+        public void ExternalHoldEnd(int parameter){}
     }
 }

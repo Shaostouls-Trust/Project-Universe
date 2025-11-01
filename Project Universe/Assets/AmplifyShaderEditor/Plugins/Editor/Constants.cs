@@ -451,8 +451,8 @@ namespace AmplifyShaderEditor
 		public readonly static float PreviewExpanderWidth = 16f;
 		public readonly static float PreviewExpanderHeight = 16f;
 		public readonly static float TextFieldFontSize = 11f;
-		public readonly static float DefaultFontSize = 15f;
-		public readonly static float DefaultTitleFontSize = 13f;
+		public readonly static float DefaultFontSize = 14f;
+		public readonly static float DefaultTitleFontSize = 12f;
 		public readonly static float PropertiesTitleFontSize = 11f;
 		public readonly static float MessageFontSize = 40f;
 		public readonly static float SelectedObjectFontSize = 30f;
@@ -460,12 +460,12 @@ namespace AmplifyShaderEditor
 		public readonly static float PORT_X_ADJUST = 10;
 		public readonly static float PORT_INITIAL_X = 10;
 
-		public readonly static float PORT_INITIAL_Y = 40;
-		public readonly static float INPUT_PORT_DELTA_Y = 5;
-		public readonly static float PORT_TO_LABEL_SPACE_X = 5;
+		public readonly static float PORT_INITIAL_Y = 41;
+		public readonly static float INPUT_PORT_DELTA_Y = 7;
+		public readonly static float PORT_TO_LABEL_SPACE_X = 4;
 
 		public readonly static float NODE_HEADER_HEIGHT = 32;
-		public readonly static float NODE_HEADER_EXTRA_HEIGHT = 5;
+		public readonly static float NODE_HEADER_EXTRA_HEIGHT = 0;
 		public readonly static float NODE_HEADER_LEFTRIGHT_MARGIN = 10;
 
 		public readonly static float MULTIPLE_SELECION_BOX_ALPHA = 0.5f;
@@ -485,6 +485,7 @@ namespace AmplifyShaderEditor
 		public readonly static string SubTitleNameFormatStr = "Name( {0} )";
 		public readonly static string SubTitleSpaceFormatStr = "Space( {0} )";
 		public readonly static string SubTitleTypeFormatStr = "Type( {0} )";
+		public readonly static string SubTitleModeFormatStr = "Mode( {0} )";
 		public readonly static string SubTitleValueFormatStr = "Value( {0} )";
 		public readonly static string SubTitleConstFormatStr = "Const( {0} )";
 		public readonly static string SubTitleVarNameFormatStr = "Var( {0} )";
@@ -571,7 +572,8 @@ namespace AmplifyShaderEditor
 		public readonly static string EmptyPortValue = "  ";
 
 		public readonly static string[] OverallInvalidChars = { "\r", "\n", "\\", " ", ".", ">", ",", "<", "\'", "\"", ";", ":", "[", "{", "]", "}","|", "=", "+", "`", "~", "/", "?", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-" };
-		public readonly static string[] ShaderInvalidChars = { "\r", "\n", "\\", "\'", "\"", };
+        public readonly static string[] RegisterInvalidChars = { "\r", "\n", "\\", ".", ">", ",", "<", "\'", "\"", ";", ":", "[", "{", "]", "}", "|", "=", "+", "`", "~", "?", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-" };
+        public readonly static string[] ShaderInvalidChars = { "\r", "\n", "\\", "\'", "\"", };
 		public readonly static string[] EnumInvalidChars = { "\r", "\n", "\\", ".", ">", ",", "<", "\'", "\"", ";", ":", "[", "{", "]", "}", "=", "+", "`", "~", "/", "?", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-" };
 		public readonly static string[] AttrInvalidChars = { "\r", "\n", "\\", ">", "<", "\'", "\"", ";", ":", "[", "{", "]", "}", "=", "+", "`", "~", "/", "?", "!", "@", "#", "$", "%", "^", "&", "*" };
 		public readonly static string[] HeaderInvalidChars = { "\r", "\n", "\\", ">", ",", "<", "\'", "\"", ";", ":", "[", "{", "]", "}", "=", "+", "`", "~", "/", "?", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-" };

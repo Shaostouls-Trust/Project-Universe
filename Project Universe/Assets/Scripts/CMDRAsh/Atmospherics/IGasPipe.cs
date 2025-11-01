@@ -30,7 +30,7 @@ namespace ProjectUniverse.Environment.Gas
     //airducts: Gas: Oxygen at 70F, 1.387132g/L, 1.544215m3 in 0.4m3 at 1.047273atm
     public class IGasPipe : MonoBehaviour
     {
-        [SerializeField] private List<IGas> gasses = new List<IGas>();
+        [SerializeField] private List<IGas> gasses = new();
         //private IGasPipe next;
         //private LinkedListNode<IGasPipe> nextLLN;
         [SerializeField] private IGasPipe[] neighbors;
@@ -80,6 +80,7 @@ namespace ProjectUniverse.Environment.Gas
         public float Volume
         {
             get { return volume_m3; }
+            set { volume_m3 = value; }
         }
 
         public GameObject Vent
@@ -95,6 +96,7 @@ namespace ProjectUniverse.Environment.Gas
         public float InnerDiameter
         {
             get { return equivalentDiameterInner_m; }
+            set { equivalentDiameterInner_m = value; }
         }
 
         public float MaxVelocity
@@ -127,89 +129,6 @@ namespace ProjectUniverse.Environment.Gas
             }
             return conc;
         }
-
-        /// <summary>
-        /// Receive temperature, pressure, and gasses to the pipe/cable.
-        /// IE add
-        /// Destructive replaces the original gas list with the parameter list
-        /// </summary>
-        /// <param name="atmoData"></param>
-        /*public void Receive(bool destructive, params object[] atmoData)
-        {
-            bool flag = false;
-            if (atmoData[2].GetType() == typeof(List<IGas>) && ((List<IGas>)atmoData[2]).Count > 0)
-            {
-                flag = true;
-                if (destructive)
-                {
-                    gasses = (List<IGas>)atmoData[2];
-                }
-                else
-                {
-                    gasses.AddRange((List<IGas>)atmoData[2]);
-                }
-            }
-            else if (atmoData[2].GetType() == typeof(IGas) && ((IGas)atmoData[2]).GetConcentration() > 0)
-            {
-                flag = true;
-                if (destructive)
-                {
-                    gasses.Clear();
-                    gasses.Add((IGas)atmoData[2]);
-                }
-                else
-                {
-                    gasses.Add((IGas)atmoData[2]);
-                }
-            }
-            //if (((List<IGas>)atmoData[2]).Count > 0)
-            //{
-            if (flag)
-            {
-                temp = (float)atmoData[0];
-                if (destructive)
-                {
-                    globalPressure = (float)Math.Round((float)atmoData[1], 4);
-                    
-                }
-                else
-                {
-                    globalPressure += (float)Math.Round((float)atmoData[1], 4);
-                }
-
-                //calculate the change in globalpressure based temp on volume or temp for local pressure calcs
-                //float totalPressure = 0.0f;
-                //Debug.Log("Pre vol adj: " + globalPressure);
-                foreach (IGas gas in gasses)
-                {
-                    ///P1*V1/T1 = P2*V2/T2///
-                    float p1 = gas.GetLocalPressure();
-                    float v1 = gas.GetLocalVolume();
-                    //convert temp to K
-                    float t1 = ((gas.GetTemp() - 32f) * (5f / 9f)) + 273.15f;
-                    float p2;
-                    float v2 = volume_m3;
-                    //convert to K
-                    float t2 = ((temp - 32f) * (5f / 9f)) + 273.15f;
-                    //Debug.Log("p1: " +p1 + "v1: " +v1+ "t1: " +t1 + "v2: " +v2+ "t2: "+t2);
-                    p2 = (p1 * v1 * t2) / (t1 * v2);
-                    //add the partial pressure of this gas to the total pressure in the duct
-                    //Debug.Log(gameObject+" adj totalPressure is "+totalPressure+" + "+p2);
-                    totalPressure += p2;
-
-                    //update the volume params for each gas in this volume in case this volume is not the same as the volume that passed the gas in.
-                    gas.SetLocalVolume(volume_m3);
-                    //Debug.Log("Current Concentration(s): " + gas.GetConcentration());
-                }
-                //Debug.Log("Total Pressure after vol adj: " + (float)Math.Round(totalPressure,4));
-                //appliedPressure = (float)Math.Round(totalPressure, 4);
-                //Debug.Log("Post vol adj: " + globalPressure);
-                gasses = CheckGasses(globalPressure);//appliedPressure
-
-                //Debug.Log(gasses[0]);
-            }
-            //}
-        }*/
 
         public void Receive(bool destructive, float inputVelocity, float inputPressure, List<IGas> inputGas, float avgTemp)
         {
@@ -342,11 +261,11 @@ namespace ProjectUniverse.Environment.Gas
             }
 
             float oldTotal = total;
-            List<IGas> extractedGasses = new List<IGas>();
+            List<IGas> extractedGasses = new();
             for (int g = 0; g < gasses.Count; g++)
             {
                 float amt = gasses[g].GetConcentration();
-                IGas newFluid = new IGas(gasses[g]);
+                IGas newFluid = new(gasses[g]);
                 newFluid.SetConcentration(amt * percent);
                 gasses[g].SetConcentration(amt * (1 - percent));
                 total -= amt * percent;
@@ -444,7 +363,7 @@ namespace ProjectUniverse.Environment.Gas
 
             //1000Ls in total, composition will be based off of the percent concentration in the duct
             //this is so that hazardous or explosive gasses will circulate into every ventilated room.
-            if (roomVAC.GetPressure() < 1.0f)
+            if (roomVAC.Pressure < 1.0f)
             {
                 //Debug.Log("Checking room gasses");
                 gasses = CheckGasses(globalPressure);//precautionary check
@@ -584,11 +503,11 @@ namespace ProjectUniverse.Environment.Gas
                         float vEq_global = totalVelocity / (neighbors.Length + 1);
                         for (int g = 0; g < neighbors.Length; g++)
                         {
-                            List<IGas> newGassesList = new List<IGas>();
+                            List<IGas> newGassesList = new();
                             for (int j = 0; j < gasses.Count; j++)
                             {
                                 //this gas is the Eq'd gas.
-                                IGas tempGas = new IGas(gasses[j].GetIDName(), tEq_global, cEq_global, pEq_global, volume_m3);
+                                IGas tempGas = new(gasses[j].GetIDName(), tEq_global, cEq_global, pEq_global, volume_m3);
                                 tempGas.CalculateAtmosphericDensity();
                                 newGassesList.Add(tempGas);
                             }

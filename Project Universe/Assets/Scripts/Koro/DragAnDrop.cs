@@ -23,7 +23,7 @@ public class DragAnDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler,
     private CanvasGroup CG;
     private void Awake()
     {
-        canvas = FindObjectOfType<canvasReferencetoscript>().GetComponent<Canvas>();
+        //canvas = FindObjectOfType<canvasReferencetoscript>().GetComponent<Canvas>();
         rectTransform = GetComponent<RectTransform>();
         CG = GetComponent<CanvasGroup>();
     }

@@ -1,6 +1,4 @@
-﻿using ProjectUniverse.Player.PlayerController;
-using ProjectUniverse.Serialization;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,11 +10,9 @@ namespace CMF
 		//References to components;
 		Controller controller;
 		Animator animator;
-		//Mover mover;
+		Mover mover;
 		Transform tr;
 		public AudioSource audioSource;
-		public SupplementalController sc;
-		public AdvancedWalkerController awc;
 
 		//Whether footsteps will be based on the currently playing animation or calculated based on walked distance (see further below);
 		public bool useAnimationBasedFootsteps = true;
@@ -43,19 +39,18 @@ namespace CMF
 		public AudioClip[] footStepClips;
 		public AudioClip jumpClip;
 		public AudioClip landClip;
-		private bool hasJumped;
 
 		//Setup;
 		void Start () {
 			//Get component references;
-			//controller = GetComponent<Controller>();
+			controller = GetComponent<Controller>();
 			animator = GetComponentInChildren<Animator>();
-			//mover = GetComponent<Mover>();
+			mover = GetComponent<Mover>();
 			tr = transform;
 
 			//Connecting events to controller events;
-			//controller.OnLand += OnLand;
-			//controller.OnJump += OnJump;
+			controller.OnLand += OnLand;
+			controller.OnJump += OnJump;
 
 			if(!animator)
 				useAnimationBasedFootsteps = false;
@@ -65,33 +60,12 @@ namespace CMF
 		void Update () {
 
 			//Get controller velocity;
-			//Vector3 _velocity = controller.GetVelocity();
-			Vector3 _velocity = sc.PlayerRigidbody.velocity;
+			Vector3 _velocity = controller.GetVelocity();
 
 			//Calculate horizontal velocity;
 			Vector3 _horizontalVelocity = VectorMath.RemoveDotVector(_velocity, tr.up);
 
 			FootStepUpdate(_horizontalVelocity.magnitude);
-
-			//jump
-			if(awc.IsGrounded() && sc.Jump && hasJumped == false)
-            {
-				hasJumped = true;
-				audioSource.volume *= GlobalSettings.MasterVolume * GlobalSettings.PlayerVolume;
-				audioSource.PlayOneShot(jumpClip, audioClipVolume);
-			}
-            //falling
-            //if (!awc.IsGrounded())
-            //{
-
-            //}
-			//land
-			if (awc.IsGrounded() && !sc.Jump && hasJumped == true)
-			{
-				hasJumped = false;
-				audioSource.volume *= GlobalSettings.MasterVolume * GlobalSettings.PlayerVolume;
-				audioSource.PlayOneShot(landClip, audioClipVolume);
-			}
 		}
 
 		void FootStepUpdate(float _movementSpeed)
@@ -107,7 +81,7 @@ namespace CMF
 				if((currentFootStepValue <= 0f && _newFootStepValue > 0f) || (currentFootStepValue >= 0f && _newFootStepValue < 0f))
 				{
 					//Only play footstep sound if mover is grounded and movement speed is above the threshold;
-					//if(mover.IsGrounded() && _movementSpeed > _speedThreshold)
+					if(mover.IsGrounded() && _movementSpeed > _speedThreshold)
 						PlayFootstepSound(_movementSpeed);
 				}
 				currentFootStepValue = _newFootStepValue;
@@ -117,10 +91,10 @@ namespace CMF
 				currentFootstepDistance += Time.deltaTime * _movementSpeed;
 
 				//Play foot step audio clip if a certain distance has been traveled;
-				if(currentFootstepDistance > footstepDistance && awc.IsGrounded())
+				if(currentFootstepDistance > footstepDistance)
 				{
 					//Only play footstep sound if mover is grounded and movement speed is above the threshold;
-					//if(mover.IsGrounded() && _movementSpeed > _speedThreshold)
+					if(mover.IsGrounded() && _movementSpeed > _speedThreshold)
 						PlayFootstepSound(_movementSpeed);
 					currentFootstepDistance = 0f;
 				}
@@ -133,7 +107,7 @@ namespace CMF
 			audioSource.PlayOneShot(footStepClips[_footStepClipIndex], audioClipVolume + audioClipVolume * Random.Range(-relativeRandomizedVolumeRange, relativeRandomizedVolumeRange));
 		}
 
-		private void OnLand(Vector3 _v)
+		void OnLand(Vector3 _v)
 		{
 			//Only trigger sound if downward velocity exceeds threshold;
 			if(VectorMath.GetDotProduct(_v, tr.up) > -landVelocityThreshold)
@@ -141,6 +115,12 @@ namespace CMF
 
 			//Play land audio clip;
 			audioSource.PlayOneShot(landClip, audioClipVolume);
+		}
+
+		void OnJump(Vector3 _v)
+		{
+			//Play jump audio clip;
+			audioSource.PlayOneShot(jumpClip, audioClipVolume);
 		}
 	}
 }

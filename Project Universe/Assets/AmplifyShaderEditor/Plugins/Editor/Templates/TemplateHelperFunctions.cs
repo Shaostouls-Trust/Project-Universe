@@ -48,9 +48,10 @@ namespace AmplifyShaderEditor
 		SV_InstanceID,
 		INTERNALTESSPOS,
 		INSTANCEID_SEMANTIC,
+		VERTEXID_SEMANTIC,
+		PRIMITIVEID_SEMANTIC,
 		BLENDWEIGHTS,
 		BLENDINDICES
-
 	}
 
 	public enum TemplateInfoOnSematics
@@ -81,7 +82,9 @@ namespace AmplifyShaderEditor
 		OTHER,
 		VFACE,
 		SHADOWCOORDS,
+		INSTANCEID,
 		VERTEXID,
+		PRIMITIVEID,
 		BLENDWEIGHTS,
 		BLENDINDICES
 	}
@@ -702,8 +705,8 @@ namespace AmplifyShaderEditor
 		{
 			{TemplateInfoOnSematics.POSITION,GeneratorUtils.VertexPosition4Str },
 			{TemplateInfoOnSematics.CLIP_POS,GeneratorUtils.ClipPositionStr },
-			{TemplateInfoOnSematics.SCREEN_POSITION,GeneratorUtils.ScreenPositionStr },
-			{TemplateInfoOnSematics.SCREEN_POSITION_NORMALIZED,GeneratorUtils.ScreenPositionNormalizedStr },
+			{TemplateInfoOnSematics.SCREEN_POSITION,GeneratorUtils.ScreenPosRawStr },
+			{TemplateInfoOnSematics.SCREEN_POSITION_NORMALIZED,GeneratorUtils.ScreenPosNormStr },
 			{TemplateInfoOnSematics.COLOR, "ase_color" },
 			{TemplateInfoOnSematics.TEXTURE_COORDINATES0, "ase_uv0" },
 			{TemplateInfoOnSematics.TEXTURE_COORDINATES1, "ase_uv1" },
@@ -929,6 +932,7 @@ namespace AmplifyShaderEditor
 		public static readonly string InlinePattern = @"\/\*ase_inline_begin\*\/(.*?)\/\*ase_inline_end\*\/";
 
 		public static readonly string SRPConditionPattern = @"\/\*ase_srp_cond_begin:([==|!=|>=|<=|>|<]*)(\d*)\*\/(?s)(.*?)\s\/\*ase_srp_cond_end\*\/";
+		public static readonly string UnityConditionPattern = @"\/\*ase_unity_cond_begin:([==|!=|>=|<=|>|<]*)(\d*)\*\/(?s)(.*?)\s\/\*ase_unity_cond_end\*\/";
 
 		public static readonly string SubShaderLODPattern = @"\sLOD\s+(\d+)";
 
@@ -1714,11 +1718,6 @@ namespace AmplifyShaderEditor
 				blendDataObj.ValidBlendOp = false;
 		}
 
-		struct SRPConditionalTag
-		{
-
-		}
-
 		public static string ProcessSRPConditionals( string body )
 		{
 			int srpVersion = ASEPackageManagerHelper.PackageSRPVersion;
@@ -1759,7 +1758,7 @@ namespace AmplifyShaderEditor
 					}
 					else
 					{
-						// @diogo: fell here? ignore SRP conditional
+						// @diogo: fell here? ignore conditional
 						body = body.Replace( signature, string.Empty );
 					}
 
@@ -1767,7 +1766,112 @@ namespace AmplifyShaderEditor
 					processedSignatures.Add( signature );
 				}
 			}
-			return body;			
+			return body;
+		}
+
+		public static int GetUnityVersion()
+		{
+			var versionParts = Application.unityVersion.Split( '.', 'f' );
+			if ( versionParts.Length != 4 || versionParts[ 0 ].Length < 4 )
+			{
+				// @diogo: invalid Unity version format; ignore these conditionals
+				return 0;
+			}
+
+			bool testMajor = int.TryParse( versionParts[ 0 ], out int major );
+			bool testMinor = int.TryParse( versionParts[ 1 ], out int minor );
+			bool testPatch = int.TryParse( versionParts[ 2 ], out int patch );
+			if ( !testMajor || !testMinor || !testPatch )
+			{
+				// @diogo: invalid Unity version format; ignore these conditionals
+				return 0;
+			}
+
+			return major * 10000 + minor * 100 + patch;
+		}
+
+		public static bool GetUnityBetaVersion( out int betaVersion )
+		{
+			string version = Application.unityVersion;
+			if ( !version.Contains( "b" ) )
+			{
+				betaVersion = 0;
+				return false;
+			}
+
+			var versionParts = version.Split( 'b' );
+			if ( versionParts.Length != 2 || versionParts[ 0 ].Length < 4 )
+			{
+				// @diogo: invalid Unity version format; ignore these conditionals
+				betaVersion = 0;
+				return false;
+			}
+
+			bool testBeta = int.TryParse( versionParts[ 1 ], out int beta );
+			if ( !testBeta )
+			{
+				// @diogo: invalid Unity version format; ignore these conditionals
+				betaVersion = 0;
+				return false;
+			}
+
+			betaVersion = beta;
+			return true;
+		}
+
+		public static string ProcessUnityConditionals( string body )
+		{
+			int unityVersion = GetUnityVersion();
+			if ( unityVersion <= 0 )
+			{
+				return body;
+			}
+			var processedSignatures = new HashSet<string>();
+			
+			foreach ( Match match in Regex.Matches( body, UnityConditionPattern ) )
+			{
+				string signature;
+				if ( match.Success && match.Groups.Count == 4 && !processedSignatures.Contains( signature = match.Groups[ 0 ].Value ) )
+				{
+					string comparisonOp = match.Groups[ 1 ].Value;
+					bool validVersion = int.TryParse( match.Groups[ 2 ].Value, out int version );
+					string content = match.Groups[ 3 ].Value;
+			
+					if ( validVersion && !string.IsNullOrEmpty( comparisonOp ) && version >= 20190000 )
+					{
+						bool passed = false;
+						switch ( comparisonOp )
+						{
+							case "==": passed = ( unityVersion == version ); break;
+							case "!=": passed = ( unityVersion != version ); break;
+							case ">=": passed = ( unityVersion >= version ); break;
+							case "<=": passed = ( unityVersion <= version ); break;
+							case ">" : passed = ( unityVersion > version ); break;
+							case "<" : passed = ( unityVersion < version ); break;
+						}
+			
+						if ( passed )
+						{
+							// @diogo: test passed? include conditional text
+							body = body.Replace( signature, content );
+						}
+						else
+						{
+							// @diogo: test failed? exclude conditional text
+							body = body.Replace( signature, string.Empty );
+						}
+					}
+					else
+					{
+						// @diogo: fell here? ignore conditional
+						body = body.Replace( signature, string.Empty );
+					}
+			
+					// @diogo: mark as processed to prevent duplicates
+					processedSignatures.Add( signature );
+				}
+			}
+			return body;
 		}
 
 		public static void FetchLocalVars( string body, ref List<TemplateLocalVarData> localVarList, TemplateFunctionData vertexFunction, TemplateFunctionData fragFunction )

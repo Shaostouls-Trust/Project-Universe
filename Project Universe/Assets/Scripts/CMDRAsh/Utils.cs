@@ -9,7 +9,7 @@ using ProjectUniverse.Environment.Volumes;
 using ProjectUniverse.Data.Libraries.Definitions;
 using static ProjectUniverse.Environment.Volumes.VolumeConstructionSection;
 using ProjectUniverse.Data.Libraries;
-using ProjectUniverse.Environment.Fluid;
+using ProjectUniverse.Environment.Fluids;
 using ProjectUniverse.Animation.Controllers;
 
 namespace ProjectUniverse.Util
@@ -62,6 +62,8 @@ namespace ProjectUniverse.Util
 				list[position] = tempStack;
 			}
 		}
+
+
 
 		/// <summary>
 		/// Try to remove X amount from the provided gas. 
@@ -158,119 +160,71 @@ namespace ProjectUniverse.Util
 			return fluidA;
 		}
 
-		/// <summary>
-		/// Equalize to local volumes to the same relative gas levels
-		/// </summary>
-		/// <param name="VACa"></param>
-		/// <param name="VACb"></param>
-		public static void LocalVolumeEqualizer(VolumeAtmosphereController VACa, VolumeAtmosphereController VACb)
-		{
-			//Debug.Log("-------------- VACa -> "+VACa+"------------------");
-			float VACaVolume = VACa.GetVolume();
-			float VACbVolume = VACb.GetVolume();
-			float totalVolume = VACaVolume + VACbVolume;
-			//Debug.Log("Total Volume: "+totalVolume);
+        /// <summary>
+        /// Equalize to local volumes to the same relative gas levels
+        /// </summary>
+        /// <param name="VACa"></param>
+        /// <param name="VACb"></param>
+        /// <summary>
+        /// Equalize the contents of two volume atmosphere controllers
+        /// </summary>
+        public static void LocalVolumeEqualizer(VolumeAtmosphereController VACa, VolumeAtmosphereController VACb)
+        {
+            float VACaVolume = VACa.GetVolume();
+            float VACbVolume = VACb.GetVolume();
+            float totalVolume = VACaVolume + VACbVolume;
 
-			//Equalize the gasses in the two volumes (over time)
-			//get the volume ratio between each volume and the total volume
-			//Get the total amount of each gas in both volumes
-			//for each gas
-			//find the eq concentration (concA + concB * ratioA, ratioB)
-			//IE multiply the total concentration of each gas by ratioA and B
-			List<IGas> jointGasses = new List<IGas>();
+            // Combine all fluids from both volumes
+            List<Fluid> allFluids = new List<Fluid>();
+            allFluids.AddRange(VACa.RoomFluids);
+            allFluids.AddRange(VACb.RoomFluids);
 
-			float ratioA = VACaVolume / totalVolume;
-			float ratioB = VACbVolume / totalVolume;
-			//Debug.Log("Ratio A: " + ratioA);
-			//Debug.Log("Ratio B: " + ratioB);
-			
-			foreach(IGas gas in VACa.RoomGasses)
-			{
-				jointGasses.Add(gas);
-				//Debug.Log("Adding (a) "+gas);
-			}
-			bool ugh;
-			foreach (IGas gas in VACb.RoomGasses)
-			{
-				ugh = false;
-				for(int k = 0; k < jointGasses.Count; k++)
-				{
-					if (jointGasses[k].GetIDName().Equals(gas.GetIDName()))
-					{
-						ugh = true;
-						jointGasses[k] = CombineGases(gas, jointGasses[k], jointGasses[k].GetLocalPressure());
-						//Debug.Log("Combining -> " + jointGasses[k]);
-						//break;
-					}
-				}
-				if (!ugh)
-				{
-					jointGasses.Add(gas);
-					//Debug.Log("Adding (b) " + gas);
-				}
-			}
+            // Combine duplicates
+            allFluids = CombineFluids(allFluids);
 
-			bool aGo = false;
-			bool bGo = false;
-			for(int c = 0; c < jointGasses.Count;c++)
-			{
-				foreach (IGas gas in VACa.RoomGasses)
-				{
-					if(gas.GetIDName().Equals(jointGasses[c].GetIDName()))
-					{
-						aGo = true;
-						//Debug.Log(VACaVolume + "Set: [Joint]: " +jointGasses[c]+" TO: "+(jointGasses[c].GetConcentration() * ratioA));
-						gas.SetConcentration(jointGasses[c].GetConcentration() * ratioA);
-						gas.SetLocalVolume(VACaVolume);
-						break;
-					}
-				}
-				if (!aGo)
-				{
-					//Debug.Log("Adding gas to room a");
-					IGas newG = new IGas(jointGasses[c]);
-					newG.SetConcentration(jointGasses[c].GetConcentration() * ratioA);
-					newG.SetLocalVolume(VACaVolume);
-					VACa.AddRoomGas(newG);
-				}
-				aGo = false;
-				foreach (IGas gas in VACb.RoomGasses)
-				{
-					if (gas.GetIDName().Equals(jointGasses[c].GetIDName()))
-					{
-						bGo = true;
-						//Debug.Log(VACbVolume+ " Set: [Joint]:" + jointGasses[c] + " > " + (jointGasses[c].GetConcentration() * ratioB));
-						gas.SetConcentration(jointGasses[c].GetConcentration() * ratioB);
-						gas.SetLocalVolume(VACbVolume);
-						break;
-					}
-				}
-				if (!bGo)
-				{
-					//Debug.Log("Adding gas to room b");
-					IGas newG = new IGas(jointGasses[c]);
-					newG.SetConcentration(jointGasses[c].GetConcentration() * ratioB);
-					newG.SetLocalVolume(VACbVolume);
-					VACb.AddRoomGas(newG);
-				}
-				bGo = false;
-			}
+            // Clear original lists
+            VACa.RoomFluids.Clear();
+            VACb.RoomFluids.Clear();
 
-			float totalGas = VACa.CalculateRoomOxygenation();
-			VACa.CalculateRoomPressure(totalGas);
-			totalGas = VACb.CalculateRoomOxygenation();
-			VACb.CalculateRoomPressure(totalGas);
-			VACa.PostProcessVolumeUpdate();
-			VACb.PostProcessVolumeUpdate();
+            // Redistribute based on volume ratios
+            float ratioA = VACaVolume / totalVolume;
+            float ratioB = VACbVolume / totalVolume;
 
-		}
+            foreach (var fluid in allFluids)
+            {
+                // Split the fluid proportionally
+                float massA = fluid.GetMass() * ratioA;
+                float massB = fluid.GetMass() * ratioB;
 
-		/// <summary>
-		/// Empty the room's gasses into the black and fill it with any local gasses.
-		/// </summary>
-		/// <param name="VAC"></param>
-		/// <param name="VGAC"></param>
-		public static void GlobalVolumeEqualizer(VolumeAtmosphereController VAC, VolumeGlobalAtmosphereController VGAC)
+                if (massA > 0.001f)
+                {
+                    VACa.RoomFluids.Add(new Fluid(fluid.GetIDName(), massA,
+                        fluid.GetTemperature(), fluid.GetVolume(), fluid.GetPressure()));
+                }
+
+                if (massB > 0.001f)
+                {
+                    VACb.RoomFluids.Add(new Fluid(fluid.GetIDName(), massB,
+                        fluid.GetTemperature(), fluid.GetVolume(), fluid.GetPressure()));
+                }
+            }
+
+            // Recalculate atmosphere properties
+            float totalGasA = VACa.CalculateRoomOxygenation();
+            VACa.CalculateRoomPressure(totalGasA);
+            VACa.PostProcessVolumeUpdate();
+
+            float totalGasB = VACb.CalculateRoomOxygenation();
+            VACb.CalculateRoomPressure(totalGasB);
+            VACb.PostProcessVolumeUpdate();
+        }
+
+        /// <summary>
+        /// Empty the room's gasses into the black and fill it with any local gasses.
+        /// </summary>
+        /// <param name="VAC"></param>
+        /// <param name="VGAC"></param>
+        public static void GlobalVolumeEqualizer(VolumeAtmosphereController VAC, VolumeGlobalAtmosphereController VGAC)
 		{
 			if (VAC.Pressure != VGAC.GetPressure())
 			{
@@ -291,171 +245,176 @@ namespace ProjectUniverse.Util
 			VAC.PostProcessVolumeUpdate();
 		}
 
-		/// <summary>
-		/// Equalize water levels between two volumes over time.
-		/// Water will flow at a rate proportional to the total height of plane 0
-		/// Water will equalize such that the heights of the two relative planes are even
-		/// Water can completely drain out of a room.
-		/// </summary>
-		public static void LocalFluidEqualization(VolumeAtmosphereController origin, VolumeAtmosphereController target,
-			DoorAnimator originDoor, DoorAnimator targetDoor)
+        /// <summary>
+        /// Equalize water levels between two volumes over time.
+        /// Water will flow at a rate proportional to the total height of plane 0
+        /// Water will equalize such that the heights of the two relative planes are even
+        /// Water can completely drain out of a room.
+        /// </summary>
+        public static void LocalFluidEqualization(VolumeAtmosphereController VACa, VolumeAtmosphereController VACb,
+            DoorAnimator doorA, DoorAnimator doorB)
         {
-			//Debug.Log("==========");
-			//get water levels of each room
-			float levelO = origin.WaterLevel(false);
-			float levelT = target.WaterLevel(false);
+            // Check if door height allows fluid passage
+            int doorIndexA = System.Array.IndexOf(VACa.RoomDoorsFluidOrder, doorA);
+            int doorIndexB = System.Array.IndexOf(VACb.RoomDoorsFluidOrder, doorB);
 
-			//if one level is below the door levels, there is no flow, so don't bother with the rest here
-			//the world space to visual position is off by ~0.25f
-			//Debug.Log((levelO+0.25f) +" > " + originDoor.transform.position.y +" || "+ (levelT + 0.25f) + " > "+ targetDoor.transform.position.y);
-			if ((levelO+0.25f) > originDoor.transform.position.y || (levelT + 0.25f) > targetDoor.transform.position.y)
-			{
+            if (doorIndexA < 0 || doorIndexB < 0)
+                return;
 
-				//Debug.Log(levelO + " & " + levelT);
-				//get which doors are open
-				int oI = 0;
-				int tI = 0;
-				for (int a = 0; a < origin.RoomDoorsFluidOrder.Length; a++)
-				{
-					if (origin.RoomDoorsFluidOrder[a] == originDoor)
-					{
-						oI = a;
-						break;
-					}
-				}
-				for (int b = 0; b < target.RoomDoorsFluidOrder.Length; b++)
-				{
-					if (target.RoomDoorsFluidOrder[b] == targetDoor)
-					{
-						tI = b;
-						break;
-					}
-				}
-				//zero the world space positions so that the lowest level is 0
-				float offset = 0f;
-				//Debug.Log(levelO + " " + levelT);
+            // Check if fluid level is high enough in either room
+            bool canFlowFromA = VACa.CanFluidPassThroughDoor(doorIndexA);
+            bool canFlowFromB = VACb.CanFluidPassThroughDoor(doorIndexB);
 
-				if (levelO > levelT)
-				{
-					offset = levelO - levelT;
-					levelO -= levelT;
-					levelT = 0f;
-				}
-				else if (levelO < levelT)
-				{
-					offset = levelT - levelO;
-					levelT -= levelO;
-					levelO = 0f;
-				}
-				//if offset == 0, then there is no difference between the water levels.
-				if (offset != 0)
-				{
-					//offset the world space positions by the relative door position
-					//if negative, add, else sub (is this correct?)
-					if (levelO >= 0f)
-					{
-						//levelO -= origin.RoomFluidPlaneLevels[oI];
-					}
-					else
-					{
-						//levelO += origin.RoomFluidPlaneLevels[oI];
-					}
-					if (levelT >= 0f)
-					{
-						//levelT -= target.RoomFluidPlaneLevels[tI];
-					}
-					else
-					{
-						//levelT += target.RoomFluidPlaneLevels[tI];
-					}
-					//Debug.Log(levelO + " & " + levelT);
+            if (!canFlowFromA && !canFlowFromB)
+                return;
 
-					//get volume of water over door levels
-					float freeVolO = 0f;
-					float freeVolT = 0f;
-					//float originArea = (origin.GetVolume() / origin.RoomHeight);
-					//float targetArea = (target.GetVolume() / target.RoomHeight);
-					if (levelO > 0f) //origin.RoomFluidPlaneLevels[oI]
-					{
-						//get the average area of the room's floor and multiply it by the water above the limit
-						freeVolO = Math.Abs(origin.RoomArea * levelO);
-					}
-					if (levelT > 0f)//= target.RoomFluidPlaneLevels[tI]
-					{
-						//get the average area of the room's floor and multiply it by the water above the limit
-						freeVolT = Math.Abs(target.RoomArea * levelT);
-					}
-					//add the two free volumes. This is how much fluid can be split between the two.
-					float eqVol = freeVolO + freeVolT;
-					//Debug.Log(eqVol + " = " + freeVolO + " + " + freeVolT);
-					//divide by totalarea to get total eq height
-					//Debug.Log(eqVol +" / "+ origin.RoomArea + " + " + target.RoomArea);
-					float eqHeight = eqVol / (origin.RoomArea + target.RoomArea);
-					//Debug.Log(eqHeight + " = " + eqVol + " / (" + origin.RoomArea + " + " + target.RoomArea + ")");
-					float Oheight = 0f;
-					float Theight = 0f;
-					if (eqHeight > origin.RoomHeight)
-					{
-						Oheight = eqHeight - origin.RoomHeight;
-					}
-					if (eqHeight > target.RoomHeight)
-					{
-						Theight = eqHeight - target.RoomHeight;
-					}
-					//Debug.Log(eqHeight + " -| " + Oheight + " |- " + Theight);
-					//multiply eqheight with volume and remove the volume of the ceiling overflow
-					//this is a ratio of the fluid in each room to the total fluid
-					float Otrans = ((eqHeight * origin.RoomArea) - (Oheight * origin.RoomArea)) / eqVol;
-					float Ttrans = ((eqHeight * target.RoomArea) - (Theight * target.RoomArea)) / eqVol;
-					//Debug.Log(Otrans + " -||- " + Ttrans);
-					//combine the fluids
-					List<IFluid> totalFluids = new List<IFluid>();
-					totalFluids.AddRange(origin.RemoveRoomFluid(eqVol));
-					totalFluids.AddRange(target.RemoveRoomFluid(eqVol));
-					//Debug.Log(totalFluids.Count);
-					if (totalFluids.Count > 0)
-					{
-						//divy the fluid volume to each room.
-						for (int f = 0; f < totalFluids.Count; f++)
-						{
-							IFluid oAdd = new IFluid(totalFluids[f]);
-							oAdd.SetConcentration(totalFluids[f].GetConcentration() * Otrans);
-							IFluid tAdd = new IFluid(totalFluids[f]);
-							tAdd.SetConcentration(totalFluids[f].GetConcentration() * Ttrans);
-							origin.AddRoomFluid(oAdd);
-							target.AddRoomFluid(tAdd);
-						}
-						totalFluids.Clear();
-					}
-				}
-			}
-		}
+            // Calculate pressure difference (hydrostatic + dynamic)
+            float volumeA = VACa.GetTotalFluidVolume();
+            float volumeB = VACb.GetTotalFluidVolume();
+            float areaA = VACa.RoomArea;
+            float areaB = VACb.RoomArea;
 
-		/// <summary>
-		/// There will be 2-way reversible fluid pumps to/from auxilliary reservoirs to drain flooded rooms.
-		/// The alternate use of this function is to vent fluids into space.
-		/// </summary>
-		/// <param name="origin"></param>
-		/// <param name="rate"></param> m^3 removed per second
-		public static void LocalFluidDrain(VolumeAtmosphereController origin, float rate, IFluidPipe pipe)
-        {
-			if(rate == -1f)
+            float heightA = volumeA / areaA;
+            float heightB = volumeB / areaB;
+
+            // Flow rate based on height difference (simplified Torricelli)
+            float heightDiff = heightA - heightB;
+            if (Mathf.Abs(heightDiff) < 0.01f)
+                return; // Already equalized
+
+            // Calculate flow volume (simplified)
+            float doorArea = 2f * 0.9f; // Approximate door area (2m x 0.9m)
+            float flowVelocity = Mathf.Sqrt(2f * 9.81f * Mathf.Abs(heightDiff)); // Torricelli
+            float flowVolume = doorArea * flowVelocity * Time.deltaTime;
+
+            // Limit by available volume
+            flowVolume = Mathf.Min(flowVolume, Mathf.Abs(heightDiff) * Mathf.Min(areaA, areaB) * 0.5f);
+
+            // Transfer fluids
+            if (heightDiff > 0) // A -> B
             {
-				//vent into space
-				origin.RemoveRoomFluid(6f);
+                List<Fluid> transferFluids = VACa.RemoveRoomFluid(flowVolume);
+                VACb.AddRoomFluid(transferFluids);
+            }
+            else // B -> A
+            {
+                List<Fluid> transferFluids = VACb.RemoveRoomFluid(flowVolume);
+                VACa.AddRoomFluid(transferFluids);
+            }
+        }
+
+        /// <summary>
+        /// There will be 2-way reversible fluid pumps to/from auxilliary reservoirs to drain flooded rooms.
+        /// The alternate use of this function is to vent fluids into space.
+        /// </summary>
+        /// <param name="origin"></param>
+        /// <param name="rate"></param> m^3 removed per second
+        public static void LocalFluidDrain(VolumeAtmosphereController origin, float rate, FluidPipe pipe)
+        {
+            if (rate == -1f)
+            {
+                // Vent into space
+                origin.RemoveRoomFluid(6f * Time.deltaTime);
             }
             else
             {
-				//remove into some other pipe
-				List<IFluid> fluids = origin.RemoveRoomFluid(rate);
-				if (fluids != null)
-				{
-					pipe.Receive(false, 10f, 2f, fluids, fluids[0].GetTemp());
-				}
-			}
+                // Remove into pipe
+                List<Fluid> fluids = origin.RemoveRoomFluid(rate * Time.deltaTime);
+                if (fluids != null && fluids.Count > 0)
+                {
+                    // Calculate average properties for pipe transfer
+                    float avgTemp = 0f;
+                    float totalMass = 0f;
+
+                    foreach (var fluid in fluids)
+                    {
+                        avgTemp += fluid.GetTemperature() * fluid.GetMass();
+                        totalMass += fluid.GetMass();
+                    }
+
+                    if (totalMass > 0)
+                    {
+                        avgTemp /= totalMass;
+                        pipe.Receive(false, 10f, 2f, fluids, avgTemp);
+                    }
+                }
+            }
         }
 
-		public static float RefinementMassLoss(int tier, int quality)
+        //A
+        /// <summary>
+        /// Extract fluid from source up to specified volume per second
+        /// </summary>
+        public static Fluid ExtractFluid(float volumePerSecond, Fluid source, out Fluid remainder)
+        {
+            float volumeToExtract = volumePerSecond * Time.deltaTime;
+            float sourceVolume = source.GetVolume();
+
+            if (volumeToExtract >= sourceVolume)
+            {
+                remainder = new Fluid(source.GetIDName(), 0.001f, source.GetTemperature(), source.GetVolume(), source.GetPressure());
+                return source;
+            }
+
+            // Extract proportional mass
+            float extractRatio = volumeToExtract / sourceVolume;
+            float massToExtract = source.GetMass() * extractRatio;
+
+            Fluid extracted = source.Split(massToExtract);
+            remainder = source;
+
+            return extracted;
+        }
+
+
+        //New Fluid
+        /// <summary>
+        /// Combine fluids of the same type in a list (similar to CheckGasses)
+        /// </summary>
+        public static List<Fluid> CombineFluids(List<Fluid> fluids)
+        {
+            Dictionary<string, Fluid> combined = new Dictionary<string, Fluid>();
+
+            foreach (var fluid in fluids)
+            {
+                if (combined.ContainsKey(fluid.GetIDName()))
+                {
+                    combined[fluid.GetIDName()] = Fluid.Mix(combined[fluid.GetIDName()], fluid);
+                }
+                else
+                {
+                    combined[fluid.GetIDName()] = new Fluid(fluid);
+                }
+            }
+
+            return new List<Fluid>(combined.Values);
+        }
+
+        /// <summary>
+        /// Remove mass from fluids in a list proportionally
+        /// </summary>
+        public static List<Fluid> ExtractMass(List<Fluid> source, float totalMassToExtract)
+        {
+            List<Fluid> extracted = new List<Fluid>();
+            float totalMass = 0f;
+
+            foreach (var fluid in source)
+                totalMass += fluid.GetMass();
+
+            if (totalMass == 0f) return extracted;
+
+            foreach (var fluid in source)
+            {
+                float ratio = fluid.GetMass() / totalMass;
+                float extractMass = totalMassToExtract * ratio;
+                extracted.Add(fluid.Split(extractMass));
+				//note: doesn't actually remove mass from source!
+            }
+
+            return extracted;
+        }
+
+        public static float RefinementMassLoss(int tier, int quality)
 		{
 			float[,] lossList = {
 				{0f, 35f, 40f, 43.75f, 46.25f, 49f },
@@ -731,7 +690,7 @@ namespace ProjectUniverse.Util
 		/// <returns></returns>
 		public static float CalculateFluidFlowThroughPipe(float diamInner_m, float flowVelocity_ms)
         {
-            return (3600f * (float)Math.PI) * (float)Math.Pow(diamInner_m/2f,2) * flowVelocity_ms;
+            return 3600f * (Mathf.PI * (diamInner_m * diamInner_m) / 4f) * flowVelocity_ms;
         }
 
 		private static Dictionary<float, float> pressureToSpecificVolumeTableA = new Dictionary<float, float>()

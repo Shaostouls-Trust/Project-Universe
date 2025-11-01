@@ -13,10 +13,9 @@ namespace CMF
 		//References to attached components;
 		protected Transform tr;
 		protected Mover mover;
-		protected CharacterInput characterInput;
-		protected CeilingDetector ceilingDetector;
-
+		//protected CharacterInput characterInput;
 		[SerializeField] private SupplementalController sc;
+		protected CeilingDetector ceilingDetector;
 
         //Jump key variables;
         bool jumpInputIsLocked = false;
@@ -106,7 +105,7 @@ namespace CMF
         {
             bool _newJumpKeyPressedState = IsJumpKeyPressed();
 
-			if (jumpKeyIsPressed == false && _newJumpKeyPressedState == true)
+            if (jumpKeyIsPressed == false && _newJumpKeyPressedState == true)
                 jumpKeyWasPressed = true;
 
             if (jumpKeyIsPressed == true && _newJumpKeyPressedState == false)
@@ -176,10 +175,6 @@ namespace CMF
 
 		//Calculate and return movement direction based on player input;
 		//This function can be overridden by inheriting scripts to implement different player controls;
-		/// <summary>
-		/// HERE?
-		/// </summary>
-		/// <returns></returns>
 		protected virtual Vector3 CalculateMovementDirection()
 		{
 			//If no character input script is attached to this object, return;
@@ -191,18 +186,19 @@ namespace CMF
 			//If no camera transform has been assigned, use the character's transform axes to calculate the movement direction;
 			if(cameraTransform == null)
 			{
-				_velocity += tr.right * sc.MoveAxis.y;//characterInput.GetHorizontalMovementInput()
-				_velocity += tr.forward * sc.MoveAxis.z;//characterInput.GetVerticalMovementInput()
+				_velocity += tr.right * sc.MoveAxis.x;
+				_velocity += tr.forward * sc.MoveAxis.y;
 			}
 			else
 			{
 				//If a camera transform has been assigned, use the assigned transform's axes for movement direction;
 				//Project movement direction so movement stays parallel to the ground;
-				_velocity += Vector3.ProjectOnPlane(cameraTransform.right, tr.up).normalized * sc.MoveAxis.x;//characterInput.GetHorizontalMovementInput();
-				_velocity += Vector3.ProjectOnPlane(cameraTransform.forward, tr.up).normalized * sc.MoveAxis.y;//characterInput.GetVerticalMovementInput();
+				_velocity += Vector3.ProjectOnPlane(cameraTransform.right, tr.up).normalized * sc.MoveAxis.x;
+				_velocity += Vector3.ProjectOnPlane(cameraTransform.forward, tr.up).normalized * sc.MoveAxis.y;
 			}
+
 			//If necessary, clamp movement vector to magnitude of 1f;
-			if (_velocity.magnitude > 1f)
+			if(_velocity.magnitude > 1f)
 				_velocity.Normalize();
 
 			return _velocity;
@@ -215,8 +211,7 @@ namespace CMF
 			Vector3 _velocity = CalculateMovementDirection();
 
 			//Multiply (normalized) velocity with movement speed;
-			//_velocity *= sc.sprinting ? sc.SprintSpeed : sc.WalkSpeed;
-            _velocity *= sc.MovementSpeed;
+			_velocity *= movementSpeed;
 
 			return _velocity;
 		}
@@ -228,7 +223,7 @@ namespace CMF
 			//if(characterInput == null)
 			//	return false;
 
-			return sc.Jump;//characterInput.IsJumpKeyPressed();
+			return sc.Jump;
 		}
 
 		//Determine current controller state based on current momentum and whether the controller is grounded (or not);
@@ -382,7 +377,7 @@ namespace CMF
 			}
 
 			//Add gravity to vertical momentum;
-			_verticalMomentum -= gravity * Time.deltaTime * tr.up;
+			_verticalMomentum -= tr.up * gravity * Time.deltaTime;
 
 			//Remove any downward force if the controller is grounded;
 			if(currentControllerState == ControllerState.Grounded && VectorMath.GetDotProduct(_verticalMomentum, tr.up) < 0f)
@@ -402,13 +397,13 @@ namespace CMF
 					
 					//Lower air control slightly with a multiplier to add some 'weight' to any momentum applied to the controller;
 					float _airControlMultiplier = 0.25f;
-					_horizontalMomentum += _airControlMultiplier * airControlRate * Time.deltaTime * _movementVelocity;
+					_horizontalMomentum += _movementVelocity * Time.deltaTime * airControlRate * _airControlMultiplier;
 				}
 				//If controller has not received additional momentum;
 				else
 				{
 					//Clamp _horizontal velocity to prevent accumulation of speed;
-					_horizontalMomentum += airControlRate * Time.deltaTime * _movementVelocity;
+					_horizontalMomentum += _movementVelocity * Time.deltaTime * airControlRate;
 					_horizontalMomentum = Vector3.ClampMagnitude(_horizontalMomentum, movementSpeed);
 				}
 			}
@@ -449,7 +444,7 @@ namespace CMF
 
 				//Apply additional slide gravity;
 				Vector3 _slideDirection = Vector3.ProjectOnPlane(-tr.up, mover.GetGroundNormal()).normalized;
-				momentum += slideGravity * Time.deltaTime * _slideDirection;
+				momentum += _slideDirection * slideGravity * Time.deltaTime;
 			}
 			
 			//If controller is jumping, override vertical velocity with jumpSpeed;

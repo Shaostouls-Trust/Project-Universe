@@ -10,6 +10,7 @@ Shader "Hidden/NodeMasking"
 		{
 			CGPROGRAM
 			#include "UnityCG.cginc"
+			#include "Preview.cginc"
 			#pragma vertex vert_img
 			#pragma fragment frag
 
@@ -28,6 +29,7 @@ Shader "Hidden/NodeMasking"
 		{
 			CGPROGRAM
 			#include "UnityCG.cginc"
+			#include "Preview.cginc"
 			#pragma vertex vert_img
 			#pragma fragment frag
 
@@ -46,6 +48,8 @@ Shader "Hidden/NodeMasking"
 					c = a.z;
 				else if ( _Port == 4 )
 					c = a.w;
+				else if ( _Port == 5 )
+					c = float4( a.xyz, 0 );
 
 				return c;
 			}

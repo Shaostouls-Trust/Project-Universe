@@ -10,7 +10,7 @@ namespace ProjectUniverse.Serialization.Surrogates
         public void GetObjectData(object obj, SerializationInfo info, StreamingContext context)
         {
             Rigidbody rb = (Rigidbody)obj;
-            info.AddValue("angularDrag", rb.angularDrag);
+            info.AddValue("angularDrag", rb.angularDamping);
             info.AddValue("angularVelocity_x", rb.angularVelocity.x);
             info.AddValue("angularVelocity_y", rb.angularVelocity.y);
             info.AddValue("angularVelocity_z", rb.angularVelocity.z);
@@ -19,7 +19,7 @@ namespace ProjectUniverse.Serialization.Surrogates
             info.AddValue("centerOfMass_z", rb.centerOfMass.z);
             info.AddValue("collisionDetectionMode", rb.collisionDetectionMode);//Enum 0,1,2,3
             info.AddValue("detectCollisions", rb.detectCollisions);
-            info.AddValue("drag", rb.drag);
+            info.AddValue("drag", rb.linearDamping);
             info.AddValue("interpolation", rb.interpolation);//Enum 0,1,2
             info.AddValue("isKinematic", rb.isKinematic);
             info.AddValue("mass", rb.mass);
@@ -32,9 +32,9 @@ namespace ProjectUniverse.Serialization.Surrogates
             info.AddValue("rotation_w", rb.rotation.w);
             //info.AddValue("tag", rb.tag);
             info.AddValue("useGravity", rb.useGravity);
-            info.AddValue("velocity_x", rb.velocity.x);
-            info.AddValue("velocity_y", rb.velocity.y);
-            info.AddValue("velocity_z", rb.velocity.z);
+            info.AddValue("velocity_x", rb.linearVelocity.x);
+            info.AddValue("velocity_y", rb.linearVelocity.y);
+            info.AddValue("velocity_z", rb.linearVelocity.z);
         }
 
         public object SetObjectData(object obj, SerializationInfo info, StreamingContext context, ISurrogateSelector selector)
@@ -43,7 +43,7 @@ namespace ProjectUniverse.Serialization.Surrogates
             GameObject go = new GameObject();
             Rigidbody rb = (Rigidbody)go.AddComponent(typeof(Rigidbody));
             //Debug.Log(rb);
-            rb.angularDrag = (float)info.GetValue("angularDrag", typeof(float));
+            rb.angularDamping = (float)info.GetValue("angularDrag", typeof(float));
             rb.angularVelocity = new Vector3(
                 (float)info.GetValue("angularVelocity_x", typeof(float)),
                 (float)info.GetValue("angularVelocity_y", typeof(float)),
@@ -56,7 +56,7 @@ namespace ProjectUniverse.Serialization.Surrogates
                 );
             rb.collisionDetectionMode = ((CollisionDetectionMode)info.GetValue("collisionDetectionMode", typeof(int)));//Iffy
             rb.detectCollisions = (bool)info.GetValue("detectCollisions", typeof(bool));
-            rb.drag = (float)info.GetValue("drag", typeof(float));
+            rb.linearDamping = (float)info.GetValue("drag", typeof(float));
             rb.interpolation = (RigidbodyInterpolation)info.GetValue("interpolation", typeof(int));//iffy
             rb.isKinematic = (bool)info.GetValue("isKinematic", typeof(bool));
             rb.mass = (float)info.GetValue("mass", typeof(float));
@@ -73,7 +73,7 @@ namespace ProjectUniverse.Serialization.Surrogates
                 );
             //rb.tag = (string)info.GetValue("tag", typeof(string));
             rb.useGravity = (bool)info.GetValue("useGravity", typeof(bool));
-            rb.velocity = new Vector3(
+            rb.linearVelocity = new Vector3(
                 (float)info.GetValue("velocity_x", typeof(float)),
                 (float)info.GetValue("velocity_y", typeof(float)),
                 (float)info.GetValue("velocity_z", typeof(float))

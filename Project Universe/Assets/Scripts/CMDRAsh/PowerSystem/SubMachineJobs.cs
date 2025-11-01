@@ -1,7 +1,4 @@
-using ProjectUniverse.Environment.Fluid;
-using ProjectUniverse.Environment.Gas;
-using ProjectUniverse.PowerSystem;
-using ProjectUniverse.Util;
+using Unity.Mathematics;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,432 +10,275 @@ using Unity.Jobs;
 using Unity.Jobs.LowLevel.Unsafe;
 using UnityEngine;
 using static Unity.Collections.AllocatorManager;
+using static ProjectUniverse.PowerSystem.SubMachineJobs;
 
 namespace ProjectUniverse.PowerSystem
 {
     public class SubMachineJobs : MonoBehaviour
     {
-        JobHandle handle;
-        //list of pointers to each submachine
-        //private Dictionary<ISubMachine, IntPtr> machinePointers = new Dictionary<ISubMachine, IntPtr>();
-        List<ISubMachine> subs = new List<ISubMachine>();
+        private JobHandle handle;
+        private List<ISubMachine> subs = new List<ISubMachine>();
+        private List<GCHandle> gcHandles = new List<GCHandle>(); // Better handle management
+        // A follow-up response got rid of gcHandles for some reason??
 
-        //get/set data
-        NativeArray<int> state;
-        NativeArray<float> netReqEng;
-        NativeArray<float> netAskEng;
-        NativeArray<float> lastEng;
-        NativeArray<float> buffer;
-        NativeArray<bool> powered;
+        // Pre-allocated persistent arrays
+        private NativeArray<SubMachineData> machineData;
+        private NativeArray<SubMachineResults> results;
+        private bool arraysInitialized = false;
 
-        NativeArray<IntPtr> ptrArray;
-        List<IntPtr> intPtrs = new List<IntPtr>();
-        NativeArray<bool> runMachine;
-        NativeArray<float> timers;
-        NativeArray<int> legsReceived;
-        NativeArray<int> legsRequired;
+        // Struct to reduce data copying
+        [System.Serializable]
+        public struct SubMachineData
+        {
+            public float requiredEnergy;
+            public float bufferCurrent;
+            public float energyBuffer;
+            public float lastEnergyReceived;
+            public float timer;
+            public int percentDrawToFill;
+            public int legsReceived;
+            public int legsRequired;
+            public bool runMachine;
+        }
+
+        [System.Serializable]
+        public struct SubMachineResults
+        {
+            public int state;
+            public float netReqEng;
+            public float netAskEng;
+            public float newBuffer;
+            public float newTimer;
+            public bool powered;
+        }
+
+        void Update()
+        {
+            if (subs.Count == 0) return;
+
+            // Initialize arrays only once or when count changes
+            if (!arraysInitialized || machineData.Length != subs.Count)
+            {
+                InitializeArrays();
+            }
+
+            // Populate input data - THIS IS KEY: We need the current buffer state
+            for (int i = 0; i < subs.Count; i++)
+            {
+                var sub = subs[i];
+                machineData[i] = new SubMachineData
+                {
+                    requiredEnergy = sub.RequiredEnergy,
+                    bufferCurrent = sub.BufferCurrent, // This gets the buffer AFTER energy was received
+                    energyBuffer = sub.EnergyBuffer,
+                    lastEnergyReceived = sub.LastEnergyReceived,
+                    timer = sub.Timer,
+                    percentDrawToFill = sub.PercentDrawToFill,
+                    legsReceived = sub.LegsReceived,
+                    legsRequired = sub.LegsRequired,
+                    runMachine = sub.RunMachine
+                };
+            }
+
+            // Schedule job
+            var jobData = new SubMachineJob
+            {
+                inputData = machineData,
+                results = results
+            };
+
+            int batchSize = Mathf.Max(1, subs.Count / (JobsUtility.JobWorkerCount * 2));
+            handle = jobData.Schedule(subs.Count, batchSize);
+        }
+
+        private void InitializeArrays()
+        {
+            if (arraysInitialized)
+            {
+                machineData.Dispose();
+                results.Dispose();
+            }
+
+            machineData = new NativeArray<SubMachineData>(subs.Count, Allocator.Persistent);
+            results = new NativeArray<SubMachineResults>(subs.Count, Allocator.Persistent);
+            arraysInitialized = true;
+        }
+
+        private void LateUpdate()
+        {
+            if (subs.Count == 0) return;
+
+            handle.Complete();
+
+            // Apply results
+            for (int i = 0; i < subs.Count; i++)
+            {
+                var result = results[i];
+                var sub = subs[i];
+
+                // Apply the job results first
+                sub.SetJobResults(result);
+
+                // THEN request power for next frame (this will fill the buffer via ReceiveEnergyAmount)
+                if (result.netAskEng > 0f && sub.RunMachine)
+                {
+                    RequestPowerForMachine(sub, result.netAskEng);
+                }
+            }
+        }
+
+        private void RequestPowerForMachine(ISubMachine sub, float energyRequest)
+        {
+            var breakers = sub.Breakers;
+            if (breakers.Count > 0)
+            {
+                float requestPerBreaker = energyRequest / breakers.Count;
+                for (int i = 0; i < breakers.Count; i++)
+                {
+                    breakers[i].RequestPowerFromBreaker(requestPerBreaker, sub);
+                }
+            }
+        }
 
         public unsafe void AddMachine(ISubMachine sub)
         {
-            try
-            {
-                GCHandle handle = GCHandle.Alloc(sub, GCHandleType.Pinned);
-                IntPtr pointer = (IntPtr)GCHandle.ToIntPtr(handle);
-                intPtrs.Add(pointer);
-            }
-            catch (Exception e)
-            {
-                Debug.LogError(e);
-            }
             subs.Add(sub);
+
+            // Better GC handle management
+            GCHandle handle = GCHandle.Alloc(sub, GCHandleType.Pinned);
+            gcHandles.Add(handle);
+
+            // Mark arrays for reinitialization
+            arraysInitialized = false;
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-            // Use half the available worker threads, clamped to a minimum of 1 worker thread
-            int numBatches = Math.Max(1, JobsUtility.JobWorkerCount / 2);
-
-            //intPtrs.Clear();
-            //get the memory pointers for the machines
-            //for (int p = 0; p < subs.Count; p++)
-            //{
-            //    GCHandle handle = GCHandle.Alloc(subs[p], GCHandleType.Pinned);
-            //    IntPtr pointer = (IntPtr)GCHandle.ToIntPtr(handle);
-            //    intPtrs.Add(pointer);
-            //}
-
-            state = new NativeArray<int>(subs.Count, Allocator.TempJob);//machinePointers
-            netReqEng = new NativeArray<float>(subs.Count, Allocator.TempJob);
-            netAskEng = new NativeArray<float>(subs.Count, Allocator.TempJob);
-            lastEng = new NativeArray<float>(subs.Count, Allocator.TempJob);
-            buffer = new NativeArray<float>(subs.Count, Allocator.TempJob);
-            powered = new NativeArray<bool>(subs.Count, Allocator.TempJob);
-            runMachine = new NativeArray<bool>(subs.Count, Allocator.TempJob);
-            timers = new NativeArray<float>(subs.Count, Allocator.TempJob);
-            legsReceived = new NativeArray<int>(subs.Count, Allocator.TempJob);
-            legsRequired = new NativeArray<int>(subs.Count, Allocator.TempJob);
-            //
-            ptrArray = new NativeArray<IntPtr>(subs.Count, Allocator.TempJob);
-
-            int idx = 0;
-            foreach (ISubMachine sub in subs)//KeyValuePair<ISubMachine, IntPtr> kvp in machinePointers
-            {
-                state[idx] = 0;
-                netReqEng[idx] = 0f;
-                netAskEng[idx] = 0f;
-                lastEng[idx] = sub.LastEnergyReceived;
-                buffer[idx] = 0f;
-                powered[idx] = false;
-                runMachine[idx] = sub.RunMachine;
-                timers[idx] = sub.Timer;
-                legsReceived[idx] = sub.LegsReceived;
-                legsRequired[idx] = sub.LegsRequired;
-                //
-                //try
-                //{
-                    ptrArray[idx] = intPtrs[idx];
-                //}
-                //catch (Exception e)
-                //{
-                //    Debug.Log(e);
-                //}
-
-                idx++;
-            }
-
-            SubMachineJob jobData = new SubMachineJob
-            {
-                state = state,
-                netReqEng = netReqEng,
-                netAskEng = netAskEng,
-                lastEng = lastEng,
-                buffer = buffer,
-                powered = powered,
-                runMachine = runMachine,
-                timers = timers,
-                legsReceived = legsReceived,
-                legsRequired = legsRequired,
-                ptrArray = ptrArray
-            };
-
-            handle = jobData.Schedule(ptrArray.Length, numBatches);
-        }
-
-        /// <summary>
-        /// Execute the submachine code in parallel tasks
-        /// 
-        /// Returns: The type and state of the machine for main thread behavior
-        /// 
-        /// </summary>
-        //[BurstCompile]
-        public struct SubMachineJob : IJobParallelFor
-        {
-            //return the type and state of machine for run logic
-            public NativeArray<int> state;
-            public NativeArray<float> netReqEng;
-            public NativeArray<float> netAskEng;
-            public NativeArray<float> lastEng;
-            public NativeArray<float> buffer;
-            public NativeArray<bool> powered;
-            public NativeArray<bool> runMachine;
-            public NativeArray<float> timers;
-            public NativeArray<int> legsReceived;
-            public NativeArray<int> legsRequired;
-
-            //memory pointers to access managed types
-            public NativeArray<IntPtr> ptrArray;
-
-            public unsafe void Execute(int index)
-            {
-                ISubMachine sub = null;
-                //try
-                //{
-                    //get the machine from the pointer
-                    GCHandle h = GCHandle.FromIntPtr((IntPtr)ptrArray[index]);
-                    sub = (ISubMachine)h.Target;
-                //}
-                //catch (Exception e) { JobLogger.LogError(e); }
-                //return to unBursted code
-                if (sub != null)
-                {
-                    if (runMachine[index])//sub.RunMachine
-                    {
-                        //instance variables
-                        float requiredEnergy = sub.RequiredEnergy;
-                        buffer[index] = sub.BufferCurrent;
-                        float energyBuffer = sub.EnergyBuffer;
-                        //reset requestedEnergy
-                        netReqEng[index] = requiredEnergy;
-                        //Recalculate drawToFill based on draw percent
-                        float floatDrawToFill = (float)sub.PercentDrawToFill;
-                        float drawToFill = requiredEnergy + (requiredEnergy * (floatDrawToFill / 100)); //105% or 110% draw
-                                                                                                        //If the energy buffer is not full
-                        if (buffer[index] < energyBuffer)
-                        {
-                            //Get the deficit between the energybuffer(max) and the current buffer amount
-                            float deficit = energyBuffer - buffer[index];
-                            if (deficit >= drawToFill)
-                            {
-                                //send energy request
-                                netAskEng[index] = drawToFill;
-                                RequestHelper(sub, index);//sub, 
-
-                            }
-                            else if (deficit < drawToFill && deficit > requiredEnergy)
-                            {
-                                netAskEng[index] = deficit + netReqEng[index];
-                                //Debug.Log(this.gameObject.name + " Request Helper");
-                                RequestHelper(sub, index);
-                            }
-                            else
-                            {
-                                netAskEng[index] = requiredEnergy;
-                                //Debug.Log(this.gameObject.name + " Request Helper");
-                                RequestHelper(sub, index);
-                            }
-                            //if (buffer[index] < 0f)
-                            //{
-                            //    buffer[index] = 0f;
-                            //}
-                        }
-                        else if (buffer[index] >= energyBuffer)
-                        {
-                            //send request
-                            netAskEng[index] = requiredEnergy;
-                            buffer[index] = energyBuffer;
-                            //Debug.Log(this.gameObject.name + " Request Helper");
-                            RequestHelper(sub, index);
-                        }
-                        //update the buffer from the submachine
-                        buffer[index] = sub.BufferCurrent;
-
-                        //run machines
-                        //Debug.Log("Running "+this.gameObject.name);
-                        RunLogic(index);
-                    }
-                    else
-                    {
-                        buffer[index] = sub.BufferCurrent;
-                        //turn the machine off
-                        netAskEng[index] = 0f;
-                        lastEng[index] = 0f;
-                        RunLogic(index);
-                    }
-
-                }
-            }
-
-            [BurstCompile]
-            public void RunLogic(int index)//ISubMachine sub, 
-            {
-                timers[index]--;//sub.Timer
-                if (timers[index] < 0f)
-                {
-                    timers[index] = 7f;
-                }
-                if (runMachine[index])//sub.RunMachine
-                {
-                    if (legsReceived[index] == legsRequired[index])
-                    {
-                        //Debug.Log("Legs received");
-                        if (buffer[index] > 0f)
-                        {
-                            powered[index] = true;
-                            if (buffer[index] - netReqEng[index] < 0.0f)//not enough power to run at full
-                            {
-                                if (buffer[index] >= netReqEng[index] * 0.75f)//75% power
-                                {
-                                    ///return type and int from job to handle this in main thread
-                                    //any slower locks emiss to blinking yellow.
-                                    state[index] = 1;
-                                }
-                                else if (buffer[index] >= netReqEng[index] * 0.5f)//no lower than 50%
-                                {
-                                    state[index] = 2;
-                                }
-                                else//lower than 50%
-                                {
-                                    state[index] = 3;
-                                }
-                                //no matter what, the buffer is emptied
-                                //set this index of the buffer to the negative of itself
-                                buffer[index] = 0f;
-                                //bufferCurrent = 0.0f;
-                            }
-                            else
-                            {
-                                //run full power
-                                state[index] = 0;
-                                //bufferCurrent -= requiredEnergy;
-                                //set this buffer to the required energy
-                                //JobLogger.Log("from " + buffer[index]);
-                                buffer[index] -= netReqEng[index];
-                                //JobLogger.Log("to "+buffer[index]);
-                                if (buffer[index] <= 0f)
-                                {
-                                    buffer[index] = 0f;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            powered[index] = false;
-                            //isPowered = false;
-                            //'run' at 0 power
-                            state[index] = 4;
-                        }
-                    }
-                    else if (legsReceived[index] < legsRequired[index] && legsReceived[index] >= 1)
-                    {
-                        //Shut down machine due to leg requirement
-                        state[index] = 4;
-                        //electrical damage (if the buffer is not empty)
-                        //if (bufferCurrent > 0)
-                        //{
-                        //NYI
-                        //}
-                    }
-                    else
-                    {
-                        //Shut down machine due to leg requirement
-                        state[index] = 4;
-                        //NO electrical damage, because no legs attached.
-                    }
-                }
-                else
-                {
-                    state[index] = 5;
-                }
-            }
-
-            // Causes netcode errors - remove net stuff
-            public void RequestHelper(ISubMachine sub, int index)// 
-            {
-                if (runMachine[index]) //sub.RunMachine
-                {
-                    foreach (IBreakerBox box in sub.Breakers)
-                    {
-                        //JobLogger.Log("request from breakers: "+ netAskEng[index] / sub.Breakers.Count);
-                        box.RequestPowerFromBreaker(netAskEng[index] / sub.Breakers.Count, sub);
-                    }
-                }
-                else
-                {
-                    netAskEng[index] = 0f;
-                }
-            }
-        }
-
-        private unsafe void LateUpdate()
+        private void OnDestroy()
         {
             handle.Complete();
 
-            //set data and update network variables
-            //reconstruct ISubMachine from Ptr to ensure it's the right machine
-            for (int i = 0; i < ptrArray.Length; i++)
+            // Clean up GC handles
+            foreach (var gcHandle in gcHandles)
             {
-                try
-                {
-                    GCHandle h = GCHandle.FromIntPtr((IntPtr)ptrArray[i]);
-                    ISubMachine sub = (ISubMachine)h.Target;
-                    float b = netAskEng[i];
-                    float d = buffer[i];
-                    bool e = powered[i];
-                    float f = timers[i];
-                    int g = state[i];
-                    sub.SetData(b, d, e, f, g);
-                }
-                catch(Exception e)
-                {
-                    Debug.Log(e);
-                    //JobLogger.Log(netReqEng[i] + " " + netAskEng[i] + " " + lastEng[i] + " " + buffer[i] + " " + powered[i] + " " + timers[i]);   
-                }
+                if (gcHandle.IsAllocated)
+                    gcHandle.Free();
             }
+            gcHandles.Clear();
 
-            //for (int i = 0; i < ptrArray.Length; i++)
-            //{
-            //    GCHandle.FromIntPtr((IntPtr)ptrArray[i]).Free();
-            //}
-
-            state.Dispose();
-            netReqEng.Dispose();
-            netAskEng.Dispose();
-            lastEng.Dispose();
-            buffer.Dispose();
-            powered.Dispose();
-            runMachine.Dispose();
-            timers.Dispose();
-            legsReceived.Dispose();
-            legsRequired.Dispose();
-            ptrArray.Dispose();
+            // Dispose arrays
+            if (arraysInitialized)
+            {
+                if (machineData.IsCreated) machineData.Dispose();
+                if (results.IsCreated) results.Dispose();
+            }
         }
+    }
 
-        private unsafe void OnDestroy()
+    [BurstCompile]
+    public struct SubMachineJob : IJobParallelFor
+    {
+        [ReadOnly] public NativeArray<SubMachineData> inputData;
+        public NativeArray<SubMachineResults> results;
+
+        public void Execute(int index)
         {
-            try
+            var data = inputData[index];
+            var result = new SubMachineResults();
+
+            // Timer update
+            result.newTimer = data.timer - 1f;
+            if (result.newTimer < 0f)
+                result.newTimer = 7f;
+
+            if (!data.runMachine)
             {
-                for (int i = 0; i < ptrArray.Length; i++)
+                result.state = 5;
+                result.netAskEng = 0f;
+                result.newBuffer = data.bufferCurrent;
+                results[index] = result;
+                return;
+            }
+
+            // Calculate energy requirements (matching original logic)
+            result.netReqEng = data.requiredEnergy;
+            float floatDrawToFill = (float)data.percentDrawToFill;
+            float drawToFill = data.requiredEnergy + (data.requiredEnergy * (floatDrawToFill / 100f));
+
+            // Start with current buffer
+            result.newBuffer = data.bufferCurrent;
+
+            // Buffer request logic (matching original)
+            if (data.bufferCurrent < data.energyBuffer)
+            {
+                float deficit = data.energyBuffer - data.bufferCurrent;
+                if (deficit >= drawToFill)
                 {
-                    GCHandle.FromIntPtr((IntPtr)ptrArray[i]).Free();
+                    result.netAskEng = drawToFill;
+                }
+                else if (deficit < drawToFill && deficit > data.requiredEnergy)
+                {
+                    result.netAskEng = deficit + data.requiredEnergy;
+                }
+                else
+                {
+                    result.netAskEng = data.requiredEnergy;
                 }
             }
-            catch (Exception e) { }
-            try
+            else
             {
-                ptrArray.Dispose();
+                result.netAskEng = data.requiredEnergy;
+                result.newBuffer = data.energyBuffer; // Cap at max
             }
-            catch (Exception e) { }
-            try
+
+            // Run logic (matching original)
+            if (data.legsReceived == data.legsRequired)
             {
-                state.Dispose();
+                if (data.bufferCurrent > 0f)
+                {
+                    result.powered = true;
+
+                    if (data.bufferCurrent - data.requiredEnergy < 0f) // Not enough for full power
+                    {
+                        if (data.bufferCurrent >= data.requiredEnergy * 0.75f)
+                        {
+                            result.state = 1; // 75% power
+                        }
+                        else if (data.bufferCurrent >= data.requiredEnergy * 0.5f)
+                        {
+                            result.state = 2; // 50% power
+                        }
+                        else
+                        {
+                            result.state = 3; // <50% power
+                        }
+                        result.newBuffer = 0f; // Buffer emptied
+                    }
+                    else
+                    {
+                        result.state = 0; // Full power
+                        result.newBuffer = data.bufferCurrent - data.requiredEnergy;
+                        if (result.newBuffer < 0f)
+                            result.newBuffer = 0f;
+                    }
+                }
+                else
+                {
+                    result.powered = false;
+                    result.state = 4; // No power
+                    result.newBuffer = 0f;
+                }
             }
-            catch (Exception e) { }
-            try
+            else if (data.legsReceived < data.legsRequired && data.legsReceived >= 1)
             {
-                netReqEng.Dispose();
+                result.state = 4; // Insufficient legs (with damage potential)
+                result.newBuffer = data.bufferCurrent; // Keep buffer
             }
-            catch (Exception e) { }
-            try
+            else
             {
-                netAskEng.Dispose();
+                result.state = 4; // No legs
+                result.newBuffer = data.bufferCurrent; // Keep buffer
             }
-            catch (Exception e) { }
-            try
-            {
-                lastEng.Dispose();
-            }
-            catch (Exception e) { }
-            try
-            {
-                buffer.Dispose();
-            }
-            catch (Exception e) { }
-            try
-            {
-                powered.Dispose();
-            }
-            catch (Exception e) { }
-            try
-            {
-                runMachine.Dispose();
-            }
-            catch (Exception e) { }
-            try
-            {
-                timers.Dispose();
-            }
-            catch (Exception e) { }
-            try
-            {
-                legsReceived.Dispose();
-            }
-            catch (Exception e) { }
-            try
-            {
-                legsRequired.Dispose();
-            }
-            catch (Exception e) { }
+
+            results[index] = result;
         }
     }
 }

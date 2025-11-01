@@ -58,6 +58,7 @@ public class MainMenuScript : MonoBehaviour
                 playerLastLoadedScene = data.PlayerSceneData.PlayerSceneString;
             }catch(Exception e)
             {
+                Debug.Log(e);
                 Continue.enabled = false;
                 Load.enabled = false;
             }

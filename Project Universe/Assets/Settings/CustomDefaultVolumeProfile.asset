@@ -148,9 +148,15 @@ MonoBehaviour:
   m_PhysicallyBased:
     m_OverrideState: 1
     m_Value: 0
+  m_AdaptiveSamplingWeight:
+    m_OverrideState: 0
+    m_Value: 0.75
   m_LimitManualRangeNearBlur:
     m_OverrideState: 1
     m_Value: 0
+  coCStabilization:
+    m_OverrideState: 0
+    m_Value: 1
 --- !u!114 &-7841563295748166292
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -236,7 +242,7 @@ MonoBehaviour:
   active: 0
   mode:
     m_OverrideState: 1
-    m_Value: 3
+    m_Value: 4
   meteringMode:
     m_OverrideState: 1
     m_Value: 4
@@ -248,13 +254,13 @@ MonoBehaviour:
     m_Value: 0.5
   compensation:
     m_OverrideState: 0
-    m_Value: 0
+    m_Value: -1.33
   limitMin:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 1
   limitMax:
-    m_OverrideState: 0
-    m_Value: 8
+    m_OverrideState: 1
+    m_Value: 15
   curveMap:
     m_OverrideState: 0
     m_Value:
@@ -385,6 +391,7 @@ MonoBehaviour:
   m_Name: HDShadowSettings
   m_EditorClassIdentifier: 
   active: 1
+  interCascadeBorders: 1
   maxShadowDistance:
     m_OverrideState: 1
     m_Value: 500
@@ -565,9 +572,15 @@ MonoBehaviour:
   m_PhysicallyBased:
     m_OverrideState: 0
     m_Value: 0
+  m_AdaptiveSamplingWeight:
+    m_OverrideState: 0
+    m_Value: 0.75
   m_LimitManualRangeNearBlur:
     m_OverrideState: 0
     m_Value: 0
+  coCStabilization:
+    m_OverrideState: 0
+    m_Value: 1
 --- !u!114 &-4881745185493529660
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -638,6 +651,9 @@ MonoBehaviour:
   sliceDistributionUniformity:
     m_OverrideState: 0
     m_Value: 0.75
+  multipleScatteringIntensity:
+    m_OverrideState: 0
+    m_Value: 0
   m_FogControlMode:
     m_OverrideState: 0
     m_Value: 0
@@ -1120,6 +1136,11 @@ MonoBehaviour:
   rayMiss:
     m_OverrideState: 0
     m_Value: 3
+  adaptiveProbeVolumesLayerMask:
+    m_OverrideState: 0
+    m_Value:
+      serializedVersion: 0
+      m_Bits: 1
   depthBufferThickness:
     m_OverrideState: 0
     m_Value: 0.2
@@ -1257,6 +1278,7 @@ MonoBehaviour:
   m_Name: HDShadowSettings
   m_EditorClassIdentifier: 
   active: 1
+  interCascadeBorders: 1
   maxShadowDistance:
     m_OverrideState: 1
     m_Value: 500
@@ -1277,13 +1299,13 @@ MonoBehaviour:
     m_Value: 0.39999998
   cascadeShadowBorder0:
     m_OverrideState: 1
-    m_Value: 0.4
+    m_Value: 0.22540331
   cascadeShadowBorder1:
     m_OverrideState: 1
-    m_Value: 0.2777778
+    m_Value: 0.18770427
   cascadeShadowBorder2:
     m_OverrideState: 1
-    m_Value: 0.35294122
+    m_Value: 0.3912007
   cascadeShadowBorder3:
     m_OverrideState: 0
     m_Value: 0
@@ -1327,19 +1349,19 @@ MonoBehaviour:
     m_Value: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 0.125
+    m_Value: 0.1
   scatter:
-    m_OverrideState: 0
-    m_Value: 0.308
+    m_OverrideState: 1
+    m_Value: 0.625
   tint:
     m_OverrideState: 1
     m_Value: {r: 0.9339623, g: 0.9339623, b: 0.9339623, a: 1}
   dirtTexture:
-    m_OverrideState: 0
-    m_Value: {fileID: 0}
+    m_OverrideState: 1
+    m_Value: {fileID: 2800000, guid: 82768258f1cc41e48a53e089e36d7e7a, type: 3}
   dirtIntensity:
-    m_OverrideState: 0
-    m_Value: 10
+    m_OverrideState: 1
+    m_Value: 1
   anamorphic:
     m_OverrideState: 0
     m_Value: 1
@@ -1411,7 +1433,7 @@ MonoBehaviour:
     m_Value: 1
   enabled:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   enabledTransparent:
     m_OverrideState: 1
     m_Value: 1
@@ -1492,9 +1514,9 @@ MonoBehaviour:
   m_DenoiserRadius:
     m_OverrideState: 1
     m_Value: 12
-  m_AffectSmoothSurfaces:
-    m_OverrideState: 1
-    m_Value: 0
+  m_DenoiserAntiFlickeringStrength:
+    m_OverrideState: 0
+    m_Value: 1
   mode:
     m_OverrideState: 1
     m_Value: 1
@@ -1734,7 +1756,7 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 1
   enabled:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
   colorMode:
     m_OverrideState: 0
@@ -1787,6 +1809,9 @@ MonoBehaviour:
   sliceDistributionUniformity:
     m_OverrideState: 0
     m_Value: 0.75
+  multipleScatteringIntensity:
+    m_OverrideState: 0
+    m_Value: 0
   m_FogControlMode:
     m_OverrideState: 0
     m_Value: 0
@@ -1969,9 +1994,9 @@ MonoBehaviour:
   m_DenoiserRadius:
     m_OverrideState: 0
     m_Value: 8
-  m_AffectSmoothSurfaces:
+  m_DenoiserAntiFlickeringStrength:
     m_OverrideState: 0
-    m_Value: 0
+    m_Value: 1
   mode:
     m_OverrideState: 0
     m_Value: 2
@@ -2025,27 +2050,9 @@ MonoBehaviour:
   enable:
     m_OverrideState: 1
     m_Value: 1
-  minGridSize:
+  triangleSize:
     m_OverrideState: 0
-    m_Value: 50
-  maxGridSize:
-    m_OverrideState: 0
-    m_Value: 2500
-  elevationTransition:
-    m_OverrideState: 0
-    m_Value: 1000
-  numLevelOfDetails:
-    m_OverrideState: 0
-    m_Value: 3
-  maxTessellationFactor:
-    m_OverrideState: 0
-    m_Value: 10
-  tessellationFactorFadeStart:
-    m_OverrideState: 0
-    m_Value: 150
-  tessellationFactorFadeRange:
-    m_OverrideState: 0
-    m_Value: 1850
+    m_Value: 30
   ambientProbeDimmer:
     m_OverrideState: 0
     m_Value: 1

@@ -32,7 +32,7 @@ namespace ProjectUniverse.Networking
         /// </summary>
         private void Start()
         {
-            Debug.Log("RT: " + SystemInfo.supportsRayTracing);
+            //Debug.Log("RT: " + SystemInfo.supportsRayTracing);
             Debug.Log("Linke Starto!");
             Host();
             if(loadScreen != null)
@@ -59,7 +59,8 @@ namespace ProjectUniverse.Networking
                 //Debug.Log(playNet.name);
                 playNet.gameObject.GetComponent<SupplementalController>().LockOnlyCursor();
                 playNet.gameObject.GetComponent<PlayerVolumeController>().tempRSMPlayer = rsmPlayer;
-                omuic.PlayerControlsInput = playNet.gameObject.GetComponent<PlayerInput>();
+                if (omuic != null)
+                { omuic.PlayerControlsInput = playNet.gameObject.GetComponent<PlayerInput>(); }
             }
             //}
             Debug.Log("Started Host");

@@ -4,7 +4,7 @@ using UnityEngine;
 using ProjectUniverse.Environment.Volumes;
 using ProjectUniverse.Util;
 
-namespace ProjectUniverse.Environment.Fluid
+namespace ProjectUniverse.Environment.Fluids
 {
     public class IFluidTank : MonoBehaviour
     {
@@ -231,7 +231,7 @@ namespace ProjectUniverse.Environment.Fluid
                             lastOutlet += redux;
                             fluids[b].SetConcentration(concLeft);
                         }
-                        roomVolume.AddRoomFluid(outFluid);
+                        //roomVolume.AddRoomFluid(outFluid);
                     }
                 }
             }

@@ -156,9 +156,9 @@ public class SaveObjectData : SaveObject
 		
 		if (hasRigidbody)
 		{
-			velX = target.gameObject.GetComponent<Rigidbody>().velocity.x;
-			velY = target.gameObject.GetComponent<Rigidbody>().velocity.y;
-			velZ = target.gameObject.GetComponent<Rigidbody>().velocity.z;
+			velX = target.gameObject.GetComponent<Rigidbody>().linearVelocity.x;
+			velY = target.gameObject.GetComponent<Rigidbody>().linearVelocity.y;
+			velZ = target.gameObject.GetComponent<Rigidbody>().linearVelocity.z;
 		}
 	}
 }

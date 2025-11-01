@@ -12,18 +12,7 @@ namespace ProjectUniverse.Environment.World
         [SerializeField] private int[] OreZones;
         [SerializeField] private string[] OreTypes;
         [SerializeField] private int[] OreMasses;
-        public MyAsteroidOrbiter orbitPath;
-        private float distanceFromCenter;
         private OreDefinition OreDef;
-
-        private void Start()
-        {
-            Vector3 centerPos = orbitPath.gameObject.transform.localPosition;
-            float deltaX = centerPos.x - transform.localPosition.x;
-            float deltaY = transform.localPosition.y - centerPos.y;
-            float deltaZ = centerPos.z - transform.localPosition.z;
-            distanceFromCenter = (float)Mathf.Sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
-        }
 
         public int[] GetOreQualities()
         {
@@ -49,22 +38,6 @@ namespace ProjectUniverse.Environment.World
         public string GetAsteroidName()
         {
             return AsteroidName;
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-            /*
-            float linearVelocity = orbitPath.GetAngularVelocity() * distanceFromCenter;//orbitPath.GetSolarRadius();
-            //this.gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(-1, -1, -1), ForceMode.Impulse);
-            float T = (2 * Mathf.PI * distanceFromCenter)/linearVelocity;
-            float w = 2 * Mathf.PI / T;
-            //r(t) = Acos(wT) + Asin(wT)
-            float xPos = (distanceFromCenter) * Mathf.Cos(w * Time.time);
-            float zPos = (distanceFromCenter) * Mathf.Sin(w * Time.time);
-            //sets all asteroids to same x and z pos
-            this.GetComponent<Rigidbody>().MovePosition(new Vector3(xPos, transform.localPosition.y, zPos));
-            */
         }
     }
 }

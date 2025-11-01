@@ -20,7 +20,7 @@ public class DirectionalAccelerometer : MonoBehaviour
         {
             return;
         }
-        Vector3 velocity = rb.transform.InverseTransformDirection(rb.velocity);
+        Vector3 velocity = rb.transform.InverseTransformDirection(rb.linearVelocity);
         Vector3 angularVelocity = rb.angularVelocity;
 
         up.text = Math.Round(velocity.y,1).ToString();

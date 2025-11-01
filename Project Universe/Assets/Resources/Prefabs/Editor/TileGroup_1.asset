@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcbe938e41425a44a86a534b6c8caf85, type: 3}
+  m_Name: TileGroup_1
+  m_EditorClassIdentifier: 
+  lowerFloors:
+  - {fileID: 1936857113363961949, guid: 8879dab9798153b44ac1e4db6c9e4872, type: 3}
+  - {fileID: 409551563487763520, guid: 5cdb30cae78419d4bbf091315d9beedb, type: 3}
+  baseStructs:
+  - {fileID: 4082449103163434424, guid: c2613745e31bd68419c29e5652119309, type: 3}
+  floors:
+  - {fileID: 409551563487763520, guid: 5cdb30cae78419d4bbf091315d9beedb, type: 3}
+  - {fileID: 7357503869384570639, guid: f5c244fee5d0ab84995b325731d7d9d5, type: 3}
+  walls:
+  - {fileID: 2800207003735029132, guid: a1074d8438e23794f80680e29ba72eaf, type: 3}
+  - {fileID: 4682360946479898107, guid: ee6847e927fd6634786940c2f7e1298b, type: 3}
+  - {fileID: 9152411154041093070, guid: 1ad8adf9f2d796f4e9d755092c86c6ad, type: 3}
+  wallStructs:
+  - {fileID: 7986199018622676791, guid: c2bc329372d0baf438bbfd93d31a34c4, type: 3}
+  - {fileID: 6674748533653039945, guid: d05ce36bdbdf11e44a2336bca4d04568, type: 3}
+  doors:
+  - {fileID: 2571420840576186781, guid: 44f4e9de9d4a94f4d8c93f30217f5f81, type: 3}
+  stairs:
+  - {fileID: 1766618527845188, guid: 21d9ae662abec408281b622862aeb771, type: 3}
+  ductsMajorType:
+  - {fileID: 7919045770911340420, guid: f89600c9215fcef41a86bb1441e6769b, type: 3}
+  - {fileID: 1558111291045323846, guid: 907a0dc2031348f4983f2b30fe873f90, type: 3}
+  - {fileID: 6393325265400621657, guid: e1d33403210874c42a2345b5771854b4, type: 3}
+  - {fileID: 8085513603006332148, guid: 546f02a93ed8c96448b520709fbd58f7, type: 3}
+  - {fileID: 6253715565822567539, guid: 82756155eb0f3234a9cbaa69e06b28df, type: 3}
+  - {fileID: 8913793612412631453, guid: 05ba8c0e090793844a512d506054f27b, type: 3}
+  - {fileID: 8813073518264525128, guid: 0512644c13c67b64ba34182573a083b7, type: 3}
+  lights:
+  - {fileID: 1503639998294784, guid: 7eb44e6d0f419324b83e33d3678c4f4f, type: 3}
+  overstructs:
+  - {fileID: 1948855928050764909, guid: 799a511f30795a4429353359b60f51d2, type: 3}
+  pipesMajorType:
+  - {fileID: 6026051083468741136, guid: 40c76addf4cbfb343a9ce1d1f8374af7, type: 3}
+  - {fileID: 6100498059797511396, guid: 8b153ea0de4eff74085114d8035d579d, type: 3}
+  - {fileID: 7931001642650352449, guid: 695ac1a55351c9d47b6869a896705a4e, type: 3}
+  - {fileID: 747255040465825746, guid: 833f89d165fd31648b9c8891a27c2cbf, type: 3}
+  - {fileID: 728405682721523242, guid: e3648d75756052641834151ca9dabf63, type: 3}
+  - {fileID: 4989287766050347680, guid: 2e02fd75647896845bc7a8b6a52d7645, type: 3}
+  - {fileID: 3478554735090750938, guid: 0828d3742d9fc374ab62f9ec3dd00fda, type: 3}
+  - {fileID: 5644475534686404472, guid: ee97f6387365f784b994800fe79308ae, type: 3}
+  - {fileID: 5586064837529527816, guid: c61836c24dc70c0408dd59a273c0dd26, type: 3}
+  - {fileID: 3805246573268695194, guid: dfb9cfb6a31fbe3439ac59af89da21fc, type: 3}
+  - {fileID: 2866307771533999036, guid: b705ed449f5874f45936f983f7e91cbe, type: 3}
+  - {fileID: 6839059219090434751, guid: d806374acc3171a4d906b76a9a1b7358, type: 3}
+  - {fileID: 5888970999148766844, guid: 714406e9533b19c429c956c81cd0263b, type: 3}
+  - {fileID: 294820570082471834, guid: e82ccb01e6a8244439069d38a1d29195, type: 3}
+  - {fileID: 8948691976840913790, guid: ec2ee3e7f9127984da42d9e0bcc0cff1, type: 3}
+  ceilings:
+  - {fileID: 7375348029336696609, guid: 477b4e9a9988c7847a4e98d2aacf4092, type: 3}

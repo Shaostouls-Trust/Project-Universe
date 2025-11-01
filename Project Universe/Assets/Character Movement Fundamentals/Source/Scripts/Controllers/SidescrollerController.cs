@@ -7,9 +7,9 @@ namespace CMF
 	//This controller script is based on 'AdvancedWalkerController' and limits player movement to a 2D plane;
 	//It can be used to build 2D platformers or other games using 2D controls;
 	public class SidescrollerController : AdvancedWalkerController {
-
-		//Calculate movement direction based on player input;
-		protected override Vector3 CalculateMovementDirection()
+		[SerializeField] private CharacterInput characterInput;
+        //Calculate movement direction based on player input;
+        protected override Vector3 CalculateMovementDirection()
 		{
 			//If no character input script is attached to this object, return;
 			if(characterInput == null)

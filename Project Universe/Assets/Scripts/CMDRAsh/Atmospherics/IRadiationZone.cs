@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using ProjectUniverse.Environment.Volumes;
 using ProjectUniverse.Util;
+using System;
+using System.Linq;
 
 namespace ProjectUniverse.Environment.Radiation
 {
@@ -47,6 +49,7 @@ namespace ProjectUniverse.Environment.Radiation
 
         private void Update()
         {
+            //bug that keeps the radiation range at 0 on start if nothing changes.
             if(lastLeakMult != _generatorLeakMultiplier)
             {
                 //float delt = lastLeakMult - _generatorLeakMultiplier;
@@ -85,6 +88,48 @@ namespace ProjectUniverse.Environment.Radiation
         }
 
         public float GetThickness(Vector3 target)
+        {
+            float thickness = 0f;
+            target = new Vector3(target.x, target.y + 1f, target.z);
+            Vector3 direction = (target - transform.position);
+            // Raycast from source to target
+            RaycastHit[] forwardHits = Physics.RaycastAll((transform.position + radiationArea.center), direction.normalized, direction.magnitude);
+            // Raycast from target to source to get exit points
+            RaycastHit[] backwardHits = Physics.RaycastAll(target, -direction.normalized, direction.magnitude);
+            // Combine both forward and backward hits
+            RaycastHit[] allHits = new RaycastHit[forwardHits.Length + backwardHits.Length];
+            forwardHits.CopyTo(allHits, 0);
+            backwardHits.CopyTo(allHits, forwardHits.Length);
+            List<RaycastHit> allHitsList = allHits.ToList();
+            
+            //Remove all the player hit(s) from the array
+            for (int i = 0; i < allHitsList.Count; i++)
+            {
+                // Ignore player collider
+                if (allHitsList[i].collider.gameObject.CompareTag("Player"))
+                {
+                    allHitsList.RemoveAt(i);
+                }
+            }
+            allHitsList.Sort((a, b) => a.distance.CompareTo(b.distance));
+            // Sort hits by distance from the source
+            for (int i = 0; i < allHitsList.Count; i++)
+            {
+                // Calculate the thickness of the object by finding the next exit point
+                for (int j = i + 1; j < allHitsList.Count; j++)
+                {
+                    if (allHitsList[i].collider == allHitsList[j].collider)
+                    {
+                        thickness += Vector3.Distance(allHitsList[i].point, allHitsList[j].point);
+                        break;
+                    }
+                }
+            }
+            // Convert thickness from meters to centimeters
+            return thickness * 100f;
+        }
+
+        public float GetThicknessO(Vector3 target)
         {
             float thickness = 0f;
             target = new Vector3(target.x, target.y + 1f, target.z);

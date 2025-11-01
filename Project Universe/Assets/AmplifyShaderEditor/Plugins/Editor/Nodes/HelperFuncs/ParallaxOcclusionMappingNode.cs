@@ -38,7 +38,7 @@ namespace AmplifyShaderEditor
 		[SerializeField]
 		private InlineProperty m_inlineMaxSamples = new InlineProperty( 16 );
 		
-		[ SerializeField]
+		[SerializeField]
 		private int m_sidewallSteps = 2;
 
 		[SerializeField]
@@ -59,7 +59,7 @@ namespace AmplifyShaderEditor
 		[SerializeField]
 		private Vector2 m_CurvatureVector = new Vector2( 0, 0 );
 		
-		private string m_functionHeader = "POM( {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13} )";
+		private string m_functionHeader = "POM( {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}, {14} )";
 		private string m_functionBody = string.Empty;
 
 		//private const string WorldDirVarStr = "worldViewDir";
@@ -69,6 +69,9 @@ namespace AmplifyShaderEditor
 		private InputPort m_ssPort;
 		private InputPort m_scalePort;
 		private InputPort m_viewdirTanPort;
+		private InputPort m_minSamplesPort;
+		private InputPort m_maxSamplesPort;
+		private InputPort m_sidewallStepsPort;
 		private InputPort m_refPlanePort;
 		private InputPort m_curvaturePort;
 		private InputPort m_arrayIndexPort;
@@ -85,6 +88,9 @@ namespace AmplifyShaderEditor
 			AddInputPort( WirePortDataType.SAMPLERSTATE, false, "SS", -1, MasterNodePortCategory.Fragment, 7 );
 			AddInputPort( WirePortDataType.FLOAT, false, "Scale", -1, MasterNodePortCategory.Fragment, 2 );
 			AddInputPort( WirePortDataType.FLOAT3, false, "ViewDir (tan)", -1, MasterNodePortCategory.Fragment, 3 );
+			AddInputPort( WirePortDataType.INT, false, "Min Samples", -1, MasterNodePortCategory.Fragment, 8 );
+			AddInputPort( WirePortDataType.INT, false, "Max Samples", -1, MasterNodePortCategory.Fragment, 9 );
+			AddInputPort( WirePortDataType.INT, false, "Sidewall Steps", -1, MasterNodePortCategory.Fragment, 10 );
 			AddInputPort( WirePortDataType.FLOAT, false, "Ref Plane", -1, MasterNodePortCategory.Fragment, 4 );
 			AddInputPort( WirePortDataType.FLOAT2, false, "Curvature", -1, MasterNodePortCategory.Fragment, 5 );
 			AddInputPort( WirePortDataType.FLOAT, false, ArrayIndexStr, -1, MasterNodePortCategory.Fragment, 6 );
@@ -102,6 +108,9 @@ namespace AmplifyShaderEditor
 			m_pomUVPort = m_outputPorts[ 0 ];
 			m_curvaturePort = GetInputPortByUniqueId( 5 );
 			m_arrayIndexPort = GetInputPortByUniqueId( 6 );
+			m_minSamplesPort = GetInputPortByUniqueId( 8 );
+			m_maxSamplesPort = GetInputPortByUniqueId( 9 );
+			m_sidewallStepsPort = GetInputPortByUniqueId( 10 );
 
 			m_scalePort.FloatInternalData = 0.02f;
 			m_useInternalPortData = false;
@@ -122,14 +131,7 @@ namespace AmplifyShaderEditor
 		public override void OnConnectedOutputNodeChanges( int outputPortId, int otherNodeId, int otherPortId, string name, WirePortDataType type )
 		{
 			base.OnConnectedOutputNodeChanges( outputPortId, otherNodeId, otherPortId, name, type );
-			if( !m_texPort.CheckValidType( type ) )
-			{
-				m_texPort.FullDeleteConnections();
-				UIUtils.ShowMessage( UniqueId, "Parallax Occlusion Mapping node only accepts SAMPLER2D, SAMPLER3D and SAMPLER2DARRAY input types.\nTexture Object connected changed to "+ type + ", connection was lost, please review and update accordingly.", MessageSeverity.Warning );
-			} else
-			{
-				m_texPort.MatchPortToConnection();
-			}
+			m_texPort.MatchPortToConnection();
 			UpdateIndexPort();
 		}
 
@@ -147,11 +149,18 @@ namespace AmplifyShaderEditor
 
 			//m_minSamples = EditorGUILayoutIntSlider( "Min Samples", m_minSamples, 1, 128 );
 			UndoParentNode inst = this;
+			EditorGUI.BeginDisabledGroup( m_minSamplesPort.IsConnected );
 			m_inlineMinSamples.CustomDrawer( ref inst, ( x ) => { m_inlineMinSamples.IntValue = EditorGUILayoutIntSlider( "Min Samples", m_inlineMinSamples.IntValue, 1, 128 ); }, "Min Samples" );
-			//m_maxSamples = EditorGUILayoutIntSlider( "Max Samples", m_maxSamples, 1, 128 );
-			m_inlineMaxSamples.CustomDrawer( ref inst, ( x ) => { m_inlineMaxSamples.IntValue = EditorGUILayoutIntSlider( "Max Samples", m_inlineMaxSamples.IntValue, 1, 128 ); }, "Max Samples" );
+			EditorGUI.EndDisabledGroup();
 
+			//m_maxSamples = EditorGUILayoutIntSlider( "Max Samples", m_maxSamples, 1, 128 );
+			EditorGUI.BeginDisabledGroup( m_maxSamplesPort.IsConnected );
+			m_inlineMaxSamples.CustomDrawer( ref inst, ( x ) => { m_inlineMaxSamples.IntValue = EditorGUILayoutIntSlider( "Max Samples", m_inlineMaxSamples.IntValue, 1, 128 ); }, "Max Samples" );
+			EditorGUI.EndDisabledGroup();
+
+			EditorGUI.BeginDisabledGroup( m_sidewallStepsPort.IsConnected );
 			m_sidewallSteps = EditorGUILayoutIntSlider( "Sidewall Steps", m_sidewallSteps, 0, 10 );
+			EditorGUI.EndDisabledGroup();
 
 			EditorGUI.BeginDisabledGroup(m_scalePort.IsConnected );
 			m_defaultScale = EditorGUILayoutSlider( "Default Scale", m_defaultScale, 0, 1 );
@@ -255,11 +264,11 @@ namespace AmplifyShaderEditor
 				
 				if ( dataCollector.IsTemplate )
 				{
-					viewDirTan = dataCollector.TemplateDataCollectorInstance.GetTangentViewDir( CurrentPrecisionType );
+					viewDirTan = dataCollector.TemplateDataCollectorInstance.GetViewDir( CurrentPrecisionType, space: ViewSpace.Tangent );
 				}
 				else
 				{
-					viewDirTan = GeneratorUtils.GenerateViewDirection( ref dataCollector, UniqueId, ViewSpace.Tangent );
+					viewDirTan = GeneratorUtils.GenerateViewDirection( ref dataCollector, UniqueId, space: ViewSpace.Tangent );
 					//dataCollector.AddToInput( UniqueId, SurfaceInputs.VIEW_DIR, m_currentPrecisionType );
 					//viewDirTan = Constants.InputVarStr + "." + UIUtils.GetInputValueFromType( SurfaceInputs.VIEW_DIR );
 				}
@@ -269,6 +278,11 @@ namespace AmplifyShaderEditor
 				viewDirTan = m_viewdirTanPort.GeneratePortInstructions( ref dataCollector );
 			}
 
+			// min/max samples
+			string minSamples = m_minSamplesPort.IsConnected ? m_minSamplesPort.GeneratePortInstructions( ref dataCollector ) : m_inlineMinSamples.GetValueOrProperty( false );
+			string maxSamples = m_maxSamplesPort.IsConnected ? m_maxSamplesPort.GeneratePortInstructions( ref dataCollector ) : m_inlineMaxSamples.GetValueOrProperty( false );
+			string sidewallSteps = m_sidewallStepsPort.IsConnected ? m_sidewallStepsPort.GeneratePortInstructions( ref dataCollector ) : m_sidewallSteps.ToString();
+
 			//generate world normal
 			string normalWorld = string.Empty;
 			if ( dataCollector.IsTemplate )
@@ -277,12 +291,12 @@ namespace AmplifyShaderEditor
 			}
 			else
 			{
-				dataCollector.AddToInput( UniqueId, SurfaceInputs.WORLD_NORMAL, CurrentPrecisionType );
+				dataCollector.AddToInput( UniqueId, SurfaceInputs.WORLD_NORMAL, UIUtils.CurrentWindow.CurrentGraph.CurrentPrecision );
 				dataCollector.AddToInput( UniqueId, SurfaceInputs.INTERNALDATA, addSemiColon: false );
 				normalWorld = GeneratorUtils.GenerateWorldNormal( ref dataCollector, UniqueId );
 			}
 
-			string worldViewDir = GeneratorUtils.GenerateViewDirection( ref dataCollector, UniqueId, ViewSpace.World );
+			string worldViewDir = GeneratorUtils.GenerateViewDirection( ref dataCollector, UniqueId, space: ViewSpace.World );
 			
 			string dx = "ddx("+ textcoords + ")";
 			string dy = "ddy(" + textcoords + ")";
@@ -356,7 +370,7 @@ namespace AmplifyShaderEditor
 				textureArgs = texture;
 			}
 			//string functionResult = dataCollector.AddFunctions( m_functionHeader, m_functionBody, ( (m_pomTexType == POMTexTypes.TextureArray) ? "UNITY_PASS_TEX2DARRAY(" + texture + ")": texture), textcoords, dx, dy, normalWorld, worldViewDir, viewDirTan, m_minSamples, m_maxSamples, scale, refPlane, texture+"_ST.xy", curvature, arrayIndex );
-			string functionResult = dataCollector.AddFunctions( m_functionHeader, m_functionBody, textureArgs, textcoords, dx, dy, normalWorld, worldViewDir, viewDirTan, m_inlineMinSamples.GetValueOrProperty(false), m_inlineMinSamples.GetValueOrProperty(false), scale, refPlane, textCoordsST + ".xy", curvature, arrayIndex );
+			string functionResult = dataCollector.AddFunctions( m_functionHeader, m_functionBody, textureArgs, textcoords, dx, dy, normalWorld, worldViewDir, viewDirTan, minSamples, maxSamples, sidewallSteps, scale, refPlane, textCoordsST + ".xy", curvature, arrayIndex );
 
 			dataCollector.AddLocalVariable( UniqueId, CurrentPrecisionType, m_pomUVPort.DataType, localVarName, functionResult );
 
@@ -374,29 +388,29 @@ namespace AmplifyShaderEditor
 				{
 					string sampleParam = string.Empty;
 					sampleParam = GeneratorUtils.GetPropertyDeclaraction( "heightMap", TextureType.Texture2D, ", " ) + GeneratorUtils.GetSamplerDeclaraction( "samplerheightMap", TextureType.Texture2D, ", " );
-					IOUtils.AddFunctionHeader( ref m_functionBody, string.Format("inline float2 POM( {0}float2 uvs, float2 dx, float2 dy, float3 normalWorld, float3 viewWorld, float3 viewDirTan, int minSamples, int maxSamples, float parallax, float refPlane, float2 tilling, float2 curv, int index )", sampleParam ));
+					IOUtils.AddFunctionHeader( ref m_functionBody, string.Format("inline float2 POM( {0}float2 uvs, float2 dx, float2 dy, float3 normalWorld, float3 viewWorld, float3 viewDirTan, int minSamples, int maxSamples, int sidewallSteps, float parallax, float refPlane, float2 tilling, float2 curv, int index )", sampleParam ));
 				}
 				break;
 				case WirePortDataType.SAMPLER3D:
 				{
 					string sampleParam = string.Empty;
 					sampleParam = GeneratorUtils.GetPropertyDeclaraction( "heightMap", TextureType.Texture3D, ", " ) + GeneratorUtils.GetSamplerDeclaraction( "samplerheightMap", TextureType.Texture3D, ", " );
-					IOUtils.AddFunctionHeader( ref m_functionBody, string.Format("inline float2 POM( {0}float3 uvs, float3 dx, float3 dy, float3 normalWorld, float3 viewWorld, float3 viewDirTan, int minSamples, int maxSamples, float parallax, float refPlane, float2 tilling, float2 curv, int index )", sampleParam ) );
+					IOUtils.AddFunctionHeader( ref m_functionBody, string.Format( "inline float2 POM( {0}float3 uvs, float3 dx, float3 dy, float3 normalWorld, float3 viewWorld, float3 viewDirTan, int minSamples, int maxSamples, int sidewallSteps, float parallax, float refPlane, float2 tilling, float2 curv, int index )", sampleParam ) );
 				}
 				break;
 				case WirePortDataType.SAMPLER2DARRAY:
 				if( outsideGraph.IsSRP )
-					IOUtils.AddFunctionHeader( ref m_functionBody, "inline float2 POM( TEXTURE2D_ARRAY(heightMap), SAMPLER(samplerheightMap), float2 uvs, float2 dx, float2 dy, float3 normalWorld, float3 viewWorld, float3 viewDirTan, int minSamples, int maxSamples, float parallax, float refPlane, float2 tilling, float2 curv, int index )" );
+					IOUtils.AddFunctionHeader( ref m_functionBody, "inline float2 POM( TEXTURE2D_ARRAY(heightMap), SAMPLER(samplerheightMap), float2 uvs, float2 dx, float2 dy, float3 normalWorld, float3 viewWorld, float3 viewDirTan, int minSamples, int maxSamples, int sidewallSteps, float parallax, float refPlane, float2 tilling, float2 curv, int index )" );
 				else
-					IOUtils.AddFunctionHeader( ref m_functionBody, "inline float2 POM( UNITY_DECLARE_TEX2DARRAY_NOSAMPLER(heightMap), SamplerState samplerheightMap, float2 uvs, float2 dx, float2 dy, float3 normalWorld, float3 viewWorld, float3 viewDirTan, int minSamples, int maxSamples, float parallax, float refPlane, float2 tilling, float2 curv, int index )" );
+					IOUtils.AddFunctionHeader( ref m_functionBody, "inline float2 POM( UNITY_DECLARE_TEX2DARRAY_NOSAMPLER(heightMap), SamplerState samplerheightMap, float2 uvs, float2 dx, float2 dy, float3 normalWorld, float3 viewWorld, float3 viewDirTan, int minSamples, int maxSamples, int sidewallSteps, float parallax, float refPlane, float2 tilling, float2 curv, int index )" );
 				break;
 			}
 			
 			IOUtils.AddFunctionLine( ref m_functionBody, "float3 result = 0;" );
-			IOUtils.AddFunctionLine( ref m_functionBody, "int stepIndex = 0;" );
-			//IOUtils.AddFunctionLine( ref m_functionBody, "int numSteps = ( int )( minSamples + dot( viewWorld, normalWorld ) * ( maxSamples - minSamples ) );" );
-			//IOUtils.AddFunctionLine( ref m_functionBody, "int numSteps = ( int )lerp( maxSamples, minSamples, length( fwidth( uvs ) ) * 10 );" );
-			IOUtils.AddFunctionLine( ref m_functionBody, "int numSteps = ( int )lerp( (float)maxSamples, (float)minSamples, saturate( dot( normalWorld, viewWorld ) ) );" );
+			IOUtils.AddFunctionLine( ref m_functionBody, "float stepIndex = 0;" );
+			//IOUtils.AddFunctionLine( ref m_functionBody, "float numSteps = ( float )( minSamples + dot( viewWorld, normalWorld ) * ( maxSamples - minSamples ) );" );
+			//IOUtils.AddFunctionLine( ref m_functionBody, "float numSteps = ( float )lerp( maxSamples, minSamples, length( fwidth( uvs ) ) * 10 );" );
+			IOUtils.AddFunctionLine( ref m_functionBody, "float numSteps = floor( lerp( (float)maxSamples, (float)minSamples, saturate( dot( normalWorld, viewWorld ) ) ) );" );
 			IOUtils.AddFunctionLine( ref m_functionBody, "float layerHeight = 1.0 / numSteps;" );
 			IOUtils.AddFunctionLine( ref m_functionBody, "float2 plane = parallax * ( viewDirTan.xy / viewDirTan.z );" );
 			IOUtils.AddFunctionLine( ref m_functionBody, "uvs.xy += refPlane * plane;" );
@@ -449,10 +463,10 @@ namespace AmplifyShaderEditor
 			IOUtils.AddFunctionLine( ref m_functionBody, " \t}" );
 			IOUtils.AddFunctionLine( ref m_functionBody, "}" );
 
-			if ( m_sidewallSteps > 0 )
+			if ( m_sidewallSteps > 0 || m_sidewallStepsPort.IsConnected )
 			{
-				IOUtils.AddFunctionLine( ref m_functionBody, "int sectionSteps = " + m_sidewallSteps + ";" );
-				IOUtils.AddFunctionLine( ref m_functionBody, "int sectionIndex = 0;" );
+				IOUtils.AddFunctionLine( ref m_functionBody, "float sectionSteps = sidewallSteps;" );
+				IOUtils.AddFunctionLine( ref m_functionBody, "float sectionIndex = 0;" );
 				IOUtils.AddFunctionLine( ref m_functionBody, "float newZ = 0;" );
 				IOUtils.AddFunctionLine( ref m_functionBody, "float newHeight = 0;" );
 				IOUtils.AddFunctionLine( ref m_functionBody, "while ( sectionIndex < sectionSteps )" );

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FluidDefinitions>
+    <Fluid>
+        <Fluid_Type STR_ID="Water"/>
+        <Flammability Value="0"/>
+        <Combustibility Value="0"/>
+        <MolarMass Value="18.02"/>
+        <IsNuclear BoolValue="false"/>
+        <Toxicity Value="0"/>
+        <BoilingPoint Value="373.15"/>
+        <SpecificHeatLiquid Value="4186"/>
+        <SpecificHeatGas Value="2010"/>
+        <EnthalpyVaporization Value="2257000"/>
+        <LiquidDensity Value="1000"/>
+    </Fluid>
+    <Fluid>
+        <Fluid_Type STR_ID="Oxygen"/>
+        <Flammability Value="0"/>
+        <Combustibility Value="8"/>
+        <MolarMass Value="31.9988"/>
+        <IsNuclear BoolValue="false"/>
+        <Toxicity Value="0"/>
+        <BoilingPoint Value="90.2"/>
+        <SpecificHeatLiquid Value="1700"/>
+        <SpecificHeatGas Value="920"/>
+        <EnthalpyVaporization Value="213000"/>
+        <LiquidDensity Value="1141"/>
+    </Fluid>
+    <Fluid>
+        <Fluid_Type STR_ID="Nitrogen"/>
+        <Flammability Value="0"/>
+        <Combustibility Value="0"/>
+        <MolarMass Value="28.014"/>
+        <IsNuclear BoolValue="false"/>
+        <Toxicity Value="0"/>
+        <BoilingPoint Value="77.36"/>
+        <SpecificHeatLiquid Value="2042"/>
+        <SpecificHeatGas Value="1040"/>
+        <EnthalpyVaporization Value="199000"/>
+        <LiquidDensity Value="807"/>
+    </Fluid>
+	<Fluid>
+		<Fluid_Type STR_ID="Methane"/>
+        <Flammability Value="8"/>
+        <Combustibility Value="7"/>
+        <MolarMass Value="16.04"/>
+        <IsNuclear BoolValue="false"/>
+        <Toxicity Value="1"/>
+        <BoilingPoint Value="111.65"/> <!-- Kelvin -->
+        <SpecificHeatLiquid Value="2220"/>
+        <SpecificHeatGas Value="2220"/>
+        <EnthalpyVaporization Value="8170"/>
+        <LiquidDensity Value="422"/>
+  </Fluid>
+  <Fluid>
+		<Fluid_Type STR_ID="Hydrogen" />
+		<Flammability Value="4"/>
+		<Combustibility Value="4"/>
+		<MolarMass Value="2.016" />
+		<IsNuclear BoolValue="false" />
+		<Toxicity Value="0.0" />
+        <BoilingPoint Value="20.35"/> <!-- Kelvin -->
+		<SpecificHeatLiquid Value="14310"/>
+		<SpecificHeatGas Value="14310"/>
+        <EnthalpyVaporization Value="904"/>
+        <LiquidDensity Value="70.8"/>
+  </Fluid>
+  
+  <Fluid>
+		<Fluid_Type STR_ID="CO2" />
+		<Flammability Value="0"/>
+		<Combustibility Value="0"/>
+		<MolarMass Value="44.01" />
+		<IsNuclear BoolValue="false" />
+		<Toxicity Value="2" />
+        <BoilingPoint Value="194.65"/> <!-- Kelvin -->
+		<SpecificHeatLiquid Value="844"/>
+		<SpecificHeatGas Value="844"/>
+        <EnthalpyVaporization Value="25200"/>
+        <LiquidDensity Value="771"/>
+  </Fluid>
+</FluidDefinitions>

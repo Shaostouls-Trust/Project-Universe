@@ -29,16 +29,17 @@ namespace AmplifyShaderEditor
 
 		private static readonly string IconGUID = "2c6536772776dd84f872779990273bfc";
 
-		public static readonly string ChangelogURL = "http://amplify.pt/Banner/ASEchangelog.json";
+		public static readonly string ChangelogURL = "https://amplify.pt/Banner/ASEchangelog.json";
 
-		private static readonly string ManualURL = "http://wiki.amplify.pt/index.php?title=Unity_Products:Amplify_Shader_Editor/Manual";
-		private static readonly string BasicURL = "http://wiki.amplify.pt/index.php?title=Unity_Products:Amplify_Shader_Editor/Tutorials#Official_-_Basics";
-		private static readonly string BeginnerURL = "http://wiki.amplify.pt/index.php?title=Unity_Products:Amplify_Shader_Editor/Tutorials#Official_-_Beginner_Series";
-		private static readonly string NodesURL = "http://wiki.amplify.pt/index.php?title=Unity_Products:Amplify_Shader_Editor/Nodes";
-		private static readonly string SRPURL = "http://wiki.amplify.pt/index.php?title=Unity_Products:Amplify_Shader_Editor/Scriptable_Rendering_Pipeline";
-		private static readonly string FunctionsURL = "http://wiki.amplify.pt/index.php?title=Unity_Products:Amplify_Shader_Editor/Manual#Shader_Functions";
-		private static readonly string TemplatesURL = "http://wiki.amplify.pt/index.php?title=Unity_Products:Amplify_Shader_Editor/Templates";
-		private static readonly string APIURL = "http://wiki.amplify.pt/index.php?title=Unity_Products:Amplify_Shader_Editor/API";
+		private static readonly string ManualURL = "https://wiki.amplify.pt/index.php?title=Unity_Products:Amplify_Shader_Editor/Manual";
+		private static readonly string BasicURL = "https://wiki.amplify.pt/index.php?title=Unity_Products:Amplify_Shader_Editor/Tutorials#Official_-_Basics";
+		private static readonly string BeginnerURL = "https://wiki.amplify.pt/index.php?title=Unity_Products:Amplify_Shader_Editor/Tutorials#Official_-_Beginner_Series";
+		private static readonly string NodesURL = "https://wiki.amplify.pt/index.php?title=Unity_Products:Amplify_Shader_Editor/Nodes";
+		private static readonly string SRPURL = "https://wiki.amplify.pt/index.php?title=Unity_Products:Amplify_Shader_Editor/Scriptable_Rendering_Pipeline";
+		private static readonly string FunctionsURL = "https://wiki.amplify.pt/index.php?title=Unity_Products:Amplify_Shader_Editor/Manual#Shader_Functions";
+		private static readonly string TemplatesURL = "https://wiki.amplify.pt/index.php?title=Unity_Products:Amplify_Shader_Editor/Templates";
+		private static readonly string APIURL = "https://wiki.amplify.pt/index.php?title=Unity_Products:Amplify_Shader_Editor/API";
+		private static readonly string SGtoASEURL = "https://wiki.amplify.pt/index.php?title=Unity_Products:Amplify_Shader_Editor/Shader_Graph_to_ASE";	
 
 		private static readonly string DiscordURL = "https://discordapp.com/invite/EdrVAP5";
 		private static readonly string ForumURL = "https://forum.unity.com/threads/best-tool-asset-store-award-amplify-shader-editor-node-based-shader-creation-tool.430959/";
@@ -76,6 +77,7 @@ namespace AmplifyShaderEditor
 		GUIContent Functionsbutton = null;
 		GUIContent Templatesbutton = null;
 		GUIContent APIbutton = null;
+		GUIContent SGtoASEbutton = null;
 
 		GUIContent DiscordButton = null;
 		GUIContent ForumButton = null;
@@ -107,6 +109,9 @@ namespace AmplifyShaderEditor
 			{ ( int )ASESRPBaseline.ASE_SRP_12, new ASESRPPackageDesc( ASESRPBaseline.ASE_SRP_12, "13ab599a7bda4e54fba3e92a13c9580a", "aa102d640b98b5d4781710a3a3dd6983" ) },
 			{ ( int )ASESRPBaseline.ASE_SRP_13, new ASESRPPackageDesc( ASESRPBaseline.ASE_SRP_13, "13ab599a7bda4e54fba3e92a13c9580a", "aa102d640b98b5d4781710a3a3dd6983" ) },
 			{ ( int )ASESRPBaseline.ASE_SRP_14, new ASESRPPackageDesc( ASESRPBaseline.ASE_SRP_14, "f6f268949ccf3f34fa4d18e92501ed82", "7a0bb33169d95ec499136d59cb25918b" ) },
+			{ ( int )ASESRPBaseline.ASE_SRP_15, new ASESRPPackageDesc( ASESRPBaseline.ASE_SRP_15, "69bc3229216b1504ea3e28b5820bbb0d", "641c955d37d2fac4f87e00ac5c9d9bd8" ) },
+			{ ( int )ASESRPBaseline.ASE_SRP_16, new ASESRPPackageDesc( ASESRPBaseline.ASE_SRP_16, "4f665a06c5a2aa5499fa1c79ac058999", "2690f45490c175045bbdc63395bf6278" ) },
+			{ ( int )ASESRPBaseline.ASE_SRP_17, new ASESRPPackageDesc( ASESRPBaseline.ASE_SRP_17, "47fc5ccecd261894994c1e9e827cf553", "f42c2bc4dab4723429b0d30b635c3035" ) },
 		};
 
 		private void OnEnable()
@@ -114,7 +119,7 @@ namespace AmplifyShaderEditor
 			rt = new RenderTexture( 16, 16, 0 );
 			rt.Create();
 
-			m_startup = (Preferences.ShowOption)EditorPrefs.GetInt( Preferences.PrefStartUp, 0 );
+			m_startup = (Preferences.ShowOption)EditorPrefs.GetInt( Preferences.User.Keys.StartUp, 0 );
 
 			if( textIcon == null )
 			{
@@ -133,6 +138,7 @@ namespace AmplifyShaderEditor
 				Functionsbutton = new GUIContent( " Shader Functions", textIcon );
 				Templatesbutton = new GUIContent( " Shader Templates", textIcon );
 				APIbutton = new GUIContent( " Node API", textIcon );
+				SGtoASEbutton = new GUIContent( " Shader Graph to ASE", textIcon );
 			}
 
 			if( packageIcon == null )
@@ -185,33 +191,24 @@ namespace AmplifyShaderEditor
 			{
 				m_infoDownloaded = true;
 
-#if UNITY_2022_1_OR_NEWER
-				if ( PlayerSettings.insecureHttpOption == InsecureHttpOption.NotAllowed )
+				StartBackgroundTask( StartRequest( ChangelogURL, () =>
 				{
-					Debug.LogWarning( "[AmplifyShaderEditor] " + OnlineVersionWarning );
-				}
-				else
-#endif
-				{
-					StartBackgroundTask( StartRequest( ChangelogURL, () =>
+					var temp = ChangeLogInfo.CreateFromJSON( www.downloadHandler.text );
+					if( temp != null && temp.Version >= m_changeLog.Version )
 					{
-						var temp = ChangeLogInfo.CreateFromJSON( www.downloadHandler.text );
-						if( temp != null && temp.Version >= m_changeLog.Version )
-						{
-							m_changeLog = temp;
-						}
+						m_changeLog = temp;
+					}
 
-						int version = m_changeLog.Version;
-						int major = version / 10000;
-						int minor = version / 1000 - major * 10;
-						int release = version / 100 - ( version / 1000 ) * 10;
-						int revision = version - ( version / 100 ) * 100;
+					int version = m_changeLog.Version;
+					int major = version / 10000;
+					int minor = version / 1000 - major * 10;
+					int release = version / 100 - ( version / 1000 ) * 10;
+					int revision = version - ( version / 100 ) * 100;
 
-						m_newVersion = major + "." + minor + "." + release + ( revision > 0 ? "." + revision : "" );
+					m_newVersion = major + "." + minor + "." + release + ( revision > 0 ? "." + revision : "" );
 
-						Repaint();
-					} ) );
-				}
+					Repaint();
+				} ) );
 			}
 
 			if( m_buttonStyle == null )
@@ -313,6 +310,9 @@ namespace AmplifyShaderEditor
 
 					if( GUILayout.Button( APIbutton, m_buttonStyle ) )
 						Application.OpenURL( APIURL );
+
+					if ( GUILayout.Button( SGtoASEbutton, m_buttonStyle ) )
+						Application.OpenURL( SGtoASEURL );
 				}
 				EditorGUILayout.EndVertical();
 
@@ -393,13 +393,10 @@ namespace AmplifyShaderEditor
 				EditorGUIUtility.labelWidth = cache;
 				if( EditorGUI.EndChangeCheck() )
 				{
-					EditorPrefs.SetInt( Preferences.PrefStartUp, (int)m_startup );
+					EditorPrefs.SetInt( Preferences.User.Keys.StartUp, (int)m_startup );
 				}
 			}
 			EditorGUILayout.EndHorizontal();
-
-			// Find a better way to update link buttons without repainting the window
-			Repaint();
 		}
 
 		void ImportSample( string pipeline, TemplateSRPType srpType )

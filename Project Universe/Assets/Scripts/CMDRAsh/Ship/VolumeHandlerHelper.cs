@@ -144,7 +144,7 @@ public class VolumeHandlerHelper : MonoBehaviour
             }
         }
 
-        if (generatePlaneOccluders)
+        /*if (generatePlaneOccluders)
         {
             generatePlaneOccluders = false;
             //get VAC
@@ -171,6 +171,6 @@ public class VolumeHandlerHelper : MonoBehaviour
                 parent = go.transform;
             }
             vac.RenderPlaneSetup(ThisVolumeDoors,pref, parent);
-        }
+        }*/
     }
 }

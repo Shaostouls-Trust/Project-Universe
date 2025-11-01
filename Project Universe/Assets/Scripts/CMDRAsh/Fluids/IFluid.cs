@@ -14,7 +14,7 @@ using UnityEngine;
  Density: 
  */
 
-namespace ProjectUniverse.Environment.Fluid { 
+namespace ProjectUniverse.Environment.Fluids { 
 
     public class IFluid //: MonoBehaviour
     {

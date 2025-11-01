@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CompoundDatabase>
+  <!-- Fuels -->
+  <Compound id="Methane" name="Methane">
+    <PhysicalProperties>
+      <MolarMass>16.04</MolarMass>
+      <BoilingPoint>-161.5</BoilingPoint> <!-- Celsius -->
+      <SpecificHeat>2220</SpecificHeat> <!-- J/(kg·K) -->
+      <Density>0.656</Density> <!-- g/L at STP -->
+    </PhysicalProperties>
+    <Thermodynamics>
+      <HeatOfFormation>-74800</HeatOfFormation> <!-- J/mol -->
+      <HeatOfVaporization>8170</HeatOfVaporization> <!-- J/mol -->
+    </Thermodynamics>
+    <ReactivityProperties>
+      <AutoIgnitionTemp>537</AutoIgnitionTemp> <!-- Celsius -->
+      <FlammabilityMin>5.0</FlammabilityMin> <!-- % by volume -->
+      <FlammabilityMax>15.0</FlammabilityMax> <!-- % by volume -->
+      <IsInhibitor>false</IsInhibitor>
+    </ReactivityProperties>
+    <SafetyProperties>
+      <Flamability>8</Flamability>
+      <Combustability>7</Combustability>
+      <Toxicity>1</Toxicity>
+      <IsNuclear>false</IsNuclear>
+    </SafetyProperties>
+  </Compound>
+
+  <Compound id="Hydrogen" name="Hydrogen">
+    <PhysicalProperties>
+      <MolarMass>2.016</MolarMass>
+      <BoilingPoint>-252.8</BoilingPoint>
+      <SpecificHeat>14300</SpecificHeat>
+      <Density>0.0899</Density> <!-- g/L at STP -->
+    </PhysicalProperties>
+    <Thermodynamics>
+      <HeatOfFormation>0</HeatOfFormation>
+      <HeatOfVaporization>904</HeatOfVaporization>
+    </Thermodynamics>
+    <ReactivityProperties>
+      <AutoIgnitionTemp>500</AutoIgnitionTemp>
+      <FlammabilityMin>4.0</FlammabilityMin>
+      <FlammabilityMax>75.0</FlammabilityMax>
+      <IsInhibitor>false</IsInhibitor>
+    </ReactivityProperties>
+    <SafetyProperties>
+      <Flamability>10</Flamability>
+      <Combustability>10</Combustability>
+      <Toxicity>0</Toxicity>
+      <IsNuclear>false</IsNuclear>
+    </SafetyProperties>
+  </Compound>
+
+  <Compound id="NH3" name="Ammonia">
+    <PhysicalProperties>
+      <MolarMass>17.03</MolarMass>
+      <BoilingPoint>-33.34</BoilingPoint>
+      <SpecificHeat>2060</SpecificHeat>
+      <Density>0.73</Density>
+    </PhysicalProperties>
+    <Thermodynamics>
+      <HeatOfFormation>-45900</HeatOfFormation>
+      <HeatOfVaporization>23350</HeatOfVaporization>
+    </Thermodynamics>
+    <ReactivityProperties>
+      <AutoIgnitionTemp>651</AutoIgnitionTemp>
+      <FlammabilityMin>15.0</FlammabilityMin>
+      <FlammabilityMax>28.0</FlammabilityMax>
+      <IsInhibitor>false</IsInhibitor>
+    </ReactivityProperties>
+    <SafetyProperties>
+      <Flamability>3</Flamability>
+      <Combustability>2</Combustability>
+      <Toxicity>7</Toxicity>
+      <IsNuclear>false</IsNuclear>
+    </SafetyProperties>
+  </Compound>
+
+  <Compound id="N2O" name="Nitrous Oxide">
+    <PhysicalProperties>
+      <MolarMass>44.01</MolarMass>
+      <BoilingPoint>-88.48</BoilingPoint>
+      <SpecificHeat>880</SpecificHeat>
+      <Density>1.977</Density>
+    </PhysicalProperties>
+    <Thermodynamics>
+      <HeatOfFormation>82050</HeatOfFormation>
+      <HeatOfVaporization>16530</HeatOfVaporization>
+    </Thermodynamics>
+    <ReactivityProperties>
+      <AutoIgnitionTemp>450</AutoIgnitionTemp> <!-- Decomposes -->
+      <FlammabilityMin>0</FlammabilityMin>
+      <FlammabilityMax>0</FlammabilityMax>
+      <IsInhibitor>false</IsInhibitor>
+    </ReactivityProperties>
+    <SafetyProperties>
+      <Flamability>0</Flamability>
+      <Combustability>8</Combustability> <!-- Oxidizer -->
+      <Toxicity>3</Toxicity>
+      <IsNuclear>false</IsNuclear>
+    </SafetyProperties>
+  </Compound>
+
+  <!-- Oxidizers -->
+  <Compound id="Oxygen" name="Oxygen">
+    <PhysicalProperties>
+      <MolarMass>31.998</MolarMass>
+      <BoilingPoint>-183.0</BoilingPoint>
+      <SpecificHeat>920</SpecificHeat>
+      <Density>1.429</Density>
+    </PhysicalProperties>
+    <Thermodynamics>
+      <HeatOfFormation>0</HeatOfFormation>
+      <HeatOfVaporization>6820</HeatOfVaporization>
+    </Thermodynamics>
+    <ReactivityProperties>
+      <AutoIgnitionTemp>0</AutoIgnitionTemp> <!-- Not flammable itself -->
+      <FlammabilityMin>0</FlammabilityMin>
+      <FlammabilityMax>0</FlammabilityMax>
+      <IsInhibitor>false</IsInhibitor>
+    </ReactivityProperties>
+    <SafetyProperties>
+      <Flamability>0</Flamability>
+      <Combustability>10</Combustability> <!-- Strong oxidizer -->
+      <Toxicity>0</Toxicity>
+      <IsNuclear>false</IsNuclear>
+    </SafetyProperties>
+  </Compound>
+
+  <!-- Products -->
+  <Compound id="CO2" name="Carbon Dioxide">
+    <PhysicalProperties>
+      <MolarMass>44.01</MolarMass>
+      <BoilingPoint>-78.5</BoilingPoint> <!-- Sublimes at 1 atm -->
+      <SpecificHeat>844</SpecificHeat>
+      <Density>1.977</Density>
+    </PhysicalProperties>
+    <Thermodynamics>
+      <HeatOfFormation>-393500</HeatOfFormation>
+      <HeatOfVaporization>25200</HeatOfVaporization>
+    </Thermodynamics>
+    <ReactivityProperties>
+      <AutoIgnitionTemp>0</AutoIgnitionTemp>
+      <FlammabilityMin>0</FlammabilityMin>
+      <FlammabilityMax>0</FlammabilityMax>
+      <IsInhibitor>true</IsInhibitor>
+    </ReactivityProperties>
+    <SafetyProperties>
+      <Flamability>0</Flamability>
+      <Combustability>0</Combustability>
+      <Toxicity>2</Toxicity> <!-- At high concentrations -->
+      <IsNuclear>false</IsNuclear>
+    </SafetyProperties>
+  </Compound>
+
+  <Compound id="Water" name="Water">
+    <PhysicalProperties>
+      <MolarMass>18.015</MolarMass>
+      <BoilingPoint>100.0</BoilingPoint>
+      <SpecificHeat>4186</SpecificHeat> <!-- Liquid -->
+      <Density>0.804</Density> <!-- Steam at STP -->
+    </PhysicalProperties>
+    <Thermodynamics>
+      <HeatOfFormation>-241800</HeatOfFormation> <!-- Gas phase -->
+      <HeatOfVaporization>40660</HeatOfVaporization>
+    </Thermodynamics>
+    <ReactivityProperties>
+      <AutoIgnitionTemp>0</AutoIgnitionTemp>
+      <FlammabilityMin>0</FlammabilityMin>
+      <FlammabilityMax>0</FlammabilityMax>
+      <IsInhibitor>true</IsInhibitor> <!-- Steam suppresses fires -->
+    </ReactivityProperties>
+    <SafetyProperties>
+      <Flamability>0</Flamability>
+      <Combustability>0</Combustability>
+      <Toxicity>0</Toxicity>
+      <IsNuclear>false</IsNuclear>
+    </SafetyProperties>
+  </Compound>
+
+  <Compound id="Nitrogen" name="Nitrogen">
+    <PhysicalProperties>
+      <MolarMass>28.014</MolarMass>
+      <BoilingPoint>-195.8</BoilingPoint>
+      <SpecificHeat>1040</SpecificHeat>
+      <Density>1.251</Density>
+    </PhysicalProperties>
+    <Thermodynamics>
+      <HeatOfFormation>0</HeatOfFormation>
+      <HeatOfVaporization>5570</HeatOfVaporization>
+    </Thermodynamics>
+    <ReactivityProperties>
+      <AutoIgnitionTemp>0</AutoIgnitionTemp>
+      <FlammabilityMin>0</FlammabilityMin>
+      <FlammabilityMax>0</FlammabilityMax>
+      <IsInhibitor>true</IsInhibitor>
+    </ReactivityProperties>
+    <SafetyProperties>
+      <Flamability>0</Flamability>
+      <Combustability>0</Combustability>
+      <Toxicity>0</Toxicity> <!-- Asphyxiant only -->
+      <IsNuclear>false</IsNuclear>
+    </SafetyProperties>
+  </Compound>
+
+  <Compound id="NO" name="Nitric Oxide">
+    <PhysicalProperties>
+      <MolarMass>30.01</MolarMass>
+      <BoilingPoint>-151.7</BoilingPoint>
+      <SpecificHeat>995</SpecificHeat>
+      <Density>1.34</Density>
+    </PhysicalProperties>
+    <Thermodynamics>
+      <HeatOfFormation>90250</HeatOfFormation>
+      <HeatOfVaporization>13800</HeatOfVaporization>
+    </Thermodynamics>
+    <ReactivityProperties>
+      <AutoIgnitionTemp>0</AutoIgnitionTemp>
+      <FlammabilityMin>0</FlammabilityMin>
+      <FlammabilityMax>0</FlammabilityMax>
+      <IsInhibitor>false</IsInhibitor>
+    </ReactivityProperties>
+    <SafetyProperties>
+      <Flamability>0</Flamability>
+      <Combustability>5</Combustability> <!-- Oxidizer -->
+      <Toxicity>8</Toxicity>
+      <IsNuclear>false</IsNuclear>
+    </SafetyProperties>
+  </Compound>
+</CompoundDatabase>

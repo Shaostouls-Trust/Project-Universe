@@ -27,7 +27,7 @@
                     "name": "Fire",
                     "type": "Button",
                     "id": "eefa238c-b4c1-40e3-b23c-eb9cc790339e",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -36,7 +36,7 @@
                     "name": "Inv_Transfer",
                     "type": "Button",
                     "id": "38aa67b0-9b47-462a-9077-dcb41d9f51a3",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -45,7 +45,7 @@
                     "name": "Inv_Use",
                     "type": "Button",
                     "id": "c4d004dc-1374-43d4-b43b-53a4bc41a7a3",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -54,7 +54,7 @@
                     "name": "Interact",
                     "type": "Button",
                     "id": "71d7b23e-27c4-45cc-8245-1e752aa1fd94",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -117,7 +117,7 @@
                     "name": "Jump",
                     "type": "Button",
                     "id": "fd5f3e9d-656d-46bc-a030-d422a4524a7b",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -144,7 +144,7 @@
                     "name": "Escape",
                     "type": "Button",
                     "id": "8422972b-a73c-4c9a-950e-275c87486879",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -171,7 +171,7 @@
                     "name": "Throwables",
                     "type": "Button",
                     "id": "d182b5f2-f30f-4bb4-8fd3-e82a4cb5031f",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -217,6 +217,15 @@
                     "type": "Button",
                     "id": "fafe7d24-45ab-4c6c-8469-4faa2c5c4d41",
                     "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RightClick",
+                    "type": "Button",
+                    "id": "3077015b-80fb-4e56-ae5a-142d77075e72",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -616,6 +625,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "10e702b4-7b5d-4dd6-be38-d8c677f0d661",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "RightClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

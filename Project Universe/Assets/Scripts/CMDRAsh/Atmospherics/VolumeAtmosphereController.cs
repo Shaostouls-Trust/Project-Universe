@@ -4,17 +4,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using ProjectUniverse.Environment.Gas;
-using ProjectUniverse.Environment.Fluid;
+using ProjectUniverse.Environment.Fluids;
 using ProjectUniverse.Animation.Controllers;
 using UnityEngine.Profiling;
 using ProjectUniverse.Util;
 using ProjectUniverse.Ship;
 using ProjectUniverse.PowerSystem;
+using ProjectUniverse.Environment.Chemistry;
+using System.Linq;
+using static UnityEngine.Rendering.LineRendering;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace ProjectUniverse.Environment.Volumes
 {
     //[RequireComponent(typeof(VolumeComponent))]
-    public sealed class VolumeAtmosphereController : MonoBehaviour
+    public sealed class VolumeAtmosphereController : MonoBehaviour, IGasContainer
     {
         private float roomPressure;
         [SerializeField] private float roomTemp;//rooms cool to -200f over time, without heating
@@ -23,12 +27,14 @@ namespace ProjectUniverse.Environment.Volumes
         [SerializeField] private float humidity;
         [SerializeField] private float toxicity;//gasses and stuff
         [SerializeField] private float contamination;//radioactive particles
-        /// <summary>
-        /// Order roomGases into a defined array for ease of access?
-        /// </summary>
-        private List<IGas> roomGases = new List<IGas>();
-        private List<IGas> gasesToEq = new List<IGas>();
-        private List<IFluid> roomFluids = new List<IFluid>();
+        private List<IGas> roomIGases = new List<IGas>();
+
+        //private List<IGas> gasesToEq = new List<IGas>();
+        private List<IFluid> roomIFluids = new List<IFluid>();
+
+        //A
+        private List<Fluid> roomFluids = new();
+
         [Tooltip("Fluid planes in order of lowest to highest.")]
         [SerializeField] private List<GameObject> roomFluidPlanes = new List<GameObject>();
         [Tooltip("The y level at which the next fluid plane will begin to rise.")]
@@ -65,15 +71,22 @@ namespace ProjectUniverse.Environment.Volumes
         private float roomFloorArea;
         [SerializeField] private VolumeAtmosphereJobs VAJobs;
 
+        [Header("Explosion Propagation")]
+        [SerializeField] private bool hasActiveExplosion = false;
+        private float explosionPressureWave;
+        private float explosionHeatWave;
+        [SerializeField] private List<ParticulateConcentration> particulates = new List<ParticulateConcentration>();
+
         private void Start()
         {
             if (autoFill)
             {
-                AddRoomGas(new IGas("Oxygen", 60f, roomVolume, 1.0f, roomVolume));
+                // Create oxygen as a Fluid in gas state
+                AddRoomGas(new Fluid("Oxygen", roomVolume * 1.293f, 288.15f, roomVolume, 1.0f)); // ~20°C, 1 atm
             }
-            if(roomFluids.Count == 0)
+            if (roomFluids.Count == 0)
             {
-                for(int j = 0; j < roomFluidPlanes.Count; j++)
+                for (int j = 0; j < roomFluidPlanes.Count; j++)
                 {
                     roomFluidPlanes[j].SetActive(false);
                 }
@@ -174,11 +187,11 @@ namespace ProjectUniverse.Environment.Volumes
                                 }
                             }
                         }
-                        else if(child.gameObject.tag == "IBreaker")
+                        else if(child.gameObject.CompareTag("IBreaker"))
                         {
                             foreach (Transform obj in child.transform)
                             {
-                                if(obj.tag == "_root")
+                                if(obj.CompareTag("_root"))
                                 {
                                     //Debug.Log(obj.gameObject);
                                     GOculls.Add(obj.gameObject);
@@ -197,13 +210,13 @@ namespace ProjectUniverse.Environment.Volumes
                 //Get all child renderers of the carryover stack
                 foreach (Transform carry in carryOver)
                 {
-                    if (carry.gameObject.tag != "GUI" && carry.gameObject.tag != "Pipe")
+                    if (!carry.gameObject.CompareTag("GUI") && !carry.gameObject.CompareTag("Pipe"))
                     {
                         MeshRenderer[] renderchilds = carry.GetComponentsInChildren<MeshRenderer>(false);
                         //Debug.Log(renderchilds.Length);
                         for (int r = 0; r < renderchilds.Length; r++)
                         {
-                            if (renderchilds[r].gameObject.tag != "GUI" && renderchilds[r].gameObject.tag != "Button3D")
+                            if (!renderchilds[r].gameObject.CompareTag("GUI") && !renderchilds[r].gameObject.CompareTag("Button3D"))
                             {
                                 renderlist.Add(renderchilds[r]);
                                 //Debug.Log("+ " + renderchilds[r]);
@@ -219,11 +232,11 @@ namespace ProjectUniverse.Environment.Volumes
                 {
                     //if not breaker, router, subst, gen, or anything else
                     //that has/might have a script or lod in the future
-                    if (lodObjs[j].tag == "Untagged")
+                    if (lodObjs[j].CompareTag("Untagged"))
                     {
                         GOculls.Add(lodObjs[j].gameObject);
                     }
-                    else if (lodObjs[j].tag == "Pipe")
+                    else if (lodObjs[j].CompareTag("Pipe"))
                     {
                         pipesGOs.Add(lodObjs[j].gameObject);
                     }
@@ -233,6 +246,12 @@ namespace ProjectUniverse.Environment.Volumes
                     GOculls.Add(canvasObj[c].gameObject);
                 }
                 pipes = pipesGOs.ToArray();
+            }
+
+            // Set door vac references
+            foreach(DoorAnimator door in roomDoorsFluidOrder)
+            {
+                door.VACRef = this;
             }
         }
 
@@ -249,23 +268,84 @@ namespace ProjectUniverse.Environment.Volumes
         public float Pressure
         {
             get { return roomPressure; }
-            set { roomPressure = value; }
+            set {
+                roomPressure = value;
+                foreach (IGas gas in roomIGases)//LEGACY
+                {
+                    gas.SetLocalPressure(value); 
+                }
+            }
         }
+        public float RoomPressure
+        {
+            get { return roomPressure; }
+            set
+            {
+                roomPressure = value;
+                foreach (Fluid fluid in roomFluids)
+                {
+                    fluid.SetPressure(value);
+                }
+            }
+        }
+        /// <summary>
+        /// Add pressure directly to the room (for explosions)
+        /// </summary>
+        public void AddPressure(float pressureIncrease)
+        {
+            roomPressure += pressureIncrease;
+
+            // Update all gas pressures
+            foreach (Fluid gas in roomFluids)
+            {
+                gas.SetPressure(roomPressure);
+            }
+        }
+
         public float Toxicity
         {
             get { return toxicity; }
             set { toxicity = value; }
         }
+
+        
         public float Contamination
         {
-            get { return contamination; }
-            set { contamination = value; }
+            get
+            {
+                float total = 0f;
+                foreach (var particulate in particulates)
+                {
+                    total += particulate.ConcentrationPPMW;
+                }
+                return total;
+            }
         }
-        public List<IGas> RoomGasses
+        public List<BoxCollider> RoomVolumeSections
         {
-            get { return roomGases; }
-            set { roomGases = value; }
+            get { return roomVolumeSections; }
         }
+
+        public List<IGas> RoomGassesLegacy
+        {
+            get { return Gases; }
+            set { Gases = value; }
+        }
+        public List<IGas> Gases // For interface compatability
+        {
+            get { return roomIGases; }
+            set { roomIGases = value; }
+        }
+        public List<IFluid> RoomFluidsLegacy
+        {
+            get { return roomIFluids; }
+        }
+        //A
+        public List<Fluid> RoomFluids
+        {
+            get { return roomFluids; }
+        }
+
         public bool RenderEnabled
         {
             get { return rendersOn; }
@@ -340,10 +420,7 @@ namespace ProjectUniverse.Environment.Volumes
         {
             get { return maxFluidFillHeight; }
         }
-        public List<IFluid> RoomFluids
-        {
-            get { return roomFluids; }
-        }
+       
         public float RoomArea
         {
             get { return roomFloorArea; }
@@ -393,20 +470,17 @@ namespace ProjectUniverse.Environment.Volumes
                 //hall to control is not hiding water
             }
             */
-            for (int i = 0; i < neighborEmpties.Length; i++)//roomVolumeDoors.Length
+            for (int i = 0; i < neighborEmpties.Length; i++)
             {
                 GameObject door = neighborEmpties[i].GetComponent<VolumeNode>().GetDoor();
-                //Debug.Log(door);
                 //if the door (in this volume) is open
-                if (door.GetComponent<DoorAnimator>().OpenOrOpening())//roomVolumeDoors
+                DoorAnimator da = door.GetComponent<DoorAnimator>();
+                if (da.OpenOrOpening() || da.IsRuptured)//roomVolumeDoors
                 {
                     Vector3 back = door.transform.TransformDirection(Vector3.back);//is Vector3.back for all cases?
-                    //raycastAll to check neighbor door. Might need 3, not two indicies.
                     RaycastHit[] hits = new RaycastHit[2];
                     Physics.RaycastNonAlloc(new Vector3(door.transform.position.x,
                         door.transform.position.y + 0.025f, door.transform.position.z), back, hits, 1.0f);
-                    //hits = Physics.RaycastAll(new Vector3(door.transform.position.x,
-                    //    door.transform.position.y + 0.025f, door.transform.position.z), back, 1.0f);
                     GameObject myDoorGameobject;
                     foreach (RaycastHit hit in hits)
                     {
@@ -419,7 +493,6 @@ namespace ProjectUniverse.Environment.Volumes
                             Component myComponent = hit.collider.GetComponentInParent<DoorAnimator>();
                             Component myComponent2 = hit.collider.GetComponent<DoorAnimator>();
                             Component myComponent3 = hit.collider.GetComponentInChildren<DoorAnimator>();
-                            //Debug.Log(hit.collider.gameObject);
                             if (myComponent != null)
                             {
                                 myDoorGameobject = myComponent.gameObject;
@@ -435,7 +508,8 @@ namespace ProjectUniverse.Environment.Volumes
 
                             if (myDoorGameobject != null)
                             {
-                                clear = myDoorGameobject.GetComponent<DoorAnimator>().OpenOrOpening();
+                                clear = myDoorGameobject.GetComponent<DoorAnimator>().OpenOrOpening() || 
+                                    myDoorGameobject.GetComponent<DoorAnimator>().IsRuptured;
                             }
                             else
                             {
@@ -482,6 +556,7 @@ namespace ProjectUniverse.Environment.Volumes
                     }
                 }
             }
+
             /*
             ///
             /// Volume Gas Pipe Section Updates
@@ -580,37 +655,35 @@ namespace ProjectUniverse.Environment.Volumes
         */
         }
 
-            /// <summary>
-            /// cools extremely quickly to -330 once down near zero.
-            /// Function of density?
-            /// </summary>
-            public void RoomHeatAmbiLoss()
+        /// <summary>
+        /// cools extremely quickly to -330 once down near zero.
+        /// Function of density?
+        /// </summary>
+        public void RoomHeatAmbiLoss()
         {
             if (roomTemp > -330f)
             {
-                float massGas = 0f;
-                float averageCp = 0f;
-                if (roomGases.Count > 0)
+                float enthalpy = 0f;
+                if (roomFluids.Count > 0)
                 {
-                    for (int q = 0; q < RoomGasses.Count; q++)
+                    for (int q = 0; q < roomFluids.Count; q++)
                     {
-                        IGas gas = RoomGasses[q];
-                        massGas += gas.GetConcentration() * gas.GetSTPDensity();
-                        averageCp += gas.SpecificHeat;
+                        enthalpy += roomFluids[q].GetEnthalpy();
                     }
-                    averageCp /= RoomGasses.Count;
-                    float dt = (qHeatLossPerSec / (massGas * averageCp)) / RoomGasses.Count;
-                    ///
-                    /// This is all in F but we are subtracting K.
-                    /// As a temporary measure, multiple k dt by 5/9
-                    dt *= (5f / 9f);
-                    //Debug.Log(dt * Time.deltaTime);
-                    for (int q = 0; q < RoomGasses.Count; q++)
+
+                    if (enthalpy > 0f)
                     {
-                        float temper = RoomGasses[q].GetTemp();//temper does not cange over time wit te volume temp?
-                        temper += (dt * Time.deltaTime);
-                        //Debug.Log(temper);
-                        RoomGasses[q].SetTemp(temper);
+                        float heatLossPerSec = qHeatLossPerSec * Time.deltaTime;
+
+                        foreach (var gas in roomFluids)
+                        {
+                            // Each gas loses heat proportional to its enthalpy content
+                            float gasRatio = gas.GetEnthalpy() / enthalpy;
+                            float gasHeatLoss = heatLossPerSec * gasRatio;
+
+                            // Use the Fluid class's RemoveEnergy method
+                            gas.RemoveEnergy(gasHeatLoss);
+                        }
                     }
                 }
                 else
@@ -618,41 +691,46 @@ namespace ProjectUniverse.Environment.Volumes
                     //without gas to hold heat, temp will drop more quickly.
                     float massRoom = (roomVolume) * 6836f;//6.836Kg in 1m3
                     float dt = qHeatLossPerSec / (massRoom * 532f);//Cp of .8iron .2aluminum (440 and 900)
-                    dt *= (5f / 9f);
                     //Debug.Log("+="+dt);
-                    //roomTemp += dt;
+                    dt *= (9f / 5f); // K to F conversion for temperature difference
+                    //roomTemp += dt * Time.deltaTime;
                 }
 
                 CalculateRoomTemp();
             }
         }
 
-        public void AddRoomHeat(float heat)
+        public void AddRoomHeat(float heat, bool dump=false)
         {
-            float massGas = 0f;
-            float averageCp = 0f;
-            if (roomGases.Count > 0)
+            float enthalpy = 0f;
+            if (roomFluids.Count > 0)
             {
-                for (int q = 0; q < RoomGasses.Count; q++)
+                for (int q = 0; q < roomFluids.Count; q++)
                 {
-                    IGas gas = RoomGasses[q];
-                    massGas += gas.GetConcentration() * gas.GetDensity();
-                    averageCp += gas.SpecificHeat;
+                    enthalpy += roomFluids[q].GetEnthalpy();
                 }
-                averageCp /= RoomGasses.Count;
-                float dt = (heat / (massGas * averageCp)) / RoomGasses.Count;
-                ///
-                /// This is all in F but we are subtracting K.
-                /// As a temporary measure, multiple k dt by 5/9
-                dt *= (5f / 9f);
-                //Debug.Log(dt * Time.deltaTime);
-                for (int q = 0; q < RoomGasses.Count; q++)
+                if (enthalpy > 0f)
                 {
-                    float temper = RoomGasses[q].GetTemp();
-                    temper += (dt * Time.deltaTime);
-                    //Debug.Log(temper);
-                    RoomGasses[q].SetTemp(temper);
+                    float heatToAdd = dump ? heat : heat * Time.deltaTime;
+                    foreach (var gas in roomFluids)
+                    {
+                        // Each gas receives heat proportional to its enthalpy content
+                        float gasRatio = gas.GetEnthalpy() / enthalpy;
+                        float gasHeatGain = heatToAdd * gasRatio;
+
+                        // Use the Fluid class's AddEnergy method
+                        gas.AddEnergy(gasHeatGain);
+                    }
                 }
+            }
+            else
+            {
+                float massRoom = roomVolume * 6836f; // 6.836Kg/m³ for ship structure
+                float dt = heat / (massRoom * 532f); // Cp of .8iron .2aluminum (440 and 900)
+
+                // Convert to Fahrenheit delta
+                dt *= (9f / 5f); // K to F conversion for temperature difference
+                roomTemp += dt * Time.deltaTime;
             }
             CalculateRoomTemp();
         }
@@ -748,7 +826,7 @@ namespace ProjectUniverse.Environment.Volumes
             if (float.IsNaN(roomPressure))
             {
                 roomPressure = 0f;
-                RoomGasses = new List<IGas>();
+                roomFluids = new List<Fluid>();
                 roomTemp = 0f;
                 roomOxygenation = 0f;
             }
@@ -890,78 +968,42 @@ namespace ProjectUniverse.Environment.Volumes
             }
         }
 
-        public List<IGas> CheckGasses(bool setToLocalPressure, float localPressure)
+        public List<Fluid> CheckGasses(bool setToLocalPressure, float localPressure)
         {
-            if (roomGases.Count > 1)
-            {
-                //Debug.Log(roomGases.Count + " gasses in pipe.");
-                List<IGas> newGassesList = roomGases;//new List<IGas>();
-                                                     //combine all same gasses
-                for (int i = 0; i < newGassesList.Count; i++)
-                {
-                    for (int j = 0; j < newGassesList.Count; j++)
-                    {
-                        if (i != j)
-                        {
-                            if (newGassesList[i].GetIDName() == newGassesList[j].GetIDName())
-                            {
-                                IGas EQgas = CombineGases(roomGases[i], roomGases[j], localPressure, setToLocalPressure);
-                                newGassesList.Remove(roomGases[i]);
-                                newGassesList.Remove(roomGases[j - 1]);
-                                newGassesList.Add(EQgas);
-                            }
-                        }
-                    }
-                }
-                //foreach (IGas gas in newGassesList)
-                //{
-                    //Debug.Log("EQM result: "+gas.ToString());
-                //}
-                return newGassesList;
-            }
-            else
-            {
-                //gasses is empty or only has one has in it
-                return roomGases;
-            }
-        }
-        public List<IFluid> CheckFluids(bool setToLocalPressure, float localPressure)
-        {
-            if (roomFluids.Count > 1)
-            {
-                //Debug.Log(roomGases.Count + " gasses in pipe.");
-                List<IFluid> newFluidsList = roomFluids;
-                //foreach(IFluid fluid in roomFluids)
-                //{
-                //    Debug.Log(fluid);
-                //}
-                //combine all same gasses
-                for (int i = 0; i < newFluidsList.Count; i++)
-                {
-                    for (int j = 0; j < newFluidsList.Count; j++)
-                    {
-                        if (i != j)
-                        {
-                            if (newFluidsList[i].GetIDName() == newFluidsList[j].GetIDName())
-                            {
-                                //Debug.Log("i "+newFluidsList[i]);
-                                //Debug.Log("j "+newFluidsList[j]);
-                                IFluid EQFluid = CombineFluids(roomFluids[i], roomFluids[j], localPressure, setToLocalPressure);
-                                //Debug.Log("EQFluid " + EQFluid);
-                                newFluidsList.Remove(roomFluids[i]);
-                                newFluidsList.Remove(roomFluids[j - 1]);//?
-                                newFluidsList.Add(EQFluid);
-                            }
-                        }
-                    }
-                }
-                return newFluidsList;
-            }
-            else
-            {
-                //gasses is empty or only has one has in it
+            if (roomFluids.Count <= 1)
                 return roomFluids;
+
+            // Use the new CombineFluids method from Utils
+            roomFluids = Utils.CombineFluids(roomFluids);
+
+            if (setToLocalPressure)
+            {
+                foreach (var gas in roomFluids)
+                {
+                    // The pressure should likely be calculated by the Fluid and set back to room.
+                    gas.SetPressure(localPressure);
+                }
             }
+
+            return roomFluids;
+        }
+        public List<Fluid> CheckFluids(bool setToLocalPressure, float localPressure)
+        {
+            if (roomFluids.Count <= 1)
+                return roomFluids;
+
+            // Use the new CombineFluids method from Utils
+            roomFluids = Utils.CombineFluids(roomFluids);
+
+            if (setToLocalPressure)
+            {
+                foreach (var fluid in roomFluids)
+                {
+                    fluid.SetPressure(localPressure);
+                }
+            }
+
+            return roomFluids;
         }
         public IGas CombineGases(IGas gasA, IGas gasB, float localPressure, bool setToLocalPressure)
         {
@@ -1030,25 +1072,27 @@ namespace ProjectUniverse.Environment.Volumes
             //Debug.Log("Volume Gas Combiner: "+gasPressure);
             return FluidA;
         }
-        
+
         public void RemoveRoomGas(IGas gasToRemove)
         {
+            if (roomIGases.Count == 0) return;
+
             IGas gas = new IGas(gasToRemove);
-            if (roomGases.Count > 0)
+            if (roomIGases.Count > 0)
             {
-                for (int j = 0; j < roomGases.Count; j++)
+                for (int j = 0; j < roomIGases.Count; j++)
                 {
-                    if (roomGases[j].GetIDName() == gas.GetIDName())
+                    if (roomIGases[j].GetIDName() == gas.GetIDName())
                     {
-                        float nVal = roomGases[j].GetConcentration() - gas.GetConcentration();
+                        float nVal = roomIGases[j].GetConcentration() - gas.GetConcentration();
                         if (nVal > 0f)
                         {
-                            roomGases[j].SetConcentration(nVal);
+                            roomIGases[j].SetConcentration(nVal);
                         }
                         else
                         {
                             //may not work?
-                            roomGases.Remove(gas);
+                            roomIGases.Remove(gas);
                         }
                     }
                 }
@@ -1059,41 +1103,48 @@ namespace ProjectUniverse.Environment.Volumes
             CalculateRoomPressure(totalGas);
         }
 
-        public void RemoveRoomGas(float pressureToRemove)
+
+        public void RemoveRoomGas(Fluid gasToRemove)
         {
-            //convert pressure to concentration
-            float runConc = 0f;
-            foreach(IGas gas in roomGases)
+            if (roomFluids.Count == 0) return;
+
+            for (int j = 0; j < roomFluids.Count; j++)
             {
-                runConc += gas.GetConcentration();
-            }
-            
-            float conc = ((roomPressure - pressureToRemove) * runConc) / roomPressure;
-            float remove = runConc - conc;
-            Debug.Log("remove gas conc: " + remove);
-            
-            //remove that conc from the first available gas
-            for (int j = 0; j < roomGases.Count; j++)
-            {
-                if(remove > 0f)
+                if (roomFluids[j].GetIDName() == gasToRemove.GetIDName())
                 {
-                    if (remove - roomGases[j].GetConcentration() > 0f)
+                    float remainingMass = roomFluids[j].GetMass() - gasToRemove.GetMass();
+                    if (remainingMass > 0.001f)
                     {
-                        remove -= roomGases[j].GetConcentration();
-                        roomGases[j].SetConcentration(0f);
+                        roomFluids[j].SetMass(remainingMass);
                     }
                     else
                     {
-                        roomGases[j].SetConcentration(roomGases[j].GetConcentration() - remove);
-                        remove = 0f;
+                        roomFluids.RemoveAt(j);
                     }
-                }
-                else
-                {
                     break;
-                } 
+                }
             }
-            
+
+            //update Volume Atmosphere
+            float totalGas = CalculateRoomOxygenation();
+            CalculateRoomTemp();
+            CalculateRoomPressure(totalGas);
+        }
+
+        public void RemoveRoomGas(float pressureToRemove)
+        {
+            if (roomFluids.Count == 0 || roomPressure <= 0) return;
+
+            // Calculate total mass to remove based on pressure
+            float totalVolume = 0f;
+            foreach (var gas in roomFluids)
+            {
+                totalVolume += gas.GetVolume();
+            }
+
+            float pressureRatio = pressureToRemove / roomPressure;
+            List<Fluid> removedGases = Utils.ExtractMass(roomFluids, totalVolume * pressureRatio * 1.293f); // Approximate density
+
             //update Volume Atmosphere
             float totalGas = CalculateRoomOxygenation();
             CalculateRoomTemp();
@@ -1109,27 +1160,57 @@ namespace ProjectUniverse.Environment.Volumes
             bool add = true;
             IGas gas = new IGas(gasToAdd);
             gasToAdd.SetLocalVolume(roomVolume);
-            if (roomGases.Count > 0)
+            if (roomIGases.Count > 0)
             {
-                for (int j = 0; j < roomGases.Count; j++)
+                for (int j = 0; j < roomIGases.Count; j++)
                 {
-                    if (roomGases[j].GetIDName() == gas.GetIDName())
+                    if (roomIGases[j].GetIDName() == gas.GetIDName())
                     {
-                        roomGases[j] = CombineGases(roomGases[j], gas, Pressure, false);
+                        roomIGases[j] = CombineGases(roomIGases[j], gas, Pressure, false);
                         add = false;
                     }
                 }
                 if (add)
                 {
                     //Debug.Log("Add");
-                    roomGases.Add(gas);
+                    roomIGases.Add(gas);
                 }
             }
             else
             {
                 //Debug.Log("Add");
-                roomGases.Add(gas);
+                roomIGases.Add(gas);
             }
+            //update Volume Atmosphere
+            float totalGas = CalculateRoomOxygenation();
+            CalculateRoomTemp();
+            CalculateRoomPressure(totalGas);
+        }
+
+
+        /// <summary>
+        /// Add the parameter gas to the room's gas array. Update Volume Atmosphere.
+        /// </summary>
+        /// <param name="gasToAdd"></param>
+        public void AddRoomGas(Fluid gasToAdd)
+        {
+            bool found = false;
+
+            for (int j = 0; j < roomFluids.Count; j++)
+            {
+                if (roomFluids[j].GetIDName() == gasToAdd.GetIDName())
+                {
+                    roomFluids[j] = Fluid.Mix(roomFluids[j], gasToAdd);
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found)
+            {
+                roomFluids.Add(new Fluid(gasToAdd));
+            }
+
             //update Volume Atmosphere
             float totalGas = CalculateRoomOxygenation();
             CalculateRoomTemp();
@@ -1140,69 +1221,65 @@ namespace ProjectUniverse.Environment.Volumes
         {
             //bool add = false;
             IFluid fluid = new IFluid(fluidToAdd);
-            roomFluids.Add(fluid);
-            roomFluids = CheckFluids(true, Pressure);
+            roomIFluids.Add(fluid);
+            //roomIFluids = CheckFluids(true, Pressure);
             UpdateRoomFluidLevel();
         }
 
-        public List<IFluid> RemoveRoomFluid(float amount)
+
+        public void AddRoomFluid(Fluid fluidToAdd)
         {
-            if (roomFluids.Count > 0)
-            {
-                List<IFluid> fluidsRemoved = new List<IFluid>();
-                float per = amount / roomFluids.Count;
-                for (int j = 0; j < roomFluids.Count; j++)
-                {
-                    fluidsRemoved.Add(new IFluid(roomFluids[j]));
-
-                    if (roomFluids[j].GetConcentration() < per)
-                    {
-                        fluidsRemoved[j].SetConcentration(roomFluids[j].GetConcentration());
-                        roomFluids[j].SetConcentration(0f);
-                    }
-                    else
-                    {
-                        fluidsRemoved[j].SetConcentration(per);
-                        roomFluids[j].AddConcentration(-per);
-                    }
-                }
-                return fluidsRemoved;
-            }
-            else
-            {
-                //protect against ArgNullException
-                return new List<IFluid>();
-            }
-
+            roomFluids.Add(new Fluid(fluidToAdd));
+            roomFluids = Utils.CombineFluids(roomFluids);
+            UpdateRoomFluidLevel();
         }
 
-        public void AddRoomFluid(List<IFluid> fluidToAdd)
+        public List<Fluid> RemoveRoomFluid(float volumeToRemove)
         {
-            bool add = false;
-            for(int f = 0; f < fluidToAdd.Count; f++)
+            if (roomFluids.Count == 0)
+                return new List<Fluid>();
+
+            float totalVolume = 0f;
+            foreach (var fluid in roomFluids)
             {
-                IFluid fluid = new IFluid(fluidToAdd[f]);
-                //If the roomFluids list is empty or does not contain the passed fluid
-                if (roomFluids.Count > 0)
+                totalVolume += fluid.GetVolume();
+            }
+
+            if (totalVolume == 0f)
+                return new List<Fluid>();
+
+            // Extract proportionally by volume
+            float extractRatio = Mathf.Min(volumeToRemove / totalVolume, 1f);
+            List<Fluid> extracted = new List<Fluid>();
+
+            for (int i = roomFluids.Count - 1; i >= 0; i--)
+            {
+                float fluidVolume = roomFluids[i].GetVolume();
+                float extractVolume = fluidVolume * extractRatio;
+
+                // Convert volume to mass for extraction
+                float density = roomFluids[i].GetMass() / fluidVolume;
+                float extractMass = extractVolume * density;
+
+                Fluid extractedFluid = roomFluids[i].Split(extractMass);
+                extracted.Add(extractedFluid);
+
+                if (roomFluids[i].GetMass() < 0.001f)
                 {
-                    //Combine the passed fluid with fluids already in volume
-                    for (int j = 0; j < roomFluids.Count; j++)
-                    {
-                        if (roomFluids[j].GetIDName() == fluid.GetIDName())
-                        {
-                            IFluid EQFluid = CombineFluids(roomFluids[j], fluid, roomPressure, true);
-                            //Debug.Log("EQFluid " + EQFluid);
-                            roomFluids.Remove(roomFluids[j]);
-                            roomFluids.Add(EQFluid);
-                        }
-                    }
-                }
-                else
-                {
-                    roomFluids.Add(fluid);
+                    roomFluids.RemoveAt(i);
                 }
             }
+
             UpdateRoomFluidLevel();
+            return extracted;
+        }
+
+        public void AddRoomFluid(List<Fluid> fluidsToAdd)
+        {
+            foreach (var fluid in fluidsToAdd)
+            {
+                AddRoomFluid(fluid);
+            }
         }
 
         /// <summary>
@@ -1212,22 +1289,30 @@ namespace ProjectUniverse.Environment.Volumes
         /// </summary>
         public float CalculateRoomOxygenation()
         {
-            float oxygenation = 0.0f;
-            float totalGasses = 0.0f;
-            for (int i = 0; i < roomGases.Count; i++)//gasesToEq
+            float oxygenVolume = 0.0f;
+            float totalGasVolume = 0.0f;
+
+            foreach (var gas in roomFluids)
             {
-                totalGasses += roomGases[i].GetConcentration();//gasesToEq
-                if (roomGases[i].GetIDName() == "Oxygen")
+                if (gas.GetState() == FluidState.Gas || gas.GetState() == FluidState.Mixed)
                 {
-                    oxygenation += roomGases[i].GetConcentration();//gasesToEq
+                    float gasVolume = gas.GetVolume();
+                    if (gas.GetState() == FluidState.Mixed)
+                    {
+                        gasVolume *= gas.GetQuality(); // Only count vapor fraction
+                    }
+
+                    totalGasVolume += gasVolume;
+
+                    if (gas.GetIDName() == "Oxygen")
+                    {
+                        oxygenVolume += gasVolume;
+                    }
                 }
             }
-            //Debug.Log("Gasses: "+ totalGasses + " in " + this.name);
-            //the above calcs are full oxygenation at 1.0, not 100.0f, so mult by 100
-            roomOxygenation = (oxygenation /= roomVolume) * 100f;
-            //float oxygenTemp = (oxygenation /= roomVolume)*100f;
-            //roomOxygenation += oxygenTemp;
-            return totalGasses;
+
+            roomOxygenation = (oxygenVolume / roomVolume) * 100f;
+            return totalGasVolume;
         }
 
         /// <summary>
@@ -1236,26 +1321,26 @@ namespace ProjectUniverse.Environment.Volumes
         /// </summary>
         public void CalculateRoomTemp()
         {
-            //Debug.Log("Recalc");
-            if (roomGases.Count > 0f)
-            {                
-                float temperature = 0.0f;
-                float totalconc = 0f;
-                //scale by volume
-                for (int j = 0; j < roomGases.Count; j++)
-                {
-                    totalconc += roomGases[j].GetConcentration();
-                }
-                for (int j = 0; j < roomGases.Count; j++)
-                {
-                    //Debug.Log(roomGases[j].GetConcentration() / totalconc);
-                    temperature += (roomGases[j].GetTemp() * (roomGases[j].GetConcentration()/totalconc));
-                    //Debug.Log(temperature);
-                }
-                //Equalized temp of the gases in the room
-                //Debug.Log(roomTemp+"=>"+ (temperature / (roomGases.Count)));
-                roomTemp = temperature;// / (roomGases.Count);
+            if (roomFluids.Count == 0)
+                return;
+
+            float totalEnthalpy = 0f;
+            float totalMass = 0f;
+
+            foreach (var gas in roomFluids)
+            {
+                totalEnthalpy += gas.GetEnthalpy();
+                totalMass += gas.GetMass();
             }
+
+            // Weight temperature by mass
+            float weightedTemp = 0f;
+            foreach (var gas in roomFluids)
+            {
+                weightedTemp += gas.GetTemperature() * (gas.GetMass() / totalMass);
+            }
+
+            roomTemp = (weightedTemp - 273.15f) * 1.8f + 32f; // Convert K to F
         }
 
         /// <summary>
@@ -1263,69 +1348,293 @@ namespace ProjectUniverse.Environment.Volumes
         /// </summary>
         public void CalculateRoomPressure(float totalRoomGasses_m3)
         {
-            ///calculate pressure in the room according to the gas vars.
-            ///IE The amount of gasses in the room where >x is 1.x atm and less than x is 0.x atm
-            ///THEN adjust for temp
+            if (roomFluids.Count == 0)
+            {
+                roomPressure = 0f;
+                return;
+            }
+            else
+            {
+                float totalPressure = 0f;
+                foreach (var gas in roomFluids)
+                {
+                    totalPressure = gas.GetPressure();
+                }
+                roomPressure = totalPressure / RoomFluids.Count;
+            }
 
-            float concPressure = totalRoomGasses_m3 / roomVolume;
-            //t1 = originalTemp; t2 = roomTemp
-            //p1 = roomPressure; p2 = X
-            //v1 = roomVolume; v2 = roomVolume
-            float p2 = 0.0f;
-            foreach (IGas gas in roomGases)
+            // Calculate pressure based on gas volume in room
+            // Now done by Fluid class
+            /*
+            float totalPressure = 0f;
+
+            foreach (var gas in roomFluids)
             {
-                float p1 = concPressure;
-                float v1 = gas.GetLocalVolume();
-                float t1 = ((gas.GetTemp() - 32f) * (5f / 9f)) + 273.15f;
-                float v2 = gas.GetLocalVolume();
-                float t2 = ((roomTemp - 32f) * (5f / 9f)) + 273.15f;
-                //Debug.Log("p1: " +p1 + " v1: " +v1+ " t1: " +t1 + " v2: " +v2+ " t2: "+t2);
-                //temp-adjusted pressure for one gas in the room
-                p2 += (p1 * v1 * t2) / (t1 * v2);
+                if (gas.GetState() == FluidState.Gas || gas.GetState() == FluidState.Mixed)
+                {
+                    // For gases, use ideal gas law contribution
+                    float gasVolume = gas.GetVolume();
+                    if (gas.GetState() == FluidState.Mixed)
+                    {
+                        gasVolume *= gas.GetQuality();
+                    }
+
+                    // Partial pressure contribution
+                    totalPressure += gas.GetPressure() * (gasVolume / roomVolume);
+                }
             }
-            roomPressure = p2 / roomGases.Count;
-            //Debug.Log("Pressure recal: " + roomPressure);
-            foreach (IGas setGases in roomGases)
+
+            roomPressure = totalPressure;
+
+            // Update all gas pressures
+            foreach (var gas in roomFluids)
             {
-                setGases.SetLocalPressure(roomPressure);
-                //Debug.Log("Set");
-                setGases.SetTemp(roomTemp);
-                setGases.CalculateAtmosphericDensity();
+                gas.SetPressure(roomPressure);
+            }*/
+        }
+
+        public void AddParticulate(string particulateTypeID, float ppmw)
+        {
+            var existing = particulates.Find(p => p.ParticulateTypeID == particulateTypeID);
+            if (existing != null)
+            {
+                existing.ConcentrationPPMW += ppmw;
             }
-            roomGases = CheckGasses(true, roomPressure);
+            else
+            {
+                particulates.Add(new ParticulateConcentration(particulateTypeID, ppmw));
+            }
+        }
+
+        public void RemoveParticulate(string particulateTypeID, float ppmw)
+        {
+            var existing = particulates.Find(p => p.ParticulateTypeID == particulateTypeID);
+            if (existing != null)
+            {
+                existing.ConcentrationPPMW = Mathf.Max(0f, existing.ConcentrationPPMW - ppmw);
+                if (existing.ConcentrationPPMW <= 0.001f)
+                {
+                    particulates.Remove(existing);
+                }
+            }
+        }
+
+        public float GetParticulateConcentration(string particulateTypeID)
+        {
+            var existing = particulates.Find(p => p.ParticulateTypeID == particulateTypeID);
+            return existing?.ConcentrationPPMW ?? 0f;
+        }
+
+        public List<ParticulateConcentration> GetAllParticulates()
+        {
+            return new List<ParticulateConcentration>(particulates);
+        }
+
+        public float GetTotalHealthRisk()
+        {
+            float risk = 0f;
+            foreach (var particulate in particulates)
+            {
+                var type = ParticulateDatabase.GetParticulate(particulate.ParticulateTypeID);
+                if (type != null)
+                {
+                    risk += type.HealthRisk * (particulate.ConcentrationPPMW / 1000f); // Normalized
+                }
+            }
+            return risk;
+        }
+
+        public float GetTotalRadioactivity()
+        {
+            float activity = 0f;
+            foreach (var particulate in particulates)
+            {
+                var type = ParticulateDatabase.GetParticulate(particulate.ParticulateTypeID);
+                if (type != null)
+                {
+                    activity += type.Radioactivity * (particulate.ConcentrationPPMW / 1000000f);
+                }
+            }
+            return activity;
+        }
+
+        public bool HasCombustibleParticulates()
+        {
+            foreach (var particulate in particulates)
+            {
+                var type = ParticulateDatabase.GetParticulate(particulate.ParticulateTypeID);
+                if (type != null && type.Combustibility > 0f && particulate.ConcentrationPPMW >= type.Combustibility)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Check if any doors are ruptured and propagate explosion to connected rooms
+        /// </summary>
+        public void CheckExplosionPropagation(float explosionIntensity, float heatReleased)
+        {
+            if (roomDoorsFluidOrder == null || roomDoorsFluidOrder.Length == 0)
+                return;
+
+            hasActiveExplosion = true;
+            explosionPressureWave = explosionIntensity;
+            explosionHeatWave = heatReleased;
+
+            for (int i = 0; i < roomDoorsFluidOrder.Length; i++)
+            {
+                DoorAnimator door = roomDoorsFluidOrder[i];
+                if (door != null && door.IsRuptured)
+                {
+                    PropagateExplosionThroughDoor(i, explosionIntensity, heatReleased);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Propagate explosion through a specific ruptured door
+        /// </summary>
+        private void PropagateExplosionThroughDoor(int doorIndex, float explosionIntensity, float heatReleased)
+        {
+            if (doorIndex >= neighborEmpties.Count())
+                return;
+
+            GameObject neighborEmpty = neighborEmpties[doorIndex];
+            if (neighborEmpty == null)
+                return;
+
+            VolumeNode volumeNode = neighborEmpty.GetComponent<VolumeNode>();
+            if (volumeNode == null)
+                return;
+
+            // Check local neighbor (another room)
+            GameObject localNeighbor = volumeNode.VolumeLink;
+            if (localNeighbor != null)
+            {
+                VolumeAtmosphereController neighborAtmosphere =
+                    localNeighbor.GetComponent<VolumeAtmosphereController>();
+
+                if (neighborAtmosphere != null && !neighborAtmosphere.hasActiveExplosion)
+                {
+                    // Transfer pressure wave (attenuated)
+                    float pressureTransfer = explosionIntensity * 0.6f; // 60% of original intensity
+                    neighborAtmosphere.AddPressure(pressureTransfer);
+
+                    // Transfer heat wave (attenuated)
+                    float heatTransfer = heatReleased * 0.5f; // 50% of original heat
+                    neighborAtmosphere.AddRoomHeat(heatTransfer);
+
+                    // Trigger ignition in connected room
+                    RoomReactionManager neighborReactions = localNeighbor.GetComponent<RoomReactionManager>();
+                    if (neighborReactions != null)
+                    {
+                        neighborReactions.TriggerIgnition(2f); // 2 second ignition burst
+                        Debug.Log($"Explosion propagated from {gameObject.name} to {localNeighbor.name}");
+                    }
+
+                    // Add explosion particulates to neighbor
+                    float particulateSpread = explosionIntensity * 5f;
+                    neighborAtmosphere.AddParticulate("ash", particulateSpread * 0.4f);
+                    neighborAtmosphere.AddParticulate("carbon_black", particulateSpread * 0.3f);
+                    neighborAtmosphere.AddParticulate("soot", particulateSpread * 0.3f);
+
+                    // Recursively check if neighbor has ruptured doors
+                    neighborAtmosphere.CheckExplosionPropagation(
+                        explosionIntensity * 0.5f,
+                        heatReleased * 0.3f
+                    );
+                }
+            }
+            // If it's a global neighbor (space/exterior)
+            else
+            {
+                GameObject globalNeighbor = volumeNode.GlobalLink;
+                if (globalNeighbor != null)
+                {
+                    // Explosion vents to space/exterior - rapid pressure loss
+                    //Pressure *= 0.3f; // Lose 70% of pressure rapidly
+                    //Temperature *= 0.7f; // Lose heat to space
+
+                    Debug.Log($"Explosion vented from {gameObject.name} to exterior");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Check if pressure is high enough to rupture doors
+        /// This is also being checked by every door, so this block is a backup
+        /// </summary>
+        public void CheckPressureRupture()
+        {
+            foreach (GameObject obj in neighborEmpties)
+            {
+                VolumeNode vn = obj.GetComponent<VolumeNode>();
+                float headpres = vn.VolumeLink.GetComponent<VolumeAtmosphereController>().Pressure;
+                DoorAnimator dr = vn.GetDoor().GetComponent<DoorAnimator>();
+                float maxPres = dr.MaxPressure;
+
+                if (Pressure - headpres >= maxPres)
+                {
+                    dr.IsRuptured = true;
+                    Debug.LogWarning($"Door {dr.gameObject.name} ruptured due to pressure: {Pressure:F2} atm");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Reset explosion state after propagation completes
+        /// </summary>
+        public void ResetExplosionState()
+        {
+            hasActiveExplosion = false;
+            explosionPressureWave = 0f;
+            explosionHeatWave = 0f;
         }
 
         public void UpdateRoomFluidLevel()
         {
-            float fluidConc = 0.0f;
-            //Debug.Log(roomFluids.Count);  
-            for (int i = 0; i < roomFluids.Count; i++)
+            float totalFluidVolume = 0.0f;
+
+            foreach (var fluid in roomFluids)
             {
-                fluidConc += roomFluids[i].GetConcentration();
+                // Only count liquid volume
+                if (fluid.GetState() == FluidState.Liquid)
+                {
+                    totalFluidVolume += fluid.GetVolume();
+                }
+                else if (fluid.GetState() == FluidState.Mixed)
+                {
+                    // For mixed state, only count liquid fraction
+                    totalFluidVolume += fluid.GetVolume() * (1f - fluid.GetQuality());
+                }
             }
-            if(fluidConc <= 0.1f)
+
+            if (totalFluidVolume <= 0.0001f)
             {
                 //set all planes false, as the room has emptied
                 for (int f = 0; f < roomFluidPlanes.Count; f++)
                 {
                     roomFluidPlanes[f].SetActive(false);
                 }
+                return;
             }
 
-            float volumeRatio = fluidConc / roomVolume;
-            //volumeRatio * gameObject.GetComponent<BoxCollider>().size.y)
-            float translatedFill = (float)Math.Round((volumeRatio * maxFluidFillHeight),3);
-            for(int p = 0; p < roomFluidPlanes.Count; p++)
+            float volumeRatio = totalFluidVolume / roomVolume;
+            float translatedFill = (float)Math.Round((volumeRatio * maxFluidFillHeight), 3);
+
+            // Update fluid plane positions (rest of method unchanged)
+            for (int p = 0; p < roomFluidPlanes.Count; p++)
             {
-                // Main thread API problem?
                 if (roomFluidPlanes[p] != null)
                 {
-                    if ((p-1) < 0)
+                    if ((p - 1) < 0)
                     {
                         roomFluidPlanes[p].SetActive(true);
                         roomFluidPlanes[p].transform.localPosition = new Vector3(
-                        roomFluidPlanes[p].transform.localPosition.x, translatedFill,
-                        roomFluidPlanes[p].transform.localPosition.z);
+                            roomFluidPlanes[p].transform.localPosition.x, translatedFill,
+                            roomFluidPlanes[p].transform.localPosition.z);
                     }
                     else
                     {
@@ -1338,23 +1647,43 @@ namespace ProjectUniverse.Environment.Volumes
                         {
                             roomFluidPlanes[p].SetActive(true);
                             roomFluidPlanes[p].transform.localPosition = new Vector3(
-                            roomFluidPlanes[p].transform.localPosition.x, tfnot,
-                            roomFluidPlanes[p].transform.localPosition.z);
+                                roomFluidPlanes[p].transform.localPosition.x, tfnot,
+                                roomFluidPlanes[p].transform.localPosition.z);
                         }
                     }
-                    
                 }
             }
         }
 
-        public float GetPressure()
+        /// <summary>
+        /// Get total fluid volume in the room
+        /// </summary>
+        public float GetTotalFluidVolume()
         {
-            return roomPressure;
+            float total = 0f;
+            foreach (var fluid in roomFluids)
+            {
+                total += fluid.GetVolume();
+            }
+            return total;
         }
-        public void SetPressure(float value)
+
+        /// <summary>
+        /// Check if fluid level allows passage through a specific door
+        /// </summary>
+        public bool CanFluidPassThroughDoor(int doorIndex)
         {
-            roomPressure = value;
+            if (doorIndex < 0 || doorIndex >= roomFluidPlaneDoorLevels.Length)
+                return false;
+
+            float totalFluidVolume = GetTotalFluidVolume();
+            if (totalFluidVolume <= 0.001f)
+                return false;
+
+            float fillHeight = totalFluidVolume / roomFloorArea;
+            return fillHeight >= roomFluidPlaneDoorLevels[doorIndex];
         }
+
         public float GetVolume()
         {
             return roomVolume;
@@ -1478,216 +1807,6 @@ namespace ProjectUniverse.Environment.Volumes
             for (int l = 0; l < lightGOs.Length; l++)
             {
                 lightGOs[l].SetActive(true);
-            }
-        }
-
-        //public bool RenderState
-        //{
-        //    get { return renderstate; }
-        //    set { renderstate = value; }
-        //}
-
-        
-        public void RenderPlaneSetup(GameObject[] doors, GameObject planePrefab, Transform planeParent)
-        {
-            Debug.Log("RPS");
-            //get all top-level trigger colliders, including from doors
-            /*foreach (BoxCollider col in roomVolumeSections)
-            {
-                if (col.isTrigger)
-                {
-                    //prefab COLplanes to form a cube
-                    GameObject planeTo = Instantiate(planePrefab, planeParent);
-                    GameObject planeBo = Instantiate(planePrefab, planeParent);
-                    GameObject planeL = Instantiate(planePrefab, planeParent);
-                    GameObject planeR = Instantiate(planePrefab, planeParent);
-                    GameObject planeFr = Instantiate(planePrefab, planeParent);
-                    GameObject planeBk = Instantiate(planePrefab, planeParent);
-                    //center and side offsets for cube
-                    float xOff = col.size.x / 2f;
-                    float yOff = col.size.y / 2f;
-                    float zOff = col.size.z / 2f;
-                    Vector3 center = col.center;
-                    Debug.Log("local center: "+center);
-                    Debug.Log("local x offset: " + xOff);
-                    Debug.Log("local y offset: " + yOff);
-                    Debug.Log("local z offset: " + zOff);
-                    //position - coordinate system shifts by axis
-                    planeTo.transform.localPosition = new Vector3(center.x, center.y + yOff, center.z);
-                    planeBo.transform.localPosition = new Vector3(center.x, center.y - yOff, center.z);
-                    planeL.transform.localPosition = new Vector3(center.x - xOff, center.y, center.z);
-                    planeR.transform.localPosition = new Vector3(center.x + xOff, center.y, center.z);
-                    planeFr.transform.localPosition = new Vector3(center.x, center.y, center.z + zOff);
-                    planeBk.transform.localPosition = new Vector3(center.x, center.y, center.z - zOff);
-                    //scaling
-                    //To,Bo - ZX
-                    //L,R - ZY
-                    //Fr,Bk - XY
-                    planeTo.transform.localScale = new Vector3(xOff, 1f, zOff);
-                    planeBo.transform.localScale = new Vector3(xOff, 1f, zOff);
-                    planeL.transform.localRotation = Quaternion.Euler(0f, 0f, 90f);
-                    planeR.transform.localRotation = Quaternion.Euler(0f, 0f, 90f);
-                    planeL.transform.localScale = new Vector3(yOff, 1f, zOff);
-                    planeR.transform.localScale = new Vector3(yOff, 1f, zOff);
-                    planeFr.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
-                    planeBk.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
-                    planeFr.transform.localScale = new Vector3(xOff, 1f, yOff);
-                    planeBk.transform.localScale = new Vector3(xOff, 1f, yOff);
-                }
-            }
-
-            //generate a portal collider at each door
-            foreach(GameObject door in doors)
-            {
-                GameObject planeDoom = Instantiate(planePrefab, planeParent);
-                Vector3 bias = Vector3.zero;
-                if(door.transform.localRotation.eulerAngles == new Vector3(0f, 90f, 0f))
-                {
-                    //x+1, y +1, z - 0.5
-                    bias = new Vector3(-0.5f, 1f, 0.5f);
-                    planeDoom.transform.localRotation = Quaternion.Euler(90f, 0f, 90f);
-                    planeDoom.tag = "Door";
-                }
-                else if (door.transform.localRotation.eulerAngles == new Vector3(0f, 180f, 0f))
-                {
-                    //x+1, y +1, z - 0.5
-                    bias = new Vector3(+0.5f, 1f, 0.5f);
-                    planeDoom.transform.localRotation = Quaternion.Euler(0f, 90f, 90f);
-                    planeDoom.tag = "Door";
-                }
-                else if (door.transform.localRotation.eulerAngles == new Vector3(0f, 0f, 0f))
-                {
-                    //x+1, y +1, z - 0.5
-                    bias = new Vector3(-0.5f, 1f, -0.5f);
-                    planeDoom.transform.localRotation = Quaternion.Euler(90f, 90f, 90f);
-                    planeDoom.tag = "Door";
-                }
-                else if (door.transform.localRotation.eulerAngles == new Vector3(0f, 270f, 0f))
-                {
-                    //x+1, y +1, z - 0.5
-                    bias = new Vector3(0.5f, 1f, -0.5f);
-                    planeDoom.transform.localRotation = Quaternion.Euler(90f, 0f, 90f);
-                    planeDoom.tag = "Door";
-                }
-                planeDoom.transform.position = door.transform.position;
-                planeDoom.transform.localPosition += bias;
-                planeDoom.transform.localScale = new Vector3(1f, 1f, 1f);
-            }
-            */
-            //List<FrustrumState> fsList = new List<FrustrumState>();
-            foreach (Transform child in transform)
-            {
-                if (child.gameObject.activeInHierarchy)
-                {
-                    if (child.TryGetComponent(out MeshRenderer render))
-                    {
-                        //place a FrustrumState script in obj
-                        //render.gameObject.AddComponent<FrustrumState>();
-                    }
-                }
-            }
-            //now raycast from all instancedColliders' centers and find what walls or whatever they are flush to.
-            RaycastHit[] hits;
-            foreach (Transform obj in planeParent)
-            {
-                if (obj.gameObject.activeInHierarchy)
-                {
-                    //raycast front / back. if no valid collisions, cast L, R for 1.25m to catch edges of doors.
-                    //hits = Physics.SphereCastAll(obj.position, 0.1f, transform.forward, 0.25f);
-                    bool neg = true;
-                    hits = Physics.RaycastAll(obj.position, transform.forward, 0.25f);
-                    for (int k = 0; k < hits.Length; k++)
-                    {
-                        FrustrumState fs = hits[k].transform.GetComponentInParent<FrustrumState>();
-                        if (fs != null)
-                        {
-                            Debug.Log(hits[k].transform.name + ": " + fs.name);
-                            fs.AddStatePlate(obj.GetComponent<MeshCollider>());
-                            neg = false;
-                            //deactivate the object fir debug purposes
-                            obj.gameObject.SetActive(false);
-                        }
-                    }
-                    if (neg)
-                    {
-                        hits = Physics.RaycastAll(obj.position, -transform.forward, 0.25f);
-                        for (int k = 0; k < hits.Length; k++)
-                        {
-                            FrustrumState fs = hits[k].transform.GetComponentInParent<FrustrumState>();
-                            if (fs != null)
-                            {
-                                Debug.Log(hits[k].transform.name + ": " + fs.name);
-                                fs.AddStatePlate(obj.GetComponent<MeshCollider>());
-                                neg = false;
-                                //deactivate the object fir debug purposes
-                                obj.gameObject.SetActive(false);
-                            }
-                        }
-                        if (neg)
-                        {
-                            hits = Physics.RaycastAll(obj.position, transform.right, 1.5f);
-                            for (int k = 0; k < hits.Length; k++)
-                            {
-                                FrustrumState fs = hits[k].transform.GetComponentInParent<FrustrumState>();
-                                if (fs != null)
-                                {
-                                    Debug.Log(hits[k].transform.name + ": " + fs.name);
-                                    fs.AddStatePlate(obj.GetComponent<MeshCollider>());
-                                    neg = false;
-                                    //deactivate the object fir debug purposes
-                                    obj.gameObject.SetActive(false);
-                                }
-                            }
-                            if (neg)
-                            {
-                                hits = Physics.RaycastAll(obj.position, -transform.right, 1.5f);
-                                for (int k = 0; k < hits.Length; k++)
-                                {
-                                    FrustrumState fs = hits[k].transform.GetComponentInParent<FrustrumState>();
-                                    if (fs != null)
-                                    {
-                                        Debug.Log(hits[k].transform.name + ": " + fs.name);
-                                        fs.AddStatePlate(obj.GetComponent<MeshCollider>());
-                                        neg = false;
-                                        //deactivate the object fir debug purposes
-                                        obj.gameObject.SetActive(false);
-                                    }
-                                }
-                                if (neg)
-                                {
-                                    hits = Physics.RaycastAll(obj.position, transform.up, 0.5f);
-                                    for (int k = 0; k < hits.Length; k++)
-                                    {
-                                        FrustrumState fs = hits[k].transform.GetComponentInParent<FrustrumState>();
-                                        if (fs != null)
-                                        {
-                                            Debug.Log(hits[k].transform.name + ": " + fs.name);
-                                            fs.AddStatePlate(obj.GetComponent<MeshCollider>());
-                                            neg = false;
-                                            //deactivate the object fir debug purposes
-                                            obj.gameObject.SetActive(false);
-                                        }
-                                    }
-                                    if (neg)
-                                    {
-                                        hits = Physics.RaycastAll(obj.position, -transform.up, 0.5f);
-                                        for (int k = 0; k < hits.Length; k++)
-                                        {
-                                            FrustrumState fs = hits[k].transform.GetComponentInParent<FrustrumState>();
-                                            if (fs != null)
-                                            {
-                                                Debug.Log(hits[k].transform.name + ": " + fs.name);
-                                                fs.AddStatePlate(obj.GetComponent<MeshCollider>());
-                                                //deactivate the object fir debug purposes
-                                                obj.gameObject.SetActive(false);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
             }
         }
     }

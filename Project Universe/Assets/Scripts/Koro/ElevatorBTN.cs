@@ -9,7 +9,7 @@ public class ElevatorBTN : MonoBehaviour
 
     private void Awake()
     {
-        EM = FindObjectOfType<ElevatorManager>();
+        EM = FindFirstObjectByType<ElevatorManager>();
     }
     public void EventBTN()
     {

@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 using ProjectUniverse.Environment.Gas;
 using ProjectUniverse.Util;
 
-namespace ProjectUniverse.Environment.Fluid
+namespace ProjectUniverse.Environment.Fluids
 {
     /// <summary>
     /// Transfer Fluids of X types at whatever rate/pressure determined by the pump

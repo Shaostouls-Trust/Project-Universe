@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Door : MonoBehaviour, IInteractable
+public class KDoor : MonoBehaviour, IInteractable
 {
     private bool closed = true;
     private bool locked = false;

@@ -24,6 +24,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 		[HideInInspector] _BlendMode("Blend Mode", Float) = 0
 		[HideInInspector] _SrcBlend("Src Blend", Float) = 1
 		[HideInInspector] _DstBlend("Dst Blend", Float) = 0
+		[HideInInspector] _DstBlend2("__dst2", Float) = 0
 		[HideInInspector] _AlphaSrcBlend("Alpha Src Blend", Float) = 1
 		[HideInInspector] _AlphaDstBlend("Alpha Dst Blend", Float) = 0
 		[HideInInspector][ToggleUI] _ZWrite("ZWrite", Float) = 1
@@ -32,7 +33,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 		[HideInInspector] _TransparentSortPriority("Transparent Sort Priority", Float) = 0
 		[HideInInspector][ToggleUI] _EnableFogOnTransparent("Enable Fog", Float) = 1
 		[HideInInspector] _CullModeForward("Cull Mode Forward", Float) = 2 // This mode is dedicated to Forward to correctly handle backface then front face rendering thin transparent
-		[HideInInspector][Enum(UnityEditor.Rendering.HighDefinition.TransparentCullMode)] _TransparentCullMode("Transparent Cull Mode", Int) = 2 // Back culling by default
+		[HideInInspector][Enum(UnityEngine.Rendering.HighDefinition.TransparentCullMode)] _TransparentCullMode("Transparent Cull Mode", Int) = 2 // Back culling by default
 		[HideInInspector] _ZTestDepthEqualForOpaque("ZTest Depth Equal For Opaque", Int) = 4 // Less equal
 		[HideInInspector][Enum(UnityEngine.Rendering.CompareFunction)] _ZTestTransparent("ZTest Transparent", Int) = 4 // Less equal
 		[HideInInspector][ToggleUI] _TransparentBackfaceEnable("Transparent Backface Enable", Float) = 0
@@ -50,7 +51,8 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 		//_TessMaxDisp( "Tess Max Displacement", Float ) = 25
 
 		[HideInInspector][ToggleUI] _TransparentWritingMotionVec("Transparent Writing MotionVec", Float) = 0
-		[HideInInspector][Enum(UnityEditor.Rendering.HighDefinition.OpaqueCullMode)] _OpaqueCullMode("Opaque Cull Mode", Int) = 2 // Back culling by default
+		[HideInInspector][ToggleUI] _PerPixelSorting("_PerPixelSorting", Float) = 0.0
+		[HideInInspector][Enum(UnityEngine.Rendering.HighDefinition.OpaqueCullMode)] _OpaqueCullMode("Opaque Cull Mode", Int) = 2 // Back culling by default
 		[HideInInspector][ToggleUI] _EnableBlendModePreserveSpecularLighting("Enable Blend Mode Preserve Specular Lighting", Float) = 1
 		[HideInInspector] _EmissionColor("Color", Color) = (1, 1, 1)
 
@@ -58,10 +60,14 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
         [HideInInspector][NoScaleOffset] unity_LightmapsInd("unity_LightmapsInd", 2DArray) = "" {}
         [HideInInspector][NoScaleOffset] unity_ShadowMasks("unity_ShadowMasks", 2DArray) = "" {}
 
-		[HideInInspector][Enum(Auto, 0, On, 1, Off, 2)] _DoubleSidedGIMode("Double sided GI mode", Float) = 0 //DoubleSidedGIMode added in api 12x and higher
+		[HideInInspector][Enum(Auto, 0, On, 1, Off, 2)] _DoubleSidedGIMode("Double sided GI mode", Float) = 0
 
 		[HideInInspector][ToggleUI] _AlphaToMaskInspectorValue("_AlphaToMaskInspectorValue", Float) = 0 // Property used to save the alpha to mask state in the inspector
         [HideInInspector][ToggleUI] _AlphaToMask("__alphaToMask", Float) = 0
+
+		//_Refrac ( "Refraction Model", Float) = 0
+        [HideInInspector][ToggleUI]_DepthOffsetEnable("Boolean", Float) = 1
+        [HideInInspector][ToggleUI]_ConservativeDepthOffsetEnable("Boolean", Float) = 1
 	}
 
 	SubShader
@@ -70,7 +76,8 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			Port:GBuffer:Bent Normal
 				On:SetDefine:ASE_BENT_NORMAL 1
 			Port:GBuffer:Coat Mask
-				On:SetDefine:_MATERIAL_FEATURE_CLEAR_COAT 1
+				On:SetDefine:_MATERIAL_FEATURE_CLEAR_COAT
+				On:SetDefine:pragma shader_feature_local_fragment _ _MATERIAL_FEATURE_CLEAR_COAT
 			Port:GBuffer:Occlusion
 				On:SetDefine:_AMBIENT_OCCLUSION 1
 			Port:GBuffer:Baked GI
@@ -85,7 +92,13 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				Opaque:SetPropertyOnSubShader:RenderQueue,Geometry
 				Opaque:SetPropertyOnSubShader:ZWrite,On
 				Opaque:SetPropertyOnSubShader:BlendRGB,One,Zero
+                Opaque:SetOption:    Blending Mode,0
+				Opaque:HideOption:    Blending Mode
+                Opaque:SetOption:    Blend Preserves Specular,0
+				Opaque:HideOption:    Blend Preserves Specular
+                Opaque:SetOption:  Rendering Pass,1
 				Opaque:HideOption:  Rendering Pass
+                Opaque:SetOption:  Refraction Model,0
 				Opaque:HideOption:  Refraction Model
 				Opaque:HideOption:  Back Then Front Rendering
 				Opaque:HideOption:  Transparent Depth Prepass
@@ -93,12 +106,14 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				Opaque:HideOption:  ZWrite
 				Opaque:HideOption:  Z Test
 				Opaque:HideOption:Receive SSR Transparent
-				Opaque:ShowOption:Receives SSR
+				Opaque:ShowOption:Receive SSR
 				Transparent:SetShaderProperty:_SurfaceType,1
 				Transparent:SetPropertyOnSubShader:RenderType,Transparent
 				Transparent:SetPropertyOnSubShader:RenderQueue,Transparent
 				Transparent:SetPropertyOnSubShader:ZWrite,Off
 				Transparent:SetPropertyOnSubShader:BlendRGB,SrcAlpha,OneMinusSrcAlpha
+				Transparent:ShowOption:    Blending Mode
+				Transparent:ShowOption:    Blend Preserves Specular
 				Transparent:ShowOption:  Rendering Pass
 				Transparent:ShowOption:  Refraction Model
 				Transparent:ShowOption:  Back Then Front Rendering
@@ -107,7 +122,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				Transparent:ShowOption:  ZWrite
 				Transparent:ShowOption:  Z Test
 				Transparent:ShowOption:Receive SSR Transparent
-				Transparent:HideOption:Receives SSR
+				Transparent:HideOption:Receive SSR
 			Option:  Rendering Pass:Before Refraction,Default,Low Resolution:Default
 				Before Refraction:SetPropertyOnSubShader:RenderQueue,Transparent,-250
 				Before Refraction:SetShaderProperty:_RenderQueueType,4
@@ -116,36 +131,24 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				Low Resolution:SetPropertyOnSubShader:RenderQueue,Transparent,+400
 				Low Resolution:SetShaderProperty:_RenderQueueType,6
 				disable:SetPropertyOnSubShader:RenderQueue,Geometry,+0
-			Option:  Refraction Model:None,Box,Sphere,Thin:None
-				None:ShowOption:    Blending Mode
-				None:ShowOption:    Blend Preserves Specular
+			Option:  Refraction Model:None,Planar,Sphere,Thin:None
 				None,disable:HidePort:GBuffer:Refraction Index
 				None,disable:HidePort:GBuffer:Refraction Color
 				None,disable:HidePort:GBuffer:Refraction Distance
 				None,disable:RemoveDefine:_HAS_REFRACTION 1
-				None,disable:RemoveDefine:_REFRACTION_PLANE 1
-				None,disable:RemoveDefine:_REFRACTION_SPHERE 1
-				Box,Sphere,Thin:HideOption:    Blending Mode
-				Box,Sphere,Thin:HideOption:    Blend Preserves Specular
-				Box,Sphere,Thin:ShowPort:GBuffer:Thickness
-				Box,Sphere,Thin:ShowPort:GBuffer:Refraction Index
-				Box,Sphere,Thin:ShowPort:GBuffer:Refraction Color
-				Box,Sphere,Thin:ShowPort:GBuffer:Refraction Distance
-				Box:SetDefine:_HAS_REFRACTION 1
-				Box:RemoveDefine:_REFRACTION_SPHERE 1
-				Box:RemoveDefine:_REFRACTION_THIN 1
-				Box:SetDefine:_REFRACTION_PLANE 1
-				Sphere:SetDefine:_HAS_REFRACTION 1
-				Sphere:RemoveDefine:_REFRACTION_PLANE 1
-				Sphere:RemoveDefine:_REFRACTION_THIN 1
-				Sphere:SetDefine:_REFRACTION_SPHERE 1
-				Thin:SetDefine:_HAS_REFRACTION 1
-				Thin:RemoveDefine:_REFRACTION_PLANE 1
-				Thin:RemoveDefine:_REFRACTION_SPHERE 1
-				Thin:SetDefine:_REFRACTION_THIN 1
-				disable:HideOption:    Blending Mode
-				disable:HideOption:    Blend Preserves Specular
+				None,disable:RemoveDefine:pragma shader_feature_local _ _REFRACTION_PLANE _REFRACTION_SPHERE _REFRACTION_THIN
+				Planar,Sphere,Thin:ShowPort:GBuffer:Thickness
+				Planar,Sphere,Thin:ShowPort:GBuffer:Refraction Index
+				Planar,Sphere,Thin:ShowPort:GBuffer:Refraction Color
+				Planar,Sphere,Thin:ShowPort:GBuffer:Refraction Distance
+				Planar,Sphere,Thin:SetDefine:_HAS_REFRACTION 1
+				Planar,Sphere,Thin:SetDefine:pragma shader_feature_local _ _REFRACTION_PLANE _REFRACTION_SPHERE _REFRACTION_THIN
+				None:SetShaderProperty:_Refrac,//[HideInInspector][Enum(None, 0, Planar, 1, Sphere, 2, Thin, 3)]_RefractionModel("Refraction Model", Int) = 0
+				Planar:SetShaderProperty:_Refrac,[HideInInspector][Enum(None, 0, Planar, 1, Sphere, 2, Thin, 3)]_RefractionModel("Refraction Model", Int) = 1
+				Sphere:SetShaderProperty:_Refrac,[HideInInspector][Enum(None, 0, Planar, 1, Sphere, 2, Thin, 3)]_RefractionModel("Refraction Model", Int) = 2
+				Thin:SetShaderProperty:_Refrac,[HideInInspector][Enum(None, 0, Planar, 1, Sphere, 2, Thin, 3)]_RefractionModel("Refraction Model", Int) = 3
 			Option:    Blending Mode:Alpha,Premultiply,Additive:Alpha
+            	Alpha:SetShaderProperty:_BlendMode,0
 				Additive:SetShaderProperty:_BlendMode,1
 				Premultiply:SetShaderProperty:_BlendMode,4
 			Option:    Blend Preserves Specular:false,true:true
@@ -180,16 +183,23 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				Greater Equal:SetShaderProperty:_ZTestTransparent,7
 				Always:SetShaderProperty:_ZTestTransparent,8
 			Option:Double-Sided:Disabled,Enabled,Flipped Normals,Mirrored Normals:Disabled
-				Disabled,disable:RemoveDefine:ASE_NEED_CULLFACE 1
-				Enabled,Flipped Normals,Mirrored Normals:SetDefine:ASE_NEED_CULLFACE 1
-				Enabled,Flipped Normals,Mirrored Normals:SetShaderProperty:_DoubleSidedEnable,1
+                Disabled,Enabled,Flipped Normals,Mirrored Normals:SetDefine:ASE_NEED_CULLFACE 1
+				Disabled,Enabled,Flipped Normals,Mirrored Normals:SetDefine:pragma shader_feature_local _ _DOUBLESIDED_ON
+				Disabled:SetShaderProperty:_DoubleSidedEnable,0
+				Disabled:SetShaderProperty:_DoubleSidedNormalMode,2
+				Enabled:SetShaderProperty:_DoubleSidedEnable,1
+				Enabled:SetShaderProperty:_DoubleSidedNormalMode,2
+				Flipped Normals:SetShaderProperty:_DoubleSidedEnable,1
 				Flipped Normals:SetShaderProperty:_DoubleSidedNormalMode,0
+				Mirrored Normals:SetShaderProperty:_DoubleSidedEnable,1
 				Mirrored Normals:SetShaderProperty:_DoubleSidedNormalMode,1
 			Option:Alpha Clipping:false,true:false
 				true:ShowOption:  Use Shadow Threshold
 				true:ShowPort:GBuffer:Alpha Clip Threshold
+				true:SetDefine:pragma shader_feature_local _ _ALPHATEST_ON
 				false:HideOption:  Use Shadow Threshold
 				false:HidePort:GBuffer:Alpha Clip Threshold
+				false:RemoveDefine:pragma shader_feature_local _ _ALPHATEST_ON
 			Option:  Use Shadow Threshold:false,true:false
 				true:SetDefine:_ALPHATEST_SHADOW_ON 1
 				true:ShowPort:GBuffer:Alpha Clip Threshold Shadow
@@ -199,22 +209,27 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			Option:Material Type,InvertActionOnDeselection:Standard,Subsurface Scattering,Anisotropy,Iridescence,Specular Color,Translucent:Standard
 				Standard:ShowPort:GBuffer:Metallic
 				Subsurface Scattering:SetDefine:_MATERIAL_FEATURE_SUBSURFACE_SCATTERING 1
+				Subsurface Scattering:SetDefine:pragma shader_feature_local_fragment _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
 				Subsurface Scattering:ShowPort:GBuffer:Subsurface Mask
 				Subsurface Scattering:ShowPort:GBuffer:Diffusion Profile
 				Subsurface Scattering:ShowOption:  Transmission
 				Subsurface Scattering:SetShaderProperty:_RequireSplitLighting,1
 				Anisotropy:SetDefine:_MATERIAL_FEATURE_ANISOTROPY 1
+				Anisotropy:SetDefine:pragma shader_feature_local_fragment _MATERIAL_FEATURE_ANISOTROPY
 				Anisotropy:ShowPort:GBuffer:Tangent
 				Anisotropy:ShowPort:GBuffer:Anisotropy
 				Anisotropy:ShowPort:GBuffer:Metallic
 				Iridescence:SetDefine:_MATERIAL_FEATURE_IRIDESCENCE 1
+				Iridescence:SetDefine:pragma shader_feature_local_fragment _MATERIAL_FEATURE_IRIDESCENCE
 				Iridescence:ShowPort:GBuffer:Iridescence Mask
 				Iridescence:ShowPort:GBuffer:Iridescence Thickness
 				Iridescence:ShowPort:GBuffer:Metallic
 				Specular Color:SetDefine:_MATERIAL_FEATURE_SPECULAR_COLOR 1
+				Specular Color:SetDefine:pragma shader_feature_local_fragment _MATERIAL_FEATURE_SPECULAR_COLOR
 				Specular Color:ShowPort:GBuffer:Specular
 				Specular Color:ShowOption:  Energy Conserving Specular
 				Translucent:SetDefine:_MATERIAL_FEATURE_TRANSMISSION 1
+				Translucent:SetDefine:pragma shader_feature_local_fragment _MATERIAL_FEATURE_TRANSMISSION
 				Translucent:ShowPort:GBuffer:Diffusion Profile
 				Translucent:ShowPort:GBuffer:Transmission Mask
 				Translucent:ShowPort:GBuffer:Thickness
@@ -229,50 +244,44 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				true:ShowPort:GBuffer:Transmission Mask
 				true:ShowPort:GBuffer:Thickness
 				true:SetDefine:_MATERIAL_FEATURE_TRANSMISSION 1
+				true:SetDefine:pragma shader_feature_local_fragment _MATERIAL_FEATURE_TRANSMISSION
+				true:SetDefine:pragma shader_feature_local_fragment _MATERIAL_FEATURE_COLORED_TRANSMISSION
 				false,disable:RemoveDefine:_MATERIAL_FEATURE_TRANSMISSION 1
-			Option:Forward Only:false,true:false
-				false,disable:SetPropertyOnPass:Forward:ChangeTagValue,LightMode,Forward
-				false,disable:SetPropertyOnPass:DepthOnly:ChangeTagValue,LightMode,DepthOnly
-				false,disable:IncludePass:GBuffer
-				true:SetPropertyOnPass:Forward:ChangeTagValue,LightMode,ForwardOnly
-				true:SetPropertyOnPass:DepthOnly:ChangeTagValue,LightMode,DepthForwardOnly
-				true:ExcludePass:GBuffer
+				false,disable:RemoveDefine:pragma shader_feature_local_fragment _MATERIAL_FEATURE_TRANSMISSION
+				false,disable:RemoveDefine:pragma shader_feature_local_fragment _MATERIAL_FEATURE_COLORED_TRANSMISSION
 			Option:Receive Decals:false,true:true
-				true:RemoveDefine:_DISABLE_DECALS
-				false:SetDefine:_DISABLE_DECALS
-			Option:Receives SSR:false,true:true
-				false:SetDefine:_DISABLE_SSR 1
-				false:SetShaderProperty:_ReceivesSSR,0
-				true:RemoveDefine:_DISABLE_SSR 1
+				true:SetDefine:pragma shader_feature_local_fragment _ _DISABLE_DECALS
+				false:RemoveDefine:pragma shader_feature_local_fragment _ _DISABLE_DECALS
+			Option:Receive SSR:false,true:true
 				true:SetShaderProperty:_ReceivesSSR,1
+				true:RemoveDefine:pragma shader_feature_local_fragment _ _DISABLE_SSR
+				false:SetShaderProperty:_ReceivesSSR,1
+				false:SetDefine:pragma shader_feature_local_fragment _ _DISABLE_SSR
 			Option:Receive SSR Transparent:false,true:false
-				false:SetDefine:_DISABLE_SSR_TRANSPARENT 1
-				false:SetShaderProperty:_ReceivesSSRTransparent,0
-				false:SetOption:  Transparent Depth Prepass,0
-				true:RemoveDefine:_DISABLE_SSR_TRANSPARENT 1
-				true:SetShaderProperty:_ReceivesSSRTransparent,1
+			    true:SetShaderProperty:_ReceivesSSRTransparent,1
+			    true:RemoveDefine:pragma shader_feature_local_fragment _ _DISABLE_SSR_TRANSPARENT
 				true:SetOption:  Transparent Depth Prepass,1
 				true:SetOption:  Rendering Pass,0
+				false:SetShaderProperty:_ReceivesSSRTransparent,0
+				false:SetDefine:pragma shader_feature_local_fragment _ _DISABLE_SSR_TRANSPARENT
+				false:SetOption:  Transparent Depth Prepass,0
 			Option:Motion Vectors:false,true:true
 				true:SetShaderProperty:_AddPrecomputedVelocity,[HideInInspector][ToggleUI] _AddPrecomputedVelocity("Add Precomputed Velocity", Float) = 1
 				false:SetShaderProperty:_AddPrecomputedVelocity,//[HideInInspector][ToggleUI] _AddPrecomputedVelocity("Add Precomputed Velocity", Float) = 1
 				true:ShowOption:  Add Precomputed Velocity
 				false:HideOption:  Add Precomputed Velocity
-				true:IncludePass:Motion Vectors
-				false:ExcludePass:Motion Vectors
+				true:IncludePass:MotionVectors
+				false:ExcludePass:MotionVectors
+				true:SetOption:Tessellation,0
 			Option:  Add Precomputed Velocity:false,true:false
-				false,disable:RemoveDefine:_ADD_PRECOMPUTED_VELOCITY 1
-				true:SetDefine:_ADD_PRECOMPUTED_VELOCITY 1
+				false,disable:RemoveDefine:pragma shader_feature_local _ _ADD_PRECOMPUTED_VELOCITY
+				true:SetDefine:pragma shader_feature_local _ _ADD_PRECOMPUTED_VELOCITY
 				true:SetShaderProperty:_AddPrecomputedVelocity,1
 			Option:Specular AA:false,true:false
-				true:SetDefine:GBuffer:_ENABLE_GEOMETRIC_SPECULAR_AA 1
-				true:SetDefine:Forward:_ENABLE_GEOMETRIC_SPECULAR_AA 1
-				true:SetDefine:META:_ENABLE_GEOMETRIC_SPECULAR_AA 1
+				true:SetDefine:shader_feature_local_fragment _ENABLE_GEOMETRIC_SPECULAR_AA
 				true:ShowPort:GBuffer:Specular AA Screen Space Variance
 				true:ShowPort:GBuffer:Specular AA Threshold
-				false:RemoveDefine:GBuffer:_ENABLE_GEOMETRIC_SPECULAR_AA 1
-				false:RemoveDefine:Forward:_ENABLE_GEOMETRIC_SPECULAR_AA 1
-				false:RemoveDefine:META:_ENABLE_GEOMETRIC_SPECULAR_AA 1
+				false:RemoveDefine:shader_feature_local_fragment _ENABLE_GEOMETRIC_SPECULAR_AA
 				false:HidePort:GBuffer:Specular AA Screen Space Variance
 				false:HidePort:GBuffer:Specular AA Threshold
 			Option:Specular Occlusion Mode:Off,From AO,From AO And Bent Normal,Custom:From AO
@@ -299,12 +308,17 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				false:HidePort:GBuffer:Baked Back GI
 			Option:Depth Offset:false,true:false
 				true:SetDefine:_DEPTHOFFSET_ON 1
-				true:ShowPort:GBuffer:DepthOffset
+				true:SetDefine:pragma shader_feature_local_fragment _ _DEPTHOFFSET_ON
+				true:ShowPort:GBuffer:Depth Offset
 				false:RemoveDefine:_DEPTHOFFSET_ON 1
-				false:HidePort:GBuffer:DepthOffset
-			Option:DOTS Instancing:false,true:false
-				true:SetDefine:pragma multi_compile _ DOTS_INSTANCING_ON
-				false:RemoveDefine:pragma multi_compile _ DOTS_INSTANCING_ON
+				false:RemoveDefine:pragma shader_feature_local_fragment _ _DEPTHOFFSET_ON
+				false:HidePort:GBuffer:Depth Offset
+				true:ShowOption:  Conserative
+				false:HideOption:  Conserative
+				false:RemoveDefine:pragma shader_feature_local_fragment _ _CONSERVATIVE_DEPTH_OFFSET
+			Option:  Conserative:false,true:true
+				true:SetDefine:pragma shader_feature_local_fragment _ _CONSERVATIVE_DEPTH_OFFSET
+				false:RemoveDefine:pragma shader_feature_local_fragment _ _CONSERVATIVE_DEPTH_OFFSET
 			Option:GPU Instancing:false,true:true
 				true:SetDefine:pragma multi_compile_instancing
 				true:SetDefine:pragma instancing_options renderinglayer
@@ -326,6 +340,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				false,disable:RemoveDefine:pragma domain DomainFunction
 				false,disable:HideOption:  Phong
 				false,disable:HideOption:  Type
+				true:SetOption:Motion Vectors,0
 			Option:  Phong:false,true:false
 				true:SetDefine:ASE_PHONG_TESSELLATION
 				false,disable:RemoveDefine:ASE_PHONG_TESSELLATION
@@ -411,71 +426,113 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			float AlphaClipThresholdShadow;
 			float AlphaClipThresholdDepthPrepass;
 			float AlphaClipThresholdDepthPostpass;
+			float SpecularOcclusion;
 			float SpecularAAScreenSpaceVariance;
 			float SpecularAAThreshold;
-			float SpecularOcclusion;
-			float DepthOffset;
-			//Refraction
 			float RefractionIndex;
 			float3 RefractionColor;
 			float RefractionDistance;
-			//SSS/Translucent
 			float DiffusionProfile;
 			float TransmissionMask;
-			// Transmission + Diffusion Profile
 			float Thickness;
 			float SubsurfaceMask;
-			//Anisotropy
 			float Anisotropy;
 			float3 Tangent;
-			//Iridescent
 			float IridescenceMask;
 			float IridescenceThickness;
-			//BakedGI
 			float3 BakedGI;
 			float3 BakedBackGI;
-			//Virtual Texturing
+			float DepthOffset;
 			float4 VTPackedFeedback;
 		};
 
 		struct AlphaSurfaceDescription // ShadowCaster
 		{
+			float3 Emission;
 			float Alpha;
 			float AlphaClipThreshold;
 			float AlphaClipThresholdShadow;
+			float3 BakedGI;
+			float3 BakedBackGI;
 			float DepthOffset;
+			float4 VTPackedFeedback;
 		};
 
 		struct SceneSurfaceDescription // SceneSelection
 		{
+		    float3 Emission;
 			float Alpha;
 			float AlphaClipThreshold;
+			float AlphaClipThresholdShadow;
+			float RefractionIndex;
+			float3 RefractionColor;
+			float RefractionDistance;
+			float3 BakedGI;
+			float3 BakedBackGI;
 			float DepthOffset;
+			float4 VTPackedFeedback;
 		};
 
 		struct PrePassSurfaceDescription // DepthPrePass
 		{
 			float3 Normal;
+			float3 Emission;
 			float Smoothness;
 			float Alpha;
+			float AlphaClipThreshold;
+			float AlphaClipThresholdShadow;
 			float AlphaClipThresholdDepthPrepass;
+			float3 BakedGI;
+			float3 BakedBackGI;
 			float DepthOffset;
+			float4 VTPackedFeedback;
 		};
 
 		struct PostPassSurfaceDescription //DepthPostPass
 		{
+			float3 Emission;
 			float Alpha;
+			float AlphaClipThreshold;
+			float AlphaClipThresholdShadow;
 			float AlphaClipThresholdDepthPostpass;
+			float3 BakedGI;
+			float3 BakedBackGI;
 			float DepthOffset;
+			float4 VTPackedFeedback;
 		};
 
 		struct SmoothSurfaceDescription // MotionVectors DepthOnly
 		{
 			float3 Normal;
+			float3 Emission;
 			float Smoothness;
 			float Alpha;
 			float AlphaClipThreshold;
+			float AlphaClipThresholdShadow;
+			float3 BakedGI;
+			float3 BakedBackGI;
 			float DepthOffset;
+			float4 VTPackedFeedback;
+		};
+
+        struct PickingSurfaceDescription //Picking
+		{
+            float3 BentNormal;
+			float3 Emission;
+			float Alpha;
+			float AlphaClipThreshold;
+			float AlphaClipThresholdShadow;
+			float3 BakedGI;
+			float3 BakedBackGI;
+			float DepthOffset;
+			float4 VTPackedFeedback;
+
+			float3 ObjectSpaceNormal;
+			float3 WorldSpaceNormal;
+			float3 TangentSpaceNormal;
+			float3 ObjectSpaceViewDirection;
+			float3 WorldSpaceViewDirection;
+			float3 ObjectSpacePosition;
 		};
 
 		#ifndef ASE_TESS_FUNCS
@@ -585,7 +642,10 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 		{
 			/*ase_main_pass*/
 			Name "GBuffer"
-			Tags { "LightMode" = "GBuffer" }
+			Tags 
+			{ 
+				"LightMode" = "GBuffer" 
+		    }
 
 			Cull [_CullMode]
 			ZTest [_ZTestGBuffer]
@@ -600,29 +660,28 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 		        PassBack Replace
 			}
 
-			ColorMask [_LightLayersMaskBuffer4] 4
-			ColorMask [_LightLayersMaskBuffer5] 5
-
 			HLSLPROGRAM
+            #pragma multi_compile _ DOTS_INSTANCING_ON
 
-            #pragma shader_feature _SURFACE_TYPE_TRANSPARENT
-            #pragma shader_feature_local _TRANSPARENT_WRITES_MOTION_VEC
-            #pragma shader_feature_local_fragment _ENABLE_FOG_ON_TRANSPARENT
-			#pragma shader_feature_local _DOUBLESIDED_ON
-			#pragma shader_feature_local _ALPHATEST_ON
+            #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
+            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC _TRANSPARENT_REFRACTIVE_SORT
+            #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
 
-			#pragma multi_compile_fragment _ SHADOWS_SHADOWMASK
-			#pragma multi_compile_fragment _ LIGHT_LAYERS
-			#pragma multi_compile_fragment PROBE_VOLUMES_OFF PROBE_VOLUMES_L1 PROBE_VOLUMES_L2
-			#pragma multi_compile _ DEBUG_DISPLAY
-			#pragma multi_compile _ LIGHTMAP_ON
-			#pragma multi_compile _ DIRLIGHTMAP_COMBINED
-			#pragma multi_compile _ DYNAMICLIGHTMAP_ON
-			#pragma multi_compile_fragment DECALS_OFF DECALS_3RT DECALS_4RT
-			#pragma multi_compile_fragment _ DECAL_SURFACE_GRADIENT
+			#pragma multi_compile_fragment _ RENDERING_LAYERS
+            #pragma multi_compile_fragment _ SHADOWS_SHADOWMASK
+            #pragma multi_compile _ DEBUG_DISPLAY
+            #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
+            #pragma multi_compile_fragment _ PROBE_VOLUMES_L1 PROBE_VOLUMES_L2
+            #pragma multi_compile _ DYNAMICLIGHTMAP_ON
+            #pragma multi_compile_fragment DECALS_OFF DECALS_3RT DECALS_4RT
+            #pragma multi_compile_fragment _ DECAL_SURFACE_GRADIENT
+            #pragma multi_compile _ USE_LEGACY_LIGHTMAPS
 
 			#pragma vertex Vert
 			#pragma fragment Frag
+
+			#define SHADERPASS SHADERPASS_GBUFFER
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
@@ -631,17 +690,32 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/DebugMipmapStreamingMacros.hlsl"
+            #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
 
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
 
-			#define SHADERPASS SHADERPASS_GBUFFER
+            #ifdef RAYTRACING_SHADER_GRAPH_DEFAULT
+                #define RAYTRACING_SHADER_GRAPH_HIGH
+            #endif
 
-			#ifndef SHADER_UNLIT
-			#if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
-			#define VARYINGS_NEED_CULLFACE
+            #ifdef RAYTRACING_SHADER_GRAPH_RAYTRACED
+                #define RAYTRACING_SHADER_GRAPH_LOW
+            #endif
+
+            #ifndef SHADER_UNLIT
+            #if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
+                #define VARYINGS_NEED_CULLFACE
+            #endif
+            #endif
+
+			#if defined(_DOUBLESIDED_ON) && !defined(ASE_NEED_CULLFACE)
+			    #define ASE_NEED_CULLFACE 1
 			#endif
-			#endif
+
+            #if _MATERIAL_FEATURE_COLORED_TRANSMISSION
+            #undef _MATERIAL_FEATURE_CLEAR_COAT
+            #endif
 
 		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
 			#define OUTPUT_SPLIT_LIGHTING
@@ -653,36 +727,40 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			#define _REFRACTION_THIN
 		    #endif
 
-			#if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
-			#if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
-				#define WRITE_NORMAL_BUFFER
-			#endif
-			#endif
+            #if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
+            #if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
+                #define WRITE_NORMAL_BUFFER
+            #endif
+            #endif
 
-			#ifndef DEBUG_DISPLAY
-				#if !defined(_SURFACE_TYPE_TRANSPARENT)
-					#if SHADERPASS == SHADERPASS_FORWARD
-					#define SHADERPASS_FORWARD_BYPASS_ALPHA_TEST
-					#elif SHADERPASS == SHADERPASS_GBUFFER
-					#define SHADERPASS_GBUFFER_BYPASS_ALPHA_TEST
-					#endif
-				#endif
-			#endif
+            #if SHADERPASS == SHADERPASS_MOTION_VECTORS && defined(WRITE_DECAL_BUFFER_AND_RENDERING_LAYER)
+                #define WRITE_DECAL_BUFFER
+            #endif
 
-			#if defined(SHADER_LIT) && !defined(_SURFACE_TYPE_TRANSPARENT)
-			#define _DEFERRED_CAPABLE_MATERIAL
-			#endif
+            #ifndef DEBUG_DISPLAY
+                #if !defined(_SURFACE_TYPE_TRANSPARENT)
+                    #if SHADERPASS == SHADERPASS_FORWARD
+                    #define SHADERPASS_FORWARD_BYPASS_ALPHA_TEST
+                    #elif SHADERPASS == SHADERPASS_GBUFFER
+                    #define SHADERPASS_GBUFFER_BYPASS_ALPHA_TEST
+                    #endif
+                #endif
+            #endif
 
-			#if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
-			#define _WRITE_TRANSPARENT_MOTION_VECTOR
-			#endif
+            #if defined(SHADER_LIT) && !defined(_SURFACE_TYPE_TRANSPARENT)
+                #define _DEFERRED_CAPABLE_MATERIAL
+            #endif
+        
+            #if (defined(_TRANSPARENT_WRITES_MOTION_VEC) || defined(_TRANSPARENT_REFRACTIVE_SORT)) && defined(_SURFACE_TYPE_TRANSPARENT)
+                #define _WRITE_TRANSPARENT_MOTION_VECTOR
+            #endif
 
 			CBUFFER_START( UnityPerMaterial )
 			float4 _EmissionColor;
 			float _AlphaCutoff;
 			float _RenderQueueType;
 			#ifdef _ADD_PRECOMPUTED_VELOCITY
-			float _AddPrecomputedVelocity;
+			    float _AddPrecomputedVelocity;
 			#endif
 			float _StencilRef;
 			float _StencilWriteMask;
@@ -690,6 +768,8 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			float _StencilWriteMaskDepth;
 			float _StencilRefMV;
 			float _StencilWriteMaskMV;
+			float _StencilRefDistortionVec;
+			float _StencilWriteMaskDistortionVec;
 			float _StencilWriteMaskGBuffer;
 			float _StencilRefGBuffer;
 			float _ZTestGBuffer;
@@ -698,10 +778,11 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			float _SurfaceType;
 			float _BlendMode;
             #ifdef SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
-			float _EnableBlendModePreserveSpecularLighting;
+			    float _EnableBlendModePreserveSpecularLighting;
             #endif
 			float _SrcBlend;
 			float _DstBlend;
+			float _DstBlend2;
 			float _AlphaSrcBlend;
 			float _AlphaDstBlend;
 			float _ZWrite;
@@ -720,21 +801,20 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			float _DoubleSidedNormalMode;
 			float4 _DoubleSidedConstants;
 			#ifdef ASE_TESSELLATION
-			float _TessPhongStrength;
-			float _TessValue;
-			float _TessMin;
-			float _TessMax;
-			float _TessEdgeLength;
-			float _TessMaxDisp;
+			    float _TessPhongStrength;
+			    float _TessValue;
+			    float _TessMin;
+			    float _TessMax;
+			    float _TessEdgeLength;
+			    float _TessMaxDisp;
 			#endif
+			UNITY_TEXTURE_STREAMING_DEBUG_VARS;
 			CBUFFER_END
 
-		    // Property used by ScenePickingPass
             #ifdef SCENEPICKINGPASS
 			float4 _SelectionID;
             #endif
 
-			// Properties used by SceneSelectionPass
             #ifdef SCENESELECTIONPASS
 			int _ObjectId;
 			int _PassValue;
@@ -753,16 +833,10 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/MaterialUtilities.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphFunctions.hlsl"
 
-			// Setup DECALS_OFF so the shader stripper can remove variants
-            #define HAVE_DECALS ( (defined(DECALS_3RT) || defined(DECALS_4RT)) && !defined(_DISABLE_DECALS) )
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalUtilities.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/LitDecalData.hlsl"
 
 			/*ase_pragma*/
-
-			#if defined(_DOUBLESIDED_ON) && !defined(ASE_NEED_CULLFACE)
-			#define ASE_NEED_CULLFACE 1
-			#endif
 
 			struct AttributesMesh
 			{
@@ -777,13 +851,14 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 
 			struct PackedVaryingsMeshToPS
 			{
-				float4 positionCS : SV_Position;
-				float3 positionRWS : TEXCOORD0;
-				float3 normalWS : TEXCOORD1;
-				float4 tangentWS : TEXCOORD2;
-				float4 uv1 : TEXCOORD3;
-				float4 uv2 : TEXCOORD4;
-				/*ase_interp(5,):sp=sp.xyzw;rwp=tc0;wn=tc1;wt=tc2;uv1=tc3;uv2=tc4*/
+				SV_POSITION_QUALIFIERS float4 positionCS : SV_Position;
+				float4 clipPosV : TEXCOORD0;
+				float3 positionRWS : TEXCOORD1;
+				float3 normalWS : TEXCOORD2;
+				float4 tangentWS : TEXCOORD3;
+				float4 uv1 : TEXCOORD4;
+				float4 uv2 : TEXCOORD5;
+				/*ase_interp(6,):sp=sp.xyzw;rwp=tc1;wn=tc2;wt=tc3;uv1=tc4;uv2=tc5*/
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				UNITY_VERTEX_OUTPUT_STEREO
 				#if defined(SHADER_STAGE_FRAGMENT) && defined(ASE_NEED_CULLFACE)
@@ -799,8 +874,8 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				ZERO_INITIALIZE(SurfaceData, surfaceData);
 
 				surfaceData.specularOcclusion = 1.0;
+				surfaceData.thickness = 0.0;
 
-				// surface data
 				surfaceData.baseColor =					surfaceDescription.BaseColor;
 				surfaceData.perceptualSmoothness =		surfaceDescription.Smoothness;
 				surfaceData.ambientOcclusion =			surfaceDescription.Occlusion;
@@ -810,199 +885,244 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				#ifdef _SPECULAR_OCCLUSION_CUSTOM
 				surfaceData.specularOcclusion =			surfaceDescription.SpecularOcclusion;
 				#endif
+
 				#ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
 				surfaceData.subsurfaceMask =			surfaceDescription.SubsurfaceMask;
 				#endif
+
 				#if defined(_HAS_REFRACTION) || defined(_MATERIAL_FEATURE_TRANSMISSION)
 				surfaceData.thickness =					surfaceDescription.Thickness;
 				#endif
+
 				#ifdef _MATERIAL_FEATURE_TRANSMISSION
 				surfaceData.transmissionMask =			surfaceDescription.TransmissionMask;
 				#endif
+
 				#if defined( _MATERIAL_FEATURE_SUBSURFACE_SCATTERING ) || defined( _MATERIAL_FEATURE_TRANSMISSION )
 				surfaceData.diffusionProfileHash =		asuint(surfaceDescription.DiffusionProfile);
 				#endif
+
 				#ifdef _MATERIAL_FEATURE_SPECULAR_COLOR
 				surfaceData.specularColor =				surfaceDescription.Specular;
 				#endif
+
 				#ifdef _MATERIAL_FEATURE_ANISOTROPY
 				surfaceData.anisotropy =				surfaceDescription.Anisotropy;
 				#endif
+
 				#ifdef _MATERIAL_FEATURE_IRIDESCENCE
 				surfaceData.iridescenceMask =			surfaceDescription.IridescenceMask;
 				surfaceData.iridescenceThickness =		surfaceDescription.IridescenceThickness;
 				#endif
 
 				// refraction
-				#ifdef _HAS_REFRACTION
-				if( _EnableSSRefraction )
-				{
-					surfaceData.ior = surfaceDescription.RefractionIndex;
-					surfaceData.transmittanceColor = surfaceDescription.RefractionColor;
-					surfaceData.atDistance = surfaceDescription.RefractionDistance;
-
-					surfaceData.transmittanceMask = ( 1.0 - surfaceDescription.Alpha );
-					surfaceDescription.Alpha = 1.0;
-				}
-				else
-				{
-					surfaceData.ior = 1.0;
-					surfaceData.transmittanceColor = float3( 1.0, 1.0, 1.0 );
-					surfaceData.atDistance = 1.0;
-					surfaceData.transmittanceMask = 0.0;
-					surfaceDescription.Alpha = 1.0;
-				}
-				#else
-				surfaceData.ior = 1.0;
-				surfaceData.transmittanceColor = float3( 1.0, 1.0, 1.0 );
-				surfaceData.atDistance = 1.0;
-				surfaceData.transmittanceMask = 0.0;
-				#endif
-
-
-				// material features
-				surfaceData.materialFeatures = MATERIALFEATUREFLAGS_LIT_STANDARD;
-				#ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SUBSURFACE_SCATTERING;
-				#endif
-				#ifdef _MATERIAL_FEATURE_TRANSMISSION
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
-				#endif
-                #ifdef _MATERIAL_FEATURE_ANISOTROPY
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
-				surfaceData.normalWS = float3(0, 1, 0);
+                #if defined(_REFRACTION_PLANE) || defined(_REFRACTION_SPHERE) || defined(_REFRACTION_THIN)
+                    if (_EnableSSRefraction)
+                    {
+                        surfaceData.ior =                       surfaceDescription.RefractionIndex;
+                        surfaceData.transmittanceColor =        surfaceDescription.RefractionColor;
+                        surfaceData.atDistance =                surfaceDescription.RefractionDistance;
+        
+                        surfaceData.transmittanceMask = (1.0 - surfaceDescription.Alpha);
+                        surfaceDescription.Alpha = 1.0;
+                    }
+                    else
+                    {
+                        surfaceData.ior = 1.0;
+                        surfaceData.transmittanceColor = float3(1.0, 1.0, 1.0);
+                        surfaceData.atDistance = 1.0;
+                        surfaceData.transmittanceMask = 0.0;
+                        surfaceDescription.Alpha = 1.0;
+                    }
+                #else
+                    surfaceData.ior = 1.0;
+                    surfaceData.transmittanceColor = float3(1.0, 1.0, 1.0);
+                    surfaceData.atDistance = 1.0;
+                    surfaceData.transmittanceMask = 0.0;
                 #endif
-				#ifdef _MATERIAL_FEATURE_CLEAR_COAT
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_CLEAR_COAT;
-				#endif
-				#ifdef _MATERIAL_FEATURE_IRIDESCENCE
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_IRIDESCENCE;
-				#endif
-				#ifdef _MATERIAL_FEATURE_SPECULAR_COLOR
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SPECULAR_COLOR;
+
+				surfaceData.materialFeatures = MATERIALFEATUREFLAGS_LIT_STANDARD;
+
+				#ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SUBSURFACE_SCATTERING;
 				#endif
 
-				// others
+				#ifdef _MATERIAL_FEATURE_TRANSMISSION
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
+				#endif
+
+				#ifdef _MATERIAL_FEATURE_COLORED_TRANSMISSION
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_COLORED_TRANSMISSION;
+				#endif
+
+                #ifdef _MATERIAL_FEATURE_ANISOTROPY
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
+                    surfaceData.normalWS = float3(0, 1, 0);
+                #endif
+
+				#ifdef _MATERIAL_FEATURE_CLEAR_COAT
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_CLEAR_COAT;
+				#endif
+
+				#ifdef _MATERIAL_FEATURE_IRIDESCENCE
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_IRIDESCENCE;
+				#endif
+
+				#ifdef _MATERIAL_FEATURE_SPECULAR_COLOR
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SPECULAR_COLOR;
+				#endif
+
 				#if defined (_MATERIAL_FEATURE_SPECULAR_COLOR) && defined (_ENERGY_CONSERVING_SPECULAR)
-				surfaceData.baseColor *= ( 1.0 - Max3( surfaceData.specularColor.r, surfaceData.specularColor.g, surfaceData.specularColor.b ) );
+                    surfaceData.baseColor *= ( 1.0 - Max3( surfaceData.specularColor.r, surfaceData.specularColor.g, surfaceData.specularColor.b ) );
 				#endif
 
 				#ifdef _DOUBLESIDED_ON
-				float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
+                    float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
 				#else
-				float3 doubleSidedConstants = float3( 1.0, 1.0, 1.0 );
+                    float3 doubleSidedConstants = float3( 1.0, 1.0, 1.0 );
 				#endif
 
-				// normals
 				float3 normalTS = float3(0.0f, 0.0f, 1.0f);
 				normalTS = surfaceDescription.Normal;
-				GetNormalWS( fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants );
+
+                #ifdef DECAL_NORMAL_BLENDING
+					normalTS = SurfaceGradientFromTangentSpaceNormalAndFromTBN(normalTS, fragInputs.tangentToWorld[0], fragInputs.tangentToWorld[1]);
+
+                    #if HAVE_DECALS
+                    if (_EnableDecals)
+                    {
+                        float alpha = 1.0;
+                        alpha = surfaceDescription.Alpha;
+
+                        DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                        ApplyDecalToSurfaceNormal(decalSurfaceData, fragInputs.tangentToWorld[2], normalTS);
+                        ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+                     }
+                    #endif
+
+                    GetNormalWS_SG(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+                #else
+					GetNormalWS(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+
+                    #if HAVE_DECALS
+                    if (_EnableDecals)
+                    {
+                        float alpha = 1.0;
+                        alpha = surfaceDescription.Alpha;
+        
+                        DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                        ApplyDecalToSurfaceNormal(decalSurfaceData, surfaceData.normalWS.xyz);
+                        ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+                    }
+                    #endif
+                #endif
 
 				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
-				surfaceData.tangentWS = normalize( fragInputs.tangentToWorld[ 0 ].xyz );
-
-				// decals
-				#if HAVE_DECALS
-				if( _EnableDecals )
-				{
-					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, surfaceDescription.Alpha);
-					ApplyDecalToSurfaceData(decalSurfaceData, fragInputs.tangentToWorld[2], surfaceData);
-				}
-				#endif
+                surfaceData.tangentWS = normalize(fragInputs.tangentToWorld[0].xyz );
+                surfaceData.tangentWS = Orthonormalize(surfaceData.tangentWS, surfaceData.normalWS);
 
 				bentNormalWS = surfaceData.normalWS;
 
 				#ifdef ASE_BENT_NORMAL
-				GetNormalWS( fragInputs, surfaceDescription.BentNormal, bentNormalWS, doubleSidedConstants );
+                    GetNormalWS( fragInputs, surfaceDescription.BentNormal, bentNormalWS, doubleSidedConstants );
 				#endif
 
 				#ifdef _MATERIAL_FEATURE_ANISOTROPY
-				surfaceData.tangentWS = TransformTangentToWorld( surfaceDescription.Tangent, fragInputs.tangentToWorld );
+                    surfaceData.tangentWS = TransformTangentToWorld(surfaceDescription.Tangent, fragInputs.tangentToWorld);
 				#endif
-				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
+
+				#if defined(DEBUG_DISPLAY)
+				    #if !defined(SHADER_STAGE_RAY_TRACING)
+				    if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
+				    {
+					   #ifdef FRAG_INPUTS_USE_TEXCOORD0
+                           surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG(posInput.positionSS, fragInputs.texCoord0);
+                       #else
+                           surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG_NO_UV(posInput.positionSS);
+                       #endif
+					   surfaceData.metallic = 0;
+				    }
+					#endif
+				    ApplyDebugToSurfaceData(fragInputs.tangentToWorld, surfaceData); 
+				#endif
 
                 #if defined(_SPECULAR_OCCLUSION_CUSTOM)
                 #elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO(V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness(surfaceData.perceptualSmoothness));
+                    surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO(V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness(surfaceData.perceptualSmoothness));
                 #elif defined(_AMBIENT_OCCLUSION) && defined(_SPECULAR_OCCLUSION_FROM_AO)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion(ClampNdotV(dot(surfaceData.normalWS, V)), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness(surfaceData.perceptualSmoothness));
+                    surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion(ClampNdotV(dot(surfaceData.normalWS, V)), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness(surfaceData.perceptualSmoothness));
                 #endif
 
-				#ifdef _ENABLE_GEOMETRIC_SPECULAR_AA
-				surfaceData.perceptualSmoothness = GeometricNormalFiltering( surfaceData.perceptualSmoothness, fragInputs.tangentToWorld[ 2 ], surfaceDescription.SpecularAAScreenSpaceVariance, surfaceDescription.SpecularAAThreshold );
-				#endif
-
-				// debug
-				#if defined(DEBUG_DISPLAY)
-				if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
-				{
-					surfaceData.metallic = 0;
-				}
-				ApplyDebugToSurfaceData(fragInputs.tangentToWorld, surfaceData);
-				#endif
+                #ifdef _ENABLE_GEOMETRIC_SPECULAR_AA
+                    surfaceData.perceptualSmoothness = GeometricNormalFiltering(surfaceData.perceptualSmoothness, fragInputs.tangentToWorld[2], surfaceDescription.SpecularAAScreenSpaceVariance, surfaceDescription.SpecularAAThreshold);
+                #endif
 			}
 
+			// Get Surface And BuiltinData
 			void GetSurfaceAndBuiltinData(GlobalSurfaceDescription surfaceDescription, FragInputs fragInputs, float3 V, inout PositionInputs posInput, out SurfaceData surfaceData, out BuiltinData builtinData)
 			{
 				#ifdef LOD_FADE_CROSSFADE
-				LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
+                    LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
 				#endif
 
-				#ifdef _DOUBLESIDED_ON
-				float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
-				#else
-				float3 doubleSidedConstants = float3( 1.0, 1.0, 1.0 );
-				#endif
-
-				ApplyDoubleSidedFlipOrMirror( fragInputs, doubleSidedConstants );
+                #ifdef _DOUBLESIDED_ON
+                    float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
+                #else
+                    float3 doubleSidedConstants = float3(1.0, 1.0, 1.0);
+                #endif  
+                ApplyDoubleSidedFlipOrMirror(fragInputs, doubleSidedConstants);
 
 				#ifdef _ALPHATEST_ON
-				DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThreshold );
+                    DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThreshold );
+				#endif
+
+				#ifdef _ALPHATEST_SHADOW_ON
+                    DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThresholdShadow);
 				#endif
 
 				#ifdef _DEPTHOFFSET_ON
-				ApplyDepthOffsetPositionInput( V, surfaceDescription.DepthOffset, GetViewForwardDir(), GetWorldToHClipMatrix(), posInput );
+                    ApplyDepthOffsetPositionInput(V, surfaceDescription.DepthOffset, GetViewForwardDir(), GetWorldToHClipMatrix(), posInput);
 				#endif
 
 				float3 bentNormalWS;
-				BuildSurfaceData( fragInputs, surfaceDescription, V, posInput, surfaceData, bentNormalWS );
-
-				InitBuiltinData( posInput, surfaceDescription.Alpha, bentNormalWS, -fragInputs.tangentToWorld[ 2 ], fragInputs.texCoord1, fragInputs.texCoord2, builtinData );
+                BuildSurfaceData(fragInputs, surfaceDescription, V, posInput, surfaceData, bentNormalWS);
+                InitBuiltinData(posInput, surfaceDescription.Alpha, bentNormalWS, -fragInputs.tangentToWorld[2], fragInputs.texCoord1, fragInputs.texCoord2, builtinData);
 
 				#ifdef _DEPTHOFFSET_ON
-				builtinData.depthOffset = surfaceDescription.DepthOffset;
+                    builtinData.depthOffset = surfaceDescription.DepthOffset;
 				#endif
 
-				#ifdef _ALPHATEST_ON
-				builtinData.alphaClipTreshold = surfaceDescription.AlphaClipThreshold;
+                #ifdef _ALPHATEST_ON
+                    builtinData.alphaClipTreshold = surfaceDescription.AlphaClipThreshold;
                 #endif
 
-				#ifdef UNITY_VIRTUAL_TEXTURING
-                builtinData.vtPackedFeedback = surfaceDescription.VTPackedFeedback;
+                #ifdef UNITY_VIRTUAL_TEXTURING
+                    builtinData.vtPackedFeedback = surfaceDescription.VTPackedFeedback;
                 #endif
 
 				#ifdef ASE_BAKEDGI
-				builtinData.bakeDiffuseLighting = surfaceDescription.BakedGI;
+                    builtinData.bakeDiffuseLighting = surfaceDescription.BakedGI;
 				#endif
 
 				#ifdef ASE_BAKEDBACKGI
-				builtinData.backBakeDiffuseLighting = surfaceDescription.BakedBackGI;
+                    builtinData.backBakeDiffuseLighting = surfaceDescription.BakedBackGI;
 				#endif
 
-				builtinData.emissiveColor = surfaceDescription.Emission;
+                builtinData.emissiveColor = surfaceDescription.Emission;
 
 				PostInitBuiltinData(V, posInput, surfaceData, builtinData);
 			}
 
 			PackedVaryingsMeshToPS VertexFunction(AttributesMesh inputMesh/*ase_vert_input*/ )
 			{
-				PackedVaryingsMeshToPS outputPackedVaryingsMeshToPS;
+				PackedVaryingsMeshToPS output;
 
 				UNITY_SETUP_INSTANCE_ID(inputMesh);
-				UNITY_TRANSFER_INSTANCE_ID(inputMesh, outputPackedVaryingsMeshToPS);
-				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO( outputPackedVaryingsMeshToPS );
+				UNITY_TRANSFER_INSTANCE_ID(inputMesh, output);
+				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO( output );
 
-				/*ase_vert_code:inputMesh=AttributesMesh;outputPackedVaryingsMeshToPS=PackedVaryingsMeshToPS*/
+				/*ase_vert_code:inputMesh=AttributesMesh;output=PackedVaryingsMeshToPS*/
 
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 				float3 defaultVertexValue = inputMesh.positionOS.xyz;
@@ -1024,13 +1144,14 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				float3 normalWS = TransformObjectToWorldNormal(inputMesh.normalOS);
 				float4 tangentWS = float4(TransformObjectToWorldDir(inputMesh.tangentOS.xyz), inputMesh.tangentOS.w);
 
-				outputPackedVaryingsMeshToPS.positionCS = TransformWorldToHClip(positionRWS);
-				outputPackedVaryingsMeshToPS.positionRWS.xyz = positionRWS;
-				outputPackedVaryingsMeshToPS.normalWS.xyz = normalWS;
-				outputPackedVaryingsMeshToPS.tangentWS.xyzw = tangentWS;
-				outputPackedVaryingsMeshToPS.uv1.xyzw = inputMesh.uv1;
-				outputPackedVaryingsMeshToPS.uv2.xyzw = inputMesh.uv2;
-				return outputPackedVaryingsMeshToPS;
+				output.positionCS = TransformWorldToHClip(positionRWS);
+				output.clipPosV = output.positionCS;
+				output.positionRWS = positionRWS;
+				output.normalWS = normalWS;
+				output.tangentWS = tangentWS;
+				output.uv1 = inputMesh.uv1;
+				output.uv2 = inputMesh.uv2;
+				return output;
 			}
 
 			#if defined(ASE_TESSELLATION)
@@ -1129,23 +1250,26 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			void Frag( PackedVaryingsMeshToPS packedInput,
 						OUTPUT_GBUFFER(outGBuffer)
 						#ifdef _DEPTHOFFSET_ON
-						, out float outputDepth : SV_Depth
+						, out float outputDepth : DEPTH_OFFSET_SEMANTIC
 						#endif
 						/*ase_frag_input*/
 						)
 			{
 				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX( packedInput );
 				UNITY_SETUP_INSTANCE_ID( packedInput );
+
+				/*ase_local_var:rwp*/float3 PositionRWS = packedInput.positionRWS;
+				/*ase_local_var:wvd*/float3 V = GetWorldSpaceNormalizeViewDir( packedInput.positionRWS );
+				/*ase_local_var:wn*/float3 NormalWS = packedInput.normalWS;
+				/*ase_local_var:wt*/float4 TangentWS = packedInput.tangentWS;
+				/*ase_local_var:sp*/float4 ClipPos = packedInput.clipPosV;
+				/*ase_local_var:spu*/float4 ScreenPos = ComputeScreenPos( packedInput.clipPosV, _ProjectionParams.x );
+
 				FragInputs input;
 				ZERO_INITIALIZE(FragInputs, input);
-				input.tangentToWorld = k_identity3x3;
-				/*ase_local_var:rwp*/float3 positionRWS = packedInput.positionRWS.xyz;
-				/*ase_local_var:wn*/float3 normalWS = packedInput.normalWS.xyz;
-				/*ase_local_var:wt*/float4 tangentWS = packedInput.tangentWS.xyzw;
-
 				input.positionSS = packedInput.positionCS;
-				input.positionRWS = positionRWS;
-				input.tangentToWorld = BuildTangentToWorld(tangentWS, normalWS);
+				input.positionRWS = PositionRWS;
+				input.tangentToWorld = BuildTangentToWorld(TangentWS, NormalWS);
 				input.texCoord1 = packedInput.uv1.xyzw;
 				input.texCoord2 = packedInput.uv2.xyzw;
 
@@ -1156,10 +1280,10 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				input.isFrontFace = IS_FRONT_VFACE( packedInput.cullFace, true, false );
 				#endif
 				#endif
-				/*ase_local_var:vf*/half isFrontFace = input.isFrontFace;
+				/*ase_local_var:vf*/half IsFrontFace = input.isFrontFace;
 
 				PositionInputs posInput = GetPositionInput(input.positionSS.xy, _ScreenSize.zw, input.positionSS.z, input.positionSS.w, input.positionRWS);
-				/*ase_local_var:wvd*/float3 V = GetWorldSpaceNormalizeViewDir(input.positionRWS);
+				
 				SurfaceData surfaceData;
 				BuiltinData builtinData;
 
@@ -1240,7 +1364,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				#endif
 
 				#ifdef _DEPTHOFFSET_ON
-				surfaceDescription.DepthOffset = /*ase_frag_out:DepthOffset;Float;26;-1;_DepthOffset*/0/*end*/;
+				surfaceDescription.DepthOffset = /*ase_frag_out:Depth Offset;Float;26;-1;_DepthOffset*/0/*end*/;
 				#endif
 
 				#ifdef UNITY_VIRTUAL_TEXTURING
@@ -1262,22 +1386,26 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 		{
 			/*ase_hide_pass*/
 			Name "META"
-			Tags { "LightMode" = "Meta" }
+			Tags 
+			{ 
+				"LightMode" = "Meta" 
+		    }
 
 			Cull Off
 
 			HLSLPROGRAM
-
-			#pragma shader_feature _SURFACE_TYPE_TRANSPARENT
-			#pragma shader_feature_local _TRANSPARENT_WRITES_MOTION_VEC
-			#pragma shader_feature_local_fragment _ENABLE_FOG_ON_TRANSPARENT
-			#pragma shader_feature_local _DOUBLESIDED_ON
-			#pragma shader_feature_local _ALPHATEST_ON
-
 			#pragma shader_feature _ EDITOR_VISUALIZATION
+			#pragma multi_compile _ DOTS_INSTANCING_ON
+
+            #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
+            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC _TRANSPARENT_REFRACTIVE_SORT
+            #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
 
 			#pragma vertex Vert
 			#pragma fragment Frag
+
+            #define SHADERPASS SHADERPASS_LIGHT_TRANSPORT
+            #define SCENEPICKINGPASS 1
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
@@ -1286,52 +1414,78 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/DebugMipmapStreamingMacros.hlsl"
+            #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
 
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/PickingSpaceTransforms.hlsl"
 
-			#define SHADERPASS SHADERPASS_LIGHT_TRANSPORT
+            #ifdef RAYTRACING_SHADER_GRAPH_DEFAULT
+                #define RAYTRACING_SHADER_GRAPH_HIGH
+            #endif
+        
+            #ifdef RAYTRACING_SHADER_GRAPH_RAYTRACED
+                #define RAYTRACING_SHADER_GRAPH_LOW
+            #endif
 
-			#ifndef SHADER_UNLIT
-			#if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
-			#define VARYINGS_NEED_CULLFACE
+            #ifndef SHADER_UNLIT
+            #if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
+                #define VARYINGS_NEED_CULLFACE
+            #endif
+            #endif
+
+			#if defined(_DOUBLESIDED_ON) && !defined(ASE_NEED_CULLFACE)
+			    #define ASE_NEED_CULLFACE 1
 			#endif
-			#endif
+
+            #if _MATERIAL_FEATURE_COLORED_TRANSMISSION
+            #undef _MATERIAL_FEATURE_CLEAR_COAT
+            #endif
 
 		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
 			#define OUTPUT_SPLIT_LIGHTING
 		    #endif
 
-			#if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
-			#if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
-				#define WRITE_NORMAL_BUFFER
-			#endif
-			#endif
+            #if (SHADERPASS == SHADERPASS_PATH_TRACING) && !defined(_DOUBLESIDED_ON) && (defined(_REFRACTION_PLANE) || defined(_REFRACTION_SPHERE))
+            #undef  _REFRACTION_PLANE
+            #undef  _REFRACTION_SPHERE
+            #define _REFRACTION_THIN
+            #endif
 
-			#ifndef DEBUG_DISPLAY
-				#if !defined(_SURFACE_TYPE_TRANSPARENT)
-					#if SHADERPASS == SHADERPASS_FORWARD
-					#define SHADERPASS_FORWARD_BYPASS_ALPHA_TEST
-					#elif SHADERPASS == SHADERPASS_GBUFFER
-					#define SHADERPASS_GBUFFER_BYPASS_ALPHA_TEST
-					#endif
-				#endif
-			#endif
+            #if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
+            #if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
+                #define WRITE_NORMAL_BUFFER
+            #endif
+            #endif
 
-			#if defined(SHADER_LIT) && !defined(_SURFACE_TYPE_TRANSPARENT)
-			#define _DEFERRED_CAPABLE_MATERIAL
-			#endif
+            #if SHADERPASS == SHADERPASS_MOTION_VECTORS && defined(WRITE_DECAL_BUFFER_AND_RENDERING_LAYER)
+                #define WRITE_DECAL_BUFFER
+            #endif
 
-			#if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
-			#define _WRITE_TRANSPARENT_MOTION_VECTOR
-			#endif
+            #ifndef DEBUG_DISPLAY
+                #if !defined(_SURFACE_TYPE_TRANSPARENT)
+                    #if SHADERPASS == SHADERPASS_FORWARD
+                    #define SHADERPASS_FORWARD_BYPASS_ALPHA_TEST
+                    #elif SHADERPASS == SHADERPASS_GBUFFER
+                    #define SHADERPASS_GBUFFER_BYPASS_ALPHA_TEST
+                    #endif
+                #endif
+            #endif
+
+            #if defined(SHADER_LIT) && !defined(_SURFACE_TYPE_TRANSPARENT)
+                #define _DEFERRED_CAPABLE_MATERIAL
+            #endif
+        
+            #if (defined(_TRANSPARENT_WRITES_MOTION_VEC) || defined(_TRANSPARENT_REFRACTIVE_SORT)) && defined(_SURFACE_TYPE_TRANSPARENT)
+                #define _WRITE_TRANSPARENT_MOTION_VECTOR
+            #endif
 
 			CBUFFER_START( UnityPerMaterial )
 			float4 _EmissionColor;
 			float _AlphaCutoff;
 			float _RenderQueueType;
 			#ifdef _ADD_PRECOMPUTED_VELOCITY
-			float _AddPrecomputedVelocity;
+			    float _AddPrecomputedVelocity;
 			#endif
 			float _StencilRef;
 			float _StencilWriteMask;
@@ -1339,6 +1493,8 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			float _StencilWriteMaskDepth;
 			float _StencilRefMV;
 			float _StencilWriteMaskMV;
+			float _StencilRefDistortionVec;
+			float _StencilWriteMaskDistortionVec;
 			float _StencilWriteMaskGBuffer;
 			float _StencilRefGBuffer;
 			float _ZTestGBuffer;
@@ -1347,10 +1503,11 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			float _SurfaceType;
 			float _BlendMode;
             #ifdef SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
-			float _EnableBlendModePreserveSpecularLighting;
+			    float _EnableBlendModePreserveSpecularLighting;
             #endif
 			float _SrcBlend;
 			float _DstBlend;
+			float _DstBlend2;
 			float _AlphaSrcBlend;
 			float _AlphaDstBlend;
 			float _ZWrite;
@@ -1369,21 +1526,20 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			float _DoubleSidedNormalMode;
 			float4 _DoubleSidedConstants;
 			#ifdef ASE_TESSELLATION
-			float _TessPhongStrength;
-			float _TessValue;
-			float _TessMin;
-			float _TessMax;
-			float _TessEdgeLength;
-			float _TessMaxDisp;
+			    float _TessPhongStrength;
+			    float _TessValue;
+			    float _TessMin;
+			    float _TessMax;
+			    float _TessEdgeLength;
+			    float _TessMaxDisp;
 			#endif
+			UNITY_TEXTURE_STREAMING_DEBUG_VARS;
 			CBUFFER_END
 
-			// Property used by ScenePickingPass
             #ifdef SCENEPICKINGPASS
 			float4 _SelectionID;
             #endif
 
-			// Properties used by SceneSelectionPass
             #ifdef SCENESELECTIONPASS
 			int _ObjectId;
 			int _PassValue;
@@ -1395,6 +1551,12 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
             #endif
 
+			#if SHADERPASS == SHADERPASS_LIGHT_TRANSPORT
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/PickingSpaceTransforms.hlsl"
+			#endif
+
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/MetaPass.hlsl"
+
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Material.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/NormalSurfaceGradient.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/Lit.hlsl"
@@ -1402,16 +1564,14 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/MaterialUtilities.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphFunctions.hlsl"
 
-			// Setup DECALS_OFF so the shader stripper can remove variants
-            #define HAVE_DECALS ( (defined(DECALS_3RT) || defined(DECALS_4RT)) && !defined(_DISABLE_DECALS) )
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalUtilities.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/LitDecalData.hlsl"
 
-			/*ase_pragma*/
+        	#ifdef HAVE_VFX_MODIFICATION
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/VisualEffectVertex.hlsl"
+        	#endif
 
-			#if defined(_DOUBLESIDED_ON) && !defined(ASE_NEED_CULLFACE)
-			#define ASE_NEED_CULLFACE 1
-			#endif
+			/*ase_pragma*/
 
 			struct AttributesMesh
 			{
@@ -1428,7 +1588,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 
 			struct PackedVaryingsMeshToPS
 			{
-				float4 positionCS : SV_Position;
+				SV_POSITION_QUALIFIERS float4 positionCS : SV_Position;
 				#ifdef EDITOR_VISUALIZATION
 				float2 VizUV : TEXCOORD0;
 				float4 LightCoord : TEXCOORD1;
@@ -1447,8 +1607,8 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				ZERO_INITIALIZE(SurfaceData, surfaceData);
 
 				surfaceData.specularOcclusion = 1.0;
+				surfaceData.thickness = 0.0;
 
-				// surface data
 				surfaceData.baseColor =					surfaceDescription.BaseColor;
 				surfaceData.perceptualSmoothness =		surfaceDescription.Smoothness;
 				surfaceData.ambientOcclusion =			surfaceDescription.Occlusion;
@@ -1458,184 +1618,248 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				#ifdef _SPECULAR_OCCLUSION_CUSTOM
 				surfaceData.specularOcclusion =			surfaceDescription.SpecularOcclusion;
 				#endif
+
 				#ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
 				surfaceData.subsurfaceMask =			surfaceDescription.SubsurfaceMask;
 				#endif
+
 				#if defined(_HAS_REFRACTION) || defined(_MATERIAL_FEATURE_TRANSMISSION)
 				surfaceData.thickness = 				surfaceDescription.Thickness;
 				#endif
+
 				#ifdef _MATERIAL_FEATURE_TRANSMISSION
 				surfaceData.transmissionMask =			surfaceDescription.TransmissionMask;
 				#endif
+
+				#ifdef _MATERIAL_FEATURE_COLORED_TRANSMISSION
+				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
+				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_COLORED_TRANSMISSION;
+				#endif
+
 				#if defined( _MATERIAL_FEATURE_SUBSURFACE_SCATTERING ) || defined( _MATERIAL_FEATURE_TRANSMISSION )
 				surfaceData.diffusionProfileHash =		asuint(surfaceDescription.DiffusionProfile);
 				#endif
+
 				#ifdef _MATERIAL_FEATURE_SPECULAR_COLOR
 				surfaceData.specularColor =				surfaceDescription.Specular;
 				#endif
+
 				#ifdef _MATERIAL_FEATURE_ANISOTROPY
 				surfaceData.anisotropy =				surfaceDescription.Anisotropy;
 				#endif
+
 				#ifdef _MATERIAL_FEATURE_IRIDESCENCE
 				surfaceData.iridescenceMask =			surfaceDescription.IridescenceMask;
 				surfaceData.iridescenceThickness =		surfaceDescription.IridescenceThickness;
 				#endif
 
 				// refraction
-				#ifdef _HAS_REFRACTION
-				if( _EnableSSRefraction )
-				{
-					surfaceData.ior = surfaceDescription.RefractionIndex;
-					surfaceData.transmittanceColor = surfaceDescription.RefractionColor;
-					surfaceData.atDistance = surfaceDescription.RefractionDistance;
-
-					surfaceData.transmittanceMask = ( 1.0 - surfaceDescription.Alpha );
-					surfaceDescription.Alpha = 1.0;
-				}
-				else
-				{
-					surfaceData.ior = 1.0;
-					surfaceData.transmittanceColor = float3( 1.0, 1.0, 1.0 );
-					surfaceData.atDistance = 1.0;
-					surfaceData.transmittanceMask = 0.0;
-					surfaceDescription.Alpha = 1.0;
-				}
-				#else
-				surfaceData.ior = 1.0;
-				surfaceData.transmittanceColor = float3( 1.0, 1.0, 1.0 );
-				surfaceData.atDistance = 1.0;
-				surfaceData.transmittanceMask = 0.0;
-				#endif
-
-				// material features
-				surfaceData.materialFeatures = MATERIALFEATUREFLAGS_LIT_STANDARD;
-				#ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SUBSURFACE_SCATTERING;
-				#endif
-				#ifdef _MATERIAL_FEATURE_TRANSMISSION
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
-				#endif
-                #ifdef _MATERIAL_FEATURE_ANISOTROPY
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
-				surfaceData.normalWS = float3(0, 1, 0);
+                #if defined(_REFRACTION_PLANE) || defined(_REFRACTION_SPHERE) || defined(_REFRACTION_THIN)
+                    if (_EnableSSRefraction)
+                    {
+                        surfaceData.ior =                       surfaceDescription.RefractionIndex;
+                        surfaceData.transmittanceColor =        surfaceDescription.RefractionColor;
+                        surfaceData.atDistance =                surfaceDescription.RefractionDistance;
+        
+                        surfaceData.transmittanceMask = (1.0 - surfaceDescription.Alpha);
+                        surfaceDescription.Alpha = 1.0;
+                    }
+                    else
+                    {
+                        surfaceData.ior = 1.0;
+                        surfaceData.transmittanceColor = float3(1.0, 1.0, 1.0);
+                        surfaceData.atDistance = 1.0;
+                        surfaceData.transmittanceMask = 0.0;
+                        surfaceDescription.Alpha = 1.0;
+                    }
+                #else
+                    surfaceData.ior = 1.0;
+                    surfaceData.transmittanceColor = float3(1.0, 1.0, 1.0);
+                    surfaceData.atDistance = 1.0;
+                    surfaceData.transmittanceMask = 0.0;
                 #endif
-				#ifdef _MATERIAL_FEATURE_CLEAR_COAT
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_CLEAR_COAT;
-				#endif
-				#ifdef _MATERIAL_FEATURE_IRIDESCENCE
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_IRIDESCENCE;
-				#endif
-				#ifdef _MATERIAL_FEATURE_SPECULAR_COLOR
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SPECULAR_COLOR;
+
+				surfaceData.materialFeatures = MATERIALFEATUREFLAGS_LIT_STANDARD;
+
+                #ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SUBSURFACE_SCATTERING;
 				#endif
 
-				// others
-				#if defined (_MATERIAL_FEATURE_SPECULAR_COLOR) && defined (_ENERGY_CONSERVING_SPECULAR)
-				surfaceData.baseColor *= ( 1.0 - Max3( surfaceData.specularColor.r, surfaceData.specularColor.g, surfaceData.specularColor.b ) );
+				#ifdef _MATERIAL_FEATURE_TRANSMISSION
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
 				#endif
+
+				#ifdef _MATERIAL_FEATURE_COLORED_TRANSMISSION
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_COLORED_TRANSMISSION;
+				#endif
+
+                #ifdef _MATERIAL_FEATURE_ANISOTROPY
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
+                    surfaceData.normalWS = float3(0, 1, 0);
+                #endif
+
+				#ifdef _MATERIAL_FEATURE_CLEAR_COAT
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_CLEAR_COAT;
+				#endif
+
+				#ifdef _MATERIAL_FEATURE_IRIDESCENCE
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_IRIDESCENCE;
+				#endif
+
+                #ifdef _MATERIAL_FEATURE_SPECULAR_COLOR
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SPECULAR_COLOR;
+                #endif
+
+				#if defined (_MATERIAL_FEATURE_SPECULAR_COLOR) && defined (_ENERGY_CONSERVING_SPECULAR)
+                    surfaceData.baseColor *= ( 1.0 - Max3( surfaceData.specularColor.r, surfaceData.specularColor.g, surfaceData.specularColor.b ) );
+				#endif
+
 				#ifdef _DOUBLESIDED_ON
 				float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
 				#else
 				float3 doubleSidedConstants = float3( 1.0, 1.0, 1.0 );
 				#endif
 
-				// normals
 				float3 normalTS = float3(0.0f, 0.0f, 1.0f);
 				normalTS = surfaceDescription.Normal;
-				GetNormalWS( fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants );
+
+                #ifdef DECAL_NORMAL_BLENDING
+					normalTS = SurfaceGradientFromTangentSpaceNormalAndFromTBN(normalTS, fragInputs.tangentToWorld[0], fragInputs.tangentToWorld[1]);
+
+                    #if HAVE_DECALS
+                    if (_EnableDecals)
+                    {
+                        float alpha = 1.0;
+                        alpha = surfaceDescription.Alpha;
+
+                        DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                        ApplyDecalToSurfaceNormal(decalSurfaceData, fragInputs.tangentToWorld[2], normalTS);
+                        ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+                     }
+                    #endif
+
+                    GetNormalWS_SG(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+                #else
+					GetNormalWS(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+
+                    #if HAVE_DECALS
+                    if (_EnableDecals)
+                    {
+                        float alpha = 1.0;
+                        alpha = surfaceDescription.Alpha;
+        
+                        DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                        ApplyDecalToSurfaceNormal(decalSurfaceData, surfaceData.normalWS.xyz);
+                        ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+                    }
+                    #endif
+                #endif
 
 				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
-				surfaceData.tangentWS = normalize( fragInputs.tangentToWorld[ 0 ].xyz );
-
-				// decals
-				#if HAVE_DECALS
-				if( _EnableDecals )
-				{
-					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, surfaceDescription.Alpha);
-					ApplyDecalToSurfaceData(decalSurfaceData, fragInputs.tangentToWorld[2], surfaceData);
-				}
-				#endif
+                surfaceData.tangentWS = normalize(fragInputs.tangentToWorld[0].xyz );
+                surfaceData.tangentWS = Orthonormalize(surfaceData.tangentWS, surfaceData.normalWS);
 
 				bentNormalWS = surfaceData.normalWS;
 
 				#ifdef ASE_BENT_NORMAL
-				GetNormalWS( fragInputs, surfaceDescription.BentNormal, bentNormalWS, doubleSidedConstants );
+                    GetNormalWS( fragInputs, surfaceDescription.BentNormal, bentNormalWS, doubleSidedConstants );
 				#endif
 
 				#ifdef _MATERIAL_FEATURE_ANISOTROPY
-				surfaceData.tangentWS = TransformTangentToWorld( surfaceDescription.Tangent, fragInputs.tangentToWorld );
+                    surfaceData.tangentWS = TransformTangentToWorld(surfaceDescription.Tangent, fragInputs.tangentToWorld);
 				#endif
-				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
+
+				#if defined(DEBUG_DISPLAY)
+				    #if !defined(SHADER_STAGE_RAY_TRACING)
+				    if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
+				    {
+					   #ifdef FRAG_INPUTS_USE_TEXCOORD0
+                           surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG(posInput.positionSS, fragInputs.texCoord0);
+                       #else
+                           surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG_NO_UV(posInput.positionSS);
+                       #endif
+					   surfaceData.metallic = 0;
+				    }
+					#endif
+				    ApplyDebugToSurfaceData(fragInputs.tangentToWorld, surfaceData); 
+				#endif
 
                 #if defined(_SPECULAR_OCCLUSION_CUSTOM)
                 #elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO(V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness(surfaceData.perceptualSmoothness));
+                    surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO(V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness(surfaceData.perceptualSmoothness));
                 #elif defined(_AMBIENT_OCCLUSION) && defined(_SPECULAR_OCCLUSION_FROM_AO)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion(ClampNdotV(dot(surfaceData.normalWS, V)), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness(surfaceData.perceptualSmoothness));
+                    surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion(ClampNdotV(dot(surfaceData.normalWS, V)), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness(surfaceData.perceptualSmoothness));
                 #endif
 
-				#ifdef _ENABLE_GEOMETRIC_SPECULAR_AA
-				surfaceData.perceptualSmoothness = GeometricNormalFiltering( surfaceData.perceptualSmoothness, fragInputs.tangentToWorld[ 2 ], surfaceDescription.SpecularAAScreenSpaceVariance, surfaceDescription.SpecularAAThreshold );
-				#endif
-
-				// debug
-				#if defined(DEBUG_DISPLAY)
-				if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
-				{
-					surfaceData.metallic = 0;
-				}
-				ApplyDebugToSurfaceData(fragInputs.tangentToWorld, surfaceData);
-				#endif
+                #ifdef _ENABLE_GEOMETRIC_SPECULAR_AA
+                    surfaceData.perceptualSmoothness = GeometricNormalFiltering(surfaceData.perceptualSmoothness, fragInputs.tangentToWorld[2], surfaceDescription.SpecularAAScreenSpaceVariance, surfaceDescription.SpecularAAThreshold);
+                #endif
 			}
 
+			// Get Surface And BuiltinData
 			void GetSurfaceAndBuiltinData(GlobalSurfaceDescription surfaceDescription, FragInputs fragInputs, float3 V, inout PositionInputs posInput, out SurfaceData surfaceData, out BuiltinData builtinData)
 			{
 				#ifdef LOD_FADE_CROSSFADE
-				LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
+                    LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
 				#endif
 
-				#ifdef _DOUBLESIDED_ON
-				float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
-				#else
-				float3 doubleSidedConstants = float3( 1.0, 1.0, 1.0 );
-				#endif
-
-				ApplyDoubleSidedFlipOrMirror( fragInputs, doubleSidedConstants );
+                #ifdef _DOUBLESIDED_ON
+                    float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
+                #else
+                    float3 doubleSidedConstants = float3(1.0, 1.0, 1.0);
+                #endif
+                ApplyDoubleSidedFlipOrMirror(fragInputs, doubleSidedConstants);
 
 				#ifdef _ALPHATEST_ON
-				DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThreshold );
+                    DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThreshold );
+				#endif
+
+				#ifdef _ALPHATEST_SHADOW_ON
+                    DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThresholdShadow);
 				#endif
 
 				#ifdef _DEPTHOFFSET_ON
-				builtinData.depthOffset = surfaceDescription.DepthOffset;
-				ApplyDepthOffsetPositionInput( V, surfaceDescription.DepthOffset, GetViewForwardDir(), GetWorldToHClipMatrix(), posInput );
+                    ApplyDepthOffsetPositionInput(V, surfaceDescription.DepthOffset, GetViewForwardDir(), GetWorldToHClipMatrix(), posInput);
 				#endif
 
-				float3 bentNormalWS;
-				BuildSurfaceData( fragInputs, surfaceDescription, V, posInput, surfaceData, bentNormalWS );
+                float3 bentNormalWS;
+                BuildSurfaceData(fragInputs, surfaceDescription, V, posInput, surfaceData, bentNormalWS);
+                InitBuiltinData(posInput, surfaceDescription.Alpha, bentNormalWS, -fragInputs.tangentToWorld[2], fragInputs.texCoord1, fragInputs.texCoord2, builtinData);
 
-				InitBuiltinData( posInput, surfaceDescription.Alpha, bentNormalWS, -fragInputs.tangentToWorld[ 2 ], fragInputs.texCoord1, fragInputs.texCoord2, builtinData );
+				#ifdef _DEPTHOFFSET_ON
+                    builtinData.depthOffset = surfaceDescription.DepthOffset;
+				#endif
 
-				builtinData.emissiveColor = surfaceDescription.Emission;
+                #ifdef _ALPHATEST_ON
+                    builtinData.alphaClipTreshold = surfaceDescription.AlphaClipThreshold;
+                #endif
 
-				PostInitBuiltinData(V, posInput, surfaceData, builtinData);
+                #ifdef UNITY_VIRTUAL_TEXTURING
+                    builtinData.vtPackedFeedback = surfaceDescription.VTPackedFeedback;
+                #endif
+
+				#ifdef ASE_BAKEDGI
+                    builtinData.bakeDiffuseLighting = surfaceDescription.BakedGI;
+				#endif
+
+				#ifdef ASE_BAKEDBACKGI
+                    builtinData.backBakeDiffuseLighting = surfaceDescription.BakedBackGI;
+				#endif
+
+                builtinData.emissiveColor = surfaceDescription.Emission;
+
+                PostInitBuiltinData(V, posInput, surfaceData, builtinData);
 			}
-
-			#if SHADERPASS == SHADERPASS_LIGHT_TRANSPORT
-			#define SCENEPICKINGPASS
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/PickingSpaceTransforms.hlsl"
-			#endif
-
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/MetaPass.hlsl"
 
 			PackedVaryingsMeshToPS VertexFunction(AttributesMesh inputMesh /*ase_vert_input*/ )
 			{
-				PackedVaryingsMeshToPS outputPackedVaryingsMeshToPS;
+				PackedVaryingsMeshToPS output;
 
 				UNITY_SETUP_INSTANCE_ID(inputMesh);
-				UNITY_TRANSFER_INSTANCE_ID(inputMesh, outputPackedVaryingsMeshToPS);
+				UNITY_TRANSFER_INSTANCE_ID(inputMesh, output);
 
-				/*ase_vert_code:inputMesh=AttributesMesh;outputPackedVaryingsMeshToPS=PackedVaryingsMeshToPS*/
+				/*ase_vert_code:inputMesh=AttributesMesh;output=PackedVaryingsMeshToPS*/
 
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 				float3 defaultVertexValue = inputMesh.positionOS.xyz;
@@ -1653,19 +1877,18 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				inputMesh.normalOS = /*ase_vert_out:Vertex Normal;Float3;12;-1;_VertexNormal*/ inputMesh.normalOS /*end*/;
 				inputMesh.tangentOS = /*ase_vert_out:Vertex Tangent;Float4;26;-1;_VertexTangent*/ inputMesh.tangentOS /*end*/;
 
-				outputPackedVaryingsMeshToPS.positionCS = UnityMetaVertexPosition(inputMesh.positionOS, inputMesh.uv1.xy, inputMesh.uv2.xy, unity_LightmapST, unity_DynamicLightmapST);
-
+				output.positionCS = UnityMetaVertexPosition(inputMesh.positionOS, inputMesh.uv1.xy, inputMesh.uv2.xy, unity_LightmapST, unity_DynamicLightmapST);
 
 				#ifdef EDITOR_VISUALIZATION
 					float2 vizUV = 0;
 					float4 lightCoord = 0;
 					UnityEditorVizData(inputMesh.positionOS.xyz, inputMesh.uv0.xy, inputMesh.uv1.xy, inputMesh.uv2.xy, vizUV, lightCoord);
 
-					outputPackedVaryingsMeshToPS.VizUV.xy = vizUV;
-					outputPackedVaryingsMeshToPS.LightCoord = lightCoord;
+					output.VizUV.xy = vizUV;
+					output.LightCoord = lightCoord;
 				#endif
 
-				return outputPackedVaryingsMeshToPS;
+				return output;
 			}
 
 			#if defined(ASE_TESSELLATION)
@@ -1852,7 +2075,6 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				#endif
 
 				GetSurfaceAndBuiltinData(surfaceDescription,input, V, posInput, surfaceData, builtinData);
-
 				BSDFData bsdfData = ConvertSurfaceDataToBSDFData(input.positionSS.xy, surfaceData);
 				LightTransportData lightTransportData = GetLightTransportData(surfaceData, builtinData, bsdfData);
 
@@ -1878,7 +2100,10 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 		{
 			/*ase_hide_pass*/
 			Name "ShadowCaster"
-			Tags { "LightMode" = "ShadowCaster" }
+			Tags 
+			{ 
+				"LightMode" = "ShadowCaster" 
+		    }
 
 			Cull [_CullMode]
 			ZWrite On
@@ -1887,17 +2112,18 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			ColorMask 0
 
 			HLSLPROGRAM
+			#pragma multi_compile _ DOTS_INSTANCING_ON
 
-			#pragma shader_feature _SURFACE_TYPE_TRANSPARENT
-			#pragma shader_feature_local _TRANSPARENT_WRITES_MOTION_VEC
-			#pragma shader_feature_local_fragment _ENABLE_FOG_ON_TRANSPARENT
-			#pragma shader_feature_local _DOUBLESIDED_ON
-			#pragma shader_feature_local _ALPHATEST_ON
+            #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
+            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC _TRANSPARENT_REFRACTIVE_SORT
+            #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
 
 			#pragma multi_compile_fragment _ SHADOWS_SHADOWMASK
 
 			#pragma vertex Vert
 			#pragma fragment Frag
+
+			#define SHADERPASS SHADERPASS_SHADOWS
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
         	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
@@ -1907,19 +2133,32 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
-
-			//#define USE_LEGACY_UNITY_MATRIX_VARIABLES
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/DebugMipmapStreamingMacros.hlsl"
+            #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
 
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
 
-			#define SHADERPASS SHADERPASS_SHADOWS
+            #ifdef RAYTRACING_SHADER_GRAPH_DEFAULT
+                #define RAYTRACING_SHADER_GRAPH_HIGH
+            #endif
+        
+            #ifdef RAYTRACING_SHADER_GRAPH_RAYTRACED
+                #define RAYTRACING_SHADER_GRAPH_LOW
+            #endif
 
-			#ifndef SHADER_UNLIT
-			#if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
-			#define VARYINGS_NEED_CULLFACE
+            #ifndef SHADER_UNLIT
+            #if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
+                #define VARYINGS_NEED_CULLFACE
+            #endif
+            #endif
+
+			#if defined(_DOUBLESIDED_ON) && !defined(ASE_NEED_CULLFACE)
+			    #define ASE_NEED_CULLFACE 1
 			#endif
-			#endif
+
+            #if _MATERIAL_FEATURE_COLORED_TRANSMISSION
+            #undef _MATERIAL_FEATURE_CLEAR_COAT
+            #endif
 
 		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
 			#define OUTPUT_SPLIT_LIGHTING
@@ -1931,36 +2170,40 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			#define _REFRACTION_THIN
 		    #endif
 
-			#if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
-			#if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
-			#define WRITE_NORMAL_BUFFER
-			#endif
-			#endif
+            #if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
+            #if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
+                #define WRITE_NORMAL_BUFFER
+            #endif
+            #endif
 
-			#ifndef DEBUG_DISPLAY
-				#if !defined(_SURFACE_TYPE_TRANSPARENT)
-					#if SHADERPASS == SHADERPASS_FORWARD
-					#define SHADERPASS_FORWARD_BYPASS_ALPHA_TEST
-					#elif SHADERPASS == SHADERPASS_GBUFFER
-					#define SHADERPASS_GBUFFER_BYPASS_ALPHA_TEST
-					#endif
-				#endif
-			#endif
+            #if SHADERPASS == SHADERPASS_MOTION_VECTORS && defined(WRITE_DECAL_BUFFER_AND_RENDERING_LAYER)
+                #define WRITE_DECAL_BUFFER
+            #endif
 
-			#if defined(SHADER_LIT) && !defined(_SURFACE_TYPE_TRANSPARENT)
-			#define _DEFERRED_CAPABLE_MATERIAL
-			#endif
+            #ifndef DEBUG_DISPLAY
+                #if !defined(_SURFACE_TYPE_TRANSPARENT)
+                    #if SHADERPASS == SHADERPASS_FORWARD
+                    #define SHADERPASS_FORWARD_BYPASS_ALPHA_TEST
+                    #elif SHADERPASS == SHADERPASS_GBUFFER
+                    #define SHADERPASS_GBUFFER_BYPASS_ALPHA_TEST
+                    #endif
+                #endif
+            #endif
 
-			#if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
-			#define _WRITE_TRANSPARENT_MOTION_VECTOR
-			#endif
+            #if defined(SHADER_LIT) && !defined(_SURFACE_TYPE_TRANSPARENT)
+                #define _DEFERRED_CAPABLE_MATERIAL
+            #endif
+        
+            #if (defined(_TRANSPARENT_WRITES_MOTION_VEC) || defined(_TRANSPARENT_REFRACTIVE_SORT)) && defined(_SURFACE_TYPE_TRANSPARENT)
+                #define _WRITE_TRANSPARENT_MOTION_VECTOR
+            #endif
 
 			CBUFFER_START( UnityPerMaterial )
 			float4 _EmissionColor;
 			float _AlphaCutoff;
 			float _RenderQueueType;
 			#ifdef _ADD_PRECOMPUTED_VELOCITY
-			float _AddPrecomputedVelocity;
+			    float _AddPrecomputedVelocity;
 			#endif
 			float _StencilRef;
 			float _StencilWriteMask;
@@ -1968,6 +2211,8 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			float _StencilWriteMaskDepth;
 			float _StencilRefMV;
 			float _StencilWriteMaskMV;
+			float _StencilRefDistortionVec;
+			float _StencilWriteMaskDistortionVec;
 			float _StencilWriteMaskGBuffer;
 			float _StencilRefGBuffer;
 			float _ZTestGBuffer;
@@ -1976,10 +2221,11 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			float _SurfaceType;
 			float _BlendMode;
             #ifdef SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
-			float _EnableBlendModePreserveSpecularLighting;
+			    float _EnableBlendModePreserveSpecularLighting;
             #endif
 			float _SrcBlend;
 			float _DstBlend;
+			float _DstBlend2;
 			float _AlphaSrcBlend;
 			float _AlphaDstBlend;
 			float _ZWrite;
@@ -1998,21 +2244,20 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			float _DoubleSidedNormalMode;
 			float4 _DoubleSidedConstants;
 			#ifdef ASE_TESSELLATION
-			float _TessPhongStrength;
-			float _TessValue;
-			float _TessMin;
-			float _TessMax;
-			float _TessEdgeLength;
-			float _TessMaxDisp;
+			    float _TessPhongStrength;
+			    float _TessValue;
+			    float _TessMin;
+			    float _TessMax;
+			    float _TessEdgeLength;
+			    float _TessMaxDisp;
 			#endif
+			UNITY_TEXTURE_STREAMING_DEBUG_VARS;
 			CBUFFER_END
 
-			// Property used by ScenePickingPass
             #ifdef SCENEPICKINGPASS
 			float4 _SelectionID;
             #endif
 
-			// Properties used by SceneSelectionPass
             #ifdef SCENESELECTIONPASS
 			int _ObjectId;
 			int _PassValue;
@@ -2031,30 +2276,30 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/MaterialUtilities.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphFunctions.hlsl"
 
-			// Setup DECALS_OFF so the shader stripper can remove variants
-            #define HAVE_DECALS ( (defined(DECALS_3RT) || defined(DECALS_4RT)) && !defined(_DISABLE_DECALS) )
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalUtilities.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/LitDecalData.hlsl"
 
-			/*ase_pragma*/
+        	#ifdef HAVE_VFX_MODIFICATION
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/VisualEffectVertex.hlsl"
+        	#endif
 
-			#if defined(_DOUBLESIDED_ON) && !defined(ASE_NEED_CULLFACE)
-			#define ASE_NEED_CULLFACE 1
-			#endif
+			/*ase_pragma*/
 
 			struct AttributesMesh
 			{
 				float3 positionOS : POSITION;
 				float3 normalOS : NORMAL;
-				/*ase_vdata:p=p;n=n*/
+				float4 tangentOS : TANGENT;
+				/*ase_vdata:p=p;n=n;t=t*/
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
 			struct PackedVaryingsMeshToPS
 			{
-				float4 positionCS : SV_Position;
-				float3 positionRWS : TEXCOORD0;
-				/*ase_interp(1,):sp=sp.xyzw;rwp=tc0*/
+				SV_POSITION_QUALIFIERS float4 positionCS : SV_Position;
+				float4 clipPosV : TEXCOORD0;
+				float3 positionRWS : TEXCOORD1;
+				/*ase_interp(2,):sp=sp.xyzw;rwp=tc1*/
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				UNITY_VERTEX_OUTPUT_STEREO
 				#if defined(SHADER_STAGE_FRAGMENT) && defined(ASE_NEED_CULLFACE)
@@ -2069,143 +2314,203 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				ZERO_INITIALIZE(SurfaceData, surfaceData);
 
 				surfaceData.specularOcclusion = 1.0;
+				surfaceData.thickness = 0.0;
 
-				// surface data
-
-				// refraction
-				#ifdef _HAS_REFRACTION
-				if( _EnableSSRefraction )
-				{
-					surfaceData.transmittanceMask = ( 1.0 - surfaceDescription.Alpha );
-					surfaceDescription.Alpha = 1.0;
-				}
-				else
-				{
-					surfaceData.ior = 1.0;
-					surfaceData.transmittanceColor = float3( 1.0, 1.0, 1.0 );
-					surfaceData.atDistance = 1.0;
-					surfaceData.transmittanceMask = 0.0;
-					surfaceDescription.Alpha = 1.0;
-				}
-				#else
-				surfaceData.ior = 1.0;
-				surfaceData.transmittanceColor = float3( 1.0, 1.0, 1.0 );
-				surfaceData.atDistance = 1.0;
-				surfaceData.transmittanceMask = 0.0;
-				#endif
-
-
-				// material features
-				surfaceData.materialFeatures = MATERIALFEATUREFLAGS_LIT_STANDARD;
-				#ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SUBSURFACE_SCATTERING;
-				#endif
-				#ifdef _MATERIAL_FEATURE_TRANSMISSION
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
-				#endif
-                #ifdef _MATERIAL_FEATURE_ANISOTROPY
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
-				surfaceData.normalWS = float3(0, 1, 0);
+				// refraction ShadowCaster
+                #if defined(_REFRACTION_PLANE) || defined(_REFRACTION_SPHERE) || defined(_REFRACTION_THIN)
+                    if (_EnableSSRefraction)
+                    {
+        
+                        surfaceData.transmittanceMask = (1.0 - surfaceDescription.Alpha);
+                        surfaceDescription.Alpha = 1.0;
+                    }
+                    else
+                    {
+                        surfaceData.ior = 1.0;
+                        surfaceData.transmittanceColor = float3(1.0, 1.0, 1.0);
+                        surfaceData.atDistance = 1.0;
+                        surfaceData.transmittanceMask = 0.0;
+                        surfaceDescription.Alpha = 1.0;
+                    }
+                    #else
+                    surfaceData.ior = 1.0;
+                    surfaceData.transmittanceColor = float3(1.0, 1.0, 1.0);
+                    surfaceData.atDistance = 1.0;
+                    surfaceData.transmittanceMask = 0.0;
                 #endif
-				#ifdef _MATERIAL_FEATURE_CLEAR_COAT
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_CLEAR_COAT;
-				#endif
-				#ifdef _MATERIAL_FEATURE_IRIDESCENCE
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_IRIDESCENCE;
-				#endif
-				#ifdef _MATERIAL_FEATURE_SPECULAR_COLOR
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SPECULAR_COLOR;
+
+				surfaceData.materialFeatures = MATERIALFEATUREFLAGS_LIT_STANDARD;
+
+				#ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SUBSURFACE_SCATTERING;
 				#endif
 
-				// others
-				#if defined (_MATERIAL_FEATURE_SPECULAR_COLOR) && defined (_ENERGY_CONSERVING_SPECULAR)
-				surfaceData.baseColor *= ( 1.0 - Max3( surfaceData.specularColor.r, surfaceData.specularColor.g, surfaceData.specularColor.b ) );
+				#ifdef _MATERIAL_FEATURE_TRANSMISSION
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
 				#endif
+
+				#ifdef _MATERIAL_FEATURE_COLORED_TRANSMISSION
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_COLORED_TRANSMISSION;
+				#endif
+
+                #ifdef _MATERIAL_FEATURE_ANISOTROPY
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
+                    surfaceData.normalWS = float3(0, 1, 0);
+                #endif
+
+				#ifdef _MATERIAL_FEATURE_IRIDESCENCE
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_IRIDESCENCE;
+				#endif
+
+				#ifdef _MATERIAL_FEATURE_SPECULAR_COLOR
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SPECULAR_COLOR;
+				#endif
+
+				#ifdef _MATERIAL_FEATURE_CLEAR_COAT
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_CLEAR_COAT;
+				#endif
+
+				#if defined (_MATERIAL_FEATURE_SPECULAR_COLOR) && defined (_ENERGY_CONSERVING_SPECULAR)
+                    surfaceData.baseColor *= ( 1.0 - Max3( surfaceData.specularColor.r, surfaceData.specularColor.g, surfaceData.specularColor.b ) );
+				#endif
+
 				#ifdef _DOUBLESIDED_ON
 				float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
 				#else
 				float3 doubleSidedConstants = float3( 1.0, 1.0, 1.0 );
 				#endif
 
-				// normals
 				float3 normalTS = float3(0.0f, 0.0f, 1.0f);
-				GetNormalWS( fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants );
+
+                #ifdef DECAL_NORMAL_BLENDING
+					normalTS = SurfaceGradientFromTangentSpaceNormalAndFromTBN(normalTS, fragInputs.tangentToWorld[0], fragInputs.tangentToWorld[1]);
+
+                    #if HAVE_DECALS
+                    if (_EnableDecals)
+                    {
+                        float alpha = 1.0;
+                        alpha = surfaceDescription.Alpha;
+
+                        DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                        ApplyDecalToSurfaceNormal(decalSurfaceData, fragInputs.tangentToWorld[2], normalTS);
+                        ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+                     }
+                    #endif
+
+                    GetNormalWS_SG(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+                #else
+					GetNormalWS(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+
+                    #if HAVE_DECALS
+                    if (_EnableDecals)
+                    {
+                        float alpha = 1.0;
+                        alpha = surfaceDescription.Alpha;
+        
+                        DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                        ApplyDecalToSurfaceNormal(decalSurfaceData, surfaceData.normalWS.xyz);
+                        ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+                    }
+                    #endif
+                #endif
 
 				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
-				surfaceData.tangentWS = normalize( fragInputs.tangentToWorld[ 0 ].xyz );
-
-				// decals
-				#if HAVE_DECALS
-				if( _EnableDecals )
-				{
-					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, surfaceDescription.Alpha);
-					ApplyDecalToSurfaceData(decalSurfaceData, fragInputs.tangentToWorld[2], surfaceData);
-				}
-				#endif
+                surfaceData.tangentWS = normalize(fragInputs.tangentToWorld[0].xyz );
+                surfaceData.tangentWS = Orthonormalize(surfaceData.tangentWS, surfaceData.normalWS);
 
 				bentNormalWS = surfaceData.normalWS;
-				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
+
+                #if defined(DEBUG_DISPLAY)
+				    #if !defined(SHADER_STAGE_RAY_TRACING)
+				    if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
+				    {
+					   #ifdef FRAG_INPUTS_USE_TEXCOORD0
+                           surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG(posInput.positionSS, fragInputs.texCoord0);
+                       #else
+                           surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG_NO_UV(posInput.positionSS);
+                       #endif
+					   surfaceData.metallic = 0;
+				    }
+					#endif
+                    ApplyDebugToSurfaceData(fragInputs.tangentToWorld, surfaceData);
+                #endif
 
                 #if defined(_SPECULAR_OCCLUSION_CUSTOM)
                 #elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO(V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness(surfaceData.perceptualSmoothness));
+                    surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO(V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness(surfaceData.perceptualSmoothness));
                 #elif defined(_AMBIENT_OCCLUSION) && defined(_SPECULAR_OCCLUSION_FROM_AO)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion(ClampNdotV(dot(surfaceData.normalWS, V)), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness(surfaceData.perceptualSmoothness));
+                    surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion(ClampNdotV(dot(surfaceData.normalWS, V)), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness(surfaceData.perceptualSmoothness));
                 #endif
 
-				// debug
-				#if defined(DEBUG_DISPLAY)
-				if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
-				{
-					surfaceData.metallic = 0;
-				}
-				ApplyDebugToSurfaceData(fragInputs.tangentToWorld, surfaceData);
-				#endif
+                #ifdef _ENABLE_GEOMETRIC_SPECULAR_AA
+                    surfaceData.perceptualSmoothness = GeometricNormalFiltering(surfaceData.perceptualSmoothness, fragInputs.tangentToWorld[2], surfaceDescription.SpecularAAScreenSpaceVariance, surfaceDescription.SpecularAAThreshold);
+                #endif
 			}
 
+			// Get Surface And BuiltinData
 			void GetSurfaceAndBuiltinData(AlphaSurfaceDescription surfaceDescription, FragInputs fragInputs, float3 V, inout PositionInputs posInput, out SurfaceData surfaceData, out BuiltinData builtinData)
 			{
 				#ifdef LOD_FADE_CROSSFADE
-				LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
+                    LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
 				#endif
 
-				#ifdef _DOUBLESIDED_ON
-				float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
-				#else
-				float3 doubleSidedConstants = float3( 1.0, 1.0, 1.0 );
-				#endif
-
-				ApplyDoubleSidedFlipOrMirror( fragInputs, doubleSidedConstants );
+                #ifdef _DOUBLESIDED_ON
+                    float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
+                #else
+                    float3 doubleSidedConstants = float3(1.0, 1.0, 1.0);
+                #endif
+                ApplyDoubleSidedFlipOrMirror(fragInputs, doubleSidedConstants);
 
 				#ifdef _ALPHATEST_ON
-				#ifdef _ALPHATEST_SHADOW_ON
-				DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThresholdShadow );
-				#else
-				DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThreshold );
+                    DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThreshold );
 				#endif
+
+				#ifdef _ALPHATEST_SHADOW_ON
+                    DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThresholdShadow);
 				#endif
 
 				#ifdef _DEPTHOFFSET_ON
-				builtinData.depthOffset = surfaceDescription.DepthOffset;
-				ApplyDepthOffsetPositionInput( V, surfaceDescription.DepthOffset, GetViewForwardDir(), GetWorldToHClipMatrix(), posInput );
+                    ApplyDepthOffsetPositionInput(V, surfaceDescription.DepthOffset, GetViewForwardDir(), GetWorldToHClipMatrix(), posInput);
 				#endif
 
-				float3 bentNormalWS;
-				BuildSurfaceData( fragInputs, surfaceDescription, V, posInput, surfaceData, bentNormalWS );
+                float3 bentNormalWS;
+                BuildSurfaceData(fragInputs, surfaceDescription, V, posInput, surfaceData, bentNormalWS);
+                InitBuiltinData(posInput, surfaceDescription.Alpha, bentNormalWS, -fragInputs.tangentToWorld[2], fragInputs.texCoord1, fragInputs.texCoord2, builtinData);
 
-				InitBuiltinData( posInput, surfaceDescription.Alpha, bentNormalWS, -fragInputs.tangentToWorld[ 2 ], fragInputs.texCoord1, fragInputs.texCoord2, builtinData );
+				#ifdef _DEPTHOFFSET_ON
+                    builtinData.depthOffset = surfaceDescription.DepthOffset;
+				#endif
 
-				PostInitBuiltinData(V, posInput, surfaceData, builtinData);
+                #ifdef _ALPHATEST_ON
+                    builtinData.alphaClipTreshold = surfaceDescription.AlphaClipThreshold;
+                #endif
+
+                #ifdef UNITY_VIRTUAL_TEXTURING
+                    builtinData.vtPackedFeedback = surfaceDescription.VTPackedFeedback;
+                #endif
+
+				#ifdef ASE_BAKEDGI
+                    builtinData.bakeDiffuseLighting = surfaceDescription.BakedGI;
+				#endif
+
+				#ifdef ASE_BAKEDBACKGI
+                    builtinData.backBakeDiffuseLighting = surfaceDescription.BakedBackGI;
+				#endif
+
+                builtinData.emissiveColor = surfaceDescription.Emission;
+
+                PostInitBuiltinData(V, posInput, surfaceData, builtinData);
 			}
 
 			PackedVaryingsMeshToPS VertexFunction(AttributesMesh inputMesh /*ase_vert_input*/)
 			{
-				PackedVaryingsMeshToPS outputPackedVaryingsMeshToPS;
+				PackedVaryingsMeshToPS output;
 				UNITY_SETUP_INSTANCE_ID(inputMesh);
-				UNITY_TRANSFER_INSTANCE_ID(inputMesh, outputPackedVaryingsMeshToPS);
-				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO( outputPackedVaryingsMeshToPS );
+				UNITY_TRANSFER_INSTANCE_ID(inputMesh, output);
+				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO( output );
 
-				/*ase_vert_code:inputMesh=AttributesMesh;outputPackedVaryingsMeshToPS=PackedVaryingsMeshToPS*/
+				/*ase_vert_code:inputMesh=AttributesMesh;output=PackedVaryingsMeshToPS*/
 
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 				float3 defaultVertexValue = inputMesh.positionOS.xyz;
@@ -2221,1073 +2526,13 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				#endif
 
 				inputMesh.normalOS = /*ase_vert_out:Vertex Normal;Float3;4;-1;_VertexNormal*/ inputMesh.normalOS /*end*/;
+				inputMesh.tangentOS = /*ase_vert_out:Vertex Tangent;Float4;27;-1;_VertexTangent*/inputMesh.tangentOS/*end*/;
 
 				float3 positionRWS = TransformObjectToWorld(inputMesh.positionOS);
-				outputPackedVaryingsMeshToPS.positionCS = TransformWorldToHClip(positionRWS);
-				outputPackedVaryingsMeshToPS.positionRWS.xyz = positionRWS;
-				return outputPackedVaryingsMeshToPS;
-			}
-
-			#if defined(ASE_TESSELLATION)
-			struct VertexControl
-			{
-				float3 positionOS : INTERNALTESSPOS;
-				float3 normalOS : NORMAL;
-				/*ase_vcontrol*/
-				UNITY_VERTEX_INPUT_INSTANCE_ID
-			};
-
-			struct TessellationFactors
-			{
-				float edge[3] : SV_TessFactor;
-				float inside : SV_InsideTessFactor;
-			};
-
-			VertexControl Vert ( AttributesMesh v )
-			{
-				VertexControl o;
-				UNITY_SETUP_INSTANCE_ID(v);
-				UNITY_TRANSFER_INSTANCE_ID(v, o);
-				o.positionOS = v.positionOS;
-				o.normalOS = v.normalOS;
-				/*ase_control_code:v=AttributesMesh;o=VertexControl*/
-				return o;
-			}
-
-			TessellationFactors TessellationFunction (InputPatch<VertexControl,3> v)
-			{
-				TessellationFactors o;
-				float4 tf = 1;
-				float tessValue = /*ase_inline_begin*/_TessValue/*ase_inline_end*/; float tessMin = /*ase_inline_begin*/_TessMin/*ase_inline_end*/; float tessMax = /*ase_inline_begin*/_TessMax/*ase_inline_end*/;
-				float edgeLength = /*ase_inline_begin*/_TessEdgeLength/*ase_inline_end*/; float tessMaxDisp = /*ase_inline_begin*/_TessMaxDisp/*ase_inline_end*/;
-				#if (SHADEROPTIONS_CAMERA_RELATIVE_RENDERING != 0)
-				float3 cameraPos = 0;
-				#else
-				float3 cameraPos = _WorldSpaceCameraPos;
-				#endif
-				#if defined(ASE_FIXED_TESSELLATION)
-				tf = FixedTess( tessValue );
-				#elif defined(ASE_DISTANCE_TESSELLATION)
-				tf = DistanceBasedTess(float4(v[0].positionOS,1), float4(v[1].positionOS,1), float4(v[2].positionOS,1), tessValue, tessMin, tessMax, GetObjectToWorldMatrix(), cameraPos );
-				#elif defined(ASE_LENGTH_TESSELLATION)
-				tf = EdgeLengthBasedTess(float4(v[0].positionOS,1), float4(v[1].positionOS,1), float4(v[2].positionOS,1), edgeLength, GetObjectToWorldMatrix(), cameraPos, _ScreenParams );
-				#elif defined(ASE_LENGTH_CULL_TESSELLATION)
-				tf = EdgeLengthBasedTessCull(float4(v[0].positionOS,1), float4(v[1].positionOS,1), float4(v[2].positionOS,1), edgeLength, tessMaxDisp, GetObjectToWorldMatrix(), cameraPos, _ScreenParams, _FrustumPlanes );
-				#endif
-				o.edge[0] = tf.x; o.edge[1] = tf.y; o.edge[2] = tf.z; o.inside = tf.w;
-				return o;
-			}
-
-			[domain("tri")]
-			[partitioning("fractional_odd")]
-			[outputtopology("triangle_cw")]
-			[patchconstantfunc("TessellationFunction")]
-			[outputcontrolpoints(3)]
-			VertexControl HullFunction(InputPatch<VertexControl, 3> patch, uint id : SV_OutputControlPointID)
-			{
-			   return patch[id];
-			}
-
-			[domain("tri")]
-			PackedVaryingsMeshToPS DomainFunction(TessellationFactors factors, OutputPatch<VertexControl, 3> patch, float3 bary : SV_DomainLocation)
-			{
-				AttributesMesh o = (AttributesMesh) 0;
-				o.positionOS = patch[0].positionOS * bary.x + patch[1].positionOS * bary.y + patch[2].positionOS * bary.z;
-				o.normalOS = patch[0].normalOS * bary.x + patch[1].normalOS * bary.y + patch[2].normalOS * bary.z;
-				/*ase_domain_code:patch=VertexControl;o=AttributesMesh;bary=SV_DomainLocation*/
-				#if defined(ASE_PHONG_TESSELLATION)
-				float3 pp[3];
-				for (int i = 0; i < 3; ++i)
-					pp[i] = o.positionOS.xyz - patch[i].normalOS * (dot(o.positionOS.xyz, patch[i].normalOS) - dot(patch[i].positionOS.xyz, patch[i].normalOS));
-				float phongStrength = /*ase_inline_begin*/_TessPhongStrength/*ase_inline_end*/;
-				o.positionOS.xyz = phongStrength * (pp[0]*bary.x + pp[1]*bary.y + pp[2]*bary.z) + (1.0f-phongStrength) * o.positionOS.xyz;
-				#endif
-				UNITY_TRANSFER_INSTANCE_ID(patch[0], o);
-				return VertexFunction(o);
-			}
-			#else
-			PackedVaryingsMeshToPS Vert ( AttributesMesh v )
-			{
-				return VertexFunction( v );
-			}
-			#endif
-
-			#if defined(WRITE_NORMAL_BUFFER) && defined(WRITE_MSAA_DEPTH)
-			#define SV_TARGET_DECAL SV_Target2
-			#elif defined(WRITE_NORMAL_BUFFER) || defined(WRITE_MSAA_DEPTH)
-			#define SV_TARGET_DECAL SV_Target1
-			#else
-			#define SV_TARGET_DECAL SV_Target0
-			#endif
-
-			void Frag( PackedVaryingsMeshToPS packedInput
-						#if defined(SCENESELECTIONPASS) || defined(SCENEPICKINGPASS)
-						, out float4 outColor : SV_Target0
-						#else
-							#ifdef WRITE_MSAA_DEPTH
-							, out float4 depthColor : SV_Target0
-								#ifdef WRITE_NORMAL_BUFFER
-								, out float4 outNormalBuffer : SV_Target1
-								#endif
-							#else
-								#ifdef WRITE_NORMAL_BUFFER
-								, out float4 outNormalBuffer : SV_Target0
-								#endif
-							#endif
-
-							#if defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)
-							, out float4 outDecalBuffer : SV_TARGET_DECAL
-							#endif
-						#endif
-
-						#if defined(_DEPTHOFFSET_ON) && !defined(SCENEPICKINGPASS)
-						, out float outputDepth : SV_Depth
-						#endif
-						/*ase_frag_input*/
-					)
-			{
-				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX( packedInput );
-				UNITY_SETUP_INSTANCE_ID( packedInput );
-
-				/*ase_local_var:rwp*/float3 positionRWS = packedInput.positionRWS.xyz;
-
-				FragInputs input;
-				ZERO_INITIALIZE(FragInputs, input);
-
-				input.tangentToWorld = k_identity3x3;
-				input.positionSS = packedInput.positionCS;
-
-				input.positionRWS = positionRWS;
-
-				#if _DOUBLESIDED_ON && SHADER_STAGE_FRAGMENT
-				input.isFrontFace = IS_FRONT_VFACE( packedInput.cullFace, true, false);
-				#elif SHADER_STAGE_FRAGMENT
-				#if defined(ASE_NEED_CULLFACE)
-				input.isFrontFace = IS_FRONT_VFACE( packedInput.cullFace, true, false );
-				#endif
-				#endif
-				/*ase_local_var:vf*/half isFrontFace = input.isFrontFace;
-
-				PositionInputs posInput = GetPositionInput(input.positionSS.xy, _ScreenSize.zw, input.positionSS.z, input.positionSS.w, input.positionRWS);
-
-				/*ase_local_var:wvd*/float3 V = GetWorldSpaceNormalizeViewDir(input.positionRWS);
-
-				AlphaSurfaceDescription surfaceDescription = (AlphaSurfaceDescription)0;
-				/*ase_frag_code:packedInput=PackedVaryingsMeshToPS*/
-				surfaceDescription.Alpha = /*ase_frag_out:Alpha;Float;0;-1;_Alpha*/1/*end*/;
-
-				#ifdef _ALPHATEST_ON
-				surfaceDescription.AlphaClipThreshold = /*ase_frag_out:Alpha Clip Threshold;Float;1;-1;_AlphaClip*/_AlphaCutoff/*end*/;
-				#endif
-
-				#ifdef _ALPHATEST_SHADOW_ON
-				surfaceDescription.AlphaClipThresholdShadow = /*ase_frag_out:Alpha Clip Threshold Shadow;Float;2;-1;_AlphaClipShadow*/0.5/*end*/;
-				#endif
-
-				#ifdef _DEPTHOFFSET_ON
-				surfaceDescription.DepthOffset = /*ase_frag_out:DepthOffset;Float;5;-1;_DepthOffset*/0/*end*/;
-				#endif
-
-				SurfaceData surfaceData;
-				BuiltinData builtinData;
-				GetSurfaceAndBuiltinData(surfaceDescription, input, V, posInput, surfaceData, builtinData);
-
-				#ifdef _DEPTHOFFSET_ON
-				outputDepth = posInput.deviceDepth;
-				float bias = max(abs(ddx(posInput.deviceDepth)), abs(ddy(posInput.deviceDepth))) * _SlopeScaleDepthBias;
-				outputDepth += bias;
-				#endif
-
-				#ifdef WRITE_MSAA_DEPTH
-				depthColor = packedInput.vmesh.positionCS.z;
-
-				#ifdef _ALPHATOMASK_ON
-				depthColor.a = SharpenAlpha(builtinData.opacity, builtinData.alphaClipTreshold);
-				#endif
-				#endif
-
-				#if defined(WRITE_NORMAL_BUFFER)
-				EncodeIntoNormalBuffer(ConvertSurfaceDataToNormalData(surfaceData), outNormalBuffer);
-				#endif
-
-				#if defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)
-				DecalPrepassData decalPrepassData;
-				decalPrepassData.geomNormalWS = surfaceData.geomNormalWS;
-				decalPrepassData.decalLayerMask = GetMeshRenderingDecalLayer();
-				EncodeIntoDecalPrepassBuffer(decalPrepassData, outDecalBuffer);
-				#endif
-			}
-			ENDHLSL
-		}
-
-		/*ase_pass*/
-		Pass
-		{
-			/*ase_hide_pass*/
-			Name "SceneSelectionPass"
-			Tags { "LightMode" = "SceneSelectionPass" }
-
-			Cull Off
-
-			HLSLPROGRAM
-
-            #pragma shader_feature _SURFACE_TYPE_TRANSPARENT
-			#pragma shader_feature_local _TRANSPARENT_WRITES_MOTION_VEC
-			#pragma shader_feature_local_fragment _ENABLE_FOG_ON_TRANSPARENT
-			#pragma shader_feature_local _DOUBLESIDED_ON
-			#pragma shader_feature_local _ALPHATEST_ON
-
-			#pragma editor_sync_compilation
-
-			#pragma vertex Vert
-			#pragma fragment Frag
-
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Tessellation.hlsl"
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
-
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
-
-			#define SHADERPASS SHADERPASS_DEPTH_ONLY
-		    #define SCENESELECTIONPASS 1
-
-			#ifndef SHADER_UNLIT
-			#if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
-			#define VARYINGS_NEED_CULLFACE
-			#endif
-			#endif
-
-		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
-			#define OUTPUT_SPLIT_LIGHTING
-		    #endif
-
-		    #if (SHADERPASS == SHADERPASS_PATH_TRACING) && !defined(_DOUBLESIDED_ON) && (defined(_REFRACTION_PLANE) || defined(_REFRACTION_SPHERE))
-			#undef  _REFRACTION_PLANE
-			#undef  _REFRACTION_SPHERE
-			#define _REFRACTION_THIN
-		    #endif
-
-			#if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
-			#if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
-				#define WRITE_NORMAL_BUFFER
-			#endif
-			#endif
-
-			#ifndef DEBUG_DISPLAY
-				#if !defined(_SURFACE_TYPE_TRANSPARENT)
-					#if SHADERPASS == SHADERPASS_FORWARD
-					#define SHADERPASS_FORWARD_BYPASS_ALPHA_TEST
-					#elif SHADERPASS == SHADERPASS_GBUFFER
-					#define SHADERPASS_GBUFFER_BYPASS_ALPHA_TEST
-					#endif
-				#endif
-			#endif
-
-			#if defined(SHADER_LIT) && !defined(_SURFACE_TYPE_TRANSPARENT)
-			#define _DEFERRED_CAPABLE_MATERIAL
-			#endif
-
-			#if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
-			#define _WRITE_TRANSPARENT_MOTION_VECTOR
-			#endif
-
-			CBUFFER_START( UnityPerMaterial )
-			float4 _EmissionColor;
-			float _AlphaCutoff;
-			float _RenderQueueType;
-			#ifdef _ADD_PRECOMPUTED_VELOCITY
-			float _AddPrecomputedVelocity;
-			#endif
-			float _StencilRef;
-			float _StencilWriteMask;
-			float _StencilRefDepth;
-			float _StencilWriteMaskDepth;
-			float _StencilRefMV;
-			float _StencilWriteMaskMV;
-			float _StencilWriteMaskGBuffer;
-			float _StencilRefGBuffer;
-			float _ZTestGBuffer;
-			float _RequireSplitLighting;
-			float _ReceivesSSR;
-			float _SurfaceType;
-			float _BlendMode;
-            #ifdef SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
-			float _EnableBlendModePreserveSpecularLighting;
-            #endif
-			float _SrcBlend;
-			float _DstBlend;
-			float _AlphaSrcBlend;
-			float _AlphaDstBlend;
-			float _ZWrite;
-			float _TransparentZWrite;
-			float _CullMode;
-			float _TransparentSortPriority;
-			float _EnableFogOnTransparent;
-			float _CullModeForward;
-			float _TransparentCullMode;
-			float _ZTestDepthEqualForOpaque;
-			float _ZTestTransparent;
-			float _TransparentBackfaceEnable;
-			float _AlphaCutoffEnable;
-			float _UseShadowThreshold;
-			float _DoubleSidedEnable;
-			float _DoubleSidedNormalMode;
-			float4 _DoubleSidedConstants;
-			#ifdef ASE_TESSELLATION
-			float _TessPhongStrength;
-			float _TessValue;
-			float _TessMin;
-			float _TessMax;
-			float _TessEdgeLength;
-			float _TessMaxDisp;
-			#endif
-			CBUFFER_END
-
-			// Property used by ScenePickingPass
-            #ifdef SCENEPICKINGPASS
-			float4 _SelectionID;
-            #endif
-
-			// Properties used by SceneSelectionPass
-            #ifdef SCENESELECTIONPASS
-			int _ObjectId;
-			int _PassValue;
-            #endif
-
-			/*ase_globals*/
-
-            #ifdef DEBUG_DISPLAY
-            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
-            #endif
-
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/PickingSpaceTransforms.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Material.hlsl"
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/NormalSurfaceGradient.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/Lit.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/BuiltinUtilities.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/MaterialUtilities.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphFunctions.hlsl"
-
-			// Setup DECALS_OFF so the shader stripper can remove variants
-            #define HAVE_DECALS ( (defined(DECALS_3RT) || defined(DECALS_4RT)) && !defined(_DISABLE_DECALS) )
-            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalUtilities.hlsl"
-            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/LitDecalData.hlsl"
-
-			/*ase_pragma*/
-
-			#if defined(_DOUBLESIDED_ON) && !defined(ASE_NEED_CULLFACE)
-			#define ASE_NEED_CULLFACE 1
-			#endif
-
-			struct AttributesMesh
-			{
-				float3 positionOS : POSITION;
-				float3 normalOS : NORMAL;
-				/*ase_vdata:p=p;n=n*/
-				UNITY_VERTEX_INPUT_INSTANCE_ID
-			};
-
-			struct PackedVaryingsMeshToPS
-			{
-				float4 positionCS : SV_Position;
-				float3 positionRWS : TEXCOORD0;
-				/*ase_interp(1,):sp=sp.xyzw;rwp=tc0*/
-				UNITY_VERTEX_INPUT_INSTANCE_ID
-				UNITY_VERTEX_OUTPUT_STEREO
-				#if defined(SHADER_STAGE_FRAGMENT) && defined(ASE_NEED_CULLFACE)
-				FRONT_FACE_TYPE cullFace : FRONT_FACE_SEMANTIC;
-				#endif
-			};
-
-			/*ase_funcs*/
-
-			void BuildSurfaceData(FragInputs fragInputs, inout SceneSurfaceDescription surfaceDescription, float3 V, PositionInputs posInput, out SurfaceData surfaceData, out float3 bentNormalWS)
-			{
-				ZERO_INITIALIZE(SurfaceData, surfaceData);
-
-				surfaceData.specularOcclusion = 1.0;
-
-				// surface data
-
-				// refraction
-				#ifdef _HAS_REFRACTION
-				if( _EnableSSRefraction )
-				{
-					surfaceData.transmittanceMask = ( 1.0 - surfaceDescription.Alpha );
-					surfaceDescription.Alpha = 1.0;
-				}
-				else
-				{
-					surfaceData.ior = 1.0;
-					surfaceData.transmittanceColor = float3( 1.0, 1.0, 1.0 );
-					surfaceData.atDistance = 1.0;
-					surfaceData.transmittanceMask = 0.0;
-					surfaceDescription.Alpha = 1.0;
-				}
-				#else
-				surfaceData.ior = 1.0;
-				surfaceData.transmittanceColor = float3( 1.0, 1.0, 1.0 );
-				surfaceData.atDistance = 1.0;
-				surfaceData.transmittanceMask = 0.0;
-				#endif
-
-
-				// material features
-				surfaceData.materialFeatures = MATERIALFEATUREFLAGS_LIT_STANDARD;
-				#ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SUBSURFACE_SCATTERING;
-				#endif
-				#ifdef _MATERIAL_FEATURE_TRANSMISSION
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
-				#endif
-                #ifdef _MATERIAL_FEATURE_ANISOTROPY
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
-				surfaceData.normalWS = float3(0, 1, 0);
-                #endif
-				#ifdef _MATERIAL_FEATURE_CLEAR_COAT
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_CLEAR_COAT;
-				#endif
-				#ifdef _MATERIAL_FEATURE_IRIDESCENCE
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_IRIDESCENCE;
-				#endif
-				#ifdef _MATERIAL_FEATURE_SPECULAR_COLOR
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SPECULAR_COLOR;
-				#endif
-
-				// others
-				#if defined (_MATERIAL_FEATURE_SPECULAR_COLOR) && defined (_ENERGY_CONSERVING_SPECULAR)
-				surfaceData.baseColor *= ( 1.0 - Max3( surfaceData.specularColor.r, surfaceData.specularColor.g, surfaceData.specularColor.b ) );
-				#endif
-				#ifdef _DOUBLESIDED_ON
-				float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
-				#else
-				float3 doubleSidedConstants = float3( 1.0, 1.0, 1.0 );
-				#endif
-
-				// normals
-				float3 normalTS = float3(0.0f, 0.0f, 1.0f);
-				GetNormalWS( fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants );
-
-				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
-				surfaceData.tangentWS = normalize( fragInputs.tangentToWorld[ 0 ].xyz );
-
-				// decals
-				#if HAVE_DECALS
-				if( _EnableDecals )
-				{
-					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, surfaceDescription.Alpha);
-					ApplyDecalToSurfaceData(decalSurfaceData, fragInputs.tangentToWorld[2], surfaceData);
-				}
-				#endif
-
-				bentNormalWS = surfaceData.normalWS;
-				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
-
-                #if defined(_SPECULAR_OCCLUSION_CUSTOM)
-                #elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO(V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness(surfaceData.perceptualSmoothness));
-                #elif defined(_AMBIENT_OCCLUSION) && defined(_SPECULAR_OCCLUSION_FROM_AO)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion(ClampNdotV(dot(surfaceData.normalWS, V)), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness(surfaceData.perceptualSmoothness));
-                #endif
-
-				// debug
-				#if defined(DEBUG_DISPLAY)
-				if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
-				{
-					surfaceData.metallic = 0;
-				}
-				ApplyDebugToSurfaceData(fragInputs.tangentToWorld, surfaceData);
-				#endif
-			}
-
-			void GetSurfaceAndBuiltinData(SceneSurfaceDescription surfaceDescription, FragInputs fragInputs, float3 V, inout PositionInputs posInput, out SurfaceData surfaceData, out BuiltinData builtinData)
-			{
-				#ifdef LOD_FADE_CROSSFADE
-				LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
-				#endif
-
-				#ifdef _DOUBLESIDED_ON
-				float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
-				#else
-				float3 doubleSidedConstants = float3( 1.0, 1.0, 1.0 );
-				#endif
-
-				ApplyDoubleSidedFlipOrMirror( fragInputs, doubleSidedConstants );
-
-				#ifdef _ALPHATEST_ON
-				DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThreshold );
-				#endif
-
-				#ifdef _DEPTHOFFSET_ON
-				builtinData.depthOffset = surfaceDescription.DepthOffset;
-				ApplyDepthOffsetPositionInput( V, surfaceDescription.DepthOffset, GetViewForwardDir(), GetWorldToHClipMatrix(), posInput );
-				#endif
-
-				float3 bentNormalWS;
-				BuildSurfaceData( fragInputs, surfaceDescription, V, posInput, surfaceData, bentNormalWS );
-
-				InitBuiltinData( posInput, surfaceDescription.Alpha, bentNormalWS, -fragInputs.tangentToWorld[ 2 ], fragInputs.texCoord1, fragInputs.texCoord2, builtinData );
-
-				PostInitBuiltinData(V, posInput, surfaceData, builtinData);
-			}
-
-			PackedVaryingsMeshToPS VertexFunction(AttributesMesh inputMesh /*ase_vert_input*/)
-			{
-				PackedVaryingsMeshToPS outputPackedVaryingsMeshToPS;
-				UNITY_SETUP_INSTANCE_ID(inputMesh);
-				UNITY_TRANSFER_INSTANCE_ID(inputMesh, outputPackedVaryingsMeshToPS);
-				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO( outputPackedVaryingsMeshToPS );
-
-				/*ase_vert_code:inputMesh=AttributesMesh;outputPackedVaryingsMeshToPS=PackedVaryingsMeshToPS*/
-
-				#ifdef ASE_ABSOLUTE_VERTEX_POS
-				float3 defaultVertexValue = inputMesh.positionOS.xyz;
-				#else
-				float3 defaultVertexValue = float3( 0, 0, 0 );
-				#endif
-				float3 vertexValue = /*ase_vert_out:Vertex Offset;Float3;2;-1;_VertexOffset*/ defaultVertexValue /*end*/;
-
-				#ifdef ASE_ABSOLUTE_VERTEX_POS
-				inputMesh.positionOS.xyz = vertexValue;
-				#else
-				inputMesh.positionOS.xyz += vertexValue;
-				#endif
-
-				inputMesh.normalOS = /*ase_vert_out:Vertex Normal;Float3;3;-1;_VertexNormal*/ inputMesh.normalOS /*end*/;
-
-				float3 positionRWS = TransformObjectToWorld(inputMesh.positionOS);
-				outputPackedVaryingsMeshToPS.positionCS = TransformWorldToHClip(positionRWS);
-				outputPackedVaryingsMeshToPS.positionRWS.xyz = positionRWS;
-				return outputPackedVaryingsMeshToPS;
-			}
-
-			#if defined(ASE_TESSELLATION)
-			struct VertexControl
-			{
-				float3 positionOS : INTERNALTESSPOS;
-				float3 normalOS : NORMAL;
-				/*ase_vcontrol*/
-				UNITY_VERTEX_INPUT_INSTANCE_ID
-			};
-
-			struct TessellationFactors
-			{
-				float edge[3] : SV_TessFactor;
-				float inside : SV_InsideTessFactor;
-			};
-
-			VertexControl Vert ( AttributesMesh v )
-			{
-				VertexControl o;
-				UNITY_SETUP_INSTANCE_ID(v);
-				UNITY_TRANSFER_INSTANCE_ID(v, o);
-				o.positionOS = v.positionOS;
-				o.normalOS = v.normalOS;
-				/*ase_control_code:v=AttributesMesh;o=VertexControl*/
-				return o;
-			}
-
-			TessellationFactors TessellationFunction (InputPatch<VertexControl,3> v)
-			{
-				TessellationFactors o;
-				float4 tf = 1;
-				float tessValue = /*ase_inline_begin*/_TessValue/*ase_inline_end*/; float tessMin = /*ase_inline_begin*/_TessMin/*ase_inline_end*/; float tessMax = /*ase_inline_begin*/_TessMax/*ase_inline_end*/;
-				float edgeLength = /*ase_inline_begin*/_TessEdgeLength/*ase_inline_end*/; float tessMaxDisp = /*ase_inline_begin*/_TessMaxDisp/*ase_inline_end*/;
-				#if (SHADEROPTIONS_CAMERA_RELATIVE_RENDERING != 0)
-				float3 cameraPos = 0;
-				#else
-				float3 cameraPos = _WorldSpaceCameraPos;
-				#endif
-				#if defined(ASE_FIXED_TESSELLATION)
-				tf = FixedTess( tessValue );
-				#elif defined(ASE_DISTANCE_TESSELLATION)
-				tf = DistanceBasedTess(float4(v[0].positionOS,1), float4(v[1].positionOS,1), float4(v[2].positionOS,1), tessValue, tessMin, tessMax, GetObjectToWorldMatrix(), cameraPos );
-				#elif defined(ASE_LENGTH_TESSELLATION)
-				tf = EdgeLengthBasedTess(float4(v[0].positionOS,1), float4(v[1].positionOS,1), float4(v[2].positionOS,1), edgeLength, GetObjectToWorldMatrix(), cameraPos, _ScreenParams );
-				#elif defined(ASE_LENGTH_CULL_TESSELLATION)
-				tf = EdgeLengthBasedTessCull(float4(v[0].positionOS,1), float4(v[1].positionOS,1), float4(v[2].positionOS,1), edgeLength, tessMaxDisp, GetObjectToWorldMatrix(), cameraPos, _ScreenParams, _FrustumPlanes );
-				#endif
-				o.edge[0] = tf.x; o.edge[1] = tf.y; o.edge[2] = tf.z; o.inside = tf.w;
-				return o;
-			}
-
-			[domain("tri")]
-			[partitioning("fractional_odd")]
-			[outputtopology("triangle_cw")]
-			[patchconstantfunc("TessellationFunction")]
-			[outputcontrolpoints(3)]
-			VertexControl HullFunction(InputPatch<VertexControl, 3> patch, uint id : SV_OutputControlPointID)
-			{
-			   return patch[id];
-			}
-
-			[domain("tri")]
-			PackedVaryingsMeshToPS DomainFunction(TessellationFactors factors, OutputPatch<VertexControl, 3> patch, float3 bary : SV_DomainLocation)
-			{
-				AttributesMesh o = (AttributesMesh) 0;
-				o.positionOS = patch[0].positionOS * bary.x + patch[1].positionOS * bary.y + patch[2].positionOS * bary.z;
-				o.normalOS = patch[0].normalOS * bary.x + patch[1].normalOS * bary.y + patch[2].normalOS * bary.z;
-				/*ase_domain_code:patch=VertexControl;o=AttributesMesh;bary=SV_DomainLocation*/
-				#if defined(ASE_PHONG_TESSELLATION)
-				float3 pp[3];
-				for (int i = 0; i < 3; ++i)
-					pp[i] = o.positionOS.xyz - patch[i].normalOS * (dot(o.positionOS.xyz, patch[i].normalOS) - dot(patch[i].positionOS.xyz, patch[i].normalOS));
-				float phongStrength = /*ase_inline_begin*/_TessPhongStrength/*ase_inline_end*/;
-				o.positionOS.xyz = phongStrength * (pp[0]*bary.x + pp[1]*bary.y + pp[2]*bary.z) + (1.0f-phongStrength) * o.positionOS.xyz;
-				#endif
-				UNITY_TRANSFER_INSTANCE_ID(patch[0], o);
-				return VertexFunction(o);
-			}
-			#else
-			PackedVaryingsMeshToPS Vert ( AttributesMesh v )
-			{
-				return VertexFunction( v );
-			}
-			#endif
-
-			#if defined(WRITE_NORMAL_BUFFER) && defined(WRITE_MSAA_DEPTH)
-			#define SV_TARGET_DECAL SV_Target2
-			#elif defined(WRITE_NORMAL_BUFFER) || defined(WRITE_MSAA_DEPTH)
-			#define SV_TARGET_DECAL SV_Target1
-			#else
-			#define SV_TARGET_DECAL SV_Target0
-			#endif
-
-			void Frag( PackedVaryingsMeshToPS packedInput
-						, out float4 outColor : SV_Target0
-						#if defined(_DEPTHOFFSET_ON) && !defined(SCENEPICKINGPASS)
-						, out float outputDepth : SV_Depth
-						#endif
-						/*ase_frag_input*/
-					)
-			{
-				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX( packedInput );
-				UNITY_SETUP_INSTANCE_ID( packedInput );
-
-				/*ase_local_var:rwp*/float3 positionRWS = packedInput.positionRWS.xyz;
-
-				FragInputs input;
-				ZERO_INITIALIZE(FragInputs, input);
-
-				input.tangentToWorld = k_identity3x3;
-				input.positionSS = packedInput.positionCS;
-
-				input.positionRWS = positionRWS;
-
-				#if _DOUBLESIDED_ON && SHADER_STAGE_FRAGMENT
-				input.isFrontFace = IS_FRONT_VFACE( packedInput.cullFace, true, false);
-				#elif SHADER_STAGE_FRAGMENT
-				#if defined(ASE_NEED_CULLFACE)
-				input.isFrontFace = IS_FRONT_VFACE( packedInput.cullFace, true, false );
-				#endif
-				#endif
-				/*ase_local_var:vf*/half isFrontFace = input.isFrontFace;
-
-				PositionInputs posInput = GetPositionInput(input.positionSS.xy, _ScreenSize.zw, input.positionSS.z, input.positionSS.w, input.positionRWS);
-
-				/*ase_local_var:wvd*/float3 V = GetWorldSpaceNormalizeViewDir(input.positionRWS);
-
-				SceneSurfaceDescription surfaceDescription = (SceneSurfaceDescription)0;
-				/*ase_frag_code:packedInput=PackedVaryingsMeshToPS*/
-				surfaceDescription.Alpha = /*ase_frag_out:Alpha;Float;0;-1;_Alpha*/1/*end*/;
-
-				#ifdef _ALPHATEST_ON
-				surfaceDescription.AlphaClipThreshold = /*ase_frag_out:Alpha Clip Threshold;Float;1;-1;_AlphaClip*/_AlphaCutoff/*end*/;
-				#endif
-
-				#ifdef _DEPTHOFFSET_ON
-				surfaceDescription.DepthOffset = /*ase_frag_out:DepthOffset;Float;4;-1;_DepthOffset*/0/*end*/;
-				#endif
-
-				SurfaceData surfaceData;
-				BuiltinData builtinData;
-				GetSurfaceAndBuiltinData(surfaceDescription, input, V, posInput, surfaceData, builtinData);
-
-				#ifdef _DEPTHOFFSET_ON
-				outputDepth = posInput.deviceDepth;
-				#endif
-
-				outColor = float4( _ObjectId, _PassValue, 1.0, 1.0 );
-			}
-			ENDHLSL
-		}
-
-		/*ase_pass*/
-		Pass
-		{
-			/*ase_hide_pass*/
-			Name "DepthOnly"
-			Tags { "LightMode" = "DepthOnly" }
-
-			Cull [_CullMode]
-
-			ZWrite On
-
-			Stencil
-			{
-				WriteMask [_StencilWriteMaskDepth]
-				Ref [_StencilRefDepth]
-		        CompFront Always
-		        PassFront Replace
-		        CompBack Always
-		        PassBack Replace
-			}
-
-			HLSLPROGRAM
-
-            #pragma shader_feature _SURFACE_TYPE_TRANSPARENT
-			#pragma shader_feature_local _TRANSPARENT_WRITES_MOTION_VEC
-			#pragma shader_feature_local_fragment _ENABLE_FOG_ON_TRANSPARENT
-			#pragma shader_feature_local _DOUBLESIDED_ON
-			#pragma shader_feature_local _ALPHATEST_ON
-
-			#pragma multi_compile _ WRITE_NORMAL_BUFFER
-			#pragma multi_compile_fragment _ WRITE_MSAA_DEPTH
-			#pragma multi_compile _ WRITE_DECAL_BUFFER
-
-			#pragma vertex Vert
-			#pragma fragment Frag
-
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Tessellation.hlsl"
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
-
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
-
-			#define SHADERPASS SHADERPASS_DEPTH_ONLY
-
-			#ifndef SHADER_UNLIT
-			#if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
-			#define VARYINGS_NEED_CULLFACE
-			#endif
-			#endif
-
-		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
-			#define OUTPUT_SPLIT_LIGHTING
-		    #endif
-
-		    #if (SHADERPASS == SHADERPASS_PATH_TRACING) && !defined(_DOUBLESIDED_ON) && (defined(_REFRACTION_PLANE) || defined(_REFRACTION_SPHERE))
-			#undef  _REFRACTION_PLANE
-			#undef  _REFRACTION_SPHERE
-			#define _REFRACTION_THIN
-		    #endif
-
-			#if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
-			#if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
-				#define WRITE_NORMAL_BUFFER
-			#endif
-			#endif
-
-			#ifndef DEBUG_DISPLAY
-				#if !defined(_SURFACE_TYPE_TRANSPARENT)
-					#if SHADERPASS == SHADERPASS_FORWARD
-					#define SHADERPASS_FORWARD_BYPASS_ALPHA_TEST
-					#elif SHADERPASS == SHADERPASS_GBUFFER
-					#define SHADERPASS_GBUFFER_BYPASS_ALPHA_TEST
-					#endif
-				#endif
-			#endif
-
-			#if defined(SHADER_LIT) && !defined(_SURFACE_TYPE_TRANSPARENT)
-			#define _DEFERRED_CAPABLE_MATERIAL
-			#endif
-
-			#if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
-			#define _WRITE_TRANSPARENT_MOTION_VECTOR
-			#endif
-
-			CBUFFER_START( UnityPerMaterial )
-			float4 _EmissionColor;
-			float _AlphaCutoff;
-			float _RenderQueueType;
-			#ifdef _ADD_PRECOMPUTED_VELOCITY
-			float _AddPrecomputedVelocity;
-			#endif
-			float _StencilRef;
-			float _StencilWriteMask;
-			float _StencilRefDepth;
-			float _StencilWriteMaskDepth;
-			float _StencilRefMV;
-			float _StencilWriteMaskMV;
-			float _StencilWriteMaskGBuffer;
-			float _StencilRefGBuffer;
-			float _ZTestGBuffer;
-			float _RequireSplitLighting;
-			float _ReceivesSSR;
-			float _SurfaceType;
-			float _BlendMode;
-            #ifdef SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
-			float _EnableBlendModePreserveSpecularLighting;
-            #endif
-			float _SrcBlend;
-			float _DstBlend;
-			float _AlphaSrcBlend;
-			float _AlphaDstBlend;
-			float _ZWrite;
-			float _TransparentZWrite;
-			float _CullMode;
-			float _TransparentSortPriority;
-			float _EnableFogOnTransparent;
-			float _CullModeForward;
-			float _TransparentCullMode;
-			float _ZTestDepthEqualForOpaque;
-			float _ZTestTransparent;
-			float _TransparentBackfaceEnable;
-			float _AlphaCutoffEnable;
-			float _UseShadowThreshold;
-			float _DoubleSidedEnable;
-			float _DoubleSidedNormalMode;
-			float4 _DoubleSidedConstants;
-			#ifdef ASE_TESSELLATION
-			float _TessPhongStrength;
-			float _TessValue;
-			float _TessMin;
-			float _TessMax;
-			float _TessEdgeLength;
-			float _TessMaxDisp;
-			#endif
-			CBUFFER_END
-
-			// Property used by ScenePickingPass
-            #ifdef SCENEPICKINGPASS
-			float4 _SelectionID;
-            #endif
-
-			// Properties used by SceneSelectionPass
-            #ifdef SCENESELECTIONPASS
-			int _ObjectId;
-			int _PassValue;
-            #endif
-
-			/*ase_globals*/
-
-            #ifdef DEBUG_DISPLAY
-            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
-            #endif
-
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Material.hlsl"
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/NormalSurfaceGradient.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/Lit.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/BuiltinUtilities.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/MaterialUtilities.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphFunctions.hlsl"
-
-			// Setup DECALS_OFF so the shader stripper can remove variants
-            #define HAVE_DECALS ( (defined(DECALS_3RT) || defined(DECALS_4RT)) && !defined(_DISABLE_DECALS) )
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalUtilities.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/LitDecalData.hlsl"
-
-			/*ase_pragma*/
-
-			#if defined(_DOUBLESIDED_ON) && !defined(ASE_NEED_CULLFACE)
-			#define ASE_NEED_CULLFACE 1
-			#endif
-
-			struct AttributesMesh
-			{
-				float3 positionOS : POSITION;
-				float3 normalOS : NORMAL;
-				float4 tangentOS : TANGENT;
-				/*ase_vdata:p=p;n=n;t=t*/
-				UNITY_VERTEX_INPUT_INSTANCE_ID
-			};
-
-			struct PackedVaryingsMeshToPS
-			{
-				float4 positionCS : SV_Position;
-				float3 positionRWS : TEXCOORD0;
-				float3 normalWS : TEXCOORD1;
-				float4 tangentWS : TEXCOORD2;
-				/*ase_interp(3,):sp=sp.xyzw;rwp=tc0;wn=tc1;wt=tc2*/
-				UNITY_VERTEX_INPUT_INSTANCE_ID
-				UNITY_VERTEX_OUTPUT_STEREO
-				#if defined(SHADER_STAGE_FRAGMENT) && defined(ASE_NEED_CULLFACE)
-				FRONT_FACE_TYPE cullFace : FRONT_FACE_SEMANTIC;
-				#endif
-			};
-
-			/*ase_funcs*/
-
-			void BuildSurfaceData(FragInputs fragInputs, inout SmoothSurfaceDescription surfaceDescription, float3 V, PositionInputs posInput, out SurfaceData surfaceData, out float3 bentNormalWS)
-			{
-				ZERO_INITIALIZE(SurfaceData, surfaceData);
-
-				surfaceData.specularOcclusion = 1.0;
-
-				// surface data
-				surfaceData.perceptualSmoothness =		surfaceDescription.Smoothness;
-
-				// refraction
-				#ifdef _HAS_REFRACTION
-				if( _EnableSSRefraction )
-				{
-					surfaceData.transmittanceMask = ( 1.0 - surfaceDescription.Alpha );
-					surfaceDescription.Alpha = 1.0;
-				}
-				else
-				{
-					surfaceData.ior = 1.0;
-					surfaceData.transmittanceColor = float3( 1.0, 1.0, 1.0 );
-					surfaceData.atDistance = 1.0;
-					surfaceData.transmittanceMask = 0.0;
-					surfaceDescription.Alpha = 1.0;
-				}
-				#else
-				surfaceData.ior = 1.0;
-				surfaceData.transmittanceColor = float3( 1.0, 1.0, 1.0 );
-				surfaceData.atDistance = 1.0;
-				surfaceData.transmittanceMask = 0.0;
-				#endif
-
-
-				// material features
-				surfaceData.materialFeatures = MATERIALFEATUREFLAGS_LIT_STANDARD;
-				#ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SUBSURFACE_SCATTERING;
-				#endif
-				#ifdef _MATERIAL_FEATURE_TRANSMISSION
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
-				#endif
-                #ifdef _MATERIAL_FEATURE_ANISOTROPY
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
-				surfaceData.normalWS = float3(0, 1, 0);
-                #endif
-				#ifdef _MATERIAL_FEATURE_CLEAR_COAT
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_CLEAR_COAT;
-				#endif
-				#ifdef _MATERIAL_FEATURE_IRIDESCENCE
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_IRIDESCENCE;
-				#endif
-				#ifdef _MATERIAL_FEATURE_SPECULAR_COLOR
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SPECULAR_COLOR;
-				#endif
-
-				// others
-				#if defined (_MATERIAL_FEATURE_SPECULAR_COLOR) && defined (_ENERGY_CONSERVING_SPECULAR)
-				surfaceData.baseColor *= ( 1.0 - Max3( surfaceData.specularColor.r, surfaceData.specularColor.g, surfaceData.specularColor.b ) );
-				#endif
-				#ifdef _DOUBLESIDED_ON
-				float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
-				#else
-				float3 doubleSidedConstants = float3( 1.0, 1.0, 1.0 );
-				#endif
-
-				// normals
-				float3 normalTS = float3(0.0f, 0.0f, 1.0f);
-				normalTS = surfaceDescription.Normal;
-				GetNormalWS( fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants );
-
-				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
-				surfaceData.tangentWS = normalize( fragInputs.tangentToWorld[ 0 ].xyz );
-
-				// decals
-				#if HAVE_DECALS
-				if( _EnableDecals )
-				{
-					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, surfaceDescription.Alpha);
-					ApplyDecalToSurfaceData(decalSurfaceData, fragInputs.tangentToWorld[2], surfaceData);
-				}
-				#endif
-
-				bentNormalWS = surfaceData.normalWS;
-				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
-
-                #if defined(_SPECULAR_OCCLUSION_CUSTOM)
-                #elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO(V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness(surfaceData.perceptualSmoothness));
-                #elif defined(_AMBIENT_OCCLUSION) && defined(_SPECULAR_OCCLUSION_FROM_AO)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion(ClampNdotV(dot(surfaceData.normalWS, V)), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness(surfaceData.perceptualSmoothness));
-                #endif
-
-				// debug
-				#if defined(DEBUG_DISPLAY)
-				if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
-				{
-					surfaceData.metallic = 0;
-				}
-				ApplyDebugToSurfaceData(fragInputs.tangentToWorld, surfaceData);
-				#endif
-			}
-
-			void GetSurfaceAndBuiltinData(SmoothSurfaceDescription surfaceDescription, FragInputs fragInputs, float3 V, inout PositionInputs posInput, out SurfaceData surfaceData, out BuiltinData builtinData)
-			{
-				#ifdef LOD_FADE_CROSSFADE
-				LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
-				#endif
-
-				#ifdef _DOUBLESIDED_ON
-				float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
-				#else
-				float3 doubleSidedConstants = float3( 1.0, 1.0, 1.0 );
-				#endif
-
-				ApplyDoubleSidedFlipOrMirror( fragInputs, doubleSidedConstants );
-
-				#ifdef _ALPHATEST_ON
-				DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThreshold );
-				#endif
-
-				#ifdef _DEPTHOFFSET_ON
-				builtinData.depthOffset = surfaceDescription.DepthOffset;
-				ApplyDepthOffsetPositionInput( V, surfaceDescription.DepthOffset, GetViewForwardDir(), GetWorldToHClipMatrix(), posInput );
-				#endif
-
-				float3 bentNormalWS;
-				BuildSurfaceData( fragInputs, surfaceDescription, V, posInput, surfaceData, bentNormalWS );
-
-				InitBuiltinData( posInput, surfaceDescription.Alpha, bentNormalWS, -fragInputs.tangentToWorld[ 2 ], fragInputs.texCoord1, fragInputs.texCoord2, builtinData );
-
-				PostInitBuiltinData(V, posInput, surfaceData, builtinData);
-			}
-
-			#if defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)
-				#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalPrepassBuffer.hlsl"
-			#endif
-			PackedVaryingsMeshToPS VertexFunction(AttributesMesh inputMesh /*ase_vert_input*/)
-			{
-				PackedVaryingsMeshToPS outputPackedVaryingsMeshToPS;
-
-				UNITY_SETUP_INSTANCE_ID(inputMesh);
-				UNITY_TRANSFER_INSTANCE_ID(inputMesh, outputPackedVaryingsMeshToPS);
-				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO( outputPackedVaryingsMeshToPS );
-
-				/*ase_vert_code:inputMesh=AttributesMesh;outputPackedVaryingsMeshToPS=PackedVaryingsMeshToPS*/
-
-				#ifdef ASE_ABSOLUTE_VERTEX_POS
-				float3 defaultVertexValue = inputMesh.positionOS.xyz;
-				#else
-				float3 defaultVertexValue = float3( 0, 0, 0 );
-				#endif
-				float3 vertexValue = /*ase_vert_out:Vertex Offset;Float3;4;-1;_VertexOffset*/ defaultVertexValue /*end*/;
-
-				#ifdef ASE_ABSOLUTE_VERTEX_POS
-				inputMesh.positionOS.xyz = vertexValue;
-				#else
-				inputMesh.positionOS.xyz += vertexValue;
-				#endif
-
-				inputMesh.normalOS = /*ase_vert_out:Vertex Normal;Float3;5;-1;_VertexNormal*/ inputMesh.normalOS /*end*/;
-				inputMesh.tangentOS = /*ase_vert_out:Vertex Tangent;Float4;7;-1;_VertexTangent*/ inputMesh.tangentOS /*end*/;
-
-				float3 positionRWS = TransformObjectToWorld(inputMesh.positionOS);
-				float3 normalWS = TransformObjectToWorldNormal(inputMesh.normalOS);
-				float4 tangentWS = float4(TransformObjectToWorldDir(inputMesh.tangentOS.xyz), inputMesh.tangentOS.w);
-
-				outputPackedVaryingsMeshToPS.positionCS = TransformWorldToHClip(positionRWS);
-				outputPackedVaryingsMeshToPS.positionRWS.xyz = positionRWS;
-				outputPackedVaryingsMeshToPS.normalWS.xyz = normalWS;
-				outputPackedVaryingsMeshToPS.tangentWS.xyzw = tangentWS;
-				return outputPackedVaryingsMeshToPS;
+				output.positionCS = TransformWorldToHClip(positionRWS);
+				output.clipPosV = output.positionCS;
+				output.positionRWS = positionRWS;
+				return output;
 			}
 
 			#if defined(ASE_TESSELLATION)
@@ -3400,32 +2645,30 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 								#endif
 							#endif
 
-							#if defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)
+							#if (defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)) || defined(WRITE_RENDERING_LAYER)
 							, out float4 outDecalBuffer : SV_TARGET_DECAL
 							#endif
 						#endif
 
 						#if defined(_DEPTHOFFSET_ON) && !defined(SCENEPICKINGPASS)
-						, out float outputDepth : SV_Depth
+						, out float outputDepth : DEPTH_OFFSET_SEMANTIC
 						#endif
 						/*ase_frag_input*/
 					)
 			{
-				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX( packedInput );
-				UNITY_SETUP_INSTANCE_ID( packedInput );
-
-				/*ase_local_var:rwp*/float3 positionRWS = packedInput.positionRWS.xyz;
-				/*ase_local_var:wn*/float3 normalWS = packedInput.normalWS.xyz;
-				/*ase_local_var:wt*/float4 tangentWS = packedInput.tangentWS.xyzw;
+				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(packedInput);
+				UNITY_SETUP_INSTANCE_ID(packedInput);
+		
+				/*ase_local_var:rwp*/float3 PositionRWS = packedInput.positionRWS;
+				/*ase_local_var:wvd*/float3 V = GetWorldSpaceNormalizeViewDir( packedInput.positionRWS );
+				/*ase_local_var:sp*/float4 ClipPos = packedInput.clipPosV;
+				/*ase_local_var:spu*/float4 ScreenPos = ComputeScreenPos( packedInput.clipPosV, _ProjectionParams.x );
 
 				FragInputs input;
 				ZERO_INITIALIZE(FragInputs, input);
-
 				input.tangentToWorld = k_identity3x3;
 				input.positionSS = packedInput.positionCS;
-
-				input.positionRWS = positionRWS;
-				input.tangentToWorld = BuildTangentToWorld(tangentWS, normalWS);
+				input.positionRWS = PositionRWS;
 
 				#if _DOUBLESIDED_ON && SHADER_STAGE_FRAGMENT
 				input.isFrontFace = IS_FRONT_VFACE( packedInput.cullFace, true, false);
@@ -3434,24 +2677,24 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				input.isFrontFace = IS_FRONT_VFACE( packedInput.cullFace, true, false );
 				#endif
 				#endif
-				/*ase_local_var:vf*/half isFrontFace = input.isFrontFace;
+				/*ase_local_var:vf*/half IsFrontFace = input.isFrontFace;
 
 				PositionInputs posInput = GetPositionInput(input.positionSS.xy, _ScreenSize.zw, input.positionSS.z, input.positionSS.w, input.positionRWS);
 
-				/*ase_local_var:wvd*/float3 V = GetWorldSpaceNormalizeViewDir(input.positionRWS);
-
-				SmoothSurfaceDescription surfaceDescription = (SmoothSurfaceDescription)0;
+				AlphaSurfaceDescription surfaceDescription = (AlphaSurfaceDescription)0;
 				/*ase_frag_code:packedInput=PackedVaryingsMeshToPS*/
-				surfaceDescription.Normal = /*ase_frag_out:Normal;Float3;0;-1;_Normal*/float3( 0, 0, 1 )/*end*/;
-				surfaceDescription.Smoothness = /*ase_frag_out:Smoothness;Float;1;-1;_Smoothness*/1/*end*/;
-				surfaceDescription.Alpha = /*ase_frag_out:Alpha;Float;2;-1;_Alpha*/1/*end*/;
+				surfaceDescription.Alpha = /*ase_frag_out:Alpha;Float;0;-1;_Alpha*/1/*end*/;
 
 				#ifdef _ALPHATEST_ON
-				surfaceDescription.AlphaClipThreshold = /*ase_frag_out:Alpha Clip Threshold;Float;3;-1;_AlphaClip*/_AlphaCutoff/*end*/;
+				surfaceDescription.AlphaClipThreshold = /*ase_frag_out:Alpha Clip Threshold;Float;1;-1;_AlphaClip*/_AlphaCutoff/*end*/;
+				#endif
+
+				#ifdef _ALPHATEST_SHADOW_ON
+				surfaceDescription.AlphaClipThresholdShadow = /*ase_frag_out:Alpha Clip Threshold Shadow;Float;2;-1;_AlphaClipShadow*/0.5/*end*/;
 				#endif
 
 				#ifdef _DEPTHOFFSET_ON
-				surfaceDescription.DepthOffset = /*ase_frag_out:DepthOffset;Float;6;-1;_DepthOffset*/0/*end*/;
+				surfaceDescription.DepthOffset = /*ase_frag_out:Depth Offset;Float;5;-1;_DepthOffset*/0/*end*/;
 				#endif
 
 				SurfaceData surfaceData;
@@ -3460,27 +2703,30 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 
 				#ifdef _DEPTHOFFSET_ON
 				outputDepth = posInput.deviceDepth;
+				float bias = max(abs(ddx(posInput.deviceDepth)), abs(ddy(posInput.deviceDepth))) * _SlopeScaleDepthBias;
+				outputDepth += bias;
 				#endif
 
 				#ifdef WRITE_MSAA_DEPTH
-					depthColor = packedInput.positionCS.z;
-					#ifdef _ALPHATOMASK_ON
-						depthColor.a = SharpenAlpha(builtinData.opacity, builtinData.alphaClipTreshold);
-					#endif
+					depthColor = packedInput.vmesh.positionCS.z;
+					depthColor.a = SharpenAlpha(builtinData.opacity, builtinData.alphaClipTreshold);
 				#endif
 
 				#if defined(WRITE_NORMAL_BUFFER)
 				EncodeIntoNormalBuffer(ConvertSurfaceDataToNormalData(surfaceData), outNormalBuffer);
 				#endif
 
-				#if defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)
-				DecalPrepassData decalPrepassData;
-				decalPrepassData.geomNormalWS = surfaceData.geomNormalWS;
-				decalPrepassData.decalLayerMask = GetMeshRenderingDecalLayer();
-				EncodeIntoDecalPrepassBuffer(decalPrepassData, outDecalBuffer);
+                #if (defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)) || defined(WRITE_RENDERING_LAYER)
+				    DecalPrepassData decalPrepassData;
+                    #ifdef _DISABLE_DECALS
+				    ZERO_INITIALIZE(DecalPrepassData, decalPrepassData);
+                    #else
+				    decalPrepassData.geomNormalWS = surfaceData.geomNormalWS;
+                    #endif
+				    decalPrepassData.renderingLayerMask = GetMeshRenderingLayerMask();
+				    EncodeIntoDecalPrepassBuffer(decalPrepassData, outDecalBuffer);
 				#endif
 			}
-
 			ENDHLSL
 		}
 
@@ -3488,37 +2734,27 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 		Pass
 		{
 			/*ase_hide_pass*/
-			Name "Motion Vectors"
-			Tags { "LightMode" = "MotionVectors" }
+			Name "SceneSelectionPass"
+			Tags 
+			{ 
+				"LightMode" = "SceneSelectionPass" 
+		    }
 
-			Cull [_CullMode]
-
-			ZWrite On
-
-			Stencil
-			{
-				WriteMask [_StencilWriteMaskMV]
-				Ref [_StencilRefMV]
-		        CompFront Always
-		        PassFront Replace
-		        CompBack Always
-		        PassBack Replace
-			}
+			Cull Off
 
 			HLSLPROGRAM
+			#pragma editor_sync_compilation
+            #pragma multi_compile _ DOTS_INSTANCING_ON
 
-            #pragma shader_feature _SURFACE_TYPE_TRANSPARENT
-			#pragma shader_feature_local _TRANSPARENT_WRITES_MOTION_VEC
-			#pragma shader_feature_local_fragment _ENABLE_FOG_ON_TRANSPARENT
-			#pragma shader_feature_local _DOUBLESIDED_ON
-			#pragma shader_feature_local _ALPHATEST_ON
-
-			#pragma multi_compile _ WRITE_NORMAL_BUFFER
-			#pragma multi_compile_fragment _ WRITE_MSAA_DEPTH
-			#pragma multi_compile _ WRITE_DECAL_BUFFER
+            #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
+            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC _TRANSPARENT_REFRACTIVE_SORT
+            #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
 
 			#pragma vertex Vert
 			#pragma fragment Frag
+
+			#define SHADERPASS SHADERPASS_DEPTH_ONLY
+		    #define SCENESELECTIONPASS 1
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
@@ -3527,17 +2763,32 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/DebugMipmapStreamingMacros.hlsl"
+            #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
 
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
 
-			#define SHADERPASS SHADERPASS_MOTION_VECTORS
+            #ifdef RAYTRACING_SHADER_GRAPH_DEFAULT
+                #define RAYTRACING_SHADER_GRAPH_HIGH
+            #endif
 
-			#ifndef SHADER_UNLIT
-			#if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
-			#define VARYINGS_NEED_CULLFACE
+            #ifdef RAYTRACING_SHADER_GRAPH_RAYTRACED
+                #define RAYTRACING_SHADER_GRAPH_LOW
+            #endif
+
+            #ifndef SHADER_UNLIT
+            #if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
+                #define VARYINGS_NEED_CULLFACE
+            #endif
+            #endif
+
+			#if defined(_DOUBLESIDED_ON) && !defined(ASE_NEED_CULLFACE)
+			    #define ASE_NEED_CULLFACE 1
 			#endif
-			#endif
+
+            #if _MATERIAL_FEATURE_COLORED_TRANSMISSION
+            #undef _MATERIAL_FEATURE_CLEAR_COAT
+            #endif
 
 		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
 			#define OUTPUT_SPLIT_LIGHTING
@@ -3549,36 +2800,40 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			#define _REFRACTION_THIN
 		    #endif
 
-			#if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
-			#if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
-				#define WRITE_NORMAL_BUFFER
-			#endif
-			#endif
+            #if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
+            #if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
+                #define WRITE_NORMAL_BUFFER
+            #endif
+            #endif
 
-			#ifndef DEBUG_DISPLAY
-				#if !defined(_SURFACE_TYPE_TRANSPARENT)
-					#if SHADERPASS == SHADERPASS_FORWARD
-					#define SHADERPASS_FORWARD_BYPASS_ALPHA_TEST
-					#elif SHADERPASS == SHADERPASS_GBUFFER
-					#define SHADERPASS_GBUFFER_BYPASS_ALPHA_TEST
-					#endif
-				#endif
-			#endif
+            #if SHADERPASS == SHADERPASS_MOTION_VECTORS && defined(WRITE_DECAL_BUFFER_AND_RENDERING_LAYER)
+                #define WRITE_DECAL_BUFFER
+            #endif
 
-			#if defined(SHADER_LIT) && !defined(_SURFACE_TYPE_TRANSPARENT)
-			#define _DEFERRED_CAPABLE_MATERIAL
-			#endif
+            #ifndef DEBUG_DISPLAY
+                #if !defined(_SURFACE_TYPE_TRANSPARENT)
+                    #if SHADERPASS == SHADERPASS_FORWARD
+                    #define SHADERPASS_FORWARD_BYPASS_ALPHA_TEST
+                    #elif SHADERPASS == SHADERPASS_GBUFFER
+                    #define SHADERPASS_GBUFFER_BYPASS_ALPHA_TEST
+                    #endif
+                #endif
+            #endif
 
-			#if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
-			#define _WRITE_TRANSPARENT_MOTION_VECTOR
-			#endif
+            #if defined(SHADER_LIT) && !defined(_SURFACE_TYPE_TRANSPARENT)
+                #define _DEFERRED_CAPABLE_MATERIAL
+            #endif
+
+            #if (defined(_TRANSPARENT_WRITES_MOTION_VEC) || defined(_TRANSPARENT_REFRACTIVE_SORT)) && defined(_SURFACE_TYPE_TRANSPARENT)
+                #define _WRITE_TRANSPARENT_MOTION_VECTOR
+            #endif
 
 			CBUFFER_START( UnityPerMaterial )
 			float4 _EmissionColor;
 			float _AlphaCutoff;
 			float _RenderQueueType;
 			#ifdef _ADD_PRECOMPUTED_VELOCITY
-			float _AddPrecomputedVelocity;
+			    float _AddPrecomputedVelocity;
 			#endif
 			float _StencilRef;
 			float _StencilWriteMask;
@@ -3586,6 +2841,8 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			float _StencilWriteMaskDepth;
 			float _StencilRefMV;
 			float _StencilWriteMaskMV;
+			float _StencilRefDistortionVec;
+			float _StencilWriteMaskDistortionVec;
 			float _StencilWriteMaskGBuffer;
 			float _StencilRefGBuffer;
 			float _ZTestGBuffer;
@@ -3594,10 +2851,11 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			float _SurfaceType;
 			float _BlendMode;
             #ifdef SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
-			float _EnableBlendModePreserveSpecularLighting;
+			    float _EnableBlendModePreserveSpecularLighting;
             #endif
 			float _SrcBlend;
 			float _DstBlend;
+			float _DstBlend2;
 			float _AlphaSrcBlend;
 			float _AlphaDstBlend;
 			float _ZWrite;
@@ -3616,21 +2874,621 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			float _DoubleSidedNormalMode;
 			float4 _DoubleSidedConstants;
 			#ifdef ASE_TESSELLATION
-			float _TessPhongStrength;
-			float _TessValue;
-			float _TessMin;
-			float _TessMax;
-			float _TessEdgeLength;
-			float _TessMaxDisp;
+			    float _TessPhongStrength;
+			    float _TessValue;
+			    float _TessMin;
+			    float _TessMax;
+			    float _TessEdgeLength;
+			    float _TessMaxDisp;
 			#endif
+			UNITY_TEXTURE_STREAMING_DEBUG_VARS;
 			CBUFFER_END
 
-			// Property used by ScenePickingPass
             #ifdef SCENEPICKINGPASS
 			float4 _SelectionID;
             #endif
 
-			// Properties used by SceneSelectionPass
+            #ifdef SCENESELECTIONPASS
+			int _ObjectId;
+			int _PassValue;
+            #endif
+
+			/*ase_globals*/
+
+            #ifdef DEBUG_DISPLAY
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
+            #endif
+
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/PickingSpaceTransforms.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Material.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/NormalSurfaceGradient.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/Lit.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/BuiltinUtilities.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/MaterialUtilities.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphFunctions.hlsl"
+
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalUtilities.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/LitDecalData.hlsl"
+
+        	#ifdef HAVE_VFX_MODIFICATION
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/VisualEffectVertex.hlsl"
+        	#endif
+
+			/*ase_pragma*/
+
+			struct AttributesMesh
+			{
+				float3 positionOS : POSITION;
+				float3 normalOS : NORMAL;
+				float4 tangentOS : TANGENT;
+				/*ase_vdata:p=p;n=n;t=t*/
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+			};
+
+			struct PackedVaryingsMeshToPS
+			{
+				SV_POSITION_QUALIFIERS float4 positionCS : SV_Position;
+				float3 positionRWS : TEXCOORD0;
+				/*ase_interp(1,):sp=sp.xyzw;rwp=tc0*/
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+				UNITY_VERTEX_OUTPUT_STEREO
+				#if defined(SHADER_STAGE_FRAGMENT) && defined(ASE_NEED_CULLFACE)
+				FRONT_FACE_TYPE cullFace : FRONT_FACE_SEMANTIC;
+				#endif
+			};
+
+			/*ase_funcs*/
+
+			void BuildSurfaceData(FragInputs fragInputs, inout SceneSurfaceDescription surfaceDescription, float3 V, PositionInputs posInput, out SurfaceData surfaceData, out float3 bentNormalWS)
+			{
+				ZERO_INITIALIZE(SurfaceData, surfaceData);
+
+				surfaceData.specularOcclusion = 1.0;
+				surfaceData.thickness = 0.0;
+
+				//refraction SceneSelectionPass
+                #if defined(_REFRACTION_PLANE) || defined(_REFRACTION_SPHERE) || defined(_REFRACTION_THIN)
+                    if (_EnableSSRefraction)
+                    {
+                        surfaceData.ior =                       surfaceDescription.RefractionIndex;
+                        surfaceData.transmittanceColor =        surfaceDescription.RefractionColor;
+                        surfaceData.atDistance =                surfaceDescription.RefractionDistance;
+        
+                        surfaceData.transmittanceMask = (1.0 - surfaceDescription.Alpha);
+                        surfaceDescription.Alpha = 1.0;
+                    }
+                    else
+                    {
+                        surfaceData.ior = 1.0;
+                        surfaceData.transmittanceColor = float3(1.0, 1.0, 1.0);
+                        surfaceData.atDistance = 1.0;
+                        surfaceData.transmittanceMask = 0.0;
+                        surfaceDescription.Alpha = 1.0;
+                    }
+                #else
+                    surfaceData.ior = 1.0;
+                    surfaceData.transmittanceColor = float3(1.0, 1.0, 1.0);
+                    surfaceData.atDistance = 1.0;
+                    surfaceData.transmittanceMask = 0.0;
+                #endif
+
+				surfaceData.materialFeatures = MATERIALFEATUREFLAGS_LIT_STANDARD;
+
+				#ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SUBSURFACE_SCATTERING;
+				#endif
+
+				#ifdef _MATERIAL_FEATURE_TRANSMISSION
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
+				#endif
+
+				#ifdef _MATERIAL_FEATURE_COLORED_TRANSMISSION
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_COLORED_TRANSMISSION;
+				#endif
+
+                #ifdef _MATERIAL_FEATURE_ANISOTROPY
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
+                    surfaceData.normalWS = float3(0, 1, 0);
+                #endif
+
+				#ifdef _MATERIAL_FEATURE_CLEAR_COAT
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_CLEAR_COAT;
+				#endif
+
+				#ifdef _MATERIAL_FEATURE_IRIDESCENCE
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_IRIDESCENCE;
+				#endif
+
+				#ifdef _MATERIAL_FEATURE_SPECULAR_COLOR
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SPECULAR_COLOR;
+				#endif
+
+				#if defined (_MATERIAL_FEATURE_SPECULAR_COLOR) && defined (_ENERGY_CONSERVING_SPECULAR)
+                    surfaceData.baseColor *= ( 1.0 - Max3( surfaceData.specularColor.r, surfaceData.specularColor.g, surfaceData.specularColor.b ) );
+				#endif
+
+				#ifdef _DOUBLESIDED_ON
+                    float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
+				#else
+                    float3 doubleSidedConstants = float3( 1.0, 1.0, 1.0 );
+				#endif
+
+				float3 normalTS = float3(0.0f, 0.0f, 1.0f);
+
+                #ifdef DECAL_NORMAL_BLENDING
+					normalTS = SurfaceGradientFromTangentSpaceNormalAndFromTBN(normalTS, fragInputs.tangentToWorld[0], fragInputs.tangentToWorld[1]);
+
+                    #if HAVE_DECALS
+                    if (_EnableDecals)
+                    {
+                        float alpha = 1.0;
+                        alpha = surfaceDescription.Alpha;
+
+                        DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                        ApplyDecalToSurfaceNormal(decalSurfaceData, fragInputs.tangentToWorld[2], normalTS);
+                        ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+                     }
+                    #endif
+
+                    GetNormalWS_SG(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+                #else
+					GetNormalWS(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+
+                    #if HAVE_DECALS
+                    if (_EnableDecals)
+                    {
+                        float alpha = 1.0;
+                        alpha = surfaceDescription.Alpha;
+        
+                        DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                        ApplyDecalToSurfaceNormal(decalSurfaceData, surfaceData.normalWS.xyz);
+                        ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+                    }
+                    #endif
+                #endif
+
+				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
+                surfaceData.tangentWS = normalize(fragInputs.tangentToWorld[0].xyz );
+                surfaceData.tangentWS = Orthonormalize(surfaceData.tangentWS, surfaceData.normalWS);
+
+				bentNormalWS = surfaceData.normalWS;
+
+                #if defined(DEBUG_DISPLAY)
+				    #if !defined(SHADER_STAGE_RAY_TRACING)
+				    if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
+				    {
+					   #ifdef FRAG_INPUTS_USE_TEXCOORD0
+                           surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG(posInput.positionSS, fragInputs.texCoord0);
+                       #else
+                           surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG_NO_UV(posInput.positionSS);
+                       #endif
+					   surfaceData.metallic = 0;
+				    }
+					#endif
+                     ApplyDebugToSurfaceData(fragInputs.tangentToWorld, surfaceData);
+                #endif
+
+                #if defined(_SPECULAR_OCCLUSION_CUSTOM)
+                #elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
+                    surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO(V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness(surfaceData.perceptualSmoothness));
+                #elif defined(_AMBIENT_OCCLUSION) && defined(_SPECULAR_OCCLUSION_FROM_AO)
+                    surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion(ClampNdotV(dot(surfaceData.normalWS, V)), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness(surfaceData.perceptualSmoothness));
+                #endif
+
+                #ifdef _ENABLE_GEOMETRIC_SPECULAR_AA
+                    surfaceData.perceptualSmoothness = GeometricNormalFiltering(surfaceData.perceptualSmoothness, fragInputs.tangentToWorld[2], surfaceDescription.SpecularAAScreenSpaceVariance, surfaceDescription.SpecularAAThreshold);
+                #endif
+			}
+
+			// Get Surface And BuiltinData
+			void GetSurfaceAndBuiltinData(SceneSurfaceDescription surfaceDescription, FragInputs fragInputs, float3 V, inout PositionInputs posInput, out SurfaceData surfaceData, out BuiltinData builtinData)
+			{
+				#ifdef LOD_FADE_CROSSFADE
+                    LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
+				#endif
+
+                #ifdef _DOUBLESIDED_ON
+                    float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
+                #else
+                    float3 doubleSidedConstants = float3(1.0, 1.0, 1.0);
+                #endif
+                ApplyDoubleSidedFlipOrMirror(fragInputs, doubleSidedConstants);
+
+				#ifdef _ALPHATEST_ON
+                    DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThreshold );
+				#endif
+
+				#ifdef _ALPHATEST_SHADOW_ON
+                    DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThresholdShadow);
+				#endif
+
+				#ifdef _DEPTHOFFSET_ON
+                    ApplyDepthOffsetPositionInput(V, surfaceDescription.DepthOffset, GetViewForwardDir(), GetWorldToHClipMatrix(), posInput);
+				#endif
+
+                float3 bentNormalWS;
+                BuildSurfaceData(fragInputs, surfaceDescription, V, posInput, surfaceData, bentNormalWS);
+                InitBuiltinData(posInput, surfaceDescription.Alpha, bentNormalWS, -fragInputs.tangentToWorld[2], fragInputs.texCoord1, fragInputs.texCoord2, builtinData);
+
+				#ifdef _DEPTHOFFSET_ON
+                    builtinData.depthOffset = surfaceDescription.DepthOffset;
+				#endif
+
+                #ifdef _ALPHATEST_ON
+                    builtinData.alphaClipTreshold = surfaceDescription.AlphaClipThreshold;
+                #endif
+
+                #ifdef UNITY_VIRTUAL_TEXTURING
+                    builtinData.vtPackedFeedback = surfaceDescription.VTPackedFeedback;
+                #endif
+
+				#ifdef ASE_BAKEDGI
+                    builtinData.bakeDiffuseLighting = surfaceDescription.BakedGI;
+				#endif
+
+				#ifdef ASE_BAKEDBACKGI
+                    builtinData.backBakeDiffuseLighting = surfaceDescription.BakedBackGI;
+				#endif
+
+                builtinData.emissiveColor = surfaceDescription.Emission;
+
+                PostInitBuiltinData(V, posInput, surfaceData, builtinData);
+			}
+
+			PackedVaryingsMeshToPS VertexFunction(AttributesMesh inputMesh /*ase_vert_input*/)
+			{
+				PackedVaryingsMeshToPS output;
+				UNITY_SETUP_INSTANCE_ID(inputMesh);
+				UNITY_TRANSFER_INSTANCE_ID(inputMesh, output);
+				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO( output );
+
+				/*ase_vert_code:inputMesh=AttributesMesh;output=PackedVaryingsMeshToPS*/
+
+				#ifdef ASE_ABSOLUTE_VERTEX_POS
+				float3 defaultVertexValue = inputMesh.positionOS.xyz;
+				#else
+				float3 defaultVertexValue = float3( 0, 0, 0 );
+				#endif
+				float3 vertexValue = /*ase_vert_out:Vertex Offset;Float3;2;-1;_VertexOffset*/ defaultVertexValue /*end*/;
+
+				#ifdef ASE_ABSOLUTE_VERTEX_POS
+				inputMesh.positionOS.xyz = vertexValue;
+				#else
+				inputMesh.positionOS.xyz += vertexValue;
+				#endif
+
+				inputMesh.normalOS = /*ase_vert_out:Vertex Normal;Float3;3;-1;_VertexNormal*/ inputMesh.normalOS /*end*/;
+				inputMesh.tangentOS = /*ase_vert_out:Vertex Tangent;Float4;26;-1;_VertexTangent*/inputMesh.tangentOS/*end*/;
+
+				float3 positionRWS = TransformObjectToWorld(inputMesh.positionOS);
+				output.positionCS = TransformWorldToHClip(positionRWS);
+				output.positionRWS = positionRWS;
+				return output;
+			}
+
+			#if defined(ASE_TESSELLATION)
+			struct VertexControl
+			{
+				float3 positionOS : INTERNALTESSPOS;
+				float3 normalOS : NORMAL;
+				float4 tangentOS : TANGENT;
+				/*ase_vcontrol*/
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+			};
+
+			struct TessellationFactors
+			{
+				float edge[3] : SV_TessFactor;
+				float inside : SV_InsideTessFactor;
+			};
+
+			VertexControl Vert ( AttributesMesh v )
+			{
+				VertexControl o;
+				UNITY_SETUP_INSTANCE_ID(v);
+				UNITY_TRANSFER_INSTANCE_ID(v, o);
+				o.positionOS = v.positionOS;
+				o.normalOS = v.normalOS;
+				o.tangentOS = v.tangentOS;
+				/*ase_control_code:v=AttributesMesh;o=VertexControl*/
+				return o;
+			}
+
+			TessellationFactors TessellationFunction (InputPatch<VertexControl,3> v)
+			{
+				TessellationFactors o;
+				float4 tf = 1;
+				float tessValue = /*ase_inline_begin*/_TessValue/*ase_inline_end*/; float tessMin = /*ase_inline_begin*/_TessMin/*ase_inline_end*/; float tessMax = /*ase_inline_begin*/_TessMax/*ase_inline_end*/;
+				float edgeLength = /*ase_inline_begin*/_TessEdgeLength/*ase_inline_end*/; float tessMaxDisp = /*ase_inline_begin*/_TessMaxDisp/*ase_inline_end*/;
+				#if (SHADEROPTIONS_CAMERA_RELATIVE_RENDERING != 0)
+				float3 cameraPos = 0;
+				#else
+				float3 cameraPos = _WorldSpaceCameraPos;
+				#endif
+				#if defined(ASE_FIXED_TESSELLATION)
+				tf = FixedTess( tessValue );
+				#elif defined(ASE_DISTANCE_TESSELLATION)
+				tf = DistanceBasedTess(float4(v[0].positionOS,1), float4(v[1].positionOS,1), float4(v[2].positionOS,1), tessValue, tessMin, tessMax, GetObjectToWorldMatrix(), cameraPos );
+				#elif defined(ASE_LENGTH_TESSELLATION)
+				tf = EdgeLengthBasedTess(float4(v[0].positionOS,1), float4(v[1].positionOS,1), float4(v[2].positionOS,1), edgeLength, GetObjectToWorldMatrix(), cameraPos, _ScreenParams );
+				#elif defined(ASE_LENGTH_CULL_TESSELLATION)
+				tf = EdgeLengthBasedTessCull(float4(v[0].positionOS,1), float4(v[1].positionOS,1), float4(v[2].positionOS,1), edgeLength, tessMaxDisp, GetObjectToWorldMatrix(), cameraPos, _ScreenParams, _FrustumPlanes );
+				#endif
+				o.edge[0] = tf.x; o.edge[1] = tf.y; o.edge[2] = tf.z; o.inside = tf.w;
+				return o;
+			}
+
+			[domain("tri")]
+			[partitioning("fractional_odd")]
+			[outputtopology("triangle_cw")]
+			[patchconstantfunc("TessellationFunction")]
+			[outputcontrolpoints(3)]
+			VertexControl HullFunction(InputPatch<VertexControl, 3> patch, uint id : SV_OutputControlPointID)
+			{
+			   return patch[id];
+			}
+
+			[domain("tri")]
+			PackedVaryingsMeshToPS DomainFunction(TessellationFactors factors, OutputPatch<VertexControl, 3> patch, float3 bary : SV_DomainLocation)
+			{
+				AttributesMesh o = (AttributesMesh) 0;
+				o.positionOS = patch[0].positionOS * bary.x + patch[1].positionOS * bary.y + patch[2].positionOS * bary.z;
+				o.normalOS = patch[0].normalOS * bary.x + patch[1].normalOS * bary.y + patch[2].normalOS * bary.z;
+				o.tangentOS = patch[0].tangentOS * bary.x + patch[1].tangentOS * bary.y + patch[2].tangentOS * bary.z;
+				/*ase_domain_code:patch=VertexControl;o=AttributesMesh;bary=SV_DomainLocation*/
+				#if defined(ASE_PHONG_TESSELLATION)
+				float3 pp[3];
+				for (int i = 0; i < 3; ++i)
+					pp[i] = o.positionOS.xyz - patch[i].normalOS * (dot(o.positionOS.xyz, patch[i].normalOS) - dot(patch[i].positionOS.xyz, patch[i].normalOS));
+				float phongStrength = /*ase_inline_begin*/_TessPhongStrength/*ase_inline_end*/;
+				o.positionOS.xyz = phongStrength * (pp[0]*bary.x + pp[1]*bary.y + pp[2]*bary.z) + (1.0f-phongStrength) * o.positionOS.xyz;
+				#endif
+				UNITY_TRANSFER_INSTANCE_ID(patch[0], o);
+				return VertexFunction(o);
+			}
+			#else
+			PackedVaryingsMeshToPS Vert ( AttributesMesh v )
+			{
+				return VertexFunction( v );
+			}
+			#endif
+
+			#if defined(WRITE_NORMAL_BUFFER) && defined(WRITE_MSAA_DEPTH)
+			#define SV_TARGET_DECAL SV_Target2
+			#elif defined(WRITE_NORMAL_BUFFER) || defined(WRITE_MSAA_DEPTH)
+			#define SV_TARGET_DECAL SV_Target1
+			#else
+			#define SV_TARGET_DECAL SV_Target0
+			#endif
+
+			void Frag( PackedVaryingsMeshToPS packedInput
+						, out float4 outColor : SV_Target0
+						#if defined(_DEPTHOFFSET_ON) && !defined(SCENEPICKINGPASS)
+						, out float outputDepth : DEPTH_OFFSET_SEMANTIC
+						#endif
+						/*ase_frag_input*/
+					)
+			{
+				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX( packedInput );
+				UNITY_SETUP_INSTANCE_ID( packedInput );
+
+				/*ase_local_var:rwp*/float3 PositionRWS = packedInput.positionRWS;
+				/*ase_local_var:wvd*/float3 V = GetWorldSpaceNormalizeViewDir( packedInput.positionRWS );
+
+				FragInputs input;
+				ZERO_INITIALIZE(FragInputs, input);
+				input.tangentToWorld = k_identity3x3;
+				input.positionSS = packedInput.positionCS;
+				input.positionRWS = PositionRWS;
+
+				#if _DOUBLESIDED_ON && SHADER_STAGE_FRAGMENT
+				input.isFrontFace = IS_FRONT_VFACE( packedInput.cullFace, true, false);
+				#elif SHADER_STAGE_FRAGMENT
+				#if defined(ASE_NEED_CULLFACE)
+				input.isFrontFace = IS_FRONT_VFACE( packedInput.cullFace, true, false );
+				#endif
+				#endif
+				/*ase_local_var:vf*/half IsFrontFace = input.isFrontFace;
+
+				PositionInputs posInput = GetPositionInput(input.positionSS.xy, _ScreenSize.zw, input.positionSS.z, input.positionSS.w, input.positionRWS);
+
+				SceneSurfaceDescription surfaceDescription = (SceneSurfaceDescription)0;
+				/*ase_frag_code:packedInput=PackedVaryingsMeshToPS*/
+				surfaceDescription.Alpha = /*ase_frag_out:Alpha;Float;0;-1;_Alpha*/1/*end*/;
+
+				#ifdef _ALPHATEST_ON
+				surfaceDescription.AlphaClipThreshold = /*ase_frag_out:Alpha Clip Threshold;Float;1;-1;_AlphaClip*/_AlphaCutoff/*end*/;
+				#endif
+
+				#ifdef _DEPTHOFFSET_ON
+				surfaceDescription.DepthOffset = /*ase_frag_out:Depth Offset;Float;4;-1;_DepthOffset*/0/*end*/;
+				#endif
+
+				SurfaceData surfaceData;
+				BuiltinData builtinData;
+				GetSurfaceAndBuiltinData(surfaceDescription, input, V, posInput, surfaceData, builtinData);
+
+				#ifdef _DEPTHOFFSET_ON
+				outputDepth = posInput.deviceDepth;
+				#endif
+
+				outColor = float4( _ObjectId, _PassValue, 1.0, 1.0 );
+			}
+			ENDHLSL
+		}
+
+		/*ase_pass*/
+		Pass
+		{
+			/*ase_hide_pass*/
+			Name "DepthOnly"
+			Tags 
+			{ 
+				"LightMode" = "DepthOnly" 
+		    }
+
+			Cull [_CullMode]
+			ZWrite On
+
+			Stencil
+			{
+				WriteMask [_StencilWriteMaskDepth]
+				Ref [_StencilRefDepth]
+		        CompFront Always
+		        PassFront Replace
+		        CompBack Always
+		        PassBack Replace
+			}
+
+			HLSLPROGRAM
+			#pragma multi_compile _ DOTS_INSTANCING_ON
+
+            #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
+            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC _TRANSPARENT_REFRACTIVE_SORT
+            #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
+
+            #pragma multi_compile _ WRITE_NORMAL_BUFFER
+            #pragma multi_compile_fragment _ WRITE_MSAA_DEPTH
+            #pragma multi_compile_fragment _ WRITE_DECAL_BUFFER WRITE_RENDERING_LAYER
+
+			#pragma vertex Vert
+			#pragma fragment Frag
+
+            #define SHADERPASS SHADERPASS_DEPTH_ONLY
+
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Tessellation.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/DebugMipmapStreamingMacros.hlsl"
+            #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
+
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+
+            #ifdef RAYTRACING_SHADER_GRAPH_DEFAULT
+                #define RAYTRACING_SHADER_GRAPH_HIGH
+            #endif
+        
+            #ifdef RAYTRACING_SHADER_GRAPH_RAYTRACED
+                #define RAYTRACING_SHADER_GRAPH_LOW
+            #endif
+
+            #ifndef SHADER_UNLIT
+            #if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
+                #define VARYINGS_NEED_CULLFACE
+            #endif
+            #endif
+
+			#if defined(_DOUBLESIDED_ON) && !defined(ASE_NEED_CULLFACE)
+			    #define ASE_NEED_CULLFACE 1
+			#endif
+
+            #if _MATERIAL_FEATURE_COLORED_TRANSMISSION
+            #undef _MATERIAL_FEATURE_CLEAR_COAT
+            #endif
+
+		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
+			#define OUTPUT_SPLIT_LIGHTING
+		    #endif
+
+		    #if (SHADERPASS == SHADERPASS_PATH_TRACING) && !defined(_DOUBLESIDED_ON) && (defined(_REFRACTION_PLANE) || defined(_REFRACTION_SPHERE))
+			#undef  _REFRACTION_PLANE
+			#undef  _REFRACTION_SPHERE
+			#define _REFRACTION_THIN
+		    #endif
+
+            #if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
+            #if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
+                #define WRITE_NORMAL_BUFFER
+            #endif
+            #endif
+
+            #if SHADERPASS == SHADERPASS_MOTION_VECTORS && defined(WRITE_DECAL_BUFFER_AND_RENDERING_LAYER)
+                #define WRITE_DECAL_BUFFER
+            #endif
+
+            #ifndef DEBUG_DISPLAY
+                #if !defined(_SURFACE_TYPE_TRANSPARENT)
+                    #if SHADERPASS == SHADERPASS_FORWARD
+                    #define SHADERPASS_FORWARD_BYPASS_ALPHA_TEST
+                    #elif SHADERPASS == SHADERPASS_GBUFFER
+                    #define SHADERPASS_GBUFFER_BYPASS_ALPHA_TEST
+                    #endif
+                #endif
+            #endif
+
+            #if defined(SHADER_LIT) && !defined(_SURFACE_TYPE_TRANSPARENT)
+                #define _DEFERRED_CAPABLE_MATERIAL
+            #endif
+
+            #if (defined(_TRANSPARENT_WRITES_MOTION_VEC) || defined(_TRANSPARENT_REFRACTIVE_SORT)) && defined(_SURFACE_TYPE_TRANSPARENT)
+                #define _WRITE_TRANSPARENT_MOTION_VECTOR
+            #endif
+
+			CBUFFER_START( UnityPerMaterial )
+			float4 _EmissionColor;
+			float _AlphaCutoff;
+			float _RenderQueueType;
+			#ifdef _ADD_PRECOMPUTED_VELOCITY
+			    float _AddPrecomputedVelocity;
+			#endif
+			float _StencilRef;
+			float _StencilWriteMask;
+			float _StencilRefDepth;
+			float _StencilWriteMaskDepth;
+			float _StencilRefMV;
+			float _StencilWriteMaskMV;
+			float _StencilRefDistortionVec;
+			float _StencilWriteMaskDistortionVec;
+			float _StencilWriteMaskGBuffer;
+			float _StencilRefGBuffer;
+			float _ZTestGBuffer;
+			float _RequireSplitLighting;
+			float _ReceivesSSR;
+			float _SurfaceType;
+			float _BlendMode;
+            #ifdef SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
+			    float _EnableBlendModePreserveSpecularLighting;
+            #endif
+			float _SrcBlend;
+			float _DstBlend;
+			float _DstBlend2;
+			float _AlphaSrcBlend;
+			float _AlphaDstBlend;
+			float _ZWrite;
+			float _TransparentZWrite;
+			float _CullMode;
+			float _TransparentSortPriority;
+			float _EnableFogOnTransparent;
+			float _CullModeForward;
+			float _TransparentCullMode;
+			float _ZTestDepthEqualForOpaque;
+			float _ZTestTransparent;
+			float _TransparentBackfaceEnable;
+			float _AlphaCutoffEnable;
+			float _UseShadowThreshold;
+			float _DoubleSidedEnable;
+			float _DoubleSidedNormalMode;
+			float4 _DoubleSidedConstants;
+			#ifdef ASE_TESSELLATION
+			    float _TessPhongStrength;
+			    float _TessValue;
+			    float _TessMin;
+			    float _TessMax;
+			    float _TessEdgeLength;
+			    float _TessMaxDisp;
+			#endif
+			UNITY_TEXTURE_STREAMING_DEBUG_VARS;
+			CBUFFER_END
+
+            #ifdef SCENEPICKINGPASS
+			float4 _SelectionID;
+            #endif
+
             #ifdef SCENESELECTIONPASS
 			int _ObjectId;
 			int _PassValue;
@@ -3649,30 +3507,707 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/MaterialUtilities.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphFunctions.hlsl"
 
-			// Setup DECALS_OFF so the shader stripper can remove variants
-            #define HAVE_DECALS ( (defined(DECALS_3RT) || defined(DECALS_4RT)) && !defined(_DISABLE_DECALS) )
-            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalUtilities.hlsl"
-            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/LitDecalData.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalUtilities.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/LitDecalData.hlsl"
+
+        	#ifdef HAVE_VFX_MODIFICATION
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/VisualEffectVertex.hlsl"
+        	#endif
 
 			/*ase_pragma*/
-
-			#if defined(_DOUBLESIDED_ON) && !defined(ASE_NEED_CULLFACE)
-			#define ASE_NEED_CULLFACE 1
-			#endif
 
 			struct AttributesMesh
 			{
 				float3 positionOS : POSITION;
 				float3 normalOS : NORMAL;
-				float3 previousPositionOS : TEXCOORD4;
-				float3 precomputedVelocity : TEXCOORD5;
-				/*ase_vdata:p=p;n=n;uv4=tc4;uv5=tc5*/
+				float4 tangentOS : TANGENT;
+				/*ase_vdata:p=p;n=n;t=t*/
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
 			struct PackedVaryingsMeshToPS
 			{
-				float4 vmeshPositionCS : SV_Position;
+				SV_POSITION_QUALIFIERS float4 positionCS : SV_Position;
+				float4 clipPosV : TEXCOORD0;
+				float3 positionRWS : TEXCOORD1;
+				float3 normalWS : TEXCOORD2;
+				float4 tangentWS : TEXCOORD3;
+				/*ase_interp(4,):sp=sp.xyzw;rwp=tc1;wn=tc2;wt=tc3*/
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+				UNITY_VERTEX_OUTPUT_STEREO
+				#if defined(SHADER_STAGE_FRAGMENT) && defined(ASE_NEED_CULLFACE)
+				FRONT_FACE_TYPE cullFace : FRONT_FACE_SEMANTIC;
+				#endif
+			};
+
+			/*ase_funcs*/
+
+			void BuildSurfaceData(FragInputs fragInputs, inout SmoothSurfaceDescription surfaceDescription, float3 V, PositionInputs posInput, out SurfaceData surfaceData, out float3 bentNormalWS)
+			{
+				ZERO_INITIALIZE(SurfaceData, surfaceData);
+
+				surfaceData.specularOcclusion = 1.0;
+				surfaceData.thickness = 0.0;
+
+				surfaceData.perceptualSmoothness =		surfaceDescription.Smoothness;
+
+				// refraction
+                #if defined(_REFRACTION_PLANE) || defined(_REFRACTION_SPHERE) || defined(_REFRACTION_THIN)
+                    if (_EnableSSRefraction)
+                    {
+                        surfaceData.ior =                       surfaceDescription.RefractionIndex;
+                        surfaceData.transmittanceColor =        surfaceDescription.RefractionColor;
+                        surfaceData.atDistance =                surfaceDescription.RefractionDistance;
+        
+                        surfaceData.transmittanceMask = (1.0 - surfaceDescription.Alpha);
+                        surfaceDescription.Alpha = 1.0;
+                    }
+                    else
+                    {
+                        surfaceData.ior = 1.0;
+                        surfaceData.transmittanceColor = float3(1.0, 1.0, 1.0);
+                        surfaceData.atDistance = 1.0;
+                        surfaceData.transmittanceMask = 0.0;
+                        surfaceDescription.Alpha = 1.0;
+                    }
+                #else
+                    surfaceData.ior = 1.0;
+                    surfaceData.transmittanceColor = float3(1.0, 1.0, 1.0);
+                    surfaceData.atDistance = 1.0;
+                    surfaceData.transmittanceMask = 0.0;
+                #endif
+
+				surfaceData.materialFeatures = MATERIALFEATUREFLAGS_LIT_STANDARD;
+
+				#ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SUBSURFACE_SCATTERING;
+				#endif
+
+				#ifdef _MATERIAL_FEATURE_TRANSMISSION
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
+				#endif
+
+				#ifdef _MATERIAL_FEATURE_COLORED_TRANSMISSION
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_COLORED_TRANSMISSION;
+				#endif
+
+                #ifdef _MATERIAL_FEATURE_ANISOTROPY
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
+                    surfaceData.normalWS = float3(0, 1, 0);
+                #endif
+
+				#ifdef _MATERIAL_FEATURE_CLEAR_COAT
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_CLEAR_COAT;
+				#endif
+
+				#ifdef _MATERIAL_FEATURE_IRIDESCENCE
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_IRIDESCENCE;
+				#endif
+
+				#ifdef _MATERIAL_FEATURE_SPECULAR_COLOR
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SPECULAR_COLOR;
+				#endif
+
+				#if defined (_MATERIAL_FEATURE_SPECULAR_COLOR) && defined (_ENERGY_CONSERVING_SPECULAR)
+                    surfaceData.baseColor *= ( 1.0 - Max3( surfaceData.specularColor.r, surfaceData.specularColor.g, surfaceData.specularColor.b ) );
+				#endif
+
+				#ifdef _DOUBLESIDED_ON
+				    float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
+				#else
+				    float3 doubleSidedConstants = float3( 1.0, 1.0, 1.0 );
+				#endif
+
+				float3 normalTS = float3(0.0f, 0.0f, 1.0f);
+				normalTS = surfaceDescription.Normal;
+
+                #ifdef DECAL_NORMAL_BLENDING
+					normalTS = SurfaceGradientFromTangentSpaceNormalAndFromTBN(normalTS, fragInputs.tangentToWorld[0], fragInputs.tangentToWorld[1]);
+
+                    #if HAVE_DECALS
+                    if (_EnableDecals)
+                    {
+                        float alpha = 1.0;
+                        alpha = surfaceDescription.Alpha;
+
+                        DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                        ApplyDecalToSurfaceNormal(decalSurfaceData, fragInputs.tangentToWorld[2], normalTS);
+                        ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+                     }
+                    #endif
+
+                    GetNormalWS_SG(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+                #else
+					GetNormalWS(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+
+                    #if HAVE_DECALS
+                    if (_EnableDecals)
+                    {
+                        float alpha = 1.0;
+                        alpha = surfaceDescription.Alpha;
+
+                        DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                        ApplyDecalToSurfaceNormal(decalSurfaceData, surfaceData.normalWS.xyz);
+                        ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+                    }
+                    #endif
+                #endif
+
+				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
+                surfaceData.tangentWS = normalize(fragInputs.tangentToWorld[0].xyz );
+                surfaceData.tangentWS = Orthonormalize(surfaceData.tangentWS, surfaceData.normalWS);
+
+				bentNormalWS = surfaceData.normalWS;
+
+                #if defined(DEBUG_DISPLAY)
+				    #if !defined(SHADER_STAGE_RAY_TRACING)
+				    if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
+				    {
+					   #ifdef FRAG_INPUTS_USE_TEXCOORD0
+                           surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG(posInput.positionSS, fragInputs.texCoord0);
+                       #else
+                           surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG_NO_UV(posInput.positionSS);
+                       #endif
+					   surfaceData.metallic = 0;
+				    }
+					#endif
+                     ApplyDebugToSurfaceData(fragInputs.tangentToWorld, surfaceData);
+                #endif
+
+                #if defined(_SPECULAR_OCCLUSION_CUSTOM)
+                #elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
+                    surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO(V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness(surfaceData.perceptualSmoothness));
+                #elif defined(_AMBIENT_OCCLUSION) && defined(_SPECULAR_OCCLUSION_FROM_AO)
+                    surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion(ClampNdotV(dot(surfaceData.normalWS, V)), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness(surfaceData.perceptualSmoothness));
+                #endif
+
+                #ifdef _ENABLE_GEOMETRIC_SPECULAR_AA
+                    surfaceData.perceptualSmoothness = GeometricNormalFiltering(surfaceData.perceptualSmoothness, fragInputs.tangentToWorld[2], surfaceDescription.SpecularAAScreenSpaceVariance, surfaceDescription.SpecularAAThreshold);
+                #endif
+			}
+
+			// Get Surface And BuiltinData
+			void GetSurfaceAndBuiltinData(SmoothSurfaceDescription surfaceDescription, FragInputs fragInputs, float3 V, inout PositionInputs posInput, out SurfaceData surfaceData, out BuiltinData builtinData)
+			{
+				#ifdef LOD_FADE_CROSSFADE
+                    LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
+				#endif
+
+                #ifdef _DOUBLESIDED_ON
+                    float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
+                #else
+                    float3 doubleSidedConstants = float3(1.0, 1.0, 1.0);
+                #endif
+                ApplyDoubleSidedFlipOrMirror(fragInputs, doubleSidedConstants);
+
+				#ifdef _ALPHATEST_ON
+                    DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThreshold );
+				#endif
+
+				#ifdef _ALPHATEST_SHADOW_ON
+                    DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThresholdShadow);
+				#endif
+
+				#ifdef _DEPTHOFFSET_ON
+                    ApplyDepthOffsetPositionInput(V, surfaceDescription.DepthOffset, GetViewForwardDir(), GetWorldToHClipMatrix(), posInput);
+				#endif
+
+                float3 bentNormalWS;
+                BuildSurfaceData(fragInputs, surfaceDescription, V, posInput, surfaceData, bentNormalWS);
+                InitBuiltinData(posInput, surfaceDescription.Alpha, bentNormalWS, -fragInputs.tangentToWorld[2], fragInputs.texCoord1, fragInputs.texCoord2, builtinData);
+
+				#ifdef _DEPTHOFFSET_ON
+                    builtinData.depthOffset = surfaceDescription.DepthOffset;
+				#endif
+
+                #ifdef _ALPHATEST_ON
+                    builtinData.alphaClipTreshold = surfaceDescription.AlphaClipThreshold;
+                #endif
+
+                #ifdef UNITY_VIRTUAL_TEXTURING
+                    builtinData.vtPackedFeedback = surfaceDescription.VTPackedFeedback;
+                #endif
+
+				#ifdef ASE_BAKEDGI
+                    builtinData.bakeDiffuseLighting = surfaceDescription.BakedGI;
+				#endif
+
+				#ifdef ASE_BAKEDBACKGI
+                    builtinData.backBakeDiffuseLighting = surfaceDescription.BakedBackGI;
+				#endif
+
+                builtinData.emissiveColor = surfaceDescription.Emission;
+
+                PostInitBuiltinData(V, posInput, surfaceData, builtinData);
+			}
+
+			#if (defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)) || defined(WRITE_RENDERING_LAYER)
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalPrepassBuffer.hlsl"
+			#endif
+
+			PackedVaryingsMeshToPS VertexFunction(AttributesMesh inputMesh /*ase_vert_input*/)
+			{
+				PackedVaryingsMeshToPS output;
+
+				UNITY_SETUP_INSTANCE_ID(inputMesh);
+				UNITY_TRANSFER_INSTANCE_ID(inputMesh, output);
+				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO( output );
+
+				/*ase_vert_code:inputMesh=AttributesMesh;output=PackedVaryingsMeshToPS*/
+
+				#ifdef ASE_ABSOLUTE_VERTEX_POS
+				float3 defaultVertexValue = inputMesh.positionOS.xyz;
+				#else
+				float3 defaultVertexValue = float3( 0, 0, 0 );
+				#endif
+				float3 vertexValue = /*ase_vert_out:Vertex Offset;Float3;4;-1;_VertexOffset*/ defaultVertexValue /*end*/;
+
+				#ifdef ASE_ABSOLUTE_VERTEX_POS
+				inputMesh.positionOS.xyz = vertexValue;
+				#else
+				inputMesh.positionOS.xyz += vertexValue;
+				#endif
+
+				inputMesh.normalOS = /*ase_vert_out:Vertex Normal;Float3;5;-1;_VertexNormal*/ inputMesh.normalOS /*end*/;
+				inputMesh.tangentOS = /*ase_vert_out:Vertex Tangent;Float4;7;-1;_VertexTangent*/ inputMesh.tangentOS /*end*/;
+
+				float3 positionRWS = TransformObjectToWorld(inputMesh.positionOS);
+				float3 normalWS = TransformObjectToWorldNormal(inputMesh.normalOS);
+				float4 tangentWS = float4(TransformObjectToWorldDir(inputMesh.tangentOS.xyz), inputMesh.tangentOS.w);
+
+				output.positionCS = TransformWorldToHClip(positionRWS);
+				output.clipPosV = output.positionCS;
+				output.positionRWS = positionRWS;
+				output.normalWS = normalWS;
+				output.tangentWS = tangentWS;
+				return output;
+			}
+
+			#if defined(ASE_TESSELLATION)
+			struct VertexControl
+			{
+				float3 positionOS : INTERNALTESSPOS;
+				float3 normalOS : NORMAL;
+				float4 tangentOS : TANGENT;
+				/*ase_vcontrol*/
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+			};
+
+			struct TessellationFactors
+			{
+				float edge[3] : SV_TessFactor;
+				float inside : SV_InsideTessFactor;
+			};
+
+			VertexControl Vert ( AttributesMesh v )
+			{
+				VertexControl o;
+				UNITY_SETUP_INSTANCE_ID(v);
+				UNITY_TRANSFER_INSTANCE_ID(v, o);
+				o.positionOS = v.positionOS;
+				o.normalOS = v.normalOS;
+				o.tangentOS = v.tangentOS;
+				/*ase_control_code:v=AttributesMesh;o=VertexControl*/
+				return o;
+			}
+
+			TessellationFactors TessellationFunction (InputPatch<VertexControl,3> v)
+			{
+				TessellationFactors o;
+				float4 tf = 1;
+				float tessValue = /*ase_inline_begin*/_TessValue/*ase_inline_end*/; float tessMin = /*ase_inline_begin*/_TessMin/*ase_inline_end*/; float tessMax = /*ase_inline_begin*/_TessMax/*ase_inline_end*/;
+				float edgeLength = /*ase_inline_begin*/_TessEdgeLength/*ase_inline_end*/; float tessMaxDisp = /*ase_inline_begin*/_TessMaxDisp/*ase_inline_end*/;
+				#if (SHADEROPTIONS_CAMERA_RELATIVE_RENDERING != 0)
+				float3 cameraPos = 0;
+				#else
+				float3 cameraPos = _WorldSpaceCameraPos;
+				#endif
+				#if defined(ASE_FIXED_TESSELLATION)
+				tf = FixedTess( tessValue );
+				#elif defined(ASE_DISTANCE_TESSELLATION)
+				tf = DistanceBasedTess(float4(v[0].positionOS,1), float4(v[1].positionOS,1), float4(v[2].positionOS,1), tessValue, tessMin, tessMax, GetObjectToWorldMatrix(), cameraPos );
+				#elif defined(ASE_LENGTH_TESSELLATION)
+				tf = EdgeLengthBasedTess(float4(v[0].positionOS,1), float4(v[1].positionOS,1), float4(v[2].positionOS,1), edgeLength, GetObjectToWorldMatrix(), cameraPos, _ScreenParams );
+				#elif defined(ASE_LENGTH_CULL_TESSELLATION)
+				tf = EdgeLengthBasedTessCull(float4(v[0].positionOS,1), float4(v[1].positionOS,1), float4(v[2].positionOS,1), edgeLength, tessMaxDisp, GetObjectToWorldMatrix(), cameraPos, _ScreenParams, _FrustumPlanes );
+				#endif
+				o.edge[0] = tf.x; o.edge[1] = tf.y; o.edge[2] = tf.z; o.inside = tf.w;
+				return o;
+			}
+
+			[domain("tri")]
+			[partitioning("fractional_odd")]
+			[outputtopology("triangle_cw")]
+			[patchconstantfunc("TessellationFunction")]
+			[outputcontrolpoints(3)]
+			VertexControl HullFunction(InputPatch<VertexControl, 3> patch, uint id : SV_OutputControlPointID)
+			{
+			   return patch[id];
+			}
+
+			[domain("tri")]
+			PackedVaryingsMeshToPS DomainFunction(TessellationFactors factors, OutputPatch<VertexControl, 3> patch, float3 bary : SV_DomainLocation)
+			{
+				AttributesMesh o = (AttributesMesh) 0;
+				o.positionOS = patch[0].positionOS * bary.x + patch[1].positionOS * bary.y + patch[2].positionOS * bary.z;
+				o.normalOS = patch[0].normalOS * bary.x + patch[1].normalOS * bary.y + patch[2].normalOS * bary.z;
+				o.tangentOS = patch[0].tangentOS * bary.x + patch[1].tangentOS * bary.y + patch[2].tangentOS * bary.z;
+				/*ase_domain_code:patch=VertexControl;o=AttributesMesh;bary=SV_DomainLocation*/
+				#if defined(ASE_PHONG_TESSELLATION)
+				float3 pp[3];
+				for (int i = 0; i < 3; ++i)
+					pp[i] = o.positionOS.xyz - patch[i].normalOS * (dot(o.positionOS.xyz, patch[i].normalOS) - dot(patch[i].positionOS.xyz, patch[i].normalOS));
+				float phongStrength = /*ase_inline_begin*/_TessPhongStrength/*ase_inline_end*/;
+				o.positionOS.xyz = phongStrength * (pp[0]*bary.x + pp[1]*bary.y + pp[2]*bary.z) + (1.0f-phongStrength) * o.positionOS.xyz;
+				#endif
+				UNITY_TRANSFER_INSTANCE_ID(patch[0], o);
+				return VertexFunction(o);
+			}
+			#else
+			PackedVaryingsMeshToPS Vert ( AttributesMesh v )
+			{
+				return VertexFunction( v );
+			}
+			#endif
+
+			#if defined(WRITE_NORMAL_BUFFER) && defined(WRITE_MSAA_DEPTH)
+			#define SV_TARGET_DECAL SV_Target2
+			#elif defined(WRITE_NORMAL_BUFFER) || defined(WRITE_MSAA_DEPTH)
+			#define SV_TARGET_DECAL SV_Target1
+			#else
+			#define SV_TARGET_DECAL SV_Target0
+			#endif
+
+			void Frag( PackedVaryingsMeshToPS packedInput
+						#if defined(SCENESELECTIONPASS) || defined(SCENEPICKINGPASS)
+						, out float4 outColor : SV_Target0
+						#else
+							#ifdef WRITE_MSAA_DEPTH
+							, out float4 depthColor : SV_Target0
+								#ifdef WRITE_NORMAL_BUFFER
+								, out float4 outNormalBuffer : SV_Target1
+								#endif
+							#else
+								#ifdef WRITE_NORMAL_BUFFER
+								, out float4 outNormalBuffer : SV_Target0
+								#endif
+							#endif
+
+							#if (defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)) || defined(WRITE_RENDERING_LAYER)
+							, out float4 outDecalBuffer : SV_TARGET_DECAL
+							#endif
+						#endif
+
+						#if defined(_DEPTHOFFSET_ON) && !defined(SCENEPICKINGPASS)
+						, out float outputDepth : DEPTH_OFFSET_SEMANTIC
+						#endif
+						/*ase_frag_input*/
+					)
+			{
+				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(packedInput);
+				UNITY_SETUP_INSTANCE_ID(packedInput);
+
+				/*ase_local_var:rwp*/float3 PositionRWS = packedInput.positionRWS;
+				/*ase_local_var:wvd*/float3 V = GetWorldSpaceNormalizeViewDir( packedInput.positionRWS );
+				/*ase_local_var:wn*/float3 NormalWS = packedInput.normalWS;
+				/*ase_local_var:wt*/float4 TangentWS = packedInput.tangentWS;
+				/*ase_local_var:sp*/float4 ClipPos = packedInput.clipPosV;
+				/*ase_local_var:spu*/float4 ScreenPos = ComputeScreenPos( packedInput.clipPosV, _ProjectionParams.x );
+		
+				FragInputs input;
+				ZERO_INITIALIZE(FragInputs, input);
+				input.positionSS = packedInput.positionCS;
+				input.positionRWS = PositionRWS;
+				input.tangentToWorld = BuildTangentToWorld(TangentWS, NormalWS);
+
+				#if _DOUBLESIDED_ON && SHADER_STAGE_FRAGMENT
+				input.isFrontFace = IS_FRONT_VFACE( packedInput.cullFace, true, false);
+				#elif SHADER_STAGE_FRAGMENT
+				#if defined(ASE_NEED_CULLFACE)
+				input.isFrontFace = IS_FRONT_VFACE( packedInput.cullFace, true, false );
+				#endif
+				#endif
+				/*ase_local_var:vf*/half IsFrontFace = input.isFrontFace;
+
+				PositionInputs posInput = GetPositionInput(input.positionSS.xy, _ScreenSize.zw, input.positionSS.z, input.positionSS.w, input.positionRWS);
+
+				SmoothSurfaceDescription surfaceDescription = (SmoothSurfaceDescription)0;
+				/*ase_frag_code:packedInput=PackedVaryingsMeshToPS*/
+				surfaceDescription.Normal = /*ase_frag_out:Normal;Float3;0;-1;_Normal*/float3( 0, 0, 1 )/*end*/;
+				surfaceDescription.Smoothness = /*ase_frag_out:Smoothness;Float;1;-1;_Smoothness*/1/*end*/;
+				surfaceDescription.Alpha = /*ase_frag_out:Alpha;Float;2;-1;_Alpha*/1/*end*/;
+
+				#ifdef _ALPHATEST_ON
+				surfaceDescription.AlphaClipThreshold = /*ase_frag_out:Alpha Clip Threshold;Float;3;-1;_AlphaClip*/_AlphaCutoff/*end*/;
+				#endif
+
+				#ifdef _DEPTHOFFSET_ON
+				surfaceDescription.DepthOffset = /*ase_frag_out:Depth Offset;Float;6;-1;_DepthOffset*/0/*end*/;
+				#endif
+
+				SurfaceData surfaceData;
+				BuiltinData builtinData;
+				GetSurfaceAndBuiltinData(surfaceDescription, input, V, posInput, surfaceData, builtinData);
+
+                #if defined(_DEPTHOFFSET_ON) && !defined(SCENEPICKINGPASS)
+				outputDepth = posInput.deviceDepth;
+				#endif
+
+                #if SHADERPASS == SHADERPASS_SHADOWS
+                float bias = max(abs(ddx(posInput.deviceDepth)), abs(ddy(posInput.deviceDepth))) * _SlopeScaleDepthBias;
+                outputDepth += bias;
+                #endif
+
+				#ifdef SCENESELECTIONPASS
+    				outColor = float4(_ObjectId, _PassValue, 1.0, 1.0);
+				#elif defined(SCENEPICKINGPASS)
+    				outColor = unity_SelectionID;
+				#else
+    				#ifdef WRITE_MSAA_DEPTH
+    				depthColor = packedInput.positionCS.z;
+    				depthColor.a = SharpenAlpha(builtinData.opacity, builtinData.alphaClipTreshold);
+    				#endif
+
+    				#if defined(WRITE_NORMAL_BUFFER)
+    				EncodeIntoNormalBuffer(ConvertSurfaceDataToNormalData(surfaceData), outNormalBuffer);
+    				#endif
+
+    				#if (defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)) || defined(WRITE_RENDERING_LAYER)
+    				DecalPrepassData decalPrepassData;
+                    #ifdef _DISABLE_DECALS
+				    ZERO_INITIALIZE(DecalPrepassData, decalPrepassData);
+                    #else
+    				decalPrepassData.geomNormalWS = surfaceData.geomNormalWS;
+                    #endif
+    				decalPrepassData.renderingLayerMask = GetMeshRenderingLayerMask();
+    				EncodeIntoDecalPrepassBuffer(decalPrepassData, outDecalBuffer);
+    				#endif
+
+				#endif // SCENESELECTIONPASS
+
+			}
+
+			ENDHLSL
+		}
+
+		/*ase_pass*/
+		Pass
+		{
+			/*ase_hide_pass*/
+			Name "MotionVectors"
+			Tags 
+			{ 
+				"LightMode" = "MotionVectors" 
+		    }
+
+			Cull [_CullMode]
+
+			ZWrite On
+
+			Stencil
+			{
+				WriteMask [_StencilWriteMaskMV]
+				Ref [_StencilRefMV]
+		        CompFront Always
+		        PassFront Replace
+		        CompBack Always
+		        PassBack Replace
+			}
+
+			HLSLPROGRAM
+			#pragma multi_compile _ DOTS_INSTANCING_ON
+
+            #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
+            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC _TRANSPARENT_REFRACTIVE_SORT
+            #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
+
+            #pragma multi_compile _ WRITE_NORMAL_BUFFER
+            #pragma multi_compile_fragment _ WRITE_MSAA_DEPTH
+            #pragma multi_compile_fragment _ WRITE_DECAL_BUFFER_AND_RENDERING_LAYER
+
+			#ifdef WRITE_DECAL_BUFFER_AND_RENDERING_LAYER
+			#define WRITE_DECAL_BUFFER
+			#endif
+
+			#pragma vertex Vert
+			#pragma fragment Frag
+
+            #define SHADERPASS SHADERPASS_MOTION_VECTORS
+
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Tessellation.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/DebugMipmapStreamingMacros.hlsl"
+            #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
+
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
+
+            #ifdef RAYTRACING_SHADER_GRAPH_DEFAULT
+                #define RAYTRACING_SHADER_GRAPH_HIGH
+            #endif
+        
+            #ifdef RAYTRACING_SHADER_GRAPH_RAYTRACED
+               #define RAYTRACING_SHADER_GRAPH_LOW
+            #endif
+
+            #ifndef SHADER_UNLIT
+            #if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
+                #define VARYINGS_NEED_CULLFACE
+            #endif
+            #endif
+
+			#if defined(_DOUBLESIDED_ON) && !defined(ASE_NEED_CULLFACE)
+			     #define ASE_NEED_CULLFACE 1
+			#endif
+
+            #if _MATERIAL_FEATURE_COLORED_TRANSMISSION
+            #undef _MATERIAL_FEATURE_CLEAR_COAT
+            #endif
+
+		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
+			#define OUTPUT_SPLIT_LIGHTING
+		    #endif
+
+		    #if (SHADERPASS == SHADERPASS_PATH_TRACING) && !defined(_DOUBLESIDED_ON) && (defined(_REFRACTION_PLANE) || defined(_REFRACTION_SPHERE))
+			#undef  _REFRACTION_PLANE
+			#undef  _REFRACTION_SPHERE
+			#define _REFRACTION_THIN
+		    #endif
+
+            #if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
+            #if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
+                #define WRITE_NORMAL_BUFFER
+            #endif
+            #endif
+
+            #if SHADERPASS == SHADERPASS_MOTION_VECTORS && defined(WRITE_DECAL_BUFFER_AND_RENDERING_LAYER)
+                #define WRITE_DECAL_BUFFER
+            #endif
+
+            #ifndef DEBUG_DISPLAY
+                #if !defined(_SURFACE_TYPE_TRANSPARENT)
+                    #if SHADERPASS == SHADERPASS_FORWARD
+                    #define SHADERPASS_FORWARD_BYPASS_ALPHA_TEST
+                    #elif SHADERPASS == SHADERPASS_GBUFFER
+                    #define SHADERPASS_GBUFFER_BYPASS_ALPHA_TEST
+                    #endif
+                #endif
+            #endif
+
+            #if defined(SHADER_LIT) && !defined(_SURFACE_TYPE_TRANSPARENT)
+                #define _DEFERRED_CAPABLE_MATERIAL
+            #endif
+        
+            #if (defined(_TRANSPARENT_WRITES_MOTION_VEC) || defined(_TRANSPARENT_REFRACTIVE_SORT)) && defined(_SURFACE_TYPE_TRANSPARENT)
+                #define _WRITE_TRANSPARENT_MOTION_VECTOR
+            #endif
+
+			CBUFFER_START( UnityPerMaterial )
+			float4 _EmissionColor;
+			float _AlphaCutoff;
+			float _RenderQueueType;
+			#ifdef _ADD_PRECOMPUTED_VELOCITY
+			    float _AddPrecomputedVelocity;
+			#endif
+			float _StencilRef;
+			float _StencilWriteMask;
+			float _StencilRefDepth;
+			float _StencilWriteMaskDepth;
+			float _StencilRefMV;
+			float _StencilWriteMaskMV;
+			float _StencilRefDistortionVec;
+			float _StencilWriteMaskDistortionVec;
+			float _StencilWriteMaskGBuffer;
+			float _StencilRefGBuffer;
+			float _ZTestGBuffer;
+			float _RequireSplitLighting;
+			float _ReceivesSSR;
+			float _SurfaceType;
+			float _BlendMode;
+            #ifdef SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
+			    float _EnableBlendModePreserveSpecularLighting;
+            #endif
+			float _SrcBlend;
+			float _DstBlend;
+			float _DstBlend2;
+			float _AlphaSrcBlend;
+			float _AlphaDstBlend;
+			float _ZWrite;
+			float _TransparentZWrite;
+			float _CullMode;
+			float _TransparentSortPriority;
+			float _EnableFogOnTransparent;
+			float _CullModeForward;
+			float _TransparentCullMode;
+			float _ZTestDepthEqualForOpaque;
+			float _ZTestTransparent;
+			float _TransparentBackfaceEnable;
+			float _AlphaCutoffEnable;
+			float _UseShadowThreshold;
+			float _DoubleSidedEnable;
+			float _DoubleSidedNormalMode;
+			float4 _DoubleSidedConstants;
+			#ifdef ASE_TESSELLATION
+			    float _TessPhongStrength;
+			    float _TessValue;
+			    float _TessMin;
+			    float _TessMax;
+			    float _TessEdgeLength;
+			    float _TessMaxDisp;
+			#endif
+			UNITY_TEXTURE_STREAMING_DEBUG_VARS;
+			CBUFFER_END
+
+            #ifdef SCENEPICKINGPASS
+			float4 _SelectionID;
+            #endif
+
+            #ifdef SCENESELECTIONPASS
+			int _ObjectId;
+			int _PassValue;
+            #endif
+
+			/*ase_globals*/
+
+            #ifdef DEBUG_DISPLAY
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
+            #endif
+
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Material.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/NormalSurfaceGradient.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/Lit.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/BuiltinUtilities.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/MaterialUtilities.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphFunctions.hlsl"
+
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalUtilities.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/LitDecalData.hlsl"
+
+        	#ifdef HAVE_VFX_MODIFICATION
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/VisualEffectVertex.hlsl"
+        	#endif
+
+			/*ase_pragma*/
+
+			struct AttributesMesh
+			{
+				float3 positionOS : POSITION;
+				float3 normalOS : NORMAL;
+				float4 tangentOS : TANGENT;
+				float3 previousPositionOS : TEXCOORD4;
+				float3 precomputedVelocity : TEXCOORD5;
+				/*ase_vdata:p=p;n=n;t=t;uv4=tc4;uv5=tc5*/
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+			};
+
+			struct PackedVaryingsMeshToPS
+			{
+				SV_POSITION_QUALIFIERS float4 vmeshPositionCS : SV_Position;
 				float3 vmeshInterp00 : TEXCOORD0;
 				float3 vpassInterpolators0 : TEXCOORD1; //interpolators0
 				float3 vpassInterpolators1 : TEXCOORD2; //interpolators1
@@ -3691,136 +4226,204 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				ZERO_INITIALIZE(SurfaceData, surfaceData);
 
 				surfaceData.specularOcclusion = 1.0;
-
-				// surface data
+				surfaceData.thickness = 0.0;
 				surfaceData.perceptualSmoothness =		surfaceDescription.Smoothness;
 
 				// refraction
-				#ifdef _HAS_REFRACTION
-				if( _EnableSSRefraction )
-				{
-					surfaceData.transmittanceMask = ( 1.0 - surfaceDescription.Alpha );
-					surfaceDescription.Alpha = 1.0;
-				}
-				else
-				{
-					surfaceData.ior = 1.0;
-					surfaceData.transmittanceColor = float3( 1.0, 1.0, 1.0 );
-					surfaceData.atDistance = 1.0;
-					surfaceData.transmittanceMask = 0.0;
-					surfaceDescription.Alpha = 1.0;
-				}
-				#else
-				surfaceData.ior = 1.0;
-				surfaceData.transmittanceColor = float3( 1.0, 1.0, 1.0 );
-				surfaceData.atDistance = 1.0;
-				surfaceData.transmittanceMask = 0.0;
-				#endif
-
-				// material features
-				surfaceData.materialFeatures = MATERIALFEATUREFLAGS_LIT_STANDARD;
-				#ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SUBSURFACE_SCATTERING;
-				#endif
-				#ifdef _MATERIAL_FEATURE_TRANSMISSION
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
-				#endif
-                #ifdef _MATERIAL_FEATURE_ANISOTROPY
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
-				surfaceData.normalWS = float3(0, 1, 0);
+                #if defined(_REFRACTION_PLANE) || defined(_REFRACTION_SPHERE) || defined(_REFRACTION_THIN)
+                    if (_EnableSSRefraction)
+                    {
+                        surfaceData.ior =                       surfaceDescription.RefractionIndex;
+                        surfaceData.transmittanceColor =        surfaceDescription.RefractionColor;
+                        surfaceData.atDistance =                surfaceDescription.RefractionDistance;
+        
+                        surfaceData.transmittanceMask = (1.0 - surfaceDescription.Alpha);
+                        surfaceDescription.Alpha = 1.0;
+                    }
+                    else
+                    {
+                        surfaceData.ior = 1.0;
+                        surfaceData.transmittanceColor = float3(1.0, 1.0, 1.0);
+                        surfaceData.atDistance = 1.0;
+                        surfaceData.transmittanceMask = 0.0;
+                        surfaceDescription.Alpha = 1.0;
+                    }
+                #else
+                    surfaceData.ior = 1.0;
+                    surfaceData.transmittanceColor = float3(1.0, 1.0, 1.0);
+                    surfaceData.atDistance = 1.0;
+                    surfaceData.transmittanceMask = 0.0;
                 #endif
+
+				surfaceData.materialFeatures = MATERIALFEATUREFLAGS_LIT_STANDARD;
+
+				#ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SUBSURFACE_SCATTERING;
+				#endif
+
+				#ifdef _MATERIAL_FEATURE_TRANSMISSION
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
+				#endif
+
+				#ifdef _MATERIAL_FEATURE_COLORED_TRANSMISSION
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_COLORED_TRANSMISSION;
+				#endif
+
+                #ifdef _MATERIAL_FEATURE_ANISOTROPY
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
+                    surfaceData.normalWS = float3(0, 1, 0);
+                #endif
+
 				#ifdef _MATERIAL_FEATURE_CLEAR_COAT
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_CLEAR_COAT;
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_CLEAR_COAT;
 				#endif
+
 				#ifdef _MATERIAL_FEATURE_IRIDESCENCE
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_IRIDESCENCE;
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_IRIDESCENCE;
 				#endif
+
 				#ifdef _MATERIAL_FEATURE_SPECULAR_COLOR
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SPECULAR_COLOR;
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SPECULAR_COLOR;
 				#endif
 
-				// others
 				#if defined (_MATERIAL_FEATURE_SPECULAR_COLOR) && defined (_ENERGY_CONSERVING_SPECULAR)
-				surfaceData.baseColor *= ( 1.0 - Max3( surfaceData.specularColor.r, surfaceData.specularColor.g, surfaceData.specularColor.b ) );
-				#endif
-				#ifdef _DOUBLESIDED_ON
-				float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
-				#else
-				float3 doubleSidedConstants = float3( 1.0, 1.0, 1.0 );
+                    surfaceData.baseColor *= ( 1.0 - Max3( surfaceData.specularColor.r, surfaceData.specularColor.g, surfaceData.specularColor.b ) );
 				#endif
 
-				// normals
+				#ifdef _DOUBLESIDED_ON
+                    float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
+				#else
+                    float3 doubleSidedConstants = float3( 1.0, 1.0, 1.0 );
+				#endif
+
 				float3 normalTS = float3(0.0f, 0.0f, 1.0f);
 				normalTS = surfaceDescription.Normal;
-				GetNormalWS( fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants );
+
+                #ifdef DECAL_NORMAL_BLENDING
+					normalTS = SurfaceGradientFromTangentSpaceNormalAndFromTBN(normalTS, fragInputs.tangentToWorld[0], fragInputs.tangentToWorld[1]);
+
+                    #if HAVE_DECALS
+                    if (_EnableDecals)
+                    {
+                        float alpha = 1.0;
+                        alpha = surfaceDescription.Alpha;
+
+                        DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                        ApplyDecalToSurfaceNormal(decalSurfaceData, fragInputs.tangentToWorld[2], normalTS);
+                        ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+                     }
+                    #endif
+
+                    GetNormalWS_SG(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+                #else
+					GetNormalWS(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+
+                    #if HAVE_DECALS
+                    if (_EnableDecals)
+                    {
+                        float alpha = 1.0;
+                        alpha = surfaceDescription.Alpha;
+
+                        DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                        ApplyDecalToSurfaceNormal(decalSurfaceData, surfaceData.normalWS.xyz);
+                        ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+                    }
+                    #endif
+                #endif
 
 				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
-				surfaceData.tangentWS = normalize( fragInputs.tangentToWorld[ 0 ].xyz );
-
-				// decals
-				#if HAVE_DECALS
-				if( _EnableDecals )
-				{
-					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, surfaceDescription.Alpha);
-					ApplyDecalToSurfaceData(decalSurfaceData, fragInputs.tangentToWorld[2], surfaceData);
-				}
-				#endif
+                surfaceData.tangentWS = normalize(fragInputs.tangentToWorld[0].xyz );
+                surfaceData.tangentWS = Orthonormalize(surfaceData.tangentWS, surfaceData.normalWS);
 
 				bentNormalWS = surfaceData.normalWS;
-				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
+
+				#if defined(DEBUG_DISPLAY)
+				    #if !defined(SHADER_STAGE_RAY_TRACING)
+				    if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
+				    {
+					   #ifdef FRAG_INPUTS_USE_TEXCOORD0
+                           surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG(posInput.positionSS, fragInputs.texCoord0);
+                       #else
+                           surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG_NO_UV(posInput.positionSS);
+                       #endif
+					   surfaceData.metallic = 0;
+				    }
+					#endif
+				    ApplyDebugToSurfaceData(fragInputs.tangentToWorld, surfaceData); 
+				#endif
 
                 #if defined(_SPECULAR_OCCLUSION_CUSTOM)
                 #elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO(V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness(surfaceData.perceptualSmoothness));
+                    surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO(V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness(surfaceData.perceptualSmoothness));
                 #elif defined(_AMBIENT_OCCLUSION) && defined(_SPECULAR_OCCLUSION_FROM_AO)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion(ClampNdotV(dot(surfaceData.normalWS, V)), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness(surfaceData.perceptualSmoothness));
+                    surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion(ClampNdotV(dot(surfaceData.normalWS, V)), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness(surfaceData.perceptualSmoothness));
                 #endif
 
-				// debug
-				#if defined(DEBUG_DISPLAY)
-				if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
-				{
-					surfaceData.metallic = 0;
-				}
-				ApplyDebugToSurfaceData(fragInputs.tangentToWorld, surfaceData);
-				#endif
+                #ifdef _ENABLE_GEOMETRIC_SPECULAR_AA
+                    surfaceData.perceptualSmoothness = GeometricNormalFiltering(surfaceData.perceptualSmoothness, fragInputs.tangentToWorld[2], surfaceDescription.SpecularAAScreenSpaceVariance, surfaceDescription.SpecularAAThreshold);
+                #endif
 			}
 
+			// Get Surface And BuiltinData
 			void GetSurfaceAndBuiltinData(SmoothSurfaceDescription surfaceDescription, FragInputs fragInputs, float3 V, inout PositionInputs posInput, out SurfaceData surfaceData, out BuiltinData builtinData)
 			{
 				#ifdef LOD_FADE_CROSSFADE
-				LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
+                    LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
 				#endif
 
-				#ifdef _DOUBLESIDED_ON
-				float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
-				#else
-				float3 doubleSidedConstants = float3( 1.0, 1.0, 1.0 );
-				#endif
-
-				ApplyDoubleSidedFlipOrMirror( fragInputs, doubleSidedConstants );
+                #ifdef _DOUBLESIDED_ON
+                    float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
+                #else
+                    float3 doubleSidedConstants = float3(1.0, 1.0, 1.0);
+                #endif
+                ApplyDoubleSidedFlipOrMirror(fragInputs, doubleSidedConstants);
 
 				#ifdef _ALPHATEST_ON
-				DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThreshold );
+                    DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThreshold );
+				#endif
+
+				#ifdef _ALPHATEST_SHADOW_ON
+                    DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThresholdShadow);
 				#endif
 
 				#ifdef _DEPTHOFFSET_ON
-				builtinData.depthOffset = surfaceDescription.DepthOffset;
-				ApplyDepthOffsetPositionInput( V, surfaceDescription.DepthOffset, GetViewForwardDir(), GetWorldToHClipMatrix(), posInput );
+                    ApplyDepthOffsetPositionInput(V, surfaceDescription.DepthOffset, GetViewForwardDir(), GetWorldToHClipMatrix(), posInput);
 				#endif
 
-				float3 bentNormalWS;
-				BuildSurfaceData( fragInputs, surfaceDescription, V, posInput, surfaceData, bentNormalWS );
+                float3 bentNormalWS;
+                BuildSurfaceData(fragInputs, surfaceDescription, V, posInput, surfaceData, bentNormalWS);
+                InitBuiltinData(posInput, surfaceDescription.Alpha, bentNormalWS, -fragInputs.tangentToWorld[2], fragInputs.texCoord1, fragInputs.texCoord2, builtinData);
 
-				InitBuiltinData( posInput, surfaceDescription.Alpha, bentNormalWS, -fragInputs.tangentToWorld[ 2 ], fragInputs.texCoord1, fragInputs.texCoord2, builtinData );
+				#ifdef _DEPTHOFFSET_ON
+                    builtinData.depthOffset = surfaceDescription.DepthOffset;
+				#endif
 
-				PostInitBuiltinData(V, posInput, surfaceData, builtinData);
+                #ifdef _ALPHATEST_ON
+                    builtinData.alphaClipTreshold = surfaceDescription.AlphaClipThreshold;
+                #endif
+
+                #ifdef UNITY_VIRTUAL_TEXTURING
+                    builtinData.vtPackedFeedback = surfaceDescription.VTPackedFeedback;
+                #endif
+
+				#ifdef ASE_BAKEDGI
+                    builtinData.bakeDiffuseLighting = surfaceDescription.BakedGI;
+				#endif
+
+				#ifdef ASE_BAKEDBACKGI
+                    builtinData.backBakeDiffuseLighting = surfaceDescription.BakedBackGI;
+				#endif
+
+                builtinData.emissiveColor = surfaceDescription.Emission;
+
+                PostInitBuiltinData(V, posInput, surfaceData, builtinData);
 			}
 
-			AttributesMesh ApplyMeshModification(AttributesMesh inputMesh, float3 timeParameters, inout PackedVaryingsMeshToPS outputPackedVaryingsMeshToPS/*ase_vert_input*/ )
+			AttributesMesh ApplyMeshModification(AttributesMesh inputMesh, float3 timeParameters, inout PackedVaryingsMeshToPS output/*ase_vert_input*/ )
 			{
 				_TimeParameters.xyz = timeParameters;
-				/*ase_vert_code:inputMesh=AttributesMesh;outputPackedVaryingsMeshToPS=PackedVaryingsMeshToPS*/
+				/*ase_vert_code:inputMesh=AttributesMesh;output=PackedVaryingsMeshToPS*/
 
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 				float3 defaultVertexValue = inputMesh.positionOS.xyz;
@@ -3835,19 +4438,20 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				inputMesh.positionOS.xyz += vertexValue;
 				#endif
 				inputMesh.normalOS = /*ase_vert_out:Vertex Normal;Float3;5;-1;_VertexNormal*/ inputMesh.normalOS /*end*/;
+				inputMesh.tangentOS = /*ase_vert_out:Vertex Tangent;Float4;27;-1;_VertexTangent*/inputMesh.tangentOS/*end*/;
 				return inputMesh;
 			}
 
 			PackedVaryingsMeshToPS VertexFunction(AttributesMesh inputMesh)
 			{
-				PackedVaryingsMeshToPS outputPackedVaryingsMeshToPS = (PackedVaryingsMeshToPS)0;
+				PackedVaryingsMeshToPS output = (PackedVaryingsMeshToPS)0;
 				AttributesMesh defaultMesh = inputMesh;
 
 				UNITY_SETUP_INSTANCE_ID(inputMesh);
-				UNITY_TRANSFER_INSTANCE_ID(inputMesh, outputPackedVaryingsMeshToPS);
-				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO( outputPackedVaryingsMeshToPS );
+				UNITY_TRANSFER_INSTANCE_ID(inputMesh, output);
+				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO( output );
 
-				inputMesh = ApplyMeshModification( inputMesh, _TimeParameters.xyz, outputPackedVaryingsMeshToPS);
+				inputMesh = ApplyMeshModification( inputMesh, _TimeParameters.xyz, output);
 
 				float3 positionRWS = TransformObjectToWorld(inputMesh.positionOS);
 				float3 normalWS = TransformObjectToWorldNormal(inputMesh.normalOS);
@@ -3890,7 +4494,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 					#endif
 
 					#if defined(HAVE_VERTEX_MODIFICATION)
-						//ApplyVertexModification(inputMesh, normalWS, previousPositionRWS, _LastTimeParameters.xyz);
+						ApplyVertexModification(inputMesh, normalWS, previousPositionRWS, _LastTimeParameters.xyz);
 					#endif
 
 					#ifdef _WRITE_TRANSPARENT_MOTION_VECTOR
@@ -3903,23 +4507,24 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 					VPASSpreviousPositionCS = mul(UNITY_MATRIX_PREV_VP, float4(previousPositionRWS, 1.0));
 				}
 
-				outputPackedVaryingsMeshToPS.vmeshPositionCS = VMESHpositionCS;
-				outputPackedVaryingsMeshToPS.vmeshInterp00.xyz = VMESHpositionRWS;
+				output.vmeshPositionCS = VMESHpositionCS;
+				output.vmeshInterp00.xyz = VMESHpositionRWS;
 
-				outputPackedVaryingsMeshToPS.vpassInterpolators0 = float3(VPASSpositionCS.xyw);
-				outputPackedVaryingsMeshToPS.vpassInterpolators1 = float3(VPASSpreviousPositionCS.xyw);
-				return outputPackedVaryingsMeshToPS;
+				output.vpassInterpolators0 = float3(VPASSpositionCS.xyw);
+				output.vpassInterpolators1 = float3(VPASSpreviousPositionCS.xyw);
+				return output;
 			}
 
-			#if defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)
+			#if (defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)) || defined(WRITE_RENDERING_LAYER)
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalPrepassBuffer.hlsl"
 			#endif
 
-			#if defined(ASE_TESSELLATION)
+			#if ( 0 ) // TEMPORARY: defined(ASE_TESSELLATION)
 			struct VertexControl
 			{
 				float3 positionOS : INTERNALTESSPOS;
 				float3 normalOS : NORMAL;
+				float4 tangentOS : TANGENT;
 				float3 previousPositionOS : TEXCOORD4;
 				float3 precomputedVelocity : TEXCOORD5;
 				/*ase_vcontrol*/
@@ -3939,6 +4544,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				UNITY_TRANSFER_INSTANCE_ID(v, o);
 				o.positionOS = v.positionOS;
 				o.normalOS = v.normalOS;
+				o.tangentOS = v.tangentOS;
 				o.previousPositionOS = v.previousPositionOS;
 				#if defined (_ADD_PRECOMPUTED_VELOCITY)
 				o.precomputedVelocity = v.precomputedVelocity;
@@ -3987,6 +4593,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				AttributesMesh o = (AttributesMesh) 0;
 				o.positionOS = patch[0].positionOS * bary.x + patch[1].positionOS * bary.y + patch[2].positionOS * bary.z;
 				o.normalOS = patch[0].normalOS * bary.x + patch[1].normalOS * bary.y + patch[2].normalOS * bary.z;
+				o.tangentOS = patch[0].tangentOS * bary.x + patch[1].tangentOS * bary.y + patch[2].tangentOS * bary.z;
 				o.previousPositionOS = patch[0].previousPositionOS * bary.x + patch[1].previousPositionOS * bary.y + patch[2].previousPositionOS * bary.z;
 				#if defined (_ADD_PRECOMPUTED_VELOCITY)
 					o.precomputedVelocity = patch[0].precomputedVelocity * bary.x + patch[1].precomputedVelocity * bary.y + patch[2].precomputedVelocity * bary.z;
@@ -4036,7 +4643,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 					#endif
 
 					#ifdef _DEPTHOFFSET_ON
-					, out float outputDepth : SV_Depth
+					, out float outputDepth : DEPTH_OFFSET_SEMANTIC
 					#endif
 				/*ase_frag_input*/
 				)
@@ -4067,10 +4674,10 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				#endif
 
 				#ifdef _DEPTHOFFSET_ON
-				surfaceDescription.DepthOffset = /*ase_frag_out:DepthOffset;Float;6;-1;_DepthOffset*/0/*end*/;
+				surfaceDescription.DepthOffset = /*ase_frag_out:Depth Offset;Float;6;-1;_DepthOffset*/0/*end*/;
 				#endif
 
-				GetSurfaceAndBuiltinData( surfaceDescription, input, V, posInput, surfaceData, builtinData );
+				GetSurfaceAndBuiltinData(surfaceDescription, input, V, posInput, surfaceData, builtinData);
 
 				float4 VPASSpositionCS = float4(packedInput.vpassInterpolators0.xy, 0.0, packedInput.vpassInterpolators0.z);
 				float4 VPASSpreviousPositionCS = float4(packedInput.vpassInterpolators1.xy, 0.0, packedInput.vpassInterpolators1.z);
@@ -4087,17 +4694,12 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				if( forceNoMotion )
 					outMotionVector = float4( 2.0, 0.0, 0.0, 0.0 );
 
-				// Depth and Alpha to coverage
 				#ifdef WRITE_MSAA_DEPTH
-					// In case we are rendering in MSAA, reading the an MSAA depth buffer is way too expensive. To avoid that, we export the depth to a color buffer
 					depthColor = packedInput.vmeshPositionCS.z;
-
-					// Alpha channel is used for alpha to coverage
 					depthColor.a = SharpenAlpha(builtinData.opacity, builtinData.alphaClipTreshold);
 				#endif
 
-				// Normal Buffer Processing
-				#ifdef WRITE_NORMAL_BUFFER
+				#if defined(WRITE_NORMAL_BUFFER)
 					EncodeIntoNormalBuffer(ConvertSurfaceDataToNormalData(surfaceData), outNormalBuffer);
 				#endif
 
@@ -4107,12 +4709,9 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 					ZERO_INITIALIZE(DecalPrepassData, decalPrepassData);
 					#else
 					decalPrepassData.geomNormalWS = surfaceData.geomNormalWS;
-					decalPrepassData.decalLayerMask = GetMeshRenderingDecalLayer();
 					#endif
+					decalPrepassData.renderingLayerMask = GetMeshRenderingLayerMask();
 					EncodeIntoDecalPrepassBuffer(decalPrepassData, outDecalBuffer);
-
-					// make sure we don't overwrite light layers
-					outDecalBuffer.w = (GetMeshRenderingLightLayer() & 0x000000FF) / 255.0;
 				#endif
 
 				#ifdef _DEPTHOFFSET_ON
@@ -4128,10 +4727,16 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 		{
 			/*ase_hide_pass*/
 			Name "TransparentBackface"
-			Tags { "LightMode" = "TransparentBackface" }
+			Tags 
+			{ 
+				"LightMode" = "TransparentBackface" 
+		    }
 
 			Blend [_SrcBlend] [_DstBlend], [_AlphaSrcBlend] [_AlphaDstBlend]
-			Blend 1 SrcAlpha OneMinusSrcAlpha
+			Blend 1 One OneMinusSrcAlpha
+			Blend 2 One OneMinusSrcAlpha
+			Blend 3 One OneMinusSrcAlpha
+			Blend 4 One OneMinusSrcAlpha
 
 			Cull Front
 			ZTest [_ZTestTransparent]
@@ -4141,31 +4746,38 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
             ColorMask [_ColorMaskTransparentVelTwo] 2
 
 			HLSLPROGRAM
+            #pragma multi_compile _ DOTS_INSTANCING_ON
 
-            #pragma shader_feature _SURFACE_TYPE_TRANSPARENT
-			#pragma shader_feature_local _TRANSPARENT_WRITES_MOTION_VEC
-			#pragma shader_feature_local_fragment _ENABLE_FOG_ON_TRANSPARENT
-			#pragma shader_feature_local _DOUBLESIDED_ON
-			#pragma shader_feature_local _ALPHATEST_ON
+            #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
+            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC _TRANSPARENT_REFRACTIVE_SORT
+            #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
 
 			#pragma multi_compile_fragment _ SHADOWS_SHADOWMASK
-			#pragma multi_compile_fragment SHADOW_LOW SHADOW_MEDIUM SHADOW_HIGH
-			#pragma multi_compile_fragment AREA_SHADOW_MEDIUM AREA_SHADOW_HIGH
-			#pragma multi_compile_fragment PROBE_VOLUMES_OFF PROBE_VOLUMES_L1 PROBE_VOLUMES_L2
+            #pragma multi_compile_fragment PUNCTUAL_SHADOW_LOW PUNCTUAL_SHADOW_MEDIUM PUNCTUAL_SHADOW_HIGH
+            #pragma multi_compile_fragment DIRECTIONAL_SHADOW_LOW DIRECTIONAL_SHADOW_MEDIUM DIRECTIONAL_SHADOW_HIGH
+            #pragma multi_compile_fragment AREA_SHADOW_MEDIUM AREA_SHADOW_HIGH
+            #pragma multi_compile_fragment _ PROBE_VOLUMES_L1 PROBE_VOLUMES_L2
             #pragma multi_compile_fragment SCREEN_SPACE_SHADOWS_OFF SCREEN_SPACE_SHADOWS_ON
-			#pragma multi_compile _ DEBUG_DISPLAY
-			#pragma multi_compile _ LIGHTMAP_ON
-			#pragma multi_compile _ DIRLIGHTMAP_COMBINED
-			#pragma multi_compile _ DYNAMICLIGHTMAP_ON
-			#pragma multi_compile_fragment DECALS_OFF DECALS_3RT DECALS_4RT
-			#pragma multi_compile_fragment _ DECAL_SURFACE_GRADIENT
+
+            #pragma multi_compile _ DEBUG_DISPLAY
+            #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
+            #pragma multi_compile _ DYNAMICLIGHTMAP_ON
+            #pragma multi_compile_fragment DECALS_OFF DECALS_3RT DECALS_4RT
+            #pragma multi_compile_fragment _ DECAL_SURFACE_GRADIENT
+            #pragma multi_compile _ USE_LEGACY_LIGHTMAPS
 
 			#ifndef SHADER_STAGE_FRAGMENT
 			#define SHADOW_LOW
+			#define USE_FPTL_LIGHTLIST
 			#endif
 
 			#pragma vertex Vert
 			#pragma fragment Frag
+
+			#define SHADERPASS SHADERPASS_FORWARD
+		    #define HAS_LIGHTLOOP 1
+			#define USE_CLUSTERED_LIGHTLIST
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
@@ -4174,22 +4786,31 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
+            #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
 
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
 
-			#define SHADERPASS SHADERPASS_FORWARD
-		    #define HAS_LIGHTLOOP 1
-		    #define USE_CLUSTERED_LIGHTLIST
+            #ifdef RAYTRACING_SHADER_GRAPH_DEFAULT
+                #define RAYTRACING_SHADER_GRAPH_HIGH
+            #endif
 
-			// Setup for Fog Enabled to apply in sky refletions in LightLoopDef.hlsl
-            #define APPLY_FOG_ON_SKY_REFLECTIONS
+            #ifdef RAYTRACING_SHADER_GRAPH_RAYTRACED
+                #define RAYTRACING_SHADER_GRAPH_LOW
+            #endif
 
-			#ifndef SHADER_UNLIT
-			#if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
-			#define VARYINGS_NEED_CULLFACE
+            #ifndef SHADER_UNLIT
+            #if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
+                #define VARYINGS_NEED_CULLFACE
+            #endif
+            #endif
+
+			#if defined(_DOUBLESIDED_ON) && !defined(ASE_NEED_CULLFACE)
+			    #define ASE_NEED_CULLFACE 1
 			#endif
-			#endif
+
+            #if _MATERIAL_FEATURE_COLORED_TRANSMISSION
+            #undef _MATERIAL_FEATURE_CLEAR_COAT
+            #endif
 
 		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
 			#define OUTPUT_SPLIT_LIGHTING
@@ -4201,36 +4822,40 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			#define _REFRACTION_THIN
 		    #endif
 
-			#if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
-			#if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
-				#define WRITE_NORMAL_BUFFER
-			#endif
-			#endif
+            #if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
+            #if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
+                #define WRITE_NORMAL_BUFFER
+            #endif
+            #endif
 
-			#ifndef DEBUG_DISPLAY
-				#if !defined(_SURFACE_TYPE_TRANSPARENT)
-					#if SHADERPASS == SHADERPASS_FORWARD
-					#define SHADERPASS_FORWARD_BYPASS_ALPHA_TEST
-					#elif SHADERPASS == SHADERPASS_GBUFFER
-					#define SHADERPASS_GBUFFER_BYPASS_ALPHA_TEST
-					#endif
-				#endif
-			#endif
+            #if SHADERPASS == SHADERPASS_MOTION_VECTORS && defined(WRITE_DECAL_BUFFER_AND_RENDERING_LAYER)
+                #define WRITE_DECAL_BUFFER
+            #endif
 
-			#if defined(SHADER_LIT) && !defined(_SURFACE_TYPE_TRANSPARENT)
-			#define _DEFERRED_CAPABLE_MATERIAL
-			#endif
+            #ifndef DEBUG_DISPLAY
+                #if !defined(_SURFACE_TYPE_TRANSPARENT)
+                    #if SHADERPASS == SHADERPASS_FORWARD
+                    #define SHADERPASS_FORWARD_BYPASS_ALPHA_TEST
+                    #elif SHADERPASS == SHADERPASS_GBUFFER
+                    #define SHADERPASS_GBUFFER_BYPASS_ALPHA_TEST
+                    #endif
+                #endif
+            #endif
 
-			#if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
-			#define _WRITE_TRANSPARENT_MOTION_VECTOR
-			#endif
+            #if defined(SHADER_LIT) && !defined(_SURFACE_TYPE_TRANSPARENT)
+                #define _DEFERRED_CAPABLE_MATERIAL
+            #endif
+        
+            #if (defined(_TRANSPARENT_WRITES_MOTION_VEC) || defined(_TRANSPARENT_REFRACTIVE_SORT)) && defined(_SURFACE_TYPE_TRANSPARENT)
+                #define _WRITE_TRANSPARENT_MOTION_VECTOR
+            #endif
 
 			CBUFFER_START( UnityPerMaterial )
 			float4 _EmissionColor;
 			float _AlphaCutoff;
 			float _RenderQueueType;
 			#ifdef _ADD_PRECOMPUTED_VELOCITY
-			float _AddPrecomputedVelocity;
+			    float _AddPrecomputedVelocity;
 			#endif
 			float _StencilRef;
 			float _StencilWriteMask;
@@ -4238,6 +4863,8 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			float _StencilWriteMaskDepth;
 			float _StencilRefMV;
 			float _StencilWriteMaskMV;
+			float _StencilRefDistortionVec;
+			float _StencilWriteMaskDistortionVec;
 			float _StencilWriteMaskGBuffer;
 			float _StencilRefGBuffer;
 			float _ZTestGBuffer;
@@ -4246,10 +4873,11 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			float _SurfaceType;
 			float _BlendMode;
             #ifdef SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
-			float _EnableBlendModePreserveSpecularLighting;
+			    float _EnableBlendModePreserveSpecularLighting;
             #endif
 			float _SrcBlend;
 			float _DstBlend;
+			float _DstBlend2;
 			float _AlphaSrcBlend;
 			float _AlphaDstBlend;
 			float _ZWrite;
@@ -4268,21 +4896,19 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			float _DoubleSidedNormalMode;
 			float4 _DoubleSidedConstants;
 			#ifdef ASE_TESSELLATION
-			float _TessPhongStrength;
-			float _TessValue;
-			float _TessMin;
-			float _TessMax;
-			float _TessEdgeLength;
-			float _TessMaxDisp;
+			    float _TessPhongStrength;
+			    float _TessValue;
+			    float _TessMin;
+			    float _TessMax;
+			    float _TessEdgeLength;
+			    float _TessMaxDisp;
 			#endif
 			CBUFFER_END
 
-			// Property used by ScenePickingPass
             #ifdef SCENEPICKINGPASS
 			float4 _SelectionID;
             #endif
 
-			// Properties used by SceneSelectionPass
             #ifdef SCENESELECTIONPASS
 			int _ObjectId;
 			int _PassValue;
@@ -4304,16 +4930,14 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/MaterialUtilities.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphFunctions.hlsl"
 
-			// Setup DECALS_OFF so the shader stripper can remove variants
-            #define HAVE_DECALS ( (defined(DECALS_3RT) || defined(DECALS_4RT)) && !defined(_DISABLE_DECALS) )
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalUtilities.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/LitDecalData.hlsl"
 
-			/*ase_pragma*/
+        	#ifdef HAVE_VFX_MODIFICATION
+        	#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/VisualEffectVertex.hlsl"
+        	#endif
 
-			#if defined(_DOUBLESIDED_ON) && !defined(ASE_NEED_CULLFACE)
-			#define ASE_NEED_CULLFACE 1
-			#endif
+			/*ase_pragma*/
 
 			struct AttributesMesh
 			{
@@ -4330,17 +4954,18 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 
 			struct PackedVaryingsMeshToPS
 			{
-				float4 positionCS : SV_Position;
-				float3 positionRWS : TEXCOORD0;
-				float3 normalWS : TEXCOORD1;
-				float4 tangentWS : TEXCOORD2;
-				float4 uv1 : TEXCOORD3;
-				float4 uv2 : TEXCOORD4;
+				SV_POSITION_QUALIFIERS float4 positionCS : SV_Position;
+				float4 clipPosV : TEXCOORD0;
+				float3 positionRWS : TEXCOORD1;
+				float3 normalWS : TEXCOORD2;
+				float4 tangentWS : TEXCOORD3;
+				float4 uv1 : TEXCOORD4;
+				float4 uv2 : TEXCOORD5;
 				#ifdef _WRITE_TRANSPARENT_MOTION_VECTOR
-					float3 vpassPositionCS : TEXCOORD5;
-					float3 vpassPreviousPositionCS : TEXCOORD6;
+					float3 vpassPositionCS : TEXCOORD6;
+					float3 vpassPreviousPositionCS : TEXCOORD7;
 				#endif
-				/*ase_interp(7,):sp=sp.xyzw;rwp=tc0;wn=tc1;wt=tc2;uv1=tc3;uv2=tc4*/
+				/*ase_interp(8,):sp=sp.xyzw;rwp=tc1;wn=tc2;wt=tc3;uv1=tc4;uv2=tc5*/
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				UNITY_VERTEX_OUTPUT_STEREO
 				#if defined(SHADER_STAGE_FRAGMENT) && defined(ASE_NEED_CULLFACE)
@@ -4355,8 +4980,8 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				ZERO_INITIALIZE(SurfaceData, surfaceData);
 
 				surfaceData.specularOcclusion = 1.0;
+				surfaceData.thickness = 0.0;
 
-				// surface data
 				surfaceData.baseColor =					surfaceDescription.BaseColor;
 				surfaceData.perceptualSmoothness =		surfaceDescription.Smoothness;
 				surfaceData.ambientOcclusion =			surfaceDescription.Occlusion;
@@ -4366,182 +4991,239 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				#ifdef _SPECULAR_OCCLUSION_CUSTOM
 				surfaceData.specularOcclusion =			surfaceDescription.SpecularOcclusion;
 				#endif
+
 				#ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
 				surfaceData.subsurfaceMask =			surfaceDescription.SubsurfaceMask;
 				#endif
+
 				#if defined(_HAS_REFRACTION) || defined(_MATERIAL_FEATURE_TRANSMISSION)
 				surfaceData.thickness = 				surfaceDescription.Thickness;
 				#endif
+
 				#ifdef _MATERIAL_FEATURE_TRANSMISSION
 				surfaceData.transmissionMask =			surfaceDescription.TransmissionMask;
 				#endif
+
 				#if defined( _MATERIAL_FEATURE_SUBSURFACE_SCATTERING ) || defined( _MATERIAL_FEATURE_TRANSMISSION )
 				surfaceData.diffusionProfileHash =		asuint(surfaceDescription.DiffusionProfile);
 				#endif
+
 				#ifdef _MATERIAL_FEATURE_SPECULAR_COLOR
 				surfaceData.specularColor =				surfaceDescription.Specular;
 				#endif
+
 				#ifdef _MATERIAL_FEATURE_ANISOTROPY
 				surfaceData.anisotropy =				surfaceDescription.Anisotropy;
 				#endif
+
 				#ifdef _MATERIAL_FEATURE_IRIDESCENCE
 				surfaceData.iridescenceMask =			surfaceDescription.IridescenceMask;
 				surfaceData.iridescenceThickness =		surfaceDescription.IridescenceThickness;
 				#endif
 
 				// refraction
-				#ifdef _HAS_REFRACTION
-				if( _EnableSSRefraction )
-				{
-					surfaceData.ior = surfaceDescription.RefractionIndex;
-					surfaceData.transmittanceColor = surfaceDescription.RefractionColor;
-					surfaceData.atDistance = surfaceDescription.RefractionDistance;
-
-					surfaceData.transmittanceMask = ( 1.0 - surfaceDescription.Alpha );
-					surfaceDescription.Alpha = 1.0;
-				}
-				else
-				{
-					surfaceData.ior = 1.0;
-					surfaceData.transmittanceColor = float3( 1.0, 1.0, 1.0 );
-					surfaceData.atDistance = 1.0;
-					surfaceData.transmittanceMask = 0.0;
-					surfaceDescription.Alpha = 1.0;
-				}
-				#else
-				surfaceData.ior = 1.0;
-				surfaceData.transmittanceColor = float3( 1.0, 1.0, 1.0 );
-				surfaceData.atDistance = 1.0;
-				surfaceData.transmittanceMask = 0.0;
-				#endif
-
-
-				// material features
-				surfaceData.materialFeatures = MATERIALFEATUREFLAGS_LIT_STANDARD;
-				#ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SUBSURFACE_SCATTERING;
-				#endif
-				#ifdef _MATERIAL_FEATURE_TRANSMISSION
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
-				#endif
-                #ifdef _MATERIAL_FEATURE_ANISOTROPY
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
-				surfaceData.normalWS = float3(0, 1, 0);
+                #if defined(_REFRACTION_PLANE) || defined(_REFRACTION_SPHERE) || defined(_REFRACTION_THIN)
+                    if (_EnableSSRefraction)
+                    {
+                        surfaceData.ior =                       surfaceDescription.RefractionIndex;
+                        surfaceData.transmittanceColor =        surfaceDescription.RefractionColor;
+                        surfaceData.atDistance =                surfaceDescription.RefractionDistance;
+        
+                        surfaceData.transmittanceMask = (1.0 - surfaceDescription.Alpha);
+                        surfaceDescription.Alpha = 1.0;
+                    }
+                    else
+                    {
+                        surfaceData.ior = 1.0;
+                        surfaceData.transmittanceColor = float3(1.0, 1.0, 1.0);
+                        surfaceData.atDistance = 1.0;
+                        surfaceData.transmittanceMask = 0.0;
+                        surfaceDescription.Alpha = 1.0;
+                    }
+                #else
+                    surfaceData.ior = 1.0;
+                    surfaceData.transmittanceColor = float3(1.0, 1.0, 1.0);
+                    surfaceData.atDistance = 1.0;
+                    surfaceData.transmittanceMask = 0.0;
                 #endif
-				#ifdef _MATERIAL_FEATURE_CLEAR_COAT
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_CLEAR_COAT;
-				#endif
-				#ifdef _MATERIAL_FEATURE_IRIDESCENCE
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_IRIDESCENCE;
-				#endif
-				#ifdef _MATERIAL_FEATURE_SPECULAR_COLOR
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SPECULAR_COLOR;
+
+				surfaceData.materialFeatures = MATERIALFEATUREFLAGS_LIT_STANDARD;
+
+				#ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SUBSURFACE_SCATTERING;
 				#endif
 
-				// others
-				#if defined (_MATERIAL_FEATURE_SPECULAR_COLOR) && defined (_ENERGY_CONSERVING_SPECULAR)
-				surfaceData.baseColor *= ( 1.0 - Max3( surfaceData.specularColor.r, surfaceData.specularColor.g, surfaceData.specularColor.b ) );
+				#ifdef _MATERIAL_FEATURE_TRANSMISSION
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
 				#endif
+
+				#ifdef _MATERIAL_FEATURE_COLORED_TRANSMISSION
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_COLORED_TRANSMISSION;
+				#endif
+
+                #ifdef _MATERIAL_FEATURE_ANISOTROPY
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
+                    surfaceData.normalWS = float3(0, 1, 0);
+                #endif
+
+                #ifdef _MATERIAL_FEATURE_CLEAR_COAT
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_CLEAR_COAT;
+                #endif
+
+                #ifdef _MATERIAL_FEATURE_IRIDESCENCE
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_IRIDESCENCE;
+                #endif
+
+                #ifdef _MATERIAL_FEATURE_SPECULAR_COLOR
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SPECULAR_COLOR;
+                #endif
+
+                #if defined (_MATERIAL_FEATURE_SPECULAR_COLOR) && defined (_ENERGY_CONSERVING_SPECULAR)
+                    surfaceData.baseColor *= ( 1.0 - Max3( surfaceData.specularColor.r, surfaceData.specularColor.g, surfaceData.specularColor.b ) );
+                #endif
+
 				#ifdef _DOUBLESIDED_ON
-				float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
+                    float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
 				#else
-				float3 doubleSidedConstants = float3( 1.0, 1.0, 1.0 );
+                    float3 doubleSidedConstants = float3( 1.0, 1.0, 1.0 );
 				#endif
 
-				// normals
 				float3 normalTS = float3(0.0f, 0.0f, 1.0f);
 				normalTS = surfaceDescription.Normal;
-				GetNormalWS( fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants );
+
+                #ifdef DECAL_NORMAL_BLENDING
+					normalTS = SurfaceGradientFromTangentSpaceNormalAndFromTBN(normalTS, fragInputs.tangentToWorld[0], fragInputs.tangentToWorld[1]);
+
+                    #if HAVE_DECALS
+                    if (_EnableDecals)
+                    {
+                        float alpha = 1.0;
+                        alpha = surfaceDescription.Alpha;
+
+                        DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                        ApplyDecalToSurfaceNormal(decalSurfaceData, fragInputs.tangentToWorld[2], normalTS);
+                        ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+                     }
+                    #endif
+
+                    GetNormalWS_SG(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+                #else
+					GetNormalWS(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+
+                    #if HAVE_DECALS
+                    if (_EnableDecals)
+                    {
+                        float alpha = 1.0;
+                        alpha = surfaceDescription.Alpha;
+
+                        DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                        ApplyDecalToSurfaceNormal(decalSurfaceData, surfaceData.normalWS.xyz);
+                        ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+                    }
+                    #endif
+                #endif
 
 				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
-
-				surfaceData.tangentWS = normalize( fragInputs.tangentToWorld[ 0 ].xyz );
-
-				// decals
-				#if HAVE_DECALS
-				if( _EnableDecals )
-				{
-					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, surfaceDescription.Alpha);
-					ApplyDecalToSurfaceData(decalSurfaceData, fragInputs.tangentToWorld[2], surfaceData);
-				}
-				#endif
+                surfaceData.tangentWS = normalize(fragInputs.tangentToWorld[0].xyz );
+                surfaceData.tangentWS = Orthonormalize(surfaceData.tangentWS, surfaceData.normalWS);
 
 				bentNormalWS = surfaceData.normalWS;
 
 				#ifdef ASE_BENT_NORMAL
-				GetNormalWS( fragInputs, surfaceDescription.BentNormal, bentNormalWS, doubleSidedConstants );
+                    GetNormalWS( fragInputs, surfaceDescription.BentNormal, bentNormalWS, doubleSidedConstants );
 				#endif
 
 				#ifdef _MATERIAL_FEATURE_ANISOTROPY
-				surfaceData.tangentWS = TransformTangentToWorld( surfaceDescription.Tangent, fragInputs.tangentToWorld );
+                    surfaceData.tangentWS = TransformTangentToWorld(surfaceDescription.Tangent, fragInputs.tangentToWorld);
 				#endif
-				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
+
+				#if defined(DEBUG_DISPLAY)
+				    #if !defined(SHADER_STAGE_RAY_TRACING)
+				    if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
+				    {
+					   #ifdef FRAG_INPUTS_USE_TEXCOORD0
+                           surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG(posInput.positionSS, fragInputs.texCoord0);
+                       #else
+                           surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG_NO_UV(posInput.positionSS);
+                       #endif
+					   surfaceData.metallic = 0;
+				    }
+					#endif
+				    ApplyDebugToSurfaceData(fragInputs.tangentToWorld, surfaceData); 
+				#endif
 
                 #if defined(_SPECULAR_OCCLUSION_CUSTOM)
                 #elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO(V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness(surfaceData.perceptualSmoothness));
+                    surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO(V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness(surfaceData.perceptualSmoothness));
                 #elif defined(_AMBIENT_OCCLUSION) && defined(_SPECULAR_OCCLUSION_FROM_AO)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion(ClampNdotV(dot(surfaceData.normalWS, V)), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness(surfaceData.perceptualSmoothness));
+                    surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion(ClampNdotV(dot(surfaceData.normalWS, V)), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness(surfaceData.perceptualSmoothness));
                 #endif
 
-				#ifdef _ENABLE_GEOMETRIC_SPECULAR_AA
-				surfaceData.perceptualSmoothness = GeometricNormalFiltering( surfaceData.perceptualSmoothness, fragInputs.tangentToWorld[ 2 ], surfaceDescription.SpecularAAScreenSpaceVariance, surfaceDescription.SpecularAAThreshold );
-				#endif
-
-				// debug
-				#if defined(DEBUG_DISPLAY)
-				if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
-				{
-					surfaceData.metallic = 0;
-				}
-				ApplyDebugToSurfaceData(fragInputs.tangentToWorld, surfaceData);
-				#endif
+                #ifdef _ENABLE_GEOMETRIC_SPECULAR_AA
+                    surfaceData.perceptualSmoothness = GeometricNormalFiltering(surfaceData.perceptualSmoothness, fragInputs.tangentToWorld[2], surfaceDescription.SpecularAAScreenSpaceVariance, surfaceDescription.SpecularAAThreshold);
+                #endif
 			}
 
+			// Get Surface And BuiltinData
 			void GetSurfaceAndBuiltinData(GlobalSurfaceDescription surfaceDescription, FragInputs fragInputs, float3 V, inout PositionInputs posInput, out SurfaceData surfaceData, out BuiltinData builtinData)
 			{
 				#ifdef LOD_FADE_CROSSFADE
-				LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
+                    LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
 				#endif
 
-				#ifdef _DOUBLESIDED_ON
-				float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
-				#else
-				float3 doubleSidedConstants = float3( 1.0, 1.0, 1.0 );
-				#endif
-
-				ApplyDoubleSidedFlipOrMirror( fragInputs, doubleSidedConstants );
+                #ifdef _DOUBLESIDED_ON
+                    float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
+                #else
+                    float3 doubleSidedConstants = float3(1.0, 1.0, 1.0);
+                #endif
+                ApplyDoubleSidedFlipOrMirror(fragInputs, doubleSidedConstants);
 
 				#ifdef _ALPHATEST_ON
-				DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThreshold );
+                    DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThreshold );
+				#endif
+
+				#ifdef _ALPHATEST_SHADOW_ON
+                    DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThresholdShadow);
 				#endif
 
 				#ifdef _DEPTHOFFSET_ON
-				builtinData.depthOffset = surfaceDescription.DepthOffset;
-				ApplyDepthOffsetPositionInput( V, surfaceDescription.DepthOffset, GetViewForwardDir(), GetWorldToHClipMatrix(), posInput );
+                    ApplyDepthOffsetPositionInput(V, surfaceDescription.DepthOffset, GetViewForwardDir(), GetWorldToHClipMatrix(), posInput);
 				#endif
 
-				float3 bentNormalWS;
-				BuildSurfaceData( fragInputs, surfaceDescription, V, posInput, surfaceData, bentNormalWS );
+                float3 bentNormalWS;
+                BuildSurfaceData(fragInputs, surfaceDescription, V, posInput, surfaceData, bentNormalWS);
+                InitBuiltinData(posInput, surfaceDescription.Alpha, bentNormalWS, -fragInputs.tangentToWorld[2], fragInputs.texCoord1, fragInputs.texCoord2, builtinData);
 
-				InitBuiltinData( posInput, surfaceDescription.Alpha, bentNormalWS, -fragInputs.tangentToWorld[ 2 ], fragInputs.texCoord1, fragInputs.texCoord2, builtinData );
+				#ifdef _DEPTHOFFSET_ON
+                    builtinData.depthOffset = surfaceDescription.DepthOffset;
+				#endif
+
+                #ifdef _ALPHATEST_ON
+                    builtinData.alphaClipTreshold = surfaceDescription.AlphaClipThreshold;
+                #endif
+
+                #ifdef UNITY_VIRTUAL_TEXTURING
+                    builtinData.vtPackedFeedback = surfaceDescription.VTPackedFeedback;
+                #endif
 
 				#ifdef ASE_BAKEDGI
-				builtinData.bakeDiffuseLighting = surfaceDescription.BakedGI;
+                    builtinData.bakeDiffuseLighting = surfaceDescription.BakedGI;
 				#endif
+
 				#ifdef ASE_BAKEDBACKGI
-				builtinData.backBakeDiffuseLighting = surfaceDescription.BakedBackGI;
+                    builtinData.backBakeDiffuseLighting = surfaceDescription.BakedBackGI;
 				#endif
 
-				builtinData.emissiveColor = surfaceDescription.Emission;
+                builtinData.emissiveColor = surfaceDescription.Emission;
 
-				PostInitBuiltinData(V, posInput, surfaceData, builtinData);
+                PostInitBuiltinData(V, posInput, surfaceData, builtinData);
 			}
 
-			AttributesMesh ApplyMeshModification(AttributesMesh inputMesh, float3 timeParameters, inout PackedVaryingsMeshToPS outputPackedVaryingsMeshToPS/*ase_vert_input*/ )
+			AttributesMesh ApplyMeshModification(AttributesMesh inputMesh, float3 timeParameters, inout PackedVaryingsMeshToPS output/*ase_vert_input*/ )
 			{
 				_TimeParameters.xyz = timeParameters;
-				/*ase_vert_code:inputMesh=AttributesMesh;outputPackedVaryingsMeshToPS=PackedVaryingsMeshToPS*/
+				/*ase_vert_code:inputMesh=AttributesMesh;output=PackedVaryingsMeshToPS*/
 
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 				float3 defaultVertexValue = inputMesh.positionOS.xyz;
@@ -4562,14 +5244,14 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 
 			PackedVaryingsMeshToPS VertexFunction(AttributesMesh inputMesh)
 			{
-				PackedVaryingsMeshToPS outputPackedVaryingsMeshToPS = (PackedVaryingsMeshToPS)0;
+				PackedVaryingsMeshToPS output = (PackedVaryingsMeshToPS)0;
 				AttributesMesh defaultMesh = inputMesh;
 
 				UNITY_SETUP_INSTANCE_ID(inputMesh);
-				UNITY_TRANSFER_INSTANCE_ID(inputMesh, outputPackedVaryingsMeshToPS);
-				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO( outputPackedVaryingsMeshToPS );
+				UNITY_TRANSFER_INSTANCE_ID(inputMesh, output);
+				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO( output );
 
-				inputMesh = ApplyMeshModification( inputMesh, _TimeParameters.xyz, outputPackedVaryingsMeshToPS);
+				inputMesh = ApplyMeshModification( inputMesh, _TimeParameters.xyz, output);
 
 				float3 positionRWS = TransformObjectToWorld(inputMesh.positionOS);
 				float3 normalWS = TransformObjectToWorldNormal(inputMesh.normalOS);
@@ -4611,25 +5293,26 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 					#endif
 
 					#if defined(HAVE_VERTEX_MODIFICATION)
-						//ApplyVertexModification(inputMesh, normalWS, previousPositionRWS, _LastTimeParameters.xyz);
+						ApplyVertexModification(inputMesh, normalWS, previousPositionRWS, _LastTimeParameters.xyz);
 					#endif
 
 					VPASSpreviousPositionCS = mul(UNITY_MATRIX_PREV_VP, float4(previousPositionRWS, 1.0));
 				}
 				#endif
 
-				outputPackedVaryingsMeshToPS.positionCS = TransformWorldToHClip(positionRWS);
-				outputPackedVaryingsMeshToPS.positionRWS.xyz = positionRWS;
-				outputPackedVaryingsMeshToPS.normalWS.xyz = normalWS;
-				outputPackedVaryingsMeshToPS.tangentWS.xyzw = tangentWS;
-				outputPackedVaryingsMeshToPS.uv1.xyzw = inputMesh.uv1;
-				outputPackedVaryingsMeshToPS.uv2.xyzw = inputMesh.uv2;
+				output.positionCS = TransformWorldToHClip(positionRWS);
+				output.clipPosV = output.positionCS;
+				output.positionRWS = positionRWS;
+				output.normalWS = normalWS;
+				output.tangentWS = tangentWS;
+				output.uv1 = inputMesh.uv1;
+				output.uv2 = inputMesh.uv2;
 
 				#ifdef _WRITE_TRANSPARENT_MOTION_VECTOR
-					outputPackedVaryingsMeshToPS.vpassPositionCS = float3(VPASSpositionCS.xyw);
-					outputPackedVaryingsMeshToPS.vpassPreviousPositionCS = float3(VPASSpreviousPositionCS.xyw);
+					output.vpassPositionCS = float3(VPASSpositionCS.xyw);
+					output.vpassPreviousPositionCS = float3(VPASSpreviousPositionCS.xyw);
 				#endif
-				return outputPackedVaryingsMeshToPS;
+				return output;
 			}
 
 			#if defined(ASE_TESSELLATION)
@@ -4640,8 +5323,6 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				float4 tangentOS : TANGENT;
 				float4 uv1 : TEXCOORD1;
 				float4 uv2 : TEXCOORD2;
-				float3 previousPositionOS : TEXCOORD4;
-				float3 precomputedVelocity : TEXCOORD5;
 				/*ase_vcontrol*/
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
@@ -4662,12 +5343,6 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				o.tangentOS = v.tangentOS;
 				o.uv1 = v.uv1;
 				o.uv2 = v.uv2;
-				#ifdef _WRITE_TRANSPARENT_MOTION_VECTOR
-					o.previousPositionOS = v.previousPositionOS;
-					#if defined (_ADD_PRECOMPUTED_VELOCITY)
-						o.precomputedVelocity = v.precomputedVelocity;
-					#endif
-				#endif
 				/*ase_control_code:v=AttributesMesh;o=VertexControl*/
 				return o;
 			}
@@ -4715,12 +5390,6 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				o.tangentOS = patch[0].tangentOS * bary.x + patch[1].tangentOS * bary.y + patch[2].tangentOS * bary.z;
 				o.uv1 = patch[0].uv1 * bary.x + patch[1].uv1 * bary.y + patch[2].uv1 * bary.z;
 				o.uv2 = patch[0].uv2 * bary.x + patch[1].uv2 * bary.y + patch[2].uv2 * bary.z;
-				#ifdef _WRITE_TRANSPARENT_MOTION_VECTOR
-					o.previousPositionOS = patch[0].previousPositionOS * bary.x + patch[1].previousPositionOS * bary.y + patch[2].previousPositionOS * bary.z;
-					#if defined (_ADD_PRECOMPUTED_VELOCITY)
-						o.precomputedVelocity = patch[0].precomputedVelocity * bary.x + patch[1].precomputedVelocity * bary.y + patch[2].precomputedVelocity * bary.z;
-					#endif
-				#endif
 				/*ase_domain_code:patch=VertexControl;o=AttributesMesh;bary=SV_DomainLocation*/
 				#if defined(ASE_PHONG_TESSELLATION)
 				float3 pp[3];
@@ -4739,40 +5408,79 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			}
 			#endif
 
-			void Frag(PackedVaryingsMeshToPS packedInput,
-				#ifdef OUTPUT_SPLIT_LIGHTING
-					out float4 outColor : SV_Target0,
-					out float4 outDiffuseLighting : SV_Target1,
-					OUTPUT_SSSBUFFER(outSSSBuffer)
-				#else
-					out float4 outColor : SV_Target0
-				#ifdef _WRITE_TRANSPARENT_MOTION_VECTOR
-					, out float4 outMotionVec : SV_Target1
-				#endif
-				#endif
-				#ifdef _DEPTHOFFSET_ON
-					, out float outputDepth : SV_Depth
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplayMaterial.hlsl"
+
+            #if defined(_TRANSPARENT_REFRACTIVE_SORT) || defined(_ENABLE_FOG_ON_TRANSPARENT)
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Water/Shaders/UnderWaterUtilities.hlsl"
             #endif
 
-			/*ase_frag_input*/
+            #ifdef UNITY_VIRTUAL_TEXTURING
+                #ifdef OUTPUT_SPLIT_LIGHTING
+                   #define DIFFUSE_LIGHTING_TARGET SV_Target2
+                   #define SSS_BUFFER_TARGET SV_Target3
+                #elif defined(_WRITE_TRANSPARENT_MOTION_VECTOR)
+                   #define MOTION_VECTOR_TARGET SV_Target2
+                    #ifdef _TRANSPARENT_REFRACTIVE_SORT
+                        #define BEFORE_REFRACTION_TARGET SV_Target3
+                        #define BEFORE_REFRACTION_ALPHA_TARGET SV_Target4
+            	#endif
+            #endif
+            #if defined(SHADER_API_PSSL)
+            	#pragma PSSL_target_output_format(target 1 FMT_32_ABGR)
+            #endif
+            #else
+                #ifdef OUTPUT_SPLIT_LIGHTING
+                #define DIFFUSE_LIGHTING_TARGET SV_Target1
+                #define SSS_BUFFER_TARGET SV_Target2
+                #elif defined(_WRITE_TRANSPARENT_MOTION_VECTOR)
+                #define MOTION_VECTOR_TARGET SV_Target1
+                #ifdef _TRANSPARENT_REFRACTIVE_SORT
+                     #define BEFORE_REFRACTION_TARGET SV_Target2
+                     #define BEFORE_REFRACTION_ALPHA_TARGET SV_Target3
+                #endif
+            #endif
+            #endif
+
+			void Frag(PackedVaryingsMeshToPS packedInput
+				, out float4 outColor:SV_Target0
+            #ifdef UNITY_VIRTUAL_TEXTURING
+				, out float4 outVTFeedback : SV_Target1
+            #endif
+            #ifdef OUTPUT_SPLIT_LIGHTING
+				, out float4 outDiffuseLighting : DIFFUSE_LIGHTING_TARGET
+				, OUTPUT_SSSBUFFER(outSSSBuffer) : SSS_BUFFER_TARGET
+            #elif defined(_WRITE_TRANSPARENT_MOTION_VECTOR)
+				, out float4 outMotionVec : MOTION_VECTOR_TARGET
+                #ifdef _TRANSPARENT_REFRACTIVE_SORT
+                , out float4 outBeforeRefractionColor : BEFORE_REFRACTION_TARGET
+                , out float4 outBeforeRefractionAlpha : BEFORE_REFRACTION_ALPHA_TARGET
+                #endif
+            #endif
+            #ifdef _DEPTHOFFSET_ON
+				, out float outputDepth : DEPTH_OFFSET_SEMANTIC
+            #endif
+		    /*ase_frag_input*/
 				)
 			{
-				#ifdef _WRITE_TRANSPARENT_MOTION_VECTOR
-					outMotionVec = float4(2.0, 0.0, 0.0, 0.0);
-				#endif
+                #ifdef _WRITE_TRANSPARENT_MOTION_VECTOR
+				   outMotionVec = float4(2.0, 0.0, 0.0, 1.0);
+                #endif
 
 				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX( packedInput );
 				UNITY_SETUP_INSTANCE_ID( packedInput );
-				/*ase_local_var:rwp*/float3 positionRWS = packedInput.positionRWS.xyz;
-				/*ase_local_var:wn*/float3 normalWS = packedInput.normalWS.xyz;
-				/*ase_local_var:wt*/float4 tangentWS = packedInput.tangentWS.xyzw;
+		
+				/*ase_local_var:rwp*/float3 PositionRWS = packedInput.positionRWS;
+				/*ase_local_var:wvd*/float3 V = GetWorldSpaceNormalizeViewDir( packedInput.positionRWS );
+				/*ase_local_var:wn*/float3 NormalWS = packedInput.normalWS;
+				/*ase_local_var:wt*/float4 TangentWS = packedInput.tangentWS;
+				/*ase_local_var:sp*/float4 ClipPos = packedInput.clipPosV;
+				/*ase_local_var:spu*/float4 ScreenPos = ComputeScreenPos( packedInput.clipPosV, _ProjectionParams.x );
 
 				FragInputs input;
 				ZERO_INITIALIZE(FragInputs, input);
-				input.tangentToWorld = k_identity3x3;
 				input.positionSS = packedInput.positionCS;
-				input.positionRWS = positionRWS;
-				input.tangentToWorld = BuildTangentToWorld(tangentWS, normalWS);
+				input.positionRWS = PositionRWS;
+				input.tangentToWorld = BuildTangentToWorld(TangentWS, NormalWS);
 				input.texCoord1 = packedInput.uv1.xyzw;
 				input.texCoord2 = packedInput.uv2.xyzw;
 
@@ -4783,14 +5491,12 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				input.isFrontFace = IS_FRONT_VFACE(packedInput.cullFace, true, false);
 				#endif
 				#endif
-				/*ase_local_var:vf*/half isFrontFace = input.isFrontFace;
+				/*ase_local_var:vf*/half IsFrontFace = input.isFrontFace;
 
-				input.positionSS.xy = _OffScreenRendering > 0 ? (input.positionSS.xy * _OffScreenDownsampleFactor) : input.positionSS.xy;
+				AdjustFragInputsToOffScreenRendering(input, _OffScreenRendering > 0, _OffScreenDownsampleFactor);
 				uint2 tileIndex = uint2(input.positionSS.xy) / GetTileSize ();
 
 				PositionInputs posInput = GetPositionInput( input.positionSS.xy, _ScreenSize.zw, input.positionSS.z, input.positionSS.w, input.positionRWS.xyz, tileIndex );
-
-				/*ase_local_var:wvd*/float3 V = GetWorldSpaceNormalizeViewDir(input.positionRWS);
 
 				GlobalSurfaceDescription surfaceDescription = (GlobalSurfaceDescription)0;
 				/*ase_frag_code:packedInput=PackedVaryingsMeshToPS*/
@@ -4862,7 +5568,11 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				#endif
 
 				#ifdef _DEPTHOFFSET_ON
-				surfaceDescription.DepthOffset = /*ase_frag_out:DepthOffset;Float;26;-1;_DepthOffset*/0/*end*/;
+				surfaceDescription.DepthOffset = /*ase_frag_out:Depth Offset;Float;26;-1;_DepthOffset*/0/*end*/;
+				#endif
+
+				#ifdef UNITY_VIRTUAL_TEXTURING
+				surfaceDescription.VTPackedFeedback = float4(1.0f,1.0f,1.0f,1.0f);
 				#endif
 
 				SurfaceData surfaceData;
@@ -4874,49 +5584,21 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				PreLightData preLightData = GetPreLightData(V, posInput, bsdfData);
 
 				outColor = float4(0.0, 0.0, 0.0, 0.0);
+
 				#ifdef DEBUG_DISPLAY
-				#ifdef OUTPUT_SPLIT_LIGHTING
-					outDiffuseLighting = 0;
-					ENCODE_INTO_SSSBUFFER(surfaceData, posInput.positionSS, outSSSBuffer);
+				       #ifdef OUTPUT_SPLIT_LIGHTING
+                       outDiffuseLighting = float4(0, 0, 0, 1);
+                ENCODE_INTO_SSSBUFFER(surfaceData, posInput.positionSS, outSSSBuffer);
 				#endif
 
-				bool viewMaterial = false;
-				int bufferSize = _DebugViewMaterialArray[0].x;
-				if (bufferSize != 0)
-				{
-					bool needLinearToSRGB = false;
-					float3 result = float3(1.0, 0.0, 1.0);
-
-					for (int index = 1; index <= bufferSize; index++)
-					{
-						int indexMaterialProperty = _DebugViewMaterialArray[index].x;
-
-						if (indexMaterialProperty != 0)
-						{
-							viewMaterial = true;
-
-							GetPropertiesDataDebug(indexMaterialProperty, result, needLinearToSRGB);
-							GetVaryingsDataDebug(indexMaterialProperty, input, result, needLinearToSRGB);
-							GetBuiltinDataDebug(indexMaterialProperty, builtinData, posInput, result, needLinearToSRGB);
-							GetSurfaceDataDebug(indexMaterialProperty, surfaceData, result, needLinearToSRGB);
-							GetBSDFDataDebug(indexMaterialProperty, bsdfData, result, needLinearToSRGB);
-						}
-					}
-
-					if (!needLinearToSRGB && _DebugAOVOutput == 0)
-						result = SRGBToLinear(max(0, result));
-
-					outColor = float4(result, 1.0);
-				}
+			    bool viewMaterial = GetMaterialDebugColor(outColor, input, builtinData, posInput, surfaceData, bsdfData);
 
 				if (!viewMaterial)
 				{
 					if (_DebugFullScreenMode == FULLSCREENDEBUGMODE_VALIDATE_DIFFUSE_COLOR || _DebugFullScreenMode == FULLSCREENDEBUGMODE_VALIDATE_SPECULAR_COLOR)
 					{
 						float3 result = float3(0.0, 0.0, 0.0);
-
 						GetPBRValidatorDebug(surfaceData, result);
-
 						outColor = float4(result, 1.0f);
 					}
 					else if (_DebugFullScreenMode == FULLSCREENDEBUGMODE_TRANSPARENCY_OVERDRAW)
@@ -4925,13 +5607,13 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 						outColor = result;
 					}
 					else
-				#endif
+                #endif
 					{
-				#ifdef _SURFACE_TYPE_TRANSPARENT
+                #ifdef _SURFACE_TYPE_TRANSPARENT
 						uint featureFlags = LIGHT_FEATURE_MASK_FLAGS_TRANSPARENT;
-				#else
+                #else
 						uint featureFlags = LIGHT_FEATURE_MASK_FLAGS_OPAQUE;
-				#endif
+                #endif
 						LightLoopOutput lightLoopOutput;
 						LightLoop(V, posInput, preLightData, bsdfData, builtinData, featureFlags, lightLoopOutput);
 
@@ -4942,7 +5624,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 						diffuseLighting *= GetCurrentExposureMultiplier();
 						specularLighting *= GetCurrentExposureMultiplier();
 
-				#ifdef OUTPUT_SPLIT_LIGHTING
+                #ifdef OUTPUT_SPLIT_LIGHTING
 						if (_EnableSubsurfaceScattering != 0 && ShouldOutputSplitLighting(bsdfData))
 						{
 							outColor = float4(specularLighting, 1.0);
@@ -4951,27 +5633,36 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 						else
 						{
 							outColor = float4(diffuseLighting + specularLighting, 1.0);
-							outDiffuseLighting = 0;
+							outDiffuseLighting = float4(0, 0, 0, 1);
 						}
 						ENCODE_INTO_SSSBUFFER(surfaceData, posInput.positionSS, outSSSBuffer);
                 #else
 						outColor = ApplyBlendMode(diffuseLighting, specularLighting, builtinData.opacity);
+
+						#ifdef _ENABLE_FOG_ON_TRANSPARENT
 						outColor = EvaluateAtmosphericScattering(posInput, V, outColor);
+                        #endif
+
+                        #ifdef _TRANSPARENT_REFRACTIVE_SORT
+                        ComputeRefractionSplitColor(posInput, outColor, outBeforeRefractionColor, outBeforeRefractionAlpha);
+                        #endif
                 #endif
 
 				#ifdef _WRITE_TRANSPARENT_MOTION_VECTOR
 						float4 VPASSpositionCS = float4(packedInput.vpassPositionCS.xy, 0.0, packedInput.vpassPositionCS.z);
 						float4 VPASSpreviousPositionCS = float4(packedInput.vpassPreviousPositionCS.xy, 0.0, packedInput.vpassPreviousPositionCS.z);
-
 						bool forceNoMotion = any(unity_MotionVectorsParams.yw == 0.0);
-						if (!forceNoMotion)
+                #if defined(HAVE_VFX_MODIFICATION) && !VFX_FEATURE_MOTION_VECTORS
+                        forceNoMotion = true;
+                #endif
+				        if (!forceNoMotion)
 						{
 							float2 motionVec = CalculateMotionVector(VPASSpositionCS, VPASSpreviousPositionCS);
 							EncodeMotionVector(motionVec * 0.5, outMotionVec);
 							outMotionVec.zw = 1.0;
 						}
 				#endif
-					}
+				}
 
 				#ifdef DEBUG_DISPLAY
 				}
@@ -4980,6 +5671,16 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				#ifdef _DEPTHOFFSET_ON
 				outputDepth = posInput.deviceDepth;
 				#endif
+
+                #ifdef UNITY_VIRTUAL_TEXTURING
+				    float vtAlphaValue = builtinData.opacity;
+                    #if defined(HAS_REFRACTION) && HAS_REFRACTION
+					vtAlphaValue = 1.0f - bsdfData.transmittanceMask;
+                #endif
+				outVTFeedback = PackVTFeedbackWithAlpha(builtinData.vtPackedFeedback, input.positionSS.xy, vtAlphaValue);
+				outVTFeedback.rgb *= outVTFeedback.a; // premuliplied alpha
+                #endif
+
 			}
 			ENDHLSL
 		}
@@ -4989,11 +5690,15 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 		{
 			/*ase_hide_pass*/
 			Name "TransparentDepthPrepass"
-			Tags { "LightMode" = "TransparentDepthPrepass" }
+			Tags 
+			{ 
+				"LightMode" = "TransparentDepthPrepass" 
+		    }
 
 			Cull [_CullMode]
             Blend One Zero
             ZWrite On
+
             Stencil
             {
                 WriteMask [_StencilWriteMaskDepth]
@@ -5005,15 +5710,17 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
             }
 
 			HLSLPROGRAM
+			#pragma multi_compile _ DOTS_INSTANCING_ON
 
-            #pragma shader_feature _SURFACE_TYPE_TRANSPARENT
-			#pragma shader_feature_local _TRANSPARENT_WRITES_MOTION_VEC
-			#pragma shader_feature_local_fragment _ENABLE_FOG_ON_TRANSPARENT
-			#pragma shader_feature_local _DOUBLESIDED_ON
-			#pragma shader_feature_local _ALPHATEST_ON
+            #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
+            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC _TRANSPARENT_REFRACTIVE_SORT
+            #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
 
 			#pragma vertex Vert
 			#pragma fragment Frag
+
+            #define SHADERPASS SHADERPASS_TRANSPARENT_DEPTH_PREPASS
+			#define CUTOFF_TRANSPARENT_DEPTH_PREPASS
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
@@ -5022,61 +5729,77 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/DebugMipmapStreamingMacros.hlsl"
+            #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
 
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
 
-			#define SHADERPASS SHADERPASS_TRANSPARENT_DEPTH_PREPASS
-			#define CUTOFF_TRANSPARENT_DEPTH_PREPASS
+            #ifdef RAYTRACING_SHADER_GRAPH_DEFAULT
+                #define RAYTRACING_SHADER_GRAPH_HIGH
+            #endif
+        
+            #ifdef RAYTRACING_SHADER_GRAPH_RAYTRACED
+                #define RAYTRACING_SHADER_GRAPH_LOW
+            #endif
 
-			#ifndef SHADER_UNLIT
-			#if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
-			#define VARYINGS_NEED_CULLFACE
+            #ifndef SHADER_UNLIT
+            #if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
+                #define VARYINGS_NEED_CULLFACE
+            #endif
+            #endif
+
+			#if defined(_DOUBLESIDED_ON) && !defined(ASE_NEED_CULLFACE)
+			    #define ASE_NEED_CULLFACE 1
 			#endif
-			#endif
+
+            #if _MATERIAL_FEATURE_COLORED_TRANSMISSION
+            #undef _MATERIAL_FEATURE_CLEAR_COAT
+            #endif
 
 		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
 		    #define OUTPUT_SPLIT_LIGHTING
 		    #endif
 
-		    #if !( (SHADERPASS == SHADERPASS_FORWARD) || (SHADERPASS == SHADERPASS_LIGHT_TRANSPORT) \
-               || (SHADERPASS == SHADERPASS_RAYTRACING_INDIRECT) || (SHADERPASS == SHADERPASS == SHADERPASS_RAYTRACING_INDIRECT)\
-               || (SHADERPASS == SHADERPASS_PATH_TRACING) || (SHADERPASS == SHADERPASS_RAYTRACING_SUB_SURFACE) \
-               || (SHADERPASS == SHADERPASS_RAYTRACING_GBUFFER) )
+            #if (SHADERPASS == SHADERPASS_PATH_TRACING) && !defined(_DOUBLESIDED_ON) && (defined(_REFRACTION_PLANE) || defined(_REFRACTION_SPHERE))
+            #undef  _REFRACTION_PLANE
+            #undef  _REFRACTION_SPHERE
+            #define _REFRACTION_THIN
+            #endif
 
-		    #define DISABLE_MODIFY_BAKED_DIFFUSE_LIGHTING
-		    #endif
+            #if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
+            #if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
+                #define WRITE_NORMAL_BUFFER
+            #endif
+            #endif
 
-			#if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
-			#if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
-				#define WRITE_NORMAL_BUFFER
-			#endif
-			#endif
+            #if SHADERPASS == SHADERPASS_MOTION_VECTORS && defined(WRITE_DECAL_BUFFER_AND_RENDERING_LAYER)
+                #define WRITE_DECAL_BUFFER
+            #endif
 
-			#ifndef DEBUG_DISPLAY
-				#if !defined(_SURFACE_TYPE_TRANSPARENT)
-					#if SHADERPASS == SHADERPASS_FORWARD
-					#define SHADERPASS_FORWARD_BYPASS_ALPHA_TEST
-					#elif SHADERPASS == SHADERPASS_GBUFFER
-					#define SHADERPASS_GBUFFER_BYPASS_ALPHA_TEST
-					#endif
-				#endif
-			#endif
+            #ifndef DEBUG_DISPLAY
+                #if !defined(_SURFACE_TYPE_TRANSPARENT)
+                    #if SHADERPASS == SHADERPASS_FORWARD
+                    #define SHADERPASS_FORWARD_BYPASS_ALPHA_TEST
+                    #elif SHADERPASS == SHADERPASS_GBUFFER
+                    #define SHADERPASS_GBUFFER_BYPASS_ALPHA_TEST
+                    #endif
+                #endif
+            #endif
 
-			#if defined(SHADER_LIT) && !defined(_SURFACE_TYPE_TRANSPARENT)
-			#define _DEFERRED_CAPABLE_MATERIAL
-			#endif
+            #if defined(SHADER_LIT) && !defined(_SURFACE_TYPE_TRANSPARENT)
+                #define _DEFERRED_CAPABLE_MATERIAL
+            #endif
 
-			#if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
-			#define _WRITE_TRANSPARENT_MOTION_VECTOR
-			#endif
+            #if (defined(_TRANSPARENT_WRITES_MOTION_VEC) || defined(_TRANSPARENT_REFRACTIVE_SORT)) && defined(_SURFACE_TYPE_TRANSPARENT)
+                #define _WRITE_TRANSPARENT_MOTION_VECTOR
+            #endif
 
 			CBUFFER_START( UnityPerMaterial )
 			float4 _EmissionColor;
 			float _AlphaCutoff;
 			float _RenderQueueType;
 			#ifdef _ADD_PRECOMPUTED_VELOCITY
-			float _AddPrecomputedVelocity;
+			    float _AddPrecomputedVelocity;
 			#endif
 			float _StencilRef;
 			float _StencilWriteMask;
@@ -5084,6 +5807,8 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			float _StencilWriteMaskDepth;
 			float _StencilRefMV;
 			float _StencilWriteMaskMV;
+			float _StencilRefDistortionVec;
+			float _StencilWriteMaskDistortionVec;
 			float _StencilWriteMaskGBuffer;
 			float _StencilRefGBuffer;
 			float _ZTestGBuffer;
@@ -5092,10 +5817,11 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			float _SurfaceType;
 			float _BlendMode;
             #ifdef SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
-			float _EnableBlendModePreserveSpecularLighting;
+			    float _EnableBlendModePreserveSpecularLighting;
             #endif
 			float _SrcBlend;
 			float _DstBlend;
+			float _DstBlend2;
 			float _AlphaSrcBlend;
 			float _AlphaDstBlend;
 			float _ZWrite;
@@ -5114,21 +5840,20 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			float _DoubleSidedNormalMode;
 			float4 _DoubleSidedConstants;
 			#ifdef ASE_TESSELLATION
-			float _TessPhongStrength;
-			float _TessValue;
-			float _TessMin;
-			float _TessMax;
-			float _TessEdgeLength;
-			float _TessMaxDisp;
+			     float _TessPhongStrength;
+			     float _TessValue;
+			     float _TessMin;
+			     float _TessMax;
+			     float _TessEdgeLength;
+			     float _TessMaxDisp;
 			#endif
+			UNITY_TEXTURE_STREAMING_DEBUG_VARS;
 			CBUFFER_END
 
-			// Property used by ScenePickingPass
             #ifdef SCENEPICKINGPASS
 			float4 _SelectionID;
             #endif
 
-			// Properties used by SceneSelectionPass
             #ifdef SCENESELECTIONPASS
 			int _ObjectId;
 			int _PassValue;
@@ -5140,23 +5865,21 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
             #endif
 
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Material.hlsl"
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/NormalSurfaceGradient.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/Lit.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/BuiltinUtilities.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/MaterialUtilities.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphFunctions.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Material.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/NormalSurfaceGradient.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/Lit.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/BuiltinUtilities.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/MaterialUtilities.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphFunctions.hlsl"
 
-			// Setup DECALS_OFF so the shader stripper can remove variants
-            #define HAVE_DECALS ( (defined(DECALS_3RT) || defined(DECALS_4RT)) && !defined(_DISABLE_DECALS) )
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalUtilities.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/LitDecalData.hlsl"
 
-			/*ase_pragma*/
+        	#ifdef HAVE_VFX_MODIFICATION
+        	#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/VisualEffectVertex.hlsl"
+        	#endif
 
-			#if defined(_DOUBLESIDED_ON) && !defined(ASE_NEED_CULLFACE)
-			#define ASE_NEED_CULLFACE 1
-			#endif
+			/*ase_pragma*/
 
 			struct AttributesMesh
 			{
@@ -5169,11 +5892,12 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 
 			struct PackedVaryingsMeshToPS
 			{
-				float4 positionCS : SV_Position;
-				float3 positionRWS : TEXCOORD0;
-				float3 normalWS : TEXCOORD1;
-				float4 tangentWS : TEXCOORD2;
-				/*ase_interp(3,):sp=sp.xyzw;rwp=tc0;wn=tc1;wt=tc2*/
+				SV_POSITION_QUALIFIERS float4 positionCS : SV_Position;
+				float4 clipPosV : TEXCOORD0;
+				float3 positionRWS : TEXCOORD1;
+				float3 normalWS : TEXCOORD2;
+				float4 tangentWS : TEXCOORD3;
+				/*ase_interp(4,):sp=sp.xyzw;rwp=tc1;wn=tc2;wt=tc3*/
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				UNITY_VERTEX_OUTPUT_STEREO
 				#if defined(SHADER_STAGE_FRAGMENT) && defined(ASE_NEED_CULLFACE)
@@ -5188,149 +5912,205 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				ZERO_INITIALIZE(SurfaceData, surfaceData);
 
 				surfaceData.specularOcclusion = 1.0;
-
-				// surface data
+				surfaceData.thickness = 0.0;
 				surfaceData.perceptualSmoothness =		surfaceDescription.Smoothness;
 
-				// refraction
-				#ifdef _HAS_REFRACTION
-				if( _EnableSSRefraction )
-				{
-					surfaceData.transmittanceMask = ( 1.0 - surfaceDescription.Alpha );
-					surfaceDescription.Alpha = 1.0;
-				}
-				else
-				{
-					surfaceData.ior = 1.0;
-					surfaceData.transmittanceColor = float3( 1.0, 1.0, 1.0 );
-					surfaceData.atDistance = 1.0;
-					surfaceData.transmittanceMask = 0.0;
-					surfaceDescription.Alpha = 1.0;
-				}
-				#else
-				surfaceData.ior = 1.0;
-				surfaceData.transmittanceColor = float3( 1.0, 1.0, 1.0 );
-				surfaceData.atDistance = 1.0;
-				surfaceData.transmittanceMask = 0.0;
-				#endif
-
-
-				// material features
-				surfaceData.materialFeatures = MATERIALFEATUREFLAGS_LIT_STANDARD;
-				#ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SUBSURFACE_SCATTERING;
-				#endif
-				#ifdef _MATERIAL_FEATURE_TRANSMISSION
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
-				#endif
-                #ifdef _MATERIAL_FEATURE_ANISOTROPY
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
-				surfaceData.normalWS = float3(0, 1, 0);
+				// refraction TransparentDepthPrepass
+                #if defined(_REFRACTION_PLANE) || defined(_REFRACTION_SPHERE) || defined(_REFRACTION_THIN)
+                    if (_EnableSSRefraction)
+                    {
+        
+                        surfaceData.transmittanceMask = (1.0 - surfaceDescription.Alpha);
+                        surfaceDescription.Alpha = 1.0;
+                    }
+                    else
+                    {
+                        surfaceData.ior = 1.0;
+                        surfaceData.transmittanceColor = float3(1.0, 1.0, 1.0);
+                        surfaceData.atDistance = 1.0;
+                        surfaceData.transmittanceMask = 0.0;
+                        surfaceDescription.Alpha = 1.0;
+                }
+                #else
+                    surfaceData.ior = 1.0;
+                    surfaceData.transmittanceColor = float3(1.0, 1.0, 1.0);
+                    surfaceData.atDistance = 1.0;
+                    surfaceData.transmittanceMask = 0.0;
                 #endif
+
+				surfaceData.materialFeatures = MATERIALFEATUREFLAGS_LIT_STANDARD;
+
+				#ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SUBSURFACE_SCATTERING;
+				#endif
+
+				#ifdef _MATERIAL_FEATURE_TRANSMISSION
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
+				#endif
+
+				#ifdef _MATERIAL_FEATURE_COLORED_TRANSMISSION
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_COLORED_TRANSMISSION;
+				#endif
+
+                #ifdef _MATERIAL_FEATURE_ANISOTROPY
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
+                    surfaceData.normalWS = float3(0, 1, 0);
+                #endif
+
 				#ifdef _MATERIAL_FEATURE_CLEAR_COAT
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_CLEAR_COAT;
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_CLEAR_COAT;
 				#endif
+
 				#ifdef _MATERIAL_FEATURE_IRIDESCENCE
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_IRIDESCENCE;
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_IRIDESCENCE;
 				#endif
+
 				#ifdef _MATERIAL_FEATURE_SPECULAR_COLOR
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SPECULAR_COLOR;
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SPECULAR_COLOR;
 				#endif
 
-				// others
 				#if defined (_MATERIAL_FEATURE_SPECULAR_COLOR) && defined (_ENERGY_CONSERVING_SPECULAR)
-				surfaceData.baseColor *= ( 1.0 - Max3( surfaceData.specularColor.r, surfaceData.specularColor.g, surfaceData.specularColor.b ) );
-				#endif
-				#ifdef _DOUBLESIDED_ON
-				float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
-				#else
-				float3 doubleSidedConstants = float3( 1.0, 1.0, 1.0 );
+                    surfaceData.baseColor *= ( 1.0 - Max3( surfaceData.specularColor.r, surfaceData.specularColor.g, surfaceData.specularColor.b ) );
 				#endif
 
-				// normals
+				#ifdef _DOUBLESIDED_ON
+                    float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
+				#else
+                    float3 doubleSidedConstants = float3( 1.0, 1.0, 1.0 );
+				#endif
+
 				float3 normalTS = float3(0.0f, 0.0f, 1.0f);
 				normalTS = surfaceDescription.Normal;
-				GetNormalWS( fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants );
+
+                #ifdef DECAL_NORMAL_BLENDING
+					normalTS = SurfaceGradientFromTangentSpaceNormalAndFromTBN(normalTS, fragInputs.tangentToWorld[0], fragInputs.tangentToWorld[1]);
+
+                    #if HAVE_DECALS
+                    if (_EnableDecals)
+                    {
+                        float alpha = 1.0;
+                        alpha = surfaceDescription.Alpha;
+
+                        DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                        ApplyDecalToSurfaceNormal(decalSurfaceData, fragInputs.tangentToWorld[2], normalTS);
+                        ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+                     }
+                    #endif
+
+                    GetNormalWS_SG(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+                #else
+					GetNormalWS(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+
+                    #if HAVE_DECALS
+                    if (_EnableDecals)
+                    {
+                        float alpha = 1.0;
+                        alpha = surfaceDescription.Alpha;
+
+                        DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                        ApplyDecalToSurfaceNormal(decalSurfaceData, surfaceData.normalWS.xyz);
+                        ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+                    }
+                    #endif
+                #endif
 
 				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
-				surfaceData.tangentWS = normalize( fragInputs.tangentToWorld[ 0 ].xyz );
-
-				// decals
-				#if HAVE_DECALS
-				if( _EnableDecals )
-				{
-					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, surfaceDescription.Alpha);
-					ApplyDecalToSurfaceData(decalSurfaceData, fragInputs.tangentToWorld[2], surfaceData);
-				}
-				#endif
+                surfaceData.tangentWS = normalize(fragInputs.tangentToWorld[0].xyz );
+                surfaceData.tangentWS = Orthonormalize(surfaceData.tangentWS, surfaceData.normalWS);
 
 				bentNormalWS = surfaceData.normalWS;
 
-				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
+				#if defined(DEBUG_DISPLAY)
+				    #if !defined(SHADER_STAGE_RAY_TRACING)
+				    if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
+				    {
+					   #ifdef FRAG_INPUTS_USE_TEXCOORD0
+                           surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG(posInput.positionSS, fragInputs.texCoord0);
+                       #else
+                           surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG_NO_UV(posInput.positionSS);
+                       #endif
+					   surfaceData.metallic = 0;
+				    }
+					#endif
+				    ApplyDebugToSurfaceData(fragInputs.tangentToWorld, surfaceData); 
+				#endif
 
                 #if defined(_SPECULAR_OCCLUSION_CUSTOM)
                 #elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO(V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness(surfaceData.perceptualSmoothness));
+                    surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO(V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness(surfaceData.perceptualSmoothness));
                 #elif defined(_AMBIENT_OCCLUSION) && defined(_SPECULAR_OCCLUSION_FROM_AO)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion(ClampNdotV(dot(surfaceData.normalWS, V)), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness(surfaceData.perceptualSmoothness));
+                    surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion(ClampNdotV(dot(surfaceData.normalWS, V)), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness(surfaceData.perceptualSmoothness));
                 #endif
 
-				// debug
-				#if defined(DEBUG_DISPLAY)
-				if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
-				{
-					surfaceData.metallic = 0;
-				}
-				ApplyDebugToSurfaceData(fragInputs.tangentToWorld, surfaceData);
-				#endif
+                #ifdef _ENABLE_GEOMETRIC_SPECULAR_AA
+                    surfaceData.perceptualSmoothness = GeometricNormalFiltering(surfaceData.perceptualSmoothness, fragInputs.tangentToWorld[2], surfaceDescription.SpecularAAScreenSpaceVariance, surfaceDescription.SpecularAAThreshold);
+                #endif
 			}
 
+			// Get Surface And BuiltinData
 			void GetSurfaceAndBuiltinData(PrePassSurfaceDescription surfaceDescription, FragInputs fragInputs, float3 V, inout PositionInputs posInput, out SurfaceData surfaceData, out BuiltinData builtinData)
 			{
 				#ifdef LOD_FADE_CROSSFADE
-				LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
+                    LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
 				#endif
 
-				#ifdef _DOUBLESIDED_ON
-				float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
-				#else
-				float3 doubleSidedConstants = float3( 1.0, 1.0, 1.0 );
+                #ifdef _DOUBLESIDED_ON
+                    float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
+                #else
+                    float3 doubleSidedConstants = float3(1.0, 1.0, 1.0);
+                #endif
+                ApplyDoubleSidedFlipOrMirror(fragInputs, doubleSidedConstants);
+
+				#ifdef _ALPHATEST_ON
+                    DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThreshold );
 				#endif
 
-				ApplyDoubleSidedFlipOrMirror( fragInputs, doubleSidedConstants );
-
-				#if defined(_ALPHATEST_ON)
-				DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThresholdDepthPrepass );
+				#ifdef _ALPHATEST_SHADOW_ON
+                    DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThresholdShadow);
 				#endif
 
 				#ifdef _DEPTHOFFSET_ON
-				ApplyDepthOffsetPositionInput( V, surfaceDescription.DepthOffset, GetViewForwardDir(), GetWorldToHClipMatrix(), posInput );
+                    ApplyDepthOffsetPositionInput(V, surfaceDescription.DepthOffset, GetViewForwardDir(), GetWorldToHClipMatrix(), posInput);
 				#endif
 
 				float3 bentNormalWS;
-				BuildSurfaceData( fragInputs, surfaceDescription, V, posInput, surfaceData, bentNormalWS );
+                BuildSurfaceData(fragInputs, surfaceDescription, V, posInput, surfaceData, bentNormalWS);
+                InitBuiltinData(posInput, surfaceDescription.Alpha, bentNormalWS, -fragInputs.tangentToWorld[2], fragInputs.texCoord1, fragInputs.texCoord2, builtinData);
 
-				InitBuiltinData( posInput, surfaceDescription.Alpha, bentNormalWS, -fragInputs.tangentToWorld[ 2 ], fragInputs.texCoord1, fragInputs.texCoord2, builtinData );
+				#ifdef _DEPTHOFFSET_ON
+                    builtinData.depthOffset = surfaceDescription.DepthOffset;
+				#endif
 
-				#ifdef _ALPHATEST_ON
-				builtinData.alphaClipTreshold = surfaceDescription.AlphaClipThresholdDepthPrepass;
+                #ifdef _ALPHATEST_ON
+                    builtinData.alphaClipTreshold = surfaceDescription.AlphaClipThreshold;
                 #endif
 
-                #if _DEPTHOFFSET_ON
-                builtinData.depthOffset = surfaceDescription.DepthOffset;
+                #ifdef UNITY_VIRTUAL_TEXTURING
+                    builtinData.vtPackedFeedback = surfaceDescription.VTPackedFeedback;
                 #endif
 
-				PostInitBuiltinData(V, posInput, surfaceData, builtinData);
+				#ifdef ASE_BAKEDGI
+                    builtinData.bakeDiffuseLighting = surfaceDescription.BakedGI;
+				#endif
+
+				#ifdef ASE_BAKEDBACKGI
+                    builtinData.backBakeDiffuseLighting = surfaceDescription.BakedBackGI;
+				#endif
+
+                builtinData.emissiveColor = surfaceDescription.Emission;
+
+                PostInitBuiltinData(V, posInput, surfaceData, builtinData);
 			}
 
 			PackedVaryingsMeshToPS VertexFunction(AttributesMesh inputMesh /*ase_vert_input*/)
 			{
-				PackedVaryingsMeshToPS outputPackedVaryingsMeshToPS;
+				PackedVaryingsMeshToPS output;
 				UNITY_SETUP_INSTANCE_ID(inputMesh);
-				UNITY_TRANSFER_INSTANCE_ID(inputMesh, outputPackedVaryingsMeshToPS);
-				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO( outputPackedVaryingsMeshToPS );
+				UNITY_TRANSFER_INSTANCE_ID(inputMesh, output);
+				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO( output );
 
-				/*ase_vert_code:inputMesh=AttributesMesh;outputPackedVaryingsMeshToPS=PackedVaryingsMeshToPS*/
+				/*ase_vert_code:inputMesh=AttributesMesh;output=PackedVaryingsMeshToPS*/
 
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 				float3 defaultVertexValue = inputMesh.positionOS.xyz;
@@ -5352,11 +6132,12 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				float3 normalWS = TransformObjectToWorldNormal(inputMesh.normalOS);
 				float4 tangentWS = float4(TransformObjectToWorldDir(inputMesh.tangentOS.xyz), inputMesh.tangentOS.w);
 
-				outputPackedVaryingsMeshToPS.positionCS = TransformWorldToHClip(positionRWS);
-				outputPackedVaryingsMeshToPS.positionRWS.xyz = positionRWS;
-				outputPackedVaryingsMeshToPS.normalWS.xyz = normalWS;
-				outputPackedVaryingsMeshToPS.tangentWS.xyzw = tangentWS;
-				return outputPackedVaryingsMeshToPS;
+				output.positionCS = TransformWorldToHClip(positionRWS);
+				output.clipPosV = output.positionCS;
+				output.positionRWS  = positionRWS;
+				output.normalWS = normalWS;
+				output.tangentWS = tangentWS;
+				return output;
 			}
 
 			#if defined(ASE_TESSELLATION)
@@ -5374,10 +6155,6 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				float edge[3] : SV_TessFactor;
 				float inside : SV_InsideTessFactor;
 			};
-
-			#if defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalPrepassBuffer.hlsl"
-			#endif
 
 			VertexControl Vert ( AttributesMesh v )
 			{
@@ -5450,6 +6227,10 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			}
             #endif
 
+			#if (defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)) || defined(WRITE_RENDERING_LAYER)
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalPrepassBuffer.hlsl"
+			#endif
+
             #if defined(WRITE_NORMAL_BUFFER) && defined(WRITE_MSAA_DEPTH)
             #define SV_TARGET_DECAL SV_Target2
             #elif defined(WRITE_NORMAL_BUFFER) || defined(WRITE_MSAA_DEPTH)
@@ -5459,99 +6240,97 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
             #endif
 
 			void Frag(PackedVaryingsMeshToPS packedInput
-            #if defined(SCENESELECTIONPASS) || defined(SCENEPICKINGPASS)
-				, out float4 outColor : SV_Target0
-            #else
-            #ifdef WRITE_MSAA_DEPTH
-				, out float4 depthColor : SV_Target0
-            #ifdef WRITE_NORMAL_BUFFER
-				, out float4 outNormalBuffer : SV_Target1
-            #endif
-            #else
-            #ifdef WRITE_NORMAL_BUFFER
-				, out float4 outNormalBuffer : SV_Target0
-            #endif
-            #endif
+						#if defined(SCENESELECTIONPASS) || defined(SCENEPICKINGPASS)
+						, out float4 outColor : SV_Target0
+						#else
+							#ifdef WRITE_MSAA_DEPTH
+							, out float4 depthColor : SV_Target0
+								#ifdef WRITE_NORMAL_BUFFER
+								, out float4 outNormalBuffer : SV_Target1
+								#endif
+							#else
+								#ifdef WRITE_NORMAL_BUFFER
+								, out float4 outNormalBuffer : SV_Target0
+								#endif
+							#endif
 
-            #if defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)
-				, out float4 outDecalBuffer : SV_TARGET_DECAL
-            #endif
-            #endif
+							#if (defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)) || defined(WRITE_RENDERING_LAYER)
+							, out float4 outDecalBuffer : SV_TARGET_DECAL
+							#endif
+						#endif
 
-            #if defined(_DEPTHOFFSET_ON) && !defined(SCENEPICKINGPASS)
-				, out float outputDepth : SV_Depth
-            #endif
-
-			/*ase_frag_input*/
-			)
+						#if defined(_DEPTHOFFSET_ON) && !defined(SCENEPICKINGPASS)
+						, out float outputDepth : DEPTH_OFFSET_SEMANTIC
+						#endif
+						/*ase_frag_input*/
+					)
 			{
-			UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(packedInput);
-			UNITY_SETUP_INSTANCE_ID(packedInput);
+				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(packedInput);
+				UNITY_SETUP_INSTANCE_ID(packedInput);
 
-			/*ase_local_var:rwp*/float3 positionRWS = packedInput.positionRWS.xyz;
-			/*ase_local_var:wn*/float3 normalWS = packedInput.normalWS.xyz;
-			/*ase_local_var:wt*/float4 tangentWS = packedInput.tangentWS.xyzw;
+				/*ase_local_var:rwp*/float3 PositionRWS = packedInput.positionRWS;
+				/*ase_local_var:wvd*/float3 V = GetWorldSpaceNormalizeViewDir( packedInput.positionRWS );
+				/*ase_local_var:wn*/float3 NormalWS = packedInput.normalWS;
+				/*ase_local_var:wt*/float4 TangentWS = packedInput.tangentWS;
+				/*ase_local_var:sp*/float4 ClipPos = packedInput.clipPosV;
+				/*ase_local_var:spu*/float4 ScreenPos = ComputeScreenPos( packedInput.clipPosV, _ProjectionParams.x );
 
-			FragInputs input;
-			ZERO_INITIALIZE(FragInputs, input);
+				FragInputs input;
+				ZERO_INITIALIZE(FragInputs, input);
+				input.positionSS = packedInput.positionCS;
+				input.positionRWS = PositionRWS;
+				input.tangentToWorld = BuildTangentToWorld(TangentWS, NormalWS);
 
-			input.tangentToWorld = k_identity3x3;
-			input.positionSS = packedInput.positionCS;
+				#if _DOUBLESIDED_ON && SHADER_STAGE_FRAGMENT
+				input.isFrontFace = IS_FRONT_VFACE(packedInput.cullFace, true, false);
+				#elif SHADER_STAGE_FRAGMENT
+				#if defined(ASE_NEED_CULLFACE)
+				input.isFrontFace = IS_FRONT_VFACE(packedInput.cullFace, true, false);
+				#endif
+				#endif
+				/*ase_local_var:vf*/half IsFrontFace = input.isFrontFace;
 
-			input.positionRWS = positionRWS;
-			input.tangentToWorld = BuildTangentToWorld(tangentWS, normalWS);
+				PositionInputs posInput = GetPositionInput(input.positionSS.xy, _ScreenSize.zw, input.positionSS.z, input.positionSS.w, input.positionRWS);
 
-            #if _DOUBLESIDED_ON && SHADER_STAGE_FRAGMENT
-			input.isFrontFace = IS_FRONT_VFACE(packedInput.cullFace, true, false);
-            #elif SHADER_STAGE_FRAGMENT
-            #if defined(ASE_NEED_CULLFACE)
-			input.isFrontFace = IS_FRONT_VFACE(packedInput.cullFace, true, false);
-            #endif
-            #endif
-			/*ase_local_var:vf*/half isFrontFace = input.isFrontFace;
+				PrePassSurfaceDescription surfaceDescription = (PrePassSurfaceDescription)0;
+				/*ase_frag_code:packedInput=PackedVaryingsMeshToPS*/
+				surfaceDescription.Alpha = /*ase_frag_out:Alpha;Float;0;-1;_Alpha*/1/*end*/;
 
-			PositionInputs posInput = GetPositionInput(input.positionSS.xy, _ScreenSize.zw, input.positionSS.z, input.positionSS.w, input.positionRWS);
+				surfaceDescription.AlphaClipThresholdDepthPrepass = /*ase_frag_out:Alpha Clip Threshold Depth Prepass;Float;1;-1;_AlphaClipDepthPrepass*/0.5/*end*/;
+				surfaceDescription.Smoothness = /*ase_frag_out:Smoothness;Float;5;-1;_Smoothness*/1/*end*/;
+				surfaceDescription.Normal = /*ase_frag_out:Normal;Float3;6;-1;_Normal*/float3(0, 0, 1)/*end*/;
 
-			/*ase_local_var:wvd*/float3 V = GetWorldSpaceNormalizeViewDir(input.positionRWS);
+				#ifdef _DEPTHOFFSET_ON
+				surfaceDescription.DepthOffset = /*ase_frag_out:Depth Offset;Float;4;-1;_DepthOffset*/0/*end*/;
+				#endif
 
-			PrePassSurfaceDescription surfaceDescription = (PrePassSurfaceDescription)0;
-			/*ase_frag_code:packedInput=PackedVaryingsMeshToPS*/
-			surfaceDescription.Alpha = /*ase_frag_out:Alpha;Float;0;-1;_Alpha*/1/*end*/;
+				SurfaceData surfaceData;
+				BuiltinData builtinData;
+				GetSurfaceAndBuiltinData(surfaceDescription, input, V, posInput, surfaceData, builtinData);
 
-			surfaceDescription.AlphaClipThresholdDepthPrepass = /*ase_frag_out:Alpha Clip Threshold Depth Prepass;Float;1;-1;_AlphaClipDepthPrepass*/0.5/*end*/;
-			surfaceDescription.Smoothness = /*ase_frag_out:Smoothness;Float;5;-1;_Smoothness*/1/*end*/;
-			surfaceDescription.Normal = /*ase_frag_out:Normal;Float3;6;-1;_Normal*/float3(0, 0, 1)/*end*/;
+				#ifdef _DEPTHOFFSET_ON
+				outputDepth = posInput.deviceDepth;
+				#endif
 
-            #ifdef _DEPTHOFFSET_ON
-			surfaceDescription.DepthOffset = /*ase_frag_out:DepthOffset;Float;4;-1;_DepthOffset*/0/*end*/;
-            #endif
+				#ifdef WRITE_MSAA_DEPTH
+					depthColor = packedInput.positionCS.z;
+					depthColor.a = SharpenAlpha(builtinData.opacity, builtinData.alphaClipTreshold);
+				#endif
 
-			SurfaceData surfaceData;
-			BuiltinData builtinData;
-			GetSurfaceAndBuiltinData(surfaceDescription, input, V, posInput, surfaceData, builtinData);
+				#if defined(WRITE_NORMAL_BUFFER)
+				EncodeIntoNormalBuffer(ConvertSurfaceDataToNormalData(surfaceData), outNormalBuffer);
+				#endif
 
-            #ifdef _DEPTHOFFSET_ON
-			outputDepth = posInput.deviceDepth;
-            #endif
-
-            #ifdef WRITE_MSAA_DEPTH
-			depthColor = packedInput.positionCS.z;
-            #ifdef _ALPHATOMASK_ON
-			depthColor.a = SharpenAlpha(builtinData.opacity, builtinData.alphaClipTreshold);
-            #endif
-            #endif
-
-            #if defined(WRITE_NORMAL_BUFFER)
-			EncodeIntoNormalBuffer(ConvertSurfaceDataToNormalData(surfaceData), outNormalBuffer);
-            #endif
-
-            #if defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)
-			DecalPrepassData decalPrepassData;
-			decalPrepassData.geomNormalWS = surfaceData.geomNormalWS;
-			decalPrepassData.decalLayerMask = GetMeshRenderingDecalLayer();
-			EncodeIntoDecalPrepassBuffer(decalPrepassData, outDecalBuffer);
-            #endif
-
+				#if (defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)) || defined(WRITE_RENDERING_LAYER)
+					DecalPrepassData decalPrepassData;
+					#ifdef _DISABLE_DECALS
+					ZERO_INITIALIZE(DecalPrepassData, decalPrepassData);
+					#else
+					decalPrepassData.geomNormalWS = surfaceData.geomNormalWS;
+					#endif
+					decalPrepassData.renderingLayerMask = GetMeshRenderingLayerMask();
+					EncodeIntoDecalPrepassBuffer(decalPrepassData, outDecalBuffer);
+				#endif
 			}
 			ENDHLSL
 		}
@@ -5561,7 +6340,10 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 		{
 			/*ase_hide_pass*/
 			Name "TransparentDepthPostpass"
-			Tags { "LightMode" = "TransparentDepthPostpass" }
+			Tags 
+			{ 
+				"LightMode" = "TransparentDepthPostpass" 
+		    }
 
 			Blend One Zero
 			Cull [_CullMode]
@@ -5569,15 +6351,17 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			ColorMask 0
 
 			HLSLPROGRAM
+			#pragma multi_compile _ DOTS_INSTANCING_ON
 
-            #pragma shader_feature _SURFACE_TYPE_TRANSPARENT
-			#pragma shader_feature_local _TRANSPARENT_WRITES_MOTION_VEC
-			#pragma shader_feature_local_fragment _ENABLE_FOG_ON_TRANSPARENT
-			#pragma shader_feature_local _DOUBLESIDED_ON
-			#pragma shader_feature_local _ALPHATEST_ON
+            #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
+            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC _TRANSPARENT_REFRACTIVE_SORT
+            #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
 
 			#pragma vertex Vert
 			#pragma fragment Frag
+
+            #define SHADERPASS SHADERPASS_TRANSPARENT_DEPTH_POSTPASS
+			#define CUTOFF_TRANSPARENT_DEPTH_POSTPASS
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
@@ -5586,18 +6370,31 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
+            #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
 
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
 
-			#define SHADERPASS SHADERPASS_TRANSPARENT_DEPTH_POSTPASS
-			#define CUTOFF_TRANSPARENT_DEPTH_POSTPASS
+            #ifdef RAYTRACING_SHADER_GRAPH_DEFAULT
+                #define RAYTRACING_SHADER_GRAPH_HIGH
+            #endif
 
-			#ifndef SHADER_UNLIT
-			#if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
-				#define VARYINGS_NEED_CULLFACE
+            #ifdef RAYTRACING_SHADER_GRAPH_RAYTRACED
+                #define RAYTRACING_SHADER_GRAPH_LOW
+            #endif
+
+            #ifndef SHADER_UNLIT
+            #if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
+                #define VARYINGS_NEED_CULLFACE
+            #endif
+            #endif
+
+			#if defined(_DOUBLESIDED_ON) && !defined(ASE_NEED_CULLFACE)
+			    #define ASE_NEED_CULLFACE 1
 			#endif
-			#endif
+
+            #if _MATERIAL_FEATURE_COLORED_TRANSMISSION
+            #undef _MATERIAL_FEATURE_CLEAR_COAT
+            #endif
 
 		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
 		    #define OUTPUT_SPLIT_LIGHTING
@@ -5609,36 +6406,40 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			    #define _REFRACTION_THIN
 		    #endif
 
-			#if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
-			#if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
-				#define WRITE_NORMAL_BUFFER
-			#endif
-			#endif
+            #if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
+            #if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
+                #define WRITE_NORMAL_BUFFER
+            #endif
+            #endif
 
-			#ifndef DEBUG_DISPLAY
-				#if !defined(_SURFACE_TYPE_TRANSPARENT)
-					#if SHADERPASS == SHADERPASS_FORWARD
-					#define SHADERPASS_FORWARD_BYPASS_ALPHA_TEST
-					#elif SHADERPASS == SHADERPASS_GBUFFER
-					#define SHADERPASS_GBUFFER_BYPASS_ALPHA_TEST
-					#endif
-				#endif
-			#endif
+            #if SHADERPASS == SHADERPASS_MOTION_VECTORS && defined(WRITE_DECAL_BUFFER_AND_RENDERING_LAYER)
+                #define WRITE_DECAL_BUFFER
+            #endif
 
-			#if defined(SHADER_LIT) && !defined(_SURFACE_TYPE_TRANSPARENT)
-			#define _DEFERRED_CAPABLE_MATERIAL
-			#endif
+            #ifndef DEBUG_DISPLAY
+                #if !defined(_SURFACE_TYPE_TRANSPARENT)
+                    #if SHADERPASS == SHADERPASS_FORWARD
+                    #define SHADERPASS_FORWARD_BYPASS_ALPHA_TEST
+                    #elif SHADERPASS == SHADERPASS_GBUFFER
+                    #define SHADERPASS_GBUFFER_BYPASS_ALPHA_TEST
+                    #endif
+                #endif
+            #endif
 
-			#if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
-			#define _WRITE_TRANSPARENT_MOTION_VECTOR
-			#endif
+            #if defined(SHADER_LIT) && !defined(_SURFACE_TYPE_TRANSPARENT)
+                #define _DEFERRED_CAPABLE_MATERIAL
+            #endif
+
+            #if (defined(_TRANSPARENT_WRITES_MOTION_VEC) || defined(_TRANSPARENT_REFRACTIVE_SORT)) && defined(_SURFACE_TYPE_TRANSPARENT)
+                #define _WRITE_TRANSPARENT_MOTION_VECTOR
+            #endif
 
 			CBUFFER_START( UnityPerMaterial )
 			float4 _EmissionColor;
 			float _AlphaCutoff;
 			float _RenderQueueType;
 			#ifdef _ADD_PRECOMPUTED_VELOCITY
-			float _AddPrecomputedVelocity;
+			    float _AddPrecomputedVelocity;
 			#endif
 			float _StencilRef;
 			float _StencilWriteMask;
@@ -5646,6 +6447,8 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			float _StencilWriteMaskDepth;
 			float _StencilRefMV;
 			float _StencilWriteMaskMV;
+			float _StencilRefDistortionVec;
+			float _StencilWriteMaskDistortionVec;
 			float _StencilWriteMaskGBuffer;
 			float _StencilRefGBuffer;
 			float _ZTestGBuffer;
@@ -5654,10 +6457,11 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			float _SurfaceType;
 			float _BlendMode;
             #ifdef SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
-			float _EnableBlendModePreserveSpecularLighting;
+			    float _EnableBlendModePreserveSpecularLighting;
             #endif
 			float _SrcBlend;
 			float _DstBlend;
+			float _DstBlend2;
 			float _AlphaSrcBlend;
 			float _AlphaDstBlend;
 			float _ZWrite;
@@ -5676,21 +6480,19 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			float _DoubleSidedNormalMode;
 			float4 _DoubleSidedConstants;
 			#ifdef ASE_TESSELLATION
-			float _TessPhongStrength;
-			float _TessValue;
-			float _TessMin;
-			float _TessMax;
-			float _TessEdgeLength;
-			float _TessMaxDisp;
+			    float _TessPhongStrength;
+			    float _TessValue;
+			    float _TessMin;
+			    float _TessMax;
+			    float _TessEdgeLength;
+			    float _TessMaxDisp;
 			#endif
 			CBUFFER_END
 
-			// Property used by ScenePickingPass
 			#ifdef SCENEPICKINGPASS
 			float4 _SelectionID;
             #endif
 
-			// Properties used by SceneSelectionPass
             #ifdef SCENESELECTIONPASS
 			int _ObjectId;
 			int _PassValue;
@@ -5709,30 +6511,34 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/MaterialUtilities.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphFunctions.hlsl"
 
-			// Setup DECALS_OFF so the shader stripper can remove variants
-            #define HAVE_DECALS ( (defined(DECALS_3RT) || defined(DECALS_4RT)) && !defined(_DISABLE_DECALS) )
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalUtilities.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/LitDecalData.hlsl"
 
-			/*ase_pragma*/
-
-			#if defined(_DOUBLESIDED_ON) && !defined(ASE_NEED_CULLFACE)
-			#define ASE_NEED_CULLFACE 1
+			#if (defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)) || defined(WRITE_RENDERING_LAYER)
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalPrepassBuffer.hlsl"
 			#endif
+
+        	#ifdef HAVE_VFX_MODIFICATION
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/VisualEffectVertex.hlsl"
+        	#endif
+
+			/*ase_pragma*/
 
 			struct AttributesMesh
 			{
 				float3 positionOS : POSITION;
 				float3 normalOS : NORMAL;
-				/*ase_vdata:p=p;n=n*/
+				float4 tangentOS : TANGENT;
+				/*ase_vdata:p=p;n=n;t=t*/
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
 			struct PackedVaryingsMeshToPS
 			{
-				float4 positionCS : SV_Position;
-				float3 positionRWS : TEXCOORD0;
-				/*ase_interp(1,):sp=sp.xyzw;rwp=tc0*/
+				SV_POSITION_QUALIFIERS float4 positionCS : SV_Position;
+				float4 clipPosV : TEXCOORD0;
+				float3 positionRWS : TEXCOORD1;
+				/*ase_interp(2,):sp=sp.xyzw;rwp=tc1*/
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				UNITY_VERTEX_OUTPUT_STEREO
 				#if defined(SHADER_STAGE_FRAGMENT) && defined(ASE_NEED_CULLFACE)
@@ -5747,152 +6553,203 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				ZERO_INITIALIZE(SurfaceData, surfaceData);
 
 				surfaceData.specularOcclusion = 1.0;
+				surfaceData.thickness = 0.0;
 
-				// surface data
-
-				// refraction
-				#ifdef _HAS_REFRACTION
-				if( _EnableSSRefraction )
-				{
-					surfaceData.transmittanceMask = ( 1.0 - surfaceDescription.Alpha );
-					surfaceDescription.Alpha = 1.0;
-				}
-				else
-				{
-					surfaceData.ior = 1.0;
-					surfaceData.transmittanceColor = float3( 1.0, 1.0, 1.0 );
-					surfaceData.atDistance = 1.0;
-					surfaceData.transmittanceMask = 0.0;
-					surfaceDescription.Alpha = 1.0;
-				}
-				#else
-				surfaceData.ior = 1.0;
-				surfaceData.transmittanceColor = float3( 1.0, 1.0, 1.0 );
-				surfaceData.atDistance = 1.0;
-				surfaceData.transmittanceMask = 0.0;
-				#endif
-
-
-				// material features
-				surfaceData.materialFeatures = MATERIALFEATUREFLAGS_LIT_STANDARD;
-				#ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SUBSURFACE_SCATTERING;
-				#endif
-				#ifdef _MATERIAL_FEATURE_TRANSMISSION
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
-				#endif
-                #ifdef _MATERIAL_FEATURE_ANISOTROPY
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
-				surfaceData.normalWS = float3(0, 1, 0);
+				// refraction TransparentDepthPostpass
+                #if defined(_REFRACTION_PLANE) || defined(_REFRACTION_SPHERE) || defined(_REFRACTION_THIN)
+                    if (_EnableSSRefraction)
+                    {
+        
+                        surfaceData.transmittanceMask = (1.0 - surfaceDescription.Alpha);
+                        surfaceDescription.Alpha = 1.0;
+                    }
+                    else
+                    {
+                        surfaceData.ior = 1.0;
+                        surfaceData.transmittanceColor = float3(1.0, 1.0, 1.0);
+                        surfaceData.atDistance = 1.0;
+                        surfaceData.transmittanceMask = 0.0;
+                        surfaceDescription.Alpha = 1.0;
+                    }
+                #else
+                    surfaceData.ior = 1.0;
+                    surfaceData.transmittanceColor = float3(1.0, 1.0, 1.0);
+                    surfaceData.atDistance = 1.0;
+                    surfaceData.transmittanceMask = 0.0;
                 #endif
-				#ifdef _MATERIAL_FEATURE_CLEAR_COAT
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_CLEAR_COAT;
-				#endif
-				#ifdef _MATERIAL_FEATURE_IRIDESCENCE
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_IRIDESCENCE;
-				#endif
-				#ifdef _MATERIAL_FEATURE_SPECULAR_COLOR
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SPECULAR_COLOR;
+
+				surfaceData.materialFeatures = MATERIALFEATUREFLAGS_LIT_STANDARD;
+
+				#ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SUBSURFACE_SCATTERING;
 				#endif
 
-				// others
+				#ifdef _MATERIAL_FEATURE_TRANSMISSION
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
+				#endif
+
+				#ifdef _MATERIAL_FEATURE_COLORED_TRANSMISSION
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_COLORED_TRANSMISSION;
+				#endif
+
+                #ifdef _MATERIAL_FEATURE_ANISOTROPY
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
+                    surfaceData.normalWS = float3(0, 1, 0);
+                #endif
+
+				#ifdef _MATERIAL_FEATURE_CLEAR_COAT
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_CLEAR_COAT;
+				#endif
+
+				#ifdef _MATERIAL_FEATURE_IRIDESCENCE
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_IRIDESCENCE;
+				#endif
+
+				#ifdef _MATERIAL_FEATURE_SPECULAR_COLOR
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SPECULAR_COLOR;
+				#endif
+
 				#if defined (_MATERIAL_FEATURE_SPECULAR_COLOR) && defined (_ENERGY_CONSERVING_SPECULAR)
-				surfaceData.baseColor *= ( 1.0 - Max3( surfaceData.specularColor.r, surfaceData.specularColor.g, surfaceData.specularColor.b ) );
+                    surfaceData.baseColor *= ( 1.0 - Max3( surfaceData.specularColor.r, surfaceData.specularColor.g, surfaceData.specularColor.b ) );
 				#endif
 
 				#ifdef _DOUBLESIDED_ON
-				float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
+                    float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
 				#else
-				float3 doubleSidedConstants = float3( 1.0, 1.0, 1.0 );
+                    float3 doubleSidedConstants = float3( 1.0, 1.0, 1.0 );
 				#endif
 
-				// normals
 				float3 normalTS = float3(0.0f, 0.0f, 1.0f);
-				GetNormalWS( fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants );
+
+                #ifdef DECAL_NORMAL_BLENDING
+					normalTS = SurfaceGradientFromTangentSpaceNormalAndFromTBN(normalTS, fragInputs.tangentToWorld[0], fragInputs.tangentToWorld[1]);
+
+                    #if HAVE_DECALS
+                    if (_EnableDecals)
+                    {
+                        float alpha = 1.0;
+                        alpha = surfaceDescription.Alpha;
+
+                        DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                        ApplyDecalToSurfaceNormal(decalSurfaceData, fragInputs.tangentToWorld[2], normalTS);
+                        ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+                     }
+                    #endif
+
+                    GetNormalWS_SG(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+                #else
+					GetNormalWS(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+
+                    #if HAVE_DECALS
+                    if (_EnableDecals)
+                    {
+                        float alpha = 1.0;
+                        alpha = surfaceDescription.Alpha;
+ 
+                        DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                        ApplyDecalToSurfaceNormal(decalSurfaceData, surfaceData.normalWS.xyz);
+                        ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+                    }
+                    #endif
+                #endif
 
 				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
-				surfaceData.tangentWS = normalize( fragInputs.tangentToWorld[ 0 ].xyz );
-
-				// decals
-				#if HAVE_DECALS
-				if( _EnableDecals )
-				{
-					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, surfaceDescription.Alpha);
-					ApplyDecalToSurfaceData(decalSurfaceData, fragInputs.tangentToWorld[2], surfaceData);
-				}
-				#endif
+                surfaceData.tangentWS = normalize(fragInputs.tangentToWorld[0].xyz );
+                surfaceData.tangentWS = Orthonormalize(surfaceData.tangentWS, surfaceData.normalWS);
 
 				bentNormalWS = surfaceData.normalWS;
 
-				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
+				#if defined(DEBUG_DISPLAY)
+				    #if !defined(SHADER_STAGE_RAY_TRACING)
+				    if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
+				    {
+					   #ifdef FRAG_INPUTS_USE_TEXCOORD0
+                           surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG(posInput.positionSS, fragInputs.texCoord0);
+                       #else
+                           surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG_NO_UV(posInput.positionSS);
+                       #endif
+					   surfaceData.metallic = 0;
+				    }
+					#endif
+				    ApplyDebugToSurfaceData(fragInputs.tangentToWorld, surfaceData); 
+				#endif
 
                 #if defined(_SPECULAR_OCCLUSION_CUSTOM)
                 #elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO(V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness(surfaceData.perceptualSmoothness));
+                    surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO(V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness(surfaceData.perceptualSmoothness));
                 #elif defined(_AMBIENT_OCCLUSION) && defined(_SPECULAR_OCCLUSION_FROM_AO)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion(ClampNdotV(dot(surfaceData.normalWS, V)), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness(surfaceData.perceptualSmoothness));
+                    surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion(ClampNdotV(dot(surfaceData.normalWS, V)), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness(surfaceData.perceptualSmoothness));
                 #endif
 
-				// debug
-				#if defined(DEBUG_DISPLAY)
-				if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
-				{
-					surfaceData.metallic = 0;
-				}
-				ApplyDebugToSurfaceData(fragInputs.tangentToWorld, surfaceData);
-				#endif
+                #ifdef _ENABLE_GEOMETRIC_SPECULAR_AA
+                    surfaceData.perceptualSmoothness = GeometricNormalFiltering(surfaceData.perceptualSmoothness, fragInputs.tangentToWorld[2], surfaceDescription.SpecularAAScreenSpaceVariance, surfaceDescription.SpecularAAThreshold);
+                #endif
 			}
 
+			// Get Surface And BuiltinData
 			void GetSurfaceAndBuiltinData(PostPassSurfaceDescription surfaceDescription, FragInputs fragInputs, float3 V, inout PositionInputs posInput, out SurfaceData surfaceData, out BuiltinData builtinData)
 			{
 				#ifdef LOD_FADE_CROSSFADE
-				LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
+                    LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
 				#endif
 
-				#ifdef _DOUBLESIDED_ON
-				float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
-				#else
-				float3 doubleSidedConstants = float3( 1.0, 1.0, 1.0 );
-				#endif
-
-				ApplyDoubleSidedFlipOrMirror( fragInputs, doubleSidedConstants );
-
-				#if defined(_ALPHATEST_ON)
-				DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThresholdDepthPostpass );
-				#endif
-
-				#ifdef _DEPTHOFFSET_ON
-				ApplyDepthOffsetPositionInput( V, surfaceDescription.DepthOffset, GetViewForwardDir(), GetWorldToHClipMatrix(), posInput );
-				#endif
-
-				float3 bentNormalWS;
-				BuildSurfaceData( fragInputs, surfaceDescription, V, posInput, surfaceData, bentNormalWS );
-
-				InitBuiltinData( posInput, surfaceDescription.Alpha, bentNormalWS, -fragInputs.tangentToWorld[ 2 ], fragInputs.texCoord1, fragInputs.texCoord2, builtinData );
+                #ifdef _DOUBLESIDED_ON
+                    float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
+                #else
+                    float3 doubleSidedConstants = float3(1.0, 1.0, 1.0);
+                #endif
+                ApplyDoubleSidedFlipOrMirror(fragInputs, doubleSidedConstants);
 
 				#ifdef _ALPHATEST_ON
-                    builtinData.alphaClipTreshold = surfaceDescription.AlphaClipThresholdDepthPostpass;
-                #endif
-
-				#ifdef _DEPTHOFFSET_ON
-				builtinData.depthOffset = surfaceDescription.DepthOffset;
+                    DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThreshold );
 				#endif
 
-				PostInitBuiltinData(V, posInput, surfaceData, builtinData);
-			}
+				#ifdef _ALPHATEST_SHADOW_ON
+                    DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThresholdShadow);
+				#endif
 
-			#if defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalPrepassBuffer.hlsl"
-			#endif
+				#ifdef _DEPTHOFFSET_ON
+                    ApplyDepthOffsetPositionInput(V, surfaceDescription.DepthOffset, GetViewForwardDir(), GetWorldToHClipMatrix(), posInput);
+				#endif
+
+                float3 bentNormalWS;
+                BuildSurfaceData(fragInputs, surfaceDescription, V, posInput, surfaceData, bentNormalWS);
+                InitBuiltinData(posInput, surfaceDescription.Alpha, bentNormalWS, -fragInputs.tangentToWorld[2], fragInputs.texCoord1, fragInputs.texCoord2, builtinData);
+
+				#ifdef _DEPTHOFFSET_ON
+                    builtinData.depthOffset = surfaceDescription.DepthOffset;
+				#endif
+
+                #ifdef _ALPHATEST_ON
+                    builtinData.alphaClipTreshold = surfaceDescription.AlphaClipThreshold;
+                #endif
+
+                #ifdef UNITY_VIRTUAL_TEXTURING
+                    builtinData.vtPackedFeedback = surfaceDescription.VTPackedFeedback;
+                #endif
+
+				#ifdef ASE_BAKEDGI
+                    builtinData.bakeDiffuseLighting = surfaceDescription.BakedGI;
+				#endif
+
+				#ifdef ASE_BAKEDBACKGI
+                    builtinData.backBakeDiffuseLighting = surfaceDescription.BakedBackGI;
+				#endif
+
+                builtinData.emissiveColor = surfaceDescription.Emission;
+
+                PostInitBuiltinData(V, posInput, surfaceData, builtinData);
+			}
 
 			PackedVaryingsMeshToPS VertexFunction(AttributesMesh inputMesh /*ase_vert_input*/)
 			{
-				PackedVaryingsMeshToPS outputPackedVaryingsMeshToPS;
+				PackedVaryingsMeshToPS output;
 				UNITY_SETUP_INSTANCE_ID(inputMesh);
-				UNITY_TRANSFER_INSTANCE_ID(inputMesh, outputPackedVaryingsMeshToPS);
-				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO( outputPackedVaryingsMeshToPS );
+				UNITY_TRANSFER_INSTANCE_ID(inputMesh, output);
+				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO( output );
 
-				/*ase_vert_code:inputMesh=AttributesMesh;outputPackedVaryingsMeshToPS=PackedVaryingsMeshToPS*/
+				/*ase_vert_code:inputMesh=AttributesMesh;output=PackedVaryingsMeshToPS*/
 
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 				float3 defaultVertexValue = inputMesh.positionOS.xyz;
@@ -5908,11 +6765,13 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				#endif
 
 				inputMesh.normalOS = /*ase_vert_out:Vertex Normal;Float3;3;-1;_VertexNormal*/ inputMesh.normalOS /*end*/;
+				inputMesh.tangentOS = /*ase_vert_out:Vertex Tangent;Float4;27;-1;_VertexTangent*/inputMesh.tangentOS/*end*/;
 
 				float3 positionRWS = TransformObjectToWorld(inputMesh.positionOS);
-				outputPackedVaryingsMeshToPS.positionCS = TransformWorldToHClip(positionRWS);
-				outputPackedVaryingsMeshToPS.positionRWS.xyz = positionRWS;
-				return outputPackedVaryingsMeshToPS;
+				output.positionCS = TransformWorldToHClip(positionRWS);
+				output.clipPosV = output.positionCS;
+				output.positionRWS = positionRWS;
+				return output;
 			}
 
 			#if defined(ASE_TESSELLATION)
@@ -5920,6 +6779,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			{
 				float3 positionOS : INTERNALTESSPOS;
 				float3 normalOS : NORMAL;
+				float4 tangentOS : TANGENT;
 				/*ase_vcontrol*/
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
@@ -5937,6 +6797,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				UNITY_TRANSFER_INSTANCE_ID(v, o);
 				o.positionOS = v.positionOS;
 				o.normalOS = v.normalOS;
+				o.tangentOS = v.tangentOS;
 				/*ase_control_code:v=AttributesMesh;o=VertexControl*/
 				return o;
 			}
@@ -5981,6 +6842,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				AttributesMesh o = (AttributesMesh) 0;
 				o.positionOS = patch[0].positionOS * bary.x + patch[1].positionOS * bary.y + patch[2].positionOS * bary.z;
 				o.normalOS = patch[0].normalOS * bary.x + patch[1].normalOS * bary.y + patch[2].normalOS * bary.z;
+				o.tangentOS = patch[0].tangentOS * bary.x + patch[1].tangentOS * bary.y + patch[2].tangentOS * bary.z;
 				/*ase_domain_code:patch=VertexControl;o=AttributesMesh;bary=SV_DomainLocation*/
 				#if defined(ASE_PHONG_TESSELLATION)
 				float3 pp[3];
@@ -6022,29 +6884,30 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 								#endif
 							#endif
 
-							#if defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)
+							#if (defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)) || defined(WRITE_RENDERING_LAYER)
 							, out float4 outDecalBuffer : SV_TARGET_DECAL
 							#endif
 						#endif
 
 						#if defined(_DEPTHOFFSET_ON) && !defined(SCENEPICKINGPASS)
-						, out float outputDepth : SV_Depth
+						, out float outputDepth : DEPTH_OFFSET_SEMANTIC
 						#endif
 						/*ase_frag_input*/
 					)
 			{
-				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX( packedInput );
-				UNITY_SETUP_INSTANCE_ID( packedInput );
-
-				/*ase_local_var:rwp*/float3 positionRWS = packedInput.positionRWS.xyz;
+				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(packedInput);
+				UNITY_SETUP_INSTANCE_ID(packedInput);
+		
+				/*ase_local_var:rwp*/float3 PositionRWS = packedInput.positionRWS;
+				/*ase_local_var:wvd*/float3 V = GetWorldSpaceNormalizeViewDir( packedInput.positionRWS );
+				/*ase_local_var:sp*/float4 ClipPos = packedInput.clipPosV;
+				/*ase_local_var:spu*/float4 ScreenPos = ComputeScreenPos( packedInput.clipPosV, _ProjectionParams.x );
 
 				FragInputs input;
 				ZERO_INITIALIZE(FragInputs, input);
-
 				input.tangentToWorld = k_identity3x3;
 				input.positionSS = packedInput.positionCS;
-
-				input.positionRWS = positionRWS;
+				input.positionRWS = PositionRWS;
 
 				#if _DOUBLESIDED_ON && SHADER_STAGE_FRAGMENT
 				input.isFrontFace = IS_FRONT_VFACE( packedInput.cullFace, true, false);
@@ -6053,11 +6916,9 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				input.isFrontFace = IS_FRONT_VFACE( packedInput.cullFace, true, false );
 				#endif
 				#endif
-				/*ase_local_var:vf*/half isFrontFace = input.isFrontFace;
+				/*ase_local_var:vf*/half IsFrontFace = input.isFrontFace;
 
 				PositionInputs posInput = GetPositionInput(input.positionSS.xy, _ScreenSize.zw, input.positionSS.z, input.positionSS.w, input.positionRWS);
-
-				/*ase_local_var:wvd*/float3 V = GetWorldSpaceNormalizeViewDir(input.positionRWS);
 
 				PostPassSurfaceDescription surfaceDescription = (PostPassSurfaceDescription)0;
 				/*ase_frag_code:packedInput=PackedVaryingsMeshToPS*/
@@ -6066,7 +6927,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				surfaceDescription.AlphaClipThresholdDepthPostpass = /*ase_frag_out:Alpha Clip Threshold Depth Postpass;Float;1;-1;_AlphaClipDepthPostpass*/0.5/*end*/;
 
 				#ifdef _DEPTHOFFSET_ON
-				surfaceDescription.DepthOffset = /*ase_frag_out:DepthOffset;Float;4;-1;_DepthOffset*/0/*end*/;
+				surfaceDescription.DepthOffset = /*ase_frag_out:Depth Offset;Float;4;-1;_DepthOffset*/0/*end*/;
 				#endif
 
 				SurfaceData surfaceData;
@@ -6079,19 +6940,21 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 
 				#ifdef WRITE_MSAA_DEPTH
 					depthColor = packedInput.positionCS.z;
-					#ifdef _ALPHATOMASK_ON
-						depthColor.a = SharpenAlpha(builtinData.opacity, builtinData.alphaClipTreshold);
-					#endif
+					depthColor.a = SharpenAlpha(builtinData.opacity, builtinData.alphaClipTreshold);
 				#endif
 
 				#if defined(WRITE_NORMAL_BUFFER)
 					EncodeIntoNormalBuffer(ConvertSurfaceDataToNormalData(surfaceData), outNormalBuffer);
 				#endif
 
-				#if defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)
+				#if (defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)) || defined(WRITE_RENDERING_LAYER)
 					DecalPrepassData decalPrepassData;
+                    #ifdef _DISABLE_DECALS
+				    ZERO_INITIALIZE(DecalPrepassData, decalPrepassData);
+                    #else
 					decalPrepassData.geomNormalWS = surfaceData.geomNormalWS;
-					decalPrepassData.decalLayerMask = GetMeshRenderingDecalLayer();
+                    #endif
+					decalPrepassData.renderingLayerMask = GetMeshRenderingLayerMask();
 					EncodeIntoDecalPrepassBuffer(decalPrepassData, outDecalBuffer);
 				#endif
 			}
@@ -6103,10 +6966,16 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 		{
 			/*ase_hide_pass*/
 			Name "Forward"
-			Tags { "LightMode" = "Forward" }
+			Tags 
+			{ 
+				"LightMode" = "Forward" 
+		    }
 
 			Blend [_SrcBlend] [_DstBlend], [_AlphaSrcBlend] [_AlphaDstBlend]
-			Blend 1 SrcAlpha OneMinusSrcAlpha
+			Blend 1 One OneMinusSrcAlpha
+			Blend 2 One [_DstBlend2]
+			Blend 3 One [_DstBlend2]
+			Blend 4 One OneMinusSrcAlpha
 
 			Cull [_CullModeForward]
 			ZTest [_ZTestDepthEqualForOpaque]
@@ -6126,25 +6995,27 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
             ColorMask [_ColorMaskTransparentVelTwo] 2
 
 			HLSLPROGRAM
+			#pragma multi_compile _ DOTS_INSTANCING_ON
 
-            #pragma shader_feature _SURFACE_TYPE_TRANSPARENT
-			#pragma shader_feature_local _TRANSPARENT_WRITES_MOTION_VEC
-			#pragma shader_feature_local_fragment _ENABLE_FOG_ON_TRANSPARENT
-			#pragma shader_feature_local _DOUBLESIDED_ON
-			#pragma shader_feature_local _ALPHATEST_ON
+            #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
+            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC _TRANSPARENT_REFRACTIVE_SORT
+            #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
 
-			#pragma multi_compile_fragment _ SHADOWS_SHADOWMASK
-			#pragma multi_compile_fragment SHADOW_LOW SHADOW_MEDIUM SHADOW_HIGH
-			#pragma multi_compile_fragment AREA_SHADOW_MEDIUM AREA_SHADOW_HIGH
-			#pragma multi_compile_fragment PROBE_VOLUMES_OFF PROBE_VOLUMES_L1 PROBE_VOLUMES_L2
+            #pragma multi_compile_fragment _ SHADOWS_SHADOWMASK
+            #pragma multi_compile_fragment PUNCTUAL_SHADOW_LOW PUNCTUAL_SHADOW_MEDIUM PUNCTUAL_SHADOW_HIGH
+            #pragma multi_compile_fragment DIRECTIONAL_SHADOW_LOW DIRECTIONAL_SHADOW_MEDIUM DIRECTIONAL_SHADOW_HIGH
+            #pragma multi_compile_fragment AREA_SHADOW_MEDIUM AREA_SHADOW_HIGH
+            #pragma multi_compile_fragment _ PROBE_VOLUMES_L1 PROBE_VOLUMES_L2
             #pragma multi_compile_fragment SCREEN_SPACE_SHADOWS_OFF SCREEN_SPACE_SHADOWS_ON
             #pragma multi_compile_fragment USE_FPTL_LIGHTLIST USE_CLUSTERED_LIGHTLIST
-			#pragma multi_compile _ DEBUG_DISPLAY
-			#pragma multi_compile _ LIGHTMAP_ON
-			#pragma multi_compile _ DIRLIGHTMAP_COMBINED
-			#pragma multi_compile _ DYNAMICLIGHTMAP_ON
-			#pragma multi_compile_fragment DECALS_OFF DECALS_3RT DECALS_4RT
-			#pragma multi_compile_fragment _ DECAL_SURFACE_GRADIENT
+
+            #pragma multi_compile _ DEBUG_DISPLAY
+            #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
+            #pragma multi_compile _ DYNAMICLIGHTMAP_ON
+            #pragma multi_compile_fragment DECALS_OFF DECALS_3RT DECALS_4RT
+            #pragma multi_compile_fragment _ DECAL_SURFACE_GRADIENT
+            #pragma multi_compile _ USE_LEGACY_LIGHTMAPS
 
 			#ifndef SHADER_STAGE_FRAGMENT
 			#define SHADOW_LOW
@@ -6154,6 +7025,9 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			#pragma vertex Vert
 			#pragma fragment Frag
 
+			#define SHADERPASS SHADERPASS_FORWARD
+		    #define HAS_LIGHTLOOP 1
+
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Tessellation.hlsl"
@@ -6161,21 +7035,32 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/DebugMipmapStreamingMacros.hlsl"
+            #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
 
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
 
-			#define SHADERPASS SHADERPASS_FORWARD
-		    #define HAS_LIGHTLOOP 1
+            #ifdef RAYTRACING_SHADER_GRAPH_DEFAULT
+                #define RAYTRACING_SHADER_GRAPH_HIGH
+            #endif
 
-			// Setup for Fog Enabled to apply in sky refletions in LightLoopDef.hlsl
-            #define APPLY_FOG_ON_SKY_REFLECTIONS
+            #ifdef RAYTRACING_SHADER_GRAPH_RAYTRACED
+                #define RAYTRACING_SHADER_GRAPH_LOW
+            #endif
 
-			#ifndef SHADER_UNLIT
-			#if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
-			#define VARYINGS_NEED_CULLFACE
+            #ifndef SHADER_UNLIT
+            #if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
+                #define VARYINGS_NEED_CULLFACE
+            #endif
+            #endif
+
+			#if defined(_DOUBLESIDED_ON) && !defined(ASE_NEED_CULLFACE)
+			    #define ASE_NEED_CULLFACE 1
 			#endif
-			#endif
+
+            #if _MATERIAL_FEATURE_COLORED_TRANSMISSION
+            #undef _MATERIAL_FEATURE_CLEAR_COAT
+            #endif
 
 		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
 			#define OUTPUT_SPLIT_LIGHTING
@@ -6187,36 +7072,40 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			#define _REFRACTION_THIN
 		    #endif
 
-			#if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
-			#if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
-				#define WRITE_NORMAL_BUFFER
-			#endif
-			#endif
+            #if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
+            #if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
+                #define WRITE_NORMAL_BUFFER
+            #endif
+            #endif
 
-			#ifndef DEBUG_DISPLAY
-				#if !defined(_SURFACE_TYPE_TRANSPARENT)
-					#if SHADERPASS == SHADERPASS_FORWARD
-					#define SHADERPASS_FORWARD_BYPASS_ALPHA_TEST
-					#elif SHADERPASS == SHADERPASS_GBUFFER
-					#define SHADERPASS_GBUFFER_BYPASS_ALPHA_TEST
-					#endif
-				#endif
-			#endif
+            #if SHADERPASS == SHADERPASS_MOTION_VECTORS && defined(WRITE_DECAL_BUFFER_AND_RENDERING_LAYER)
+                #define WRITE_DECAL_BUFFER
+            #endif
 
-			#if defined(SHADER_LIT) && !defined(_SURFACE_TYPE_TRANSPARENT)
-			#define _DEFERRED_CAPABLE_MATERIAL
-			#endif
+            #ifndef DEBUG_DISPLAY
+                #if !defined(_SURFACE_TYPE_TRANSPARENT)
+                    #if SHADERPASS == SHADERPASS_FORWARD
+                    #define SHADERPASS_FORWARD_BYPASS_ALPHA_TEST
+                    #elif SHADERPASS == SHADERPASS_GBUFFER
+                    #define SHADERPASS_GBUFFER_BYPASS_ALPHA_TEST
+                    #endif
+                #endif
+            #endif
 
-			#if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
-			#define _WRITE_TRANSPARENT_MOTION_VECTOR
-			#endif
+            #if defined(SHADER_LIT) && !defined(_SURFACE_TYPE_TRANSPARENT)
+                #define _DEFERRED_CAPABLE_MATERIAL
+            #endif
+        
+            #if (defined(_TRANSPARENT_WRITES_MOTION_VEC) || defined(_TRANSPARENT_REFRACTIVE_SORT)) && defined(_SURFACE_TYPE_TRANSPARENT)
+                #define _WRITE_TRANSPARENT_MOTION_VECTOR
+            #endif
 
 			CBUFFER_START( UnityPerMaterial )
 			float4 _EmissionColor;
 			float _AlphaCutoff;
 			float _RenderQueueType;
 			#ifdef _ADD_PRECOMPUTED_VELOCITY
-			float _AddPrecomputedVelocity;
+			    float _AddPrecomputedVelocity;
 			#endif
 			float _StencilRef;
 			float _StencilWriteMask;
@@ -6224,6 +7113,8 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			float _StencilWriteMaskDepth;
 			float _StencilRefMV;
 			float _StencilWriteMaskMV;
+			float _StencilRefDistortionVec;
+			float _StencilWriteMaskDistortionVec;
 			float _StencilWriteMaskGBuffer;
 			float _StencilRefGBuffer;
 			float _ZTestGBuffer;
@@ -6232,10 +7123,11 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			float _SurfaceType;
 			float _BlendMode;
             #ifdef SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
-			float _EnableBlendModePreserveSpecularLighting;
+			    float _EnableBlendModePreserveSpecularLighting;
             #endif
 			float _SrcBlend;
 			float _DstBlend;
+			float _DstBlend2;
 			float _AlphaSrcBlend;
 			float _AlphaDstBlend;
 			float _ZWrite;
@@ -6254,21 +7146,20 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			float _DoubleSidedNormalMode;
 			float4 _DoubleSidedConstants;
 			#ifdef ASE_TESSELLATION
-			float _TessPhongStrength;
-			float _TessValue;
-			float _TessMin;
-			float _TessMax;
-			float _TessEdgeLength;
-			float _TessMaxDisp;
+			    float _TessPhongStrength;
+			    float _TessValue;
+			    float _TessMin;
+			    float _TessMax;
+			    float _TessEdgeLength;
+			    float _TessMaxDisp;
 			#endif
+			UNITY_TEXTURE_STREAMING_DEBUG_VARS;
 			CBUFFER_END
 
-			// Property used by ScenePickingPass
             #ifdef SCENEPICKINGPASS
 			float4 _SelectionID;
             #endif
 
-			// Properties used by SceneSelectionPass
             #ifdef SCENESELECTIONPASS
 			int _ObjectId;
 			int _PassValue;
@@ -6290,16 +7181,14 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/MaterialUtilities.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphFunctions.hlsl"
 
-			// Setup DECALS_OFF so the shader stripper can remove variants
-            #define HAVE_DECALS ( (defined(DECALS_3RT) || defined(DECALS_4RT)) && !defined(_DISABLE_DECALS) )
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalUtilities.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/LitDecalData.hlsl"
 
-			/*ase_pragma*/
+        	#ifdef HAVE_VFX_MODIFICATION
+        	#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/VisualEffectVertex.hlsl"
+        	#endif
 
-			#if defined(_DOUBLESIDED_ON) && !defined(ASE_NEED_CULLFACE)
-			#define ASE_NEED_CULLFACE 1
-			#endif
+			/*ase_pragma*/
 
 			struct AttributesMesh
 			{
@@ -6316,17 +7205,18 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 
 			struct PackedVaryingsMeshToPS
 			{
-				float4 positionCS : SV_Position;
-				float3 positionRWS : TEXCOORD0;
-				float3 normalWS : TEXCOORD1;
-				float4 tangentWS : TEXCOORD2;
-				float4 uv1 : TEXCOORD3;
-				float4 uv2 : TEXCOORD4;
+				SV_POSITION_QUALIFIERS float4 positionCS : SV_Position;
+				float4 clipPosV : TEXCOORD0;
+				float3 positionRWS : TEXCOORD1;
+				float3 normalWS : TEXCOORD2;
+				float4 tangentWS : TEXCOORD3;
+				float4 uv1 : TEXCOORD4;
+				float4 uv2 : TEXCOORD5;
 				#ifdef _WRITE_TRANSPARENT_MOTION_VECTOR
-					float3 vpassPositionCS : TEXCOORD5;
-					float3 vpassPreviousPositionCS : TEXCOORD6;
+					float3 vpassPositionCS : TEXCOORD6;
+					float3 vpassPreviousPositionCS : TEXCOORD7;
 				#endif
-				/*ase_interp(7,):sp=sp.xyzw;rwp=tc0;wn=tc1;wt=tc2;uv1=tc3;uv2=tc4*/
+				/*ase_interp(8,):sp=sp.xyzw;rwp=tc1;wn=tc2;wt=tc3;uv1=tc4;uv2=tc5*/
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				UNITY_VERTEX_OUTPUT_STEREO
 				#if defined(SHADER_STAGE_FRAGMENT) && defined(ASE_NEED_CULLFACE)
@@ -6339,10 +7229,9 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			void BuildSurfaceData(FragInputs fragInputs, inout GlobalSurfaceDescription surfaceDescription, float3 V, PositionInputs posInput, out SurfaceData surfaceData, out float3 bentNormalWS)
 			{
 				ZERO_INITIALIZE(SurfaceData, surfaceData);
-
 				surfaceData.specularOcclusion = 1.0;
+				surfaceData.thickness = 0.0;
 
-				// surface data
 				surfaceData.baseColor =                 surfaceDescription.BaseColor;
 				surfaceData.perceptualSmoothness =		surfaceDescription.Smoothness;
 				surfaceData.ambientOcclusion =			surfaceDescription.Occlusion;
@@ -6352,194 +7241,239 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				#ifdef _SPECULAR_OCCLUSION_CUSTOM
 				surfaceData.specularOcclusion =			surfaceDescription.SpecularOcclusion;
 				#endif
+
 				#ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
 				surfaceData.subsurfaceMask =			surfaceDescription.SubsurfaceMask;
 				#endif
+
 				#if defined(_HAS_REFRACTION) || defined(_MATERIAL_FEATURE_TRANSMISSION)
 				surfaceData.thickness = 				surfaceDescription.Thickness;
 				#endif
+
 				#ifdef _MATERIAL_FEATURE_TRANSMISSION
 				surfaceData.transmissionMask =			surfaceDescription.TransmissionMask;
 				#endif
+
 				#if defined( _MATERIAL_FEATURE_SUBSURFACE_SCATTERING ) || defined( _MATERIAL_FEATURE_TRANSMISSION )
 				surfaceData.diffusionProfileHash =		asuint(surfaceDescription.DiffusionProfile);
 				#endif
+
 				#ifdef _MATERIAL_FEATURE_SPECULAR_COLOR
 				surfaceData.specularColor =				surfaceDescription.Specular;
 				#endif
+
 				#ifdef _MATERIAL_FEATURE_ANISOTROPY
 				surfaceData.anisotropy =				surfaceDescription.Anisotropy;
 				#endif
+
 				#ifdef _MATERIAL_FEATURE_IRIDESCENCE
 				surfaceData.iridescenceMask =			surfaceDescription.IridescenceMask;
 				surfaceData.iridescenceThickness =		surfaceDescription.IridescenceThickness;
 				#endif
 
 				// refraction
-				#ifdef _HAS_REFRACTION
-				if( _EnableSSRefraction )
-				{
-					surfaceData.ior = surfaceDescription.RefractionIndex;
-					surfaceData.transmittanceColor = surfaceDescription.RefractionColor;
-					surfaceData.atDistance = surfaceDescription.RefractionDistance;
-
-					surfaceData.transmittanceMask = ( 1.0 - surfaceDescription.Alpha );
-					surfaceDescription.Alpha = 1.0;
-				}
-				else
-				{
-					surfaceData.ior = 1.0;
-					surfaceData.transmittanceColor = float3( 1.0, 1.0, 1.0 );
-					surfaceData.atDistance = 1.0;
-					surfaceData.transmittanceMask = 0.0;
-					surfaceDescription.Alpha = 1.0;
-				}
-				#else
-				surfaceData.ior = 1.0;
-				surfaceData.transmittanceColor = float3( 1.0, 1.0, 1.0 );
-				surfaceData.atDistance = 1.0;
-				surfaceData.transmittanceMask = 0.0;
-				#endif
-
-
-				// material features
-				surfaceData.materialFeatures = MATERIALFEATUREFLAGS_LIT_STANDARD;
-				#ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SUBSURFACE_SCATTERING;
-				#endif
-				#ifdef _MATERIAL_FEATURE_TRANSMISSION
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
-				#endif
-                #ifdef _MATERIAL_FEATURE_ANISOTROPY
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
-				surfaceData.normalWS = float3(0, 1, 0);
+                #if defined(_REFRACTION_PLANE) || defined(_REFRACTION_SPHERE) || defined(_REFRACTION_THIN)
+                    if (_EnableSSRefraction)
+                    {
+                        surfaceData.ior =                       surfaceDescription.RefractionIndex;
+                        surfaceData.transmittanceColor =        surfaceDescription.RefractionColor;
+                        surfaceData.atDistance =                surfaceDescription.RefractionDistance;
+        
+                        surfaceData.transmittanceMask = (1.0 - surfaceDescription.Alpha);
+                        surfaceDescription.Alpha = 1.0;
+                    }
+                    else
+                    {
+                        surfaceData.ior = 1.0;
+                        surfaceData.transmittanceColor = float3(1.0, 1.0, 1.0);
+                        surfaceData.atDistance = 1.0;
+                        surfaceData.transmittanceMask = 0.0;
+                        surfaceDescription.Alpha = 1.0;
+                    }
+                #else
+                    surfaceData.ior = 1.0;
+                    surfaceData.transmittanceColor = float3(1.0, 1.0, 1.0);
+                    surfaceData.atDistance = 1.0;
+                    surfaceData.transmittanceMask = 0.0;
                 #endif
+
+				surfaceData.materialFeatures = MATERIALFEATUREFLAGS_LIT_STANDARD;
+
+				#ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SUBSURFACE_SCATTERING;
+				#endif
+
+				#ifdef _MATERIAL_FEATURE_TRANSMISSION
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
+				#endif
+
+				#ifdef _MATERIAL_FEATURE_COLORED_TRANSMISSION
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_COLORED_TRANSMISSION;
+				#endif
+
+                #ifdef _MATERIAL_FEATURE_ANISOTROPY
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
+                    surfaceData.normalWS = float3(0, 1, 0);
+                #endif
+
 				#ifdef _MATERIAL_FEATURE_CLEAR_COAT
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_CLEAR_COAT;
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_CLEAR_COAT;
 				#endif
+
 				#ifdef _MATERIAL_FEATURE_IRIDESCENCE
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_IRIDESCENCE;
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_IRIDESCENCE;
 				#endif
+
 				#ifdef _MATERIAL_FEATURE_SPECULAR_COLOR
-				surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SPECULAR_COLOR;
+                    surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SPECULAR_COLOR;
 				#endif
 
-				// others
 				#if defined (_MATERIAL_FEATURE_SPECULAR_COLOR) && defined (_ENERGY_CONSERVING_SPECULAR)
-				surfaceData.baseColor *= ( 1.0 - Max3( surfaceData.specularColor.r, surfaceData.specularColor.g, surfaceData.specularColor.b ) );
-				#endif
-				#ifdef _DOUBLESIDED_ON
-				float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
-				#else
-				float3 doubleSidedConstants = float3( 1.0, 1.0, 1.0 );
+                    surfaceData.baseColor *= ( 1.0 - Max3( surfaceData.specularColor.r, surfaceData.specularColor.g, surfaceData.specularColor.b ) );
 				#endif
 
-				// normals
+				#ifdef _DOUBLESIDED_ON
+                    float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
+				#else
+                    float3 doubleSidedConstants = float3( 1.0, 1.0, 1.0 );
+				#endif
+
 				float3 normalTS = float3(0.0f, 0.0f, 1.0f);
 				normalTS = surfaceDescription.Normal;
-				GetNormalWS( fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants );
+
+                #ifdef DECAL_NORMAL_BLENDING
+					normalTS = SurfaceGradientFromTangentSpaceNormalAndFromTBN(normalTS, fragInputs.tangentToWorld[0], fragInputs.tangentToWorld[1]);
+
+                    #if HAVE_DECALS
+                    if (_EnableDecals)
+                    {
+                        float alpha = 1.0;
+                        alpha = surfaceDescription.Alpha;
+
+                        DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                        ApplyDecalToSurfaceNormal(decalSurfaceData, fragInputs.tangentToWorld[2], normalTS);
+                        ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+                     }
+                    #endif
+
+                    GetNormalWS_SG(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+                #else
+					GetNormalWS(fragInputs, normalTS, surfaceData.normalWS, doubleSidedConstants);
+
+                    #if HAVE_DECALS
+                    if (_EnableDecals)
+                    {
+                        float alpha = 1.0;
+                        alpha = surfaceDescription.Alpha;
+        
+                        DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, alpha);
+                        ApplyDecalToSurfaceNormal(decalSurfaceData, surfaceData.normalWS.xyz);
+                        ApplyDecalToSurfaceDataNoNormal(decalSurfaceData, surfaceData);
+                    }
+                    #endif
+                #endif
 
 				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
-				surfaceData.tangentWS = normalize( fragInputs.tangentToWorld[ 0 ].xyz );
-
-				// decals
-				#if HAVE_DECALS
-				if( _EnableDecals )
-				{
-					DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, surfaceDescription.Alpha);
-					ApplyDecalToSurfaceData(decalSurfaceData, fragInputs.tangentToWorld[2], surfaceData);
-				}
-				#endif
+                surfaceData.tangentWS = normalize(fragInputs.tangentToWorld[0].xyz );
+                surfaceData.tangentWS = Orthonormalize(surfaceData.tangentWS, surfaceData.normalWS);
 
 				bentNormalWS = surfaceData.normalWS;
 
 				#ifdef ASE_BENT_NORMAL
-				GetNormalWS( fragInputs, surfaceDescription.BentNormal, bentNormalWS, doubleSidedConstants );
+                    GetNormalWS( fragInputs, surfaceDescription.BentNormal, bentNormalWS, doubleSidedConstants );
 				#endif
 
 				#ifdef _MATERIAL_FEATURE_ANISOTROPY
-				surfaceData.tangentWS = TransformTangentToWorld( surfaceDescription.Tangent, fragInputs.tangentToWorld );
+                    surfaceData.tangentWS = TransformTangentToWorld(surfaceDescription.Tangent, fragInputs.tangentToWorld);
 				#endif
-				surfaceData.tangentWS = Orthonormalize( surfaceData.tangentWS, surfaceData.normalWS );
 
+				#if defined(DEBUG_DISPLAY)
+				    #if !defined(SHADER_STAGE_RAY_TRACING)
+				    if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
+				    {
+					   #ifdef FRAG_INPUTS_USE_TEXCOORD0
+                           surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG(posInput.positionSS, fragInputs.texCoord0);
+                       #else
+                           surfaceData.baseColor = GET_TEXTURE_STREAMING_DEBUG_NO_UV(posInput.positionSS);
+                       #endif
+					   surfaceData.metallic = 0;
+				    }
+					#endif
+				    ApplyDebugToSurfaceData(fragInputs.tangentToWorld, surfaceData); 
+				#endif
 
                 #if defined(_SPECULAR_OCCLUSION_CUSTOM)
                 #elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO(V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness(surfaceData.perceptualSmoothness));
+                    surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO(V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness(surfaceData.perceptualSmoothness));
                 #elif defined(_AMBIENT_OCCLUSION) && defined(_SPECULAR_OCCLUSION_FROM_AO)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion(ClampNdotV(dot(surfaceData.normalWS, V)), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness(surfaceData.perceptualSmoothness));
+                    surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion(ClampNdotV(dot(surfaceData.normalWS, V)), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness(surfaceData.perceptualSmoothness));
                 #endif
 
-				#ifdef _ENABLE_GEOMETRIC_SPECULAR_AA
-				surfaceData.perceptualSmoothness = GeometricNormalFiltering( surfaceData.perceptualSmoothness, fragInputs.tangentToWorld[ 2 ], surfaceDescription.SpecularAAScreenSpaceVariance, surfaceDescription.SpecularAAThreshold );
-				#endif
-
-				// debug
-				#if defined(DEBUG_DISPLAY)
-				if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
-				{
-					surfaceData.metallic = 0;
-				}
-				ApplyDebugToSurfaceData(fragInputs.tangentToWorld, surfaceData);
-				#endif
+                #ifdef _ENABLE_GEOMETRIC_SPECULAR_AA
+                    surfaceData.perceptualSmoothness = GeometricNormalFiltering(surfaceData.perceptualSmoothness, fragInputs.tangentToWorld[2], surfaceDescription.SpecularAAScreenSpaceVariance, surfaceDescription.SpecularAAThreshold);
+                #endif
 			}
 
+			// Get Surface And BuiltinData
 			void GetSurfaceAndBuiltinData(GlobalSurfaceDescription surfaceDescription, FragInputs fragInputs, float3 V, inout PositionInputs posInput, out SurfaceData surfaceData, out BuiltinData builtinData)
 			{
 				#ifdef LOD_FADE_CROSSFADE
-				LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
+                    LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
 				#endif
 
-				#ifdef _DOUBLESIDED_ON
-				float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
-				#else
-				float3 doubleSidedConstants = float3( 1.0, 1.0, 1.0 );
-				#endif
-
-				ApplyDoubleSidedFlipOrMirror( fragInputs, doubleSidedConstants );
+                #ifdef _DOUBLESIDED_ON
+                    float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
+                #else
+                    float3 doubleSidedConstants = float3(1.0, 1.0, 1.0);
+                #endif  
+                ApplyDoubleSidedFlipOrMirror(fragInputs, doubleSidedConstants);
 
 				#ifdef _ALPHATEST_ON
-				DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThreshold );
+                    DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThreshold );
+				#endif
+
+				#ifdef _ALPHATEST_SHADOW_ON
+                    DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThresholdShadow);
 				#endif
 
 				#ifdef _DEPTHOFFSET_ON
-				ApplyDepthOffsetPositionInput( V, surfaceDescription.DepthOffset, GetViewForwardDir(), GetWorldToHClipMatrix(), posInput );
+                    ApplyDepthOffsetPositionInput(V, surfaceDescription.DepthOffset, GetViewForwardDir(), GetWorldToHClipMatrix(), posInput);
 				#endif
 
 				float3 bentNormalWS;
-				BuildSurfaceData( fragInputs, surfaceDescription, V, posInput, surfaceData, bentNormalWS );
-
-				InitBuiltinData( posInput, surfaceDescription.Alpha, bentNormalWS, -fragInputs.tangentToWorld[ 2 ], fragInputs.texCoord1, fragInputs.texCoord2, builtinData );
+                BuildSurfaceData(fragInputs, surfaceDescription, V, posInput, surfaceData, bentNormalWS);
+                InitBuiltinData(posInput, surfaceDescription.Alpha, bentNormalWS, -fragInputs.tangentToWorld[2], fragInputs.texCoord1, fragInputs.texCoord2, builtinData);
 
 				#ifdef _DEPTHOFFSET_ON
-				builtinData.depthOffset = surfaceDescription.DepthOffset;
+                    builtinData.depthOffset = surfaceDescription.DepthOffset;
 				#endif
 
-				#ifdef _ALPHATEST_ON
+                #ifdef _ALPHATEST_ON
                     builtinData.alphaClipTreshold = surfaceDescription.AlphaClipThreshold;
                 #endif
 
-				#ifdef UNITY_VIRTUAL_TEXTURING
-                builtinData.vtPackedFeedback = surfaceDescription.VTPackedFeedback;
+                #ifdef UNITY_VIRTUAL_TEXTURING
+                    builtinData.vtPackedFeedback = surfaceDescription.VTPackedFeedback;
                 #endif
 
 				#ifdef ASE_BAKEDGI
-				builtinData.bakeDiffuseLighting = surfaceDescription.BakedGI;
+                    builtinData.bakeDiffuseLighting = surfaceDescription.BakedGI;
 				#endif
 
 				#ifdef ASE_BAKEDBACKGI
-				builtinData.backBakeDiffuseLighting = surfaceDescription.BakedBackGI;
+                    builtinData.backBakeDiffuseLighting = surfaceDescription.BakedBackGI;
 				#endif
 
-				builtinData.emissiveColor = surfaceDescription.Emission;
+                builtinData.emissiveColor = surfaceDescription.Emission;
 
 				PostInitBuiltinData(V, posInput, surfaceData, builtinData);
 			}
 
-			AttributesMesh ApplyMeshModification(AttributesMesh inputMesh, float3 timeParameters, inout PackedVaryingsMeshToPS outputPackedVaryingsMeshToPS/*ase_vert_input*/ )
+			AttributesMesh ApplyMeshModification(AttributesMesh inputMesh, float3 timeParameters, inout PackedVaryingsMeshToPS output/*ase_vert_input*/ )
 			{
 				_TimeParameters.xyz = timeParameters;
-				/*ase_vert_code:inputMesh=AttributesMesh;outputPackedVaryingsMeshToPS=PackedVaryingsMeshToPS*/
+				/*ase_vert_code:inputMesh=AttributesMesh;output=PackedVaryingsMeshToPS*/
 
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 				float3 defaultVertexValue = inputMesh.positionOS.xyz;
@@ -6560,14 +7494,14 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 
 			PackedVaryingsMeshToPS VertexFunction(AttributesMesh inputMesh)
 			{
-				PackedVaryingsMeshToPS outputPackedVaryingsMeshToPS = (PackedVaryingsMeshToPS)0;
+				PackedVaryingsMeshToPS output = (PackedVaryingsMeshToPS)0;
 				AttributesMesh defaultMesh = inputMesh;
 
 				UNITY_SETUP_INSTANCE_ID(inputMesh);
-				UNITY_TRANSFER_INSTANCE_ID(inputMesh, outputPackedVaryingsMeshToPS);
-				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO( outputPackedVaryingsMeshToPS );
+				UNITY_TRANSFER_INSTANCE_ID(inputMesh, output);
+				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO( output );
 
-				inputMesh = ApplyMeshModification( inputMesh, _TimeParameters.xyz, outputPackedVaryingsMeshToPS);
+				inputMesh = ApplyMeshModification( inputMesh, _TimeParameters.xyz, output);
 
 				float3 positionRWS = TransformObjectToWorld(inputMesh.positionOS);
 				float3 normalWS = TransformObjectToWorldNormal(inputMesh.normalOS);
@@ -6609,25 +7543,26 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 					#endif
 
 					#if defined(HAVE_VERTEX_MODIFICATION)
-						//ApplyVertexModification(inputMesh, normalWS, previousPositionRWS, _LastTimeParameters.xyz);
+						ApplyVertexModification(inputMesh, normalWS, previousPositionRWS, _LastTimeParameters.xyz);
 					#endif
 
 					VPASSpreviousPositionCS = mul(UNITY_MATRIX_PREV_VP, float4(previousPositionRWS, 1.0));
 				}
 				#endif
 
-				outputPackedVaryingsMeshToPS.positionCS = TransformWorldToHClip(positionRWS);
-				outputPackedVaryingsMeshToPS.positionRWS.xyz = positionRWS;
-				outputPackedVaryingsMeshToPS.normalWS.xyz = normalWS;
-				outputPackedVaryingsMeshToPS.tangentWS.xyzw = tangentWS;
-				outputPackedVaryingsMeshToPS.uv1.xyzw = inputMesh.uv1;
-				outputPackedVaryingsMeshToPS.uv2.xyzw = inputMesh.uv2;
+				output.positionCS = TransformWorldToHClip(positionRWS);
+				output.clipPosV = output.positionCS;
+				output.positionRWS = positionRWS;
+				output.normalWS = normalWS;
+				output.tangentWS = tangentWS;
+				output.uv1 = inputMesh.uv1;
+				output.uv2 = inputMesh.uv2;
 
 				#ifdef _WRITE_TRANSPARENT_MOTION_VECTOR
-					outputPackedVaryingsMeshToPS.vpassPositionCS = float3(VPASSpositionCS.xyw);
-					outputPackedVaryingsMeshToPS.vpassPreviousPositionCS = float3(VPASSpreviousPositionCS.xyw);
+					output.vpassPositionCS = float3(VPASSpositionCS.xyw);
+					output.vpassPreviousPositionCS = float3(VPASSpreviousPositionCS.xyw);
 				#endif
-				return outputPackedVaryingsMeshToPS;
+				return output;
 			}
 
 			#if defined(ASE_TESSELLATION)
@@ -6638,8 +7573,6 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				float4 tangentOS : TANGENT;
 				float4 uv1 : TEXCOORD1;
 				float4 uv2 : TEXCOORD2;
-				float3 previousPositionOS : TEXCOORD4;
-				float3 precomputedVelocity : TEXCOORD5;
 				/*ase_vcontrol*/
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
@@ -6660,12 +7593,6 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				o.tangentOS = v.tangentOS;
 				o.uv1 = v.uv1;
 				o.uv2 = v.uv2;
-				#ifdef _WRITE_TRANSPARENT_MOTION_VECTOR
-					o.previousPositionOS = v.previousPositionOS;
-					#if defined (_ADD_PRECOMPUTED_VELOCITY)
-						o.precomputedVelocity = v.precomputedVelocity;
-					#endif
-				#endif
 				/*ase_control_code:v=AttributesMesh;o=VertexControl*/
 				return o;
 			}
@@ -6713,12 +7640,6 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				o.tangentOS = patch[0].tangentOS * bary.x + patch[1].tangentOS * bary.y + patch[2].tangentOS * bary.z;
 				o.uv1 = patch[0].uv1 * bary.x + patch[1].uv1 * bary.y + patch[2].uv1 * bary.z;
 				o.uv2 = patch[0].uv2 * bary.x + patch[1].uv2 * bary.y + patch[2].uv2 * bary.z;
-				#ifdef _WRITE_TRANSPARENT_MOTION_VECTOR
-					o.previousPositionOS = patch[0].previousPositionOS * bary.x + patch[1].previousPositionOS * bary.y + patch[2].previousPositionOS * bary.z;
-					#if defined (_ADD_PRECOMPUTED_VELOCITY)
-						o.precomputedVelocity = patch[0].precomputedVelocity * bary.x + patch[1].precomputedVelocity * bary.y + patch[2].precomputedVelocity * bary.z;
-					#endif
-				#endif
 				/*ase_domain_code:patch=VertexControl;o=AttributesMesh;bary=SV_DomainLocation*/
 				#if defined(ASE_PHONG_TESSELLATION)
 				float3 pp[3];
@@ -6737,23 +7658,36 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			}
 			#endif
 
-            #ifdef UNITY_VIRTUAL_TEXTURING
-            #ifdef OUTPUT_SPLIT_LIGHTING
-            #define DIFFUSE_LIGHTING_TARGET SV_Target2
-            #define SSS_BUFFER_TARGET SV_Target3
-            #elif defined(_WRITE_TRANSPARENT_MOTION_VECTOR)
-            #define MOTION_VECTOR_TARGET SV_Target2
-            #endif
-            #if defined(SHADER_API_PSSL)
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplayMaterial.hlsl"
 
-            #pragma PSSL_target_output_format(target 1 FMT_32_ABGR)
+            #if defined(_TRANSPARENT_REFRACTIVE_SORT) || defined(_ENABLE_FOG_ON_TRANSPARENT)
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Water/Shaders/UnderWaterUtilities.hlsl"
+            #endif
+
+            #ifdef UNITY_VIRTUAL_TEXTURING
+                #ifdef OUTPUT_SPLIT_LIGHTING
+                   #define DIFFUSE_LIGHTING_TARGET SV_Target2
+                   #define SSS_BUFFER_TARGET SV_Target3
+                #elif defined(_WRITE_TRANSPARENT_MOTION_VECTOR)
+                   #define MOTION_VECTOR_TARGET SV_Target2
+                    #ifdef _TRANSPARENT_REFRACTIVE_SORT
+                        #define BEFORE_REFRACTION_TARGET SV_Target3
+                        #define BEFORE_REFRACTION_ALPHA_TARGET SV_Target4
+                #endif
+            	#endif
+            #if defined(SHADER_API_PSSL)
+            	#pragma PSSL_target_output_format(target 1 FMT_32_ABGR)
             #endif
             #else
-            #ifdef OUTPUT_SPLIT_LIGHTING
-            #define DIFFUSE_LIGHTING_TARGET SV_Target1
-            #define SSS_BUFFER_TARGET SV_Target2
-            #elif defined(_WRITE_TRANSPARENT_MOTION_VECTOR)
-            #define MOTION_VECTOR_TARGET SV_Target1
+                #ifdef OUTPUT_SPLIT_LIGHTING
+                #define DIFFUSE_LIGHTING_TARGET SV_Target1
+                #define SSS_BUFFER_TARGET SV_Target2
+                #elif defined(_WRITE_TRANSPARENT_MOTION_VECTOR)
+                #define MOTION_VECTOR_TARGET SV_Target1
+                #ifdef _TRANSPARENT_REFRACTIVE_SORT
+                     #define BEFORE_REFRACTION_TARGET SV_Target2
+                     #define BEFORE_REFRACTION_ALPHA_TARGET SV_Target3
+                #endif
             #endif
             #endif
 
@@ -6767,31 +7701,36 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				, OUTPUT_SSSBUFFER(outSSSBuffer) : SSS_BUFFER_TARGET
             #elif defined(_WRITE_TRANSPARENT_MOTION_VECTOR)
 				, out float4 outMotionVec : MOTION_VECTOR_TARGET
+                #ifdef _TRANSPARENT_REFRACTIVE_SORT
+                , out float4 outBeforeRefractionColor : BEFORE_REFRACTION_TARGET
+                , out float4 outBeforeRefractionAlpha : BEFORE_REFRACTION_ALPHA_TARGET
+                #endif
             #endif
-
             #ifdef _DEPTHOFFSET_ON
 				, out float outputDepth : DEPTH_OFFSET_SEMANTIC
             #endif
-
 		    /*ase_frag_input*/
 						)
 			{
 				#ifdef _WRITE_TRANSPARENT_MOTION_VECTOR
-					outMotionVec = float4(2.0, 0.0, 0.0, 0.0);
+					outMotionVec = float4(2.0, 0.0, 0.0, 1.0);
 				#endif
 
 				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX( packedInput );
 				UNITY_SETUP_INSTANCE_ID( packedInput );
-				/*ase_local_var:rwp*/float3 positionRWS = packedInput.positionRWS.xyz;
-				/*ase_local_var:wn*/float3 normalWS = packedInput.normalWS.xyz;
-				/*ase_local_var:wt*/float4 tangentWS = packedInput.tangentWS.xyzw;
+		
+				/*ase_local_var:rwp*/float3 PositionRWS = packedInput.positionRWS;
+				/*ase_local_var:wvd*/float3 V = GetWorldSpaceNormalizeViewDir( packedInput.positionRWS );
+				/*ase_local_var:wn*/float3 NormalWS = packedInput.normalWS;
+				/*ase_local_var:wt*/float4 TangentWS = packedInput.tangentWS;
+				/*ase_local_var:sp*/float4 ClipPos = packedInput.clipPosV;
+				/*ase_local_var:spu*/float4 ScreenPos = ComputeScreenPos( packedInput.clipPosV, _ProjectionParams.x );
 
 				FragInputs input;
 				ZERO_INITIALIZE(FragInputs, input);
-				input.tangentToWorld = k_identity3x3;
 				input.positionSS = packedInput.positionCS;
-				input.positionRWS = positionRWS;
-				input.tangentToWorld = BuildTangentToWorld(tangentWS, normalWS);
+				input.positionRWS = PositionRWS;
+				input.tangentToWorld = BuildTangentToWorld(TangentWS, NormalWS);
 				input.texCoord1 = packedInput.uv1.xyzw;
 				input.texCoord2 = packedInput.uv2.xyzw;
 
@@ -6802,14 +7741,12 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				input.isFrontFace = IS_FRONT_VFACE(packedInput.cullFace, true, false);
 				#endif
 				#endif
-				/*ase_local_var:vf*/half isFrontFace = input.isFrontFace;
+				/*ase_local_var:vf*/half IsFrontFace = input.isFrontFace;
 
-				input.positionSS.xy = _OffScreenRendering > 0 ? (uint2)round(input.positionSS.xy * _OffScreenDownsampleFactor) : input.positionSS.xy;
+				AdjustFragInputsToOffScreenRendering(input, _OffScreenRendering > 0, _OffScreenDownsampleFactor);
 				uint2 tileIndex = uint2(input.positionSS.xy) / GetTileSize ();
 
 				PositionInputs posInput = GetPositionInput( input.positionSS.xy, _ScreenSize.zw, input.positionSS.z, input.positionSS.w, input.positionRWS.xyz, tileIndex );
-
-				/*ase_local_var:wvd*/float3 V = GetWorldSpaceNormalizeViewDir(input.positionRWS);
 
 				GlobalSurfaceDescription surfaceDescription = (GlobalSurfaceDescription)0;
 				/*ase_frag_code:packedInput=PackedVaryingsMeshToPS*/
@@ -6832,13 +7769,13 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				surfaceDescription.AlphaClipThreshold = /*ase_frag_out:Alpha Clip Threshold;Float;10;-1;_AlphaClip*/_AlphaCutoff/*end*/;
 				#endif
 
+				#ifdef _SPECULAR_OCCLUSION_CUSTOM
+				surfaceDescription.SpecularOcclusion = /*ase_frag_out:Specular Occlusion;Float;15;-1;_SpecularOcclusion*/0/*end*/;
+				#endif
+
 				#ifdef _ENABLE_GEOMETRIC_SPECULAR_AA
 				surfaceDescription.SpecularAAScreenSpaceVariance = /*ase_frag_out:Specular AA Screen Space Variance;Float;13;-1;_SpecularAAScreenSpaceVariance*/0/*end*/;
 				surfaceDescription.SpecularAAThreshold = /*ase_frag_out:Specular AA Threshold;Float;14;-1;_SpecularAAThreshold*/0/*end*/;
-				#endif
-
-				#ifdef _SPECULAR_OCCLUSION_CUSTOM
-				surfaceDescription.SpecularOcclusion = /*ase_frag_out:Specular Occlusion;Float;15;-1;_SpecularOcclusion*/0/*end*/;
 				#endif
 
 				#if defined(_HAS_REFRACTION) || defined(_MATERIAL_FEATURE_TRANSMISSION)
@@ -6876,12 +7813,13 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				#ifdef ASE_BAKEDGI
 				surfaceDescription.BakedGI = /*ase_frag_out:Baked GI;Float3;31;-1;_BakedGI*/0/*end*/;
 				#endif
+
 				#ifdef ASE_BAKEDBACKGI
 				surfaceDescription.BakedBackGI = /*ase_frag_out:Baked Back GI;Float3;32;-1;_BakedBackGI*/0/*end*/;
 				#endif
 
 				#ifdef _DEPTHOFFSET_ON
-				surfaceDescription.DepthOffset = /*ase_frag_out:DepthOffset;Float;26;-1;_DepthOffset*/0/*end*/;
+				surfaceDescription.DepthOffset = /*ase_frag_out:Depth Offset;Float;26;-1;_DepthOffset*/0/*end*/;
 				#endif
 
 				#ifdef UNITY_VIRTUAL_TEXTURING
@@ -6898,40 +7836,13 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 
 				outColor = float4(0.0, 0.0, 0.0, 0.0);
 
-            #ifdef DEBUG_DISPLAY
-            #ifdef OUTPUT_SPLIT_LIGHTING
-				outDiffuseLighting = float4(0, 0, 0, 1);
-				ENCODE_INTO_SSSBUFFER(surfaceData, posInput.positionSS, outSSSBuffer);
-                #endif
+				#ifdef DEBUG_DISPLAY
+				#ifdef OUTPUT_SPLIT_LIGHTING
+					outDiffuseLighting = float4(0, 0, 0, 1);
+					ENCODE_INTO_SSSBUFFER(surfaceData, posInput.positionSS, outSSSBuffer);
+				#endif
 
-				bool viewMaterial = false;
-				int bufferSize = _DebugViewMaterialArray[0].x;
-				if (bufferSize != 0)
-				{
-					bool needLinearToSRGB = false;
-					float3 result = float3(1.0, 0.0, 1.0);
-
-					for (int index = 1; index <= bufferSize; index++)
-					{
-						int indexMaterialProperty = _DebugViewMaterialArray[index].x;
-
-						if (indexMaterialProperty != 0)
-						{
-							viewMaterial = true;
-
-							GetPropertiesDataDebug(indexMaterialProperty, result, needLinearToSRGB);
-							GetVaryingsDataDebug(indexMaterialProperty, input, result, needLinearToSRGB);
-							GetBuiltinDataDebug(indexMaterialProperty, builtinData, posInput, result, needLinearToSRGB);
-							GetSurfaceDataDebug(indexMaterialProperty, surfaceData, result, needLinearToSRGB);
-							GetBSDFDataDebug(indexMaterialProperty, bsdfData, result, needLinearToSRGB);
-						}
-					}
-
-					if (!needLinearToSRGB && _DebugAOVOutput == 0)
-						result = SRGBToLinear(max(0, result));
-
-					outColor = float4(result, 1.0);
-				}
+			    bool viewMaterial = GetMaterialDebugColor(outColor, input, builtinData, posInput, surfaceData, bsdfData);
 
 				if (!viewMaterial)
 				{
@@ -6978,15 +7889,24 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 						ENCODE_INTO_SSSBUFFER(surfaceData, posInput.positionSS, outSSSBuffer);
                 #else
 						outColor = ApplyBlendMode(diffuseLighting, specularLighting, builtinData.opacity);
+
+						#ifdef _ENABLE_FOG_ON_TRANSPARENT
 						outColor = EvaluateAtmosphericScattering(posInput, V, outColor);
+                        #endif
+
+                        #ifdef _TRANSPARENT_REFRACTIVE_SORT
+                        ComputeRefractionSplitColor(posInput, outColor, outBeforeRefractionColor, outBeforeRefractionAlpha);
+                        #endif
                 #endif
 
 				#ifdef _WRITE_TRANSPARENT_MOTION_VECTOR
 						float4 VPASSpositionCS = float4(packedInput.vpassPositionCS.xy, 0.0, packedInput.vpassPositionCS.z);
 						float4 VPASSpreviousPositionCS = float4(packedInput.vpassPreviousPositionCS.xy, 0.0, packedInput.vpassPreviousPositionCS.z);
-
 						bool forceNoMotion = any(unity_MotionVectorsParams.yw == 0.0);
-						if (!forceNoMotion)
+                #if defined(HAVE_VFX_MODIFICATION) && !VFX_FEATURE_MOTION_VECTORS
+                        forceNoMotion = true;
+                #endif
+				        if (!forceNoMotion)
 						{
 							float2 motionVec = CalculateMotionVector(VPASSpositionCS, VPASSpreviousPositionCS);
 							EncodeMotionVector(motionVec * 0.5, outMotionVec);
@@ -7003,17 +7923,15 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				outputDepth = posInput.deviceDepth;
 				#endif
 
-				#ifdef UNITY_VIRTUAL_TEXTURING
-					outVTFeedback = builtinData.vtPackedFeedback;
-				#endif
-
                 #ifdef UNITY_VIRTUAL_TEXTURING
 				    float vtAlphaValue = builtinData.opacity;
                     #if defined(HAS_REFRACTION) && HAS_REFRACTION
 					vtAlphaValue = 1.0f - bsdfData.transmittanceMask;
                 #endif
 				outVTFeedback = PackVTFeedbackWithAlpha(builtinData.vtPackedFeedback, input.positionSS.xy, vtAlphaValue);
+				outVTFeedback.rgb *= outVTFeedback.a; // premuliplied alpha
                 #endif
+
 			}
 			ENDHLSL
 		}
@@ -7023,16 +7941,30 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
         {
 			/*ase_hide_pass*/
             Name "ScenePickingPass"
-            Tags { "LightMode" = "Picking" }
+            Tags 
+			{ 
+				"LightMode" = "Picking" 
+			}
 
             Cull [_CullMode]
 
             HLSLPROGRAM
-
 			#pragma editor_sync_compilation
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+
+            #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
+            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC _TRANSPARENT_REFRACTIVE_SORT
+            #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
 
 			#pragma vertex Vert
 			#pragma fragment Frag
+
+			#define SHADERPASS SHADERPASS_DEPTH_ONLY
+			#define SCENEPICKINGPASS 1
+
+			#define ATTRIBUTES_NEED_NORMAL
+			#define ATTRIBUTES_NEED_TANGENT
+			#define VARYINGS_NEED_TANGENT_TO_WORLD
 
             #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
         	#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
@@ -7041,48 +7973,77 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
             #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
-            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
-
-			#define ATTRIBUTES_NEED_NORMAL
-			#define ATTRIBUTES_NEED_TANGENT
-			#define VARYINGS_NEED_TANGENT_TO_WORLD
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/DebugMipmapStreamingMacros.hlsl"
+            #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
 
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
 
-			#define SHADERPASS SHADERPASS_DEPTH_ONLY
-			#define SCENEPICKINGPASS 1
+            #ifdef RAYTRACING_SHADER_GRAPH_DEFAULT
+                #define RAYTRACING_SHADER_GRAPH_HIGH
+            #endif
 
-			#ifndef SHADER_UNLIT
-			#if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
-		    #define VARYINGS_NEED_CULLFACE
-			#endif
+            #ifdef RAYTRACING_SHADER_GRAPH_RAYTRACED
+                #define RAYTRACING_SHADER_GRAPH_LOW
+            #endif
+
+            #ifndef SHADER_UNLIT
+            #if defined(_DOUBLESIDED_ON) && !defined(VARYINGS_NEED_CULLFACE)
+                #define VARYINGS_NEED_CULLFACE
+            #endif
+            #endif
+
+			#if defined(_DOUBLESIDED_ON) && !defined(ASE_NEED_CULLFACE)
+			    #define ASE_NEED_CULLFACE 1
 			#endif
 
-			#if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
-			#if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
-			#define WRITE_NORMAL_BUFFER
-			#endif
-			#endif
+            #if _MATERIAL_FEATURE_COLORED_TRANSMISSION
+            #undef _MATERIAL_FEATURE_CLEAR_COAT
+            #endif
 
 		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
 			#define OUTPUT_SPLIT_LIGHTING
 		    #endif
 
-			#if defined(SHADER_LIT) && !defined(_SURFACE_TYPE_TRANSPARENT)
-			#define _DEFERRED_CAPABLE_MATERIAL
-			#endif
+            #if (SHADERPASS == SHADERPASS_PATH_TRACING) && !defined(_DOUBLESIDED_ON) && (defined(_REFRACTION_PLANE) || defined(_REFRACTION_SPHERE))
+            #undef  _REFRACTION_PLANE
+            #undef  _REFRACTION_SPHERE
+            #define _REFRACTION_THIN
+            #endif
 
-			#if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
-			#define _WRITE_TRANSPARENT_MOTION_VECTOR
-			#endif
+            #if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
+            #if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
+                #define WRITE_NORMAL_BUFFER
+            #endif
+            #endif
 
-			float4 _SelectionID;
+            #if SHADERPASS == SHADERPASS_MOTION_VECTORS && defined(WRITE_DECAL_BUFFER_AND_RENDERING_LAYER)
+                #define WRITE_DECAL_BUFFER
+            #endif
+
+            #ifndef DEBUG_DISPLAY
+                #if !defined(_SURFACE_TYPE_TRANSPARENT)
+                    #if SHADERPASS == SHADERPASS_FORWARD
+                    #define SHADERPASS_FORWARD_BYPASS_ALPHA_TEST
+                    #elif SHADERPASS == SHADERPASS_GBUFFER
+                    #define SHADERPASS_GBUFFER_BYPASS_ALPHA_TEST
+                    #endif
+                #endif
+            #endif
+
+            #if defined(SHADER_LIT) && !defined(_SURFACE_TYPE_TRANSPARENT)
+                #define _DEFERRED_CAPABLE_MATERIAL
+            #endif
+        
+            #if (defined(_TRANSPARENT_WRITES_MOTION_VEC) || defined(_TRANSPARENT_REFRACTIVE_SORT)) && defined(_SURFACE_TYPE_TRANSPARENT)
+                #define _WRITE_TRANSPARENT_MOTION_VECTOR
+            #endif
+	
             CBUFFER_START( UnityPerMaterial )
 			float4 _EmissionColor;
 			float _AlphaCutoff;
 			float _RenderQueueType;
 			#ifdef _ADD_PRECOMPUTED_VELOCITY
-			float _AddPrecomputedVelocity;
+			    float _AddPrecomputedVelocity;
 			#endif
 			float _StencilRef;
 			float _StencilWriteMask;
@@ -7090,6 +8051,8 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			float _StencilWriteMaskDepth;
 			float _StencilRefMV;
 			float _StencilWriteMaskMV;
+			float _StencilRefDistortionVec;
+			float _StencilWriteMaskDistortionVec;
 			float _StencilWriteMaskGBuffer;
 			float _StencilRefGBuffer;
 			float _ZTestGBuffer;
@@ -7098,10 +8061,11 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			float _SurfaceType;
 			float _BlendMode;
             #ifdef SUPPORT_BLENDMODE_PRESERVE_SPECULAR_LIGHTING
-			float _EnableBlendModePreserveSpecularLighting;
+			    float _EnableBlendModePreserveSpecularLighting;
             #endif
 			float _SrcBlend;
 			float _DstBlend;
+			float _DstBlend2;
 			float _AlphaSrcBlend;
 			float _AlphaDstBlend;
 			float _ZWrite;
@@ -7120,14 +8084,24 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			float _DoubleSidedNormalMode;
 			float4 _DoubleSidedConstants;
 			#ifdef ASE_TESSELLATION
-			float _TessPhongStrength;
-			float _TessValue;
-			float _TessMin;
-			float _TessMax;
-			float _TessEdgeLength;
-			float _TessMaxDisp;
+			    float _TessPhongStrength;
+			    float _TessValue;
+			    float _TessMin;
+			    float _TessMax;
+			    float _TessEdgeLength;
+			    float _TessMaxDisp;
 			#endif
+			UNITY_TEXTURE_STREAMING_DEBUG_VARS;
 			CBUFFER_END
+
+            #ifdef SCENEPICKINGPASS
+            float4 _SelectionID;
+            #endif
+
+            #ifdef SCENESELECTIONPASS
+            int _ObjectId;
+            int _PassValue;
+            #endif
 
 			/*ase_globals*/
 
@@ -7137,169 +8111,206 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/PickingSpaceTransforms.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Material.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Unlit/Unlit.hlsl"
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/NormalSurfaceGradient.hlsl"
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Lit/Lit.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/BuiltinUtilities.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/MaterialUtilities.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphFunctions.hlsl"
 
+			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/DecalUtilities.hlsl"
+
 			/*ase_pragma*/
 
-			struct VertexInput
+			struct AttributesMesh
 			{
 				float3 positionOS : POSITION;
 				float3 normalOS : NORMAL;
 				float4 tangentOS : TANGENT;
-				/*ase_vdata:p=p;n=n;t=t*/
+				float4 uv1 : TEXCOORD1;
+				float4 uv2 : TEXCOORD2;
+				float3 previousPositionOS : TEXCOORD4;
+				float3 precomputedVelocity : TEXCOORD5;
+				/*ase_vdata:p=p;n=n;t=t;uv1=tc1;uv2=tc2;uv4=tc4;uv5=tc5*/
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
-			struct VertexOutput
+			struct PackedVaryingsMeshToPS
 			{
-				float4 positionCS : SV_POSITION;
-				float3 normalWS : TEXCOORD0;
-				float4 tangentWS : TEXCOORD1;
-				/*ase_interp(2,):sp=sp.xyzw;wn=tc0;wt=tc1*/
+				SV_POSITION_QUALIFIERS float4 positionCS : SV_Position;
+				float3 positionRWS : TEXCOORD0;
+				float3 normalWS : TEXCOORD1;
+				float4 tangentWS : TEXCOORD2;
+				float4 uv1 : TEXCOORD3;
+				float4 uv2 : TEXCOORD4;
+				#ifdef _WRITE_TRANSPARENT_MOTION_VECTOR
+					float3 vpassPositionCS : TEXCOORD5;
+					float3 vpassPreviousPositionCS : TEXCOORD6;
+				#endif
+				/*ase_interp(7,):sp=sp.xyzw;rwp=tc0;wn=tc1;wt=tc2;uv1=tc3;uv2=tc4*/
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				UNITY_VERTEX_OUTPUT_STEREO
+				#if defined(SHADER_STAGE_FRAGMENT) && defined(ASE_NEED_CULLFACE)
+				FRONT_FACE_TYPE cullFace : FRONT_FACE_SEMANTIC;
+				#endif
 			};
 
 			/*ase_funcs*/
 
-            struct SurfaceDescription
+			// Get Surface And BuiltinData
+			void GetSurfaceAndBuiltinData(PickingSurfaceDescription surfaceDescription, FragInputs fragInputs, float3 V, inout PositionInputs posInput, out SurfaceData surfaceData, out BuiltinData builtinData)
 			{
-				float Alpha;
-				float AlphaClipThreshold;
-			};
-			struct SurfaceDescriptionInputs
-			{
-				float3 ObjectSpaceNormal;
-				float3 WorldSpaceNormal;
-				float3 TangentSpaceNormal;
-				float3 ObjectSpaceViewDirection;
-				float3 WorldSpaceViewDirection;
-				float3 ObjectSpacePosition;
-			};
+				#ifdef LOD_FADE_CROSSFADE
+                    LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
+				#endif
 
-
-            void GetSurfaceAndBuiltinData(SurfaceDescription surfaceDescription, FragInputs fragInputs, float3 V, inout PositionInputs posInput, out SurfaceData surfaceData, out BuiltinData builtinData RAY_TRACING_OPTIONAL_PARAMETERS)
-            {
-
-                #if !defined(SHADER_STAGE_RAY_TRACING) && !defined(_TESSELLATION_DISPLACEMENT)
-                #ifdef LOD_FADE_CROSSFADE
-				LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
-                #endif
-                #endif
-
-                #ifndef SHADER_UNLIT
                 #ifdef _DOUBLESIDED_ON
-				float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
+                    float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
                 #else
-				float3 doubleSidedConstants = float3(1.0, 1.0, 1.0);
+                    float3 doubleSidedConstants = float3(1.0, 1.0, 1.0);
+                #endif  
+                ApplyDoubleSidedFlipOrMirror(fragInputs, doubleSidedConstants);
+
+                #ifdef DEBUG_DISPLAY
+                if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
+                {
+                    surfaceDescription.Alpha = 1.0f;
+                }
                 #endif
-				ApplyDoubleSidedFlipOrMirror(fragInputs, doubleSidedConstants);
-                #endif
+
+				#ifdef _ALPHATEST_ON
+                    DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThreshold );
+				#endif
+
+				#ifdef _ALPHATEST_SHADOW_ON
+                    DoAlphaTest( surfaceDescription.Alpha, surfaceDescription.AlphaClipThresholdShadow);
+				#endif
+
+				#ifdef _DEPTHOFFSET_ON
+                    ApplyDepthOffsetPositionInput(V, surfaceDescription.DepthOffset, GetViewForwardDir(), GetWorldToHClipMatrix(), posInput);
+				#endif
+
+				float3 bentNormalWS;
+                //BuildSurfaceData(fragInputs, surfaceDescription, V, posInput, surfaceData, bentNormalWS);
+                InitBuiltinData(posInput, surfaceDescription.Alpha, bentNormalWS, -fragInputs.tangentToWorld[2], fragInputs.texCoord1, fragInputs.texCoord2, builtinData);
+
+				#ifdef _DEPTHOFFSET_ON
+                    builtinData.depthOffset = surfaceDescription.DepthOffset;
+				#endif
 
                 #ifdef _ALPHATEST_ON
-				float alphaCutoff = surfaceDescription.AlphaClipThreshold;
-                #if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
-                #elif SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_POSTPASS
-				alphaCutoff = surfaceDescription.AlphaClipThresholdDepthPostpass;
-                #elif (SHADERPASS == SHADERPASS_SHADOWS) || (SHADERPASS == SHADERPASS_RAYTRACING_VISIBILITY)
-                #endif
-				GENERIC_ALPHA_TEST(surfaceDescription.Alpha, alphaCutoff);
-                #endif
-
-                #if !defined(SHADER_STAGE_RAY_TRACING) && _DEPTHOFFSET_ON
-				ApplyDepthOffsetPositionInput(V, surfaceDescription.DepthOffset, GetViewForwardDir(), GetWorldToHClipMatrix(), posInput);
-                #endif
-
-                #ifdef FRAG_INPUTS_USE_TEXCOORD1
-				float4 lightmapTexCoord1 = fragInputs.texCoord1;
-                #else
-				float4 lightmapTexCoord1 = float4(0, 0, 0, 0);
-                #endif
-
-                #ifdef FRAG_INPUTS_USE_TEXCOORD2
-				float4 lightmapTexCoord2 = fragInputs.texCoord2;
-                #else
-				float4 lightmapTexCoord2 = float4(0, 0, 0, 0);
-                #endif
-
-				//InitBuiltinData(posInput, surfaceDescription.Alpha, bentNormalWS, -fragInputs.tangentToWorld[2], lightmapTexCoord1, lightmapTexCoord2, builtinData);
-
-                //#else
-                //BuildSurfaceData(fragInputs, surfaceDescription, V, posInput, surfaceData);
-
-                ZERO_INITIALIZE(SurfaceData, surfaceData);
-
-                ZERO_BUILTIN_INITIALIZE(builtinData);
-                builtinData.opacity = surfaceDescription.Alpha;
-
-                #if defined(DEBUG_DISPLAY)
-				builtinData.renderingLayers = GetMeshRenderingLightLayer();
-                #endif
-
-                #ifdef _ALPHATEST_ON
-				builtinData.alphaClipTreshold = alphaCutoff;
+                    builtinData.alphaClipTreshold = surfaceDescription.AlphaClipThreshold;
                 #endif
 
                 #ifdef UNITY_VIRTUAL_TEXTURING
+                    builtinData.vtPackedFeedback = surfaceDescription.VTPackedFeedback;
                 #endif
 
-                #if _DEPTHOFFSET_ON
-				builtinData.depthOffset = surfaceDescription.DepthOffset;
-                #endif
+				#ifdef ASE_BAKEDGI
+                    builtinData.bakeDiffuseLighting = surfaceDescription.BakedGI;
+				#endif
 
-                #if (SHADERPASS == SHADERPASS_DISTORTION)
-				builtinData.distortion = surfaceDescription.Distortion;
-				builtinData.distortionBlur = surfaceDescription.DistortionBlur;
-                #endif
+				#ifdef ASE_BAKEDBACKGI
+                    builtinData.backBakeDiffuseLighting = surfaceDescription.BakedBackGI;
+				#endif
 
-                #ifndef SHADER_UNLIT
+                builtinData.emissiveColor = surfaceDescription.Emission;
+
 				PostInitBuiltinData(V, posInput, surfaceData, builtinData);
-                #else
-				ApplyDebugToBuiltinData(builtinData);
-                #endif
-
-				RAY_TRACING_OPTIONAL_ALPHA_TEST_PASS
 
             }
 
-
-			VertexOutput VertexFunction(VertexInput inputMesh /*ase_vert_input*/ )
+			AttributesMesh ApplyMeshModification(AttributesMesh inputMesh, float3 timeParameters, inout PackedVaryingsMeshToPS output/*ase_vert_input*/ )
 			{
+				_TimeParameters.xyz = timeParameters;
+				/*ase_vert_code:inputMesh=AttributesMesh;output=PackedVaryingsMeshToPS*/
 
-				VertexOutput o;
-				ZERO_INITIALIZE(VertexOutput, o);
-				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
-
-				UNITY_SETUP_INSTANCE_ID(inputMesh);
-				UNITY_TRANSFER_INSTANCE_ID(inputMesh, o );
-
-				/*ase_vert_code:inputMesh=VertexInput;o=VertexOutput*/
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 				float3 defaultVertexValue = inputMesh.positionOS.xyz;
 				#else
 				float3 defaultVertexValue = float3( 0, 0, 0 );
 				#endif
 				float3 vertexValue =  /*ase_vert_out:Vertex Offset;Float3;2;-1;_VertexOffset*/ defaultVertexValue /*end*/;
+
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 				inputMesh.positionOS.xyz = vertexValue;
 				#else
 				inputMesh.positionOS.xyz += vertexValue;
 				#endif
-
 				inputMesh.normalOS = /*ase_vert_out:Vertex Normal;Float3;3;-1;_VertexNormal*/ inputMesh.normalOS /*end*/;
+				inputMesh.tangentOS = /*ase_vert_out:Vertex Tangent;Float4;27;-1;_VertexTangent*/inputMesh.tangentOS/*end*/;
+				return inputMesh;
+			}
+
+			PackedVaryingsMeshToPS VertexFunction(AttributesMesh inputMesh)
+			{
+				PackedVaryingsMeshToPS output = (PackedVaryingsMeshToPS)0;
+				AttributesMesh defaultMesh = inputMesh;
+
+				UNITY_SETUP_INSTANCE_ID(inputMesh);
+				UNITY_TRANSFER_INSTANCE_ID(inputMesh, output);
+				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO( output );
+
+				inputMesh = ApplyMeshModification( inputMesh, _TimeParameters.xyz, output);
 
 				float3 positionRWS = TransformObjectToWorld(inputMesh.positionOS);
 				float3 normalWS = TransformObjectToWorldNormal(inputMesh.normalOS);
 				float4 tangentWS = float4(TransformObjectToWorldDir(inputMesh.tangentOS.xyz), inputMesh.tangentOS.w);
 
-				o.positionCS = TransformWorldToHClip(positionRWS);
-				o.normalWS.xyz =  normalWS;
-				o.tangentWS.xyzw =  tangentWS;
+				#ifdef _WRITE_TRANSPARENT_MOTION_VECTOR
+				float4 VPASSpreviousPositionCS;
+				float4 VPASSpositionCS = mul(UNITY_MATRIX_UNJITTERED_VP, float4(positionRWS, 1.0));
 
-				return o;
+				bool forceNoMotion = unity_MotionVectorsParams.y == 0.0;
+				if (forceNoMotion)
+				{
+					VPASSpreviousPositionCS = float4(0.0, 0.0, 0.0, 1.0);
+				}
+				else
+				{
+					bool hasDeformation = unity_MotionVectorsParams.x > 0.0;
+					float3 effectivePositionOS = (hasDeformation ? inputMesh.previousPositionOS : defaultMesh.positionOS);
+					#if defined(_ADD_PRECOMPUTED_VELOCITY)
+					effectivePositionOS -= inputMesh.precomputedVelocity;
+					#endif
+
+					#if defined(HAVE_MESH_MODIFICATION)
+						AttributesMesh previousMesh = defaultMesh;
+						previousMesh.positionOS = effectivePositionOS ;
+						PackedVaryingsMeshToPS test = (PackedVaryingsMeshToPS)0;
+						float3 curTime = _TimeParameters.xyz;
+						previousMesh = ApplyMeshModification(previousMesh, _LastTimeParameters.xyz, test);
+						_TimeParameters.xyz = curTime;
+						float3 previousPositionRWS = TransformPreviousObjectToWorld(previousMesh.positionOS);
+					#else
+						float3 previousPositionRWS = TransformPreviousObjectToWorld(effectivePositionOS);
+					#endif
+
+					#ifdef ATTRIBUTES_NEED_NORMAL
+						float3 normalWS = TransformPreviousObjectToWorldNormal(defaultMesh.normalOS);
+					#else
+						float3 normalWS = float3(0.0, 0.0, 0.0);
+					#endif
+
+					#if defined(HAVE_VERTEX_MODIFICATION)
+						ApplyVertexModification(inputMesh, normalWS, previousPositionRWS, _LastTimeParameters.xyz);
+					#endif
+
+					VPASSpreviousPositionCS = mul(UNITY_MATRIX_PREV_VP, float4(previousPositionRWS, 1.0));
+				}
+				#endif
+
+				output.positionCS = TransformWorldToHClip(positionRWS);
+				output.positionRWS = positionRWS;
+				output.normalWS = normalWS;
+				output.tangentWS = tangentWS;
+				output.uv1 = inputMesh.uv1;
+				output.uv2 = inputMesh.uv2;
+
+				#ifdef _WRITE_TRANSPARENT_MOTION_VECTOR
+					output.vpassPositionCS = float3(VPASSpositionCS.xyw);
+					output.vpassPreviousPositionCS = float3(VPASSpreviousPositionCS.xyw);
+				#endif
+				return output;
 			}
 
 			#if defined(ASE_TESSELLATION)
@@ -7318,7 +8329,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				float inside : SV_InsideTessFactor;
 			};
 
-			VertexControl Vert ( VertexInput v )
+			VertexControl Vert ( AttributesMesh v )
 			{
 				VertexControl o;
 				UNITY_SETUP_INSTANCE_ID(v);
@@ -7326,7 +8337,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				o.positionOS = v.positionOS;
 				o.normalOS = v.normalOS;
 				o.tangentOS = v.tangentOS;
-				/*ase_control_code:v=VertexInput;o=VertexControl*/
+				/*ase_control_code:v=AttributesMesh;o=VertexControl*/
 				return o;
 			}
 
@@ -7365,13 +8376,13 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			}
 
 			[domain("tri")]
-			VertexOutput DomainFunction(TessellationFactors factors, OutputPatch<VertexControl, 3> patch, float3 bary : SV_DomainLocation)
+			PackedVaryingsMeshToPS DomainFunction(TessellationFactors factors, OutputPatch<VertexControl, 3> patch, float3 bary : SV_DomainLocation)
 			{
-				VertexInput o = (VertexInput) 0;
+				AttributesMesh o = (AttributesMesh) 0;
 				o.positionOS = patch[0].positionOS * bary.x + patch[1].positionOS * bary.y + patch[2].positionOS * bary.z;
 				o.normalOS = patch[0].normalOS * bary.x + patch[1].normalOS * bary.y + patch[2].normalOS * bary.z;
 				o.tangentOS = patch[0].tangentOS * bary.x + patch[1].tangentOS * bary.y + patch[2].tangentOS * bary.z;
-				/*ase_domain_code:patch=VertexControl;o=VertexInput;bary=SV_DomainLocation*/
+				/*ase_domain_code:patch=VertexControl;o=AttributesMesh;bary=SV_DomainLocation*/
 				#if defined(ASE_PHONG_TESSELLATION)
 				float3 pp[3];
 				for (int i = 0; i < 3; ++i)
@@ -7383,40 +8394,77 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				return VertexFunction(o);
 			}
 			#else
-			VertexOutput Vert ( VertexInput v )
+			PackedVaryingsMeshToPS Vert ( AttributesMesh v )
 			{
 				return VertexFunction( v );
 			}
 			#endif
 
-			void Frag(	VertexOutput packedInput
+			#if defined(WRITE_NORMAL_BUFFER) && defined(WRITE_MSAA_DEPTH)
+			#define SV_TARGET_DECAL SV_Target2
+			#elif defined(WRITE_NORMAL_BUFFER) || defined(WRITE_MSAA_DEPTH)
+			#define SV_TARGET_DECAL SV_Target1
+			#else
+			#define SV_TARGET_DECAL SV_Target0
+			#endif
+
+			void Frag( PackedVaryingsMeshToPS packedInput
+						#if defined(SCENESELECTIONPASS) || defined(SCENEPICKINGPASS)
 						, out float4 outColor : SV_Target0
+						#else
+							#ifdef WRITE_MSAA_DEPTH
+							, out float4 depthColor : SV_Target0
+								#ifdef WRITE_NORMAL_BUFFER
+								, out float4 outNormalBuffer : SV_Target1
+								#endif
+							#else
+								#ifdef WRITE_NORMAL_BUFFER
+								, out float4 outNormalBuffer : SV_Target0
+								#endif
+							#endif
+
+							#if (defined(WRITE_DECAL_BUFFER) && !defined(_DISABLE_DECALS)) || defined(WRITE_RENDERING_LAYER)
+							, out float4 outDecalBuffer : SV_TARGET_DECAL
+							#endif
+						#endif
+
+						#if defined(_DEPTHOFFSET_ON) && !defined(SCENEPICKINGPASS)
+						, out float outputDepth : DEPTH_OFFSET_SEMANTIC
+						#endif
 						/*ase_frag_input*/
 					)
 			{
 				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(packedInput);
 				UNITY_SETUP_INSTANCE_ID(packedInput);
 
+				/*ase_local_var:rwp*/float3 positionRWS = packedInput.positionRWS;
+				/*ase_local_var:wvd*/float3 V = GetWorldSpaceNormalizeViewDir( packedInput.positionRWS );
+
 				FragInputs input;
 				ZERO_INITIALIZE(FragInputs, input);
 				input.tangentToWorld = k_identity3x3;
 				input.positionSS = packedInput.positionCS;
+				input.positionRWS = positionRWS;
 
-				input.tangentToWorld = BuildTangentToWorld(packedInput.tangentWS.xyzw, packedInput.normalWS.xyz);
+				#if _DOUBLESIDED_ON && SHADER_STAGE_FRAGMENT
+				input.isFrontFace = IS_FRONT_VFACE( packedInput.cullFace, true, false);
+				#elif SHADER_STAGE_FRAGMENT
+				#if defined(ASE_NEED_CULLFACE)
+				input.isFrontFace = IS_FRONT_VFACE( packedInput.cullFace, true, false );
+				#endif
+				#endif
+				/*ase_local_var:vf*/half isFrontFace = input.isFrontFace;
 
 				PositionInputs posInput = GetPositionInput(input.positionSS.xy, _ScreenSize.zw, input.positionSS.z, input.positionSS.w, input.positionRWS);
 
-				SurfaceDescription surfaceDescription = (SurfaceDescription)0;
-				/*ase_frag_code:packedInput=VertexOutput*/
+				PickingSurfaceDescription surfaceDescription = (PickingSurfaceDescription)0;
+				/*ase_frag_code:packedInput=PackedVaryingsMeshToPS*/
 				surfaceDescription.Alpha = /*ase_frag_out:Alpha;Float;0;-1;_Alpha*/1/*end*/;
+
+				#ifdef _ALPHATEST_ON
 				surfaceDescription.AlphaClipThreshold =  /*ase_frag_out:Alpha Clip Threshold;Float;1;-1;_AlphaClip*/_AlphaCutoff/*end*/;
+				#endif
 
-
-				float3 V = float3(1.0, 1.0, 1.0);
-
-				SurfaceData surfaceData;
-				BuiltinData builtinData;
-				GetSurfaceAndBuiltinData(surfaceDescription, input, V, posInput, surfaceData, builtinData);
 				outColor = _SelectionID;
 			}
 
@@ -7427,20 +8475,29 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
         {
 
             Name "FullScreenDebug"
-            Tags { "LightMode" = "FullScreenDebug" }
+            Tags 
+			{ 
+				"LightMode" = "FullScreenDebug" 
+            }
 
             Cull [_CullMode]
 			ZTest LEqual
 			ZWrite Off
 
             HLSLPROGRAM
-
-			#pragma multi_compile_instancing
-			#pragma instancing_options renderinglayer
+            #pragma multi_compile _ DOTS_INSTANCING_ON
 
 			#pragma vertex Vert
 			#pragma fragment Frag
 
+            #pragma shader_feature _ _SURFACE_TYPE_TRANSPARENT
+            #pragma shader_feature_local _ _TRANSPARENT_WRITES_MOTION_VEC _TRANSPARENT_REFRACTIVE_SORT
+            #pragma shader_feature_local_fragment _ _ENABLE_FOG_ON_TRANSPARENT
+
+			#define SHADERPASS SHADERPASS_FULL_SCREEN_DEBUG
+
+			#define ATTRIBUTES_NEED_NORMAL
+			#define ATTRIBUTES_NEED_TANGENT
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/GeometricTools.hlsl"
@@ -7449,10 +8506,8 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
-			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphHeader.hlsl"
-
-			#define ATTRIBUTES_NEED_NORMAL
-			#define ATTRIBUTES_NEED_TANGENT
+			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/DebugMipmapStreamingMacros.hlsl"
+            #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
 
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
 
@@ -7462,23 +8517,29 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			#endif
 			#endif
 
+            #if _MATERIAL_FEATURE_COLORED_TRANSMISSION
+            #undef _MATERIAL_FEATURE_CLEAR_COAT
+            #endif
+
 		    #if defined(_MATERIAL_FEATURE_SUBSURFACE_SCATTERING) && !defined(_SURFACE_TYPE_TRANSPARENT)
 		    #define OUTPUT_SPLIT_LIGHTING
 		    #endif
 
-		    #if !( (SHADERPASS == SHADERPASS_FORWARD) || (SHADERPASS == SHADERPASS_LIGHT_TRANSPORT) \
-               || (SHADERPASS == SHADERPASS_RAYTRACING_INDIRECT) || (SHADERPASS == SHADERPASS == SHADERPASS_RAYTRACING_INDIRECT)\
-               || (SHADERPASS == SHADERPASS_PATH_TRACING) || (SHADERPASS == SHADERPASS_RAYTRACING_SUB_SURFACE) \
-               || (SHADERPASS == SHADERPASS_RAYTRACING_GBUFFER) )
-
-		    #define DISABLE_MODIFY_BAKED_DIFFUSE_LIGHTING
-		    #endif
+            #if (SHADERPASS == SHADERPASS_PATH_TRACING) && !defined(_DOUBLESIDED_ON) && (defined(_REFRACTION_PLANE) || defined(_REFRACTION_SPHERE))
+            #undef  _REFRACTION_PLANE
+            #undef  _REFRACTION_SPHERE
+            #define _REFRACTION_THIN
+            #endif
 
 			#if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
 			#if !defined(_DISABLE_SSR_TRANSPARENT) && !defined(SHADER_UNLIT)
 				#define WRITE_NORMAL_BUFFER
 			#endif
 			#endif
+
+            #if SHADERPASS == SHADERPASS_MOTION_VECTORS && defined(WRITE_DECAL_BUFFER_AND_RENDERING_LAYER)
+                #define WRITE_DECAL_BUFFER
+            #endif
 
 			#ifndef DEBUG_DISPLAY
 				#if !defined(_SURFACE_TYPE_TRANSPARENT)
@@ -7490,13 +8551,13 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				#endif
 			#endif
 
-			#if defined(SHADER_LIT) && !defined(_SURFACE_TYPE_TRANSPARENT)
-			#define _DEFERRED_CAPABLE_MATERIAL
-			#endif
-
-			#if defined(_TRANSPARENT_WRITES_MOTION_VEC) && defined(_SURFACE_TYPE_TRANSPARENT)
-			#define _WRITE_TRANSPARENT_MOTION_VECTOR
-			#endif
+            #if defined(SHADER_LIT) && !defined(_SURFACE_TYPE_TRANSPARENT)
+                #define _DEFERRED_CAPABLE_MATERIAL
+            #endif
+        
+            #if (defined(_TRANSPARENT_WRITES_MOTION_VEC) || defined(_TRANSPARENT_REFRACTIVE_SORT)) && defined(_SURFACE_TYPE_TRANSPARENT)
+                #define _WRITE_TRANSPARENT_MOTION_VECTOR
+            #endif
 
             #ifdef DEBUG_DISPLAY
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"
@@ -7514,7 +8575,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				float3 positionOS : POSITION;
 				float3 normalOS : NORMAL;
 				float4 tangentOS : TANGENT;
-				#if UNITY_ANY_INSTANCING_ENABLED
+				#if UNITY_ANY_INSTANCING_ENABLED || defined(ATTRIBUTES_NEED_INSTANCEID)
 					uint instanceID : INSTANCEID_SEMANTIC;
 				#endif
 			};
@@ -7522,7 +8583,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			struct VaryingsMeshToPS
 			{
 				SV_POSITION_QUALIFIERS float4 positionCS : SV_POSITION;
-				#if UNITY_ANY_INSTANCING_ENABLED
+				#if UNITY_ANY_INSTANCING_ENABLED || defined(ATTRIBUTES_NEED_INSTANCEID)
 					uint instanceID : CUSTOM_INSTANCE_ID;
 				#endif
 			};
@@ -7542,7 +8603,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			struct PackedVaryingsMeshToPS
 			{
 				SV_POSITION_QUALIFIERS float4 positionCS : SV_POSITION;
-				#if UNITY_ANY_INSTANCING_ENABLED
+				#if UNITY_ANY_INSTANCING_ENABLED || defined(ATTRIBUTES_NEED_INSTANCEID)
 					uint instanceID : CUSTOM_INSTANCE_ID;
 				#endif
 			};
@@ -7552,7 +8613,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				PackedVaryingsMeshToPS output;
 				ZERO_INITIALIZE(PackedVaryingsMeshToPS, output);
 				output.positionCS = input.positionCS;
-				#if UNITY_ANY_INSTANCING_ENABLED
+				#if UNITY_ANY_INSTANCING_ENABLED || defined(ATTRIBUTES_NEED_INSTANCEID)
 				output.instanceID = input.instanceID;
 				#endif
 				return output;
@@ -7562,7 +8623,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 			{
 				VaryingsMeshToPS output;
 				output.positionCS = input.positionCS;
-				#if UNITY_ANY_INSTANCING_ENABLED
+				#if UNITY_ANY_INSTANCING_ENABLED || defined(ATTRIBUTES_NEED_INSTANCEID)
 				output.instanceID = input.instanceID;
 				#endif
 				return output;
@@ -7618,6 +8679,9 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				output.ObjectSpaceNormal =                          input.normalOS;
 				output.ObjectSpaceTangent =                         input.tangentOS.xyz;
 				output.ObjectSpacePosition =                        input.positionOS;
+				#if UNITY_ANY_INSTANCING_ENABLED
+                #else
+                #endif
 
 				return output;
 			}
@@ -7640,11 +8704,13 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				ZERO_INITIALIZE(FragInputs, output);
 
 				output.tangentToWorld = k_identity3x3;
-				output.positionSS = input.positionCS;
+				output.positionSS = input.positionCS; // input.positionCS is SV_Position
+				#if UNITY_ANY_INSTANCING_ENABLED
+                #else
+                #endif
 
 				return output;
 			}
-
 
 			FragInputs UnpackVaryingsMeshToFragInputs(PackedVaryingsMeshToPS input)
 			{
@@ -7652,202 +8718,6 @@ Shader /*ase_name*/ "Hidden/HDRP/Lit" /*end*/
 				VaryingsMeshToPS unpacked = UnpackVaryingsMeshToPS(input);
 				return BuildFragInputs(unpacked);
 			}
-
-
-            SurfaceDescriptionInputs FragInputsToSurfaceDescriptionInputs(FragInputs input, float3 viewWS)
-			{
-				SurfaceDescriptionInputs output;
-				ZERO_INITIALIZE(SurfaceDescriptionInputs, output);
-
-				#if defined(SHADER_STAGE_RAY_TRACING)
-				#else
-				#endif
-				output.TangentSpaceNormal =                         float3(0.0f, 0.0f, 1.0f);
-				return output;
-			}
-
-			void BuildSurfaceData(FragInputs fragInputs, inout SurfaceDescription surfaceDescription, float3 V, PositionInputs posInput, out SurfaceData surfaceData, out float3 bentNormalWS)
-			{
-				ZERO_INITIALIZE(SurfaceData, surfaceData);
-
-				surfaceData.specularOcclusion = 1.0;
-
-				surfaceData.baseColor =                 surfaceDescription.BaseColor;
-				surfaceData.perceptualSmoothness =      surfaceDescription.Smoothness;
-				surfaceData.ambientOcclusion =          surfaceDescription.Occlusion;
-				surfaceData.metallic =                  surfaceDescription.Metallic;
-
-				#if defined(_REFRACTION_PLANE) || defined(_REFRACTION_SPHERE) || defined(_REFRACTION_THIN)
-					if (_EnableSSRefraction)
-					{
-
-						surfaceData.transmittanceMask = (1.0 - surfaceDescription.Alpha);
-						surfaceDescription.Alpha = 1.0;
-					}
-					else
-					{
-						surfaceData.ior = 1.0;
-						surfaceData.transmittanceColor = float3(1.0, 1.0, 1.0);
-						surfaceData.atDistance = 1.0;
-						surfaceData.transmittanceMask = 0.0;
-						surfaceDescription.Alpha = 1.0;
-					}
-				#else
-					surfaceData.ior = 1.0;
-					surfaceData.transmittanceColor = float3(1.0, 1.0, 1.0);
-					surfaceData.atDistance = 1.0;
-					surfaceData.transmittanceMask = 0.0;
-				#endif
-
-
-				surfaceData.materialFeatures = MATERIALFEATUREFLAGS_LIT_STANDARD;
-				#ifdef _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
-					surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SUBSURFACE_SCATTERING;
-				#endif
-				#ifdef _MATERIAL_FEATURE_TRANSMISSION
-					surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_TRANSMISSION;
-				#endif
-                #ifdef _MATERIAL_FEATURE_ANISOTROPY
-					surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_ANISOTROPY;
-					surfaceData.normalWS = float3(0, 1, 0);
-                #endif
-				#ifdef _MATERIAL_FEATURE_IRIDESCENCE
-					surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_IRIDESCENCE;
-				#endif
-				#ifdef _MATERIAL_FEATURE_SPECULAR_COLOR
-					surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_SPECULAR_COLOR;
-				#endif
-				#ifdef _MATERIAL_FEATURE_CLEAR_COAT
-					surfaceData.materialFeatures |= MATERIALFEATUREFLAGS_LIT_CLEAR_COAT;
-				#endif
-				#if defined (_MATERIAL_FEATURE_SPECULAR_COLOR) && defined (_ENERGY_CONSERVING_SPECULAR)
-					surfaceData.baseColor *= (1.0 - Max3(surfaceData.specularColor.r, surfaceData.specularColor.g, surfaceData.specularColor.b));
-				#endif
-				#ifdef _DOUBLESIDED_ON
-					float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
-				#else
-					float3 doubleSidedConstants = float3(1.0, 1.0, 1.0);
-				#endif
-
-
-				GetNormalWS(fragInputs, surfaceDescription.NormalTS, surfaceData.normalWS, doubleSidedConstants);
-
-				surfaceData.geomNormalWS = fragInputs.tangentToWorld[2];
-
-				surfaceData.tangentWS = normalize(fragInputs.tangentToWorld[0].xyz);
-
-
-				#if HAVE_DECALS
-					if (_EnableDecals)
-					{
-						DecalSurfaceData decalSurfaceData = GetDecalSurfaceData(posInput, fragInputs, surfaceDescription.Alpha);
-						ApplyDecalToSurfaceData(decalSurfaceData, fragInputs.tangentToWorld[2], surfaceData);
-					}
-				#endif
-
-				bentNormalWS = surfaceData.normalWS;
-
-				surfaceData.tangentWS = Orthonormalize(surfaceData.tangentWS, surfaceData.normalWS);
-
-				#ifdef DEBUG_DISPLAY
-					if (_DebugMipMapMode != DEBUGMIPMAPMODE_NONE)
-					{
-
-						surfaceData.metallic = 0;
-					}
-
-					ApplyDebugToSurfaceData(fragInputs.tangentToWorld, surfaceData);
-				#endif
-
-                #if defined(_SPECULAR_OCCLUSION_CUSTOM)
-                #elif defined(_SPECULAR_OCCLUSION_FROM_AO_BENT_NORMAL)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromBentAO(V, bentNormalWS, surfaceData.normalWS, surfaceData.ambientOcclusion, PerceptualSmoothnessToPerceptualRoughness(surfaceData.perceptualSmoothness));
-                #elif defined(_AMBIENT_OCCLUSION) && defined(_SPECULAR_OCCLUSION_FROM_AO)
-				surfaceData.specularOcclusion = GetSpecularOcclusionFromAmbientOcclusion(ClampNdotV(dot(surfaceData.normalWS, V)), surfaceData.ambientOcclusion, PerceptualSmoothnessToRoughness(surfaceData.perceptualSmoothness));
-                #endif
-			}
-
-            void GetSurfaceAndBuiltinData(FragInputs fragInputs, float3 V, inout PositionInputs posInput, out SurfaceData surfaceData, out BuiltinData builtinData RAY_TRACING_OPTIONAL_PARAMETERS)
-            {
-
-                #if !defined(SHADER_STAGE_RAY_TRACING) && !defined(_TESSELLATION_DISPLACEMENT)
-                #ifdef LOD_FADE_CROSSFADE
-                LODDitheringTransition(ComputeFadeMaskSeed(V, posInput.positionSS), unity_LODFade.x);
-                #endif
-                #endif
-
-                #ifndef SHADER_UNLIT
-                #ifdef _DOUBLESIDED_ON
-                    float3 doubleSidedConstants = _DoubleSidedConstants.xyz;
-                #else
-                    float3 doubleSidedConstants = float3(1.0, 1.0, 1.0);
-                #endif
-
-                ApplyDoubleSidedFlipOrMirror(fragInputs, doubleSidedConstants);
-                #endif
-
-                SurfaceDescriptionInputs surfaceDescriptionInputs = FragInputsToSurfaceDescriptionInputs(fragInputs, V);
-
-                SurfaceDescription surfaceDescription = SurfaceDescriptionFunction(surfaceDescriptionInputs);
-
-                #ifdef _ALPHATEST_ON
-				float alphaCutoff = surfaceDescription.AlphaClipThreshold;
-                #if SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_PREPASS
-                #elif SHADERPASS == SHADERPASS_TRANSPARENT_DEPTH_POSTPASS
-				alphaCutoff = surfaceDescription.AlphaClipThresholdDepthPostpass;
-                #elif (SHADERPASS == SHADERPASS_SHADOWS) || (SHADERPASS == SHADERPASS_RAYTRACING_VISIBILITY)
-                #endif
-				GENERIC_ALPHA_TEST(surfaceDescription.Alpha, alphaCutoff);
-                #endif
-
-                #if !defined(SHADER_STAGE_RAY_TRACING) && _DEPTHOFFSET_ON
-                ApplyDepthOffsetPositionInput(V, surfaceDescription.DepthOffset, GetViewForwardDir(), GetWorldToHClipMatrix(), posInput);
-                #endif
-
-                #ifndef SHADER_UNLIT
-                float3 bentNormalWS;
-                BuildSurfaceData(fragInputs, surfaceDescription, V, posInput, surfaceData, bentNormalWS);
-
-                InitBuiltinData(posInput, surfaceDescription.Alpha, bentNormalWS, -fragInputs.tangentToWorld[2], fragInputs.texCoord1, fragInputs.texCoord2, builtinData);
-
-                #else
-                BuildSurfaceData(fragInputs, surfaceDescription, V, posInput, surfaceData);
-
-                ZERO_BUILTIN_INITIALIZE(builtinData);
-                builtinData.opacity = surfaceDescription.Alpha;
-
-                #if defined(DEBUG_DISPLAY)
-                    builtinData.renderingLayers = GetMeshRenderingLightLayer();
-                #endif
-
-                #endif
-
-                #ifdef _ALPHATEST_ON
-
-                    builtinData.alphaClipTreshold = alphaCutoff;
-                #endif
-
-
-                builtinData.emissiveColor = surfaceDescription.Emission;
-
-                #if _DEPTHOFFSET_ON
-                builtinData.depthOffset = surfaceDescription.DepthOffset;
-                #endif
-
-
-                #if (SHADERPASS == SHADERPASS_DISTORTION)
-                builtinData.distortion = surfaceDescription.Distortion;
-                builtinData.distortionBlur = surfaceDescription.DistortionBlur;
-                #endif
-
-                #ifndef SHADER_UNLIT
-
-                PostInitBuiltinData(V, posInput, surfaceData, builtinData);
-                #else
-                ApplyDebugToBuiltinData(builtinData);
-                #endif
-
-            }
 
 			#define DEBUG_DISPLAY
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplay.hlsl"

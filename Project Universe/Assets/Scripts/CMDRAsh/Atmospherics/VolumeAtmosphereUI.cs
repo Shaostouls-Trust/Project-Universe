@@ -16,6 +16,7 @@ namespace ProjectUniverse.Environment.Volumes
         [SerializeField] private Color32 YELLOW;
         [SerializeField] private Color32 RED;
         [SerializeField] private VolumeAtmosphereController vac;
+        [SerializeField] private AtmosphereChartManager chartManager; // Add this
         private float timer = 1.0f;
 
         // Update is called once per frame
@@ -85,6 +86,11 @@ namespace ProjectUniverse.Environment.Volumes
                     toxTxt.color = GREEN;
                 }
             }
+        }
+        private void Start()
+        {
+            // Initialize color configs
+            ParticulateDatabase.Initialize();
         }
     } 
 }

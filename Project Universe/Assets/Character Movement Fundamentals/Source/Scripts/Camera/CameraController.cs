@@ -1,5 +1,4 @@
 ﻿using ProjectUniverse.Player.PlayerController;
-using ProjectUniverse.Serialization;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,8 +9,6 @@ namespace CMF
 	//Rotation around the x-axis (vertical) can be clamped/limited by setting 'upperVerticalLimit' and 'lowerVerticalLimit'.
 	public class CameraController : MonoBehaviour {
 
-		[SerializeField] private SupplementalController sc;
-        
 		//Current rotation values (in degrees);
 		float currentXAngle = 0f;
 		float currentYAngle = 0f;
@@ -45,8 +42,12 @@ namespace CMF
 
 		//References to transform and camera components;
 		protected Transform tr;
-		protected Camera cam;
+		//protected Camera cam;
 		//protected CameraInput cameraInput;
+		private Vector2 cameraInput;
+		[SerializeField] private SupplementalController sc;
+		[SerializeField] private Camera cam;
+		private float lastTime;
 
 		//Setup references.
 		void Awake () {
@@ -55,7 +56,6 @@ namespace CMF
 			//cameraInput = GetComponent<CameraInput>();
 
 			//if(cameraInput == null)
-			//	Debug.LogWarning("No camera input script has been attached to this gameobject", this.gameObject);
 
 			//If no camera component has been attached to this gameobject, search the transform's children;
 			if(cam == null)
@@ -77,34 +77,37 @@ namespace CMF
 			
 		}
 
-		void Update()
+		void LateUpdate()//Update
 		{
 			HandleCameraRotation();
-		}
+			lastTime = Time.deltaTime;
+
+        }
 
 		//Get user input and handle camera rotation;
 		//This method can be overridden in classes derived from this base class to modify camera behaviour;
 		protected virtual void HandleCameraRotation()
 		{
-			//if(cameraInput == null)
-			//	return;
-            
+			cameraInput = sc.LookInput;
+
+            if (cameraInput == null)
+				return;
+
 			//Get input values;
-			float _inputHorizontal = sc.LookInput.x * 0.3f * GlobalSettings.Sensitivity;
-			float _inputVertical = sc.LookInput.y * 0.3f * GlobalSettings.Sensitivity;
-			//Debug.Log(sc.LookInput);
+			float _inputHorizontal = cameraInput.x;
+			float _inputVertical = cameraInput.y;
+		
 			RotateCamera(_inputHorizontal, _inputVertical);
 		}
 
 		//Rotate camera; 
 		protected void RotateCamera(float _newHorizontalInput, float _newVerticalInput)
 		{
-
-		
 			if(smoothCameraRotation)
 			{
-				//Lerp input;
-				oldHorizontalInput = Mathf.Lerp (oldHorizontalInput, _newHorizontalInput, Time.deltaTime * cameraSmoothingFactor);
+                //Lerp input;
+				
+                oldHorizontalInput = Mathf.Lerp (oldHorizontalInput, _newHorizontalInput, Time.deltaTime * cameraSmoothingFactor);
 				oldVerticalInput = Mathf.Lerp (oldVerticalInput, _newVerticalInput, Time.deltaTime * cameraSmoothingFactor);
 			}
 			else
@@ -114,26 +117,35 @@ namespace CMF
 				oldVerticalInput = _newVerticalInput;
 			}
 
-			/*    
-			//Add input to camera angles;
-			currentXAngle += oldVerticalInput * cameraSpeed * Time.deltaTime;
-			currentYAngle += oldHorizontalInput * cameraSpeed * Time.deltaTime;
-			*/
-            
-			//Vector3 rotation = new Vector3(_newHorizontalInput, _newVerticalInput, 0f);
-			Vector3 rotation = new Vector3(oldHorizontalInput, oldVerticalInput, 0f);
-			rotation = Vector3.Lerp(new Vector3(0f, 0f, 0f), rotation, (1f / Time.captureFramerate) * 10f);
-			
-			currentXAngle += rotation.y;//x
-			currentYAngle += rotation.x;//y
-            
+            //Add input to camera angles;
+            //currentXAngle += oldVerticalInput * cameraSpeed * Time.deltaTime;
+			//currentYAngle += oldHorizontalInput * cameraSpeed * Time.deltaTime;
+
+			//Use the last frame to predict where the rotation should be
+			//Debug.Log(Time.fixedDeltaTime + " vs " + Time.deltaTime);
+			if (lastTime != 0f)
+			{
+				float lagFactor = (Time.deltaTime - lastTime) / lastTime;
+
+				if (lagFactor < 0.8)
+				{
+					//Debug.Log("Spike: " + lagFactor);
+                    //currentXAngle -= oldVerticalInput * cameraSpeed * lastTime * lagFactor;
+                    //currentYAngle -= oldHorizontalInput * cameraSpeed * lastTime * lagFactor;
+                    currentXAngle += oldVerticalInput * cameraSpeed * Time.deltaTime;
+                    currentYAngle += oldHorizontalInput * cameraSpeed * Time.deltaTime;
+                }
+				/*else
+				{
+                    Debug.Log("Spike: " + lagFactor);
+                }*/
+			}
 			//Clamp vertical rotation;
 			currentXAngle = Mathf.Clamp(currentXAngle, -upperVerticalLimit, lowerVerticalLimit);
 
-			//tr.Rotate(new Vector3(currentXAngle, currentYAngle, 0f));
 			UpdateRotation();
 		}
-        
+
 		//Update camera rotation based on x and y angles;
 		protected void UpdateRotation()
 		{

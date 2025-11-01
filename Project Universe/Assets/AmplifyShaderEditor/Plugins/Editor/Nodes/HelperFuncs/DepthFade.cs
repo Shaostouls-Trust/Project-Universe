@@ -52,16 +52,13 @@ namespace AmplifyShaderEditor
 			{
 				if( dataCollector.IsTemplate && dataCollector.CurrentSRPType == TemplateSRPType.URP )
 				{
-					//dataCollector.AddToUniforms( UniqueId, Constants.CameraDepthTextureSRPVar );
-					//dataCollector.AddToUniforms( UniqueId, Constants.CameraDepthTextureSRPSampler );
 					dataCollector.AddToDirectives( Constants.CameraDepthTextureLWEnabler, -1, AdditionalLineType.Define );
 				}
 				else
 				{
 					dataCollector.AddToUniforms( UniqueId, Constants.CameraDepthTextureValue );
+					dataCollector.AddToUniforms( UniqueId, Constants.CameraDepthTextureTexelSize );
 				}
-
-				dataCollector.AddToUniforms( UniqueId, Constants.CameraDepthTextureTexelSize );
 			}
 
 			string screenPosNorm = string.Empty;

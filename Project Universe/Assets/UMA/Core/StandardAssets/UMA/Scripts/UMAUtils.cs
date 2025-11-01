@@ -63,9 +63,9 @@ namespace UMA
 		/// </summary>
 		/// <returns></returns>
 		public static PipelineType DetectPipeline() {
-			if(GraphicsSettings.renderPipelineAsset != null) {
+			if(GraphicsSettings.defaultRenderPipeline != null) {
 				// SRP
-				var srpType = GraphicsSettings.renderPipelineAsset.GetType().ToString();
+				var srpType = GraphicsSettings.defaultRenderPipeline.GetType().ToString();
 				if(srpType.Contains("HDRenderPipelineAsset")) {
 					return PipelineType.HDPipeline;
 				} else if(srpType.Contains("UniversalRenderPipelineAsset")) {

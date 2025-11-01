@@ -1092,7 +1092,7 @@ namespace AmplifyShaderEditor
 		public void ForceReOrder()
 		{
 			// @diogo: replaced Sort() with OrderBy() for stable sorting
-			m_nodes.OrderBy( s => s.Depth );
+			m_nodes = m_nodes.OrderBy( s => s.Depth ).ToList();
 		}
 
 		public bool Draw( DrawInfo drawInfo )
@@ -2957,7 +2957,7 @@ namespace AmplifyShaderEditor
 			}
 			
 			// @diogo: replaced Sort() with OrderBy() for stable sorting
-			m_nodes.OrderBy( s => s.GraphDepth );
+			m_nodes = m_nodes.OrderByDescending( s => s.GraphDepth ).ToList();
 		}
 
 		public void WriteToString( ref string nodesInfo, ref string connectionsInfo )

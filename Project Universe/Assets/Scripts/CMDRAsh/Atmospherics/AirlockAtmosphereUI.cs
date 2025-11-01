@@ -164,12 +164,14 @@ public class AirlockAtmosphereUI : MonoBehaviour
             if (extVac == null)
             {
                 //Debug.Log("Pressure to 0f");
-                StartCoroutine(PressurizeAirlock(0f));
+                //StartCoroutine(PressurizeAirlock(0f));
+                StartCoroutine(PressurizeAirlockAI(0f));
             }
             else
             {
                 //Debug.Log("Pressure to " + extVac.Pressure);
-                StartCoroutine(PressurizeAirlock(extVac.Pressure));
+                //StartCoroutine(PressurizeAirlock(extVac.Pressure));
+                StartCoroutine(PressurizeAirlockAI(extVac.Pressure));
             }
         }
         //cycle from door1
@@ -205,14 +207,16 @@ public class AirlockAtmosphereUI : MonoBehaviour
                 if (extVac == null)
                 {
                     //Debug.Log("Pressure to 0f");
-                    StartCoroutine(PressurizeAirlock(0f));
+                    //StartCoroutine(PressurizeAirlock(0f));
+                    StartCoroutine(PressurizeAirlockAI(0f));
                     //if the airlock interior pressure is the pressure at the exterior of door 2
                     //adjust pressure to side of door 2, open door 2
                 }
                 else
                 {
                     //Debug.Log("Pressure to "+extVac.Pressure);
-                    StartCoroutine(PressurizeAirlock(extVac.Pressure));
+                    //StartCoroutine(PressurizeAirlock(extVac.Pressure));
+                    StartCoroutine(PressurizeAirlockAI(extVac.Pressure));
                 } 
             }
         }
@@ -248,14 +252,107 @@ public class AirlockAtmosphereUI : MonoBehaviour
                 if (extVac == null)
                 {
                     //Debug.Log("Pressure to 0f");
-                    StartCoroutine(PressurizeAirlock(0f));
+                    //StartCoroutine(PressurizeAirlock(0f));
+                    StartCoroutine(PressurizeAirlockAI(0f));
                 }
                 else
                 {
                     //Debug.Log("Pressure to " + extVac.Pressure);
-                    StartCoroutine(PressurizeAirlock(extVac.Pressure));
+                    //StartCoroutine(PressurizeAirlock(extVac.Pressure));
+                    StartCoroutine(PressurizeAirlockAI(extVac.Pressure));
                 }
             }
+        }
+    }
+
+    private IEnumerator PressurizeAirlockAI(float pressureTarget)
+    {
+        /*
+        //calculate the concentration of gas needed for that pressure
+        float concnew = this.airlockVac.RoomVolume * Math.Abs(pressureDifference);
+
+        // Create a gas object to adjust the pressure
+        float pres = Math.Abs(pressureDifference);
+        IGas gasAdjustment = new IGas("Oxygen", 70.0f, concnew, pres, 0.4f);
+        gasAdjustment.CalculateAtmosphericDensity();
+         */
+        // Determine which door is the external door and set the external vacuum accordingly
+        if (extDoor == door1Node.GetDoor())
+        {
+            extDoor = door2Node.GetDoor();
+            if (door2Node.VolumeLink != null)
+            {
+                extVac = door2Node.VolumeLink.GetComponent<VolumeAtmosphereController>();
+            }
+            else
+            {
+                extVac = null;
+            }
+        }
+        else
+        {
+            extDoor = door1Node.GetDoor();
+            if (door1Node.VolumeLink != null)
+            {
+                extVac = door1Node.VolumeLink.GetComponent<VolumeAtmosphereController>();
+            }
+            else
+            {
+                extVac = null;
+            }
+        }
+
+        adjustingPressure = true;
+
+        // Calculate the total pressure difference
+        float totalPressureDifference = pressureTarget - airlockVac.Pressure;
+        float step = 0.02f; // Define the pressure adjustment step per frame
+        float currentPressure = airlockVac.Pressure;
+
+        while (Math.Abs(currentPressure - pressureTarget) > Mathf.Epsilon)
+        {
+            float pressureDifference = pressureTarget - currentPressure;
+
+            // Determine the adjustment for this frame
+            float adjustment = Mathf.Clamp(pressureDifference, -step, step);
+
+            // Calculate the concentration of gas needed for this adjustment
+            float concAdjustment = airlockVac.RoomVolume * Math.Abs(adjustment);
+
+            // Create a gas object for this adjustment
+            IGas gasAdjustment = new IGas("Oxygen", 70.0f, concAdjustment, Math.Abs(adjustment), 0.4f);
+            gasAdjustment.CalculateAtmosphericDensity();
+
+            if (adjustment > 0)
+            {
+                // Add gas to increase pressure
+                airlockVac.AddRoomGas(gasAdjustment);
+            }
+            else if (adjustment < 0)
+            {
+                // Remove gas to decrease pressure
+                airlockVac.RemoveRoomGas(gasAdjustment);
+            }
+
+            // Update the current pressure
+            currentPressure += adjustment;
+
+            // Wait for the next frame
+            yield return null;
+        }
+
+        adjustingPressure = false;
+
+        // Open the appropriate door once pressure is adjusted
+        if (extDoor == door1Node.GetDoor())
+        {
+            door2.Locked = false;
+            door2.OpenDoor();
+        }
+        else
+        {
+            door1.Locked = false;
+            door1.OpenDoor();
         }
     }
 

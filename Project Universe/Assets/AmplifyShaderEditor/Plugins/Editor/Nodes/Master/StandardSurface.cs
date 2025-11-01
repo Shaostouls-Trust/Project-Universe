@@ -189,6 +189,7 @@ namespace AmplifyShaderEditor
 		private const string VertexPositionStr = "Local Vertex Position";
 		private const string VertexDataStr = "VertexData";
 		private const string VertexNormalStr = "Local Vertex Normal";
+		private const string VertexTangentStr = "Local Vertex Tangent";
 		private const string CustomLightingStr = "Custom Lighting";
 		private const string AlbedoStr = "Albedo";
 		private const string NormalStr = "Normal";
@@ -453,7 +454,7 @@ namespace AmplifyShaderEditor
 
 		public override void AddMasterPorts()
 		{
-			int vertexCorrection = 2;
+			int vertexCorrection = 3;
 			int index = vertexCorrection + 2;
 			base.AddMasterPorts();
 			switch( m_currentLightModel )
@@ -570,6 +571,7 @@ namespace AmplifyShaderEditor
 			m_tessOpHelper.VertexOffsetIndexPort = m_vertexPortId;
 			AddInputPort( WirePortDataType.FLOAT3, false, ( m_vertexMode == VertexMode.Relative ? VertexDisplacementStr : VertexPositionStr ), VertexDataStr, 0/*index++*/, MasterNodePortCategory.Vertex, 11 );
 			AddInputPort( WirePortDataType.FLOAT3, false, VertexNormalStr, 1/*index++*/, MasterNodePortCategory.Vertex, 12 );
+			AddInputPort( WirePortDataType.FLOAT4, false, VertexTangentStr, 2/*index++*/, MasterNodePortCategory.Vertex, 16 );
 
 			//AddInputPort( WirePortDataType.FLOAT3, false, CustomLightModelStr, index++, MasterNodePortCategory.Fragment, 13 );
 			//m_inputPorts[ m_inputPorts.Count - 1 ].Locked = true;// !(m_currentLightModel == StandardShaderLightModel.CustomLighting);
@@ -659,6 +661,8 @@ namespace AmplifyShaderEditor
 			m_inputPorts[ portId++ ].ChangeType( WirePortDataType.FLOAT3, false );
 			//Vertex Normal
 			m_inputPorts[ portId++ ].ChangeType( WirePortDataType.FLOAT3, false );
+			//Vertex Tangents
+			m_inputPorts[ portId++ ].ChangeType( WirePortDataType.FLOAT4, false );
 			//Tessellation
 			m_inputPorts[ portId++ ].ChangeType( WirePortDataType.FLOAT4, false );
 			//Debug
@@ -1352,8 +1356,11 @@ namespace AmplifyShaderEditor
 
 			m_currentDataCollector.TesselationActive = m_tessOpHelper.EnableTesselation;
 			#if UNITY_IOS
-			// On iOS custom app data must be used since fixed4 color from appdata_full generates an error on it when tessellation is active
-			m_currentDataCollector.ForceCustomAppDataUsage();
+			if ( m_currentDataCollector.TesselationActive )
+			{
+				// On iOS custom app data must be used since fixed4 color from appdata_full generates an error on it when tessellation is active
+				m_currentDataCollector.ForceCustomAppDataUsage();
+			}
 			#endif
 			m_currentDataCollector.CurrentRenderPath = m_renderPath;
 
@@ -1372,7 +1379,10 @@ namespace AmplifyShaderEditor
 				ContainerGraph.CurrentCanvasMode = NodeAvailability.CustomLighting;
 			}
 
-			if( isInstancedShader )
+			// @diogo: Set ASE info
+			ASEPackageManagerHelper.SetASEVersionInfoOnDataCollector( ref m_currentDataCollector );
+
+			if ( isInstancedShader )
 			{
 				m_currentDataCollector.AddToPragmas( UniqueId, IOUtils.InstancedPropertiesHeader );
 			}
@@ -1685,6 +1695,11 @@ namespace AmplifyShaderEditor
 						{
 							string vertexInstructions = CreateInstructionsForVertexPort( sortedPorts[ i ] );
 							m_currentDataCollector.AddToVertexNormal( vertexInstructions );
+						}
+						else if ( sortedPorts[ i ].DataName.Equals( VertexTangentStr ) )
+						{
+							string vertexInstructions = CreateInstructionsForVertexPort( sortedPorts[ i ] );
+							m_currentDataCollector.AddToVertexTangent( vertexInstructions );
 						}
 						else if( m_tessOpHelper.IsTessellationPort( sortedPorts[ i ].PortId ) && sortedPorts[ i ].IsConnected  /* && m_tessOpHelper.EnableTesselation*/)
 						{

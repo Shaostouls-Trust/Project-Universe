@@ -1,7 +1,6 @@
 ﻿
 using System;
 using UnityEngine;
-using System;
 using System.Collections;
 using Unity;
 
@@ -30,7 +29,7 @@ public class CraftingTablet : MonoBehaviour
       /*  recipe[1, 1] = ItemScript.ItemType.None.ToString(); recipe[1, 2] = ItemScript.ItemType.iron.ToString(); recipe[1, 3] = ItemScript.ItemType.None.ToString();
         recipe[2, 1] = ItemScript.ItemType.None.ToString(); recipe[2, 2] = ItemScript.ItemType.iron.ToString(); recipe[2, 3] = ItemScript.ItemType.None.ToString();
         recipe[3, 1] = ItemScript.ItemType.None.ToString(); recipe[3, 2] = ItemScript.ItemType.Stick.ToString(); recipe[3, 3] = ItemScript.ItemType.None.ToString();*/
-        WS = FindObjectOfType<WeaponSwitching>();
+        WS = FindFirstObjectByType<WeaponSwitching>();
         
     }
     public void checkrecipe()

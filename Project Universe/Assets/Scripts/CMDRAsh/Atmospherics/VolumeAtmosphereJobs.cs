@@ -1,5 +1,5 @@
 using ProjectUniverse.Animation.Controllers;
-using ProjectUniverse.Environment.Fluid;
+using ProjectUniverse.Environment.Fluids;
 using ProjectUniverse.Environment.Gas;
 using ProjectUniverse.Util;
 using System;
@@ -165,8 +165,8 @@ namespace ProjectUniverse.Environment.Volumes
                             // Equalize the duct gasses with the volume
                             float volumeratio = burstPipe.Volume / thisvac.RoomVolume;
                             burstPipe.Gasses.Clear();
-                            List<IGas> roomGasses = thisvac.RoomGasses;
-                            for (int g = 0; g < thisvac.RoomGasses.Count; g++)
+                            List<IGas> roomGasses = thisvac.RoomGassesLegacy;
+                            for (int g = 0; g < thisvac.RoomGassesLegacy.Count; g++)
                             {
                                 IGas gas = roomGasses[g];
                                 gas.SetLocalPressure(thisvac.Pressure);

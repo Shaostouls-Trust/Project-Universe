@@ -89,7 +89,7 @@ public class MiningDroneUIController : MonoBehaviour, IPointerExitHandler, IPoin
 
     public void SelectAsteroid(string asteroidName)
     {
-        foreach(DevOreAsteroid ast in FindObjectsOfType<DevOreAsteroid>())
+        foreach(DevOreAsteroid ast in FindObjectsByType<DevOreAsteroid>(FindObjectsSortMode.None))
         {
             if(ast.GetAsteroidName() == asteroidName)
             {
@@ -103,9 +103,9 @@ public class MiningDroneUIController : MonoBehaviour, IPointerExitHandler, IPoin
 
     public void UpdateAsteroidRegistry()
     {
-        string compile = "";
+        //string compile = "";
         //eventually this will need to be "all asteroids within range of drone"
-        DevOreAsteroid[] asters = FindObjectsOfType<DevOreAsteroid>();
+        DevOreAsteroid[] asters = FindObjectsByType<DevOreAsteroid>(FindObjectsSortMode.None);
         //Debug.Log(asters.Length);
         float newy = 0;
         foreach (DevOreAsteroid ast in asters)

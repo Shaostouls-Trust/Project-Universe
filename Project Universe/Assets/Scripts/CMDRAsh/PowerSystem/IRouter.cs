@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using ProjectUniverse.PowerSystem.Nuclear;
+using System.Linq;
 
 namespace ProjectUniverse.PowerSystem
 {
@@ -37,6 +38,15 @@ namespace ProjectUniverse.PowerSystem
         private int availibleLegsOut;
         private bool useGeneratorPower = true;
 
+
+        [Header("Connection Configuration")]
+        [SerializeField] private List<PowerConnectionPoint> connectionPoints = new List<PowerConnectionPoint>();
+
+        [Header("Visualization")]
+        [SerializeField] private bool showConnectionPoints = true;
+        [SerializeField] private Color inputConnectionColor = Color.blue;
+        [SerializeField] private Color outputConnectionColor = Color.green;
+
         void Start()
         {
             //create GUID
@@ -44,6 +54,34 @@ namespace ProjectUniverse.PowerSystem
             //legsOut = subRouters.Length;
             //energyBufferMax = 6000;
             ProxyStart();
+            
+            // Initialize connection points
+            if (connectionPoints.Count == 0)
+            {
+                // One input from generator
+                connectionPoints.Add(new PowerConnectionPoint("Generator Input", 
+                    new Vector3(-2f, 0, 0), PowerConnectionPoint.ConnectionType.Input));
+
+                // Multiple outputs to substations (based on routerCap)
+                for (int i = 0; i < routerCap; i++)
+                {
+                    connectionPoints.Add(
+                        new PowerConnectionPoint($"Substation Output_{i}", 
+                            new Vector3(2f, 0, -1.5f + (i * 0.75f)), PowerConnectionPoint.ConnectionType.Output)
+                    );
+                }
+            }
+
+            // Set owner for all connection points
+            foreach (var point in connectionPoints)
+            {
+                point.ownerComponent = this;
+            }
+        }
+
+        public List<PowerConnectionPoint> ConnectionPoints
+        {
+            get { return connectionPoints; }
         }
 
         public float BufferCurrent
@@ -83,11 +121,11 @@ namespace ProjectUniverse.PowerSystem
         {
             switch (routerLevel)
             {
-                case 1: routerCap = 4; break;
-                case 2: routerCap = 6; break;
-                case 3: routerCap = 8; break;
-                case 4: routerCap = 10; break;
-                case 5: routerCap = 12; break;
+                case 1: routerCap = 2; break;
+                case 2: routerCap = 4; break;
+                case 3: routerCap = 6; break;
+                case 4: routerCap = 8; break;
+                case 5: routerCap = 10; break;
             }
             if (subRouters.Length > routerCap)
             {
@@ -121,7 +159,70 @@ namespace ProjectUniverse.PowerSystem
             }
         }
 
-        // Update is called once per frame
+#if UNITY_EDITOR
+        private void OnDrawGizmos()
+        {
+            if (!showConnectionPoints)
+            {
+                return;
+            }
+
+            // Draw connection points
+            foreach (var point in connectionPoints)
+            {
+                if (point == null) continue;
+                point.ownerComponent = this;
+
+                Vector3 worldPos = point.GetWorldPosition();
+
+                // Draw sphere at connection point
+                Gizmos.color = point.connectionType == PowerConnectionPoint.ConnectionType.Input ?
+                    inputConnectionColor : outputConnectionColor;
+                Gizmos.DrawWireSphere(worldPos, 0.3f);
+
+                // Draw connection radius
+                Gizmos.color = point.connectionType == PowerConnectionPoint.ConnectionType.Input ?
+                    inputConnectionColor : outputConnectionColor;
+                Gizmos.DrawWireSphere(worldPos, point.connectionRadius);
+
+                // Draw direction arrow
+                Gizmos.color = point.connectionType == PowerConnectionPoint.ConnectionType.Input ?
+                    inputConnectionColor : outputConnectionColor;
+                Vector3 endPos = worldPos + point.GetWorldDirection() * 1f;
+                Gizmos.DrawLine(worldPos, endPos);
+
+                // Draw cone for output, inverted cone for input
+                if (point.connectionType == PowerConnectionPoint.ConnectionType.Output)
+                {
+                    GizmosExtensions.DrawCone(endPos, point.GetWorldDirection(), 0.2f, 0.3f);
+                }
+                else
+                {
+                    //Gizmos.DrawCone(worldPos, -point.GetWorldDirection(), 0.2f, 0.3f);
+                    GizmosExtensions.DrawCone(endPos, point.GetWorldDirection(), 0.2f, 0.3f);
+                }
+            }
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            if (!showConnectionPoints)
+            {
+                return;
+            }
+
+            // Draw labels for connection points
+            foreach (var point in connectionPoints)
+            {
+                if (point == null) continue;
+
+                Vector3 worldPos = point.GetWorldPosition();
+                UnityEditor.Handles.Label(worldPos + Vector3.up * 0.5f,
+                    $"{point.name} ({point.connectionType})");
+            }
+        }
+#endif
+        
         void Update()
         {
             //lastOut = 0f;
@@ -169,6 +270,20 @@ namespace ProjectUniverse.PowerSystem
             {
                 lastReceived = 0f;
             }
+        }
+
+        // Add method to handle PathCable connections
+        public void AddPathCable(PathCable cable)
+        {
+            if (!iCableDLL.Contains(cable))
+            {
+                iCableDLL.AddLast(cable);
+            }
+        }
+
+        public void RemovePathCable(PathCable cable)
+        {
+            iCableDLL.Remove(cable);
         }
 
         public bool CheckMachineState(ref IGenerator thisGenerator)
@@ -260,6 +375,7 @@ namespace ProjectUniverse.PowerSystem
             }
             legsReceived = legCount;
         }
+
         /// <summary>
         /// A simplified input func for turbines
         /// </summary>

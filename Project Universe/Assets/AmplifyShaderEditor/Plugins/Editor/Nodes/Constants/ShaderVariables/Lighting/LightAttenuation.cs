@@ -1,52 +1,19 @@
 // Amplify Shader Editor - Visual Shader Editing Tool
 // Copyright (c) Amplify Creations, Lda <info@amplify.pt>
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
 namespace AmplifyShaderEditor
 {
 	[System.Serializable]
-	[NodeAttributes( "Light Attenuation", "Light", "Contains light attenuation for all types of light", NodeAvailabilityFlags = (int)( NodeAvailability.CustomLighting | NodeAvailability.TemplateShader ) )]
+	[NodeAttributes( "Main Light Attenuation", "Lighting", "Attenuation/shadow of main Directional light.", NodeAvailabilityFlags = (int)( NodeAvailability.CustomLighting | NodeAvailability.TemplateShader ) )]
 	public sealed class LightAttenuation : ParentNode
 	{
 		static readonly string SurfaceError = "This node only returns correct information using a custom light model, otherwise returns 1";
 		static readonly string TemplateError = "This node will only produce proper attenuation if the template contains a shadow caster pass";
 
 		private const string ASEAttenVarName = "ase_lightAtten";
-
-		private readonly string[] URP10PragmaMultiCompiles =
-		{
-			"multi_compile _ _MAIN_LIGHT_SHADOWS",
-			"multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE",
-			"multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS",
-			"multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS",
-			"multi_compile_fragment _ _SHADOWS_SOFT"
-		};
-
-		private readonly string[] URP11PragmaMultiCompiles =
-		{
-			"multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN",
-			"multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS",
-			"multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS",
-			"multi_compile_fragment _ _SHADOWS_SOFT"
-		};
-
-		private readonly string[] URP12PragmaMultiCompiles =
-		{
-			"multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN",
-			"multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS",
-			"multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS",
-			"multi_compile_fragment _ _SHADOWS_SOFT"
-		};
-
-		private readonly string[] URP14PragmaMultiCompiles =
-		{
-			"multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN",
-			"multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS",
-			"multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS",
-			"multi_compile_fragment _ _SHADOWS_SOFT",
-			"multi_compile _ _FORWARD_PLUS"
-		};
 
 		//private readonly string[] LightweightVertexInstructions =
 		//{
@@ -94,26 +61,86 @@ namespace AmplifyShaderEditor
 						if( dataCollector.HasLocalVariable( LightweightLightAttenDecl ))
 							return ASEAttenVarName;
 
+						bool isForward = dataCollector.CurrentPassName.Contains( "Forward" );
+						bool isGBuffer = dataCollector.CurrentPassName.Contains( "GBuffer" );
+
 						// Pragmas
-						string[] pragmas;
-						if ( ASEPackageManagerHelper.CurrentURPBaseline >= ASESRPBaseline.ASE_SRP_14 )
+						var pragmas = new List<string>();
+						if ( ASEPackageManagerHelper.CurrentSRPVersion >= 140009 )
 						{
-							pragmas = URP14PragmaMultiCompiles;
+							if ( isForward || isGBuffer )
+							{
+								pragmas.Add( "multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN" );
+								pragmas.Add( "multi_compile_fragment _ _SHADOWS_SOFT _SHADOWS_SOFT_LOW _SHADOWS_SOFT_MEDIUM _SHADOWS_SOFT_HIGH" );
+							}
+
+							if ( isForward )
+							{
+								pragmas.Add( "multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS" );
+								pragmas.Add( "multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS" );
+								pragmas.Add( "multi_compile _ _FORWARD_PLUS" );
+							}
+						}
+						else if ( ASEPackageManagerHelper.CurrentURPBaseline >= ASESRPBaseline.ASE_SRP_14 )
+						{
+							if ( isForward || isGBuffer )
+							{
+								pragmas.Add( "multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN" );
+								pragmas.Add( "multi_compile_fragment _ _SHADOWS_SOFT" );
+							}
+
+							if ( isForward )
+							{
+								pragmas.Add( "multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS" );
+								pragmas.Add( "multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS" );
+								pragmas.Add( "multi_compile _ _FORWARD_PLUS" );
+							}
 						}
 						else if ( ASEPackageManagerHelper.CurrentURPBaseline >= ASESRPBaseline.ASE_SRP_12 )
 						{
-							pragmas = URP12PragmaMultiCompiles;
+							if ( isForward || isGBuffer )
+							{
+								pragmas.Add( "multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN" );
+								pragmas.Add( "multi_compile_fragment _ _SHADOWS_SOFT" );
+							}
+
+							if ( isForward )
+							{
+								pragmas.Add( "multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS" );
+								pragmas.Add( "multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS" );
+							}
 						}
 						else if ( ASEPackageManagerHelper.CurrentURPBaseline >= ASESRPBaseline.ASE_SRP_11 )
 						{
-							pragmas = URP11PragmaMultiCompiles;
+							if ( isForward || isGBuffer )
+							{
+								pragmas.Add( "multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN" );
+								pragmas.Add( "multi_compile_fragment _ _SHADOWS_SOFT" );
+							}
+
+							if ( isForward )
+							{
+								pragmas.Add( "multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS" );
+								pragmas.Add( "multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS" );
+							}
 						}
 						else
 						{
-							pragmas = URP10PragmaMultiCompiles;
+							if ( isForward || isGBuffer )
+							{
+								pragmas.Add( "multi_compile _ _MAIN_LIGHT_SHADOWS" );
+								pragmas.Add( "multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE" );
+								pragmas.Add( "multi_compile_fragment _ _SHADOWS_SOFT" );
+							}
+
+							if ( isForward )
+							{
+								pragmas.Add( "multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS" );
+								pragmas.Add( "multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS" );
+							}
 						}
 
-						for ( int i = 0; i < pragmas.Length; i++ )
+						for ( int i = 0; i < pragmas.Count; i++ )
 						{
 							dataCollector.AddToPragmas( UniqueId, pragmas[ i ] );
 						}

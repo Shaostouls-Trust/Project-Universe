@@ -5,6 +5,7 @@ using UnityEngine;
 using ProjectUniverse.Data.Libraries;
 using ProjectUniverse.Animation.Controllers;
 using Unity.Netcode;
+using UnityEngine.PlayerLoop;
 namespace ProjectUniverse.PowerSystem
 {
     public sealed class ISubMachine : NetworkBehaviour
@@ -46,6 +47,12 @@ namespace ProjectUniverse.PowerSystem
         private NetworkVariable<int> netLegsRequired = new NetworkVariable<int>();
         private NetworkVariable<int> netLegsReceived = new NetworkVariable<int>();
         private NetworkVariable<bool> netLightEnabled = new NetworkVariable<bool>();
+
+        //B
+        private int previousRunState = -1;
+        private Material[] powerStateMaterials; // 0=full, 1=75%, 2=50%, 3=low, 4=off
+        private int currentMaterialIndex = -1;
+
         //anti-spaz timer
         private float chillTime = 7f;
         private float lastEnergyReceived = 0f;
@@ -106,7 +113,52 @@ namespace ProjectUniverse.PowerSystem
             //if(isHost){
             //}?
             NetworkListeners();
-            //
+
+            //B
+            //Pre-bake materials with different emission intensities
+            if (powerStateMaterials == null || powerStateMaterials.Length == 0)
+            {
+                CreatePowerStateMaterials();
+            }
+        }
+
+        //B
+        private void CreatePowerStateMaterials()
+        {
+            Material baseMat = renderer.sharedMaterial;
+            powerStateMaterials = new Material[5];
+
+            float[] emissionLevels = { 50f, 40f, 25f, 10f, 0f };
+
+            for (int i = 0; i < 5; i++)
+            {
+                powerStateMaterials[i] = new Material(baseMat);
+                powerStateMaterials[i].SetFloat("_EmissionIntensity", emissionLevels[i]);
+                //BUG: On light material change, lots of lag??
+
+                // Should do/use?:
+                //renderer.GetPropertyBlock(MPB);
+                //MPB.SetFloat("_EmissionIntensity", 25f);//50f is current emissive level for lights
+                //renderer.SetPropertyBlock(MPB);
+            }
+        }
+
+        //B
+        public void SetPowerState(int state)
+        {
+            int materialIndex = Mathf.Clamp(state, 0, 4);
+
+            if (materialIndex != currentMaterialIndex)
+            {
+                try
+                {
+                    renderer.sharedMaterial = powerStateMaterials[materialIndex];
+                }catch(IndexOutOfRangeException e)
+                {
+                    Debug.Log("Anomalous: "+e);
+                }
+                currentMaterialIndex = materialIndex;
+            }
         }
 
         private void NetworkListeners()
@@ -176,76 +228,25 @@ namespace ProjectUniverse.PowerSystem
             RunMachineSelector(machineType, runStateFromJob);
         }
 
-        /// <summary>
-        /// We need to lighten this update method as much as possible!
-        /// 
-        /// Offload onto worker thread?
-        /// </summary>
-        /*void Update()
+        public void SetJobResults(SubMachineJobs.SubMachineResults result)
         {
-            if (runMachine)
-            {
-                //reset requestedEnergy
-                netRequestedEnergy.Value = requiredEnergy;
-                //requestedEnergy = requiredEnergy;
-                //Recalculate drawToFill based on draw percent
-                float floatDrawToFill = (float)percentDrawToFill;
-                drawToFill = requiredEnergy + (requiredEnergy * (floatDrawToFill / 100)); //105% or 110% draw
-                                                                                          //If the energy buffer is not full
-                if (bufferCurrent < energyBuffer)
-                {
-                    //Get the deficit between the energybuffer(max) and the current buffer amount
-                    float deficit = energyBuffer - bufferCurrent;
-                    if (deficit >= drawToFill)
-                    {
-                        //send energy request
-                        netRequestedEnergy.Value = drawToFill;
-                        //requestedEnergy = drawToFill;
-                        RequestHelper();
+            // Update state from job
+            requestedEnergy = result.netAskEng;
+            bufferCurrent = result.newBuffer; // This is the buffer AFTER consumption
+            isPowered = result.powered;
+            chillTime = result.newTimer;
+            runStateFromJob = result.state;
+        }
 
-                    }
-                    else if (deficit < drawToFill && deficit > requiredEnergy)
-                    {
-                        netRequestedEnergy.Value = deficit + netRequiredEnergy.Value;
-                        //requestedEnergy = deficit + requiredEnergy;
-                        //Debug.Log(this.gameObject.name + " Request Helper");
-                        RequestHelper();
-                    }
-                    else
-                    {
-                        requestedEnergy = requiredEnergy;
-                        //Debug.Log(this.gameObject.name + " Request Helper");
-                        RequestHelper();
-                    }
-                    if(bufferCurrent < 0f)
-                    {
-                        bufferCurrent = 0f;
-                    }
-                }
-                else if (bufferCurrent >= energyBuffer)
-                {
-                    //send request
-                    //netRequestedEnergy.Value = netRequiredEnergy.Value;
-                    requestedEnergy = requiredEnergy;
-                    bufferCurrent = energyBuffer;
-                    //requestedEnergy = 0.0f;
-                    //Debug.Log(this.gameObject.name + " Request Helper");
-                    RequestHelper();
-                }
-            
-            
-                //run machines
-                //Debug.Log("Running "+this.gameObject.name);
-                RunLogic();
-            }
-            else
+        private void UpdateNetworkVariables()
+        {
+            if (IsServer)
             {
-                //turn the machine off
-                netRequestedEnergy.Value = 0f;
-                lastEnergyReceived = 0f;
-                RunLogic();
+                netBufferCurrent.Value = bufferCurrent;
+                netIsPowered.Value = isPowered;
+                netRequestedEnergy.Value = requestedEnergy;
             }
-        }*/
+        }
 
         public bool GetRunMachine()
         {
@@ -346,23 +347,6 @@ namespace ProjectUniverse.PowerSystem
 
         }
 
-        //float netReqEng, float lastEng, 
-        internal void SetData(float netAskEng, float buffer, bool powered, float time, int state)
-        {
-            //netRequiredEnergy.Value = netReqEng;
-            //requiredEnergy = netReqEng;
-            //netRequestedEnergy.Value = netAskEng;
-            requestedEnergy = netAskEng;
-            //lastEnergyReceived = lastEng;
-            //netBufferCurrent.Value = buffer;
-            bufferCurrent = buffer;
-            
-            //netIsPowered.Value = powered;
-            isPowered = powered;
-            chillTime = time;
-            runStateFromJob = state;
-        }
-
         public int GetLegRequirement()
         {
             return legsRequired;
@@ -379,9 +363,8 @@ namespace ProjectUniverse.PowerSystem
             get { return isPowered; }
         }
 
-        public float RequestedEnergyAmount() //ref int numSuppliers)
+        public float RequestedEnergyAmount()
         {
-            //numSuppliers += 1;
             if (iCableDLL.Count > 1)
             {
                 //correct for multiple inputs
@@ -454,6 +437,8 @@ namespace ProjectUniverse.PowerSystem
             }
             return true;
         }
+
+        
 
         public void RunMachineSelector(string ImachineType, int powerLevel)
         {
@@ -551,6 +536,49 @@ namespace ProjectUniverse.PowerSystem
 
         private void RunMachinePointLightStandAlone(int powerLevel)
         {
+            if (chillTime > 0f || lightComponent == null) return;
+
+            //B
+            SetPowerState(powerLevel);
+
+            switch (powerLevel)
+            {
+                case 0:
+                    SetLightProperties(maxLightIntensity, maxLightRange, true);
+                    break;
+                case 1:
+                    SetLightProperties(maxLightIntensity * 0.5f, maxLightRange * 0.75f, true);
+                    break;
+                case 2:
+                    SetLightProperties(
+                        maxLightIntensity * UnityEngine.Random.Range(0.25f, 0.35f),
+                        maxLightRange * UnityEngine.Random.Range(0.5f, 0.6f),
+                        true);
+                    break;
+                case 3:
+                    SetLightProperties(
+                        maxLightIntensity * UnityEngine.Random.Range(0.05f, 0.1f),
+                        maxLightRange * UnityEngine.Random.Range(0.2f, 0.3f),
+                        true);
+                    break;
+                case 4:
+                    SetLightProperties(0f, maxLightRange, true);
+                    break;
+                case 5:
+                    SetLightProperties(0f, maxLightRange, false);
+                    break;
+            }
+        }
+
+        private void SetLightProperties(float intensity, float range, bool enabled)
+        {
+            lightComponent.intensity = intensity;
+            lightComponent.range = range;
+            if (IsServer) netLightEnabled.Value = enabled;
+        }
+
+        private void RunMachinePointLightStandAlone_(int powerLevel)
+        {
             if (chillTime <= 0f)
             {
                 netLightEnabled.Value = true;
@@ -564,47 +592,47 @@ namespace ProjectUniverse.PowerSystem
                         lightComponent.range = maxLightRange;
                         //set material emissive to default
                         //MaterialPropertyBlock to manage the emissive material values for all our common lights
-                        renderer.GetPropertyBlock(MPB);
-                        MPB.SetFloat("_EmissionIntensity", 50f);//50f is current emissive level for lights
-                        renderer.SetPropertyBlock(MPB);
+                        //renderer.GetPropertyBlock(MPB);
+                        //MPB.SetFloat("_EmissionIntensity", 50f);//50f is current emissive level for lights
+                        //renderer.SetPropertyBlock(MPB);
                         break;
                     case 1:
                         lightComponent.intensity = maxLightIntensity * 0.5f; //50
                         lightComponent.range = maxLightRange * 0.75f; //3.75
                                                                       //set material emissive to 50%
-                        renderer.GetPropertyBlock(MPB);
-                        MPB.SetFloat("_EmissionIntensity", 40f);//50f is current emissive level for lights
-                        renderer.SetPropertyBlock(MPB);
+                        //renderer.GetPropertyBlock(MPB);
+                        //MPB.SetFloat("_EmissionIntensity", 40f);//50f is current emissive level for lights
+                        //renderer.SetPropertyBlock(MPB);
                         break;
                     case 2:
                         lightComponent.intensity = maxLightIntensity * UnityEngine.Random.Range(0.35f, 0.25f);//35 - 25
                         lightComponent.range = maxLightRange * UnityEngine.Random.Range(0.5f, 0.6f);//6.0f; (2.5 to 3)
                                                                   //set material emissive to 35%
-                        renderer.GetPropertyBlock(MPB);
-                        MPB.SetFloat("_EmissionIntensity", 25f);//50f is current emissive level for lights
-                        renderer.SetPropertyBlock(MPB);
+                        //renderer.GetPropertyBlock(MPB);
+                        //MPB.SetFloat("_EmissionIntensity", 25f);//50f is current emissive level for lights
+                        //renderer.SetPropertyBlock(MPB);
                         break;
                     case 3:
                         lightComponent.intensity = maxLightIntensity * UnityEngine.Random.Range(0.05f, 0.1f);//5 - 10
                         lightComponent.range = maxLightRange * UnityEngine.Random.Range(0.2f, 0.30f); //4.0f; (1 to 1.5)
                                                                                                       //set material emissive to 10%
-                        renderer.GetPropertyBlock(MPB);
-                        MPB.SetFloat("_EmissionIntensity", 10f);//50f is current emissive level for lights
-                        renderer.SetPropertyBlock(MPB);
+                        //renderer.GetPropertyBlock(MPB);
+                        //MPB.SetFloat("_EmissionIntensity", 10f);//50f is current emissive level for lights
+                        //renderer.SetPropertyBlock(MPB);
                         break;
                     case 4:
                         lightComponent.intensity = 0.0f;
                         //set material emissive to 0%
-                        renderer.GetPropertyBlock(MPB);
-                        MPB.SetFloat("_EmissionIntensity", 0f);//50f is current emissive level for lights
-                        renderer.SetPropertyBlock(MPB);
+                        //renderer.GetPropertyBlock(MPB);
+                        //MPB.SetFloat("_EmissionIntensity", 0f);//50f is current emissive level for lights
+                        //renderer.SetPropertyBlock(MPB);
                         break;
                     case 5:
                         netLightEnabled.Value = false;
                         //set material emissive to 0%
-                        renderer.GetPropertyBlock(MPB);
-                        MPB.SetFloat("_EmissionIntensity", 0f);//50f is current emissive level for lights
-                        renderer.SetPropertyBlock(MPB);
+                        //renderer.GetPropertyBlock(MPB);
+                        //MPB.SetFloat("_EmissionIntensity", 0f);//50f is current emissive level for lights
+                        //renderer.SetPropertyBlock(MPB);
                         break;
                 }
             }

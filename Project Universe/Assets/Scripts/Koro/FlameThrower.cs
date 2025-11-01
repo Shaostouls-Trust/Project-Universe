@@ -11,7 +11,7 @@ public class FlameThrower : MonoBehaviour
 
     private void Start()
     {
-        trgt = FindObjectOfType<target>();
+        trgt = FindFirstObjectByType<target>();
     }
     private void OnTriggerEnter(Collider other)
     {

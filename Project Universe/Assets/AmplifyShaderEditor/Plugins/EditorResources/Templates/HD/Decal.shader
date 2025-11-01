@@ -28,6 +28,8 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
 		[HideInInspector] _NormalBlendSrc("_NormalBlendSrc", Float) = 0.0
 		[HideInInspector] _MaskBlendSrc("_MaskBlendSrc", Float) = 1.0
 		[HideInInspector] _DecalMaskMapBlueScale("_DecalMaskMapBlueScale", Range(0.0, 1.0)) = 1.0
+
+		//[HideInInspector]_Unity_Identify_HDRP_Decal("_Unity_Identify_HDRP_Decal", Float) = 1.0
 	}
 
     SubShader
@@ -92,6 +94,8 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
 		#pragma multi_compile_instancing
 		#pragma instancing_options renderinglayer
 
+		#define SUPPORT_GLOBAL_MIP_BIAS
+
 		#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
 		#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Filtering.hlsl"
 
@@ -114,7 +118,10 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
 		{
 			/*ase_main_pass*/
 			Name "DBufferProjector"
-			Tags{"LightMode" = "DBufferProjector"}
+			Tags
+			{
+			   "LightMode" = "DBufferProjector"
+			}
 
             Stencil
 			{
@@ -158,6 +165,8 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
             #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
 
 			#define SHADERPASS SHADERPASS_DBUFFER_PROJECTOR
+			#define SUPPORT_GLOBAL_MIP_BIAS
+
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/Decal.hlsl"
@@ -371,7 +380,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
 
 					DecodeFromDecalPrepass(posInput.positionSS, material);
 
-					if ((decalLayerMask & material.decalLayerMask) == 0)
+					if ((decalLayerMask & material.renderingLayerMask) == 0)
 						clipValue -= 2.0;
 				}
 
@@ -405,11 +414,10 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
 				{
 					float2 angleFade = float2(normalToWorld[1][3], normalToWorld[2][3]);
 
-					if (angleFade.y < 0.0f)
+					if (angleFade.x > 0.0f)
 					{
 						float3 decalNormal = float3(normalToWorld[0].z, normalToWorld[1].z, normalToWorld[2].z);
-						float dotAngle = dot(material.geomNormalWS, decalNormal);
-						angleFadeFactor = saturate(angleFade.x + angleFade.y * (dotAngle * (dotAngle - 2.0)));
+                        angleFadeFactor = DecodeAngleFade(dot(material.geomNormalWS, decalNormal), angleFade);
 					}
 				}
 
@@ -473,7 +481,10 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
 		{
 			/*ase_hide_pass*/
 			Name "DecalProjectorForwardEmissive"
-			Tags { "LightMode" = "DecalProjectorForwardEmissive" }
+			Tags 
+			{ 
+				"LightMode" = "DecalProjectorForwardEmissive" 
+			}
 
 			Stencil
 			{
@@ -504,6 +515,8 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
             #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
 
 			#define SHADERPASS SHADERPASS_FORWARD_EMISSIVE_PROJECTOR
+			#define SUPPORT_GLOBAL_MIP_BIAS
+
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/Decal.hlsl"
@@ -653,7 +666,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
 
 				float depth = LoadCameraDepth(input.positionSS.xy);
 				#if (SHADERPASS == SHADERPASS_FORWARD_EMISSIVE_PROJECTOR) && UNITY_REVERSED_Z
-					depth = max(0.0001f, depth);
+					depth = IsSky(depth) ? UNITY_NEAR_CLIP_VALUE : depth;
 				#endif
 
 				posInput = GetPositionInput(input.positionSS.xy, _ScreenSize.zw, depth, UNITY_MATRIX_I_VP, UNITY_MATRIX_V);
@@ -666,7 +679,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
 
 					DecodeFromDecalPrepass(posInput.positionSS, material);
 
-					if ((decalLayerMask & material.decalLayerMask) == 0)
+					if ((decalLayerMask & material.renderingLayerMask) == 0)
 						clipValue -= 2.0;
 				}
 
@@ -700,12 +713,10 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
 				{
 					float2 angleFade = float2(normalToWorld[1][3], normalToWorld[2][3]);
 
-					if (angleFade.y < 0.0f)
+					if (angleFade.x > 0.0f)
 					{
 						float3 decalNormal = float3(normalToWorld[0].z, normalToWorld[1].z, normalToWorld[2].z);
-						float dotAngle = dot(material.geomNormalWS, decalNormal);
-
-						angleFadeFactor = saturate(angleFade.x + angleFade.y * (dotAngle * (dotAngle - 2.0)));
+                        angleFadeFactor = DecodeAngleFade(dot(material.geomNormalWS, decalNormal), angleFade);
 					}
 				}
 
@@ -769,7 +780,10 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
 		{
 			/*ase_hide_pass*/
 			Name "DBufferMesh"
-			Tags { "LightMode" = "DBufferMesh" }
+			Tags 
+			{ 
+				"LightMode" = "DBufferMesh" 
+			}
 
 
 			Stencil
@@ -813,6 +827,8 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
             #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
 
 			#define SHADERPASS SHADERPASS_DBUFFER_MESH
+			#define SUPPORT_GLOBAL_MIP_BIAS
+
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/Decal.hlsl"
@@ -1041,7 +1057,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
 
 					DecodeFromDecalPrepass(posInput.positionSS, material);
 
-					if ((decalLayerMask & material.decalLayerMask) == 0)
+					if ((decalLayerMask & material.renderingLayerMask) == 0)
 						clipValue -= 2.0;
 				}
 
@@ -1074,12 +1090,10 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
 				if (_EnableDecalLayers)
 				{
 					float2 angleFade = float2(normalToWorld[1][3], normalToWorld[2][3]);
-
-					if (angleFade.y < 0.0f)
+					if (angleFade.x > 0.0f)
 					{
 						float3 decalNormal = float3(normalToWorld[0].z, normalToWorld[1].z, normalToWorld[2].z);
-						float dotAngle = dot(material.geomNormalWS, decalNormal);
-						angleFadeFactor = saturate(angleFade.x + angleFade.y * (dotAngle * (dotAngle - 2.0)));
+                        angleFadeFactor = DecodeAngleFade(dot(material.geomNormalWS, decalNormal), angleFade);
 					}
 				}
 
@@ -1137,7 +1151,10 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
 		{
 			/*ase_hide_pass*/
 			Name "DecalMeshForwardEmissive"
-			Tags{ "LightMode" = "DecalMeshForwardEmissive" }
+			Tags
+			{ 
+			   "LightMode" = "DecalMeshForwardEmissive" 
+			}
 
 			Stencil
 			{
@@ -1169,6 +1186,8 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
             #include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
 
 			#define SHADERPASS SHADERPASS_FORWARD_EMISSIVE_MESH
+			#define SUPPORT_GLOBAL_MIP_BIAS
+
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
             #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/Decal.hlsl"
@@ -1278,7 +1297,6 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
 						#if (SHADERPASS == SHADERPASS_DBUFFER_PROJECTOR)
 							surfaceData.normalWS.xyz = mul((float3x3)normalToWorld, surfaceDescription.NormalTS);
 						#elif (SHADERPASS == SHADERPASS_DBUFFER_MESH) || (SHADERPASS == SHADERPASS_FORWARD_PREVIEW)
-
 							surfaceData.normalWS.xyz = normalize(TransformTangentToWorld(surfaceDescription.NormalTS, fragInputs.tangentToWorld));
 						#endif
 					#endif
@@ -1378,7 +1396,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
 
 					DecodeFromDecalPrepass(posInput.positionSS, material);
 
-					if ((decalLayerMask & material.decalLayerMask) == 0)
+					if ((decalLayerMask & material.renderingLayerMask) == 0)
 						clipValue -= 2.0;
 				}
 
@@ -1411,13 +1429,10 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
 				if (_EnableDecalLayers)
 				{
 					float2 angleFade = float2(normalToWorld[1][3], normalToWorld[2][3]);
-
-					if (angleFade.y < 0.0f)
+					if (angleFade.x > 0.0f)
 					{
 						float3 decalNormal = float3(normalToWorld[0].z, normalToWorld[1].z, normalToWorld[2].z);
-						float dotAngle = dot(material.geomNormalWS, decalNormal);
-
-						angleFadeFactor = saturate(angleFade.x + angleFade.y * (dotAngle * (dotAngle - 2.0)));
+                        angleFadeFactor = DecodeAngleFade(dot(material.geomNormalWS, decalNormal), angleFade);
 					}
 				}
 
@@ -1475,18 +1490,26 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
 		{
 			/*ase_hide_pass*/
 			Name "ScenePickingPass"
-			Tags { "LightMode" = "Picking" }
+			Tags 
+			{ 
+				"LightMode" = "Picking" 
+			}
 
             Cull Back
 
             HLSLPROGRAM
 		    #pragma only_renderers d3d11 playstation xboxone xboxseries vulkan metal switch
-
-            #define ATTRIBUTES_NEED_NORMAL
-            #define ATTRIBUTES_NEED_TANGENT
+			#pragma editor_sync_compilation
 
 			#pragma vertex Vert
 			#pragma fragment Frag
+
+            #define SHADERPASS SHADERPASS_DEPTH_ONLY
+            #define SCENEPICKINGPASS 1
+			#define SUPPORT_GLOBAL_MIP_BIAS
+
+            #define ATTRIBUTES_NEED_NORMAL
+            #define ATTRIBUTES_NEED_TANGENT
 
             #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
             #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
@@ -1496,9 +1519,6 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
 			// Require _SelectionID variable
             float4 _SelectionID;
 
-           #define SHADERPASS SHADERPASS_DEPTH_ONLY
-           #define SCENEPICKINGPASS 1
-
             #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Packing.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
@@ -1507,7 +1527,7 @@ Shader /*ase_name*/ "Hidden/HDRP/Decal" /*end*/
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/PickingSpaceTransforms.hlsl"
 			#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Decal/Decal.hlsl"
 
-            #pragma editor_sync_compilation
+
 
 			/*ase_pragma*/
 

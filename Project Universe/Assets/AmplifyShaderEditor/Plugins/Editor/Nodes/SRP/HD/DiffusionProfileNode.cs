@@ -77,6 +77,8 @@ namespace AmplifyShaderEditor
 		//[NonSerialized]
 		//private DiffusionProfileSettings m_previousValue;
 
+		public const string NodeErrorMsg = "Only valid on HDRP";
+
 		protected override void CommonInit( int uniqueId )
 		{
 			base.CommonInit( uniqueId );
@@ -88,6 +90,8 @@ namespace AmplifyShaderEditor
 #if UNITY_2019_3_OR_NEWER
 			m_freeType = true;
 #endif
+			m_errorMessageTypeIsError = NodeMessageType.Error;
+			m_errorMessageTooltip = NodeErrorMsg;
 		}
 
 		protected override void OnUniqueIDAssigned()
@@ -176,123 +180,21 @@ namespace AmplifyShaderEditor
 			EditorGUILayout.EndVertical();
 		}
 
-		//public override void OnNodeLayout( DrawInfo drawInfo )
-		//{
-		//	base.OnNodeLayout( drawInfo );
+		public override void OnNodeLogicUpdate(DrawInfo drawInfo)
+		{
+			base.OnNodeLogicUpdate( drawInfo );
+			m_showErrorMessage = ( ContainerGraph.CurrentCanvasMode == NodeAvailability.SurfaceShader ) ||
+								 ( ContainerGraph.CurrentCanvasMode == NodeAvailability.TemplateShader && ContainerGraph.CurrentSRPType != TemplateSRPType.HDRP );
+		}
 
-		//	m_propertyDrawPos = m_remainingBox;
-		//	m_propertyDrawPos.width = drawInfo.InvertedZoom * Constants.FLOAT_DRAW_WIDTH_FIELD_SIZE * 2;
-		//	m_propertyDrawPos.height = drawInfo.InvertedZoom * Constants.FLOAT_DRAW_HEIGHT_FIELD_SIZE;
-		//}
-
-		//public override void DrawGUIControls( DrawInfo drawInfo )
-		//{
-		//	base.DrawGUIControls( drawInfo );
-
-		//	if( drawInfo.CurrentEventType != EventType.MouseDown )
-		//		return;
-
-		//	Rect hitBox = m_remainingBox;
-		//	bool insideBox = hitBox.Contains( drawInfo.MousePosition );
-
-		//	if( insideBox )
-		//	{
-		//		GUI.FocusControl( null );
-		//		m_isEditingFields = true;
-		//	}
-		//	else if( m_isEditingFields && !insideBox )
-		//	{
-		//		GUI.FocusControl( null );
-		//		m_isEditingFields = false;
-		//	}
-		//}
-
-		//GUIStyle GetStyle( string styleName )
-		//{
-		//	GUIStyle s = GUI.skin.FindStyle( styleName ) ?? EditorGUIUtility.GetBuiltinSkin( EditorSkin.Inspector ).FindStyle( styleName );
-		//	if( s == null )
-		//	{
-		//		Debug.LogError( "Missing built-in guistyle " + styleName );
-		//		s = GUIStyle.none;
-		//	}
-		//	return s;
-		//}
-
-		//public override void Draw( DrawInfo drawInfo )
-		//{
-		//	base.Draw( drawInfo );
-
-		//	if( !m_isVisible )
-		//		return;
-
-		//	var cache = EditorStyles.objectField.fontSize;
-		//	EditorStyles.objectField.fontSize = (int)(9 * drawInfo.InvertedZoom);
-		//	var style = GetStyle( "ObjectFieldButton" );
-		//	var sw = style.stretchWidth;
-		//	style.stretchWidth = false;
-		//	//style.isHeightDependantOnWidth
-		//	style.fixedWidth = (int)( 16 * drawInfo.InvertedZoom );
-		//	style.fixedHeight = (int)( 16 * drawInfo.InvertedZoom );
-		//	//if( m_isEditingFields && m_currentParameterType != PropertyType.Global )
-		//	//{
-		//	float labelWidth = EditorGUIUtility.labelWidth;
-		//		EditorGUIUtility.labelWidth = 0;
-
-		//		if( m_materialMode && m_currentParameterType != PropertyType.Constant )
-		//		{
-		//			EditorGUI.BeginChangeCheck();
-		//			m_materialValue = EditorGUIObjectField( m_propertyDrawPos, m_materialValue, typeof( DiffusionProfileSettings ), true ) as DiffusionProfileSettings;
-		//			if( EditorGUI.EndChangeCheck() )
-		//			{
-		//				PreviewIsDirty = true;
-		//				m_requireMaterialUpdate = true;
-		//				if( m_currentParameterType != PropertyType.Constant )
-		//					BeginDelayedDirtyProperty();
-		//			}
-		//		}
-		//		else
-		//		{
-		//			EditorGUI.BeginChangeCheck();
-		//			m_defaultValue = EditorGUIObjectField( m_propertyDrawPos, m_defaultValue, typeof( DiffusionProfileSettings ), true ) as DiffusionProfileSettings;
-		//			if( EditorGUI.EndChangeCheck() )
-		//			{
-		//				PreviewIsDirty = true;
-		//				BeginDelayedDirtyProperty();
-		//			}
-		//		}
-		//		EditorGUIUtility.labelWidth = labelWidth;
-
-		//	style.fixedWidth = 0;
-		//	style.fixedHeight = 0;
-		//	style.stretchWidth = sw;
-		//	EditorStyles.objectField.fontSize = cache;
-		//	//}
-		//	//else if( drawInfo.CurrentEventType == EventType.Repaint )
-		//	//{
-		//	//	bool guiEnabled = GUI.enabled;
-		//	//	GUI.enabled = m_currentParameterType != PropertyType.Global;
-		//	//	Rect fakeField = m_propertyDrawPos;
-		//	//	if( GUI.enabled )
-		//	//	{
-		//	//		Rect fakeLabel = m_propertyDrawPos;
-		//	//		fakeLabel.xMax = fakeField.xMin;
-		//	//		EditorGUIUtility.AddCursorRect( fakeLabel, MouseCursor.SlideArrow );
-		//	//		EditorGUIUtility.AddCursorRect( fakeField, MouseCursor.Text );
-		//	//	}
-		//	//	bool currMode = m_materialMode && m_currentParameterType != PropertyType.Constant;
-		//	//	var value = currMode ? m_materialValue : m_defaultValue;
-
-		//	//	//if( m_previousValue != value )
-		//	//	//{
-		//	//	//	m_previousValue = value;
-		//	//	// string stuff
-		//	//	//}
-
-		//	//	//GUI.Label( fakeField, m_fieldText, UIUtils.MainSkin.textField );
-		//	//	GUI.enabled = guiEnabled;
-		//	//}
-		//}
-
+		public override void DrawProperties()
+		{
+			base.DrawProperties();
+			if ( m_showErrorMessage )
+			{
+				EditorGUILayout.HelpBox(NodeErrorMsg, MessageType.Error );
+			}				
+		}
 
 		public override string GenerateShaderForOutput( int outputId, ref MasterNodeDataCollector dataCollector, bool ignoreLocalvar )
 		{

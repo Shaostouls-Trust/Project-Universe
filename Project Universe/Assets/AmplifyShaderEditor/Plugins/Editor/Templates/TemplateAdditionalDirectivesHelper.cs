@@ -227,6 +227,7 @@ namespace AmplifyShaderEditor
 				{
 					AdditionalDirectiveContainer item = ScriptableObject.CreateInstance<AdditionalDirectiveContainer>();
 					item.Init( ownerOutputId, functionList[ i ] );
+					item.hideFlags = HideFlags.HideAndDontSave;
 					m_shaderFunctionDirectives.Add( item );
 				}
 			}

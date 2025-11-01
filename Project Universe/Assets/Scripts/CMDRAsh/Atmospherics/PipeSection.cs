@@ -1,4 +1,4 @@
-using ProjectUniverse.Environment.Fluid;
+using ProjectUniverse.Environment.Fluids;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +17,16 @@ namespace ProjectUniverse.Environment.Gas
         {
             get { return gasPipesInSection; }
             set { gasPipesInSection = value; }
+        }
+        public bool GasPipe
+        {
+            get { return gasPipe; }
+            set { gasPipe = value; fluidPipe = !value; }
+        }
+        public bool FluidPipe
+        {
+            get { return fluidPipe; }
+            set { fluidPipe = value; gasPipe = !value; }
         }
     }
 }

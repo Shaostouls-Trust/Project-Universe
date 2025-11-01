@@ -40,6 +40,10 @@ namespace ProjectUniverse.PowerSystem
         private int legsReceived;
         private float lastReceived;
 
+        //B2
+        [Header("Connection Configuration")]
+        [SerializeField] public PowerConnectionPoint connectionPoint = new PowerConnectionPoint();
+
         public float LastReceived 
         {
             get { return lastReceived; }
@@ -54,6 +58,9 @@ namespace ProjectUniverse.PowerSystem
         {
             RunMachine = true;
             bufferCurrent = 0.0f;
+            //B2
+            // Initialize connection point
+            connectionPoint.ownerComponent = this;
         }
 
         void Update()

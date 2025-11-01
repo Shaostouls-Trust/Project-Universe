@@ -17,10 +17,12 @@ namespace ProjectUniverse.Environment.Volumes
             if (originDoor != null && linkedVolume != null)
             {
                 originDoor.GetComponent<DoorAnimator>().OthersideTextMesh.text = linkedVolume.name;
+                originDoor.GetComponent<DoorAnimator>().LinkedNode = this;
             }
            
         }
 
+        // No longer used - Now, the intersection of the rigidbody and the trigger volume sets connection
         public bool LinkByImpact
         {
             get { return linkByImpact; }

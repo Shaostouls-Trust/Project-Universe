@@ -1,5 +1,5 @@
 using ProjectUniverse.Base;
-using ProjectUniverse.Environment.Fluid;
+using ProjectUniverse.Environment.Fluids;
 using ProjectUniverse.Environment.Gas;
 using ProjectUniverse.Environment.Volumes;
 using ProjectUniverse.Util;

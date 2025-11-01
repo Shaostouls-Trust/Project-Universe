@@ -308,8 +308,8 @@ Shader "ASESampleShaders/Decals Scifi Panels/Scifi Panel Decal"
 
 					DecodeFromDecalPrepass(posInput.positionSS, material);
 
-					if ((decalLayerMask & material.decalLayerMask) == 0)
-						clipValue -= 2.0;
+					//if ((decalLayerMask & material.decalLayerMask) == 0)
+					//	clipValue -= 2.0;
 				}
 
 
@@ -628,8 +628,8 @@ Shader "ASESampleShaders/Decals Scifi Panels/Scifi Panel Decal"
 
 					DecodeFromDecalPrepass(posInput.positionSS, material);
 
-					if ((decalLayerMask & material.decalLayerMask) == 0)
-						clipValue -= 2.0;
+					//if ((decalLayerMask & material.decalLayerMask) == 0)
+					//	clipValue -= 2.0;
 				}
 
 

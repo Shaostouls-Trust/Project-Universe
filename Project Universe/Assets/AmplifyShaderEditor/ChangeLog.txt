@@ -1,3 +1,398 @@
+v1.9.8
+
+   Editor
+      * Updated default shader target for Surface shaders to 3.5
+      * Fixed loading a shader sometimes shows an empty canvas (nodes out of view)
+      * Fix bug in "Clear Log on Update" preferences option hiding messages
+
+   Templates
+      * Updated all templates to shader target 3.5
+      * Updated Fog, Vertex Lighting, Depth Output, Early-Z in URP 12x-17x (#349, #274)
+      * Updated decal templates to use correct relative-world position (URP 12-17x)
+      * Fixed Lit and Hair template api errors in HDRP 14x
+      * Fixed "Alpha Clipping" in URP 12x to 17x
+      * Fixed duplicated ase_local_var in HDRP templates 10x to 17x
+
+   Nodes
+      * Added new "Position" node that can output in different spaces (#364)
+      * Added new "Normal Face" node that can output in different spaces (#354)
+      * Added numerically stable camera-relative world position to "Normal Face" node 
+      * Added extended Mode options to "Screen Position" node, matching SG (#144)
+      * Added "Inverse Model Matrix" node that outputs unity_WorldToObject
+      * Changed "Model Matrix" to output unity_ObjectToWorld, not UNITY_MATRIX_M
+      * Changed "Screen Depth" to remove linear toggle and extend depth mode
+      * Changed "Surface Depth" node, depth mode options now match "Screen Depth"
+      * Fixed div by zero in "Main Light Color" node when there are no lights (#367)
+      * Fixed errors and warnings in "Transform Direction" node (#359)
+      * Fixed errors and warnings in "Transform Position" node (#359)
+      * Fixed errors and warnings in "Grab Screen Color" nodes (#359)
+      * Fixed "Dither" node implicit truncation warnings
+      * Fixed "Dither" node large float precision issues when using tessellation
+      * Fixed "World Normal Face" node not correcting for projection flip
+      * Fixed "World Normal Face" node large-float precision issues (#354)
+      * Fixed "Screen Position" node not considering Vertex Offset in HDRP 10x-17x (#346) 
+      * Fixed "Screen Position" Normalized preview Z output
+
+v1.9.7.1
+
+   Editor
+      * Added ASE_VERSION define to all generated shaders
+
+   Templates
+      * Fixed URP 14x templates missing "Alpha Clipping" options and other changes
+
+   Nodes
+      * Updated "Common Transform Matrices" node to add InvP, InvVP and InvMVP
+      * Updated "Inverse View Projection Matrix" node to be compatible with BiRP
+      * Updated "Inverse Projection Matrix" node to be compatible with BiRP
+
+v1.9.7
+
+   Editor
+      * Added "Shader Graph to ASE" link button to Start Screen
+      * Shader inspector button "Open in Shader Editor" now greyed for non-ASE shaders
+
+   Templates
+      * Added template ase_subshader_options action conditionals and RefreshOption
+      * Added "Alpha Clipping" option to URP templates 10x-17x
+      * Fixed renderQueue based on AlphaTest/Transparency on URP templates 10x-17x
+      * Fixed missing light shadows in Transmission/Translucency on URP 10x-17x (#344)
+      * Fixed "Legacy/Lit" template error when using Baked Lightmap debug VIS (#244)
+
+   Nodes
+      * Added "View Vector" node (#57)
+      * Added "Object" and "View" space options to "View Dir" node
+      * Added Normalize option to "Normal Reconstruct Z" (#342)
+      * Added "Rounded Polygon" node
+      * Added "Fade Transition" node (#56)
+      * Added Saturation node (#64)
+      * Updated "Diffuse And Specular From Metallic" to work on any SRP, not just BiRP
+      * Updated "Polygon" node with minor improvements
+      * Updated "Rectangle" and "Rounded Rectangle" nodes with minor improvements
+      * Renamed "Light Color" node to "Main Light Color" (#310)
+      * Renamed "Light Attenuation" node to "Main Light Attenuation" (#310)
+      * Deprecated "Object Space View Dir" and "World Space View Dir" nodes (#315)
+      * Fixed SRP's additional lights Function for Light Layers on SRP 14+ (#325)
+      * Fixed invalid preview of the Dot Product Node (#338)
+      * Fixed matrix default values on Function Inputs (#335)
+      * Fixed "Switch" node Dynamic Branch bug (#348)
+      * Fixed "Parallax Occlusion Mapping" tex port disconnecting on changes (#255.B)
+      * Fixed "Grid" and "Rectangle" nodes throwing warning floatdiv/zero (#336)
+      * Fixed "Parallax Occlusion Mapping" node visual errors in WebGL2 (#339)
+      * Fixed "SRP Additional Light" no shadows unless "Use Shadow Mask" (#280)
+      * Fixed "Custom Expression" handling of unconnected SamplerState inputs (#318)
+      * Fixed invalid "screenPosition" when using "Depth Fade" and "Dither" nodes (#333)
+      * Fixed error using "Surface Depth" when connected "Local Vertex Offset" (#331)
+      * Fixed "Dither" node handling of unstable precision inputs (#266)
+
+v1.9.6.3
+
+   Templates
+      * Updated URP ShadowCaster template code to match Unity 6000.0.14 (#329)
+
+   Nodes
+      * Fixed "Instance ID" node causing errors when connected to vertex output (#291)
+
+v1.9.6.2
+
+   Editor
+      * Fixed ASE material inspector preview broken when using custom meshes (#324)
+
+   Templates
+      * Fixed invalid subscript probeOcclusion errors in URP 17x (#326)
+
+   Nodes
+      * Added "Exposure" node (#72)
+      * Added "Apply Exposure" (def:ON) to "Fetch Lightmap Value" and "Sample Lightmap"
+      * Fixed "Fetch Lightmap Value" and "Sample Lightmap" not respecting exposure
+
+v1.9.6.1
+
+   Samples
+      * Fixed URP 17x sample errors on Unity 6000.0.9+
+      * Removed deprecated shader from URP samples (10x to 17x)
+
+v1.9.6
+
+   Nodes
+      * Updated "Indirect Diffuse Light" node to support Unity6000.0.9+ (#321)
+      * Removed "Back Normal WS" input from "Sample Lightmap" to prevent mistakes (#322)
+
+   Templates 
+      * Updated support for Unity6000.0.9+, ignoring older versions (#319)
+      * Fixed RemapFoveatedRenderingResolve related shader errors on MacOS/Metal (#320)
+
+v1.9.5.1
+
+   Nodes
+      * Fixed "Transform Position" breaking when using "Clip" transform target
+
+v1.9.5
+
+   Editor
+      * Added ability to sort input and output ports, on a per node basis 
+      * Additional change to old fix related to nodes sometimes missing attributes (#296)
+
+   Nodes
+      * Fixed "SRP Bake GI" node support for adaptive probe volumes
+      * Changed "Transform Position" node output to vec4 with target transform "Clip"
+      * Changed "SRP Baked GI" input port "Screen Position" now expects Normalized (xyz/w)
+      * Added "Instance ID" node "Procedural" toggle to support procedural instancing
+      * Added "Transform Position" node "Screen" target transform
+      * Added "Use Alpha" option to "Color" node to output RGB when false (default = true)
+      * Added extra RGB output port to "Color" nodes
+      * Added extra RGB output port to "Texture Sample" node
+
+v1.9.4.4
+
+   Editor
+      * Changed "Template *" nodes to show property name as sub-title, instead of title
+
+   Nodes
+      * Fixed dithering broken with vertex offset/position on URP Unlit (all versions)
+      * Fixed duplicated declarations generated by "Reciprocal" node
+      * Fixed "SRP Baked GI" node causing flickering on HDRP 15+
+
+v1.9.4.3
+
+   Editor
+      * Added "Disable Material Mode" user preferences option
+
+   Nodes
+      * Fixed "Object Bounds" node not generating code reliably on URP 14x+
+
+v1.9.4.2
+
+   Nodes
+      * Fixed "Indirect Diffuse Light" node failing to generate code in URP Unlit
+
+v1.9.4.1
+
+   Nodes
+      * Reverted branch code optimizations due to errors on "If" and "Switch" nodes
+
+v1.9.4
+
+   Editor
+      * Template-restricted/specific nodes now show errors with Surface shader (#299)
+      * Fixed nodes sometimes missing attributes (#296)
+      * Fixed swizzle node preview (#292)
+      * Fixed "forwardadd" option added to URP/HDRP with "Instanced Terrain" (#300)
+
+   Templates 
+      * Added Lit/Unlit option for "Enable SSAO" URP 10-17x (#289)
+      * Added Lit/Unlit option for "Receive shadows" URP 10-17x (#233)
+      * Added Lighting Model option (PBR or Simple) to URP Lit 12-17x
+      * Fixed Lit/Unlit missing DOTS support in ExtraPrePass URP 10-17x (#286)
+      * Fixed Unlit missing FoveatedRenderingKeywords.hlsl URP 14-17x (#288)
+      * Fixed Lit LOD Cross Fade pragma in Forward and Gbuffer passes URP 16x
+      * Fixed Lit/Fabric Decal error in 2023.1.0 HDRP 15x (#293)
+      * Fixed Premultiply shader bug in URP Unlit template, all versions (#301)
+      * Fixed terrain instancing in BiRP templates
+      * Fixed foveated rendering related errors on macOS (URP 14) using Forward+ (#238)
+
+   Nodes
+      * Added "Object Bounds" node
+      * Added "Object Position" node
+      * Added "Compute Mip Level" node
+      * Added "Alpha Split" node
+      * Added "Alpha Merge" node
+      * Added "Flip" node
+      * Added "Nand" node
+      * Added "Not" node
+      * Added "Is Infinite" node
+      * Added "Is NaN" node
+      * Added "Current Frame" output to "Flipbook UV Animation" node
+      * Added "Max Frame" property to "Flipbook UV Animation" node
+      * Added "Switch" node support for "dynamic_branch" pragma
+      * Renamed "Static Switch" node to "Switch"
+      * Updated "Light Attenuation" node for URP 14.0.9 to 17 (#238)
+      * Fixed "SRP Baked GI" and "Indirect Diffuse Light" nodes in HDRP 17x (#285)
+      * Fixed "If" node code generation to take proper advantage of dynamic branching
+      * Fixed "Billboard" node generating implicit vector casting
+      * Fixed "Dither" node causing crashes on PS5
+      * Fixed "SRP Baked GI" node in Unity 16x 2023.2.20+ (#298)
+      * Fixed "SRP Baked GI" node error in Unity 14x 2022.3.26+ (#297)
+      * Fixed "Flipbook" node to also work with Clamp wrap mode (#304)
+      * Fixed timing issues in "Flipbook UV Animation" node
+      * Fixed "Indirect Diffuse Lighting" generating code in "Meta" pass (#232)
+
+v1.9.3.3
+
+   Editor
+      * Added support for Unity 6 (preview)
+      * Split Preferences into User-level and Project-level settings
+      * Added template ase_unity_cond_begin/end replacement tags (Unity version)
+      * Added template ability to set port actions via LinkId instead of Id/Name
+
+   Templates
+      * SRP 17x templates updated per Unity 6.0.0b13
+      * Updated HDRP Hair templates
+      * Fixed Double Sided Mode in HDRP templates (#279)
+      * Added conservative depth option to HDRP templates
+      * Fixed decal error in Decal template in HDRP 12x 14x
+      * Added missing Dots include in URP Unlit DepthNormal pass (#267)
+      * Fixed incorrect include for Foveated Rendering in URP
+      * Updated all templates 10x to 17x
+
+   Nodes
+      * Fixed DepthFade and ScreenDepth code generation in URP (#271)
+
+v1.9.3.2
+
+   Templates
+      * Fixed URP 14x template compile errors in some Unity versions
+
+v1.9.3.1
+
+   Editor
+      * Potential fix ASEPackageManagerHelper exceptions in batchmode (#237)
+
+   Templates
+      * Added URP 2D templates to SRP 17x
+      * Fixed URP 2D templates color change bug in 15x and 16x (#211)
+
+   Nodes
+      * Added min/max/steps inputs to "Parallax Occlusion Mapping" node (#163)
+
+v1.9.3
+
+   Editor
+      * Fixed inline properties sometimes losing connection (#212)
+      * Fixed broken double-click to change property names (#231)
+      * Fixed broken "Reset and Forget All" in ASE Preferences
+
+   Templates
+      * Added support for URP/HDRP 17x (Unity 2023.3.0b4)
+      * Updated URP/HDRP with latest unity changes (10x to 17x)
+      * Updated HDRP Refraction (10x to 17x)
+      * Fixed HDRP logic issues in SSR (10x to 17x)
+      * Fixed HDRP FullscreenDebug pass errors (#246)
+      * Fixed HDRP Unlit build errors (#247)
+
+   Nodes
+      * Updated "Polar Coordinate" node
+      * Updated "Flipbook" node
+      * Updated "SRP Additional Light" node
+
+   Samples      
+      * Removed URP Reflection Probe sample (moved to Amplify Shader Pack)
+      * Removed URP Terrain sample (moved to Amplify Shader Pack)
+      * Removed unused assets
+
+v1.9.2.2
+
+   Templates
+      * Massive template URP template update (all SRP versions)
+      * Massive template HDRP template update (all SRP versions)
+      * Added Local Vertex Tangent to Surface shader Master Node input      
+      * Deprecated duplicated DepthNormals pass in URP Unlit 12x
+
+   Nodes
+      * Fixed Normalize node when using safe mode
+      * Improved "World Normal Face" shader function precision
+      * Added Safe Normalize toggle to "World Normal Face"
+      * Fixed SRP Additional Light shader function
+      * Fixed Flipbook shader function
+
+v1.9.2.1
+
+   Templates
+      * Added initial support for URP/HDRP 17
+      * Updated all URP/HDRP templates
+      * Force AlphaToMask Off on URP ScenePicking/SceneSelection passes
+      * Fixed URP 14x 15x 16x Decal not working properly on Mac (#217)
+      * Fixed HDRP 12x 14x 15x 16x Unlit errors on Shadow Matte option (#218)
+
+   Nodes
+      * Fixed World Normal node sometimes generating errors on iOS platform (#225)
+      * Fixed dither node not updating subtitle when switching pattern (#229)
+      * Fixed errors in Light Color Node (#227)
+
+   Editor
+      * Proper fix for guistyle typo warning
+
+v1.9.2
+
+   Highlights
+      * Added support for 2023.2 and URP/HDRP 16x
+      * Added URP/HDRP 16x samples
+      * Fixed URP/HDRP 15x samples
+      * Added "Always Align to Grid" option to Preferences
+
+   Editor
+      * Node lengths now align to grid during snap
+      * Node header height now same regardless of subtitle
+      * Shader Function node Icon now white
+      * Removed [ASEBegin]/[ASEEnd] SRP tags
+
+   Samples
+      * Fixed Built-in samples
+      * Removed some Built-in samples conflicting with ASP
+
+v1.9.1.9
+
+   Editor
+      * Adjusted UIUtils toolbar style fix to include Unity 2021.3
+      * Switched from http to https as workaround for connection issues
+
+   Templates
+      * Fixed Decal related errors in Lit template (HDRP 14x 15x)
+      * Fixed OUTPUT_SH errors on URP 15x
+
+v1.9.1.8
+
+   Editor
+      * Fixed Undo-related error spam (#205)
+      * Fix for UIUtils console spam on Unity 2022.3+ (#208)
+      * Fixed "Indirect Diffuse Light" node errors on URP 15 (#209)
+      * Added "Device Depth" node; depth range compatible with "Depth Value" input
+      
+   Templates
+      * Fixed "Depth Value" input issues on URP (#190)
+      * Fixed EarlyZ errors on URP (#191)      
+      * Fixed "Depth Offset" input issues on HDRP
+
+v1.9.1.7
+
+   Editor
+      * Fixed Start Screen high CPU/GPU usage
+
+   Templates
+      * Fixed decal angle fade in (HDRP 12x 14x 15x)
+      * Fixed positionCS errors in Lit shader (URP 15x)
+
+v1.9.1.6
+
+   Editor
+      * Added support for Unity 2023
+      * Fixed NRE caused by Shader Function additional directives
+      * Fixed resize NRE in functions switch
+      * Increased MaxAllowedAmount in FunctionSwitch from 9 to 10
+      * Fixed GetScriptingDefineSymbolsForGroup deprecation warnings
+
+   Samples
+      * Added samples for SRP 15x
+
+   Nodes
+      * New "Metal Reflectance" node
+      * New "All" node
+      * New "Any" node
+      * New "Reciprocal" node
+      * New "Bacteria Smoothstep" node
+      * New "World Normal Face" node
+      * Update "Bacteria Smoothstep" node
+      * Added tags "refl reflect reflection" to "Reflect" node
+      * Renamed "Light" category to "Lighting"
+      * Added SRP 16x to "SwitchBySRPVersion" Node
+
+   Templates
+      * New SRP templates 15x
+      * Added ase_pragma to "UI-Default" template
+      * Updated SRP templates (10x 12x 14x)      
+      * Fixed color mask for light layers in HDRP (12x)
+      * Fixed URP terrain instancing (12x 14x)
+
 v1.9.1.5
 
    Editor

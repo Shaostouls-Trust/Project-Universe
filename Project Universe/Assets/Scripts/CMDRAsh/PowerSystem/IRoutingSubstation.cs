@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using ProjectUniverse.Production.Machines;
+using static ProjectUniverse.PowerSystem.PowerConnectionPoint;
 
 namespace ProjectUniverse.PowerSystem
 {
@@ -14,14 +15,14 @@ namespace ProjectUniverse.PowerSystem
         //private float[] requestedPower;
         private float totalRequiredPower;
         private IRoutingSubstation thisSubstation;
-        private LinkedList<ICable> iCableDLL = new LinkedList<ICable>();
+        private LinkedList<ICable> iCableDLL = new();
         [SerializeField] private float energyBufferMax;
         private float energyBufferMaxResetValue;
         private Mach_RoutingSubstation M_Substation;
         [SerializeField] private float bufferCurrent;
         private float deficitVbreaker = 1.0f;
         private float deficitVmachine = 1.0f;
-        private List<IRouter> myRouters = new List<IRouter>();
+        private List<IRouter> myRouters = new();
         //buildstate
         private bool buildState;
         //power legs update
@@ -39,6 +40,14 @@ namespace ProjectUniverse.PowerSystem
         private float lastReceived = 0f;
         private bool canRequestEnergy = true;
         //private float lastOut;
+ 
+        [Header("Connection Configuration")]
+        [SerializeField] private List<PowerConnectionPoint> connectionPoints = new();
+
+        [Header("Visualization")]
+        [SerializeField] private bool showConnectionPoints = true;
+        [SerializeField] private Color inputConnectionColor = Color.blue;
+        [SerializeField] private Color outputConnectionColor = Color.green;
 
         // Start is called before the first frame update
         void Start()
@@ -54,6 +63,46 @@ namespace ProjectUniverse.PowerSystem
             legsOut = 0;
             ProxyStart(2);
             ProxyStart(1);
+            // Initialize connection points
+            if (connectionPoints.Count == 0)
+            {
+                // Input from router
+                connectionPoints.Add(new PowerConnectionPoint("Router Input", new Vector3(-1.5f, 0, 0), ConnectionType.Input));
+
+                // Outputs to machines
+                int machineOutputs = targetMachine != null ? targetMachine.Length : 4;
+                for (int i = 0; i < machineOutputs; i++)
+                {
+                    connectionPoints.Add(new PowerConnectionPoint($"Machine Output_{i}", new Vector3(1.5f, 0, -1f + (i * 0.5f)), ConnectionType.Output));
+                }
+
+                // Outputs to breaker boxes
+                int breakerOutputs = targetBreakers != null ? targetBreakers.Length : 2;
+                for (int i = 0; i < breakerOutputs; i++)
+                {
+                    var point = new PowerConnectionPoint($"Breaker Output_{i}", new Vector3(0, 0, 1.5f + (i * 0.5f)), ConnectionType.Output);
+                    connectionPoints.Add(point);
+                }
+            }
+            // Set owner component for all connection points
+            foreach (var point in connectionPoints)
+            {
+                point.ownerComponent = this;
+            }
+        }
+
+        // Add method to handle PathCable connections
+        public void AddPathCable(PathCable cable)
+        {
+            if (!iCableDLL.Contains(cable))
+            {
+                iCableDLL.AddLast(cable);
+            }
+        }
+
+        public List<PowerConnectionPoint> ConnectionPoints
+        {
+            get { return connectionPoints; }
         }
 
         public float BufferCurrent
@@ -99,7 +148,7 @@ namespace ProjectUniverse.PowerSystem
                 {
                     if (targetBreakers[i] != null)
                     {
-                        ICable cable = new ICable(this, targetBreakers[i]);
+                        ICable cable = new(this, targetBreakers[i]);
                         iCableDLL.AddLast(cable);
                         legsOut += targetBreakers[i].GetLegRequirement();
                         availibleLegsOut = legsOut;
@@ -122,7 +171,7 @@ namespace ProjectUniverse.PowerSystem
                 {
                     if (targetMachine[i] != null)
                     {
-                        ICable cable = new ICable(this, targetMachine[i]);
+                        ICable cable = new(this, targetMachine[i]);
                         iCableDLL.AddLast(cable);
                         legsOut += targetMachine[i].GetLegRequirement();
                         //Debug.Log("Checking Machine State " + targetMachine[i].gameObject.name);
@@ -136,7 +185,57 @@ namespace ProjectUniverse.PowerSystem
             }
         }
 
-        // Update is called once per frame
+#if UNITY_EDITOR
+        private void OnDrawGizmos()
+        {
+            if (!showConnectionPoints)
+            {
+                return;
+            }
+            // Draw connection points
+            foreach (var point in connectionPoints)
+            {
+                if (point == null) continue;
+                point.ownerComponent = this;
+
+                Vector3 worldPos = point.GetWorldPosition();
+
+                // Draw sphere at connection point
+                Gizmos.color = point.connectionType == PowerConnectionPoint.ConnectionType.Input ?
+                    inputConnectionColor : outputConnectionColor;
+                Gizmos.DrawWireSphere(worldPos, 0.25f);
+
+                // Draw connection radius
+                Gizmos.color = point.connectionType == PowerConnectionPoint.ConnectionType.Input ?
+                    inputConnectionColor : outputConnectionColor;
+                Gizmos.DrawWireSphere(worldPos, point.connectionRadius);
+
+                // Draw direction arrow
+                Gizmos.color = point.connectionType == PowerConnectionPoint.ConnectionType.Input ?
+                    inputConnectionColor : outputConnectionColor;
+                Vector3 endPos = worldPos + point.GetWorldDirection() * 0.8f;
+                Gizmos.DrawLine(worldPos, endPos);
+            }
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            if (!showConnectionPoints)
+            {
+                return;
+            }
+            // Draw labels for connection points
+            foreach (var point in connectionPoints)
+            {
+                if (point == null) continue;
+
+                Vector3 worldPos = point.GetWorldPosition();
+                UnityEditor.Handles.Label(worldPos + Vector3.up * 0.5f,
+                    $"{point.name} ({point.connectionType})");
+            }
+        }
+#endif
+        
         void Update()
         {
             //get the Mach_ build state

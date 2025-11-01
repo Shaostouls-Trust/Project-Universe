@@ -1,0 +1,490 @@
+.graph-container {
+    width: 100%;
+    height: 100%;
+    background-color: #252525;
+    overflow: hidden;
+}
+
+.nodes-container, .connections-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform-origin: center center;
+}
+
+.node {
+    min-width: 150px;
+    min-height: 80px;
+    transition: none;
+    cursor: move;
+}
+
+.node-body {
+    background-color: #3a3a3a;
+    border-radius: 5px;
+    border-width: 1px;
+    border-color: #555;
+    padding: 5px;
+}
+
+.node.selected .node-body {
+    border-color: #0088ff;
+    border-width: 2px;
+}
+
+.node-title {
+    color: white;
+    font-size: 14px;
+    -unity-text-align: middle-center;
+    padding: 5px;
+}
+
+.ports-container {
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 10px;
+    min-height: 10px;
+    align-items: flex-start;
+}
+
+.input-ports-section, .output-ports-section {
+    flex-direction: column;
+    min-width: 80px;
+    margin: 5px;
+}
+.powernode-port-group {
+    background-color: #4a4a4a;
+    border-radius: 5px;
+    border-width: 1px;
+    border-color: #666;
+    padding: 5px;
+    margin-bottom: 8px;
+}
+
+.input-powernode-group {
+    border-left-color: #00ff88;
+    border-left-width: 3px;
+}
+
+.output-powernode-group {
+    border-left-color: #ff8800;
+    border-left-width: 3px;
+}
+
+.powernode-group-header {
+    color: #ccc;
+    font-size: 10px;
+    margin-bottom: 3px;
+    -unity-font-style: bold;
+}
+
+.powernode-ports-container {
+    flex-direction: column;
+}
+
+.port {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: #777;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.port:hover {
+    background-color: #0088ff;
+}
+
+.input-port {
+    background-color: #00ff88;
+    align-self: flex-start;
+}
+
+.output-port {
+    background-color: #ff8800;
+    align-self: flex-end;
+}
+
+.connection {
+    height: 3px;
+    background-color: #aaa;
+    transform-origin: 0 0;
+    pointer-events: none;
+}
+
+.connection-preview {
+    background-color: #0088ff;
+    opacity: 0.7;
+}
+
+.graph-container {
+    cursor: default;
+}
+
+.graph-container.panning {
+    cursor: grab;
+}
+
+.graph-container.panning:active {
+    cursor: grabbing;
+}
+
+.node:hover .node-body {
+    border-color: #777;
+}
+
+.input-ports-container, .output-ports-container {
+    flex-direction: column;
+    justify-content: space-around;
+    min-width: 25px;
+}
+
+.expand-button {
+    background-color: #555;
+    color: white;
+    border-width: 0;
+    border-radius: 3px;
+    font-size: 12px;
+    padding: 0;
+    margin: 0;
+}
+.expand-button:hover {
+    background-color: #666;
+}
+.main-content {
+    margin-bottom: 5px;
+}
+
+.utilization-label {
+    color: #ccc;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.expanded-content {
+    background-color: #2a2a2a;
+    border-radius: 3px;
+    padding: 5px;
+    margin-top: 5px;
+}
+
+.section {
+    margin-bottom: 10px;
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+}
+
+.section-header {
+    color: #0088ff;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+.stats-container {
+    background-color: rgba(0, 136, 255, 0.1);
+    border-radius: 3px;
+    padding: 5px;
+    margin-bottom: 8px;
+}
+
+.stats-label {
+    color: #ccc;
+    font-size: 11px;
+}
+.template-info {
+    background-color: #333;
+    border-radius: 3px;
+    padding: 3px;
+    margin-bottom: 3px;
+}
+
+.template-name {
+    color: #fff;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.template-utilization {
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.template-details {
+    margin-top: 2px;
+}
+
+.template-detail-label {
+    color: #bbb;
+    font-size: 10px;
+    margin-bottom: 1px;
+}
+
+.no-data-label {
+    color: #999;
+    font-size: 11px;
+    font-style: italic;
+    padding: 5px;
+    -unity-text-align: middle-center;
+}
+
+.debug-label {
+    color: #aaa;
+    font-size: 10px;
+    margin-left: 10px;
+}
+
+.connection-hover {
+    border-top-width: 3px;
+    transition: border-top-width 0.2s ease;
+}
+.matrix-section {
+    flex-grow: 1;
+    margin: 5px;
+    padding: 5px;
+    background-color: #333;
+    border-radius: 5px;
+    border-width: 1px;
+    border-color: #555;
+}
+
+.matrix-header {
+    color: #ddd;
+    font-size: 12px;
+    -unity-font-style: bold;
+    margin-bottom: 5px;
+    -unity-text-align: middle-center;
+}
+
+.powernode-matrix-container {
+    margin-bottom: 10px;
+    padding: 5px;
+    background-color: #3a3a3a;
+    border-radius: 3px;
+}
+
+.powernode-matrix-id {
+    color: #bbb;
+    font-size: 10px;
+    margin-bottom: 3px;
+}
+
+.routing-matrix {
+    background-color: #2a2a2a;
+    border-radius: 3px;
+    padding: 5px;
+}
+
+.matrix-grid {
+    flex-direction: column;
+}
+
+.matrix-row {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 2px;
+}
+
+.matrix-cell {
+    width: 30px;
+    height: 20px;
+    -unity-text-align: middle-center;
+    margin: 1px;
+}
+
+.matrix-corner-cell {
+    background-color: transparent;
+}
+
+.matrix-output-label {
+    color: #ff8800;
+    font-size: 10px;
+}
+
+.matrix-input-label {
+    color: #00ff88;
+    font-size: 10px;
+}
+
+.matrix-route-indicator {
+    background-color: rgba(40, 40, 40, 0.5);
+    border-radius: 3px;
+}
+
+.matrix-route-connected {
+    background-color: rgba(0, 100, 0, 0.5);
+}
+
+.matrix-indicator-symbol {
+    color: white;
+    font-size: 12px;
+}
+
+.matrix-route-active {
+    color: #ffcc00;
+    margin-left: 5px;
+    font-size: 10px;
+}
+.matrix-route-button {
+    background-color: rgba(40, 40, 40, 0.8);
+    border-radius: 3px;
+    border-width: 1px;
+    border-color: #555;
+    color: white;
+    font-size: 12px;
+    padding: 0;
+    transition: background-color 0.1s;
+}
+
+.matrix-route-button:hover {
+    background-color: rgba(60, 60, 60, 0.8);
+    border-color: #777;
+}
+
+.matrix-route-connected {
+    background-color: rgba(0, 120, 0, 0.7);
+    border-color: #0f0;
+}
+
+.matrix-route-connected:hover {
+    background-color: rgba(0, 150, 0, 0.8);
+}
+
+.matrix-route-active {
+    color: #ffcc00;
+    margin-left: 5px;
+    font-size: 10px;
+}
+
+.matrix-route-inactive {
+    color: #888;
+    margin-left: 5px;
+    font-size: 10px;
+    font-style: italic;
+}
+
+.matrix-reset-button {
+    margin-top: 8px;
+    background-color: #444;
+    border-radius: 3px;
+    border-width: 1px;
+    border-color: #666;
+    color: #ddd;
+    font-size: 10px;
+    padding: 3px;
+}
+
+.matrix-reset-button:hover {
+    background-color: #555;
+    border-color: #888;
+}
+
+.power-system-node .node-body {
+    background-color: #4a3a5a;
+    border-color: #8a7a9a;
+}
+
+.generator-node .node-body {
+    background-color: #5a4a3a;
+    border-color: #9a8a7a;
+}
+
+.generator-node .node-title {
+    color: #ffcc88;
+}
+
+.router-node .node-body {
+    background-color: #3a4a5a;
+    border-color: #7a8a9a;
+}
+
+.router-node .node-title {
+    color: #88ccff;
+}
+
+.substation-node .node-body {
+    background-color: #4a5a3a;
+    border-color: #8a9a7a;
+}
+
+.substation-node .node-title {
+    color: #ccff88;
+}
+
+.breaker-node .node-body {
+    background-color: #5a3a4a;
+    border-color: #9a7a8a;
+}
+
+.breaker-node .node-title {
+    color: #ff88cc;
+}
+
+.power-info-label {
+    color: #ddd;
+    font-size: 11px;
+    margin-bottom: 2px;
+}
+
+.toolbar-button.selecting {
+    background-color: #ff6600;
+    color: white;
+}
+
+.node.path-source {
+    border-color: #00ff00;
+    border-width: 3px;
+}
+
+.node.path-destination {
+    border-color: #ff0000;
+    border-width: 3px;
+}
+/*B*/
+.tab-container {
+    flex-direction: row;
+    align-items: flex-end;
+    height: 30px;
+    margin-bottom: -1px;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.view-tab {
+    border-width: 1px;
+    border-color: #444444;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    margin-right: 2px;
+    padding: 5px 15px;
+    background-color: #3C3C3C;
+    color: #CCCCCC;
+    min-width: 80px;
+}
+
+.view-tab:hover {
+    background-color: #4C4C4C;
+}
+
+.view-tab:active {
+    background-color: #5C5C5C;
+}
+
+.tab-row {
+    background-color: #2A2A2A;
+    border-bottom-width: 1px;
+    border-bottom-color: #444444;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.toolbar {
+    flex-direction: row;
+    padding: 10px;
+    background-color: #2A2A2A;
+    border-bottom-width: 1px;
+    border-bottom-color: #444444;
+    flex-wrap: wrap;
+    align-items: center;
+}

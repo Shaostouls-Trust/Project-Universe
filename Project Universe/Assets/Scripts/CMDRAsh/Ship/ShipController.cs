@@ -131,11 +131,11 @@ namespace ProjectUniverse.Ship
             else
             {
                 //decel to zero
-                if (rigidbody.velocity.x > 0f)
+                if (rigidbody.linearVelocity.x > 0f)
                 {
                     //x = -decel / 2f;
                 }
-                else if (rigidbody.velocity.x < 0f)
+                else if (rigidbody.linearVelocity.x < 0f)
                 {
                     //x = accel / 2f;
                 }
@@ -156,11 +156,11 @@ namespace ProjectUniverse.Ship
             else
             {
                 //decel to zero
-                if (rigidbody.velocity.z > 0f)
+                if (rigidbody.linearVelocity.z > 0f)
                 {
                     //z = -leftAcel / 2f;
                 }
-                else if (rigidbody.velocity.z < 0f)
+                else if (rigidbody.linearVelocity.z < 0f)
                 {
                     //z = rightAcel / 2f;
                 }
@@ -181,11 +181,11 @@ namespace ProjectUniverse.Ship
             else
             {
                 //decel to zero
-                if (rigidbody.velocity.y > 0f)
+                if (rigidbody.linearVelocity.y > 0f)
                 {
                     //y = -downAcel / 2f;
                 }
-                else if (rigidbody.velocity.y < 0f)
+                else if (rigidbody.linearVelocity.y < 0f)
                 {
                     //y = upAcel / 2f;
                 }

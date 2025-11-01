@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProjectUniverse.Environment.Chemistry;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -107,6 +108,18 @@ namespace ProjectUniverse.Data.Libraries
             catch (Exception e)
             {
                 Debug.Log("Gas Library Failed to Load:");
+                Debug.LogError(e);
+                Debug.Log("===========================");
+            }
+
+            //Static type
+            try
+            {
+                ChemistryDatabase.Initialize();
+            }
+            catch(Exception e)
+            {
+                Debug.Log("Chemistry Database Failed to Load:");
                 Debug.LogError(e);
                 Debug.Log("===========================");
             }

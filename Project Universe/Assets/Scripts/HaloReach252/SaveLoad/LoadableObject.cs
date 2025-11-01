@@ -34,7 +34,7 @@ public class LoadableObject : MonoBehaviour
 		if(saveRot)
 			transform.rotation = Quaternion.Euler(new Vector3(data.rotX, data.rotY, data.rotZ));
 		if(hasRigidbody)
-			GetComponent<Rigidbody>().velocity = new Vector3(data.velX, data.velY, data.velZ);
+			GetComponent<Rigidbody>().linearVelocity = new Vector3(data.velX, data.velY, data.velZ);
 	}
 
 	//Creates a new saveobjectdata object for saving purposes, then saves it

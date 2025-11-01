@@ -10,7 +10,7 @@ namespace AmplifyShaderEditor
 	{
 		public static void RegisterUndoRedoCallback( Undo.UndoRedoCallback onUndoRedo )
 		{
-			if ( Preferences.GlobalEnableUndo )
+			if ( Preferences.User.EnableUndo )
 			{
 				Undo.undoRedoPerformed -= onUndoRedo;
 				Undo.undoRedoPerformed += onUndoRedo;
@@ -19,7 +19,7 @@ namespace AmplifyShaderEditor
 
 		public static void UnregisterUndoRedoCallback( Undo.UndoRedoCallback onUndoRedo )
 		{
-			if ( Preferences.GlobalEnableUndo )
+			if ( Preferences.User.EnableUndo )
 			{
 				Undo.undoRedoPerformed -= onUndoRedo;
 			}
@@ -27,7 +27,7 @@ namespace AmplifyShaderEditor
 
 		public static void RegisterCompleteObjectUndo( UnityEngine.Object objectToUndo, string name )
 		{
-			if ( Preferences.GlobalEnableUndo )
+			if ( Preferences.User.EnableUndo )
 			{
 				Profiler.BeginSample( "Undo_RegisterCompleteObjectUndo" );
 				Undo.RegisterCompleteObjectUndo( objectToUndo, name );
@@ -37,7 +37,7 @@ namespace AmplifyShaderEditor
 
 		public static void RegisterCreatedObjectUndo( UnityEngine.Object objectToUndo, string name )
 		{
-			if ( Preferences.GlobalEnableUndo )
+			if ( Preferences.User.EnableUndo )
 			{
 				Profiler.BeginSample( "Undo_RegisterCreatedObjectUndo" );
 				Undo.RegisterCreatedObjectUndo( objectToUndo, name );
@@ -47,7 +47,7 @@ namespace AmplifyShaderEditor
 
 		public static void ClearUndo( UnityEngine.Object obj )
 		{
-			if ( Preferences.GlobalEnableUndo )
+			if ( Preferences.User.EnableUndo )
 			{
 				Profiler.BeginSample( "Undo_ClearUndo" );
 				Undo.ClearUndo( obj );
@@ -57,7 +57,7 @@ namespace AmplifyShaderEditor
 
 		public static void RecordObject( UnityEngine.Object objectToUndo, string name )
 		{
-			if ( Preferences.GlobalEnableUndo )
+			if ( Preferences.User.EnableUndo )
 			{
 				Profiler.BeginSample( "Undo_RecordObject" );
 				Undo.RecordObject( objectToUndo, name );
@@ -67,7 +67,7 @@ namespace AmplifyShaderEditor
 
 		public static void RecordObjects( UnityEngine.Object[] objectsToUndo, string name )
 		{
-			if ( Preferences.GlobalEnableUndo )
+			if ( Preferences.User.EnableUndo )
 			{
 				Profiler.BeginSample( "Undo_RecordObjects" );
 				Undo.RecordObjects( objectsToUndo, name );
@@ -77,7 +77,7 @@ namespace AmplifyShaderEditor
 
 		public static void DestroyObjectImmediate( UnityEngine.Object objectToUndo )
 		{
-			if ( Preferences.GlobalEnableUndo )
+			if ( Preferences.User.EnableUndo )
 			{
 				Profiler.BeginSample( "Undo_DestroyObjectImmediate" );
 				Undo.DestroyObjectImmediate( objectToUndo );
@@ -87,7 +87,7 @@ namespace AmplifyShaderEditor
 
 		public static void PerformUndo()
 		{
-			if ( Preferences.GlobalEnableUndo )
+			if ( Preferences.User.EnableUndo )
 			{
 				Profiler.BeginSample( "Undo_PerformUndo" );
 				Undo.PerformUndo();
@@ -97,7 +97,7 @@ namespace AmplifyShaderEditor
 
 		public static void PerformRedo()
 		{
-			if ( Preferences.GlobalEnableUndo )
+			if ( Preferences.User.EnableUndo )
 			{
 				Profiler.BeginSample( "Undo_PerformRedo" );
 				Undo.PerformRedo();
@@ -107,7 +107,7 @@ namespace AmplifyShaderEditor
 
 		public static void IncrementCurrentGroup()
 		{
-			if ( Preferences.GlobalEnableUndo )
+			if ( Preferences.User.EnableUndo )
 			{
 				Profiler.BeginSample( "Undo_IncrementCurrentGroup" );
 				Undo.IncrementCurrentGroup();

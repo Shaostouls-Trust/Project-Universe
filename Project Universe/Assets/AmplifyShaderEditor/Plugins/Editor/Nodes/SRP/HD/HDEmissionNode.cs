@@ -1,9 +1,9 @@
 // Amplify Shader Editor - Visual Shader Editing Tool
 // Copyright (c) Amplify Creations, Lda <info@amplify.pt>
-//#if UNITY_2019_1_OR_NEWER
-//#if UNITY_2018_3_OR_NEWER
+
 using System;
 using UnityEditor;
+
 namespace AmplifyShaderEditor
 {
 	using UnityEngine;
@@ -64,12 +64,8 @@ namespace AmplifyShaderEditor
 			AddInputPort( WirePortDataType.FLOAT, false, "Intensity" );
 			AddInputPort( WirePortDataType.FLOAT, false, "Exposition Weight" );
 			AddOutputPort( WirePortDataType.FLOAT3, Constants.EmptyPortValue );
-#if UNITY_2019_1_OR_NEWER
+
 			m_errorMessageTooltip = NodeErrorMsg;
-#else
-			m_errorMessageTooltip = MinorNodeErrorMsg;
-			m_showErrorMessage = true;
-#endif
 			m_errorMessageTypeIsError = NodeMessageType.Error;
 			m_autoWrapProperties = true;
 		}
@@ -81,18 +77,12 @@ namespace AmplifyShaderEditor
 			m_normalizeColor = EditorGUILayoutToggle( NormalizeColorLabel, m_normalizeColor );
 			if( m_showErrorMessage )
 			{
-#if UNITY_2019_1_OR_NEWER
 				EditorGUILayout.HelpBox( NodeErrorMsg , MessageType.Error );
-#else
-				EditorGUILayout.HelpBox( MinorNodeErrorMsg , MessageType.Error );
-#endif
 			}
 		}
 
 		public override string GenerateShaderForOutput( int outputId, ref MasterNodeDataCollector dataCollector, bool ignoreLocalvar )
 		{
-#if UNITY_2019_1_OR_NEWER
-
 			if( !dataCollector.IsSRP || !dataCollector.TemplateDataCollectorInstance.IsHDRP )
 			{
 				UIUtils.ShowMessage( ErrorOnCompilationMsg , MessageSeverity.Error );
@@ -135,36 +125,19 @@ namespace AmplifyShaderEditor
 			dataCollector.AddLocalVariable( UniqueId, CurrentPrecisionType, m_outputPorts[ 0 ].DataType, varName, varValue );
 			m_outputPorts[ 0 ].SetLocalValue( varName, dataCollector.PortCategory );
 			return varName;
-#else
-			UIUtils.ShowMessage( MinorVersionMsg , MessageSeverity.Error );
-			return GenerateErrorValue();
-#endif
 		}
 
 		public override void OnNodeLogicUpdate( DrawInfo drawInfo )
 		{
 			base.OnNodeLogicUpdate( drawInfo );
-#if UNITY_2019_1_OR_NEWER
 			m_showErrorMessage = ( ContainerGraph.CurrentCanvasMode == NodeAvailability.SurfaceShader ) ||
 									( ContainerGraph.CurrentCanvasMode == NodeAvailability.TemplateShader && ContainerGraph.CurrentSRPType != TemplateSRPType.HDRP );
-#endif
 		}
 		
 		public override void ReadFromString( ref string[] nodeParams )
 		{
 			base.ReadFromString( ref nodeParams );
-#if UNITY_2019_1_OR_NEWER
 			Enum.TryParse<HDEmissionIntensityUnit>( GetCurrentParam( ref nodeParams ), out m_intensityUnit );
-#else
-			try
-			{
-				m_intensityUnit = (HDEmissionIntensityUnit)Enum.Parse( typeof( HDEmissionIntensityUnit ) , GetCurrentParam( ref nodeParams ) );
-			}
-			catch( Exception e )
-			{
-				Debug.LogException( e );
-			}
-#endif
 			m_normalizeColor =  Convert.ToBoolean( GetCurrentParam( ref nodeParams ) );
 		}
 

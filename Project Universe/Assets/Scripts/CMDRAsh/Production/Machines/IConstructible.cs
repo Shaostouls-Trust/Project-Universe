@@ -10,10 +10,12 @@ using ProjectUniverse.Items.Weapons;
 using ProjectUniverse.Util;
 using System.Reflection;
 using ProjectUniverse.Environment.Volumes;
+using ProjectUniverse.Environment.Hazards;
+using ProjectUniverse.PowerSystem.CollisionDemo;
 
 namespace ProjectUniverse.Base
 {
-	public class IConstructible : MonoBehaviour
+	public class IConstructible : MonoBehaviour, IEnvironmentalDamageReceiver
 	{
 		[SerializeField] private bool AutoBuild = false;
 		protected MachineDefinition IConstructible_MachineDefinition;
@@ -80,8 +82,17 @@ namespace ProjectUniverse.Base
 				IConstructible_ComponentsReal.Add(stackx);
 			}
 			IConstructible_BuildTimeRemaining = CalculateBuildTime();
-			//autobuild
-			if (AutoBuild)
+
+            //A
+            // Register with environmental threat manager
+            var hazardManager = FindFirstObjectByType<EnvironmentalThreatManager>();
+            if (hazardManager != null)
+            {
+                hazardManager.RegisterMachine(this);
+            }
+
+            //autobuild
+            if (AutoBuild)
 			{
 				AutoBuildConstructible();
 			}
@@ -545,5 +556,92 @@ namespace ProjectUniverse.Base
 		}
 
 		protected virtual void ProcessDamageToComponents() { }
-	}
+
+        /// <summary>
+        /// Receives damage from environmental hazards (fire, heat, etc.)
+        /// </summary>
+        public void ReceiveEnvironmentalDamage(float damage, DamageType damageType)
+        {
+            ProcessEnvironmentalDamage(damage, damageType);
+        }
+
+        /// <summary>
+        /// Protected virtual method for subclasses to override environmental damage behavior
+        /// </summary>
+        protected virtual void ProcessEnvironmentalDamage(float damage, DamageType damageType)
+        {
+            // Find the lowest priority component with health remaining
+            int currentPriority = 10;
+            int compsInLevel = 0;
+            Consumable_Component comp;
+
+            for (int b = 0; b < IConstructible_ComponentsReal.Count; b++)
+            {
+                comp = IConstructible_ComponentsReal[b].GetItemArray().GetValue(0) as Consumable_Component;
+                if (comp == null || comp.GetQuantity() <= 0 || comp.RemainingHealth <= 0)
+                    continue;
+
+                int tempPriority = comp.GetPriority();
+                currentPriority = Mathf.Min(tempPriority, currentPriority);
+                if (tempPriority == currentPriority)
+                {
+                    compsInLevel += 1;
+                }
+            }
+
+            if (compsInLevel > 0)
+            {
+                float damagePerComponent = damage / compsInLevel;
+
+                for (int c = 0; c < IConstructible_ComponentsReal.Count; c++)
+                {
+                    if (IConstructible_ComponentsReal[c] == null)
+                        continue;
+
+                    comp = IConstructible_ComponentsReal[c].GetItemArray().GetValue(0) as Consumable_Component;
+                    if (comp == null || comp.GetPriority() != currentPriority || comp.RemainingHealth <= 0 || comp.GetQuantity() <= 0)
+                        continue;
+
+                    float remains = comp.CompTakeDamage(damagePerComponent);
+                    IConstructible_MachineHealthRemaining -= damagePerComponent;
+
+                    if (remains <= 0)
+                    {
+                        IConstructible_MachineFullyBuilt = false;
+                        IConstructible_ComponentsReal[c].RemoveTArrayIndex(0);
+
+                        Consumable_Component dummy = Consumable_Component.ConstructComponent(
+                            comp.ComponentID, 0, comp.GetComponentDefinition());
+                        dummy.RemainingHealth = 0f;
+
+                        if (IConstructible_ComponentsReal[c].LastIndex == 0)
+                        {
+                            IConstructible_ComponentsReal[c].GetItemArray()
+                                .SetValue(dummy, IConstructible_ComponentsReal[c].LastIndex);
+                        }
+                        else
+                        {
+                            IConstructible_ComponentsReal[c].GetItemArray()
+                                .SetValue(dummy, IConstructible_ComponentsReal[c].LastIndex - 1);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                IConstructible_MachineHealthRemaining -= damage;
+            }
+
+            ProcessDamageToComponents();
+        }
+
+        void OnDestroy()
+        {
+            var hazardManager = FindFirstObjectByType<EnvironmentalThreatManager>();
+            if (hazardManager != null)
+            {
+                hazardManager.UnregisterMachine(this);
+            }
+        }
+    }
 }

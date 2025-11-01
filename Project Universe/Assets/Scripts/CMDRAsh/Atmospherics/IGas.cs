@@ -31,24 +31,25 @@ namespace ProjectUniverse.Environment.Gas {
         private float stpDensity;
         //Instanced property
         private float temp;
-        private float concentration;//amount of the gas in the local volume
-        private float volume_m3;//amount of gas in m^3
+        private float concentration;//amount of the gas in the local volume (m^3)
+        private float volume_m3;//size of the local volume in m^3
+        private float mass; // in grams
         private float localPressure;//pressure of the gas in it's local volume
         private GasDefinition definition = null;
 
         override
         public string ToString()
         {
-            string compile = "" + IDname + " at " + temp + "F, " + density + "g/L, " + concentration + "m3 in " + volume_m3 + "m3 at " + localPressure + "atm";
+            string compile = "" + IDname + " at " + temp + "F, " + density + "g/L, " + concentration + "m3 in " + volume_m3 + "m3 at " + localPressure + "atm. Mass: " + mass + "g";
             return compile;
         }
 
-        public IGas(string gasID, float mytemp, float myconcentration)//, float localpressure)
+        public IGas(string gasID, float mytemp, float myconcentration)
         {
             IDname = gasID;
             temp = mytemp;
-            //localPressure = localpressure;
             concentration = myconcentration;
+
             //fill other values from gasID lib
             if (GasLibrary.GasDictionary.TryGetValue(IDname, out definition))
             {
@@ -60,6 +61,9 @@ namespace ProjectUniverse.Environment.Gas {
                 specificHeat = definition.SpecificHeat;
                 stpDensity = (1f * MolarMass) / (0.0821f * 273.15f);
             }
+
+            // Initialize mass based on concentration (assuming STP or default conditions)
+            mass = 0f; // Cannot calculate without pressure
         }
 
         public IGas(IGas otherGas)
@@ -69,6 +73,8 @@ namespace ProjectUniverse.Environment.Gas {
             localPressure = otherGas.GetLocalPressure();
             concentration = otherGas.GetConcentration();
             volume_m3 = otherGas.GetLocalVolume();
+            mass = otherGas.GetMass(); // NEW
+
             //gaslib data
             if (GasLibrary.GasDictionary.TryGetValue(IDname, out definition))
             {
@@ -89,6 +95,7 @@ namespace ProjectUniverse.Environment.Gas {
             localPressure = localpressure;
             concentration = myconcentration;
             volume_m3 = localvolume;
+
             //gaslib data
             if (GasLibrary.GasDictionary.TryGetValue(IDname, out definition))
             {
@@ -100,6 +107,74 @@ namespace ProjectUniverse.Environment.Gas {
                 specificHeat = definition.SpecificHeat;
                 stpDensity = (1f * MolarMass) / (0.0821f * 273.15f);
             }
+
+            // Calculate initial mass from ideal gas law: n = PV/RT, mass = n * M
+            // Convert temp to Kelvin
+            float tempK = ((temp - 32f) * (5f / 9f)) + 273.15f;
+            // Convert concentration (m³) to liters
+            float volumeL = concentration * 1000f;
+
+            if (tempK > 0f && localPressure > 0f)
+            {
+                // n = (P * V) / (R * T)
+                float moles = (localPressure * volumeL) / (0.0821f * tempK);
+                mass = moles * MolarMass; // in grams
+            }
+            else
+            {
+                mass = 0f;
+            }
+        }
+
+        public float MassToMoles(float massInGrams)
+        {
+            if (MolarMass <= 0f) return 0f;
+            return massInGrams / MolarMass;
+        }
+
+        // NEW METHOD: Remove mass from the gas
+        public void RemoveMass(float massInGrams)
+        {
+            Debug.Log("less: "+massInGrams);
+            mass = Mathf.Max(0f, mass - massInGrams);
+            Debug.Log("new mass: " + mass);
+            UpdateConcentrationFromMass();
+        }
+
+        // NEW METHOD: Add mass to the gas
+        public void AddMass(float massInGrams)
+        {
+            mass += massInGrams;
+            UpdateConcentrationFromMass();
+        }
+
+        // NEW METHOD: Get current mass
+        public float GetMass()
+        {
+            return mass;
+        }
+
+        // NEW HELPER: Update concentration based on current mass
+        private void UpdateConcentrationFromMass()
+        {
+            // Convert mass to moles
+            float moles = MassToMoles(mass);
+
+            // Convert temp to Kelvin
+            float tempK = ((temp - 32f) * (5f / 9f)) + 273.15f;
+
+            if (tempK <= 0f || localPressure <= 0f || moles <= 0f)
+            {
+                concentration = 0f;
+                return;
+            }
+
+            // Calculate volume from ideal gas law: V = nRT/P
+            // Result in liters
+            float volumeL = (moles * 0.0821f * tempK) / localPressure;
+
+            // Convert to m³
+            concentration = volumeL / 1000f;
         }
 
         public string GetIDName()
@@ -164,18 +239,18 @@ namespace ProjectUniverse.Environment.Gas {
         {
             concentration += amount;
         }
-        
+
         public void SetTemp(float newTemp)
         {
-            //Debug.Log(newTemp);
             temp = newTemp;
+            UpdateConcentrationFromMass(); // Recalculate concentration when temp changes
         }
 
         //public void SetTempKelvin(float kelvin)
         //{
         //    temp = ((temp - 273.15f) * (9f / 5f)) + 32f;
         //}
-        
+
         public void SetDensity(float newDensity)
         {
             density = newDensity;
@@ -183,6 +258,7 @@ namespace ProjectUniverse.Environment.Gas {
         public void SetLocalPressure(float pipePressure)
         {
             localPressure = pipePressure;
+            UpdateConcentrationFromMass(); // Recalculate concentration when pressure changes
         }
         public float GetLocalPressure()
         {

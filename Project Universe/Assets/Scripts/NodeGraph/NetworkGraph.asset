@@ -1,0 +1,427 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca6d7833b22e6f44d8d7d199f229185e, type: 3}
+  m_Name: NetworkGraph
+  m_EditorClassIdentifier: 
+  Nodes:
+  - Id: 067af118-d107-4282-94c2-1e7c732dc25c
+    Name: PowerRoutingStation 1
+    Position: {x: 204.12086, y: 339.92914}
+    InputConnectionIds:
+    - 47f3ad10-13e7-4b93-8da7-cfa00e213ccf
+    - 47f3ad10-13e7-4b93-8da7-cfa00e213ccf
+    OutputConnectionIds:
+    - 47f3ad10-13e7-4b93-8da7-cfa00e213ccf
+    InputConnectionPortIndices: 0000000001000000
+    OutputConnectionPortIndices: 00000000
+    SourceGameObjectPath: RoomNetwork/PowerRoutingStation 1
+    SourceGameObjectName: PowerRoutingStation 1
+    ComponentType: IRouter
+    SourceRoomPath: RoomNetwork
+    powerNodeState:
+      nodeId: 
+      connectionCount: 0
+      internalRoutes: []
+      activeConnections: []
+    templateInfos: []
+    waypointPortInfos:
+    - waypointPathId: path_794b7990
+      waypointName: path_794b7990
+      isComponentInput: 1
+      waypointWorldPosition: {x: -0.27499986, y: 0, z: 6.475}
+      connectedRoom: {fileID: 0}
+      connectedRoomPath: RoomNetwork
+    - waypointPathId: path_7f779c7d
+      waypointName: path_7f779c7d
+      isComponentInput: 0
+      waypointWorldPosition: {x: 4.45, y: 0, z: 7.825}
+      connectedRoom: {fileID: 0}
+      connectedRoomPath: RoomNetwork
+    boundaryPortInfos: []
+  - Id: 2db5d7cc-13dc-4674-9264-a48361418195
+    Name: Router_Substation (1)
+    Position: {x: 202.95764, y: 633.1566}
+    InputConnectionIds:
+    - 6f416fc3-fb35-4de4-b9f4-4c918cd48451
+    OutputConnectionIds: []
+    InputConnectionPortIndices: 01000000
+    OutputConnectionPortIndices: 
+    SourceGameObjectPath: RoomNetwork (3)/Router_Substation (1)
+    SourceGameObjectName: Router_Substation (1)
+    ComponentType: IRoutingSubstation
+    SourceRoomPath: RoomNetwork (3)
+    powerNodeState:
+      nodeId: 
+      connectionCount: 0
+      internalRoutes: []
+      activeConnections: []
+    templateInfos: []
+    waypointPortInfos:
+    - waypointPathId: path_90538b77
+      waypointName: path_90538b77
+      isComponentInput: 1
+      waypointWorldPosition: {x: 2.75, y: 0, z: 18.5}
+      connectedRoom: {fileID: 0}
+      connectedRoomPath: RoomNetwork (3)
+    boundaryPortInfos: []
+  - Id: fe1e6791-3a57-468d-a86d-8f2760fcf950
+    Name: Router_Substation
+    Position: {x: 204.05511, y: 495.28595}
+    InputConnectionIds:
+    - 6f416fc3-fb35-4de4-b9f4-4c918cd48451
+    - 6f416fc3-fb35-4de4-b9f4-4c918cd48451
+    OutputConnectionIds:
+    - 6f416fc3-fb35-4de4-b9f4-4c918cd48451
+    InputConnectionPortIndices: 0000000002000000
+    OutputConnectionPortIndices: 00000000
+    SourceGameObjectPath: RoomNetwork (3)/Router_Substation
+    SourceGameObjectName: Router_Substation
+    ComponentType: IRoutingSubstation
+    SourceRoomPath: RoomNetwork (3)
+    powerNodeState:
+      nodeId: 
+      connectionCount: 0
+      internalRoutes: []
+      activeConnections: []
+    templateInfos: []
+    waypointPortInfos:
+    - waypointPathId: path_0203be26
+      waypointName: path_0203be26
+      isComponentInput: 0
+      waypointWorldPosition: {x: 7, y: 0, z: 14}
+      connectedRoom: {fileID: 0}
+      connectedRoomPath: RoomNetwork (3)
+    - waypointPathId: path_5f8fee92
+      waypointName: path_5f8fee92
+      isComponentInput: 1
+      waypointWorldPosition: {x: 9, y: 0, z: 12}
+      connectedRoom: {fileID: 0}
+      connectedRoomPath: RoomNetwork (3)
+    boundaryPortInfos: []
+  - Id: 9a8f71e6-e10f-4ba3-b1e0-b08c1b9ad525
+    Name: RoomNetwork (1)
+    Position: {x: 496.24734, y: 6.985119}
+    InputConnectionIds:
+    - 09c78dc9-1ddf-4421-b234-c817783ee9af
+    OutputConnectionIds:
+    - 47f3ad10-13e7-4b93-8da7-cfa00e213ccf
+    InputConnectionPortIndices: 00000000
+    OutputConnectionPortIndices: 00000000
+    SourceGameObjectPath: RoomNetwork (1)
+    SourceGameObjectName: RoomNetwork (1)
+    ComponentType: HolographicRoom
+    SourceRoomPath: RoomNetwork (1)
+    powerNodeState:
+      nodeId: 
+      connectionCount: 0
+      internalRoutes: []
+      activeConnections: []
+    templateInfos:
+    - templateId: B11
+      templateName: Template2
+      templateType: 1
+      supportedSizes: 0100000002000000
+      assignedSizes: 01000000
+      usedPaths: 2
+      maxPaths: 2
+      utilizationPercentage: 100
+      maxCableCapacity: 10
+      currentCableCount: 0
+    - templateId: B12
+      templateName: Template1
+      templateType: 1
+      supportedSizes: 0100000002000000
+      assignedSizes: 0000000001000000
+      usedPaths: 2
+      maxPaths: 2
+      utilizationPercentage: 100
+      maxCableCapacity: 10
+      currentCableCount: 0
+    waypointPortInfos: []
+    boundaryPortInfos:
+    - portId: NP2
+      boundaryName: NP2
+      isConnected: 1
+      isInput: 1
+      worldPosition: {x: -4.1, y: 0, z: 15.1}
+    - portId: NP3
+      boundaryName: NP3
+      isConnected: 1
+      isInput: 0
+      worldPosition: {x: -4, y: 0, z: 3.1000004}
+    - portId: NP4
+      boundaryName: NP4
+      isConnected: 1
+      isInput: 0
+      worldPosition: {x: -4, y: 0, z: 3}
+    - portId: NP5
+      boundaryName: NP5
+      isConnected: 1
+      isInput: 1
+      worldPosition: {x: -4.1, y: 0, z: 14.85}
+  - Id: 6f416fc3-fb35-4de4-b9f4-4c918cd48451
+    Name: RoomNetwork (3)
+    Position: {x: 413.56317, y: 165.50404}
+    InputConnectionIds:
+    - 47f3ad10-13e7-4b93-8da7-cfa00e213ccf
+    OutputConnectionIds:
+    - fe1e6791-3a57-468d-a86d-8f2760fcf950
+    - 2db5d7cc-13dc-4674-9264-a48361418195
+    - fe1e6791-3a57-468d-a86d-8f2760fcf950
+    InputConnectionPortIndices: 00000000
+    OutputConnectionPortIndices: 000000000000000001000000
+    SourceGameObjectPath: RoomNetwork (3)
+    SourceGameObjectName: RoomNetwork (3)
+    ComponentType: HolographicRoom
+    SourceRoomPath: RoomNetwork (3)
+    powerNodeState:
+      nodeId: 
+      connectionCount: 0
+      internalRoutes: []
+      activeConnections: []
+    templateInfos:
+    - templateId: A12
+      templateName: Template1
+      templateType: 1
+      supportedSizes: 0100000002000000
+      assignedSizes: 01000000
+      usedPaths: 1
+      maxPaths: 1
+      utilizationPercentage: 100
+      maxCableCapacity: 10
+      currentCableCount: 0
+    - templateId: A12
+      templateName: Template2
+      templateType: 1
+      supportedSizes: 0100000002000000
+      assignedSizes: 02000000
+      usedPaths: 1
+      maxPaths: 1
+      utilizationPercentage: 100
+      maxCableCapacity: 10
+      currentCableCount: 0
+    - templateId: A14
+      templateName: Template3
+      templateType: 1
+      supportedSizes: 0100000002000000
+      assignedSizes: 01000000
+      usedPaths: 2
+      maxPaths: 2
+      utilizationPercentage: 100
+      maxCableCapacity: 10
+      currentCableCount: 0
+    waypointPortInfos:
+    - waypointPathId: path_90538b77
+      waypointName: path_90538b77
+      isComponentInput: 0
+      waypointWorldPosition: {x: 2.75, y: 0, z: 18.5}
+      connectedRoom: {fileID: 0}
+      connectedRoomPath: RoomNetwork (3)
+    - waypointPathId: path_0203be26
+      waypointName: path_0203be26
+      isComponentInput: 1
+      waypointWorldPosition: {x: 7, y: 0, z: 14}
+      connectedRoom: {fileID: 0}
+      connectedRoomPath: RoomNetwork (3)
+    - waypointPathId: path_5f8fee92
+      waypointName: path_5f8fee92
+      isComponentInput: 0
+      waypointWorldPosition: {x: 9, y: 0, z: 12}
+      connectedRoom: {fileID: 0}
+      connectedRoomPath: RoomNetwork (3)
+    boundaryPortInfos:
+    - portId: NP1
+      boundaryName: 1
+      isConnected: 1
+      isInput: 1
+      worldPosition: {x: 4.5, y: 0, z: 8.75}
+  - Id: 09c78dc9-1ddf-4421-b234-c817783ee9af
+    Name: RoomNetwork (2)
+    Position: {x: 7.6196475, y: 162.41585}
+    InputConnectionIds:
+    - 2663b754-583a-41d6-954a-121c5e77efaf
+    OutputConnectionIds:
+    - 9a8f71e6-e10f-4ba3-b1e0-b08c1b9ad525
+    InputConnectionPortIndices: 00000000
+    OutputConnectionPortIndices: 00000000
+    SourceGameObjectPath: RoomNetwork (2)
+    SourceGameObjectName: RoomNetwork (2)
+    ComponentType: HolographicRoom
+    SourceRoomPath: RoomNetwork (2)
+    powerNodeState:
+      nodeId: 
+      connectionCount: 0
+      internalRoutes: []
+      activeConnections: []
+    templateInfos:
+    - templateId: B12
+      templateName: Template1
+      templateType: 0
+      supportedSizes: 000000000100000002000000
+      assignedSizes: 00000000
+      usedPaths: 1
+      maxPaths: 1
+      utilizationPercentage: 100
+      maxCableCapacity: 10
+      currentCableCount: 0
+    waypointPortInfos:
+    - waypointPathId: path_804e7891
+      waypointName: path_804e7891
+      isComponentInput: 1
+      waypointWorldPosition: {x: -6.6, y: 0, z: -3.4}
+      connectedRoom: {fileID: 0}
+      connectedRoomPath: RoomNetwork (2)
+    boundaryPortInfos:
+    - portId: NP1
+      boundaryName: 1
+      isConnected: 1
+      isInput: 1
+      worldPosition: {x: -4, y: 0, z: 2.5}
+  - Id: 47f3ad10-13e7-4b93-8da7-cfa00e213ccf
+    Name: RoomNetwork
+    Position: {x: 210.74995, y: 97.27112}
+    InputConnectionIds:
+    - 09c78dc9-1ddf-4421-b234-c817783ee9af
+    OutputConnectionIds:
+    - 6f416fc3-fb35-4de4-b9f4-4c918cd48451
+    - 067af118-d107-4282-94c2-1e7c732dc25c
+    InputConnectionPortIndices: 00000000
+    OutputConnectionPortIndices: 0000000001000000
+    SourceGameObjectPath: RoomNetwork
+    SourceGameObjectName: RoomNetwork
+    ComponentType: HolographicRoom
+    SourceRoomPath: RoomNetwork
+    powerNodeState:
+      nodeId: 
+      connectionCount: 0
+      internalRoutes: []
+      activeConnections: []
+    templateInfos:
+    - templateId: B12
+      templateName: Template3
+      templateType: 0
+      supportedSizes: 000000000100000002000000
+      assignedSizes: 00000000
+      usedPaths: 1
+      maxPaths: 1
+      utilizationPercentage: 100
+      maxCableCapacity: 10
+      currentCableCount: 0
+    - templateId: B12
+      templateName: Template4
+      templateType: 0
+      supportedSizes: 000000000100000002000000
+      assignedSizes: 01000000
+      usedPaths: 1
+      maxPaths: 1
+      utilizationPercentage: 100
+      maxCableCapacity: 10
+      currentCableCount: 0
+    waypointPortInfos:
+    - waypointPathId: path_794b7990
+      waypointName: path_794b7990
+      isComponentInput: 0
+      waypointWorldPosition: {x: -0.27499986, y: 0, z: 6.475}
+      connectedRoom: {fileID: 0}
+      connectedRoomPath: RoomNetwork
+    - waypointPathId: path_7f779c7d
+      waypointName: path_7f779c7d
+      isComponentInput: 1
+      waypointWorldPosition: {x: 4.45, y: 0, z: 7.825}
+      connectedRoom: {fileID: 0}
+      connectedRoomPath: RoomNetwork
+    boundaryPortInfos:
+    - portId: NP3
+      boundaryName: 3
+      isConnected: 1
+      isInput: 1
+      worldPosition: {x: -4, y: 0, z: 2.5}
+    - portId: NP6
+      boundaryName: 3
+      isConnected: 1
+      isInput: 0
+      worldPosition: {x: 4.5, y: 0, z: 8.75}
+  - Id: 2663b754-583a-41d6-954a-121c5e77efaf
+    Name: Temp_GeneratorThing
+    Position: {x: 17.270939, y: 4.9587793}
+    InputConnectionIds: []
+    OutputConnectionIds:
+    - 09c78dc9-1ddf-4421-b234-c817783ee9af
+    InputConnectionPortIndices: 
+    OutputConnectionPortIndices: 00000000
+    SourceGameObjectPath: RoomNetwork (2)/Temp_GeneratorThing
+    SourceGameObjectName: Temp_GeneratorThing
+    ComponentType: IGenerator
+    SourceRoomPath: RoomNetwork (2)
+    powerNodeState:
+      nodeId: 
+      connectionCount: 0
+      internalRoutes: []
+      activeConnections: []
+    templateInfos: []
+    waypointPortInfos:
+    - waypointPathId: path_804e7891
+      waypointName: path_804e7891
+      isComponentInput: 0
+      waypointWorldPosition: {x: -6.6, y: 0, z: -3.4}
+      connectedRoom: {fileID: 0}
+      connectedRoomPath: RoomNetwork (2)
+    boundaryPortInfos: []
+  Connections:
+  - outputNodeId: 47f3ad10-13e7-4b93-8da7-cfa00e213ccf
+    inputNodeId: 067af118-d107-4282-94c2-1e7c732dc25c
+    outputPortIndex: 1
+    inputPortIndex: 1
+  - outputNodeId: 6f416fc3-fb35-4de4-b9f4-4c918cd48451
+    inputNodeId: fe1e6791-3a57-468d-a86d-8f2760fcf950
+    outputPortIndex: 2
+    inputPortIndex: 1
+  - outputNodeId: 47f3ad10-13e7-4b93-8da7-cfa00e213ccf
+    inputNodeId: 067af118-d107-4282-94c2-1e7c732dc25c
+    outputPortIndex: 0
+    inputPortIndex: 0
+  - outputNodeId: 067af118-d107-4282-94c2-1e7c732dc25c
+    inputNodeId: 47f3ad10-13e7-4b93-8da7-cfa00e213ccf
+    outputPortIndex: 0
+    inputPortIndex: 0
+  - outputNodeId: 6f416fc3-fb35-4de4-b9f4-4c918cd48451
+    inputNodeId: 2db5d7cc-13dc-4674-9264-a48361418195
+    outputPortIndex: 1
+    inputPortIndex: 0
+  - outputNodeId: fe1e6791-3a57-468d-a86d-8f2760fcf950
+    inputNodeId: 6f416fc3-fb35-4de4-b9f4-4c918cd48451
+    outputPortIndex: 0
+    inputPortIndex: 0
+  - outputNodeId: 6f416fc3-fb35-4de4-b9f4-4c918cd48451
+    inputNodeId: fe1e6791-3a57-468d-a86d-8f2760fcf950
+    outputPortIndex: 0
+    inputPortIndex: 0
+  - outputNodeId: 2663b754-583a-41d6-954a-121c5e77efaf
+    inputNodeId: 09c78dc9-1ddf-4421-b234-c817783ee9af
+    outputPortIndex: 0
+    inputPortIndex: 0
+  - outputNodeId: 47f3ad10-13e7-4b93-8da7-cfa00e213ccf
+    inputNodeId: 6f416fc3-fb35-4de4-b9f4-4c918cd48451
+    outputPortIndex: 0
+    inputPortIndex: 0
+  - outputNodeId: 9a8f71e6-e10f-4ba3-b1e0-b08c1b9ad525
+    inputNodeId: 47f3ad10-13e7-4b93-8da7-cfa00e213ccf
+    outputPortIndex: 0
+    inputPortIndex: 0
+  - outputNodeId: 09c78dc9-1ddf-4421-b234-c817783ee9af
+    inputNodeId: 47f3ad10-13e7-4b93-8da7-cfa00e213ccf
+    outputPortIndex: 0
+    inputPortIndex: 0
+  - outputNodeId: 09c78dc9-1ddf-4421-b234-c817783ee9af
+    inputNodeId: 9a8f71e6-e10f-4ba3-b1e0-b08c1b9ad525
+    outputPortIndex: 0
+    inputPortIndex: 0

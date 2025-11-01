@@ -22,11 +22,11 @@ public class AirScrubber : MonoBehaviour
         {
             scrubRateLeft = scrubRate_m3perSec;
             //for every gas in vacToScrub
-            for (int i = 0; i < vacToScrub.RoomGasses.Count; i++)
+            for (int i = 0; i < vacToScrub.RoomGassesLegacy.Count; i++)
             {
                 if (scrubRate_m3perSec > 0f)
                 {
-                    IGas gas = vacToScrub.RoomGasses[i];
+                    IGas gas = vacToScrub.RoomGassesLegacy[i];
                     if (scrubToxic)
                     {
                         if (gas.GetToxicity() > 0f)

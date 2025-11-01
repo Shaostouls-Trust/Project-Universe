@@ -279,7 +279,7 @@ namespace AmplifyShaderEditor
 
 		private void TryReadUniqueId( string param )
 		{
-			if ( Preferences.GlobalForceTemplateInlineProperties && !string.IsNullOrEmpty( m_nodePropertyName ) )
+			if ( Preferences.User.ForceTemplateInlineProperties && !string.IsNullOrEmpty( m_nodePropertyName ) )
 			{
 				// @diogo: exception path => ignore param and revert to template default
 				m_nodeId = UIUtils.GetFloatIntNodeIdByName( m_nodePropertyName );

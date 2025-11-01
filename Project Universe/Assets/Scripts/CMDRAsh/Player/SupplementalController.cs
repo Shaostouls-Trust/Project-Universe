@@ -1058,6 +1058,7 @@ namespace ProjectUniverse.Player.PlayerController
 
             controls.Player.Look.performed += ctx =>
             {
+                //Debug.Log("LOOK");
                 Vector2 inputlook = mouseInputMultiplier * Time.deltaTime * ctx.ReadValue<Vector2>();
                 inputlook.y *= -1f;
 
@@ -1088,6 +1089,7 @@ namespace ProjectUniverse.Player.PlayerController
                     //Debug.Log("Look: " + inputlook.x + " " + inputlook.y);
                     if (!cameraLocked)
                     {
+                        //Debug.Log("LOOK SH");
                         lookInput = Vector2.zero;
                         RemoteLookAxis_Horizonal = inputlook.x;
                         RemoteLookAxis_Vertical = inputlook.y;
@@ -1196,7 +1198,7 @@ namespace ProjectUniverse.Player.PlayerController
         public void TeleportPlayerServerRPC(Vector3 newGlobalPosition)
         {
             Debug.Log("TP SRPC");
-            transform.position = newGlobalPosition;
+            playerRoot.transform.position = newGlobalPosition;
             TeleportPlayerClientRPC(newGlobalPosition);
 
         }
@@ -1210,7 +1212,7 @@ namespace ProjectUniverse.Player.PlayerController
         private void TeleportPlayer(Vector3 newGlobalPosition)
         {
             Debug.Log("TP: "+newGlobalPosition);
-            transform.position = newGlobalPosition;
+            playerRoot.transform.position = newGlobalPosition;
         }
 
         public bool CameraLocked
@@ -1328,15 +1330,15 @@ namespace ProjectUniverse.Player.PlayerController
         {
             //raycast to visible render planes
             //get camera position
-            GameObject camGo;
-            if (cameraFirst)
-            {
-                camGo = firstPersonCameraRoot.GetComponentInChildren<Camera>().gameObject;
-            }
-            else
-            {
-                camGo = thirdPersonCameraRoot.GetComponentInChildren<Camera>().gameObject;
-            }
+            //GameObject camGo;
+            //if (cameraFirst)
+            //{
+            //    camGo = firstPersonCameraRoot.GetComponentInChildren<Camera>().gameObject;
+            //}
+            //else
+            //{
+            //    camGo = thirdPersonCameraRoot.GetComponentInChildren<Camera>().gameObject;
+            //}
             //Vector3 forward = camGo.transform.TransformDirection(0f, 0f, 1f);
 
             //RaycastHit[] hits;
@@ -1489,7 +1491,7 @@ namespace ProjectUniverse.Player.PlayerController
             if (!grounded && !OnLadder)
             {
                 //add gravity to velocity
-                rigidbody.velocity += g;
+                rigidbody.linearVelocity += g;
             }
 
             //If gravity is along y
@@ -1702,7 +1704,7 @@ namespace ProjectUniverse.Player.PlayerController
                 if (FloorMasterRB != null)
                 {
                     //Debug.Log(FloorMasterRB.velocity);
-                    floorVel = FloorMasterRB.velocity;
+                    floorVel = FloorMasterRB.linearVelocity;
                 }
                 else
                 {
@@ -1765,7 +1767,7 @@ namespace ProjectUniverse.Player.PlayerController
 
             // velocity is having player try to clip/walk into things. Can we use .move somehow?
             //Debug.Log(floorVel);
-            rigidbody.velocity = velocity + floorVel;
+            rigidbody.linearVelocity = velocity + floorVel;
             //Debug.Log(rigidbody.velocity);
         }
 
@@ -1795,7 +1797,7 @@ namespace ProjectUniverse.Player.PlayerController
                 if (angleDeltas.magnitude > 0f) { 
                     Vector3 playerFloorDelta = playerLocalOldPosition - transform.localPosition;
                     // get the player's velocity
-                    Vector3 playerVelocity = rigidbody.velocity;
+                    Vector3 playerVelocity = rigidbody.linearVelocity;
                     //Debug.Log(playerLocalOldPosition.x +" "+ playerLocalOldPosition.y + " " + playerLocalOldPosition.z);//FloorMasterTransform.TransformPoint(playerLocalOldPosition)
                     //Debug.Log(transform.localPosition.x + " " + transform.localPosition.y + " " + transform.localPosition.z);
                     // if playerfloorDelta is greater than playerVelocity, move the player to the extrapolated velocity position

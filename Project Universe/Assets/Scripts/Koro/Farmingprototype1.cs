@@ -62,7 +62,7 @@ public class Farmingprototype1 : MonoBehaviour
         {
             if (cantakeplant)
         {
-            if (plantchild.active == false)
+            if (plantchild.activeSelf == false)
             {
                 plantchild.SetActive(true);
                 plantchild.SendMessage("Plusoneplantinchild");

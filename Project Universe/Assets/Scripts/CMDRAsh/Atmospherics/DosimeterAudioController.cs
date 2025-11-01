@@ -76,7 +76,7 @@ namespace ProjectUniverse.Environment.Radiation
                 {
                     if (!speaker.isPlaying)
                     {
-                        speaker.volume *= GlobalSettings.MasterVolume * GlobalSettings.PlayerVolume;
+                        speaker.volume = 1;//*= GlobalSettings.MasterVolume * GlobalSettings.PlayerVolume;
                         //speaker.panStereo = Random.Range(-1f, 1f);
                         speaker.PlayOneShot(soundBlips[Random.Range(range[0], range[1])]);
                         cyclesToPlaySound = rate;

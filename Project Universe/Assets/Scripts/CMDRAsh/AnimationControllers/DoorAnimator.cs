@@ -5,6 +5,8 @@ using ProjectUniverse.PowerSystem;
 using ProjectUniverse.Data.Libraries;
 using ProjectUniverse.Production.Machines;
 using Unity.Netcode;
+using ProjectUniverse.Environment.Volumes;
+using System;
 
 namespace ProjectUniverse.Animation.Controllers
 {
@@ -21,6 +23,9 @@ namespace ProjectUniverse.Animation.Controllers
         private Mach_AirtightDoor M_door;
         [SerializeField] private AudioSource audsrc;
         [SerializeField] private AudioClip[] clips;//0 is open, 1 is closed
+        [SerializeField] private float maxPressure=10f; //max pressure in atm that the door can withstand
+        private VolumeNode linkedNode;
+        private VolumeAtmosphereController thisVAC;
         //IMPORTANT
         //elem 0 is door L
         //elem 1 is door R
@@ -44,8 +49,11 @@ namespace ProjectUniverse.Animation.Controllers
         //private bool isROpening;
         //private bool isRClosing;
         private bool hasEmissive;
+        [SerializeField] private bool isRuptured = false;
 
         public bool locked=false;//whether or not the door can be opened
+
+        //NYI
         private bool weldedClosed;//whether or not door has been welded shut
         private bool weldedOpen;//Allow welded open?
 
@@ -76,6 +84,11 @@ namespace ProjectUniverse.Animation.Controllers
         //private NetworkVariableFloat netAnimSpeed = new NetworkVariableFloat(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
         [SerializeField] private TMPro.TMP_Text othersideID;
 
+        public float MaxPressure
+        {
+            get { return maxPressure; }
+        }
+
         public bool Open
         {
             get { return (isLOpen || isROpen); }
@@ -84,6 +97,16 @@ namespace ProjectUniverse.Animation.Controllers
         public bool Closing
         {
             get { return isClosing; }
+        }
+        public VolumeNode LinkedNode
+        {
+            get { return linkedNode; }
+            set { linkedNode = value; }
+        }
+        public VolumeAtmosphereController VACRef
+        {
+            get { return thisVAC; }
+            set { thisVAC = value; }
         }
         public TMPro.TMP_Text OthersideTextMesh
         {
@@ -328,9 +351,31 @@ namespace ProjectUniverse.Animation.Controllers
                     panelRenderer[i].material = MaterialLibrary.GetDoorDisplayMaterials(2);
                 }
             }
-
+            // Check pressures
+            if(thisVAC != null && !IsRuptured)
+            {
+                float headpres = thisVAC.Pressure;
+                if(linkedNode != null)
+                {
+                    headpres -= linkedNode.VolumeLink.GetComponent<VolumeAtmosphereController>().Pressure;
+                }
+                if(Math.Abs(headpres) > maxPressure)
+                {
+                    Debug.Log("Door Overpressure");
+                    IsRuptured = true;
+                    //isLOpen = true;
+                    //isROpen = true;
+                    
+                    /// NYI
+                    //play burst sound + anim
+                }
+            }
         }
-
+        public bool IsRuptured
+        {
+            get { return isRuptured; }
+            set { isRuptured = value; }
+        }
         public bool Locked
         {
             get

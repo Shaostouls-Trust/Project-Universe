@@ -1064,15 +1064,15 @@ namespace AmplifyShaderEditor
 			}
 		}
 
-		public void OnCustomPassOptionSelected( bool actionFromUser , bool isRefreshing , bool invertAction , TemplateOptionUIItem uiItem , params TemplateActionItem[] validActions )
+		public void OnCustomPassOptionSelected( bool actionFromUser , bool isRefreshing , bool invertAction , TemplateOptionUIItem uiItem , int recursionLevel, params TemplateActionItem[] validActions )
 		{
-			m_passOptions.OnCustomOptionSelected( actionFromUser , isRefreshing , invertAction , this , uiItem , validActions );
+			m_passOptions.OnCustomOptionSelected( actionFromUser , isRefreshing , invertAction , this , uiItem , recursionLevel, validActions );
 		}
 
-		public void OnCustomSubShaderOptionSelected( bool actionFromUser , bool isRefreshing , bool invertAction , TemplateOptionUIItem uiItem , params TemplateActionItem[] validActions )
+		public void OnCustomSubShaderOptionSelected( bool actionFromUser , bool isRefreshing , bool invertAction , TemplateOptionUIItem uiItem , int recursionLevel, params TemplateActionItem[] validActions )
 		{
 			if( m_isMainOutputNode )
-				m_subShaderOptions.OnCustomOptionSelected( actionFromUser , isRefreshing , invertAction , this , uiItem , validActions );
+				m_subShaderOptions.OnCustomOptionSelected( actionFromUser , isRefreshing , invertAction , this , uiItem , recursionLevel, validActions );
 		}
 
 		void SetupCustomOptionsFromTemplate( bool newTemplate )
@@ -2249,6 +2249,8 @@ namespace AmplifyShaderEditor
 			// Check Current Options for property changes on pass
 			CheckPropertyChangesOnOptions( m_passOptions );
 
+			// @diogo: Set ASE info
+			ASEPackageManagerHelper.SetASEVersionInfoOnDataCollector( ref m_currentDataCollector );
 
 			//Set SRP info
 			if( m_templateMultiPass.SRPtype != TemplateSRPType.BiRP )
@@ -2475,40 +2477,6 @@ namespace AmplifyShaderEditor
 					if( !currDataCollector.ContainsProperty( "_EmissionColor" ) )
 					{
 						currDataCollector.AddToProperties( UniqueId, "[HideInInspector] _EmissionColor(\"Emission Color\", Color) = (1,1,1,1)", -1 );
-					}
-				}
-			}
-
-			// here we add ASE attributes to the material properties that allows materials to communicate with ASE
-			//if( m_templateMultiPass.SRPtype != TemplateSRPType.BiRP )
-			{
-				string currentInspector = IsLODMainMasterNode ? m_customInspectorName : ContainerGraph.GetMainMasterNodeOfLOD( -1 ).CurrentInspector;
-				bool isASENativeInspector = Constants.DefaultCustomInspector.Equals( currentInspector );
-				bool isUnityNativeInspector = Constants.UnityNativeInspectors.FindIndex( x => x.Equals( currentInspector ) ) > 0;
-
-				List<PropertyDataCollector> list = new List<PropertyDataCollector>( currDataCollector.PropertiesDict.Values );
-				list.Sort( ( x , y ) => { return x.OrderIndex.CompareTo( y.OrderIndex ); } );
-				if( isUnityNativeInspector )
-				{
-					for( int i = 0 ; i < list.Count ; i++ )
-					{
-						if( !( list[ i ].PropertyName.Contains( "[HideInInspector]" ) || list[ i ].PropertyName.Contains( "//" ) ) )
-						{
-							list[ i ].PropertyName = "[ASEBegin]" + list[ i ].PropertyName;
-							break;
-						}
-					}
-				}
-
-				if( !isASENativeInspector )
-				{
-					for( int i = list.Count - 1 ; i >= 0 ; i-- )
-					{
-						if( !( list[ i ].PropertyName.Contains( "[HideInInspector]" ) || list[ i ].PropertyName.Contains( "//" ) ) )
-						{
-							list[ i ].PropertyName = "[ASEEnd]" + list[ i ].PropertyName;
-							break;
-						}
 					}
 				}
 			}
@@ -3061,10 +3029,12 @@ namespace AmplifyShaderEditor
 		{
 
 			base.ReadFromString( ref nodeParams );
+
+			string currShaderName = string.Empty;
 			try
 			{
-				string currShaderName = GetCurrentParam( ref nodeParams );
-				if( currShaderName.Length > 0 )
+				currShaderName = GetCurrentParam( ref nodeParams );
+				if ( currShaderName.Length > 0 )
 					currShaderName = UIUtils.RemoveShaderInvalidCharacters( currShaderName );
 
 				m_templateGUID = GetCurrentParam( ref nodeParams );
@@ -3091,7 +3061,15 @@ namespace AmplifyShaderEditor
 				}
 
 				m_passName = GetCurrentParam( ref nodeParams );
-				SetTemplate( null , false , true , m_subShaderIdx , m_passIdx , SetTemplateSource.ShaderLoad );
+				SetTemplate( null, false, true, m_subShaderIdx, m_passIdx, SetTemplateSource.ShaderLoad );
+			}
+			catch ( Exception e )
+			{
+				Debug.LogException( e, this );
+			}
+
+			if ( !m_invalidNode ) try
+			{
 				////If value gotten from template is > -1 then it contains the LOD field
 				////and we can properly write the value
 				//if( m_subShaderLOD > -1 )
@@ -3103,8 +3081,9 @@ namespace AmplifyShaderEditor
 				ShaderName = currShaderName;
 				m_visiblePorts = Convert.ToInt32( GetCurrentParam( ref nodeParams ) );
 
-				m_subShaderModule.ReadFromString( m_templateMultiPass.SubShaders[ m_subShaderIdx ].Modules, ref m_currentReadParamIdx , ref nodeParams );
-				m_passModule.ReadFromString( m_templateMultiPass.SubShaders[ m_subShaderIdx ].Passes[m_passIdx].Modules, ref m_currentReadParamIdx , ref nodeParams );
+				m_subShaderModule.ReadFromString( m_templateMultiPass.SubShaders[ m_subShaderIdx ].Modules, ref m_currentReadParamIdx, ref nodeParams );
+				m_passModule.ReadFromString( m_templateMultiPass.SubShaders[ m_subShaderIdx ].Passes[ m_passIdx ].Modules, ref m_currentReadParamIdx, ref nodeParams );				
+
 				if( UIUtils.CurrentShaderVersion() > 15308 )
 				{
 					m_fallbackHelper.ReadFromString( ref m_currentReadParamIdx , ref nodeParams );
@@ -3164,6 +3143,8 @@ namespace AmplifyShaderEditor
 				//{
 				//	SetClippedTitle( m_passName );
 				//}
+
+				CheckLegacyCustomInspectors();
 			}
 			catch( Exception e )
 			{
@@ -3175,7 +3156,6 @@ namespace AmplifyShaderEditor
 			{
 				m_containerGraph.CurrentPrecision = m_currentPrecisionType;
 			}
-			CheckLegacyCustomInspectors();
 		}
 
 		void CheckLegacyCustomInspectors()
@@ -3491,6 +3471,9 @@ namespace AmplifyShaderEditor
 
 		public override void ReadInputDataFromString( ref string[] nodeParams )
 		{
+			if ( m_invalidNode )
+				return;
+
 			//For a Template Master Node an input port data must be set by its template and not meta data
 			if( UIUtils.CurrentShaderVersion() > 17007 )
 				return;
@@ -3540,6 +3523,14 @@ namespace AmplifyShaderEditor
 					}
 				}
 			}
+		}
+
+		public override void ReadOutputDataFromString( ref string[] nodeParams )
+		{
+			if ( m_invalidNode )
+				return;
+
+			base.ReadOutputDataFromString( ref nodeParams );
 		}
 
 		//For a Template Master Node an input port data must be set by its template and not meta data
