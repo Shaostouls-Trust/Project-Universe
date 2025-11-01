@@ -1,0 +1,651 @@
+﻿#pragma kernel main
+
+
+#ifndef PLANET_ALL_CGINC
+// Upgrade NOTE: excluded shader from OpenGL ES 2.0 because it uses non-square matrices
+#pragma exclude_renderers gles
+#define PLANET_ALL_CGINC
+
+
+
+
+
+#ifndef PLANET_COMMON_CGINC
+#define PLANET_COMMON_CGINC
+
+
+
+
+
+
+#include "Noise/All.cginc"
+#include "Math.cginc"
+
+#define MAX_INT 2147483647
+
+#define PACK_NORMAL(NORMAL) ((NORMAL + 1) / 2)
+#define UNPACK_NORMAL(NORMAL) (NORMAL * 2 - 1)
+
+
+#define M_PI 3.1415926535897932384626433832795
+
+float3 calestialToSpherical(float3 c /*calestial*/)
+{
+	float r = length(c);
+	if (r == 0) return 0;
+
+	// calculate
+	float3 p = float3(
+		atan2(c.z, c.x),  // longitude = x
+		asin(c.y / r), // latitude = y
+		r // altitude = z
+		);
+
+	// normalize to 0..1 range
+	p.x = p.x / (M_PI * 2) + 0.5;
+	p.y = p.y / M_PI + 0.5;
+
+	return p;
+}
+
+float3 sphericalToCalestial(float3 c /*spherical*/)
+{
+	// denormalize from 0..1
+	c.x = (c.x - 0.5) * (2 * M_PI);
+	c.y = (c.y - 0.5) * M_PI;
+
+	// calculate
+	float3 p = float3(
+		cos(c.y) * cos(c.x) * c.z,
+		sin(c.y) * c.z,
+		cos(c.y) * sin(c.x) * c.z
+		);
+
+	return p;
+}
+
+float3 sphericalToCalestial(float2 c /*spherical*/)
+{
+	// denormalize from 0..1
+	c.x = (c.x - 0.5) * (2 * M_PI);
+	c.y = (c.y - 0.5) * M_PI;
+
+	// calculate
+	float3 p = float3(
+		cos(c.y) * cos(c.x),
+		sin(c.y),
+		cos(c.y) * sin(c.x)
+		);
+
+	return p;
+}
+
+
+
+
+
+
+float3 baseMapUvToDirFromCenter(float2 uv) {
+	return sphericalToCalestial(uv);
+}
+
+float2 dirFromCenterToBaseMapUv(float3 dir) {
+	return calestialToSpherical(dir).xy;
+}
+
+
+
+
+
+// https://gamedev.stackexchange.com/questions/116205/terracing-mountain-features
+float terrace(float h, float bandHeight) {
+	float W = bandHeight; // width of terracing bands
+	float k = floor(h / W);
+	float f = (h - k*W) / W;
+	float s = min(2 * f, 1.0);
+	return (k + s) * W;
+}
+
+
+float snoise(float3 pos, int octaves, float modifier)
+{
+	float result = 0;
+	float amp = 1;
+	for (int i = 0; i < octaves; i++)
+	{
+		result += snoise(pos) * amp;
+		pos *= modifier;
+		amp /= modifier;
+	}
+	return result;
+}
+
+float3 snoise_grad(float3 pos, int octaves, float modifier)
+{
+	float result = 0;
+	float amp = 1;
+	for (int i = 0; i < octaves; i++)
+	{
+		result += snoise_grad(pos) * amp;
+		pos *= modifier;
+		amp /= modifier;
+	}
+	return result;
+}
+
+
+// from http://www.java-gaming.org/index.php?topic=35123.0
+// maybe it's https://en.wikipedia.org/wiki/Centripetal_Catmull%E2%80%93Rom_spline
+float4 cubic(float v)
+{
+	float4 n = float4(1.0, 2.0, 3.0, 4.0) - v;
+	float4 s = n * n * n;
+	float x = s.x;
+	float y = s.y - 4.0 * s.x;
+	float z = s.z - 4.0 * s.y + 6.0 * s.x;
+	float w = 6.0 - x - y - z;
+	return float4(x, y, z, w) * (1.0 / 6.0);
+}
+//float4 cubic(float v)
+//{
+//	float4 n = float4(1.0, 2.0, 3.0, 4.0) - v;
+//	float4 s = n * n * n;
+//	float x = s.x;
+//	float y = s.y - 4.0 * s.x;
+//	float z = s.z - 4.0 * s.y + 6.0 * s.x;
+//	float w = 6.0 - x - y - z;
+//	return float4(x, y, z, w) * (1.0 / 6.0);
+//}
+
+
+
+
+
+
+
+
+float3 rgbToHsv(float3 c)
+{
+	float4 K = float4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+	float4 p = lerp(float4(c.bg, K.wz), float4(c.gb, K.xy), step(c.b, c.g));
+	float4 q = lerp(float4(p.xyw, c.r), float4(c.r, p.yzx), step(p.x, c.r));
+
+	float d = q.x - min(q.w, q.y);
+	float e = 1.0e-10;
+	return float3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
+}
+
+float3 hsvToRgb(float3 c)
+{
+	float4 K = float4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+	float3 p = abs(frac(c.xxx + K.xyz) * 6.0 - K.www);
+	return c.z * lerp(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+}
+
+
+// -1 <= unitCube.x && unitCube.x <= 1
+// -1 <= unitCube.y && unitCube.y <= 1
+// -1 <= unitCube.z && unitCube.z <= 1
+// uses math from http://mathproofs.blogspot.cz/2005/07/mapping-cube-to-sphere.html
+// implementation license: public domain
+float3 unitCubeToUnitSphere(float3 unitCube)
+{
+	float3 unitCubePow2 = unitCube * unitCube;
+	float3 unitCubePow2Div2 = unitCubePow2 / 2;
+	float3 unitCubePow2Div3 = unitCubePow2 / 3;
+	return unitCube * sqrt(1 - unitCubePow2Div2.yzx - unitCubePow2Div2.zxy + unitCubePow2.yzx * unitCubePow2Div3.zxy);
+}
+//float3 unitCubeToUnitSphere(float3 unitCube)
+//{
+//	float3 unitCubePow2 = unitCube * unitCube;
+//	float3 unitCubePow2Div2 = unitCubePow2 / 2;
+//	float3 unitCubePow2Div3 = unitCubePow2 / 3;
+//	return unitCube * d_sqrt(1 - unitCubePow2Div2.yzx - unitCubePow2Div2.zxy + unitCubePow2.yzx * unitCubePow2Div3.zxy);
+//}
+
+
+
+#endif
+//#include "Planet.Common.cginc"
+
+
+
+float2 getUv(RWTexture2D<float4> map, int2 id)
+{
+	float w, h;
+	map.GetDimensions(w, h);
+	return id / float2(w - 1, h - 1);
+}
+float2 getUv(RWTexture2D<float3> map, int2 id)
+{
+	float w, h;
+	map.GetDimensions(w, h);
+	return id / float2(w - 1, h - 1);
+}
+float2 getUv(RWTexture2D<float2> map, int2 id)
+{
+	float w, h;
+	map.GetDimensions(w, h);
+	return id / float2(w - 1, h - 1);
+}
+float2 getUv(RWTexture2D<float> map, int2 id)
+{
+	float w, h;
+	map.GetDimensions(w, h);
+	return id / float2(w - 1, h - 1);
+}
+
+
+
+
+
+
+//
+//float2 getUv(RWTexture2D<float2> map, int2 id)
+//{
+//	float w, h;
+//	map.GetDimensions(w, h);
+//	return id / float2(w - 1, h - 1);
+//}
+//float2 getUv(RWTexture2D<float> map, int2 id)
+//{
+//	float w, h;
+//	map.GetDimensions(w, h);
+//	return id / float2(w - 1, h - 1);
+//}
+
+
+
+
+
+
+
+float2 getUv(Texture2D<float4> map, int2 id)
+{
+	float w, h;
+	map.GetDimensions(w, h);
+	return id / float2(w - 1, h - 1);
+}
+float2 getUv(Texture2D<float3> map, int2 id)
+{
+	float w, h;
+	map.GetDimensions(w, h);
+	return id / float2(w - 1, h - 1);
+}
+float2 getUv(Texture2D<float2> map, int2 id)
+{
+	float w, h;
+	map.GetDimensions(w, h);
+	return id / float2(w - 1, h - 1);
+}
+float2 getUv(Texture2D<float> map, int2 id)
+{
+	float w, h;
+	map.GetDimensions(w, h);
+	return id / float2(w - 1, h - 1);
+}
+
+
+
+
+
+
+
+//float2 getUv(Texture2D<float2> map, int2 id)
+//{
+//	float w, h;
+//	map.GetDimensions(w, h);
+//	return id / float2(w - 1, h - 1);
+//}
+//float2 getUv(Texture2D<float> map, int2 id)
+//{
+//	float w, h;
+//	map.GetDimensions(w, h);
+//	return id / float2(w - 1, h - 1);
+//}
+
+
+
+
+float2 sampleCubicFloat2(Texture2D<float2> map, float2 uv)
+{
+	int w, h;
+	map.GetDimensions(w, h);
+	float2 xy = uv * float2(w - 1, h - 1);
+
+	// p03--p13-------p23--p33
+	//  |    |         |    |
+	// p02--p12-------p22--p32     1
+	//  |    |         |    |     ...
+	//  |   t.y  xy    |    |     t.y
+	//  |    |         |    |     ...
+	// p01--p11--t.x--p21--p31     0...tx...1
+	//  |    |         |    |
+	// p00--p10-------p20--p30
+
+	float2 xyFloored = floor(xy);
+	float2 t = xy - xyFloored;
+	float4 tx = cubic(t.x);
+	float4 ty = cubic(t.y);
+
+	int2 p12 = int2(xyFloored);
+	int2 p00 = p12 - int2(1, 2);
+
+	float4x2 v0 = float4x2(
+		map[p00 + int2(0, 0)],
+		map[p00 + int2(1, 0)],
+		map[p00 + int2(2, 0)],
+		map[p00 + int2(3, 0)]
+		);
+
+	float4x2 v1 = float4x2(
+		map[p00 + int2(0, 1)],
+		map[p00 + int2(1, 1)],
+		map[p00 + int2(2, 1)],
+		map[p00 + int2(3, 1)]
+		);
+
+	float4x2 v2 = float4x2(
+		map[p00 + int2(0, 2)],
+		map[p00 + int2(1, 2)],
+		map[p00 + int2(2, 2)],
+		map[p00 + int2(3, 2)]
+		);
+
+	float4x2 v3 = float4x2(
+		map[p00 + int2(0, 3)],
+		map[p00 + int2(1, 3)],
+		map[p00 + int2(2, 3)],
+		map[p00 + int2(3, 3)]
+		);
+
+	// first interpolate on X
+	float4x2 c = float4x2(
+		mul(tx, v0),
+		mul(tx, v1),
+		mul(tx, v2),
+		mul(tx, v3)
+		);
+
+	// then on Y
+	float2 f = mul(ty, c);
+
+	return f;
+}
+
+
+
+float sampleCubicFloat(Texture2D<float> map, float2 uv)
+{
+	int w, h;
+	map.GetDimensions(w, h);
+	float2 xy = uv * float2(w - 1, h - 1);
+
+	// p03--p13-------p23--p33
+	//  |    |         |    |
+	// p02--p12-------p22--p32     1
+	//  |    |         |    |     ...
+	//  |   t.y  xy    |    |     t.y
+	//  |    |         |    |     ...
+	// p01--p11--t.x--p21--p31     0...tx...1
+	//  |    |         |    |
+	// p00--p10-------p20--p30
+
+	float2 t = frac(xy);
+	float4 tx = cubic(t.x);
+	float4 ty = cubic(t.y);
+
+	int2 p12 = int2(xy);
+	int2 p00 = p12 - int2(1, 2);
+
+	float4x4 v = float4x4(
+
+		map[p00 + int2(0, 0)],
+		map[p00 + int2(1, 0)],
+		map[p00 + int2(2, 0)],
+		map[p00 + int2(3, 0)],
+
+		map[p00 + int2(0, 1)],
+		map[p00 + int2(1, 1)],
+		map[p00 + int2(2, 1)],
+		map[p00 + int2(3, 1)],
+
+		map[p00 + int2(0, 2)],
+		map[p00 + int2(1, 2)],
+		map[p00 + int2(2, 2)],
+		map[p00 + int2(3, 2)],
+
+		map[p00 + int2(0, 3)],
+		map[p00 + int2(1, 3)],
+		map[p00 + int2(2, 3)],
+		map[p00 + int2(3, 3)]
+
+	);
+
+	// first interpolate 4 rows (16 values) on x axis
+	float4 c = mul(v, tx);
+
+	// then one final row on y axis
+	float f = dot(ty, c);
+
+	return f;
+}
+
+
+
+
+#endif
+//#include "Planet.Compute.cginc"
+
+
+
+Texture2D<float> _planetHeightMap;
+
+
+
+Texture2D<float> _chunkHeightMap;
+SamplerState sampler_chunkHeightMap;
+
+Texture2D<float4> _grass;
+SamplerState sampler_grass;
+
+Texture2D<float4> _clay;
+SamplerState sampler_clay;
+
+Texture2D<float4> _rock;
+SamplerState sampler_rock;
+
+Texture2D<float4> _snow;
+SamplerState sampler_snow;
+
+Texture2D<float4> _tundra;
+SamplerState sampler_tundra;
+
+
+float3 _rangeUnitCubePosA;
+float3 _rangeUnitCubePosB;
+float3 _rangeUnitCubePosC;
+float3 _rangeUnitCubePosD;
+
+int _slopeModifier;
+
+float _heightMin;
+float _heightMax;
+float _planetRadiusStart;
+float _planetRadiusHeightMapMultiplier;
+
+float _mipMapLevel;
+
+
+Texture2D<float4> _chunkWorldNormalMap;
+RWTexture2D<float4> _chunkDiffuseMap;
+
+
+struct MyBindingStruct
+{
+	float3 pos;
+	int3 region;
+};
+
+float3 triPlanar(Texture2D tex, SamplerState samp, float3 pos, float3 normal, float scale)
+{
+	float3 blendWeights = pow(abs(normal), 5);
+	blendWeights /= blendWeights.x + blendWeights.y + blendWeights.z;
+
+	return
+		blendWeights.x * tex.SampleLevel(samp, pos.yz * scale, 0).xyz +
+		blendWeights.y * tex.SampleLevel(samp, pos.zx * scale, 0).xyz +
+		blendWeights.z * tex.SampleLevel(samp, pos.xy * scale, 0).xyz;
+
+	//return
+	//	blendWeights.x * tex.SampleLevel(samp, pos.yz * scale, _mipMapLevel).xyz +
+	//	blendWeights.y * tex.SampleLevel(samp, pos.zx * scale, _mipMapLevel).xyz +
+	//	blendWeights.z * tex.SampleLevel(samp, pos.xy * scale, _mipMapLevel).xyz;
+}
+
+float3 triPlanarThreeSizes(Texture2D tex, SamplerState samp, float3 pos, float3 normal, float scale)
+{
+	return 
+		triPlanar(tex, samp, pos, normal, scale) * 0.6 +
+		triPlanar(tex, samp, pos, normal, scale * 0.3) * 0.3 +
+		triPlanar(tex, samp, pos, normal, scale * 0.01) * 0.1;
+}
+
+float3 ramp(float v)
+{
+	return hsvToRgb(float3(clamp(v, 0, 1) / 1.35 + 0.25, 1, 1));
+}
+
+
+float3 GetGrass(float3 pos, float3 normal) {
+	return triPlanarThreeSizes(_grass, sampler_grass, pos, normal, 1);
+	return float3(121, 136, 69) / float3(255, 255, 255); // grass
+}
+float3 GetClay(float3 pos, float3 normal) {
+	return triPlanarThreeSizes(_clay, sampler_clay, pos, normal, 1);
+	return float3(139, 133, 75) / float3(255, 255, 255); // clay
+}
+float3 GetRock(float3 pos, float3 normal) {
+	return triPlanarThreeSizes(_rock, sampler_rock, pos, normal, 1);
+	return float3(100, 100, 100) / float3(255, 255, 255); // rock
+}
+float3 GetSnow(float3 pos, float3 normal) {
+	return triPlanarThreeSizes(_snow, sampler_snow, pos, normal, 1);
+	return float3(1, 1, 1); // white
+}
+float3 GetTundra(float3 pos, float3 normal) {
+	return triPlanarThreeSizes(_tundra, sampler_tundra, pos, normal, 1);
+	return float3(0.5, 0.5, 0.5); // grey
+}
+
+
+struct BiomesResult
+{
+	float snowWeight;
+	float tundraWeight;
+	float rockWeight;
+	float clayWeight;
+	float grassWeight;
+	float seaWeight;
+
+};
+
+BiomesResult CalculateBiomes(float3 pos, float3 dir, float slope, float altidute01)
+{
+	float3 biomeAdjustmentNoise = snoise_grad(pos / 50, 10, 1.4);
+	//biomeAdjustmentNoise = 0;
+
+	BiomesResult result;
+
+	result.snowWeight = smoothstep(0.2, 0, slope) * (smoothstep(0.8, 1, abs(dir.z)) * 2 + altidute01 * 2);
+	result.tundraWeight = smoothstep(0.8, 0, slope) * (smoothstep(0.5, 1, abs(dir.z)) + altidute01 + 0.01*biomeAdjustmentNoise.z);
+	result.rockWeight = smoothstep(0.5, 1, slope)*5 + 0.003*biomeAdjustmentNoise.x;
+	result.clayWeight = smoothstep(0, 0.2, slope)*0.3 + 0.02*biomeAdjustmentNoise.y;
+	result.grassWeight = smoothstep(0.8, 0, slope) + 0.05*biomeAdjustmentNoise.z;	
+	result.seaWeight = smoothstep(0.0105, 0.0095, altidute01) * 5;
+	
+	float sum = result.snowWeight + result.tundraWeight + result.rockWeight + result.clayWeight + result.grassWeight + result.seaWeight;
+
+	result.snowWeight /= sum;
+	result.tundraWeight /= sum;
+	result.rockWeight /= sum;
+	result.clayWeight /= sum;
+	result.grassWeight /= sum;
+	result.seaWeight /= sum;
+
+	return result;
+}
+
+
+[numthreads(16, 16, 1)]
+void main(uint3 id : SV_DispatchThreadID)
+{
+	float2 uv = getUv(_chunkDiffuseMap, id.xy);
+
+	float3 dir = lerp(
+		lerp(_rangeUnitCubePosA, _rangeUnitCubePosB, uv.x),
+		lerp(_rangeUnitCubePosD, _rangeUnitCubePosC, uv.x),
+		uv.y
+	);
+	dir = unitCubeToUnitSphere(dir);
+	
+	float height01 = _chunkHeightMap.SampleLevel(sampler_chunkHeightMap, uv, 0).r;
+	height01 = height01 * (_heightMax - _heightMin) + _heightMin;
+	float heightReal = height01 * _planetRadiusHeightMapMultiplier;
+	heightReal += _planetRadiusStart;
+	float3 pos = dir * heightReal;
+
+	float3 triplanarPos = fmod(pos, 10);
+
+
+	float4 worldNormalAndSlope = _chunkWorldNormalMap[id.xy];
+	float3 worldNormal = UNPACK_NORMAL(worldNormalAndSlope.rgb);
+	float slope = worldNormalAndSlope.w * 7;
+	//slope = 0.2; // DEBUG
+
+	BiomesResult biomes = CalculateBiomes(pos, dir, slope, height01);
+
+	float3 color;
+
+	if (biomes.snowWeight >= biomes.snowWeight && biomes.snowWeight >= biomes.rockWeight && biomes.snowWeight >= biomes.tundraWeight && biomes.snowWeight >= biomes.grassWeight && biomes.snowWeight >= biomes.clayWeight && biomes.snowWeight >= biomes.seaWeight)
+		color = GetSnow(triplanarPos, worldNormal);
+	else if (biomes.rockWeight >= biomes.snowWeight && biomes.rockWeight >= biomes.rockWeight && biomes.rockWeight >= biomes.tundraWeight && biomes.rockWeight >= biomes.grassWeight && biomes.rockWeight >= biomes.clayWeight && biomes.rockWeight >= biomes.seaWeight)
+		color = GetRock(triplanarPos, worldNormal);
+	else if (biomes.tundraWeight >= biomes.snowWeight && biomes.tundraWeight >= biomes.rockWeight && biomes.tundraWeight >= biomes.tundraWeight && biomes.tundraWeight >= biomes.grassWeight && biomes.tundraWeight >= biomes.clayWeight && biomes.tundraWeight >= biomes.seaWeight)
+		color = GetTundra(triplanarPos, worldNormal);
+	else if (biomes.grassWeight >= biomes.snowWeight && biomes.grassWeight >= biomes.rockWeight && biomes.grassWeight >= biomes.tundraWeight && biomes.grassWeight >= biomes.grassWeight && biomes.grassWeight >= biomes.clayWeight && biomes.grassWeight >= biomes.seaWeight)
+		color = GetGrass(triplanarPos, worldNormal);
+	else if (biomes.clayWeight >= biomes.snowWeight && biomes.clayWeight >= biomes.rockWeight && biomes.clayWeight >= biomes.tundraWeight && biomes.clayWeight >= biomes.grassWeight && biomes.clayWeight >= biomes.clayWeight && biomes.clayWeight >= biomes.seaWeight)
+		color = GetClay(triplanarPos, worldNormal);
+	else if (biomes.seaWeight >= biomes.snowWeight && biomes.seaWeight >= biomes.rockWeight && biomes.seaWeight >= biomes.tundraWeight && biomes.seaWeight >= biomes.grassWeight && biomes.seaWeight >= biomes.clayWeight && biomes.seaWeight >= biomes.seaWeight)
+		color = float3(0, 0, 1); // sea
+	else
+		color = float3(1, 0, 0);
+
+	
+		
+
+	// DEBUG
+	//color = _grass.SampleLevel(sampler_grass, pos.yz, 0);
+	//color = GetGrass(pos, normal);
+	//color = float3(1, 1, 1) * slope;
+	//color = PACK_NORMAL(normal);
+	//color = SampleLinearFloat(_chunkWorldNormalMap, uv);
+	//color = float3(1, 1, 1) * slope;
+	//color = _chunkSlopeMap[id.xy].xyz;
+	//color = float3(slopeXY, 0);
+	//color = float3(slope > 0, 0, 0);
+	//color = ramp(length(_chunkSlopeMap[id.xy].xyz));
+	//color = float3(_chunkHeightMap[id.xy].x > 0 && _chunkHeightMap[id.xy].x < 0.5, 0, 0);
+	//color = _chunkHeightMap[id.xy].xyz;
+	//color = ramp(slope);
+	//color = slope;
+	//color = ramp(biomes.snowWeight);
+	//color = ramp(lerp(0.8, 1, snoise(pos / 1000, 10, 1.5)));
+
+	// SAFE
+	//if (slope > 1) color = float3(1, 0, 0);
+
+	_chunkDiffuseMap[id.xy] = float4(color, 1);
+
+}

@@ -36,7 +36,12 @@ namespace Artngame.SKYMASTER {
         // Update is called once per frame
         void Update()
         {
-            nebulaClouds.startHeight = (player.transform.position.y - cloudMiddle) * multiplier;
+            if (player != null)
+            {
+                nebulaClouds.startHeight = (player.transform.position.y - cloudMiddle) * multiplier;
+            }
+
+
             nebulaClouds.planetZeroCoordinate = new Vector3(nebulaClouds.planetZeroCoordinate.x, nebulaClouds.startHeight, nebulaClouds.planetZeroCoordinate.z);
 
             nebulaClouds.localLight = startLight;

@@ -17,32 +17,45 @@ namespace Artngame.Orion.Galaxia
         [HideInInspector]
         public List<GameObject> Systems;
 
-        void Start()
-        {
-            Galaxia.Random.seed = galaxy.Particles[0].Prefab.Seed;
-            Systems = new List<GameObject>();
-            List<Galaxia.Particle> Stars = finder.Find(galaxy.Particles[0], Names.Length);
-            List<string> names = Names.OrderBy(n => Galaxia.Random.Next()).ToList();
+        bool mapCreated = false;
 
-            for (int i = 0; i < Stars.Count; i++)
+        //void Start()
+        void LateUpdate()
+        {
+            if(galaxy.Particles.Count == 0)
             {
-                int planets = Galaxia.Random.Next(0, 5);
-                GameObject system = new GameObject("System", typeof(RectTransform), typeof(Image));
-                system.GetComponent<RectTransform>().sizeDelta = Vector3.one * SystemGUISize;
-                system.transform.position = Stars[i].position;
-                system.transform.rotation = Quaternion.AngleAxis(90, new Vector3(1, 0, 0));
-                Image Image = system.GetComponent<Image>();
-                Image.sprite = SystemTexture;
-                //Image.material = mat;
-                //Image.color = new Color(Stars[i].color.r, Stars[i].color.g, Stars[i].color.b, 1);
-                SystemGUICircle gui = system.AddComponent<SystemGUICircle>();
-                gui.Size = SystemGUISize;
-                system.transform.SetParent(transform, true);
-                gui.SetPlanets(planets);
-                StarSystem starSystem = system.AddComponent<StarSystem>();
-                starSystem.Name = i < names.Count ? names[i] : "Unknown";
-                starSystem.Planets = planets;
-                Systems.Add(system);
+                galaxy.GenerateParticles();
+            }
+
+            if (!mapCreated)
+            {
+                mapCreated = true;
+
+                Galaxia.Random.seed = galaxy.Particles[0].Prefab.Seed;
+                Systems = new List<GameObject>();
+                List<Galaxia.Particle> Stars = finder.Find(galaxy.Particles[0], Names.Length);
+                List<string> names = Names.OrderBy(n => Galaxia.Random.Next()).ToList();
+
+                for (int i = 0; i < Stars.Count; i++)
+                {
+                    int planets = Galaxia.Random.Next(0, 5);
+                    GameObject system = new GameObject("System", typeof(RectTransform), typeof(Image));
+                    system.GetComponent<RectTransform>().sizeDelta = Vector3.one * SystemGUISize;
+                    system.transform.position = Stars[i].position;
+                    system.transform.rotation = Quaternion.AngleAxis(90, new Vector3(1, 0, 0));
+                    Image Image = system.GetComponent<Image>();
+                    Image.sprite = SystemTexture;
+                    //Image.material = mat;
+                    //Image.color = new Color(Stars[i].color.r, Stars[i].color.g, Stars[i].color.b, 1);
+                    SystemGUICircle gui = system.AddComponent<SystemGUICircle>();
+                    gui.Size = SystemGUISize;
+                    system.transform.SetParent(transform, true);
+                    gui.SetPlanets(planets);
+                    StarSystem starSystem = system.AddComponent<StarSystem>();
+                    starSystem.Name = i < names.Count ? names[i] : "Unknown";
+                    starSystem.Planets = planets;
+                    Systems.Add(system);
+                }
             }
         }
 

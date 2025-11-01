@@ -4,15 +4,15 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet.IO
+namespace Artngame.Orion.TriangleNet.IO
 {
     using System;
     using System.Globalization;
     using System.IO;
     using System.IO.Compression;
     using System.Text;
-    using TriangleNet.Topology;
-    using TriangleNet.Geometry;
+    using Artngame.Orion.TriangleNet.Topology;
+    using Artngame.Orion.TriangleNet.Geometry;
 
     /// <summary>
     /// Writes a the current mesh into a text file.

@@ -4,10 +4,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet
+namespace Artngame.Orion.TriangleNet
 {
     using System.Collections.Generic;
-    using TriangleNet.Logging;
+    using Artngame.Orion.TriangleNet.Logging;
 
     /// <summary>
     /// A simple logger, which logs messages to a List.

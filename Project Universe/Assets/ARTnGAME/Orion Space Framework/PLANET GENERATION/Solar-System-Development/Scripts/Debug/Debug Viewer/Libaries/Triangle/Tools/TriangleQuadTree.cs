@@ -5,11 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet.Tools
+namespace Artngame.Orion.TriangleNet.Tools
 {
     using System.Collections.Generic;
     using System.Linq;
-    using TriangleNet.Geometry;
+    using Artngame.Orion.TriangleNet.Geometry;
 
     /// <summary>
     /// A Quadtree implementation optimized for triangles.

@@ -5,10 +5,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet
+namespace Artngame.Orion.TriangleNet
 {
-    using TriangleNet.Geometry;
-    using TriangleNet.Topology;
+    using Artngame.Orion.TriangleNet.Geometry;
+    using Artngame.Orion.TriangleNet.Topology;
 
     /// <summary>
     /// Locate triangles in a mesh.

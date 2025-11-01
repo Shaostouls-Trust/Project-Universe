@@ -2,14 +2,16 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: A19
   m_Shader: {fileID: 4800000, guid: ecbe14f8538bf4b46a1f5fb7044fa2f9, type: 3}
-  m_ShaderKeywords: _CLOUDSADDITIVE_ON
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - _CLOUDSADDITIVE_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -75,6 +77,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _AtmosphereHeight: 60000
     - _AtmosphereModifier: 4.81
@@ -92,6 +95,9 @@ Material:
     - _Glossiness: 0.79
     - _GlossyReflections: 1
     - _LightSamples: 5
+    - _MAnisotropy: 0.75821
+    - _MScaleHeight: 1205
+    - _MScatteringCoefficient: 0.002111
     - _Metallic: 0
     - _MieAnisotropy: -0.31
     - _MieDirection: 0.758
@@ -125,6 +131,10 @@ Material:
     - _iSteps: 16
     - _jSteps: 8
     - _passSunExternally: 1
+    - detailCloudsTiling: -0.37
+    - detailNormalPower: 6
+    - detailNormalTiling: 10
+    - normalPower: 0
     m_Colors:
     - _AtmosphereColor: {r: 1, g: 1, b: 1, a: 1}
     - _Centre: {r: 0, g: 0, b: 0, a: 0}
@@ -136,3 +146,7 @@ Material:
     - _RayScatteringCoefficient: {r: 0.0000058, g: 0.0000135, b: 0.0000331, a: 0}
     - _ScatteringCoefficient: {r: 5.5, g: 13, b: 22.4, a: 0}
     - _SunCentre: {r: 75.2, g: 90.92, b: -43.64, a: 0}
+    - normalOffsetScale: {r: 0, g: 0, b: 1, a: 1}
+    - normalPadding: {r: 0, g: 0, b: 0, a: 0}
+    - normalSize: {r: 1, g: 1, b: 0, a: 0}
+  m_BuildTextureStacks: []

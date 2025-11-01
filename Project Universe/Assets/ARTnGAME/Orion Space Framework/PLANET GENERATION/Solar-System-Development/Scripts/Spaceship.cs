@@ -82,7 +82,7 @@ namespace Artngame.Orion.ProceduralPlanets
         void FixedUpdate()
         {
 
-            var bodies = FindObjectsOfType<CelestialBody>();
+            var bodies = FindObjectsByType<CelestialBody>(FindObjectsSortMode.None);
             // gravity
             foreach (var body in bodies)
             {

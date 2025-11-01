@@ -61,7 +61,7 @@ namespace Artngame.Orion.RaymarchedNebula
             //v0.1
             if (useLocalLights)
             {
-                NebulaLightSM[] myItems = FindObjectsOfType(typeof(NebulaLightSM)) as NebulaLightSM[];
+                NebulaLightSM[] myItems = FindObjectsByType<NebulaLightSM>(FindObjectsSortMode.None) as NebulaLightSM[];
                 if (myItems != null && myItems.Length > 0)
                 {
                     localLights = new Vector4[myItems.Length];
@@ -95,7 +95,7 @@ namespace Artngame.Orion.RaymarchedNebula
                 {
                     if (updateLocalLightsRunTime)
                     {
-                        NebulaLightSM[] myItems = FindObjectsOfType(typeof(NebulaLightSM)) as NebulaLightSM[];
+                        NebulaLightSM[] myItems = FindObjectsByType<NebulaLightSM>(FindObjectsSortMode.None) as NebulaLightSM[];
                         if (myItems != null && myItems.Length > 0)
                         {
                             localLights = new Vector4[myItems.Length];

@@ -4,11 +4,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet.Tools
+namespace Artngame.Orion.TriangleNet.Tools
 {
     using System;
     using System.Collections.Generic;
-    using TriangleNet.Geometry;
+    using Artngame.Orion.TriangleNet.Geometry;
 
     public static class PolygonValidator
     {

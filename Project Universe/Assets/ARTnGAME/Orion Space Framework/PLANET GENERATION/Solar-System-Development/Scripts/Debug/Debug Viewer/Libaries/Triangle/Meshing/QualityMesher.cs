@@ -5,15 +5,15 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet.Meshing
+namespace Artngame.Orion.TriangleNet.Meshing
 {
     using System;
     using System.Collections.Generic;
-    using TriangleNet.Geometry;
-    using TriangleNet.Logging;
-    using TriangleNet.Meshing.Data;
-    using TriangleNet.Tools;
-    using TriangleNet.Topology;
+    using Artngame.Orion.TriangleNet.Geometry;
+    using Artngame.Orion.TriangleNet.Logging;
+    using Artngame.Orion.TriangleNet.Meshing.Data;
+    using Artngame.Orion.TriangleNet.Tools;
+    using Artngame.Orion.TriangleNet.Topology;
 
     /// <summary>
     /// Provides methods for mesh quality enforcement and testing.

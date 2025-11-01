@@ -5,10 +5,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet.Topology
+namespace Artngame.Orion.TriangleNet.Topology
 {
     using System;
-    using TriangleNet.Geometry;
+    using Artngame.Orion.TriangleNet.Geometry;
 
     /// <summary>
     /// An oriented triangle.

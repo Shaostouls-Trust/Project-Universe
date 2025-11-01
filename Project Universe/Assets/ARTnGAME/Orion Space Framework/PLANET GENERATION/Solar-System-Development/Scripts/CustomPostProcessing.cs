@@ -18,7 +18,7 @@ namespace Artngame.Orion.ProceduralPlanets
         {
             if (effectManager == null)
             {
-                effectManager = FindObjectOfType<BodyEffectManager>();
+                effectManager = FindFirstObjectByType<BodyEffectManager>();
             }
             if (effectManager)
             {

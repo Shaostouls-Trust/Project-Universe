@@ -1,7 +1,7 @@
 ﻿
-namespace TriangleNet.Tools
+namespace Artngame.Orion.TriangleNet.Tools
 {
-    using TriangleNet.Geometry;
+    using Artngame.Orion.TriangleNet.Geometry;
 
     public static class Interpolation
     {

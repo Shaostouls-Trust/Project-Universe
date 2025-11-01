@@ -23,7 +23,7 @@ namespace Artngame.Orion.ProceduralPlanets
         {
             if (generators == null || generators.Count == 0 || Application.isEditor)
             {
-                generators = new List<CelestialBodyGenerator>(FindObjectsOfType<CelestialBodyGenerator>());
+                generators = new List<CelestialBodyGenerator>(FindObjectsByType<CelestialBodyGenerator>(FindObjectsSortMode.None));
             }
             if (postProcessingMaterials == null)
             {

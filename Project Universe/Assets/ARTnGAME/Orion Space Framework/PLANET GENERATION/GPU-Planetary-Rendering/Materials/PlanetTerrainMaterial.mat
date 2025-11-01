@@ -2,14 +2,15 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: PlanetTerrainMaterial
   m_Shader: {fileID: 4800000, guid: 65d70ff5450bb9b4abe189e4fe2a6298, type: 3}
-  m_ShaderKeywords: 
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
   m_LightmapFlags: 5
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -151,6 +152,7 @@ Material:
         m_Texture: {fileID: 2800000, guid: e80c3c84ea861404d8a427db8b7abf04, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _Amp: 1
     - _CameraHeight: 0
@@ -159,7 +161,7 @@ Material:
     - _Contrast: 6
     - _Distance: 10
     - _EdgeDensity: 1.725506
-    - _Frequency: 0.007
+    - _Frequency: 0.006
     - _Frq: 1
     - _G: 0
     - _G2: 0
@@ -184,7 +186,7 @@ Material:
     - _OuterRadius: 0
     - _OuterRadius2: 0
     - _Parallax: 0.053214286
-    - _PlanetRadius: 5360
+    - _PlanetRadius: 6360
     - _Ramp: 1
     - _RimPower: 2.1838915
     - _Samples: 0
@@ -247,3 +249,4 @@ Material:
     - lightpos: {r: -10, g: 10, b: 10, a: 1}
     - specular_color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - starPositionRaw: {r: 0, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []

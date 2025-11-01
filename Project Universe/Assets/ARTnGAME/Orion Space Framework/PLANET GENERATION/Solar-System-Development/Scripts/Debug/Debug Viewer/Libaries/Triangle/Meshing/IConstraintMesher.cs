@@ -1,7 +1,7 @@
 ﻿
-namespace TriangleNet.Meshing
+namespace Artngame.Orion.TriangleNet.Meshing
 {
-    using TriangleNet.Geometry;
+    using Artngame.Orion.TriangleNet.Geometry;
 
     /// <summary>
     /// Interface for polygon triangulation.

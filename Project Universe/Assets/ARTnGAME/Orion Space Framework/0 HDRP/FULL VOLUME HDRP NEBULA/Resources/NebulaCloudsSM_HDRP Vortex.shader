@@ -141,7 +141,56 @@ Shader "Hidden/Shader/NebulaCloudsSM_HDRP_Vortex"
 				superCellControlsA("superCellControlsA", Float) = (0, 0, 0, 0)
 				//v0.7b - SUPER CELLS
 
-			
+				
+				//NEBULA
+				starsControl("star Controls", Vector) = (1, 1, 1, 1)
+				starsControlA("star Controls A", Vector) = (1, 1, 1, 1)
+				starsControlB("star Controls B", Vector) = (1, 1, 1, 1)
+				starsTransparency("star Transparency", Vector) = (1, 1, 1, 1) //v1.0.9
+
+				//STARFIELD
+				// MIT LICENSE //https://github.com/DanielPri/CGD_GGJ20
+				// MIT LICENSE //https://github.com/lyuma/LyumaShader/blob/master/LyumaShader/StarNestAvatar.shader
+				// MIT LICENSE //https://gist.github.com/lyuma/035ecab12e28c269fa0dfe4717bb80fd
+				_Color("Main Color", Color) = (1, 1, 1, 1)
+				//[Toggle(CLAMPOUT)] _CLAMPOUT("Clamp Output with Main Color", Float) = 0
+				//Scrolls in this direction over time. Set 'w' to zero to stop scrolling.
+				_Scroll("Scrolling direction (x,y,z) * w * time", Vector) = (1.3, 1, .6, .01)
+				//Center position in space and time.
+				_Center("Center Position (x, y, z, time)", Vector) = (1, .3, .5, 0)
+				//How much does camera position cause the effect to scroll?
+				_CamScroll("Camera Scroll", Float) = 0
+				//Does rotation apply?
+				_Rotation("Rotation axis (x,y,z) * w * time", Vector) = (0, 0, 0, .01)
+				//Iterations of inner loop. 
+				//The higher this is, the more distant objects get rendered.
+				_Iterations("Iterations", Range(1, 30)) = 5
+				//Volumetric rendering steps. Each 'step' renders more objects at all distances.
+				//This has a higher performance hit than iterations.
+				_Volsteps("Volumetric Steps", Range(1, 20)) = 6
+				//Magic number. Best values are around 400-600.
+				_Formuparam("Formuparam", Float) = 572
+				//How much farther each volumestep goes
+				_StepSize("Step Size", Float) = 355 // 574 also good
+				//Fractal repeating rate
+				//Low numbers are busy and give lots of repititio
+				//High numbers are very sparce
+				_Tile("Tile", Float) = 700
+				//Brightness scale.
+				_Brightness("Brightness", Float) = .5
+				//Abundance of Dark matter (in the distance). 
+				//Visible with Volsteps >= 8 (at 7 its really, really hard to see)
+				_Darkmatter("Dark Matter", Float) = 555
+				//Brightness of distant objects (or dim) are distant objects
+				//Ironically, Also affets brightness of 'darkmatter'
+				_Distfading("Distance Fading", Float) = 55
+				//How much color is present?
+				_Saturation("Saturation", Float) = 77
+
+				//v0.7a - VORTEX
+				//vortexPosRadius("vortexPosRadius", Float) = (0, 0, 0, 0)
+				//vortexControlsA("vortexControlsA", Float) = (0, 0, 0, 0)
+				vortexAxis("vortex Axis", Vector) = (0, 1, 0, 1) //v1.0.9
 
 	}
 
@@ -173,13 +222,39 @@ Shader "Hidden/Shader/NebulaCloudsSM_HDRP_Vortex"
 	//////////////////// FULL VOLUMETRIC CLOUDS /////////////////////////
 	//#include "UnityCG.cginc"
 #pragma multi_compile __ DEBUG_NO_LOW_FREQ_NOISE
-#pragma multi_compile __ DEBUG_NO_HIGH_FREQ_NOISE
-#pragma multi_compile __ DEBUG_NO_CURL
+//#pragma multi_compile __ DEBUG_NO_HIGH_FREQ_NOISE
+//#pragma multi_compile __ DEBUG_NO_CURL
 #pragma multi_compile __ ALLOW_IN_CLOUDS
-#pragma multi_compile __ RANDOM_JITTER_WHITE RANDOM_JITTER_BLUE
+//#pragma multi_compile __ RANDOM_JITTER_WHITE RANDOM_JITTER_BLUE
 #pragma multi_compile __ RANDOM_UNIT_SPHERE
-#pragma multi_compile __ SLOW_LIGHTING
+//#pragma multi_compile __ SLOW_LIGHTING
 #define BIG_STEP 3.0
+
+
+			//NEBULA
+			float4 starsControl;
+		float4 starsControlA;
+		float4 starsControlB;
+		float4 starsTransparency; //v1.0.9
+
+		//STARFIELD
+		static const float kInnerRadius = 1.0;
+		static const float kCameraHeight = 0.0001;
+		float4 _Color;
+		int _Volsteps;
+		int _Iterations;
+		float4 _Scroll;
+		float4 _Center;
+		float _CamScroll;
+		float4 _Rotation;
+		float _Formuparam;
+		float _StepSize;
+		float _Tile;
+		float _Brightness;
+		float _Darkmatter;
+		float _Distfading;
+		float _Saturation;
+
 
 			//v0.6
 			float4 controlCloudEdgeA;// = float4(0.65, 1.22, 1.14, 1.125);
@@ -193,6 +268,8 @@ Shader "Hidden/Shader/NebulaCloudsSM_HDRP_Vortex"
 				float4x4 unity_CameraInvProjection;
 
 			uniform int _renderInFront = 0;//v0.1
+
+			float globalTIME = 0;
 
 			int scatterOn = 1;
 			int sunRaysOn = 1;
@@ -271,6 +348,7 @@ Shader "Hidden/Shader/NebulaCloudsSM_HDRP_Vortex"
 			float4 	vortexControlsA;
 			float4 	superCellPosRadius;
 			float4 	superCellControlsA;
+			float4 vortexAxis; //v1.0.9
 
 			uniform int _Steps;
 			//////////////////// END FULL VOLUMETRIC CLOUDS /////////////////////
@@ -1479,7 +1557,7 @@ uniform half4 _MainTex_TexelSize;
 			// returns height fraction [0, 1] for point in cloud
 			float getHeightFractionForPoint(float3 pos)
 			{
-
+#if defined(DEBUG_NO_LOW_FREQ_NOISE) //VORTEX
 				//v0.7 VORTEX
 				//float4 vortexPosRadius = vortexPosRadius;// float4(0, 0, 0, 1100); //v0.8
 				float distanceToVortexCenter = length(vortexPosRadius.xz - pos.xz);
@@ -1490,6 +1568,9 @@ uniform half4 _MainTex_TexelSize;
 				}
 
 				return ((distance(pos, _PlanetCenter) - (_SphereSize + _CloudHeightMinMax.x)) / thick);
+#else
+				return saturate((distance(pos, _PlanetCenter) - (_SphereSize + _CloudHeightMinMax.x)) / _Thickness);
+#endif
 			}
 
 			// samples the gradient
@@ -1521,7 +1602,16 @@ uniform half4 _MainTex_TexelSize;
 
 			// samples weather texture
 			float3 sampleWeather(float3 pos) {
+								
+				//v0.4 - construct time
+				float4 _TimeA = _Time;
+				if (globalTIME > 0) {
+					_TimeA = float4(globalTIME / 20, globalTIME, 2 * globalTIME, 3 * globalTIME);
+				}
 
+				float3 weatherData = tex2Dlod(_WeatherTexture, float4((pos.xz + _CoverageWindOffset) * _WeatherScale, 0, 0)).rgb;
+
+#if defined(DEBUG_NO_LOW_FREQ_NOISE) //VORTEX
 				//v0.7
 				//float4 vortexPosRadius = float4(0, 0, 0, -1100);
 				float distanceToVortexCenter = length(vortexPosRadius.xz - pos.xz);
@@ -1529,14 +1619,8 @@ uniform half4 _MainTex_TexelSize;
 					//pos.y = pos.y + 1000*distanceToVortexCenter;
 				//}
 
-
-
-				float3 weatherData = tex2Dlod(_WeatherTexture, float4((pos.xz + _CoverageWindOffset) * _WeatherScale, 0, 0)).rgb;
-
-
-
 				//v0.7
-				float3x3 rotator = rotationMatrix(float3(0, 1, 0), 1 * (_Time.y * vortexControlsA.x));
+				float3x3 rotator = rotationMatrix(float3(0, 1, 0), 1 * (_TimeA.y * vortexControlsA.x));
 				float3 posVertex = mul(float3(pos.x, 0, pos.z), rotator);
 				float3 weatherData2 = tex2Dlod(_WeatherTexture, float4((posVertex.xz + _CoverageWindOffset) * _WeatherScale, 0, 0)).rgb;
 				//if (distanceToVortexCenter > 0) {				
@@ -1550,6 +1634,7 @@ uniform half4 _MainTex_TexelSize;
 					weatherData = lerp(weatherData2, weatherData, 1 - saturate(distanceToVortexCenter / 1000));
 					weatherData.r *= 14;
 				}
+#endif
 				//v0.7a
 				//weatherData.r = weatherData.r + (distanceToVortexCenter / 100000) - 0.2;
 				weatherData.r = (weatherData.r - _Coverage);
@@ -1582,8 +1667,8 @@ uniform half4 _MainTex_TexelSize;
 				float4 texInteract = tex2Dlod(_InteractTexture, 0.0003*float4(
 					//_InteractTexturePos.x*pos.x + _InteractTexturePos.z*-_Scroll1.x * _Time.x + _InteractTextureOffset.x,
 					//_InteractTexturePos.y*pos.z + _InteractTexturePos.w*-_Scroll1.z * _Time.x + _InteractTextureOffset.y,
-					_InteractTexturePos.x*pos.x + _InteractTexturePos.z * _Time.x + _InteractTextureOffset.x,
-					_InteractTexturePos.y*pos.z + _InteractTexturePos.w * _Time.x + _InteractTextureOffset.y,
+					_InteractTexturePos.x*pos.x + _InteractTexturePos.z * _TimeA.x + _InteractTextureOffset.x,
+					_InteractTexturePos.y*pos.z + _InteractTexturePos.w * _TimeA.x + _InteractTextureOffset.y,
 					0, 0));
 				float3 _LocalLightPos = float3(0, 0, 0);
 				float diffPos = length(_LocalLightPos.xyz - pos);
@@ -1597,30 +1682,43 @@ uniform half4 _MainTex_TexelSize;
 			// samples cloud density
 			float sampleCloudDensity(float3 p, float heightFraction, float3 weatherData, float lod, bool sampleDetail)
 			{
+
+				//v0.4 - construct time
+				float4 _TimeA = _Time;
+				if (globalTIME > 0) {
+					_TimeA = float4(globalTIME / 20, globalTIME, 2 * globalTIME, 3 * globalTIME);
+				}
+
 				float3 pos = p + _WindOffset; // add wind offset
 				pos += heightFraction * _WindDirection * 700.0; // shear at higher altitude
 
 #if defined(DEBUG_NO_LOW_FREQ_NOISE)
-				float cloudSample = 0.7;
-				cloudSample = remap(cloudSample, _LowFreqMinMax.x, _LowFreqMinMax.y, 0.0, 1.0);
-#else
+				//float cloudSample = 0.7;
+				//cloudSample = remap(cloudSample, _LowFreqMinMax.x, _LowFreqMinMax.y, 0.0, 1.0);
+//#else
 			//float cloudSample = tex3Dlod(_ShapeTexture, float4(pos * _Scale, lod)).r; // sample cloud shape texture
 
 
-			//v0.7a
+				//v0.7a
 				//float4 vortexPosRadius = float4(0, 0, 0, 1000);
-				float distanceToVortexCenter = length(vortexPosRadius.xz - pos.xz);
-				float3x3 rotator = rotationMatrix(float3(0, 1, 0), 1 * ((_Time.y * 2* vortexControlsA.y) - 700 * (distanceToVortexCenter / 10000000)));
-				float3 posVertex = mul(float3(pos.x, 0, pos.z), rotator);
-				posVertex.y = pos.y;
+				float distanceToVortexCenter = length(vortexPosRadius.xz - p.xz);
+
+				//v1.1.0
+				//float3x3 rotator = rotationMatrix(float3(0, 1, 0), 1 * ((_Time.y * 2* vortexControlsA.y) - 700 * (distanceToVortexCenter / 10000000)));
+				float3x3 rotator = rotationMatrix(vortexAxis.xyz, vortexControlsA.x*_TimeA.y + ((2 * vortexControlsA.z) - vortexControlsA.y * 700 * (distanceToVortexCenter / 10000000)));
+
+				float3 posVertex = mul(float3(p.x, 0, p.z), rotator);
+				posVertex.y = p.y;
 				if (distanceToVortexCenter > vortexPosRadius.w) {//if (distanceToVortexCenter > 150000) { //v0.8
-					posVertex = pos;
+					posVertex = p;
 				}
 				//posVertex.y = posVertex.y - (_Time.y * 12);
 				float cloudSample = tex3Dlod(_ShapeTexture, float4(posVertex * _Scale, lod)).r;
 
+				cloudSample = remap(cloudSample * pow(1.2 - heightFraction, 0.1), _LowFreqMinMax.x, _LowFreqMinMax.y, 0.0, 1.0); // pick certain range from sample texture
 
-
+#else
+				float cloudSample = tex3Dlod(_ShapeTexture, float4(pos * _Scale, lod)).r; // sample cloud shape texture
 				cloudSample = remap(cloudSample * pow(1.2 - heightFraction, 0.1), _LowFreqMinMax.x, _LowFreqMinMax.y, 0.0, 1.0); // pick certain range from sample texture
 #endif
 
@@ -1633,23 +1731,23 @@ uniform half4 _MainTex_TexelSize;
 				cloudSample = saturate(remap(cloudSample, saturate(heightFraction / cloudCoverage), 1.0, 0.0, 1.0)); // Change cloud coverage based by height and use remap to reduce clouds outside coverage
 				cloudSample *= cloudCoverage; // multiply by cloud coverage to smooth them out, GPU Pro 7
 
-#if defined(DEBUG_NO_HIGH_FREQ_NOISE)
-				cloudSample = remap(cloudSample, 0.2, 1.0, 0.0, 1.0);
-#else
+//#if defined(DEBUG_NO_HIGH_FREQ_NOISE)
+				//cloudSample = remap(cloudSample, 0.2, 1.0, 0.0, 1.0);
+//#else
 				if (cloudSample > 0.0 && sampleDetail) // If cloud sample > 0 then erode it with detail noise
 				{
-#if defined(DEBUG_NO_CURL)
-#else
+//#if defined(DEBUG_NO_CURL)
+//#else
 					float3 curlNoise = mad(tex2Dlod(_CurlNoise, float4(p.xz * _CurlDistortScale, 0, 0)).rgb, 2.0, -1.0); // sample Curl noise and transform it from [0, 1] to [-1, 1]
 					pos += float3(curlNoise.r, curlNoise.b, curlNoise.g) * heightFraction * _CurlDistortAmount; // distort position with curl noise
-#endif
+//#endif
 					float detailNoise = tex3Dlod(_DetailTexture, float4(pos * _DetailScale, lod)).r; // Sample detail noise
 
 					float highFreqNoiseModifier = lerp(1.0 - detailNoise, detailNoise, saturate(heightFraction * 10.0)); // At lower cloud levels invert it to produce more wispy shapes and higher billowy
 
 					cloudSample = remap(cloudSample, highFreqNoiseModifier * _HighFreqModifier, 1.0, 0.0, 1.0); // Erode cloud edges
 				}
-#endif
+//#endif
 
 				return max(cloudSample * _SampleMultiplier, 0.0);
 			}
@@ -1725,31 +1823,31 @@ uniform half4 _MainTex_TexelSize;
 					densityAlongCone += sampleCloudDensity(p, heightFraction, weatherData, lod + ((float)i) * 0.5, true) * weatherDensity(weatherData);
 				}
 
-#if defined(SLOW_LIGHTING) // if doing slow lighting then do more samples in straight line
-				pos += 24.0 * _LightStepLength * lightDir;
-				weatherData = sampleWeather(pos);
-				heightFraction = getHeightFractionForPoint(pos);
-				densityAlongCone += sampleCloudDensity(pos, heightFraction, weatherData, lod, true) * 2.0;
-				int j = 0;
-				while (1) {
-					if (j > 22) {
-						break;
-					}
-					pos += 4.25 * _LightStepLength * lightDir;
-					weatherData = sampleWeather(pos);
-					if (weatherData.r > 0.05) {
-						heightFraction = getHeightFractionForPoint(pos);
-						densityAlongCone += sampleCloudDensity(pos, heightFraction, weatherData, lod, true);
-					}
-
-					j++;
-				}
-#else
+//#if defined(SLOW_LIGHTING) // if doing slow lighting then do more samples in straight line
+//				pos += 24.0 * _LightStepLength * lightDir;
+//				weatherData = sampleWeather(pos);
+//				heightFraction = getHeightFractionForPoint(pos);
+//				densityAlongCone += sampleCloudDensity(pos, heightFraction, weatherData, lod, true) * 2.0;
+//				int j = 0;
+//				while (1) {
+//					if (j > 22) {
+//						break;
+//					}
+//					pos += 4.25 * _LightStepLength * lightDir;
+//					weatherData = sampleWeather(pos);
+//					if (weatherData.r > 0.05) {
+//						heightFraction = getHeightFractionForPoint(pos);
+//						densityAlongCone += sampleCloudDensity(pos, heightFraction, weatherData, lod, true);
+//					}
+//
+//					j++;
+//				}
+//#else
 				pos += 32.0 * _LightStepLength * lightDir; // light sample from further away
 				weatherData = sampleWeather(pos);
 				heightFraction = getHeightFractionForPoint(pos);
 				densityAlongCone += sampleCloudDensity(pos, heightFraction, weatherData, lod + 2, false) * weatherDensity(weatherData) * 3.0;
-#endif
+//#endif
 
 				return calculateLightEnergy(densityAlongCone, cosAngle, density) * _SunColor;
 			}
@@ -1897,6 +1995,54 @@ uniform half4 _MainTex_TexelSize;
 			}
 
 
+			//NEBULA v0.1
+#define HASHSCALE1 .1031
+#define HASHSCALE3 float3(.1031, .1030, .0973)
+			float3 Hash33(float3 p3)
+			{
+				p3 = frac(p3 * HASHSCALE3);
+				p3 += dot(p3, p3.yxz + 19.19);
+				return frac((p3.xxy + p3.yxx)*p3.zyx);
+
+			}
+			float Hash13(float3 p3)
+			{
+				p3 = frac(p3 * HASHSCALE1);
+				p3 += dot(p3, p3.yzx + 19.19);
+				return frac((p3.x + p3.y) * p3.z);
+			}
+
+			float3 StarsA(in float3 ro, in float3 rd, float den, float tileNum)
+			{
+				float3 c = float3(0., 0., 0.);
+				float3 p = (ro / 1 + rd) / 32800; //_WorldSpaceCameraPos.z * 0.01 +
+				float SIZE = 0.11;
+				for (float i = 0.; i < 18.; i++)
+				{
+					float3 q = frac(p*tileNum) - 0.5;
+					float3 id = floor(p*tileNum);
+					float2 rn = Hash33(id).xy;
+
+					float size = (Hash13(id)*0.2 + 0.8)*SIZE;
+					float demp = pow(1. - size / SIZE, .8)*0.45;
+					float val = (sin(1 * 31.*size)*demp + 1. - demp) * size * 2;
+					float c2 = 1 - smoothstep(0., val, length(q));
+					c2 *= step(rn.x, (.0005 + i * i*0.001)*den);
+					c += c2 * (lerp(float3(1.0, 0.49, 0.1), float3(0.75, 0.9, 1.), rn.y)*0.25 + 0.75);
+					p *= 1.5;// 1.4;
+				}
+				return c * c*.7;
+			}
+			float3 raymarchSTARS(float3 ro, float3 rd, float steps, float depth, float cosAngle, float2 duv)
+			{
+				//float4 ProcessRayMarch(float2 uv, float3 ro, float3 rd, inout float sceneDep, float4 sceneCol) {
+				//if (depth > depthCutoff) {//if (length(ro + rd) < sceneDep) {//if (sceneDep > 21111){// (length(ro + rd) < sceneDep) {
+					//sceneCol.xyz = sceneCol + StarsA(rd, 3., 50.);//sceneCol.xyz =  StarsA(rd,3.,50.);
+				return StarsA(ro, rd, 13., 1.);
+				//}
+			}
+			//END NEBULA
+
 			float4 raymarch(float3 ro, float3 rd, float steps, float depth, float cosAngle, float2 duv)
 			{
 				float3 pos = ro;
@@ -1906,10 +2052,54 @@ uniform half4 _MainTex_TexelSize;
 				float stepLength = BIG_STEP; // step length multiplier, 1.0 when doing small steps
 
 
+				//NEBULA INIT
+				float3 c = float3(0., 0., 0.);
+				float3 p = (0 + rd * starsControl.z) / starsControl.y; //_WorldSpaceCameraPos.z * 0.01 + //rayOrigin / 20 * starsControl.x
+
+				//STARFIELD CONTROL
+				float foundCloudAtDist = 0;
+
+
 				for (float i = 0.0; i < steps; i += stepLength)
 				{
+
+
+					//NEBULA
+					float SIZE = 0.72;
+					float den = 0.0005* starsControl.w; float tileNum = 0.0000001;
+					float3 q = frac(p*tileNum) - 0.5;
+					float3 id = floor(p*tileNum);
+					float2 rn = Hash33(id).xy* starsControlA.x;
+					float size = (Hash13(id)*0.2 + 0.8)*SIZE;
+					float demp = pow(1. - size / SIZE, .8)*0.45;
+					float val = (sin(_Time.y * 2 * size)*demp + 1. - demp) * size; //(sin(_Time.y * 31.*size)*demp + 1. - demp) * size;
+					float c2 = 1 - smoothstep(0., val, length(q));
+					if (sunRaysOn != 0) {
+						starsControlA.z = 0;
+					}
+					if (starsControlA.z > 0) {
+						c2 *= step(rn.x, (.0005 + i * i*0.0001)*den) * starsControlA.w;
+						//if (res.a < 0.005 && length(p) < 211000) {
+						//if (depth > 21111111 && res.a < 0.0000000000005) {
+						if (depth > 21111111) {
+							c += c2 * (lerp(float3(1.0, 0.49* starsControlB.z, 0.1* starsControlB.w), float3(0.75* starsControlB.x, 0.9* starsControlB.y, 1.), rn.y)*0.25 + 0.75) * (1 * starsControlA.y - res.a * 1)*0.35 *starsControl.x;
+							//}
+						}
+						p *= 1.25;// 1.4;
+						if (res.a >= 0.5) {
+							c = c * (1 - res.a);
+						}
+					}
+					//END NEBULA
+
+
 					if (distance(_CameraWS, pos) >= depth || res.a >= 0.99) { // check if is behind some geometrical object or that cloud color aplha is almost 1
 																			  //break;  // if it is then raymarch ends
+
+
+						//NEBULA
+						c = c * (1 - res.a);// c * (1 - res.a*res.a*res.a*res.a);
+						//starFieldASum = starFieldASum * (1 - res.a);
 
 																			  //v0.1 - add option to rernder in front of all objects for reflections
 						if (_renderInFront == 0) {
@@ -1935,6 +2125,10 @@ uniform half4 _MainTex_TexelSize;
 
 					if (cloudDensity > 0.0) // check if cloud density is > 0 //NASOS >=
 					{
+						//NEBULA
+						if (foundCloudAtDist == 0) {
+							foundCloudAtDist = length(pos - ro);
+						}
 
 						//NASOS
 						//		float adder1 = 0;
@@ -2392,6 +2586,108 @@ uniform half4 _MainTex_TexelSize;
 					pos += rd * stepLength; // march forward
 				}
 
+				//NEBULA
+				//v1.0.9
+				if (res.a == 0) {
+					res.a = 0.01 * starsTransparency.x;
+					//res.a = 0.5;
+				}
+#if defined(ALLOW_IN_CLOUDS)
+				//STARFIELD INIT
+				//half3 col = half3(0, 0, 0);
+				//float4 pos = IN.pos;
+				float3 dir = normalize(rd); //
+				//float3 dir = normalize(_WorldSpaceCameraPos.xyz - IN.posWorld.xyz);
+				//return half4(dir,1.);
+				float time = _Center.w + 25 * _Time.x;									//////////////////////
+				//Un-scale parameters (source parameters for these are mostly in 0...1 range)
+				//Scaling them up makes it much easier to fine-tune shader in the inspector.
+				float brightness = _Brightness / 1000;
+				float stepSize = _StepSize / 1000;
+				float3 tile = abs(float3(_Tile, _Tile, _Tile)) / 1000;
+				float formparam = _Formuparam / 1000;
+				float darkmatter = _Darkmatter / 100;
+				float distFade = _Distfading / 100 * (1.1 + 0.5*sin(_Time.x));
+				float3 from = _Center.xyz;
+				//scroll over time
+				from += _Scroll.xyz * _Scroll.w * time;									//////////////////////
+				//scroll from camera position
+				from += float3(_WorldSpaceCameraPos.x, _WorldSpaceCameraPos.y, _WorldSpaceCameraPos.z * 1) * _CamScroll * 0.0001;// .00001;
+				//Apply rotation if enabled
+				float3 rot = _Rotation.xyz * _Rotation.w * time * .1;
+				if (length(rot) > 0) {
+					float2x2 rx = float2x2(cos(rot.x), sin(rot.x), -sin(rot.x), cos(rot.x));
+					float2x2 ry = float2x2(cos(rot.y), sin(rot.y), -sin(rot.y), cos(rot.y));
+					float2x2 rz = float2x2(cos(rot.z), sin(rot.z), -sin(rot.z), cos(rot.z));
+					dir.xy = mul(rz, dir.xy);
+					dir.xz = mul(ry, dir.xz);
+					dir.yz = mul(rx, dir.yz);
+					from.xy = mul(rz, from.xy);
+					from.xz = mul(ry, from.xz);
+					from.yz = mul(rx, from.yz);
+				}
+				//volumetric rendering
+				float s = 0.1, fade = 1.0*distFade*distFade;
+				float3 v = float3(0, 0, 0) + 1. + distFade + fade;
+				float4 starFieldASum = float4(0, 0, 0, 0);
+				//END STARFIELD INIT
+				//STARFIELD
+				float starFieldASumMINUS = 1;
+				for (int i = 3; i < _Volsteps; i++) {
+					//for (float i = 0.0; i < steps; i += stepLength){//for (int i = 3; i < _Volsteps; i++) {
+					float3 pA = abs(from + s * dir * 0.05);//.5);
+					float heightFraction = getHeightFractionForPoint(pA);
+					float3 weatherData = sampleWeather(pA);
+					float cloudDensity = saturate(sampleCloudDensity(pA, heightFraction, weatherData, lod, true));
+					//if (cloudDensity > 0.0 || res.a > 0.99985 || (foundCloudAtDist > 0 && length(pA) > foundCloudAtDist) ) // check if cloud density is > 0 //NASOS >=
+					if (cloudDensity > 0.0 || (foundCloudAtDist > 0 && length(pA - from) * 200000 * _Saturation >= foundCloudAtDist))
+					{
+						//starFieldASum = 0; //for (float i = 0.0; i < steps; i += stepLength)
+						//break;
+						starFieldASumMINUS += starFieldASumMINUS;
+					}
+					pA = abs(float3(tile - fmod(pA, tile * 2)));
+					float pa, a = pa = 0.;
+					for (int k = 0; k < _Iterations; k++) {
+						for (int j = 0; j < 3; j++) {
+							pA = abs(pA) / dot(pA, pA) - formparam;
+							a += abs(length(pA) - pa);
+							pa = length(pA);
+						}
+					}
+					//Dark matter
+					float dm = max(0., darkmatter - a * a * .001);
+					if (i > 6) { fade *= 1. - dm; } // Render distant darkmatter
+					a *= a * a; //add contrast
+					v += fade;
+					// coloring based on distance
+					v += float3(s, s*s, s*s*s*s) * a * brightness * fade;
+					// distance fading
+					fade *= distFade;
+					s += stepSize;
+					//starFieldASum = starFieldASum + saturate(float4(v * 0.0025* (float3(0.5, .5, .5)), 0.1));  // + 0.5 * diffuse.xyz), diffuse.a);
+					//res = res + saturate(float4(v * 0.0025* (float3(0.5, .5, .5)), 0.3)) * (1 - res.a);
+					//res = res + saturate(float4(v * 0.0025* (float3(0.5, .5, .5)), 0.3)) * (1 - res.a);
+					//res.rgb = res.rgb + saturate(float3(v * 0.0025* (float3(0.5, .5, .5)))) * (1 - res.a);
+					//res.rgb = res.rgb + 0.01*saturate(float3(v * 0.0025* (float3(0.5, .5, .5))));
+					starFieldASum.rgb = starFieldASum.rgb + saturate(float3(v * 0.0025* (float3(0.5, .5, .5)))) * 1;// (1 - res.a);
+					/*if (res.a >= 0.5) {
+						starFieldASum = starFieldASum * (1 - res.a);
+					}*/
+				}
+				starFieldASum.rgb = starFieldASum.rgb / pow(starFieldASumMINUS, 1.56);
+				//END STARFIELD
+				//STARFIELD
+				//res = starFieldASum/1001;
+				res.rgb = res.rgb + 0.6*pow(starFieldASum, 1);
+				//END STARFIELD
+#endif
+				//NEBULA
+				if (starsControlA.z > 0) {
+					//res.rgb = res.rgb + c * c * 7 * starsControlA.z;
+					res.rgb = res.rgb + saturate(c * c * 7 * starsControlA.z * (1 - res.a));
+				}
+
 				return res;
 			}
 
@@ -2508,6 +2804,13 @@ uniform half4 _MainTex_TexelSize;
 
 			float4 frag_FV(v2f_FV i) : SV_Target
 			{
+
+				//v0.4 - construct time
+				float4 _TimeA = _Time;
+				if (globalTIME > 0) {
+					_TimeA = float4(globalTIME / 20, globalTIME, 2 * globalTIME, 3 * globalTIME);
+				}
+
 				//return float4(i.pos);
 				//return float4(i.ray);
 				//return float4(i.uv, 0, 0);
@@ -2561,6 +2864,7 @@ uniform half4 _MainTex_TexelSize;
 							float3 rs;
 							float3 re;
 
+#if defined(DEBUG_NO_LOW_FREQ_NOISE) //VORTEX
 							//v0.7
 							//float4 vortexPosRadius = float4(0, 0, 0, 1100);
 							float distanceToVortexCenter = length(vortexPosRadius.xz - wsPos.xz);
@@ -2573,6 +2877,7 @@ uniform half4 _MainTex_TexelSize;
 								//_CloudHeightMinMax.x = _CloudHeightMinMax.x + thick.y;
 								_CloudHeightMinMax.y = _CloudHeightMinMax.y + thick.y;
 							}
+#endif
 
 							float steps;
 							float stepSize;
@@ -2629,12 +2934,12 @@ uniform half4 _MainTex_TexelSize;
 							// Ray end pos
 
 
-				#if defined(RANDOM_JITTER_WHITE)
-							rs += rd * stepSize * rand(_Time.zw + duv) * BIG_STEP * 0.75;
-				#endif
-				#if defined(RANDOM_JITTER_BLUE)
+				/*#if defined(RANDOM_JITTER_WHITE)
+							rs += rd * stepSize * rand(_TimeA.zw + duv) * BIG_STEP * 0.75;
+				#endif*/
+				//#if defined(RANDOM_JITTER_BLUE)
 							rs += rd * stepSize * BIG_STEP * 0.75 * getRandomRayOffset((duv + _Randomness.xy) * _ScreenParams.xy * _BlueNoise_TexelSize.xy);
-				#endif
+				//#endif
 
 							// Convert from depth buffer (eye space) to true distance from camera
 							// This is done by multiplying the eyespace depth by the length of the "z-normalized"
@@ -3032,6 +3337,11 @@ uniform half4 _MainTex_TexelSize;
 
 			float SampleNoise(float3 uvw, float _Altitude1, float _NoiseAmp1, float Alpha)//v3.5.3
 			{
+				//v0.4 - construct time
+				float4 _TimeA = _Time;
+				if (globalTIME > 0) {
+					_TimeA = float4(globalTIME / 20, globalTIME, 2 * globalTIME, 3 * globalTIME);
+				}
 
 				float AlphaFactor = clamp(Alpha*_InteractTextureAtr.w, _InteractTextureAtr.x, 1);
 
@@ -3040,8 +3350,8 @@ uniform half4 _MainTex_TexelSize;
 				float4 uvw1 = float4(uvw * _NoiseFreq1 * baseFreq, 0);
 				float4 uvw2 = float4(uvw * _NoiseFreq2 * baseFreq, 0);
 
-				uvw1.xyz += _Scroll1.xyz * _Time.x;
-				uvw2.xyz += _Scroll2.xyz * _Time.x;
+				uvw1.xyz += _Scroll1.xyz * _TimeA.x;
+				uvw2.xyz += _Scroll2.xyz * _TimeA.x;
 
 				float n1 = tex3Dlod(_NoiseTex1, uvw1).a;
 				float n2 = tex3Dlod(_NoiseTex2, uvw2).a;
@@ -3122,6 +3432,14 @@ uniform half4 _MainTex_TexelSize;
 
 			half4 Fragment(Varyings input) : SV_Target
 			{
+
+				//v0.4 - construct time
+				float4 _TimeA = _Time;
+				if (globalTIME > 0) {
+					_TimeA = float4(globalTIME / 20, globalTIME, 2 * globalTIME, 3 * globalTIME);
+				}
+
+
 				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
 			float3 forward = float3(0, 0, 1);// mul((float3x3)(unity_WorldToCamera), float3(0, 0, 1)); //v0.1
@@ -3222,18 +3540,18 @@ uniform half4 _MainTex_TexelSize;
 					- 1 * 1.03 * _WorldSpaceCameraPos.z * 3.24 + 75 * abs(sin(_WorldSpaceCameraPos.z * 0.02)) + 85 * abs(cos(_WorldSpaceCameraPos.z * 0.01));
 
 				noise = SAMPLE_TEXTURE2D(_NoiseTex, sampler_NoiseTex, 1 * (dividerScale * (float2(input.texcoord.x*scaler1 * 1, input.texcoord.y*scaler1))
-					+ (-0.001*float2((0.94)*hor1, vert1)) + 3 * abs(cos(_Time.y *1.22* 0.012)))) * 2 * 9;
+					+ (-0.001*float2((0.94)*hor1, vert1)) + 3 * abs(cos(_TimeA.y *1.22* 0.012)))) * 2 * 9;
 				noise1 = SAMPLE_TEXTURE2D(_NoiseTex, sampler_NoiseTex, 1 * (dividerScale * (input.texcoord.xy*scaler2)
-					+ (-0.001*float2((0.94)*hor2, vert2) + 3 * abs(cos(_Time.y *1.22* 0.010))))) * 3 * 9;
+					+ (-0.001*float2((0.94)*hor2, vert2) + 3 * abs(cos(_TimeA.y *1.22* 0.010))))) * 3 * 9;
 				noise2 = SAMPLE_TEXTURE2D(_NoiseTex, sampler_NoiseTex, 1 * (dividerScale * (input.texcoord.xy*scaler3)
-					+ (-0.001*float2((0.94)*hor3, vert3) + 1 * abs(cos(_Time.y *1.22* 0.006))))) * 3 * 9;
+					+ (-0.001*float2((0.94)*hor3, vert3) + 1 * abs(cos(_TimeA.y *1.22* 0.006))))) * 3 * 9;
 			}
 			else {
 
 				/////////// NOISE 3D //////////////
 				const float epsilon = 0.0001;
 
-				float2 uv = input.texcoord * 4.0 + float2(0.2, 1) * _Time.y * 0.01;
+				float2 uv = input.texcoord * 4.0 + float2(0.2, 1) * _TimeA.y * 0.01;
 
 				/*#if defined(SNOISE_AGRAD) || defined(SNOISE_NGRAD)
 				#if defined(THREED)
@@ -3257,9 +3575,9 @@ uniform half4 _MainTex_TexelSize;
 				for (int i = 0; i < 5; i++)
 					//#endif
 				{
-					float3 coord = wpos + float3(_Time.y * 3 * _NoiseSpeed.x,
-						_Time.y * _NoiseSpeed.y,
-						_Time.y * _NoiseSpeed.z);
+					float3 coord = wpos + float3(_TimeA.y * 3 * _NoiseSpeed.x,
+						_TimeA.y * _NoiseSpeed.y,
+						_TimeA.y * _NoiseSpeed.z);
 					float3 period = float3(s, s, 1.0) * 1111;
 
 
@@ -3274,9 +3592,9 @@ uniform half4 _MainTex_TexelSize;
 					for (int j = 0; j < steps; j++) {
 						//ray trace noise												
 						float3 coordAlongRay = _WorldSpaceCameraPos + normalize(pointToCamera) * step
-							+ float3(_Time.y * 6 * _NoiseSpeed.x,
-								_Time.y * _NoiseSpeed.y,
-								_Time.y * _NoiseSpeed.z);
+							+ float3(_TimeA.y * 6 * _NoiseSpeed.x,
+								_TimeA.y * _NoiseSpeed.y,
+								_TimeA.y * _NoiseSpeed.z);
 						o += 1.5*cnoise(coordAlongRay * 0.17 * _NoiseScale) * w * 1;
 						//stepCount++;
 						if (depth < 0.99999) {
@@ -3516,7 +3834,7 @@ uniform half4 _MainTex_TexelSize;
 
 				float3 light = v3LightDir;// 4.8
 				float hg = HenyeyGreenstein(dot(ray, light));
-				float2 uv = input.texcoord + _Time.x;
+				float2 uv = input.texcoord + _TimeA.x;
 				float offs = UVRandom(uv) * (dist1 - dist0) / samples;
 
 				//v4.8.2
@@ -3555,8 +3873,8 @@ uniform half4 _MainTex_TexelSize;
 				UNITY_LOOP for (int s = 0; s < samples; s++)
 				{
 					float4 texInteract = tex2Dlod(_InteractTexture, 0.0003*float4(
-						_InteractTexturePos.x*pos.x + _InteractTexturePos.z*-_Scroll1.x * _Time.x + _InteractTextureOffset.x,
-						_InteractTexturePos.y*pos.z + _InteractTexturePos.w*-_Scroll1.z * _Time.x + _InteractTextureOffset.y,
+						_InteractTexturePos.x*pos.x + _InteractTexturePos.z*-_Scroll1.x * _TimeA.x + _InteractTextureOffset.x,
+						_InteractTexturePos.y*pos.z + _InteractTexturePos.w*-_Scroll1.z * _TimeA.x + _InteractTextureOffset.y,
 						0, 0));
 					//return float4(texInteract * Final_fog_color);
 
@@ -3901,6 +4219,9 @@ uniform half4 _MainTex_TexelSize;
 
 			}
 
+			//BACKGROUND BLEND MODE
+			float backgroundOnly;
+
 			/////////////// FULL VOLUMETRIC CLOUDS 
 			half4 CombineClouds(v2f i) : SV_Target
 			{
@@ -3948,6 +4269,12 @@ uniform half4 _MainTex_TexelSize;
 				float zsample = Linear01DepthA(i.uv.xy);
 				float depth = Linear01Depth(zsample * (zsample < 1.0), _ZBufferParams);
 				//return float4(back.rgb * (1.0 - cloud.a) + cloud.rgb, 1.0)*depth + float4((1 - depth) * back.rgb, 0); // blend them
+
+				//BACKGROUND MODE
+				if (backgroundOnly > 0 && depth < backgroundOnly) {
+					return back;
+				}
+
 				if (depthDilation == 0) {
 					depth = 1;
 				}
@@ -4595,7 +4922,7 @@ uniform half4 _MainTex_TexelSize;
 					ZTest Always Cull Off ZWrite Off
 					HLSLPROGRAM
 
-					#pragma vertex vert_FV
+					#pragma vertex vert//_FV
 					#pragma fragment fragCombineClouds
 
 					ENDHLSL

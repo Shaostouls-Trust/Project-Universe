@@ -5,10 +5,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet.Geometry
+namespace Artngame.Orion.TriangleNet.Geometry
 {
     using System;
-    using TriangleNet.Topology;
+    using Artngame.Orion.TriangleNet.Topology;
 
     /// <summary>
     /// The vertex data structure.

@@ -1,9 +1,9 @@
 ﻿
-namespace TriangleNet.Meshing.Iterators
+namespace Artngame.Orion.TriangleNet.Meshing.Iterators
 {
     using System.Collections.Generic;
-    using TriangleNet.Geometry;
-    using TriangleNet.Topology;
+    using Artngame.Orion.TriangleNet.Geometry;
+    using Artngame.Orion.TriangleNet.Topology;
 
     public class VertexCirculator
     {

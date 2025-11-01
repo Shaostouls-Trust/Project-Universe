@@ -31,8 +31,8 @@ namespace Artngame.Orion.Galaxia
         #endregion
         #region Private
         [SerializeField]
-        [HideInInspector]
-        private ParticlesPrefab m_prefab;
+        //[HideInInspector]
+        public ParticlesPrefab m_prefab;//v1.1.0
         [SerializeField]
         [HideInInspector]
         private Particle[] m_particleList;
@@ -43,9 +43,9 @@ namespace Artngame.Orion.Galaxia
         [HideInInspector]
         private Mesh[] m_meshes;
         [SerializeField]
-        [HideInInspector]
-        private GalaxyPrefab m_galaxyPrefab;
-        private bool m_gpu = true;
+        //[HideInInspector]
+        public GalaxyPrefab m_galaxyPrefab;//v1.1.0
+        public bool m_gpu = true;
         private bool m_needsRebuild = true;
         private bool m_needsUpdate = true;
 	    private float m_time = 0;

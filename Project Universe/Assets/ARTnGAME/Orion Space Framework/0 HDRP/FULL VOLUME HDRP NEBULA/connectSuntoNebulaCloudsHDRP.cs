@@ -10,6 +10,8 @@ namespace Artngame.SKYMASTER
     //v0.1 - HDRP volumetric clouds image effect
     public class connectSuntoNebulaCloudsHDRP : MonoBehaviour
     {
+        public bool useGlobalTime = true; //_Time since level load (t/20, t, t*2, t*3)
+
         public GameObject volumeObj;
         public bool renderClouds = true;
         [Range(0, 1)]
@@ -39,6 +41,48 @@ namespace Artngame.SKYMASTER
         public float height = 1.0f;
         [Tooltip("Distance fog is based on radial distance from camera when checked")]
         public bool useRadialDistance = false;
+
+        public float backgroundOnly = 0; //Background only blend mode
+        //v0.7 - STARFIELD
+        public Vector4 starsControl = new Vector4(0.5f, -0.02f, 0.0001f, 37.91f);
+        public Vector4 starsControlA = new Vector4(1.6f, 0.79f, 1.0f, 0.25f);
+        public Vector4 starsControlB = new Vector4(2, 0.22f, 24.57f, 111);
+        public Vector4 starsTransparency = new Vector4(1, 1, 1, 1);
+
+        //STARFIELD
+        public Color sfColor = Color.gray;
+        //Scrolls in this direction over time. Set 'w' to zero to stop scrolling.
+        public Vector4 sfScroll = new Vector4(0.3f, 0.02f, 0.1f, 0.022f);
+        //Center position in space and time.
+        public Vector4 sfCenter = new Vector4(0, 0.0f, 0.0f, 1);
+        //How much does camera position cause the effect to scroll?
+        public float sfCamScroll = 4;
+        //Rotation 
+        public Vector4 sfRotation = new Vector4(0, 0, 0, 0.01f);
+        //Iterations of inner loop,The higher this is, the more distant objects get rendered. Range(1, 30)
+        public float sfIterations = 13.7f;
+        //Volumetric rendering steps. Each 'step' renders more objects at all distances.This has a higher performance hit than iterations.
+        public float sfVolsteps = 7.1f; //range 1 to 20
+        //Magic number. Best values are around 400-600.
+        public float sfFormuparam = 772; //572
+        //How much farther each volumestep goes
+        public float sfStepSize = 1159; //355 574 also good
+        //Fractal repeating rate, Low numbers are busy and give lots of repititio,High numbers are very sparce
+        public float sfTile = 11111; //700
+        //Brightness scale.
+        public float sfBrightness = 0.15f; //0.5
+        //Abundance of Dark matter (in the distance),Visible with Volsteps >= 8 (at 7 its really, really hard to see)
+        public float sfDarkmatter = 355; //555
+        //Brightness of distant objects (or dim) are distant objects, Also affets brightness of 'darkmatter'
+        public float sfDistfading = 55;
+        //How much color is present?
+        [Tooltip("Control near density - occlusion of Volumetric Star Field")]
+        public float sfSaturation = 0.1f;//77;
+
+        //v0.7a - VORTEX
+        //public Vector4 vortexPosRadius = new Vector4(0, 0, 0, 0);
+        //public Vector4 vortexControlsA = new Vector4(0, 0, 0, 0);
+        public Vector4 vortexAxis = new Vector4(0, 1, 0, 1);
 
         //v0.6
         public Vector3 cloudDistanceParams = new Vector3(0, 0, 1);
@@ -523,7 +567,7 @@ namespace Artngame.SKYMASTER
                 shafts.renderInFront = connector.renderInFront;
 
 
-                shafts.debugNoLowFreqNoise = connector.debugNoLowFreqNoise;
+                shafts.debugNoLowFreqNoise = connector.enableVortex; //connector.debugNoLowFreqNoise; //v1.1.0
                 shafts.debugNoHighFreqNoise = connector.debugNoHighFreqNoise;
                 shafts.debugNoCurlNoise = connector.debugNoCurlNoise;
 
@@ -876,6 +920,57 @@ namespace Artngame.SKYMASTER
         // Update is called once per frame
         void Update()
         {
+            //v0.9
+            if (sunLight == null && !Application.isPlaying)
+            {
+                //if did not find in controller, check for light with Sun in name
+                Light[] lightsAll = FindObjectsByType(typeof(Light),FindObjectsSortMode.None) as Light[];
+                foreach (Light light in lightsAll)
+                {
+                    if (light.type == LightType.Directional && light.gameObject.name.Contains("SunMoon") && light.enabled && light.gameObject.activeInHierarchy)
+                    {
+                        sunLight = light;
+                        sun = light.transform;
+                        break;
+                    }
+                }
+                if (sunLight == null)
+                {
+                    foreach (Light light in lightsAll)
+                    {
+                        if (light.type == LightType.Directional && light.gameObject.name.Contains("Sun") && light.enabled && light.gameObject.activeInHierarchy)
+                        {
+                            sunLight = light;
+                            sun = light.transform;
+                            break;
+                        }
+                    }
+
+                    if (sunLight == null)
+                    {
+                        //if not found Sun from sky master, try find any other active directional
+                        foreach (Light light in lightsAll)
+                        {
+                            if (light.type == LightType.Directional && light.gameObject.activeInHierarchy)
+                            {
+                                sunLight = light;
+                                sun = light.transform;
+                                break;
+                            }
+                        }
+                        if (sunLight == null)
+                        {
+                            //if not found, create one
+                            GameObject SunLight = new GameObject();
+                            SunLight.name = "Sky Master Sun";
+                            Light tmpL = SunLight.AddComponent<Light>();
+                            sunLight = tmpL;
+                            sun = SunLight.transform;
+                        }
+                    }
+                }
+            }
+
             //v0.6
             //put controlBackAlphaPower = 1, controlCloudAlphaPower = 0.001 if inside or above clouds
             if (autoRegulateEdgeMode && Application.isPlaying)

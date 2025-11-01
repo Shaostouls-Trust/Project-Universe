@@ -132,9 +132,11 @@ Material:
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 2
     - _DstBlend: 10
+    - _DstBlend2: 10
     - _EmissionEnabled: 1
     - _EnableBlendModePreserveSpecularLighting: 0
     - _EnableFogOnTransparent: 1
+    - _ExcludeFromTUAndAA: 0
     - _FlipbookMode: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
@@ -152,6 +154,7 @@ Material:
     - _OpacityLight: 50
     - _OpaqueCullMode: 2
     - _Parallax: 0.02
+    - _PerPixelSorting: 0
     - _Radius: 1
     - _ReceivesSSR: 0
     - _RenderQueueType: 4
@@ -196,3 +199,4 @@ Material:
     - _SoftParticleFadeParams: {r: 0, g: 1, b: 0, a: 0}
     - _TintColor: {r: 0.9528302, g: 0.8944019, b: 0.8944019, a: 0.89411765}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1

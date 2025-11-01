@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet.IO
+namespace Artngame.Orion.TriangleNet.IO
 {
     using System.IO;
     using TriangleNet.Geometry;

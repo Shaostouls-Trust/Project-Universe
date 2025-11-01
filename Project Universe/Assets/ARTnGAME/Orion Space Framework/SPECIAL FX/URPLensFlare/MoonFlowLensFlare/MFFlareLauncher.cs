@@ -14,7 +14,7 @@ public class MFFlareLauncher : MonoBehaviour
     public MFFlareAsset assetModel;
     [HideInInspector]public Light lightSource;
     // [HideInInspector]public Texture2D tex;
-    private void OnEnable()
+    public void OnEnable()
     {
         lightSource = GetComponent<Light>();
         // Add self to awake function: AddLight in URPLensFlare.cs on camera in render;

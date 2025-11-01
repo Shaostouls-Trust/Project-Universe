@@ -1,8 +1,8 @@
 ﻿
-namespace TriangleNet.Geometry
+namespace Artngame.Orion.TriangleNet.Geometry
 {
     using System;
-    using TriangleNet.Meshing;
+    using Artngame.Orion.TriangleNet.Meshing;
 
     public static class ExtensionMethods
     {

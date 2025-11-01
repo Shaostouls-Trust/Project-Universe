@@ -4,11 +4,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet.Topology.DCEL
+namespace Artngame.Orion.TriangleNet.Topology.DCEL
 {
     using System.Collections.Generic;
 
-    public class Vertex : TriangleNet.Geometry.Point
+    public class Vertex : Artngame.Orion.TriangleNet.Geometry.Point
     {
         internal HalfEdge leaving;
 

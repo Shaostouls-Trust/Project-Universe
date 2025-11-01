@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TriangleNet.Geometry;
+using Artngame.Orion.TriangleNet.Geometry;
 using UnityEngine;
 namespace Artngame.Orion.ProceduralPlanets
 {

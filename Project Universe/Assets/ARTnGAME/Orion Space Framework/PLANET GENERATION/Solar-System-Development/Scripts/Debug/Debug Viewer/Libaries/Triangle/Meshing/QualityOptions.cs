@@ -1,8 +1,8 @@
 ﻿
-namespace TriangleNet.Meshing
+namespace Artngame.Orion.TriangleNet.Meshing
 {
     using System;
-    using TriangleNet.Geometry;
+    using Artngame.Orion.TriangleNet.Geometry;
 
     /// <summary>
     /// Mesh constraint options for quality triangulation.

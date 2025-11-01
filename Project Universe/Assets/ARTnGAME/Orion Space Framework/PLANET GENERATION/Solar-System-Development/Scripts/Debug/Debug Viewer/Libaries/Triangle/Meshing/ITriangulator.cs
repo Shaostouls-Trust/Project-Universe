@@ -4,10 +4,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet.Meshing
+namespace Artngame.Orion.TriangleNet.Meshing
 {
     using System.Collections.Generic;
-    using TriangleNet.Geometry;
+    using Artngame.Orion.TriangleNet.Geometry;
 
     /// <summary>
     /// Interface for point set triangulation.

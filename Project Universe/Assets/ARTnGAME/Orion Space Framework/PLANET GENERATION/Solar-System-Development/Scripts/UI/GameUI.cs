@@ -46,7 +46,7 @@ namespace Artngame.Orion.ProceduralPlanets
             {
                 if (instance == null)
                 {
-                    instance = FindObjectOfType<GameUI>();
+                    instance = FindFirstObjectByType<GameUI>();
                 }
                 return instance;
             }

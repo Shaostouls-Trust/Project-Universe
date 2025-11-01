@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4162a1944cb8bfe4e9180f51f628e894, type: 3}
   m_Name: Density Wave Galaxy Prefab 1
   m_EditorClassIdentifier: 
-  m_particlePrefabs: []
-  m_distributor: {fileID: 0}
+  m_particlePrefabs:
+  - {fileID: 11400000, guid: 568e1867fbfd652498ad836e0f55aa56, type: 2}
+  m_distributor: {fileID: 11400000, guid: eae2a20c399f51a4bb91525e0b588f37, type: 2}
   m_size: 100
   m_heightOffset: 10
   m_galaxySpeed:

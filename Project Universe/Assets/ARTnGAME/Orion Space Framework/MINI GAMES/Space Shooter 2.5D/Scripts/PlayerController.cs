@@ -37,9 +37,9 @@ namespace Artngame.Orion.MiniGames
             float moveHorizontal = Input.GetAxis("Horizontal");
             float moveVertical = Input.GetAxis("Vertical");
             var velocity = new Vector3(moveHorizontal, 0.0f, moveVertical);
-            rb.velocity = speed*velocity;
+            rb.linearVelocity = speed*velocity;
             rb.position = boundary.Clamp(rb.position);
-            rb.rotation = Quaternion.Euler(0.0f, 0.0f, rb.velocity.x*-tilt);
+            rb.rotation = Quaternion.Euler(0.0f, 0.0f, rb.linearVelocity.x*-tilt);
         }
     }
 

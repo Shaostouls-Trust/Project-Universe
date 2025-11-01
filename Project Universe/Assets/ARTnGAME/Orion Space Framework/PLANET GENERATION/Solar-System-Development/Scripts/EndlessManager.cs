@@ -16,9 +16,9 @@ namespace Artngame.Orion.ProceduralPlanets
 
         void Awake()
         {
-            var ship = FindObjectOfType<Ship>();
-            var player = FindObjectOfType<PlayerControllerSolarS>();//v1.0.6c
-            var bodies = FindObjectsOfType<CelestialBody>();
+            var ship = FindFirstObjectByType<Ship>();
+            var player = FindFirstObjectByType<PlayerControllerSolarS>();//v1.0.6c
+            var bodies = FindObjectsByType<CelestialBody>(FindObjectsSortMode.None);
 
             physicsObjects = new List<Transform>();
             physicsObjects.Add(ship.transform);

@@ -4,9 +4,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet.Smoothing
+namespace Artngame.Orion.TriangleNet.Smoothing
 {
-    using TriangleNet.Meshing;
+    using Artngame.Orion.TriangleNet.Meshing;
 
     /// <summary>
     /// Interface for mesh smoothers.

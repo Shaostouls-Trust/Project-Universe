@@ -8,7 +8,7 @@ namespace Artngame.Orion.ProceduralPlanets
 
         protected override void ShowInteractMessage()
         {
-            Ship ship = FindObjectOfType<Ship>();
+            Ship ship = FindFirstObjectByType<Ship>();
             string action = (ship.HatchOpen) ? "close" : "open";
             string contextualMessage = $"Press F to {action} hatch";
             GameUI.DisplayInteractionInfo(contextualMessage);

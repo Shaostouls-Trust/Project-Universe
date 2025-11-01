@@ -19,6 +19,9 @@ namespace Artngame.Orion.EarthMoon
         SerializedProperty _castShadows;
         SerializedProperty _receiveShadows;
 
+        SerializedProperty _baseShader;
+        SerializedProperty _atmosphereShader;
+
         static GUIContent _textBaseSaturation = new GUIContent("Base Saturation");
         static GUIContent _textNightSideLight = new GUIContent("Night Side Light");
 
@@ -40,6 +43,9 @@ namespace Artngame.Orion.EarthMoon
 
             _castShadows = serializedObject.FindProperty("_castShadows");
             _receiveShadows = serializedObject.FindProperty("_receiveShadows");
+
+            _baseShader = serializedObject.FindProperty("_baseShader");
+            _atmosphereShader = serializedObject.FindProperty("_atmosphereShader");
         }
 
         public override void OnInspectorGUI()
@@ -77,6 +83,9 @@ namespace Artngame.Orion.EarthMoon
 
             EditorGUILayout.PropertyField(_castShadows);
             EditorGUILayout.PropertyField(_receiveShadows);
+
+            EditorGUILayout.PropertyField(_baseShader);
+            EditorGUILayout.PropertyField(_atmosphereShader);
 
             serializedObject.ApplyModifiedProperties();
         }

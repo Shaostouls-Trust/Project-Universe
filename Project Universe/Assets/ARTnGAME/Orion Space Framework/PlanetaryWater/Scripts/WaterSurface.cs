@@ -31,7 +31,7 @@ namespace Artngame.Orion.PlanetaryWater
         [SerializeField]
         private int _Radius = 1600;
 
-        [Range(16, 256)]
+        [Range(16, 2048)]
         [SerializeField]
         private int _FaceMeshResolution = 170;
 
@@ -49,6 +49,13 @@ namespace Artngame.Orion.PlanetaryWater
         private SphereFace[] _Faces = new SphereFace[_FaceCount];
 
         private void OnValidate()
+        {
+            GenerateMesh();
+            UpdateShader();
+        }
+
+        //v0.1
+        void Start()
         {
             GenerateMesh();
             UpdateShader();
@@ -86,6 +93,9 @@ namespace Artngame.Orion.PlanetaryWater
                     var meshFilter = faceObject.AddComponent<MeshFilter>();
                     _MeshFilters[faceIdx] = meshFilter;
                     _MeshFilters[faceIdx].sharedMesh = new Mesh();
+
+                    _MeshFilters[faceIdx].sharedMesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32; //v0.1
+                    //_MeshFilters[faceIdx].mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
                 }
 
                 _MeshRenderers[faceIdx].sharedMaterial = _WaterMaterial;

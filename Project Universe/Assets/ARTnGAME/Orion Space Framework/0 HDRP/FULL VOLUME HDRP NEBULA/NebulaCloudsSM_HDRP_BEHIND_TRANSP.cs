@@ -8,6 +8,48 @@ namespace Artngame.SKYMASTER
     [Serializable, VolumeComponentMenu("Post-processing/Custom/NebulaCloudsSM_HDRP_BEHIND_TRANSP")]
     public sealed class NebulaCloudsSM_HDRP_BEHIND_TRANSP : CustomPostProcessVolumeComponent, IPostProcessComponent
     {
+        public bool useGlobalTime = true; //_Time since level load (t/20, t, t*2, t*3)
+
+        public float backgroundOnly = 0; //Background only blend mode
+        //v0.7 - STARFIELD
+        public Vector4 starsControl = new Vector4(0.5f, -0.02f, 0.0001f, 37.91f);
+        public Vector4 starsControlA = new Vector4(1.6f, 0.79f, 1.0f, 0.25f);
+        public Vector4 starsControlB = new Vector4(2, 0.22f, 24.57f, 111);
+        public Vector4 starsTransparency = new Vector4(1, 1, 1, 1);
+
+        //STARFIELD
+        public Color sfColor = Color.gray;
+        //Scrolls in this direction over time. Set 'w' to zero to stop scrolling.
+        public Vector4 sfScroll = new Vector4(0.3f, 0.02f, 0.1f, 0.022f);
+        //Center position in space and time.
+        public Vector4 sfCenter = new Vector4(0, 0.0f, 0.0f, 1);
+        //How much does camera position cause the effect to scroll?
+        public float sfCamScroll = 4;
+        //Rotation 
+        public Vector4 sfRotation = new Vector4(0, 0, 0, 0.01f);
+        //Iterations of inner loop,The higher this is, the more distant objects get rendered. Range(1, 30)
+        public float sfIterations = 13.7f;
+        //Volumetric rendering steps. Each 'step' renders more objects at all distances.This has a higher performance hit than iterations.
+        public float sfVolsteps = 7.1f; //range 1 to 20
+        //Magic number. Best values are around 400-600.
+        public float sfFormuparam = 772; //572
+        //How much farther each volumestep goes
+        public float sfStepSize = 1159; //355 574 also good
+        //Fractal repeating rate, Low numbers are busy and give lots of repititio,High numbers are very sparce
+        public float sfTile = 11111; //700
+        //Brightness scale.
+        public float sfBrightness = 0.15f; //0.5
+        //Abundance of Dark matter (in the distance),Visible with Volsteps >= 8 (at 7 its really, really hard to see)
+        public float sfDarkmatter = 355; //555
+        //Brightness of distant objects (or dim) are distant objects, Also affets brightness of 'darkmatter'
+        public float sfDistfading = 55;
+        //How much color is present?
+        public float sfSaturation = 0.1f;//77;
+
+        //v0.7a - VORTEX
+        //public Vector4 vortexPosRadius = new Vector4(0, 0, 0, 0);
+        //public Vector4 vortexControlsA = new Vector4(0, 0, 0, 0);
+        public Vector4 vortexAxis = new Vector4(0, 1, 0, 1);
 
         //v0.6
         public Vector3 cloudDistanceParams = new Vector3(0, 0, 1);
@@ -456,6 +498,12 @@ namespace Artngame.SKYMASTER
 
         public override void Setup()
         {
+            //v1.1.0
+            if (Camera.main == null)
+            {
+                return;
+            }
+
             connectSuntoNebulaCloudsHDRP connector = Camera.main.GetComponent<connectSuntoNebulaCloudsHDRP>();
             if (connector != null)
             {
@@ -476,7 +524,7 @@ namespace Artngame.SKYMASTER
                 sheetSHAFTS = new Material(Shader.Find("Hidden/Shader/NebulaCloudsSM_HDRP_Vortex"));
             }
 
-            var hdrpAsset = (GraphicsSettings.renderPipelineAsset as HDRenderPipelineAsset);
+            var hdrpAsset = (GraphicsSettings.defaultRenderPipeline as HDRenderPipelineAsset);
             var colorBufferFormat = hdrpAsset.currentPlatformRenderPipelineSettings.colorBufferFormat;
 
             if (lrDepthBuffer == null)
@@ -699,6 +747,7 @@ namespace Artngame.SKYMASTER
                 shafts.cloudChoice = connector.cloudChoice;
                 //////////////// FULL VOLUMETRIC CLOUDS
 
+                shafts.useGlobalTime = connector.useGlobalTime;
                 shafts.WeatherTexture = connector.WeatherTexture;
                 shafts.maskTexture = connector.maskTexture;//v0.1.1
 
@@ -726,7 +775,7 @@ namespace Artngame.SKYMASTER
                 shafts.renderInFront = connector.renderInFront;
 
 
-                shafts.debugNoLowFreqNoise = connector.debugNoLowFreqNoise;
+                shafts.debugNoLowFreqNoise = connector.enableVortex; //connector.debugNoLowFreqNoise;//v1.1.0
                 shafts.debugNoHighFreqNoise = connector.debugNoHighFreqNoise;
                 shafts.debugNoCurlNoise = connector.debugNoCurlNoise;
 
@@ -996,7 +1045,7 @@ namespace Artngame.SKYMASTER
                 shafts.cameraMotionCompensate = connector.cameraMotionCompensate;//v2.1.19    
                 shafts.updateRate = connector.updateRate;
                 // public int resolution = 256;
-                shafts.downScaleFactor = connector.downScaleFactor;
+                shafts.downScaleFactor = connector.downSample;// .downScaleFactor; //v1.1.0
                 shafts.downScale = connector.downScale;
                 shafts._needsReset = connector._needsReset;
                 if (!connector.autoReproject)
@@ -1019,6 +1068,30 @@ namespace Artngame.SKYMASTER
                 shafts._underDomeColor = connector._underDomeColor;
 
                 shafts.enableShafts = connector.enableShafts; //v0.3
+
+                backgroundOnly = connector.backgroundOnly;
+                //v0.7
+                starsControl = connector.starsControl;
+                starsControlA = connector.starsControlA;
+                starsControlB = connector.starsControlB;
+                starsTransparency = connector.starsTransparency;
+                sfColor = connector.sfColor;
+                sfScroll = connector.sfScroll;
+                sfCenter = connector.sfCenter;
+                sfCamScroll = connector.sfCamScroll;
+                sfRotation = connector.sfRotation;
+                sfIterations = connector.sfIterations;
+                sfVolsteps = connector.sfVolsteps;
+                sfFormuparam = connector.sfFormuparam;
+                sfStepSize = connector.sfStepSize;
+                sfTile = connector.sfTile;
+                sfBrightness = connector.sfBrightness;
+                sfDarkmatter = connector.sfDarkmatter;
+                sfDistfading = connector.sfDistfading;
+                sfSaturation = connector.sfSaturation;
+               // vortexPosRadius = connector.vortexPosRadius;
+                //vortexControlsA = connector.vortexControlsA;
+                vortexAxis = connector.vortexAxis;
 
                 //v0.6
                 cloudDistanceParams = connector.cloudDistanceParams;
@@ -1047,6 +1120,14 @@ namespace Artngame.SKYMASTER
 
         public override void Render(CommandBuffer cmd, HDCamera camera, RTHandle source, RTHandle destination)
         {
+            //v1.1.0
+            if (Camera.main == null || camera.camera != Camera.main)
+            {
+                HDUtils.BlitCameraTexture(cmd, source, destination);
+                //HDUtils.DrawFullScreen(cmd, source, destination, null, 0);
+                return;
+            }
+
             if (sheetSHAFTS == null)
                 return;
 
@@ -2379,6 +2460,16 @@ namespace Artngame.SKYMASTER
                 CloudMaterial.SetTexture("_maskTexture", maskTexture);//v0.1.1
             }
 
+            //v0.4
+            if (useGlobalTime)
+            {
+                CloudMaterial.SetFloat("globalTIME", Time.fixedTime);
+            }
+            else
+            {
+                CloudMaterial.SetFloat("globalTIME", 0.0f);
+            }
+
             //v0.5
             CloudMaterial.SetVector("YCutHeightDepthScale", YCutHeightDepthScale);
             CloudMaterial.SetFloat("extendFarPlaneAboveClouds", extendFarPlaneAboveClouds);//v0.4
@@ -2490,7 +2581,32 @@ namespace Artngame.SKYMASTER
 
             //v3.5
             CloudMaterial.SetFloat("_BackShade", _BackShade);
+            
+            //BACKGROUND BLEND MODE
+            CloudMaterial.SetFloat("backgroundOnly", backgroundOnly);
 
+            //v0.7
+            CloudMaterial.SetVector("starsControl", starsControl);
+            CloudMaterial.SetVector("starsControlA", starsControlA);
+            CloudMaterial.SetVector("starsControlB", starsControlB);
+            CloudMaterial.SetVector("starsTransparency", starsTransparency);
+            CloudMaterial.SetColor("_Color", sfColor);
+            CloudMaterial.SetVector("_Scroll", sfScroll);
+            CloudMaterial.SetVector("_Center", sfCenter);
+            CloudMaterial.SetFloat("_CamScroll", sfCamScroll);
+            CloudMaterial.SetVector("_Rotation", sfRotation);
+            CloudMaterial.SetFloat("_Iterations", sfIterations);
+            CloudMaterial.SetFloat("_Volsteps", sfVolsteps);
+            CloudMaterial.SetFloat("_Formuparam", sfFormuparam);
+            CloudMaterial.SetFloat("_StepSize", sfStepSize);
+            CloudMaterial.SetFloat("_Tile", sfTile);
+            CloudMaterial.SetFloat("_Brightness", sfBrightness);
+            CloudMaterial.SetFloat("_Darkmatter", sfDarkmatter);
+            CloudMaterial.SetFloat("_Distfading", sfDistfading);
+            CloudMaterial.SetFloat("_Saturation", sfSaturation * 0.1f);
+            //CloudMaterial.SetVector("vortexPosRadius", vortexPosRadius);
+           // CloudMaterial.SetVector("vortexControlsA", vortexControlsA);
+            CloudMaterial.SetVector("vortexAxis", vortexAxis);
 
             //v2.1.19
             if (localLight != null)
@@ -2568,7 +2684,7 @@ namespace Artngame.SKYMASTER
             CloudMaterial.SetFloat("_TemporalGain", TemporalGain);
 
             //v0.7 - Vortex and supercell
-            if (enableVortex)
+            //if (enableVortex)
             {
                 CloudMaterial.SetVector("vortexPosRadius", vortexPosRadius);
                 CloudMaterial.SetVector("vortexControlsA", vortexControlsA);

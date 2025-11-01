@@ -8,10 +8,10 @@ namespace Artngame.Orion.PlanetaryWater
         private const string _AxisNameX = "Mouse X";
         private const string _AxisNameY = "Mouse Y";
 
-        private const float _MovementSpeed = 20f;
-        private const float _FastMovementSpeed = 250f;
+        public float _MovementSpeed = 20f;
+        public float _FastMovementSpeed = 250f;
 
-        private const float _MouseSensitivity = 2f;
+        public float _MouseSensitivity = 2f;
 
         private void LateUpdate()
         {

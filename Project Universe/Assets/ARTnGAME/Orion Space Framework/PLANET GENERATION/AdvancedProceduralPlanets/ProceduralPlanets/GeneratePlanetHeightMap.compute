@@ -1,0 +1,600 @@
+﻿#pragma kernel main
+
+
+#ifndef PLANET_ALL_CGINC
+// Upgrade NOTE: excluded shader from OpenGL ES 2.0 because it uses non-square matrices
+#pragma exclude_renderers gles
+#define PLANET_ALL_CGINC
+
+
+
+
+
+#ifndef PLANET_COMMON_CGINC
+#define PLANET_COMMON_CGINC
+
+
+
+
+
+
+#include "Noise/All.cginc"
+#include "Math.cginc"
+
+#define MAX_INT 2147483647
+
+#define PACK_NORMAL(NORMAL) ((NORMAL + 1) / 2)
+#define UNPACK_NORMAL(NORMAL) (NORMAL * 2 - 1)
+
+
+#define M_PI 3.1415926535897932384626433832795
+
+float3 calestialToSpherical(float3 c /*calestial*/)
+{
+	float r = length(c);
+	if (r == 0) return 0;
+
+	// calculate
+	float3 p = float3(
+		atan2(c.z, c.x),  // longitude = x
+		asin(c.y / r), // latitude = y
+		r // altitude = z
+		);
+
+	// normalize to 0..1 range
+	p.x = p.x / (M_PI * 2) + 0.5;
+	p.y = p.y / M_PI + 0.5;
+
+	return p;
+}
+
+float3 sphericalToCalestial(float3 c /*spherical*/)
+{
+	// denormalize from 0..1
+	c.x = (c.x - 0.5) * (2 * M_PI);
+	c.y = (c.y - 0.5) * M_PI;
+
+	// calculate
+	float3 p = float3(
+		cos(c.y) * cos(c.x) * c.z,
+		sin(c.y) * c.z,
+		cos(c.y) * sin(c.x) * c.z
+		);
+
+	return p;
+}
+
+float3 sphericalToCalestial(float2 c /*spherical*/)
+{
+	// denormalize from 0..1
+	c.x = (c.x - 0.5) * (2 * M_PI);
+	c.y = (c.y - 0.5) * M_PI;
+
+	// calculate
+	float3 p = float3(
+		cos(c.y) * cos(c.x),
+		sin(c.y),
+		cos(c.y) * sin(c.x)
+		);
+
+	return p;
+}
+
+
+
+
+
+
+float3 baseMapUvToDirFromCenter(float2 uv) {
+	return sphericalToCalestial(uv);
+}
+
+float2 dirFromCenterToBaseMapUv(float3 dir) {
+	return calestialToSpherical(dir).xy;
+}
+
+
+
+
+
+// https://gamedev.stackexchange.com/questions/116205/terracing-mountain-features
+float terrace(float h, float bandHeight) {
+	float W = bandHeight; // width of terracing bands
+	float k = floor(h / W);
+	float f = (h - k*W) / W;
+	float s = min(2 * f, 1.0);
+	return (k + s) * W;
+}
+
+
+float snoise(float3 pos, int octaves, float modifier)
+{
+	float result = 0;
+	float amp = 1;
+	for (int i = 0; i < octaves; i++)
+	{
+		result += snoise(pos) * amp;
+		pos *= modifier;
+		amp /= modifier;
+	}
+	return result;
+}
+
+float3 snoise_grad(float3 pos, int octaves, float modifier)
+{
+	float result = 0;
+	float amp = 1;
+	for (int i = 0; i < octaves; i++)
+	{
+		result += snoise_grad(pos) * amp;
+		pos *= modifier;
+		amp /= modifier;
+	}
+	return result;
+}
+
+
+// from http://www.java-gaming.org/index.php?topic=35123.0
+// maybe it's https://en.wikipedia.org/wiki/Centripetal_Catmull%E2%80%93Rom_spline
+float4 cubic(float v)
+{
+	float4 n = float4(1.0, 2.0, 3.0, 4.0) - v;
+	float4 s = n * n * n;
+	float x = s.x;
+	float y = s.y - 4.0 * s.x;
+	float z = s.z - 4.0 * s.y + 6.0 * s.x;
+	float w = 6.0 - x - y - z;
+	return float4(x, y, z, w) * (1.0 / 6.0);
+}
+double4 cubic(double v)
+{
+	double4 n = double4(1.0, 2.0, 3.0, 4.0) - v;
+	double4 s = n * n * n;
+	double x = s.x;
+	double y = s.y - 4.0 * s.x;
+	double z = s.z - 4.0 * s.y + 6.0 * s.x;
+	double w = 6.0 - x - y - z;
+	return double4(x, y, z, w) * (1.0 / 6.0);
+}
+
+
+
+
+
+
+
+
+float3 rgbToHsv(float3 c)
+{
+	float4 K = float4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+	float4 p = lerp(float4(c.bg, K.wz), float4(c.gb, K.xy), step(c.b, c.g));
+	float4 q = lerp(float4(p.xyw, c.r), float4(c.r, p.yzx), step(p.x, c.r));
+
+	float d = q.x - min(q.w, q.y);
+	float e = 1.0e-10;
+	return float3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
+}
+
+float3 hsvToRgb(float3 c)
+{
+	float4 K = float4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+	float3 p = abs(frac(c.xxx + K.xyz) * 6.0 - K.www);
+	return c.z * lerp(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+}
+
+
+// -1 <= unitCube.x && unitCube.x <= 1
+// -1 <= unitCube.y && unitCube.y <= 1
+// -1 <= unitCube.z && unitCube.z <= 1
+// uses math from http://mathproofs.blogspot.cz/2005/07/mapping-cube-to-sphere.html
+// implementation license: public domain
+float3 unitCubeToUnitSphere(float3 unitCube)
+{
+	float3 unitCubePow2 = unitCube * unitCube;
+	float3 unitCubePow2Div2 = unitCubePow2 / 2;
+	float3 unitCubePow2Div3 = unitCubePow2 / 3;
+	return unitCube * sqrt(1 - unitCubePow2Div2.yzx - unitCubePow2Div2.zxy + unitCubePow2.yzx * unitCubePow2Div3.zxy);
+}
+double3 unitCubeToUnitSphere(double3 unitCube)
+{
+	double3 unitCubePow2 = unitCube * unitCube;
+	double3 unitCubePow2Div2 = unitCubePow2 / 2;
+	double3 unitCubePow2Div3 = unitCubePow2 / 3;
+	return unitCube * d_sqrt(1 - unitCubePow2Div2.yzx - unitCubePow2Div2.zxy + unitCubePow2.yzx * unitCubePow2Div3.zxy);
+}
+
+
+
+#endif
+//#include "Planet.Common.cginc"
+
+
+
+float2 getUv(RWTexture2D<float4> map, int2 id)
+{
+	float w, h;
+	map.GetDimensions(w, h);
+	return id / float2(w - 1, h - 1);
+}
+float2 getUv(RWTexture2D<float3> map, int2 id)
+{
+	float w, h;
+	map.GetDimensions(w, h);
+	return id / float2(w - 1, h - 1);
+}
+float2 getUv(RWTexture2D<float2> map, int2 id)
+{
+	float w, h;
+	map.GetDimensions(w, h);
+	return id / float2(w - 1, h - 1);
+}
+float2 getUv(RWTexture2D<float> map, int2 id)
+{
+	float w, h;
+	map.GetDimensions(w, h);
+	return id / float2(w - 1, h - 1);
+}
+
+
+
+
+
+
+
+float2 getUv(RWTexture2D<double2> map, int2 id)
+{
+	float w, h;
+	map.GetDimensions(w, h);
+	return id / float2(w - 1, h - 1);
+}
+float2 getUv(RWTexture2D<double> map, int2 id)
+{
+	float w, h;
+	map.GetDimensions(w, h);
+	return id / float2(w - 1, h - 1);
+}
+
+
+
+
+
+
+
+float2 getUv(Texture2D<float4> map, int2 id)
+{
+	float w, h;
+	map.GetDimensions(w, h);
+	return id / float2(w - 1, h - 1);
+}
+float2 getUv(Texture2D<float3> map, int2 id)
+{
+	float w, h;
+	map.GetDimensions(w, h);
+	return id / float2(w - 1, h - 1);
+}
+float2 getUv(Texture2D<float2> map, int2 id)
+{
+	float w, h;
+	map.GetDimensions(w, h);
+	return id / float2(w - 1, h - 1);
+}
+float2 getUv(Texture2D<float> map, int2 id)
+{
+	float w, h;
+	map.GetDimensions(w, h);
+	return id / float2(w - 1, h - 1);
+}
+
+
+
+
+
+
+
+float2 getUv(Texture2D<double2> map, int2 id)
+{
+	float w, h;
+	map.GetDimensions(w, h);
+	return id / float2(w - 1, h - 1);
+}
+float2 getUv(Texture2D<double> map, int2 id)
+{
+	float w, h;
+	map.GetDimensions(w, h);
+	return id / float2(w - 1, h - 1);
+}
+
+
+
+
+float2 sampleCubicFloat2(Texture2D<float2> map, float2 uv)
+{
+	int w, h;
+	map.GetDimensions(w, h);
+	float2 xy = uv * float2(w - 1, h - 1);
+
+	// p03--p13-------p23--p33
+	//  |    |         |    |
+	// p02--p12-------p22--p32     1
+	//  |    |         |    |     ...
+	//  |   t.y  xy    |    |     t.y
+	//  |    |         |    |     ...
+	// p01--p11--t.x--p21--p31     0...tx...1
+	//  |    |         |    |
+	// p00--p10-------p20--p30
+
+	float2 xyFloored = floor(xy);
+	float2 t = xy - xyFloored;
+	float4 tx = cubic(t.x);
+	float4 ty = cubic(t.y);
+
+	int2 p12 = int2(xyFloored);
+	int2 p00 = p12 - int2(1, 2);
+
+	float4x2 v0 = float4x2(
+		map[p00 + int2(0, 0)],
+		map[p00 + int2(1, 0)],
+		map[p00 + int2(2, 0)],
+		map[p00 + int2(3, 0)]
+		);
+
+	float4x2 v1 = float4x2(
+		map[p00 + int2(0, 1)],
+		map[p00 + int2(1, 1)],
+		map[p00 + int2(2, 1)],
+		map[p00 + int2(3, 1)]
+		);
+
+	float4x2 v2 = float4x2(
+		map[p00 + int2(0, 2)],
+		map[p00 + int2(1, 2)],
+		map[p00 + int2(2, 2)],
+		map[p00 + int2(3, 2)]
+		);
+
+	float4x2 v3 = float4x2(
+		map[p00 + int2(0, 3)],
+		map[p00 + int2(1, 3)],
+		map[p00 + int2(2, 3)],
+		map[p00 + int2(3, 3)]
+		);
+
+	// first interpolate on X
+	float4x2 c = float4x2(
+		mul(tx, v0),
+		mul(tx, v1),
+		mul(tx, v2),
+		mul(tx, v3)
+		);
+
+	// then on Y
+	float2 f = mul(ty, c);
+
+	return f;
+}
+
+
+
+float sampleCubicFloat(Texture2D<float> map, float2 uv)
+{
+	int w, h;
+	map.GetDimensions(w, h);
+	float2 xy = uv * float2(w - 1, h - 1);
+
+	// p03--p13-------p23--p33
+	//  |    |         |    |
+	// p02--p12-------p22--p32     1
+	//  |    |         |    |     ...
+	//  |   t.y  xy    |    |     t.y
+	//  |    |         |    |     ...
+	// p01--p11--t.x--p21--p31     0...tx...1
+	//  |    |         |    |
+	// p00--p10-------p20--p30
+
+	float2 t = frac(xy);
+	float4 tx = cubic(t.x);
+	float4 ty = cubic(t.y);
+
+	int2 p12 = int2(xy);
+	int2 p00 = p12 - int2(1, 2);
+
+	float4x4 v = float4x4(
+
+		map[p00 + int2(0, 0)],
+		map[p00 + int2(1, 0)],
+		map[p00 + int2(2, 0)],
+		map[p00 + int2(3, 0)],
+
+		map[p00 + int2(0, 1)],
+		map[p00 + int2(1, 1)],
+		map[p00 + int2(2, 1)],
+		map[p00 + int2(3, 1)],
+
+		map[p00 + int2(0, 2)],
+		map[p00 + int2(1, 2)],
+		map[p00 + int2(2, 2)],
+		map[p00 + int2(3, 2)],
+
+		map[p00 + int2(0, 3)],
+		map[p00 + int2(1, 3)],
+		map[p00 + int2(2, 3)],
+		map[p00 + int2(3, 3)]
+
+	);
+
+	// first interpolate 4 rows (16 values) on x axis
+	float4 c = mul(v, tx);
+
+	// then one final row on y axis
+	float f = dot(ty, c);
+
+	return f;
+}
+
+
+
+
+#endif
+//#include "Planet.Compute.cginc"
+
+
+
+float _planetRadiusStart;
+
+
+float bigHills(float3 dir, float size)
+{
+	float x = (1.0 - abs(snoise(dir / size, 7, 2)));
+	x += abs(snoise(dir.xzy / size, 7, 2));
+	float2 w = worley(dir / size);
+	w += worley(dir.xzy / size);
+	x *= smoothstep(0.4, 1, w.y - w.x);
+	return x;
+}
+
+float bigHills2(float3 dir, float size)
+{
+	float x = (abs(snoise(dir / size, 7, 2)));
+	x += abs(snoise(dir.xzy / size, 7, 2));
+	float2 w = worley(dir / size);
+	w += worley(dir.xzy / size);
+	x *= smoothstep(0.4, 1, w.y - w.x);
+	return x;
+}
+
+
+float craters(float3 dir, float size)
+{
+	float distanceToCenter = worley(dir / size);
+	distanceToCenter += snoise(dir, 6, 4) * 0.1;
+	float c = 5;
+	distanceToCenter *= c;
+	float height = size * 20 / c;
+	//return distanceToCenter;
+	float displacetMassHeight = height / 40.0;
+	return distanceToCenter < 0.8 ? 
+		-smoothstep(0.8, 0.2, distanceToCenter) * height / 2.0 + displacetMassHeight: // inside of crater
+ 		smoothstep(1, 0.8, distanceToCenter) * displacetMassHeight; // edge outside, displaced mass
+}
+
+float getProceduralHeight01
+(float3 dir)
+{
+	float3 pos = dir * _planetRadiusStart;
+
+	float h = 0.5;
+
+	float2 w;
+	float x;
+
+	// base nose
+	h += snoise(dir * 2, 10, 2) * 0.2;
+	h += snoise(dir, 1, 1) * 0.5;
+
+	h += bigHills(dir, 0.97);
+	h += bigHills(dir.xzy, 0.95);
+	h += bigHills(dir.yzx, 0.92);
+	h += bigHills(dir, 0.56);
+	h += bigHills(dir, 0.22);
+
+	//h += bigHills2(dir.xyx, 0.97);
+	//h += bigHills2(dir.zyx, 0.95);
+	//h += bigHills2(dir.xzy, 0.92);
+	
+	h += craters(dir, 0.93);
+	h += craters(dir, 0.45);
+	h += craters(dir, 0.13);
+	h += craters(dir, 0.07);
+
+
+	// base nose
+	//h += snoise(dir * 2, 10, 2) * 0.2;
+
+	// small hills
+	w = worley(dir * 15);
+	//h += (w.y - w.x) * 0.1;
+
+	// big rivers
+	x = snoise(dir * 3, 10, 2);
+	//h -= exp(-abs(x * 55)) * 0.2;
+
+	// big craters
+	w = worley(dir * 3);
+	//h -= smoothstep(0.9, 1, 1 - w.x);
+
+	// small craters
+	w = worley(dir * 15);
+	//h -= smoothstep(0.9, 1, 1 - w.x) * 0.3;
+
+
+	/*
+	{ // terraces
+	float3 pos = dir * 10;
+	int octaves = 2;
+	float freqModifier = 3;
+	float ampModifier = 1/freqModifier;
+	float amp = 1;
+	for (int i = 0; i < octaves; i++)
+	{
+	float p = snoise(pos, 4, 10);
+	result += terrace(p, 0.5) * amp;
+	pos *= freqModifier;
+	amp *= ampModifier;
+	}
+	}
+	*/
+	
+	/*
+	{ //big detail
+	//continents
+	h += abs(snoise(dir*0.5, 5, 4));
+	//w = worleyNoise(dir * 2);
+	//h += (w.x - w.y) * 2;
+	//oceans
+	h -= abs(snoise(dir*2.2, 4, 4));
+	//big rivers
+	x = snoise(dir * 3, 3, 2);
+	h += -exp(-pow(x * 55, 2)) * 0.2;
+	//craters
+	//w = worleyNoise(dir);
+	//h += smoothstep(0.0, 0.1, w.x);
+	}
+	*/
+	
+	/*
+	{ //small detail
+	float p = snoise(dir * 10, 5, 10) * 100;
+	float t = 0.3;
+	t = clamp(snoise(dir * 2), 0.1, 1.0);
+	h += terrace(p, 0.2)*0.005;
+	h += p*0.005;
+	small rivers
+	x = snoise(dir * 3);
+	h += -exp(-pow(x*55,2));
+	}
+	*/
+	
+
+
+	return h * 0.3;
+
+}
+
+
+
+RWTexture2D<float> _planetHeightMap;
+
+
+[numthreads(16, 16, 1)]
+void main(uint3 id : SV_DispatchThreadID)
+{
+	float2 uv = getUv(_planetHeightMap, id.xy);
+
+	float3 dir = baseMapUvToDirFromCenter(uv);
+
+	float height01 = getProceduralHeight01(dir);
+
+	height01 = clamp(height01, 0, 1);
+
+	_planetHeightMap[id.xy] = height01;
+}

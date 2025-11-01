@@ -941,7 +941,7 @@ namespace Artngame.Orion.ImageFX
                 }
 
                 // Keeping luminance values between frames, RT restore expected
-                m_SmallAdaptiveRt.MarkRestoreExpected();
+                //m_SmallAdaptiveRt.MarkRestoreExpected(); //v0.1
 
                 material.SetFloat(m_AdaptationSpeed, Mathf.Max(eyeAdaptation.speed, 0.001f));
 
@@ -1037,7 +1037,7 @@ namespace Artngame.Orion.ImageFX
                     material.SetVector(m_ChannelMixerGreen, colorGrading.channelMixer.channels[1]);
                     material.SetVector(m_ChannelMixerBlue, colorGrading.channelMixer.channels[2]);
                     material.SetTexture(m_CurveTex, curveTexture);
-                    internalLutRt.MarkRestoreExpected();
+                    //internalLutRt.MarkRestoreExpected(); //v0.1
                     Graphics.Blit(identityLut, internalLutRt, material, (int)Pass.LutGen);
                     m_Dirty = false;
                 }

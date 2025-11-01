@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet.Geometry
+namespace Artngame.Orion.TriangleNet.Geometry
 {
     public interface IEdge
     {

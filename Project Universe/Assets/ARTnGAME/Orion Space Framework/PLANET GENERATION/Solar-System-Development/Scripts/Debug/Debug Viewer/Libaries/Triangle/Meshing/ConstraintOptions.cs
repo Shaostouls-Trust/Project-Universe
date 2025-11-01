@@ -1,5 +1,5 @@
 ﻿
-namespace TriangleNet.Meshing
+namespace Artngame.Orion.TriangleNet.Meshing
 {
     /// <summary>
     /// Mesh constraint options for polygon triangulation.

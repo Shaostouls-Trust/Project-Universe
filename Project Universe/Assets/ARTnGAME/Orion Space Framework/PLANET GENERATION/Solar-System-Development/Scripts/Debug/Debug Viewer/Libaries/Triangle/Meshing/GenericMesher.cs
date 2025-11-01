@@ -4,13 +4,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet.Meshing
+namespace Artngame.Orion.TriangleNet.Meshing
 {
     using System;
     using System.Collections.Generic;
-    using TriangleNet.Geometry;
-    using TriangleNet.IO;
-    using TriangleNet.Meshing.Algorithm;
+    using Artngame.Orion.TriangleNet.Geometry;
+    using Artngame.Orion.TriangleNet.IO;
+    using Artngame.Orion.TriangleNet.Meshing.Algorithm;
 
     /// <summary>
     /// Create meshes of point sets or polygons.

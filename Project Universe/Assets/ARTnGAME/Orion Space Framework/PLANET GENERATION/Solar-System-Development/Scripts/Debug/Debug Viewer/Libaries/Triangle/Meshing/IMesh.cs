@@ -1,9 +1,9 @@
 ﻿
-namespace TriangleNet.Meshing
+namespace Artngame.Orion.TriangleNet.Meshing
 {
     using System.Collections.Generic;
-    using TriangleNet.Topology;
-    using TriangleNet.Geometry;
+    using Artngame.Orion.TriangleNet.Topology;
+    using Artngame.Orion.TriangleNet.Geometry;
 
     /// <summary>
     /// Mesh interface.

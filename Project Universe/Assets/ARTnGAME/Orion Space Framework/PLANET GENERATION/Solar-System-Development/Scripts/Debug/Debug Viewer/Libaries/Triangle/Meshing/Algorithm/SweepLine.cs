@@ -5,13 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet.Meshing.Algorithm
+namespace Artngame.Orion.TriangleNet.Meshing.Algorithm
 {
     using System;
     using System.Collections.Generic;
-    using TriangleNet.Topology;
-    using TriangleNet.Geometry;
-    using TriangleNet.Tools;
+    using Artngame.Orion.TriangleNet.Topology;
+    using Artngame.Orion.TriangleNet.Geometry;
+    using Artngame.Orion.TriangleNet.Tools;
 
     /// <summary>
     /// Builds a delaunay triangulation using the sweepline algorithm.

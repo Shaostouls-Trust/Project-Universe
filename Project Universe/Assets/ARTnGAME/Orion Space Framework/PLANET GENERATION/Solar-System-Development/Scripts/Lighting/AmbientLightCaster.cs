@@ -12,7 +12,7 @@ namespace Artngame.Orion.ProceduralPlanets
 
         void Start()
         {
-            sunLight = FindObjectOfType<SunShadowCaster>();
+            sunLight = FindFirstObjectByType<SunShadowCaster>();
             ambientLight = GetComponent<Light>();
             camT = Camera.main.transform;
             transform.rotation = CalculateAmbientLightRot();

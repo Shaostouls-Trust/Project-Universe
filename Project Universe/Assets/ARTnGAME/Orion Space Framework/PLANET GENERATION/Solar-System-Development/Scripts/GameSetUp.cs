@@ -12,8 +12,8 @@ namespace Artngame.Orion.ProceduralPlanets
 
         void Start()
         {
-            Ship ship = FindObjectOfType<Ship>();
-            PlayerControllerSolarS player = FindObjectOfType<PlayerControllerSolarS>();
+            Ship ship = FindFirstObjectByType<Ship>();
+            PlayerControllerSolarS player = FindFirstObjectByType<PlayerControllerSolarS>();
 
             if (startCondition == StartCondition.InShip)
             {

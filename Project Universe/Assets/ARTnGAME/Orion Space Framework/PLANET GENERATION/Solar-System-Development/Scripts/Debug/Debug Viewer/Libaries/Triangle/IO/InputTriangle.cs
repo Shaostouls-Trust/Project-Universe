@@ -4,10 +4,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet.IO
+namespace Artngame.Orion.TriangleNet.IO
 {
-    using TriangleNet.Topology;
-    using TriangleNet.Geometry;
+    using Artngame.Orion.TriangleNet.Topology;
+    using Artngame.Orion.TriangleNet.Geometry;
 
     /// <summary>
     /// Simple triangle class for input.

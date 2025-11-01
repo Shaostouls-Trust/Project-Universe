@@ -29,7 +29,7 @@ namespace Artngame.Orion.ProceduralPlanets
 
         static string[] GetGravityInfo(Vector3 point, CelestialBody ignore = null)
         {
-            CelestialBody[] bodies = GameObject.FindObjectsOfType<CelestialBody>();
+            CelestialBody[] bodies = GameObject.FindObjectsByType<CelestialBody>(FindObjectsSortMode.None);
             Vector3 totalAcc = Vector3.zero;
 
             // gravity

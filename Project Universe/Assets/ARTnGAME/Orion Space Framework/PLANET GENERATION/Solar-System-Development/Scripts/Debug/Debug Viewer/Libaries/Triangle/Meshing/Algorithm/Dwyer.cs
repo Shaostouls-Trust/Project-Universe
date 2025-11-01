@@ -5,13 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet.Meshing.Algorithm
+namespace Artngame.Orion.TriangleNet.Meshing.Algorithm
 {
     using System;
     using System.Collections.Generic;
-    using TriangleNet.Geometry;
-    using TriangleNet.Tools;
-    using TriangleNet.Topology;
+    using Artngame.Orion.TriangleNet.Geometry;
+    using Artngame.Orion.TriangleNet.Tools;
+    using Artngame.Orion.TriangleNet.Topology;
 
     /// <summary>
     /// Builds a delaunay triangulation using the divide-and-conquer algorithm.

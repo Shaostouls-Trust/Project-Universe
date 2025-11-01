@@ -12,6 +12,11 @@ namespace Artngame.Orion.FluidPlanetGenerator
     public class PlanetScene : MonoBehaviour
     {
 
+        //v0.1
+        public Vector3 forceDir = new Vector3(1, 1, 0);
+        public float forcePowerA = 1;
+        public float forcePowerB = 1;
+
         public ComputeShader ComputeShader;
         public Shader VisualShader;
 
@@ -36,6 +41,11 @@ namespace Artngame.Orion.FluidPlanetGenerator
 
                 FluidSimulation.SetDyeTexture(DyeTexture);
                 FluidSimulation.setVelocity(Velocity);
+
+                //v0.1
+                FluidSimulation.forceDir = forceDir;
+                FluidSimulation.forcePowerA = forcePowerA;
+                FluidSimulation.forcePowerB = forcePowerB;
 
                 PlanetMaterial.SetTexture("_MainTex", FluidSimulation._colorRT1);
 
@@ -90,6 +100,13 @@ namespace Artngame.Orion.FluidPlanetGenerator
             if (Application.isPlaying)
             {
                 FluidSimulation.SimStep(Time.deltaTime);
+
+                //v0.1
+                FluidSimulation.forceDir = forceDir;
+                FluidSimulation.forcePowerA = forcePowerA;
+                FluidSimulation.forcePowerB = forcePowerB;
+                FluidSimulation.SetDyeTexture(DyeTexture);
+                FluidSimulation.setVelocity(Velocity);
 
                 // Not sure if this is really necessary
                 PlanetMaterial.SetTexture("_MainTex", FluidSimulation._colorRT1);

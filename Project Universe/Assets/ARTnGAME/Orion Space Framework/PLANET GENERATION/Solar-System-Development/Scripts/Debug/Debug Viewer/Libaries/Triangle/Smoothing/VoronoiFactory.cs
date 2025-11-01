@@ -1,9 +1,9 @@
 ﻿
-namespace TriangleNet.Smoothing
+namespace Artngame.Orion.TriangleNet.Smoothing
 {
     using System;
-    using TriangleNet.Topology.DCEL;
-    using TriangleNet.Voronoi;
+    using Artngame.Orion.TriangleNet.Topology.DCEL;
+    using Artngame.Orion.TriangleNet.Voronoi;
 
     /// <summary>
     /// Factory which re-uses objects in the smoothing loop to enhance performance.

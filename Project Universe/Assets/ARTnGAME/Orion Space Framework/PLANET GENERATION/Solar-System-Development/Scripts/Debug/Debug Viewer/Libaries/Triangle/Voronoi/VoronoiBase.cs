@@ -5,13 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet.Voronoi
+namespace Artngame.Orion.TriangleNet.Voronoi
 {
     using System.Collections.Generic;
 
-    using TriangleNet.Topology;
-    using TriangleNet.Geometry;
-    using TriangleNet.Topology.DCEL;
+    using Artngame.Orion.TriangleNet.Topology;
+    using Artngame.Orion.TriangleNet.Geometry;
+    using Artngame.Orion.TriangleNet.Topology.DCEL;
 
     using Vertex = TriangleNet.Topology.DCEL.Vertex;
 

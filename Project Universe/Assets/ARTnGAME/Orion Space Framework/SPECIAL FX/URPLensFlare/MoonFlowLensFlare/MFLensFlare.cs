@@ -20,6 +20,10 @@ public class MFLensFlare : MonoBehaviour
     public float maxFadeOutScale = 1;
     public bool HDRP_Mode = false;
 
+    //v0.1
+    public bool useCollisionOcclusion = false;//occlude based on raycast, in case depth occlusion is not an option
+    public float lightFarDistance = 1;
+
     public bool DebugMode;
     [Space(10)]
     public List<MFFlareLauncher> lightSource;
@@ -185,23 +189,71 @@ public class MFLensFlare : MonoBehaviour
         }
         else
         {
-            // var camPos = _camera.transform.position;
-            // var targetPos = lightSource[lightIndex].directionalLight
-            //     ? -lightSource[lightIndex].transform.forward * 10000f
-            //     : lightSource[lightIndex].transform.position;
-            // Ray ray = new Ray(camPos, targetPos - camPos );
-            // RaycastHit hit;
-            // Physics.Raycast(ray, out hit);
-            // if (Vector3.Distance(hit.point, camPos) < Vector3.Distance(targetPos, camPos))
-            // {
-            //     if (hit.point == Vector3.zero) return true;
-            //     return false;
-            // }
-            Vector4 screenUV = state.sourceCoordinate;
-            screenUV.x = screenUV.x / _camera.pixelWidth;
-            screenUV.y = screenUV.y / _camera.pixelHeight;
-            screenUV.w = lightSource[lightIndex].directionalLight ? 1 : 0;
-            _screenpos.Add(screenUV);
+            //Vector4 screenUV = state.sourceCoordinate;
+            //screenUV.x = screenUV.x / _camera.pixelWidth;
+            //screenUV.y = screenUV.y / _camera.pixelHeight;
+            //screenUV.w = lightSource[lightIndex].directionalLight ? 1 : 0;
+            //_screenpos.Add(screenUV);
+
+            //v0.1
+            if (useCollisionOcclusion)
+            {
+                var camPos = _camera.transform.position;
+                var targetPos = lightSource[lightIndex].directionalLight
+                    ? -lightSource[lightIndex].transform.forward * 10000f * lightFarDistance
+                    : lightSource[lightIndex].transform.position;
+                Ray ray = new Ray(camPos, targetPos - camPos);
+                RaycastHit hit;
+                //Debug.DrawLine(camPos, camPos + (targetPos - camPos), Color.red, 10);
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+                {
+                   // Debug.Log(camPos);
+                   // Debug.Log(lightSource[lightIndex].directionalLight);
+                    if (Vector3.Distance(hit.point, camPos) < Vector3.Distance(targetPos, camPos))
+                    {
+                       // Debug.Log(hit.point);
+                        if (hit.point == Vector3.zero)
+                        {
+
+                            Vector4 screenUV = state.sourceCoordinate;
+                            screenUV.x = screenUV.x / _camera.pixelWidth;
+                            screenUV.y = screenUV.y / _camera.pixelHeight;
+                            screenUV.w = lightSource[lightIndex].directionalLight ? 1 : 0;
+                            _screenpos.Add(screenUV);
+                            return true;
+                        }
+                        return false;
+                    }
+                    else
+                    {
+                        Vector4 screenUV = state.sourceCoordinate;
+                        screenUV.x = screenUV.x / _camera.pixelWidth;
+                        screenUV.y = screenUV.y / _camera.pixelHeight;
+                        screenUV.w = lightSource[lightIndex].directionalLight ? 1 : 0;
+                        _screenpos.Add(screenUV);
+                        return true;
+                    }
+                }
+                else
+                {
+                    Vector4 screenUV = state.sourceCoordinate;
+                    screenUV.x = screenUV.x / _camera.pixelWidth;
+                    screenUV.y = screenUV.y / _camera.pixelHeight;
+                    screenUV.w = lightSource[lightIndex].directionalLight ? 1 : 0;
+                    _screenpos.Add(screenUV);
+                    return true;
+                }
+            }
+            else
+            {
+                Vector4 screenUV = state.sourceCoordinate;
+                screenUV.x = screenUV.x / _camera.pixelWidth;
+                screenUV.y = screenUV.y / _camera.pixelHeight;
+                screenUV.w = lightSource[lightIndex].directionalLight ? 1 : 0;
+                _screenpos.Add(screenUV);
+            }
+
+         
             return true;
         }
     }

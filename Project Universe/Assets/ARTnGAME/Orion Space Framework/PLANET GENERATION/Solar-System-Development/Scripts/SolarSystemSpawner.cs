@@ -19,7 +19,7 @@ namespace Artngame.Orion.ProceduralPlanets
             var sw = System.Diagnostics.Stopwatch.StartNew();
 
             PRNG prng = new PRNG(seed);
-            CelestialBody[] bodies = FindObjectsOfType<CelestialBody>();
+            CelestialBody[] bodies = FindObjectsByType<CelestialBody>(FindObjectsSortMode.None);
 
             foreach (var body in bodies)
             {

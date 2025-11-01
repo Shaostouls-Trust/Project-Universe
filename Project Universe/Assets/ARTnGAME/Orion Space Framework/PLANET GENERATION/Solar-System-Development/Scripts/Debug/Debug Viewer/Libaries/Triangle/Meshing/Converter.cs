@@ -5,17 +5,17 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet.Meshing
+namespace Artngame.Orion.TriangleNet.Meshing
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using TriangleNet.Geometry;
-    using TriangleNet.Topology;
-    using TriangleNet.Topology.DCEL;
+    using Artngame.Orion.TriangleNet.Geometry;
+    using Artngame.Orion.TriangleNet.Topology;
+    using Artngame.Orion.TriangleNet.Topology.DCEL;
 
-    using HVertex = TriangleNet.Topology.DCEL.Vertex;
-    using TVertex = TriangleNet.Geometry.Vertex;
+    using HVertex = Artngame.Orion.TriangleNet.Topology.DCEL.Vertex;
+    using TVertex = Artngame.Orion.TriangleNet.Geometry.Vertex;
 
     /// <summary>
     /// The Converter class provides methods for mesh reconstruction and conversion.

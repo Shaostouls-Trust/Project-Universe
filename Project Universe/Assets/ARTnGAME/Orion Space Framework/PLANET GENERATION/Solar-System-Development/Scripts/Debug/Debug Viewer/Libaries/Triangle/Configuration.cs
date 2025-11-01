@@ -4,11 +4,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet
+namespace Artngame.Orion.TriangleNet
 {
     using System;
-    using TriangleNet.Meshing;
-    using TriangleNet.Meshing.Algorithm;
+    using Artngame.Orion.TriangleNet.Meshing;
+    using Artngame.Orion.TriangleNet.Meshing.Algorithm;
 
     /// <summary>
     /// Configure advanced aspects of the library.

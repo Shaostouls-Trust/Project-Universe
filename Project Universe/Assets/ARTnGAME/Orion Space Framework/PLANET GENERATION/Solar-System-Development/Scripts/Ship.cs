@@ -118,7 +118,7 @@ namespace Artngame.Orion.ProceduralPlanets
 
         void TeleportToBody(CelestialBody body)
         {
-            rb.velocity = body.velocity;
+            rb.linearVelocity = body.velocity;
             rb.MovePosition(body.transform.position + (transform.position - body.transform.position).normalized * body.radius * 2);
         }
 
@@ -142,7 +142,7 @@ namespace Artngame.Orion.ProceduralPlanets
             {
                 if (Input.GetKeyDown(KeyCode.Return) && IsPiloted)
                 {
-                    var shipHud = FindObjectOfType<ShipHUD>();
+                    var shipHud = FindFirstObjectByType<ShipHUD>();
                     if (shipHud.LockedBody)
                     {
                         TeleportToBody(shipHud.LockedBody);
@@ -180,7 +180,7 @@ namespace Artngame.Orion.ProceduralPlanets
 
         public void PilotShip()
         {
-            pilot = FindObjectOfType<PlayerControllerSolarS>();
+            pilot = FindFirstObjectByType<PlayerControllerSolarS>();
             shipIsPiloted = true;
             pilot.Camera.transform.parent = camViewPoint;
             pilot.Camera.transform.localPosition = Vector3.zero;
@@ -196,7 +196,7 @@ namespace Artngame.Orion.ProceduralPlanets
             shipIsPiloted = false;
             pilot.transform.position = pilotSeatPoint.position;
             pilot.transform.rotation = pilotSeatPoint.rotation;
-            pilot.Rigidbody.velocity = rb.velocity;
+            pilot.Rigidbody.linearVelocity = rb.linearVelocity;
             pilot.gameObject.SetActive(true);
             window.SetActive(true);
             pilot.ExitFromSpaceship();
@@ -220,7 +220,7 @@ namespace Artngame.Orion.ProceduralPlanets
 
         public void SetVelocity(Vector3 velocity)
         {
-            rb.velocity = velocity;
+            rb.linearVelocity = velocity;
         }
 
         public bool ShowHUD

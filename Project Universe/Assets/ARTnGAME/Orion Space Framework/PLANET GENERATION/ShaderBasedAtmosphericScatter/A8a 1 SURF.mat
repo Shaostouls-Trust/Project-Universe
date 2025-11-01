@@ -2,14 +2,16 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: A8a 1 SURF
   m_Shader: {fileID: 4800000, guid: e663ea5ccca02674aa1d540799aca1ec, type: 3}
-  m_ShaderKeywords: _CLOUDSADDITIVE_ON
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - _CLOUDSADDITIVE_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -75,6 +77,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _AtmosphereHeight: 80050
     - _AtmosphereModifier: 1.33
@@ -140,3 +143,4 @@ Material:
     - _RayScatteringCoefficient: {r: 0.0000058, g: 0.0000135, b: 0.0000331, a: 0}
     - _ScatteringCoefficient: {r: 5.5, g: 13, b: 22.4, a: 0}
     - _SunCentre: {r: 75.2, g: 90.92, b: -43.64, a: 0}
+  m_BuildTextureStacks: []

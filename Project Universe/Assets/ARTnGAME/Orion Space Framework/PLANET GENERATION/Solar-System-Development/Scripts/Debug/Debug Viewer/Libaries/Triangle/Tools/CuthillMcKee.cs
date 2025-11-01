@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet.Tools
+namespace Artngame.Orion.TriangleNet.Tools
 {
     using System;
 

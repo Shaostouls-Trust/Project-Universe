@@ -318,7 +318,7 @@ Shader "ORION/_Clouds/Clouds Unlit Vertex Color"
 		}
 	}
 	Fallback "Diffuse"
-	CustomEditor "ASEMaterialInspector"
+	//CustomEditor "ASEMaterialInspector"
 }
 /*ASEBEGIN
 Version=16900

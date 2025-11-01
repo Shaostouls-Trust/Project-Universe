@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet.IO
+namespace Artngame.Orion.TriangleNet.IO
 {
     public interface IFileFormat
     {

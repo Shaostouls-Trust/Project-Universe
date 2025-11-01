@@ -5,11 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet.Meshing.Iterators
+namespace Artngame.Orion.TriangleNet.Meshing.Iterators
 {
     using System;
     using System.Collections.Generic;
-    using TriangleNet.Topology;
+    using Artngame.Orion.TriangleNet.Topology;
 
     /// <summary>
     /// Iterates the region a given triangle belongs to and applies an action

@@ -5,10 +5,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet.Meshing.Data
+namespace Artngame.Orion.TriangleNet.Meshing.Data
 {
-    using TriangleNet.Geometry;
-    using TriangleNet.Topology;
+    using Artngame.Orion.TriangleNet.Geometry;
+    using Artngame.Orion.TriangleNet.Topology;
 
     /// <summary>
     /// A (priority) queue for bad triangles.

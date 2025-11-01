@@ -5,11 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet
+namespace Artngame.Orion.TriangleNet
 {
     using System;
-    using TriangleNet.Geometry;
-    using TriangleNet.Tools;
+    using Artngame.Orion.TriangleNet.Geometry;
+    using Artngame.Orion.TriangleNet.Tools;
 
     /// <summary>
     /// Adaptive exact arithmetic geometric predicates.

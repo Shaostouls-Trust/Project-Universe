@@ -4,12 +4,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet.Smoothing
+namespace Artngame.Orion.TriangleNet.Smoothing
 {
-    using TriangleNet.Geometry;
-    using TriangleNet.Meshing;
-    using TriangleNet.Topology.DCEL;
-    using TriangleNet.Voronoi;
+    using Artngame.Orion.TriangleNet.Geometry;
+    using Artngame.Orion.TriangleNet.Meshing;
+    using Artngame.Orion.TriangleNet.Topology.DCEL;
+    using Artngame.Orion.TriangleNet.Voronoi;
 
     /// <summary>
     /// Simple mesh smoother implementation.

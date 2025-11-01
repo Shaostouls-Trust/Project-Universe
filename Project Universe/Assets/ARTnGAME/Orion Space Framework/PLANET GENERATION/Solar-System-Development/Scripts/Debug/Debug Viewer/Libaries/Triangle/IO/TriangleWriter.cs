@@ -5,13 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet.IO
+namespace Artngame.Orion.TriangleNet.IO
 {
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
-    using TriangleNet.Geometry;
-    using TriangleNet.Topology;
+    using Artngame.Orion.TriangleNet.Geometry;
+    using Artngame.Orion.TriangleNet.Topology;
 
     /// <summary>
     /// Helper methods for writing Triangle file formats.

@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet.Topology.DCEL
+namespace Artngame.Orion.TriangleNet.Topology.DCEL
 {
     public class HalfEdge
     {

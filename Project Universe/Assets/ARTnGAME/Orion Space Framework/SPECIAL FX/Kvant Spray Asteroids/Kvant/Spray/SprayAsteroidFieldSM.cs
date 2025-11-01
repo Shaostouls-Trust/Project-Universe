@@ -396,9 +396,22 @@ namespace Artngame.Orion.Kvant
 
             UpdateKernelShader();
 
-            Graphics.Blit(null, _positionBuffer2, _kernelMaterial, 0);
-            Graphics.Blit(null, _velocityBuffer2, _kernelMaterial, 1);
-            Graphics.Blit(null, _rotationBuffer2, _kernelMaterial, 2);
+            //v6.1
+            RenderTexture temp1 = RenderTexture.GetTemporary(_positionBuffer2.width, _positionBuffer2.height,0, _positionBuffer2.format);
+            RenderTexture temp2 = RenderTexture.GetTemporary(_velocityBuffer2.width, _velocityBuffer2.height, 0, _velocityBuffer2.format);
+            RenderTexture temp3 = RenderTexture.GetTemporary(_rotationBuffer2.width, _rotationBuffer2.height, 0, _rotationBuffer2.format);
+            Graphics.Blit(null, temp1, _kernelMaterial, 0);
+            Graphics.Blit(temp1, _positionBuffer2);
+
+            Graphics.Blit(null, temp2, _kernelMaterial, 1);
+            Graphics.Blit(temp2, _velocityBuffer2);
+
+            Graphics.Blit(null, temp3, _kernelMaterial, 2);
+            Graphics.Blit(temp3, _rotationBuffer2);
+
+            RenderTexture.ReleaseTemporary(temp1);
+            RenderTexture.ReleaseTemporary(temp2);
+            RenderTexture.ReleaseTemporary(temp3);
 
             for (var i = 0; i < 8; i++) {
                 SwapBuffersAndInvokeKernels();

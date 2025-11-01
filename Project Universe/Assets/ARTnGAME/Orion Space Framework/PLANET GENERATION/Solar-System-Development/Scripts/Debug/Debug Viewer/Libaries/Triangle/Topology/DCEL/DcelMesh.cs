@@ -4,10 +4,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet.Topology.DCEL
+namespace Artngame.Orion.TriangleNet.Topology.DCEL
 {
     using System.Collections.Generic;
-    using TriangleNet.Geometry;
+    using Artngame.Orion.TriangleNet.Geometry;
 
     public class DcelMesh
     {

@@ -6,6 +6,10 @@ namespace Artngame.Orion.FluidPlanetGenerator
 {
     public class FluidSimulation
     {
+        //v0.1
+        public Vector3 forceDir = new Vector3(1,1,0);
+        public float forcePowerA=1;
+        public float forcePowerB=1;
 
         public bool isLinearColorSpace = false;
 
@@ -240,6 +244,12 @@ namespace Artngame.Orion.FluidPlanetGenerator
                 ComputeShader.SetFloat("Alpha", dif_alpha);
                 ComputeShader.SetFloat("Beta", 4 + dif_alpha);
                 ComputeShader.SetTexture(Kernels.Diffuse0, "V4Field_Temp", TEMP);
+
+                //v0.1
+                ComputeShader.SetVector("forceDir", forceDir);
+                ComputeShader.SetFloat("forcePowerA", forcePowerA);
+                ComputeShader.SetFloat("forcePowerB", forcePowerB);
+                
 
                 // Diffuse Velocity
                 for (int i = 0; i < 10; i++)

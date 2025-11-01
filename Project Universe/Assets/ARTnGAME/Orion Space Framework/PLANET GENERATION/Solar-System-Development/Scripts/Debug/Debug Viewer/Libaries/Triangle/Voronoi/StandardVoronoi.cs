@@ -4,12 +4,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet.Voronoi
+namespace Artngame.Orion.TriangleNet.Voronoi
 {
     using System.Collections.Generic;
-    using TriangleNet.Geometry;
-    using TriangleNet.Tools;
-    using TriangleNet.Topology.DCEL;
+    using Artngame.Orion.TriangleNet.Geometry;
+    using Artngame.Orion.TriangleNet.Tools;
+    using Artngame.Orion.TriangleNet.Topology.DCEL;
 
     public class StandardVoronoi : VoronoiBase
     {

@@ -22,15 +22,17 @@ namespace Artngame.Orion.Galaxia
         [SerializeField]
       //  [HideInInspector]
         public List<Particles> particles;//private List<Particles> particles; //v0.1
-        [SerializeField,HideInInspector]
-        private GalaxyGenerationType m_generationType;
-        [SerializeField,HideInInspector]
-        private bool m_gpu = true;
-	    [SerializeField,HideInInspector] private bool m_render_galaxy = true;
-	    [SerializeField, HideInInspector] private bool m_frustumCulling = true;
+        [SerializeField]//,HideInInspector]
+        public GalaxyGenerationType m_generationType;//v1.1.0
+        [SerializeField]//,HideInInspector]
+        public bool m_gpu = true;//private bool m_gpu = true; //v1.1.0
+        //   [SerializeField,HideInInspector] private bool m_render_galaxy = true;
+        //[SerializeField, HideInInspector] private bool m_frustumCulling = true;
+        [SerializeField] public bool m_render_galaxy = true;//v1.1.0
+        [SerializeField] public bool m_frustumCulling = true;//v1.1.0
         [SerializeField]
-        private GalaxyPrefab m_galaxy;
-		[SerializeField,HideInInspector]
+        public GalaxyPrefab m_galaxy;//v1.1.0
+        [SerializeField,HideInInspector]
 		private bool m_saveMeshes;
 		[SerializeField, HideInInspector]
 		private bool m_saveParticles;

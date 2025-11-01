@@ -1,7 +1,7 @@
 ﻿
-namespace TriangleNet.Voronoi
+namespace Artngame.Orion.TriangleNet.Voronoi
 {
-    using TriangleNet.Topology.DCEL;
+    using Artngame.Orion.TriangleNet.Topology.DCEL;
 
     public interface IVoronoiFactory
     {

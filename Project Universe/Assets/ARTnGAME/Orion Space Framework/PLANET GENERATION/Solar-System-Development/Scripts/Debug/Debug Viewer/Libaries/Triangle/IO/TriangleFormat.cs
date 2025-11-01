@@ -4,13 +4,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet.IO
+namespace Artngame.Orion.TriangleNet.IO
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using TriangleNet.Geometry;
-    using TriangleNet.Meshing;
+    using Artngame.Orion.TriangleNet.Geometry;
+    using Artngame.Orion.TriangleNet.Meshing;
 
     /// <summary>
     /// Implements geometry and mesh file formats of the the original Triangle code.

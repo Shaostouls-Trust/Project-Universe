@@ -11,7 +11,7 @@ namespace Artngame.Orion.ProceduralPlanets
         void Awake()
         {
 
-            bodies = FindObjectsOfType<CelestialBody>();
+            bodies = FindObjectsByType<CelestialBody>(FindObjectsSortMode.None);
             Time.fixedDeltaTime = Universe.physicsTimeStep;
             Debug.Log("Setting fixedDeltaTime to: " + Universe.physicsTimeStep);
         }
@@ -62,7 +62,7 @@ namespace Artngame.Orion.ProceduralPlanets
             {
                 if (instance == null)
                 {
-                    instance = FindObjectOfType<NBodySimulation>();
+                    instance = FindFirstObjectByType<NBodySimulation>();
                 }
                 return instance;
             }

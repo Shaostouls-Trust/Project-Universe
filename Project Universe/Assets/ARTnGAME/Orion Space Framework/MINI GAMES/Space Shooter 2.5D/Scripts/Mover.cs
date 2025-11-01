@@ -10,7 +10,7 @@ namespace Artngame.Orion.MiniGames
         private void Awake()
         {
             rb = GetComponent<Rigidbody>();
-            rb.velocity = speed * transform.forward;
+            rb.linearVelocity = speed * transform.forward;
         }
     }
 }

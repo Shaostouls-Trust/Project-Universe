@@ -29,6 +29,10 @@ float Alpha, Beta;
 
 RWTexture2D<float4> Div;
 
+//v0.1
+float3 forceDir;
+float forcePowerA;
+float forcePowerB;
 
 int2 ix(uint2 index, uint2 dim){
 
@@ -55,7 +59,9 @@ void AddForce(uint2 tid : SV_DispatchThreadID)
 	float3 dir2 = (Map_In.SampleLevel(samplerMap_In, uv + float2(Time*0.05f, 0), 0).xyz + float3(0.003921568627, 0.003921568627, 0.003921568627)*0.5f) * 2 - 1;
 
 	//V4Field_in[tid] = float4(dir2.x, dir2.y, 0, 0);// V4Field_out[tid] - V4Field_out[tid] * DeltaTime*0.5f + float4(dir2.x, dir2.y, 0, 0)*((sin(Time * 2 + uv.x * 2)*0.5 + 0.5)*0.5 + 0.5)*DeltaTime * 5;
-	V4Field_in[tid] = V4Field_out[tid] - V4Field_out[tid] * DeltaTime*0.5f + float4(dir2.x, dir2.y, 0, 0)*((sin(Time * 2 + uv.x * 2)*0.5 + 0.5)*0.5 + 0.5)*DeltaTime * 5;
+	//V4Field_in[tid] = V4Field_out[tid] - V4Field_out[tid] * DeltaTime*0.5f + float4(dir2.x, dir2.y, 0, 0)*((sin(Time * 2 + uv.x * 2)*0.5 + 0.5)*0.5 + 0.5)*DeltaTime * 5;
+	V4Field_in[tid] = V4Field_out[tid] - V4Field_out[tid] * DeltaTime*0.5f * forcePowerA
+		+ float4(forceDir.x * dir2.x, forceDir.y * dir2.y, 0, forceDir.z * dir2.z)*((sin(Time * 2 + uv.x * 2)*0.5 + 0.5)*0.5 + 0.5)*DeltaTime * 5 * forcePowerB;
 }
 
 

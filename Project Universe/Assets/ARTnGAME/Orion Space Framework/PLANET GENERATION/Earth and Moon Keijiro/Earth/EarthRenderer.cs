@@ -114,8 +114,10 @@ namespace Artngame.Orion.EarthMoon
         [SerializeField] int _segments = 64;
         [SerializeField] int _rings = 32;
 
-        [SerializeField] Shader _baseShader;
-        [SerializeField] Shader _atmosphereShader;
+        //[SerializeField] Shader _baseShader;
+        //[SerializeField] Shader _atmosphereShader;
+        public Shader _baseShader;
+        public Shader _atmosphereShader;
 
         [SerializeField] Texture _baseMap;
         [SerializeField] Texture _normalMap;

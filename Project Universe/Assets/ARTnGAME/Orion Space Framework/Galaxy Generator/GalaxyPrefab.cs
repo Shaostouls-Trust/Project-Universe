@@ -16,14 +16,14 @@ namespace Artngame.Orion.Galaxia
         #region Private
         [SerializeField]
         //[HideInInspector]
-        private List<ParticlesPrefab> m_particlePrefabs;
+        public List<ParticlesPrefab> m_particlePrefabs;
         [SerializeField]
-       // [HideInInspector]
-        private ParticleDistributor m_distributor;
+        // [HideInInspector]
+        public ParticleDistributor m_distributor;
         [SerializeField]
-        private float m_size = 100;
+        public float m_size = 100;
         [SerializeField]
-        private float m_heightOffset = 10;
+        public float m_heightOffset = 10;
         [SerializeField]
         //[HideInInspector]
         [CurveRange(0, 0, 1, 1)]
@@ -246,7 +246,7 @@ namespace Artngame.Orion.Galaxia
 		/// </remarks>
 		public void UpdateAllGalaxies()
         {
-            foreach (Galaxy galaxy in GameObject.FindObjectsOfType<Galaxy>())
+            foreach (Galaxy galaxy in FindObjectsByType<Galaxy>(FindObjectsSortMode.None))
             {
                 if (galaxy.GalaxyPrefab == this && galaxy.GenerationType == Galaxy.GalaxyGenerationType.Automatic)
                 {
@@ -263,7 +263,7 @@ namespace Artngame.Orion.Galaxia
 		/// <param name="prefab"></param>
 		public void UpdateAllGalaxies(ParticlesPrefab prefab)
         {
-            foreach (Galaxy galaxy in GameObject.FindObjectsOfType<Galaxy>())
+            foreach (Galaxy galaxy in FindObjectsByType<Galaxy>(FindObjectsSortMode.None))
             {
                 if (galaxy.GalaxyPrefab == this && galaxy.GenerationType == Galaxy.GalaxyGenerationType.Automatic)
                 {
@@ -280,7 +280,7 @@ namespace Artngame.Orion.Galaxia
 		/// </remarks>
 		public void RecreateAllGalaxies()
         {
-            foreach (Galaxy galaxy in GameObject.FindObjectsOfType<Galaxy>())
+            foreach (Galaxy galaxy in FindObjectsByType<Galaxy>(FindObjectsSortMode.None))
             {
                 if (galaxy.GalaxyPrefab == this && galaxy.GenerationType == Galaxy.GalaxyGenerationType.Automatic)
                 {
@@ -297,7 +297,7 @@ namespace Artngame.Orion.Galaxia
 		/// </remarks>
 		public void RecreateAllGalaxies(ParticlesPrefab prefab)
         {
-            foreach (Galaxy galaxy in GameObject.FindObjectsOfType<Galaxy>())
+            foreach (Galaxy galaxy in GameObject.FindObjectsByType<Galaxy>(FindObjectsSortMode.None))
             {
                 if (galaxy.GalaxyPrefab == this && galaxy.GenerationType == Galaxy.GalaxyGenerationType.Automatic)
                 {

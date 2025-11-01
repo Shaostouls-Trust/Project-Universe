@@ -21,7 +21,7 @@ namespace Artngame.Orion.MiniGames
         public IEnumerator Maneuver()
         {
             yield return new WaitForSeconds(startDelay);
-            Vector3 velocity = rb.velocity;
+            Vector3 velocity = rb.linearVelocity;
             while (true)
             {
                 float moveDir = -Mathf.Sign(rb.position.x);
@@ -34,15 +34,15 @@ namespace Artngame.Orion.MiniGames
                 {
                     float currentSpeed = Mathf.Lerp(0, maxSpeed, accelerated / accelerateTime);
                     velocity.x = currentSpeed;
-                    rb.velocity = velocity;
+                    rb.linearVelocity = velocity;
                     yield return null;
                     accelerated += Time.deltaTime;
                 }
                 velocity.x = maxSpeed;
-                rb.velocity = velocity;
+                rb.linearVelocity = velocity;
                 yield return new WaitForSeconds(moveTime - accelerated);
                 velocity.x = 0.0f;
-                rb.velocity = velocity;
+                rb.linearVelocity = velocity;
                 rb.rotation = Quaternion.identity;
                 yield return new WaitForSeconds(Random.Range(pauseTime.x, pauseTime.y));
             }
@@ -51,7 +51,7 @@ namespace Artngame.Orion.MiniGames
         private void FixedUpdate()
         {
             rb.position = boundary.Clamp(rb.position);
-            rb.rotation = Quaternion.Euler(0f, 0f, tilt * rb.velocity.x);
+            rb.rotation = Quaternion.Euler(0f, 0f, tilt * rb.linearVelocity.x);
         }
 
         private void Awake()

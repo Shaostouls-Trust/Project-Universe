@@ -22,13 +22,30 @@ namespace Artngame.Orion.ImageFX
 
         void OnEnable()
         {
-            var settings = FieldFinder<Bloom>.GetField(x => x.settings);
-            foreach (var setting in settings.FieldType.GetFields())
-            {
-                var prop = settings.Name + "." + setting.Name;
-                m_Properties.Add(serializedObject.FindProperty(prop));
-            }
+            //var settings = FieldFinder<Bloom>.GetField(x => x.settings);
+            //foreach (var setting in settings.FieldType.GetFields())
+            //{
+            //    var prop = settings.Name + "." + setting.Name;
+            //    m_Properties.Add(serializedObject.FindProperty(prop));
+            //}
 
+            //v0.1
+            //threshold = 0.9f,
+            //            softKnee = 0.5f,
+            //            radius = 2.0f,
+            //            intensity = 0.7f,
+            //            highQuality = true,
+            //            antiFlicker = false,
+            //            dirtTexture = null,
+            //            dirtIntensity = 2.5f
+            m_Properties.Add(serializedObject.FindProperty("settings.threshold"));
+            m_Properties.Add(serializedObject.FindProperty("settings.softKnee"));
+            m_Properties.Add(serializedObject.FindProperty("settings.radius"));
+            m_Properties.Add(serializedObject.FindProperty("settings.intensity"));
+            m_Properties.Add(serializedObject.FindProperty("settings.highQuality"));
+            m_Properties.Add(serializedObject.FindProperty("settings.antiFlicker"));
+            m_Properties.Add(serializedObject.FindProperty("settings.dirtTexture"));
+            m_Properties.Add(serializedObject.FindProperty("settings.dirtIntensity"));
             _graph = new BloomGraphDrawer();
         }
 

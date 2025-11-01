@@ -5,11 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet.Meshing.Algorithm
+namespace Artngame.Orion.TriangleNet.Meshing.Algorithm
 {
     using System.Collections.Generic;
-    using TriangleNet.Topology;
-    using TriangleNet.Geometry;
+    using Artngame.Orion.TriangleNet.Topology;
+    using Artngame.Orion.TriangleNet.Geometry;
 
     /// <summary>
     /// Builds a delaunay triangulation using the incremental algorithm.

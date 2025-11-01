@@ -13,7 +13,27 @@ MonoBehaviour:
   m_Name: NebulaCloudsSM_HDRP
   m_EditorClassIdentifier: 
   active: 1
-  m_AdvancedMode: 0
+  useGlobalTime: 1
+  backgroundOnly: 0
+  starsControl: {x: 0.5, y: -0.02, z: 0.0001, w: 37.91}
+  starsControlA: {x: 1.6, y: 0.79, z: 1, w: 0.25}
+  starsControlB: {x: 2, y: 0.22, z: 24.57, w: 111}
+  starsTransparency: {x: 1, y: 1, z: 1, w: 1}
+  sfColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  sfScroll: {x: 0.3, y: 0.02, z: 0.1, w: 0.022}
+  sfCenter: {x: 0, y: 0, z: 0, w: 1}
+  sfCamScroll: 4
+  sfRotation: {x: 0, y: 0, z: 0, w: 0.01}
+  sfIterations: 13.7
+  sfVolsteps: 7.1
+  sfFormuparam: 772
+  sfStepSize: 1159
+  sfTile: 11111
+  sfBrightness: 0.15
+  sfDarkmatter: 355
+  sfDistfading: 55
+  sfSaturation: 0.1
+  vortexAxis: {x: 0, y: 1, z: 0, w: 1}
   cloudDistanceParams: {x: 0, y: 0, z: 1}
   controlBackAlphaPower: 1
   controlCloudAlphaPower: 0.001
@@ -400,9 +420,7 @@ MonoBehaviour:
   blitShaderPassIndex: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 0.006
-    min: 0
-    max: 1
+    m_Value: 1
   shaftsFollowCamera:
     m_OverrideState: 1
     m_Value: 0
@@ -417,15 +435,9 @@ MonoBehaviour:
   sunColor:
     m_OverrideState: 1
     m_Value: {r: 1, g: 1, b: 1, a: 1}
-    hdr: 0
-    showAlpha: 1
-    showEyeDropper: 1
   sunThreshold:
     m_OverrideState: 1
     m_Value: {r: 0.87, g: 0.74, b: 0.65, a: 1}
-    hdr: 0
-    showAlpha: 1
-    showEyeDropper: 1
   sunShaftBlurRadius:
     m_OverrideState: 1
     m_Value: 2.5
@@ -459,9 +471,6 @@ MonoBehaviour:
   underWaterTint:
     m_OverrideState: 1
     m_Value: {r: 0, g: 1, b: 1, a: 1}
-    hdr: 0
-    showAlpha: 1
-    showEyeDropper: 1
   BumpIntensityRL:
     m_OverrideState: 1
     m_Value: 0.17

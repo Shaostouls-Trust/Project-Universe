@@ -5,17 +5,17 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet
+namespace Artngame.Orion.TriangleNet
 {
     using System;
     using System.Collections.Generic;
-    using TriangleNet.Geometry;
-    using TriangleNet.Logging;
-    using TriangleNet.Meshing;
-    using TriangleNet.Meshing.Data;
-    using TriangleNet.Meshing.Iterators;
-    using TriangleNet.Tools;
-    using TriangleNet.Topology;
+    using Artngame.Orion.TriangleNet.Geometry;
+    using Artngame.Orion.TriangleNet.Logging;
+    using Artngame.Orion.TriangleNet.Meshing;
+    using Artngame.Orion.TriangleNet.Meshing.Data;
+    using Artngame.Orion.TriangleNet.Meshing.Iterators;
+    using Artngame.Orion.TriangleNet.Tools;
+    using Artngame.Orion.TriangleNet.Topology;
 
     /// <summary>
     /// Mesh data structure.

@@ -16,25 +16,29 @@
         _EmitColor ("Night light color",Color) = (1,1,1,1)
         
         _EarthGlint ("Glintmap (RGB)", 2D) = "black" {}
-        _Glossiness ("Smoothness", Range(0,1)) = 0.5
+        _Glossiness("Smoothness", Range(0,1)) = 0.5
+
+        _SunDir("Sun Dir", Vector) = (1,0,0,1)
     }
-    SubShader
-    {
-        Tags { "Queue"="Geometry" }
-        LOD 300
-        
-        //Blend SrcAlpha OneMinusSrcAlpha // Ordinary blending
-       // ZWrite Off // We're proxy geometry
-       // ZTest Always // We need to draw backside
-        //Cull Front // Draw back faces only (avoids clipping when camera is inside proxy)
-        
-        Pass
+        SubShader
         {
-        CGPROGRAM
-        #include "../SphereUtils/RaytraceSphereMath.cginc"
-        #include "../SphereUtils/RaytraceDraw.cginc"
-        #pragma vertex raytrace_vert
-        #pragma fragment raytrace_frag
+            Tags { "Queue" = "Geometry" }
+            LOD 300
+
+            //Blend SrcAlpha OneMinusSrcAlpha // Ordinary blending
+           // ZWrite Off // We're proxy geometry
+           // ZTest Always // We need to draw backside
+            //Cull Front // Draw back faces only (avoids clipping when camera is inside proxy)
+
+            Pass
+            {
+            CGPROGRAM
+            #include "../SphereUtils/RaytraceSphereMath.cginc"
+            #include "../SphereUtils/RaytraceDraw.cginc"
+            #pragma vertex raytrace_vert
+            #pragma fragment raytrace_frag
+
+            float4 _SunDir;
 
         sampler2D _EarthAlbedo;
         fixed4 _AlbedoColor;
@@ -70,7 +74,7 @@
             float gloss =  length(glint.rgb);
             
             float3 normal=normalize(hit); // surface normal for sphere is easy (object coords)
-            float3 sun_dir = normalize(mul(unity_WorldToObject,float4(+1.0,0.0,0.0,0.0)).xyz);
+            float3 sun_dir = normalize(mul(unity_WorldToObject, _SunDir).xyz);//  float4(+1.0,0.0,0.0,0.0)).xyz);
             
             float lambert = dot(normal,sun_dir);
             if (lambert>0) {

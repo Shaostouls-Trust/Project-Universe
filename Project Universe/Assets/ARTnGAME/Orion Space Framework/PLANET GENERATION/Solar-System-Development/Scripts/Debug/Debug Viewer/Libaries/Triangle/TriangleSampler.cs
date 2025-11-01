@@ -5,11 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet
+namespace Artngame.Orion.TriangleNet
 {
     using System;
     using System.Collections.Generic;
-    using TriangleNet.Topology;
+    using Artngame.Orion.TriangleNet.Topology;
 
     /// <summary>
     /// Used for triangle sampling in the <see cref="TriangleLocator"/> class.

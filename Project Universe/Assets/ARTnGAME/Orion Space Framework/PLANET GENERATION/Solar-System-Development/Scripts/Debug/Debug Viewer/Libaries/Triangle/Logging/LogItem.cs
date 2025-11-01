@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TriangleNet.Logging
+namespace Artngame.Orion.TriangleNet.Logging
 {
     using System;
 
